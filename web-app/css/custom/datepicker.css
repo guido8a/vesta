@@ -1,0 +1,13 @@
+.datepicker th {
+    background : inherit !important;
+    color      : inherit !important;
+}
+
+.datepicker-dropdown {
+    /*background-color : #efefef !important;*/
+    /*background-color : red !important;*/
+}
+
+.datepicker {
+    z-index : 9999;
+}

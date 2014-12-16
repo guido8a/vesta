@@ -1,0 +1,18 @@
+/*.long .modal-body {*/
+/*max-height : 720px;*/
+/*}*/
+
+.modal-contenido {
+    max-height : 480px;
+    overflow-y : auto;
+}
+
+.long .bootbox-body {
+    max-height : 720px;
+    overflow-y : auto;
+    overflow-x : hidden;
+}
+
+.long.modal-dialog {
+    width : 1100px;
+}

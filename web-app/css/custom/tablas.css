@@ -1,0 +1,40 @@
+table {
+    font-size : 13px;
+}
+
+th {
+    background-color : #1260B3;
+    color            : #ffab19;
+}
+
+th.sortable {
+    background-position : right;
+    background-repeat   : no-repeat;
+    background-image    : url(../../images/skin/upDown.png);
+    padding-right       : 1.1em;
+}
+
+th.asc {
+    background-image : url(../../images/skin/up.png);
+}
+
+th.desc {
+    background-image : url(../../images/skin/down.png);
+}
+
+th a {
+    /*color : #ffab19;*/
+    color : #72cb8e;
+}
+
+th a:hover, th a:focus {
+    /*color : #ffc766;*/
+    color : #72cb8e;
+}
+
+tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
+    color      : #444444;
+    /*background : #ffc766 !important;*/
+    background : #72cb8e !important;
+}
+

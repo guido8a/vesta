@@ -1,0 +1,84 @@
+.navbar-logo {
+    padding-top : 15px;
+}
+
+.banner-top {
+    position   : absolute;
+    top        : 0;
+    left       : 0;
+    height     : 50px;
+    width      : 100%;
+    background : url("../../images/bg.jpg") repeat-x;
+}
+
+.banner-top div {
+    float  : left;
+    height : 50px;
+}
+
+.banner-esquina {
+    width      : 47px;
+    background : url("../../images/esquina.png") no-repeat;
+}
+
+.banner-esquina.der {
+    -moz-transform    : scaleX(-1);
+    -o-transform      : scaleX(-1);
+    -webkit-transform : scaleX(-1);
+    transform         : scaleX(-1);
+    filter            : FlipH;
+    -ms-filter        : "FlipH";
+    position          : absolute;
+    right             : 0;
+}
+
+.banner-title {
+    font-family : "PT Sans Narrow", sans-serif;
+    font-size   : 20pt;
+    font-weight : bold;
+    color       : #fff;
+    margin-left : 70px;
+}
+
+.banner-logo {
+    float        : right !important;
+    margin-top   : 5px;
+    margin-right : 72px;
+    width        : 127px;
+    background   : url("../../images/logo.png") no-repeat;
+}
+
+.banner-search {
+    float        : right !important;
+    margin-right : 60px;
+    width        : 200px;
+}
+
+.banner-search input {
+    margin-top : 8px;
+}
+
+.banner-top-lg {
+    height     : 75px;
+    background : url("../../images/bg-lg.jpg") repeat-x;
+}
+
+.banner-top-lg div {
+    height : 75px;
+}
+
+.banner-top-lg .banner-esquina {
+    width      : 79px;
+    background : url("../../images/esquina-lg.png") no-repeat;
+}
+
+.banner-top-lg .banner-title {
+    margin-top : 15px;
+}
+
+.banner-top-lg .banner-logo {
+    margin-top   : 7px;
+    width        : 191px;
+    margin-right : 104px;
+    background   : url("../../images/logo-lg.png") no-repeat;
+}

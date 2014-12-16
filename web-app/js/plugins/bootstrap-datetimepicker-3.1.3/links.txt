@@ -1,0 +1,8 @@
+docs:
+http://eonasdan.github.io/bootstrap-datetimepicker
+
+download:
+https://github.com/Eonasdan/bootstrap-datetimepicker
+
+installation:
+https://github.com/Eonasdan/bootstrap-datetimepicker/wiki/Installation
