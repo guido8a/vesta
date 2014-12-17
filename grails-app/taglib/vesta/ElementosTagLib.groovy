@@ -278,14 +278,14 @@ class ElementosTagLib {
         def textfield = "<input type='text' name='${nameInput}' id='${id}' " + (readonly ? "readonly=''" : "") + " value='${value}'" +
                 " class='${clase}' data-date-format='${formatJS}'/>"
 
-        def hiddenDay = "<input type='text' name='${nameHiddenDay}' id='${nameHiddenDay}' value='${valueDay}'/>"
-        def hiddenMonth = "<input type='text' name='${nameHiddenMonth}' id='${nameHiddenMonth}' value='${valueMonth}'/>"
-        def hiddenYear = "<input type='text' name='${nameHiddenYear}' id='${nameHiddenYear}' value='${valueYear}'/>"
+        def hiddenDay = "<input type='hidden' name='${nameHiddenDay}' id='${nameHiddenDay}' value='${valueDay}'/>"
+        def hiddenMonth = "<input type='hidden' name='${nameHiddenMonth}' id='${nameHiddenMonth}' value='${valueMonth}'/>"
+        def hiddenYear = "<input type='hidden' name='${nameHiddenYear}' id='${nameHiddenYear}' value='${valueYear}'/>"
 
-        def hiddenHour = "<input type='text' name='${nameHiddenHour}' id='${nameHiddenHour}' value='${valueHour}'/>"
-        def hiddenMin = "<input type='text' name='${nameHiddenMin}' id='${nameHiddenMin}' value='${valueMin}'/>"
+        def hiddenHour = "<input type='hidden' name='${nameHiddenHour}' id='${nameHiddenHour}' value='${valueHour}'/>"
+        def hiddenMin = "<input type='hidden' name='${nameHiddenMin}' id='${nameHiddenMin}' value='${valueMin}'/>"
 
-        def hidden = "<input type='text' name='${name}' id='${name}' value='date.struct'/>"
+        def hidden = "<input type='hidden' name='${name}' id='${name}' value='date.struct'/>"
 
         def div = ""
         div += hiddenDay + br
@@ -309,12 +309,12 @@ class ElementosTagLib {
         if (endDate) {
             js += "maxDate: '${endDate}'," + br
         }
-        js += 'pickDate: ' + showDate + ','
-        js += 'pickTime: ' + showTime + ','
-        js += 'useMinutes: ' + showMin + ','
-        js += 'useSeconds: false,'
-        js += 'minuteStepping: ' + minStep + ','
-        js += 'sideBySide: true,'
+        js += 'pickDate: ' + showDate + ',' + br
+        js += 'pickTime: ' + showTime + ',' + br
+        js += 'useMinutes: ' + showMin + ',' + br
+        js += 'useSeconds: false,' + br
+        js += 'minuteStepping: ' + minStep + ',' + br
+        js += 'sideBySide: true,' + br
         if (daysOfWeekDisabled) {
             js += "daysOfWeekDisabled: '${daysOfWeekDisabled}'," + br
         }
@@ -323,12 +323,12 @@ class ElementosTagLib {
             js += "beforeShowDay: ${beforeShowDay}," + br
         }
         js += 'language: "es",' + br
-        js += 'icons: {'
-        js += 'time: "fa fa-clock-o",'
-        js += 'date: "fa fa-calendar",'
-        js += 'up: "fa fa-arrow-up",'
-        js += 'down: "fa fa-arrow-down"'
-        js += '},'
+        js += 'icons: {' + br
+        js += 'time: "fa fa-clock-o",' + br
+        js += 'date: "fa fa-calendar",' + br
+        js += 'up: "fa fa-arrow-up",' + br
+        js += 'down: "fa fa-arrow-down"' + br
+        js += '},' + br
 //        js += "format: '${formatJS}'," + br
         js += "orientation: '${orientation}'," + br
         js += "showToday: ${todayHighlight}" + br
@@ -346,7 +346,7 @@ class ElementosTagLib {
         js += '$(e.currentTarget).parents(".grupo").removeClass("has-error").find("label.help-block").hide();' + br
         js += "}" + br
         if (onChangeDate) {
-            js += onChangeDate + "(\$(this), e);"
+            js += onChangeDate + "(\$(this), e);" + br
         }
         js += "});" + br
         js += "</script>" + br

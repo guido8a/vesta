@@ -7,12 +7,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <imp:favicon/>
-        <imp:css/>
         <imp:js/>
-        <imp:customJs/>
         <imp:plugins/>
+        <imp:customJs/>
 
         <imp:spinners/>
+
+        <imp:css/>
 
         <g:layoutHead/>
 
@@ -24,7 +25,7 @@
     <body>
         <mn:bannerTop/>
 
-        <mn:menu title="${g.layoutTitle(default: 'Vesta')}"/>\
+        <mn:menu title="${g.layoutTitle(default: 'Vesta')}"/>
 
         <div class="container">
             <g:layoutBody/>

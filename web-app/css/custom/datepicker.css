@@ -1,13 +1,40 @@
-.datepicker th {
-    background : inherit !important;
-    color      : inherit !important;
+/*.datepicker th {*/
+/*background : inherit !important;*/
+/*color      : inherit !important;*/
+/*}*/
+
+/*.datepicker-dropdown {*/
+/*background-color : #efefef !important;*/
+/*background-color : red !important;*/
+/*}*/
+
+/*.datepicker {*/
+/*z-index : 9999;*/
+/*}*/
+
+.bootstrap-datetimepicker-widget {
+    font-size : 14px;
 }
 
-.datepicker-dropdown {
-    /*background-color : #efefef !important;*/
-    /*background-color : red !important;*/
+.bootstrap-datetimepicker-widget td.day {
+    height      : 15px;
+    line-height : 15px;
+    width       : 15px;
 }
 
-.datepicker {
-    z-index : 9999;
+.bootstrap-datetimepicker-widget .timepicker-hour,
+.bootstrap-datetimepicker-widget .timepicker-minute,
+.bootstrap-datetimepicker-widget .timepicker-second {
+    width     : 25px;
+    font-size : 15px;
+}
+
+.bootstrap-datetimepicker-widget td, .bootstrap-datetimepicker-widget td span {
+    height      : 25px;
+    line-height : 25px;
+    width       : 25px;
+}
+
+.timepicker-picker table {
+    margin-top : 30px;
 }

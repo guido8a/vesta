@@ -38,10 +38,9 @@ class ${className}Controller extends Shield {
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-                    eq("id", "%" + params.search + "%")
                     <% for (p in props) {
                 if(p.type == String && !p.name.contains("pass")) { %>
-                    eq("${p.name}", "%" + params.search + "%")  <% } } %>
+                    ilike("${p.name}", "%" + params.search + "%")  <% } } %>
                 }
             }
         } else {

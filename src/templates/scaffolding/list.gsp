@@ -19,11 +19,11 @@
             </div>
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar" value="\${params.search}">
+                    <input type="text" class="form-control input-search" placeholder="Buscar" value="\${params.search}">
                     <span class="input-group-btn">
-                        <a href="#" class="btn btn-default btn-search">
+                        <g:link controller="${className.toLowerCase()}" action="list" class="btn btn-default btn-search">
                             <i class="fa fa-search"></i>&nbsp;
-                        </a>
+                        </g:link>
                     </span>
                 </div><!-- /input-group -->
             </div>
@@ -34,14 +34,14 @@
                 <tr>
                     <%
                     int cant = 0
-                    excludedProps = Event.allEvents.toList() << 'id' << 'version'
+                    excludedProps = Event.allEvents.toList() << 'id' << 'version' << 'password' << 'pass'
                     allowedNames = domainClass.persistentProperties*.name << 'dateCreated' << 'lastUpdated'
                     props = domainClass.properties.findAll { allowedNames.contains(it.name) && !excludedProps.contains(it.name) && it.type != null && !Collection.isAssignableFrom(it.type) }
-                    cant = props.size()
+//                    cant = props.size()
                     Collections.sort(props, comparator.constructors[0].newInstance([domainClass] as Object[]))
                     props.eachWithIndex { p, i ->
-//                        cant = (int)cant+1
-                        if (i < 6) {
+                        cant = (int)cant+1
+                        if (i < 10) {
                             if (p.isAssociation()) { %>
                     <th>${p.naturalName}</th>
                     <%      } else { %>
@@ -50,21 +50,42 @@
                 </tr>
             </thead>
             <tbody>
-                <g:each in="\${${propertyName}List}" status="i" var="${propertyName}">
-                    <tr data-id="\${${propertyName}.id}">
-                        <%  props.eachWithIndex { p, i ->
-                            if (i == 0) { %>
-                        <td>\${${propertyName}.${p.name}}</td>
-                        <%      } else if (i < 6) {
-                            if (p.type == Boolean || p.type == boolean) { %>
-                        <td><g:formatBoolean boolean="\${${propertyName}.${p.name}}" false="No" true="Sí" /></td>
-                        <%          } else if (p.type == Date || p.type == java.sql.Date || p.type == java.sql.Time || p.type == Calendar) { %>
-                        <td><g:formatDate date="\${${propertyName}.${p.name}}" format="dd-MM-yyyy" /></td>
-                        <%          } else { %>
-                        <td>\${${propertyName}.${p.name}}</td>
-                        <%  }   }   } %>
+                <g:if test="\${${propertyName}Count > 0}">
+                    <g:each in="\${${propertyName}List}" status="i" var="${propertyName}">
+                        <tr data-id="\${${propertyName}.id}">
+                            <%  props.eachWithIndex { p, i ->
+
+                                boolean bool = p.type == Boolean || p.type == boolean
+                                boolean number = Number.isAssignableFrom(p.type) || (p.type?.isPrimitive() && p. type != boolean)
+                                boolean date = p.type == Date || p.type == java.sql.Date || p.type == java.sql.Time || p.type == Calendar
+
+                                if (i == 0) { %>
+                            <td>\${${propertyName}.${p.name}}</td>
+                            <%      } else if (i < 10) {
+                                if (bool) { %>
+                            <td><g:formatBoolean boolean="\${${propertyName}.${p.name}}" false="No" true="Sí" /></td>
+                            <%          } else if (date) { %>
+                            <td><g:formatDate date="\${${propertyName}.${p.name}}" format="dd-MM-yyyy" /></td>
+                            <%          } else if (number) { %>
+                            <td><g:fieldValue bean="\${${propertyName}}" field="${p.name}"/></td>
+                            <%          } else { %>
+                            <td><elm:textoBusqueda busca="\${params.search}"><g:fieldValue bean="\${${propertyName}}" field="${p.name}"/></elm:textoBusqueda></td>
+                            <%  }   }   } %>
+                        </tr>
+                    </g:each>
+                </g:if>
+                <g:else>
+                    <tr class="danger">
+                        <td class="text-center" colspan="${cant}">
+                            <g:if test="\${params.search && params.search!= ''}">
+                                No se encontraron resultados para su búsqueda
+                            </g:if>
+                            <g:else>
+                                No se econtraron registros que mostrar
+                            </g:else>
+                        </td>
                     </tr>
-                </g:each>
+                </g:else>
             </tbody>
         </table>
 

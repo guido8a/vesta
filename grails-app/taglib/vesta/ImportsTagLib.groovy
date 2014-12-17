@@ -85,7 +85,7 @@ class ImportsTagLib {
         def text = " <script src=\"${resource(dir: 'js/jquery-ui-1.11.2/external/jquery', file: 'jquery.js')}\"></script>\n"
         text += "    <script src=\"${resource(dir: 'js/jquery-ui-1.11.2/', file: 'jquery-ui.min.js')}\"></script>\n"
         // Include all compiled plugins (below), or include individual files as needed
-        text += "    <script src=\"${resource(dir: 'bootstrap-3.3.1/dist/js', file: 'bootstrap.min.js')}\"></script>"
+        text += "    <script src=\"${resource(dir: 'bootstrap-3.3.1/dist/js', file: 'bootstrap.min.js')}\"></script>\n"
 
         out << text
     }
@@ -93,6 +93,7 @@ class ImportsTagLib {
     def customJs = { attrs ->
         def text = "    <script src=\"${resource(dir: 'js', file: 'funciones.js')}\"></script>"
         text += "    <script src=\"${resource(dir: 'js', file: 'functions.js')}\"></script>"
+        text += "    <script src=\"${resource(dir: 'js', file: 'ui.js')}\"></script>"
         out << text
     }
 
@@ -111,7 +112,7 @@ class ImportsTagLib {
         text += "    <script src=\"${resource(dir: 'js/plugins/moment-2.8.4.js', file: 'moment-with-locales.js')}\"></script>\n"
         text += "    <script src=\"${resource(dir: 'js/plugins/bootstrap-datetimepicker-3.1.3/build/js', file: 'bootstrap-datetimepicker.min.js')}\"></script>\n"
 //        text += "    <script src=\"${resource(dir: 'js/plugins/bootstrap-datepicker/js/locales', file: 'bootstrap-datepicker.es.js')}\"></script>\n"
-        text += "    <link href=\"${resource(dir: 'js/plugins/bootstrap-datetimepicker-3.1.3/build/css', file: 'bootstrap-datetimepicker.min.css')}\" rel=\"stylesheet\">"
+        text += "    <link href=\"${resource(dir: 'js/plugins/bootstrap-datetimepicker-3.1.3/build/css', file: 'bootstrap-datetimepicker.css')}\" rel=\"stylesheet\">"
         text += "    <link href=\"${resource(dir: 'css/custom/', file: 'datepicker.css')}\" rel=\"stylesheet\">"
 
 //        text += "    <script src=\"${resource(dir: 'js/plugins/bootstrap-datepicker/js', file: 'bootstrap-datepicker.js')}\"></script>\n"

@@ -38,13 +38,12 @@ class TestController extends Shield {
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-                    eq("id", "%" + params.search + "%")
                     
-                    eq("codigo", "%" + params.search + "%")  
-                    eq("email", "%" + params.search + "%")  
-                    eq("login", "%" + params.search + "%")  
-                    eq("mail", "%" + params.search + "%")  
-                    eq("nombre", "%" + params.search + "%")  
+                    ilike("codigo", "%" + params.search + "%")  
+                    ilike("email", "%" + params.search + "%")  
+                    ilike("login", "%" + params.search + "%")  
+                    ilike("mail", "%" + params.search + "%")  
+                    ilike("nombre", "%" + params.search + "%")  
                 }
             }
         } else {

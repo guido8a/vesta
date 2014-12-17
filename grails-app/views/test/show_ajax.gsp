@@ -136,17 +136,4 @@
         </div>
     </g:if>
     
-    <g:if test="${testInstance?.password}">
-        <div class="row">
-            <div class="col-md-2">
-                Password
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${testInstance}" field="password"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
 </g:else>
