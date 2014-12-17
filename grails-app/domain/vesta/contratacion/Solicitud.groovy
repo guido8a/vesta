@@ -1,11 +1,11 @@
 package vesta.contratacion
 
-import yachay.parametros.TipoAprobacion
-import yachay.parametros.TipoBien
-import yachay.parametros.TipoContrato
-import yachay.parametros.UnidadEjecutora
-import yachay.proyectos.MarcoLogico
-import yachay.seguridad.Usro
+import vesta.parametros.TipoAprobacion
+import vesta.parametros.TipoBien
+import vesta.parametros.TipoContrato
+import vesta.parametros.UnidadEjecutora
+import vesta.proyectos.MarcoLogico
+import vesta.seguridad.Usro
 
 /**
  * Clase para conectar con la tabla 'slct' de la base de datos

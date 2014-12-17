@@ -1,7 +1,7 @@
 package vesta.hitos
 
-import yachay.avales.Aval
-import yachay.avales.ProcesoAval
+import vesta.avales.Aval
+import vesta.avales.ProcesoAval
 
 class AvanceFinanciero {
 

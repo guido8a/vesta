@@ -1,8 +1,8 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoResponsable
-import yachay.parametros.UnidadEjecutora
-import yachay.seguridad.Usro
+import vesta.parametros.TipoResponsable
+import vesta.parametros.UnidadEjecutora
+import vesta.seguridad.Usro
 
 /* Responsable nombrado en la Unidad ejecutora para la ejecución de los proyectos.*/
 /**

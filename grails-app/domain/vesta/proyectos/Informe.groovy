@@ -1,6 +1,6 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoInforme
+import vesta.parametros.TipoInforme
 
 /**
  * Clase para conectar con la tabla 'info' de la base de datos

@@ -1,7 +1,7 @@
 package vesta.parametros
 
-import yachay.parametros.geografia.Provincia
-import yachay.parametros.proyectos.ObjetivoUnidad
+import vesta.parametros.geografia.Provincia
+import vesta.parametros.proyectos.ObjetivoUnidad
 
 /*Unidades ejecutoras de los proyectos, generalmente adscritas a los ministerios*/
 /**

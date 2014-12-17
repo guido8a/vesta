@@ -1,6 +1,6 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoDocumento
+import vesta.parametros.TipoDocumento
 
 /**
  * Clase para conectar con la tabla 'docp' de la base de datos

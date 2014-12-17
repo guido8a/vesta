@@ -1,8 +1,8 @@
 package vesta.avales
 
-import yachay.parametros.UnidadEjecutora
-import yachay.seguridad.Firma
-import yachay.seguridad.Usro
+import vesta.parametros.UnidadEjecutora
+import vesta.seguridad.Firma
+import vesta.seguridad.Usro
 
 /**
  * Clase para conectar con la tabla 'slav' de la base de datos

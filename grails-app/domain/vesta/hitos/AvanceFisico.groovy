@@ -1,6 +1,6 @@
 package vesta.hitos
 
-import yachay.avales.ProcesoAval
+import vesta.avales.ProcesoAval
 
 class AvanceFisico {
 

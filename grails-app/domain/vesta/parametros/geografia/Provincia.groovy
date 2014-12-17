@@ -1,6 +1,6 @@
 package vesta.parametros.geografia
 
-import yachay.proyectos.Meta
+import vesta.proyectos.Meta
 
 /**
  * Clase para conectar con la tabla 'prov' de la base de datos<br/>

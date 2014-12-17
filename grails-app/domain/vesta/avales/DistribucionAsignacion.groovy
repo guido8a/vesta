@@ -1,7 +1,7 @@
 package vesta.avales
 
-import yachay.parametros.UnidadEjecutora
-import yachay.poa.Asignacion
+import vesta.parametros.UnidadEjecutora
+import vesta.poa.Asignacion
 
 /**
  * Clase para conectar con la tabla 'dsas' de la base de datos

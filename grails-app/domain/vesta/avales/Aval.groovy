@@ -1,7 +1,7 @@
 package vesta.avales
 
-import yachay.hitos.AvanceFinanciero
-import yachay.seguridad.Firma
+import vesta.hitos.AvanceFinanciero
+import vesta.seguridad.Firma
 
 /**
  * Clase para conectar con la tabla 'aval' de la base de datos

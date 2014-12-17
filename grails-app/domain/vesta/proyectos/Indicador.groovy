@@ -1,6 +1,6 @@
 package vesta.proyectos
 
-import yachay.poa.Asignacion
+import vesta.poa.Asignacion
 
 /*Para cada elemento del marco lógico se define uno o varios indicadores*/
 /**

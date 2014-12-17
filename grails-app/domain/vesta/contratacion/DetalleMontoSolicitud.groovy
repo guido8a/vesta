@@ -1,6 +1,6 @@
 package vesta.contratacion
 
-import yachay.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Anio
 
 /**
  * Clase para conectar con la tabla 'dtms' de la base de datos

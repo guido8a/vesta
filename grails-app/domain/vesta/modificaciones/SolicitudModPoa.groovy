@@ -1,12 +1,12 @@
 package vesta.modificaciones
 
-import yachay.parametros.poaPac.Anio
-import yachay.parametros.poaPac.Fuente
-import yachay.parametros.poaPac.Presupuesto
-import yachay.poa.Asignacion
-import yachay.proyectos.MarcoLogico
-import yachay.seguridad.Firma
-import yachay.seguridad.Usro
+import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
+import vesta.parametros.poaPac.Presupuesto
+import vesta.poa.Asignacion
+import vesta.proyectos.MarcoLogico
+import vesta.seguridad.Firma
+import vesta.seguridad.Usro
 
 /**
  * Clase para conectar con la tabla 'slma' de la base de datos

@@ -1,6 +1,6 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoGrupo
+import vesta.parametros.TipoGrupo
 
 /**
  * Clase para conectar con la tabla 'grat' de la base de datos

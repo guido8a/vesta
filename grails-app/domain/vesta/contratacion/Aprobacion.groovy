@@ -1,6 +1,6 @@
 package vesta.contratacion
 
-import yachay.seguridad.Usro
+import vesta.seguridad.Usro
 
 /**
  * Clase para conectar con la tabla 'aprb' de la base de datos<br/>

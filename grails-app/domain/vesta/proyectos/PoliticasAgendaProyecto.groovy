@@ -1,6 +1,6 @@
 package vesta.proyectos
 
-import yachay.parametros.proyectos.PoliticaAgendaSocial
+import vesta.parametros.proyectos.PoliticaAgendaSocial
 
 /**
  * Clase para conectar con la tabla 'papy' de la base de datos

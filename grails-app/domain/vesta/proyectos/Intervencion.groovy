@@ -1,7 +1,7 @@
 package vesta.proyectos
 
-import yachay.parametros.Sector
-import yachay.parametros.SubSector
+import vesta.parametros.Sector
+import vesta.parametros.SubSector
 
 /**
  * Clase para conectar con la tabla 'intv' de la base de datos

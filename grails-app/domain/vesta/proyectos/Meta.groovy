@@ -1,10 +1,10 @@
 package vesta.proyectos
 
-import yachay.parametros.Unidad
-import yachay.parametros.geografia.Parroquia
-import yachay.parametros.poaPac.Anio
-import yachay.parametros.proyectos.TipoMeta
-import yachay.poa.Asignacion
+import vesta.parametros.Unidad
+import vesta.parametros.geografia.Parroquia
+import vesta.parametros.poaPac.Anio
+import vesta.parametros.proyectos.TipoMeta
+import vesta.poa.Asignacion
 
 /*Para cada componente se determinan las metas desagregadas conforme al marco lógico. */
 /**

@@ -1,6 +1,6 @@
 package vesta.avales
 
-import yachay.poa.Asignacion
+import vesta.poa.Asignacion
 
 /**
  * Clase para conectar con la tabla 'poas' de la base de datos

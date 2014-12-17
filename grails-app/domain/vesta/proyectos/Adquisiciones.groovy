@@ -1,7 +1,7 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoAdquisicion
-import yachay.parametros.TipoProcedencia
+import vesta.parametros.TipoAdquisicion
+import vesta.parametros.TipoProcedencia
 
 /**
  * Clase para conectar con la tabla 'adqc' de la base de datos

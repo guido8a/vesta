@@ -1,7 +1,7 @@
 package vesta.avales
 
-import yachay.poa.Asignacion
-import yachay.seguridad.Usro
+import vesta.poa.Asignacion
+import vesta.seguridad.Usro
 
 /**
  * Clase para conectar con la tabla 'crtf' de la base de datos

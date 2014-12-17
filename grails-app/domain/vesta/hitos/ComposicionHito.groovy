@@ -1,8 +1,8 @@
 package vesta.hitos
 
-import yachay.avales.ProcesoAval
-import yachay.proyectos.MarcoLogico
-import yachay.proyectos.Proyecto
+import vesta.avales.ProcesoAval
+import vesta.proyectos.MarcoLogico
+import vesta.proyectos.Proyecto
 
 class ComposicionHito  {
     /*

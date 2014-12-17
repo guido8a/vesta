@@ -1,9 +1,9 @@
 package vesta.poa
 
-import yachay.avales.DistribucionAsignacion
-import yachay.parametros.poaPac.Mes
-import yachay.proyectos.Cronograma
-import yachay.proyectos.ModificacionProyecto
+import vesta.avales.DistribucionAsignacion
+import vesta.parametros.poaPac.Mes
+import vesta.proyectos.Cronograma
+import vesta.proyectos.ModificacionProyecto
 
 /*Programación de la asignación presupuestaria por cuatrimestres.*/
 /**

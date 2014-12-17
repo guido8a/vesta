@@ -1,9 +1,9 @@
 package vesta.proyectos
 
-import yachay.parametros.poaPac.Anio
-import yachay.parametros.poaPac.Fuente
-import yachay.parametros.poaPac.Mes
-import yachay.parametros.poaPac.Presupuesto
+import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
+import vesta.parametros.poaPac.Mes
+import vesta.parametros.poaPac.Presupuesto
 
 /*El cronograma valorado se registra por actividades del marco lógico, por año, mes y fuente de financiamiento.*/
 /**

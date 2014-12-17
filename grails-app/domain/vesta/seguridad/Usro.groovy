@@ -1,7 +1,7 @@
 package vesta.seguridad
 
-import yachay.parametros.CargoPersonal
-import yachay.parametros.UnidadEjecutora
+import vesta.parametros.CargoPersonal
+import vesta.parametros.UnidadEjecutora
 
 /**
  * Clase para conectar con la tabla 'usro' de la base de datos
@@ -51,7 +51,7 @@ class Usro implements Serializable {
     /**
      * Define las relaciones uno a varios
      */
-    static hasMany = [sesiones: Sesn, accesos: Accs, alertas: yachay.alertas.Alerta]
+    static hasMany = [sesiones: Sesn, accesos: Accs, alertas: vesta.alertas.Alerta]
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs

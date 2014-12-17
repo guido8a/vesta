@@ -1,6 +1,6 @@
 package vesta.proyectos
 
-import yachay.seguridad.Usro
+import vesta.seguridad.Usro
 
 /**
  * Clase para conectar con la tabla 'mdv2' de la base de datos

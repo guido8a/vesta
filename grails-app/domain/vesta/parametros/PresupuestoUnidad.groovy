@@ -1,10 +1,10 @@
 package vesta.parametros
 
-import yachay.parametros.poaPac.Anio
-import yachay.parametros.proyectos.ObjetivoGobiernoResultado
-import yachay.parametros.proyectos.Politica
-import yachay.proyectos.EjeProgramatico
-import yachay.proyectos.ObjetivoEstrategicoProyecto
+import vesta.parametros.poaPac.Anio
+import vesta.parametros.proyectos.ObjetivoGobiernoResultado
+import vesta.parametros.proyectos.Politica
+import vesta.proyectos.EjeProgramatico
+import vesta.proyectos.ObjetivoEstrategicoProyecto
 
 /**
  * Clase para conectar con la tabla 'prue' de la base de datos

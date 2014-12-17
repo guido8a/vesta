@@ -1,8 +1,8 @@
 package vesta.avales
 
-import yachay.hitos.AvanceAvance
-import yachay.hitos.AvanceFisico
-import yachay.proyectos.Proyecto
+import vesta.hitos.AvanceAvance
+import vesta.hitos.AvanceFisico
+import vesta.proyectos.Proyecto
 
 /**
  * Clase para conectar con la tabla 'alertas' de la base de datos

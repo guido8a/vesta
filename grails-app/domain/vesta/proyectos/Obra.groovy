@@ -1,9 +1,9 @@
 package vesta.proyectos
 
-import yachay.parametros.CodigoComprasPublicas
-import yachay.parametros.Unidad
-import yachay.parametros.poaPac.TipoCompra
-import yachay.poa.Asignacion
+import vesta.parametros.CodigoComprasPublicas
+import vesta.parametros.Unidad
+import vesta.parametros.poaPac.TipoCompra
+import vesta.poa.Asignacion
 
 /*Para cada actividad asignada un presupuesto, se registra el plan anual de compras como obras a alcanzar, ejecutar o productos a adquirir.*/
 /**

@@ -1,7 +1,7 @@
 package vesta.proyectos
 
-import yachay.parametros.poaPac.Anio
-import yachay.parametros.poaPac.Mes
+import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Mes
 
 /**
  * Clase para conectar con la tabla 'sigf' de la base de datos

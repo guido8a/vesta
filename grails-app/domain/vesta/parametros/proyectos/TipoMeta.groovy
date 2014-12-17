@@ -1,6 +1,6 @@
 package vesta.parametros.proyectos
 
-import yachay.proyectos.Meta
+import vesta.proyectos.Meta
 
 /*Tipo de meta para agregar o agrupar metas.*/
 

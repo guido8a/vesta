@@ -1,7 +1,7 @@
 package vesta.proyectos
 
-import yachay.parametros.UnidadEjecutora
-import yachay.poa.Asignacion
+import vesta.parametros.UnidadEjecutora
+import vesta.poa.Asignacion
 
 /*La modificación de la asignación presupuestaria se refiere a la redistribución del valor asignado lo cual implica además una reprogramación.*/
 /**

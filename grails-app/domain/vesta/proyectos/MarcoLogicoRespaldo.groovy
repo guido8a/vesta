@@ -1,7 +1,7 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoElemento
-import yachay.parametros.UnidadEjecutora
+import vesta.parametros.TipoElemento
+import vesta.parametros.UnidadEjecutora
 
 /**
  * Clase para conectar con la tabla 'mlrs' de la base de datos

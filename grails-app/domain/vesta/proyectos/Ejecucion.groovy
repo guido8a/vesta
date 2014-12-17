@@ -1,6 +1,6 @@
 package vesta.proyectos
 
-import yachay.poa.Asignacion
+import vesta.poa.Asignacion
 
 /*Ejecución de la asignación presupuestaria.*/
 /**

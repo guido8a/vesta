@@ -1,7 +1,7 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoResponsable
-import yachay.parametros.UnidadEjecutora
+import vesta.parametros.TipoResponsable
+import vesta.parametros.UnidadEjecutora
 
 /**
  * Clase para conectar con la tabla 'resp' de la base de datos

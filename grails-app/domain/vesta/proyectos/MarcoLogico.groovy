@@ -1,8 +1,8 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoElemento
-import yachay.parametros.UnidadEjecutora
-import yachay.poa.Asignacion
+import vesta.parametros.TipoElemento
+import vesta.parametros.UnidadEjecutora
+import vesta.poa.Asignacion
 
 /*Marco lógico con cada uno de sus componentes */
 

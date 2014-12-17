@@ -1,7 +1,7 @@
 package vesta.proyectos
 
-import yachay.parametros.poaPac.Anio
-import yachay.parametros.poaPac.Fuente
+import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
 
 /*Financiamiento del proyecto por fuente y año*/
 /**

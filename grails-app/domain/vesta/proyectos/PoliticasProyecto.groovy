@@ -1,6 +1,6 @@
 package vesta.proyectos
 
-import yachay.parametros.proyectos.Politica
+import vesta.parametros.proyectos.Politica
 
 /*Políticas que se aplican en el proyecto*/
 /**

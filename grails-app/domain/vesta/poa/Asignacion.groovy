@@ -1,15 +1,15 @@
 package vesta.poa
 
-import yachay.avales.DistribucionAsignacion
-import yachay.avales.ProcesoAsignacion
-import yachay.parametros.TipoGasto
-import yachay.parametros.UnidadEjecutora
-import yachay.parametros.poaPac.Anio
-import yachay.parametros.poaPac.Fuente
-import yachay.parametros.poaPac.Presupuesto
-import yachay.parametros.poaPac.ProgramaPresupuestario
-import yachay.proyectos.MarcoLogico
-import yachay.proyectos.ModificacionAsignacion
+import vesta.avales.DistribucionAsignacion
+import vesta.avales.ProcesoAsignacion
+import vesta.parametros.TipoGasto
+import vesta.parametros.UnidadEjecutora
+import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
+import vesta.parametros.poaPac.Presupuesto
+import vesta.parametros.poaPac.ProgramaPresupuestario
+import vesta.proyectos.MarcoLogico
+import vesta.proyectos.ModificacionAsignacion
 
 /**
  * Clase para conectar con la tabla 'asgn' de la base de datos

@@ -1,10 +1,10 @@
 package vesta.proyectos
 
-import yachay.parametros.*
-import yachay.parametros.poaPac.ProgramaPresupuestario
-import yachay.parametros.proyectos.ObjetivoGobiernoResultado
-import yachay.parametros.proyectos.Programa
-import yachay.poa.Asignacion
+import vesta.parametros.*
+import vesta.parametros.poaPac.ProgramaPresupuestario
+import vesta.parametros.proyectos.ObjetivoGobiernoResultado
+import vesta.parametros.proyectos.Programa
+import vesta.poa.Asignacion
 
 /*Proyecto*/
 /**

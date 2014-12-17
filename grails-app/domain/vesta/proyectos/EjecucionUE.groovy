@@ -1,9 +1,9 @@
 package vesta.proyectos
 
-import yachay.parametros.UnidadEjecutora
-import yachay.parametros.poaPac.Fuente
-import yachay.parametros.poaPac.Presupuesto
-import yachay.parametros.poaPac.ProgramaPresupuestario
+import vesta.parametros.UnidadEjecutora
+import vesta.parametros.poaPac.Fuente
+import vesta.parametros.poaPac.Presupuesto
+import vesta.parametros.poaPac.ProgramaPresupuestario
 
 /**
  * Clase para conectar con la tabla 'ejun' de la base de datos

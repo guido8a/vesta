@@ -1,7 +1,7 @@
 package vesta.proyectos
 
-import yachay.parametros.PresupuestoUnidad
-import yachay.seguridad.Usro
+import vesta.parametros.PresupuestoUnidad
+import vesta.seguridad.Usro
 
 /**
  * Clase para conectar con la tabla 'mdtc' de la base de datos

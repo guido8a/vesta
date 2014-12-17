@@ -1,7 +1,7 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoParticipacion
-import yachay.parametros.UnidadEjecutora
+import vesta.parametros.TipoParticipacion
+import vesta.parametros.UnidadEjecutora
 
 /**
  * Clase para conectar con la tabla 'etpy' de la base de datos

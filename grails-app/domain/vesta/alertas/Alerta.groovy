@@ -1,6 +1,6 @@
 package vesta.alertas
 
-import yachay.seguridad.Usro
+import vesta.seguridad.Usro
 
 /**
  * Clase para conectar con la tabla 'alertas' de la base de datos

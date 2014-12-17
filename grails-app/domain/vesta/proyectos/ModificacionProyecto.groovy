@@ -1,9 +1,9 @@
 package vesta.proyectos
 
-import yachay.parametros.TipoModificacion
-import yachay.parametros.UnidadEjecutora
-import yachay.parametros.poaPac.Anio
-import yachay.seguridad.Usro
+import vesta.parametros.TipoModificacion
+import vesta.parametros.UnidadEjecutora
+import vesta.parametros.poaPac.Anio
+import vesta.seguridad.Usro
 
 /**
  * Clase para conectar con la tabla 'mdfc' de la base de datos
