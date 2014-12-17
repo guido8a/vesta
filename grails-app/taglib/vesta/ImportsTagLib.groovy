@@ -16,7 +16,7 @@ class ImportsTagLib {
         <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
         <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-        <meta name="apple-mobile-web-app-title" content="Yachay">
+        <meta name="apple-mobile-web-app-title" content="vesta">
         <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
         <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
@@ -24,7 +24,7 @@ class ImportsTagLib {
         <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
         <meta name="msapplication-TileColor" content="#1f3a78">
         <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-        <meta name="application-name" content="Yachay">
+        <meta name="application-name" content="vesta">
          */
 
         def favicons = ""
@@ -38,7 +38,7 @@ class ImportsTagLib {
         favicons += "<link rel='apple-touch-icon' sizes='76x76' href='${resource(dir: 'images/favicons', file: 'apple-touch-icon-76x76.png')}'>"
         favicons += "<link rel='apple-touch-icon' sizes='152x152' href='${resource(dir: 'images/favicons', file: 'apple-touch-icon-152x152.png')}'>"
         favicons += "<link rel='apple-touch-icon' sizes='180x180' href='${resource(dir: 'images/favicons', file: 'apple-touch-icon-180x180.png')}'>"
-        favicons += "<meta name='apple-mobile-web-app-title' content='Yachay'>"
+        favicons += "<meta name='apple-mobile-web-app-title' content='vesta'>"
         favicons += "<link rel='icon' type='image/png' href='${resource(dir: 'images/favicons', file: 'favicon-192x192.png')}' sizes='192x192'>"
         favicons += "<link rel='icon' type='image/png' href='${resource(dir: 'images/favicons', file: 'favicon-160x160.png')}' sizes='160x160'>"
         favicons += "<link rel='icon' type='image/png' href='${resource(dir: 'images/favicons', file: 'favicon-96x96.png')}' sizes='96x96'>"
@@ -46,7 +46,7 @@ class ImportsTagLib {
         favicons += "<link rel='icon' type='image/png' href='${resource(dir: 'images/favicons', file: 'favicon-32x32.png')}' sizes='32x32'>"
         favicons += "<meta name='msapplication-TileColor' content='#1f3a78'>"
         favicons += "<meta name='msapplication-TileImage' content='${resource(dir: 'images/favicons', file: 'mstile-144x144.png')}'>"
-        favicons += "<meta name='application-name' content='Yachay'>"
+        favicons += "<meta name='application-name' content='vesta'>"
 
         out << favicons
     }

@@ -1,12 +1,12 @@
 package vesta
 
-import yachay.contratacion.Aprobacion
-import yachay.contratacion.DetalleMontoSolicitud
-import yachay.contratacion.Solicitud
-import yachay.parametros.TipoAprobacion
-import yachay.parametros.poaPac.Anio
-import yachay.poa.Asignacion
-import yachay.seguridad.Prfl
+import vesta.contratacion.Aprobacion
+import vesta.contratacion.DetalleMontoSolicitud
+import vesta.contratacion.Solicitud
+import vesta.parametros.TipoAprobacion
+import vesta.parametros.poaPac.Anio
+import vesta.poa.Asignacion
+import vesta.seguridad.Prfl
 
 /**
  * Tags para mostrar la información de las solicitudes de contratación
@@ -677,7 +677,7 @@ class SolicitudTagLib {
         html += "<td style='width:206px;' rowspan='${rowspan}'><img src='${logoPath}' style='width:${w}px;'/></td>"
         html += "</tr>"
         html += "<tr>"
-        html += "<td class='ttl'>YACHAY EP</td>"
+        html += "<td class='ttl'>vesta EP</td>"
         html += "<td> </td>"
         html += "</tr>"
 //        html += "<tr>"
