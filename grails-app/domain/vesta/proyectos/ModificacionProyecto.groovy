@@ -87,10 +87,10 @@ class ModificacionProyecto implements Serializable {
             fecha column: 'mdfcfcha'
             fechaAprobacion column: 'mdfcfcap'
             observaciones column: 'mdfcobsr'
-            responsable column: 'usro__id'
+            responsable column: 'prsn__id'
             estado column: 'mdfcetdo'
             anio column: 'anio__id'
-            solicitante column: 'usroslct'
+            solicitante column: 'prsnslct'
         }
     }
 

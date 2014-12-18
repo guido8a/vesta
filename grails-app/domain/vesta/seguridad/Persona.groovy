@@ -144,11 +144,11 @@ class Persona implements Serializable {
         observaciones(matches: /^[a-zA-Z0-9ñÑ .,áéíóúÁÉÍÚÓüÜ#_-]+$/, size: 1..127, blank: true, nullable: true, attributes: ['mensaje': 'Observaciones adicionales'])
 
         cargoPersonal(blank: true, nullable: true, attributes: [mensaje: 'Cargo'])
-        login(matches: /^[a-zA-Z0-9_-]{1,15}$/, size: 1..15, blank: false, nullable: false, unique: true, attributes: [mensaje: 'Nombre de usuario'])
-        password(matches: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÚÓüÜ_-]+$/, size: 1..64, blank: false, nullable: false, attributes: [mensaje: 'Contraseña para el ingreso al sistema'])
-        autorizacion(matches: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÚÓüÜ_-]+$/, size: 1..255, blank: false, nullable: false, attributes: [mensaje: 'Contraseña para autorizaciones'])
-        sigla(matches: /^[a-zA-Z]{1,8}$/, size: 1..8, blank: false, nullable: false, attributes: [mensaje: 'Sigla del usuario'])
-        estaActivo(matches: /^[0-1]{1}$/, size: 1..1, blank: false, nullable: false, attributes: [mensaje: 'Usuario activo o no'])
+        login(matches: /^[a-zA-Z0-9_-]{1,15}$/, size: 1..15, blank: true, nullable: true, unique: true, attributes: [mensaje: 'Nombre de usuario'])
+        password(matches: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÚÓüÜ_-]+$/, size: 1..64, blank: true, nullable: true, attributes: [mensaje: 'Contraseña para el ingreso al sistema'])
+        autorizacion(matches: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÚÓüÜ_-]+$/, size: 1..255, blank: true, nullable: true, attributes: [mensaje: 'Contraseña para autorizaciones'])
+        sigla(matches: /^[a-zA-Z]{1,8}$/, size: 1..8, blank: true, nullable: true, attributes: [mensaje: 'Sigla del usuario'])
+        estaActivo(matches: /^[0-1]{1}$/, size: 1..1, blank: true, nullable: true, attributes: [mensaje: 'Usuario activo o no'])
         fechaPass(blank: true, nullable: true, attributes: [mensaje: 'Fecha de cambio de contraseña'])
         unidad(blank: true, nullable: true, attributes: [mensaje: 'Unidad Ejecutora a la que pertenece el usuario'])
     }
