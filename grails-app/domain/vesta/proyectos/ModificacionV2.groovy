@@ -1,6 +1,6 @@
 package vesta.proyectos
 
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'mdv2' de la base de datos
@@ -33,7 +33,7 @@ class ModificacionV2 {
     /**
      * Usuario que efectuó la modificación
      */
-    Usro usuario
+    Persona usuario
     /**
      * Tipo de modificación
      */
@@ -54,7 +54,7 @@ class ModificacionV2 {
             id_remoto column: 'mdv2idrm'
             oldValue column: 'mdv2olva'
             newValue column: 'mdv2nwva'
-            usuario column: 'usro__id'
+            usuario column: 'prsn__id'
             fecha column: 'mdv2fcha'
             tipo column: 'mdv2tipo'
         }

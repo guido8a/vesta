@@ -7,7 +7,7 @@ class Audt implements Serializable {
     /**
      * Usuario para la auditoría
      */
-    Usro usuario
+    Persona usuario
     /**
      * Perfil para la auditoría
      */
@@ -60,7 +60,7 @@ class Audt implements Serializable {
         version false
         columns {
             id column: 'audt__id'
-            usuario column: 'usro__id'
+            usuario column: 'prsn__id'
             perfil column: 'prfl__id'
             accion column: 'audtaccn'
             controlador column: 'audtctrl'

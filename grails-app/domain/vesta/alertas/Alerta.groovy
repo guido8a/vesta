@@ -1,6 +1,6 @@
 package vesta.alertas
 
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'alertas' de la base de datos
@@ -10,11 +10,11 @@ class Alerta implements Serializable {
     /**
      * Usuario que envía la alerta
      */
-    Usro from
+    Persona from
     /**
      * Usuario que recibe la alerta
      */
-    Usro usro
+    Persona usro
     /**
      * Fecha de envío de la alerta
      */

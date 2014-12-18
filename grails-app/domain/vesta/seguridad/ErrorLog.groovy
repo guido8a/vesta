@@ -23,7 +23,7 @@ class ErrorLog {
     /**
      * Usuario logueado al momento del error
      */
-    Usro usuario
+    Persona usuario
 
     /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
@@ -40,7 +40,7 @@ class ErrorLog {
             error column: 'logferro'
             causa column: 'logfcaus'
             url column: 'logf_url'
-            usuario column: 'logfusro'
+            usuario column: 'logfprsn'
         }
     }
     /**

@@ -21,10 +21,10 @@ class MenuTagLib {
         html += "<div class='container text-center'>"
         html += "<div class='row'>"
         html += "<div class='col-md-3 col-md-offset-3'>"
-        html += "<img src='${resource(dir: 'images', file: 'gobierno.png')}'/>"
+        html += "<img src='${resource(dir: 'images/barras', file: 'gobierno.png')}'/>"
         html += "</div>"
         html += "<div class='col-md-3'>"
-        html += "<img src='${resource(dir: 'images', file: 'logo-ecuador_.png')}'/>"
+        html += "<img src='${resource(dir: 'images/barras', file: 'logo-ecuador_.png')}'/>"
         html += "</div>"
         html += "</div>"
         html += "</div>"
@@ -98,7 +98,7 @@ class MenuTagLib {
         html += '<span class="icon-bar"></span>'
         html += '<span class="icon-bar"></span>'
         html += '</button>'
-        html += '<a class="navbar-brand navbar-logo" href="#"><img src="' + resource(dir: 'images', file: 'logo-menu.png') + '" /></a>'
+        html += '<a class="navbar-brand navbar-logo" href="#"><img src="' + resource(dir: 'images/barras', file: 'logo-menu.png') + '" /></a>'
         html += '</div>'
 
         // Collect the nav links, forms, and other content for toggling

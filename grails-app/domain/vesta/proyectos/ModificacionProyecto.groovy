@@ -3,7 +3,7 @@ package vesta.proyectos
 import vesta.parametros.TipoModificacion
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'mdfc' de la base de datos
@@ -44,11 +44,11 @@ class ModificacionProyecto implements Serializable {
     /**
      * Usuario que solicita la modificación de proyecto
      */
-    Usro solicitante
+    Persona solicitante
     /**
      * Usuario responsable de la modificación de proyecto
      */
-    Usro responsable
+    Persona responsable
     /**
      * Estado de la modificación de proyecto (0: solicitada, 1: negada, 2: aprobada, 3: usada)
      */

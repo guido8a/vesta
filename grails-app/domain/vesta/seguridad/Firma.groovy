@@ -6,7 +6,7 @@ class Firma {
     /**
      * Usuario que firma
      */
-    Usro usuario
+    Persona usuario
     /**
      * Fecha de firma
      */
@@ -83,7 +83,7 @@ class Firma {
         sort "fecha"
         columns {
             id column: 'frma__id'
-            usuario column: 'usro__id'
+            usuario column: 'prsn__id'
             fecha column: 'frmafcha'
             accion column: 'frmaaccn'
             controlador column: 'frmactrl'

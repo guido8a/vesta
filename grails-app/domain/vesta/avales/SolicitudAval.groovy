@@ -2,7 +2,7 @@ package vesta.avales
 
 import vesta.parametros.UnidadEjecutora
 import vesta.seguridad.Firma
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'slav' de la base de datos
@@ -19,7 +19,7 @@ class SolicitudAval {
     /**
      * Usuario que generó la solicitud
      */
-    Usro usuario
+    Persona usuario
     /**
      * Aval de la solicitud
      */
@@ -97,7 +97,7 @@ class SolicitudAval {
             memo column: 'slavmemo'
             concepto column: 'slavcpto'
             estado column: 'edav__id'
-            usuario column: 'usro__id'
+            usuario column: 'prsn__id'
             observaciones column: 'slavobs'
             observaciones type: 'text'
             numero column: 'slavnmro'

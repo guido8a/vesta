@@ -8,7 +8,7 @@
     left       : 0;
     height     : 50px;
     width      : 100%;
-    background : url("../../images/bg.jpg") repeat-x;
+    background : url("../../images/barras/bg.jpg") repeat-x;
 }
 
 .banner-top div {
@@ -18,7 +18,7 @@
 
 .banner-esquina {
     width      : 47px;
-    background : url("../../images/esquina.png") no-repeat;
+    background : url("../../images/barras/esquina.png") no-repeat;
 }
 
 .banner-esquina.der {
@@ -45,7 +45,7 @@
     margin-top   : 5px;
     margin-right : 72px;
     width        : 127px;
-    background   : url("../../images/logo.png") no-repeat;
+    background   : url("../../images/barras/logo.png") no-repeat;
 }
 
 .banner-search {
@@ -60,7 +60,7 @@
 
 .banner-top-lg {
     height     : 75px;
-    background : url("../../images/bg-lg.jpg") repeat-x;
+    background : url("../../images/barras/bg-lg.jpg") repeat-x;
 }
 
 .banner-top-lg div {
@@ -69,7 +69,7 @@
 
 .banner-top-lg .banner-esquina {
     width      : 79px;
-    background : url("../../images/esquina-lg.png") no-repeat;
+    background : url("../../images/barras/esquina-lg.png") no-repeat;
 }
 
 .banner-top-lg .banner-title {
@@ -80,5 +80,5 @@
     margin-top   : 7px;
     width        : 191px;
     margin-right : 104px;
-    background   : url("../../images/logo-lg.png") no-repeat;
+    background   : url("../../images/barras/logo-lg.png") no-repeat;
 }

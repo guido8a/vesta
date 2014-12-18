@@ -1,7 +1,7 @@
 package vesta.proyectos
 
 import vesta.parametros.PresupuestoUnidad
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'mdtc' de la base de datos
@@ -30,7 +30,7 @@ class ModificacionTechos {
     /**
      * Usuario que efectuó la modificación
      */
-    Usro usuario
+    Persona usuario
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -52,7 +52,7 @@ class ModificacionTechos {
             recibe column: 'pruercbe'
             fecha column: 'mdasfcha'
             valor column: 'mdasvlor'
-            usuario column: 'usro__id'
+            usuario column: 'prsn__id'
             tipo column: 'mdtctipo'
         }
     }

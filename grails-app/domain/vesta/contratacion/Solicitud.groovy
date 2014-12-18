@@ -5,7 +5,7 @@ import vesta.parametros.TipoBien
 import vesta.parametros.TipoContrato
 import vesta.parametros.UnidadEjecutora
 import vesta.proyectos.MarcoLogico
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'slct' de la base de datos
@@ -14,7 +14,7 @@ class Solicitud {
     /**
      * Usuario que genera la solicitud
      */
-    Usro usuario
+    Persona usuario
     /**
      * Unidad ejecutora que genera la solicitud
      */
@@ -208,7 +208,7 @@ class Solicitud {
         version false
         columns {
             id column: 'slct__id'
-            usuario column: 'usro__id'
+            usuario column: 'prsn__id'
             unidadEjecutora column: 'unej__id'
             actividad column: 'mrlg__id'
             fecha column: 'slctfcha'

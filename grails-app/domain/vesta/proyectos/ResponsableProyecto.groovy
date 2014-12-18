@@ -2,7 +2,7 @@ package vesta.proyectos
 
 import vesta.parametros.TipoResponsable
 import vesta.parametros.UnidadEjecutora
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /* Responsable nombrado en la Unidad ejecutora para la ejecución de los proyectos.*/
 /**
@@ -13,7 +13,7 @@ class ResponsableProyecto implements Serializable {
     /**
      * Usuario responsable
      */
-    Usro responsable
+    Persona responsable
     /**
      * Unidad ejecutora del responsable
      */
@@ -54,7 +54,7 @@ class ResponsableProyecto implements Serializable {
         id generator: 'identity'
         version false
         columns {
-            responsable column: 'usro__id'
+            responsable column: 'prsn__id'
             proyecto column: 'proy__id'
             desde column: 'rspydsde'
             hasta column: 'rspyhsta'

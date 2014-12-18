@@ -19,7 +19,7 @@ class Accs implements Serializable {
     /**
      * Usuario para el acceso
      */
-    Usro usuario
+    Persona usuario
 
     /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
@@ -31,7 +31,7 @@ class Accs implements Serializable {
 
         columns {
             id column: 'accs__id'
-            usuario column: 'usro__id'
+            usuario column: 'prsn__id'
             accsFechaInicial column: 'accsfcin'
             accsFechaFinal column: 'accsfcfn'
             accsObservaciones column: 'accsobsr'

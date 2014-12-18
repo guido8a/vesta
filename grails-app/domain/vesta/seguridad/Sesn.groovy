@@ -7,7 +7,7 @@ class Sesn implements Serializable {
     /**
      * Usuario de la sesión
      */
-    Usro usuario
+    Persona usuario
     /**
      * Perfil de la sesión
      */
@@ -30,7 +30,7 @@ class Sesn implements Serializable {
         columns {
             id column: 'sesn__id'
             perfil column: 'prfl__id'
-            usuario column: 'usro__id'
+            usuario column: 'prsn__id'
         }
     }
 

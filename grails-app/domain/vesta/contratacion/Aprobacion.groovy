@@ -1,6 +1,6 @@
 package vesta.contratacion
 
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'aprb' de la base de datos<br/>
@@ -41,19 +41,19 @@ class Aprobacion {
     /**
      * El usuario logueado al momento de la creación de la aprobación
      */
-    Usro creadoPor
+    Persona creadoPor
     /**
      * La firma de gerencia de planif
      */
-    Usro firmaGerenciaPlanificacion
+    Persona firmaGerenciaPlanificacion
     /**
      * La firma de direccion de planif
      */
-    Usro firmaDireccionPlanificacion
+    Persona firmaDireccionPlanificacion
     /**
      * La firma de gerencia técnica
      */
-    Usro firmaGerenciaTecnica
+    Persona firmaGerenciaTecnica
 
     /**
      * Define las relaciones uno a varios
@@ -83,10 +83,10 @@ class Aprobacion {
             asistentes column: 'aprbasst'
             numero column: 'aprbnmro'
             aprobada column: 'aprbaprb'
-            creadoPor column: 'user__id'
-            firmaDireccionPlanificacion column: 'userfrdp'
-            firmaGerenciaPlanificacion column: 'userfrgp'
-            firmaGerenciaTecnica column: 'userfrgt'
+            creadoPor column: 'prsn__id'
+            firmaDireccionPlanificacion column: 'prsnfrdp'
+            firmaGerenciaPlanificacion column: 'prsnfrgp'
+            firmaGerenciaTecnica column: 'prsnfrgt'
         }
     }
 

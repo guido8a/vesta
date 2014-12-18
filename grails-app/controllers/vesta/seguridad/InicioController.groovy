@@ -1,6 +1,10 @@
 package vesta.seguridad
 
-class InicioController {
+class InicioController extends Shield {
 
     def index() {}
+
+    def demoUI() {
+
+    }
 }

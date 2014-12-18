@@ -6,7 +6,7 @@ import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.proyectos.MarcoLogico
 import vesta.seguridad.Firma
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'slma' de la base de datos
@@ -66,11 +66,11 @@ class SolicitudModPoa {
     /*
     * Usuario que crea la solicitud
      */
-    Usro usuario
+    Persona usuario
     /*
    * usuario que revisa la solicitud
     */
-    Usro revisor
+    Persona revisor
     /*
     * Tipo de la solicitud R-> reasignacion, N-> nueva asignacion, D-> derivada, E-> Eliminar
      */
@@ -139,8 +139,8 @@ class SolicitudModPoa {
             valor column: 'slmavlor'
             concepto column: 'slmacpto'
             estado column: 'slmaetdo'
-            usuario column: 'usro__id'
-            revisor column: 'usrorvid'
+            usuario column: 'prsn__id'
+            revisor column: 'prsnrvid'
             tipo column: 'slmatipo'
             observaciones column: 'slmaobsr'
             actividad column: 'slmaactv'

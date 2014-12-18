@@ -1,7 +1,7 @@
 package vesta.avales
 
 import vesta.poa.Asignacion
-import vesta.seguridad.Usro
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'crtf' de la base de datos
@@ -11,7 +11,7 @@ class Certificacion {
     /**
      * Usuario que creó la certificación
      */
-    Usro usuario
+    Persona usuario
     /**
      * Asignación a la cual pertenece la certificación
      */
@@ -118,7 +118,7 @@ class Certificacion {
         version false
         columns {
             id column: 'crtf__id'
-            usuario column: 'usro__id'
+            usuario column: 'prsn__id'
             asignacion column: 'asgn__id'
             fecha column: 'crtffcha'
             fechaRevision column: 'crtffcrv'
