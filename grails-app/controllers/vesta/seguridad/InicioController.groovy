@@ -7,4 +7,7 @@ class InicioController extends Shield {
     def demoUI() {
 
     }
+    def parametros(){
+
+    }
 }
