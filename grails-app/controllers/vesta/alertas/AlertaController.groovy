@@ -1,6 +1,5 @@
 package vesta.alertas
 
-import org.springframework.dao.DataIntegrityViolationException
 import vesta.seguridad.Shield
 
 
@@ -15,7 +14,7 @@ class AlertaController extends Shield {
      * Acción que redirecciona a la lista (acción "list")
      */
     def index() {
-        redirect(action:"list", params: params)
+        redirect(action: "list", params: params)
     }
 
     /**
@@ -28,20 +27,20 @@ class AlertaController extends Shield {
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
         params.offset = params.offset ?: 0
-        if(all) {
+        if (all) {
             params.remove("max")
             params.remove("offset")
         }
         def list
-        if(params.search) {
+        if (params.search) {
             def c = Alerta.createCriteria()
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-                    
-                    ilike("accion", "%" + params.search + "%")  
-                    ilike("controlador", "%" + params.search + "%")  
-                    ilike("mensaje", "%" + params.search + "%")  
+
+                    ilike("accion", "%" + params.search + "%")
+                    ilike("controlador", "%" + params.search + "%")
+                    ilike("mensaje", "%" + params.search + "%")
                 }
             }
         } else {
@@ -65,86 +64,13 @@ class AlertaController extends Shield {
     }
 
     /**
-     * Acción llamada con ajax que muestra la información de un elemento particular
-     * @return alertaInstance el objeto a mostrar cuando se encontró el elemento
-     * @render ERROR*[mensaje] cuando no se encontró el elemento
+     * Acción que redirecciona a la acción necesaria según la alerta
      */
-    def show_ajax() {
-        if(params.id) {
-            def alertaInstance = Alerta.get(params.id)
-            if(!alertaInstance) {
-                render "ERROR*No se encontró Alerta."
-                return
-            }
-            return [alertaInstance: alertaInstance]
-        } else {
-            render "ERROR*No se encontró Alerta."
-        }
-    } //show para cargar con ajax en un dialog
-
-    /**
-     * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
-     * @return alertaInstance el objeto a modificar cuando se encontró el elemento
-     * @render ERROR*[mensaje] cuando no se encontró el elemento
-     */
-    def form_ajax() {
-        def alertaInstance = new Alerta()
-        if(params.id) {
-            alertaInstance = Alerta.get(params.id)
-            if(!alertaInstance) {
-                render "ERROR*No se encontró Alerta."
-                return
-            }
-        }
-        alertaInstance.properties = params
-        return [alertaInstance: alertaInstance]
-    } //form para cargar con ajax en un dialog
-
-    /**
-     * Acción llamada con ajax que guarda la información de un elemento
-     * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
-     */
-    def save_ajax() {
-        def alertaInstance = new Alerta()
-        if(params.id) {
-            alertaInstance = Alerta.get(params.id)
-            if(!alertaInstance) {
-                render "ERROR*No se encontró Alerta."
-                return
-            }
-        }
-        alertaInstance.properties = params
-        if(!alertaInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Alerta: " + renderErrors(bean: alertaInstance)
-            return
-        }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Alerta exitosa."
-        return
-    } //save para grabar desde ajax
-
-    /**
-     * Acción llamada con ajax que permite eliminar un elemento
-     * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
-     */
-    def delete_ajax() {
-        if(params.id) {
-            def alertaInstance = Alerta.get(params.id)
-            if (!alertaInstance) {
-                render "ERROR*No se encontró Alerta."
-                return
-            }
-            try {
-                alertaInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Alerta exitosa."
-                return
-            } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Alerta"
-                return
-            }
-        } else {
-            render "ERROR*No se encontró Alerta."
-            return
-        }
-    } //delete para eliminar via ajax
-    
+    def showAlerta = {
+        def alerta = Alerta.get(params.id)
+        alerta.fechaRecibido = new Date()
+        alerta.save(flush: true)
+        params.id = alerta.id_remoto
+        redirect(controller: alerta.controlador, action: alerta.accion, params: params)
+    }
 }

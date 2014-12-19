@@ -15,7 +15,7 @@
     <body>
 
         <div class="alert alert-info text-shadow">
-            <i class="fa icon-ghost fa-4x pull-left"></i>
+            <i class="fa icon-ghost fa-4x pull-left" style="margin-top: 15px;"></i>
 
             <h1 class="text-info tituloError">Ha ocurrido un error</h1>
 

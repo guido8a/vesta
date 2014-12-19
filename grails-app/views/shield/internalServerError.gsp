@@ -14,8 +14,8 @@
 
     <body>
 
-        <div class="alert alert-danger text-shadow">
-            <i class="fa fa-exclamation-triangle fa-4x pull-left"></i>
+        <div class="alert tdn-note alert-danger text-shadow" style="margin-top: 15px;">
+            <i class="fa fa-exclamation-triangle fa-4x pull-left" style="margin-top: 15px;"></i>
 
             <h1 class="text-danger tituloError">Ha ocurrido un error interno</h1>
         </div>
@@ -26,8 +26,12 @@
             <g:if test="${session.usuario}">
                 <span style="font-size: 16px"><b>Usuario: ${session.usuario}</b></span><br>
             </g:if>
-            <span style="font-size: 16px" id="spanContinuarSistema"><b>Para continuar usando el sistema pulse <a href="${createLink(controller: 'inicio', action: 'index')}" id="regresar">Aquí</a>
-            </b></span><br>
+            <span style="font-size: 16px" id="spanContinuarSistema">
+                <b>
+                    Para continuar usando el sistema pulse <a href="${createLink(controller: 'inicio', action: 'index')}" id="regresar">Aquí</a>
+                </b>
+            </span>
+            <br>
         %{--<span style="font-size: 16px"><b>Si desea borrar toda la información del sistema pulse  <a href="${createLink(controller: 'shield',action: 'prueba')}" id="prueba">Aquí</a></b></span><br>--}%
 
             <div class="alert alert-danger">

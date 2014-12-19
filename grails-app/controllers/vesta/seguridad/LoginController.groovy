@@ -94,7 +94,7 @@ class LoginController {
         cargarPermisos()
         def count = Alerta.countByPersonaAndFechaRecibidoIsNull(session.usuario)
         if (count > 0) {
-            redirect(controller: 'alertas', action: 'list')
+            redirect(controller: 'alerta', action: 'list')
             return
         } else {
             if (session.an && session.cn) {
@@ -179,7 +179,7 @@ class LoginController {
             }
 
             if (count > 0)
-                redirect(controller: 'alertas', action: 'list')
+                redirect(controller: 'alerta', action: 'list')
             else {//
 //                redirect(controller: "retrasadosWeb", action: "reporteRetrasadosConsolidado", params: [dpto: Persona.get(session.usuario.id).departamento.id,inicio:"1"])
                 if (session.usuario.getPuedeDirector()) {
