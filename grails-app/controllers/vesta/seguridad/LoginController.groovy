@@ -119,7 +119,7 @@ class LoginController {
             perfil {
                 order("nombre", "asc")
             }
-        }
+        }.perfil
 
         return [perfiles: perfiles]
     }

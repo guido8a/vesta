@@ -4,6 +4,24 @@
     <head>
         <meta name="layout" content="main">
         <title>Lista de Alerta</title>
+
+        <style type="text/css">
+        .d0 {
+            background : #e0ffc8;
+        }
+
+        .d1 {
+            background : #fff949;
+        }
+
+        .d2 {
+            background : #ff9d4d;
+        }
+
+        .dmas {
+            background : #ff573f;
+        }
+        </style>
     </head>
 
     <body>
@@ -17,6 +35,7 @@
         <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Fecha</th>
                     <th>Mensaje</th>
                     <th>Originador</th>
@@ -27,6 +46,7 @@
                 <g:if test="${alertaInstanceCount > 0}">
                     <g:each in="${alertaInstanceList}" status="i" var="alertaInstance">
                         <tr>
+                            <td class="d${(((new Date()) - alertaInstance.fechaEnvio) > 2) ? "mas" : (new Date()) - alertaInstance.fechaEnvio}"></td>
                             <td><g:formatDate date="${alertaInstance.fechaEnvio}" format="dd-MM-yyyy"/></td>
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${alertaInstance}" field="mensaje"/></elm:textoBusqueda></td>
                             <td>${alertaInstance.from}</td>

@@ -35,16 +35,17 @@ class AlertaController extends Shield {
         if (params.search) {
             def c = Alerta.createCriteria()
             list = c.list(params) {
+                eq("persona", session.usuario)
+                isNull("fechaRecibido")
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-
                     ilike("accion", "%" + params.search + "%")
                     ilike("controlador", "%" + params.search + "%")
                     ilike("mensaje", "%" + params.search + "%")
                 }
             }
         } else {
-            list = Alerta.list(params)
+            list = Alerta.findAllByPersonaAndFechaRecibidoIsNull(session.usuario, params)
         }
         if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
             params.offset = params.offset.toInteger() - 1

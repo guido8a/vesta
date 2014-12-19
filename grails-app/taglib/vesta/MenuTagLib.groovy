@@ -1,5 +1,8 @@
 package vesta
 
+import vesta.alertas.Alerta
+import vesta.seguridad.Prms
+
 class MenuTagLib {
 //    static defaultEncodeAs = 'html'
     //static encodeAsForTags = [tagName: 'raw']
@@ -63,28 +66,63 @@ class MenuTagLib {
 
     def menu = { attrs ->
 
-        def items = [
-                [
-                        label     : "Inicio",
-                        icon      : "fa fa-home",
-                        controller: "inicio"
-                ]/*,
-                [
-                        label: "Transacciones",
-                        icon : "fa fa-exchange",
-                        hijos: [
-                                [
-                                        label: "Compras",
-                                        icon : "fa fa-download"
-                                ],
-                                [
-                                        label          : "Ventas",
-                                        icon           : "fa fa-upload",
-                                        separate_before: true
-                                ]
-                        ]
-                ]*/
-        ]
+        def items = [:]
+        def usuario = session.usuario
+        def perfil = session.perfil
+        def dpto = session.departamento
+        def strItems = ""
+        if (!attrs.title) {
+            attrs.title = "Happy"
+        }
+//        attrs.title = attrs.title.toUpperCase()
+        if (usuario) {
+            def acciones = Prms.findAllByPerfil(perfil).accion.sort { it.modulo.orden }
+
+            acciones.each { ac ->
+                if (ac.tipo.id == 1) {
+                    if (!items[ac.modulo.nombre]) {
+                        items.put(ac.modulo.nombre, [ac.accnDescripcion, g.createLink(controller: ac.control.ctrlNombre, action: ac.accnNombre)])
+                    } else {
+                        items[ac.modulo.nombre].add(ac.accnDescripcion)
+                        items[ac.modulo.nombre].add(g.createLink(controller: ac.control.ctrlNombre, action: ac.accnNombre))
+                    }
+                }
+            }
+            items.each { item ->
+                for (int i = 0; i < item.value.size(); i += 2) {
+                    for (int j = 2; j < item.value.size() - 1; j += 2) {
+                        def val = item.value[i].trim().compareTo(item.value[j].trim())
+                        if (val > 0 && i < j) {
+                            def tmp = [item.value[j], item.value[j + 1]]
+                            item.value[j] = item.value[i]
+                            item.value[j + 1] = item.value[i + 1]
+                            item.value[i] = tmp[0]
+                            item.value[i + 1] = tmp[1]
+                        }
+
+                    }
+                }
+            }
+        } else {
+            items = ["Inicio": ["Prueba", "linkPrueba", "Test", "linkTest"]]
+        }
+
+        items.each { item ->
+            strItems += '<li class="dropdown">'
+            strItems += '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' + item.key + '<b class="caret"></b></a>'
+            strItems += '<ul class="dropdown-menu">'
+
+            (item.value.size() / 2).toInteger().times {
+                strItems += '<li><a href="' + item.value[it * 2 + 1] + '">' + item.value[it * 2] + '</a></li>'
+            }
+            strItems += '</ul>'
+            strItems += '</li>'
+        }
+
+        def alertas = "("
+        def count = Alerta.countByPersonaAndFechaRecibidoIsNull(usuario)
+        alertas += count
+        alertas += ")"
 
         def html = "<nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\">"
 
@@ -104,49 +142,17 @@ class MenuTagLib {
         // Collect the nav links, forms, and other content for toggling
         html += '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">'
         html += '<ul class="nav navbar-nav">'
-
-        items.each { item ->
-            def icon = ""
-            if (item.icon) {
-                icon = "<i class='${item.icon}'></i> "
-            }
-            if (item.hijos) {
-                html += '<li class="dropdown">'
-                html += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'>${icon}${item.label} <b class='caret'></b></a>"
-                html += '<ul class="dropdown-menu">'
-                item.hijos.each { hijo ->
-                    def iconh = ""
-                    def linkh = "#"
-                    if (hijo.controller) {
-                        linkh = createLink(controller: hijo.controller ?: "list", action: hijo.action, params: hijo.params)
-                    }
-                    if (hijo.icon) {
-                        iconh = "<i class='${hijo.icon}'></i> "
-                    }
-                    if (hijo.separate_before) {
-                        html += '<li class="divider"></li>'
-                    }
-                    html += "<li><a href='${linkh}'>${iconh}${hijo.label}</a></li>"
-                }
-                html += '</ul>'
-                html += '</li>'
-            } else {
-                def link = "#"
-                if (item.controller) {
-                    link = createLink(controller: item.controller, action: item.action ?: "list", params: item.params)
-                }
-                html += "<li><a href='${link}'>${icon}${item.label}</a></li>"
-            }
-        }
+        html += strItems
         html += '</ul>'
 
         html += '<ul class="nav navbar-nav navbar-right">'
+        html += '<li><a href="' + g.createLink(controller: 'alerta', action: 'list') + '" ' + ((count > 0) ? ' style="color:#ab623a" class="annoying"' : "") + '><i class="fa fa-exclamation-triangle"></i> Alertas ' + alertas + '</a></li>'
         html += '<li class="dropdown">'
-        html += '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Usuario <b class="caret"></b></a>'
+        html += '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' + usuario.login + ' (' + session.perfil + ')' + ' <b class="caret"></b></a>'
         html += '<ul class="dropdown-menu">'
-        html += '<li><a href="#"><i class="fa fa-cog"></i> Configuración</a></li>'
+        html += '<li><a href="' + g.createLink(controller: 'persona', action: 'personal') + '"><i class="fa fa-cogs"></i> Configuración</a></li>'
         html += '<li class="divider"></li>'
-        html += '<li><a href="' + createLink(controller: 'login', action: 'logout') + '"><i class="fa fa-sign-out"></i> Salir</a></li>'
+        html += '<li><a href="' + g.createLink(controller: 'login', action: 'logout') + '"><i class="fa fa-power-off"></i> Salir</a></li>'
         html += '</ul>'
         html += '</li>'
         html += '</ul>'
