@@ -1,10 +1,10 @@
 // Readable 3.3.1
 // Bootswatch
 // -----------------------------------------------------
-@import url("//fonts.googleapis.com/css?family=Raleway:400,700");
+@import url("//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700");
+@import url("//fonts.googleapis.com/css?family=PT+Sans:400,700");
 
 // Navbar =====================================================================
-
 .navbar {
   font-family : @headings-font-family;
 
@@ -17,17 +17,29 @@
   &-nav > li > a {
     padding       : @padding-base-vertical @padding-base-horizontal;
     margin        : 12px 6px;
-    border        : 1px solid transparent;
+    //    border        : 1px solid transparent;
+    border-left   : solid 1px transparent;
+    border-right  : solid 1px transparent;
     border-radius : @border-radius-base;
 
     &:hover {
-      border : 1px solid #ddd;
+      border-left  : solid 1px @gray-light;
+      border-right : solid 1px @gray-light;
+      border-top   : 3px solid @brand-primary;
+      padding-top  : (@padding-base-vertical - 3);
     }
   }
 
   &-nav > .active > a,
   &-nav > .active > a:hover {
-    border : 1px solid #ddd;
+    border-left  : solid 1px @gray-light;
+    border-right : solid 1px @gray-light;
+    border-top   : 3px solid @brand-accent;
+    //    box-shadow : inset 0 3px 9px rgba(0, 0, 0, .25);
+  }
+
+  &-nav > .active > a:hover {
+    padding-top : (@padding-base-vertical);
   }
 
   &-default .navbar-nav > .active > a:hover {
@@ -38,9 +50,41 @@
     color : @navbar-inverse-link-hover-color;
   }
 
+  &-inverse .navbar-nav > li > a:hover, .navbar-nav > li > a:hover {
+    color : @navbar-inverse-link-hover-color;
+    //    box-shadow : inset 0 3px 9px rgba(0, 0, 0, .5);
+  }
+
   &-brand {
     padding-top : 20px;
   }
+
+  .navbar-nav {
+    // Remove background color from open dropdown
+    > .open > a {
+      &,
+      &:hover,
+      &:focus {
+        border-left  : solid 1px @gray-light;
+        border-right : solid 1px @gray-light;
+        border-top   : 3px solid @brand-accent;
+        //        box-shadow : inset 0 3px 9px rgba(0, 0, 0, .5);
+      }
+    }
+    > .open > a {
+      padding-top : (@padding-base-vertical - 3);
+    }
+
+    > li > .dropdown-menu {
+      border-radius : @border-radius-base;
+      margin-top    : -12px;
+      margin-left   : 6px;
+    }
+  }
+}
+
+.navbar-fixed-top {
+  top : 50px;
 }
 
 @media (max-width : @grid-float-breakpoint) {
@@ -125,10 +169,15 @@ legend {
 }
 
 .alert {
-  .alert-link {
-    color           : @alert-success-text;
-    text-decoration : underline;
-  }
+  border-width : 0 0 0 5px;
+}
+
+.tdn-note, .tdn-note-right {
+  border-width : 1px;
+}
+
+.alert-primary {
+  .alert-variant(@body-bg; lighten(@brand-primary, 10%); @text-color);
 }
 
 .label {
@@ -180,16 +229,26 @@ legend {
 }
 
 .tdn-tab {
-  .box-shadow(none);
-
-  &-primary,
-  &-success,
-  &-warning,
-  &-danger,
-  &-info {
+  &.tdn-tab-primary,
+  &.tdn-tab-success,
+  &.tdn-tab-warning,
+  &.tdn-tab-danger,
+  &.tdn-tab-info {
     .tdn-tab-heading {
-      &.selected {
+      a {
+        &.selected {
+          color : @headings-color;
+        }
+      }
+    }
+  }
+  &.tdn-tab-primary {
+    .tdn-tab-heading {
+      a {
         color : #fff;
+        &.selected {
+          color : #fff;
+        }
       }
     }
   }
