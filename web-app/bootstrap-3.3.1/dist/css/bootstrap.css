@@ -6289,17 +6289,21 @@ button.close {
 .navbar-nav > li > a {
   padding: 8px 12px;
   margin: 12px 6px;
+  border-right: solid 1px transparent;
+  border-left: solid 1px transparent;
   border-radius: 4px;
 }
 .navbar-nav > li > a:hover {
   padding-top: 5px;
   border-top: 3px solid #1e2c58;
+  border-right: solid 1px #b3b3b3;
+  border-left: solid 1px #b3b3b3;
 }
 .navbar-nav > .active > a,
 .navbar-nav > .active > a:hover {
   border-top: 3px solid #5bc0de;
-  -webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
-          box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
+  border-right: solid 1px #b3b3b3;
+  border-left: solid 1px #b3b3b3;
 }
 .navbar-nav > .active > a:hover {
   padding-top: 8px;
@@ -6313,8 +6317,6 @@ button.close {
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar .navbar-nav > li > a:hover {
   color: #333;
-  -webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, .5);
-          box-shadow: inset 0 3px 9px rgba(0, 0, 0, .5);
 }
 .navbar-brand {
   padding-top: 20px;
@@ -6323,8 +6325,8 @@ button.close {
 .navbar .navbar-nav > .open > a:hover,
 .navbar .navbar-nav > .open > a:focus {
   border-top: 3px solid #5bc0de;
-  -webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, .5);
-          box-shadow: inset 0 3px 9px rgba(0, 0, 0, .5);
+  border-right: solid 1px #b3b3b3;
+  border-left: solid 1px #b3b3b3;
 }
 .navbar .navbar-nav > .open > a {
   padding-top: 5px;
