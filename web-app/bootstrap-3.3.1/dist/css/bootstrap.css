@@ -6358,6 +6358,10 @@ legend {
 .nav .open > a:focus {
   border: 1px solid #ddd;
 }
+.nav-pills > li > a:hover {
+  color: #eee;
+  background-color: #3a5daa;
+}
 .pagination {
   font-family: "PT Sans Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -6459,6 +6463,25 @@ legend {
 }
 .modal .close {
   color: #333;
+}
+.corner-all {
+  border-radius: 4px;
+}
+.corner-left {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.corner-right {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.corner-top {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.corner-bottom {
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 .clearfix:before,
 .clearfix:after,
