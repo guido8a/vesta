@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tpaq' de la base de datos
  */
-class TipoAdquisicion implements Serializable {
+class TipoAdquisicion   {
     /**
      * Descripción del tipo de adquisición
      */

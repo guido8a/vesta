@@ -5,7 +5,7 @@ package vesta.parametros.proyectos
  * El grupo de procesos del proyecto se refiere a los distintos momentos del proyecto como son:
  * INICIO, PLANIFICACIÓN, EJECUCIÓN y CIERRE
  */
-class GrupoProcesos implements Serializable {
+class GrupoProcesos   {
     /**
      * Descripción del grupo de procesos
      */

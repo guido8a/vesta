@@ -5,7 +5,7 @@ import vesta.parametros.TipoInforme
 /**
  * Clase para conectar con la tabla 'info' de la base de datos
  */
-class Informe implements Serializable {
+class Informe   {
     /**
      * Responsable del informe
      */

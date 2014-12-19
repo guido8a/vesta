@@ -2,7 +2,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'pltc' de la base de datos
  */
-class PoliticaAplicaProyecto implements Serializable {
+class PoliticaAplicaProyecto   {
     /**
      * Descripción de la política que aplica al proyecto
      */

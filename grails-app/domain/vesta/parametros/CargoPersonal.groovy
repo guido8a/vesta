@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'cgpr' de la base de datos
  */
-class CargoPersonal implements Serializable {
+class CargoPersonal   {
     /**
      * Descipción del cargo de personal
      */

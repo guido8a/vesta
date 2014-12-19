@@ -5,7 +5,7 @@ package vesta.parametros
  * Clase para conectar con la tabla 'etpa' de la base de datos<br/>
  * Guarda un catálogo de posibles etapas del proyecto, como PERFIL, PRIORIZADO, INVERSION
  */
-class Etapa implements Serializable {
+class Etapa   {
     /**
      * Descipción de la etapa
      */

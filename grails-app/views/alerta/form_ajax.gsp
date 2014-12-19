@@ -23,37 +23,37 @@
             </span>
         </div>
         
-        <div class="form-group keeptogether ${hasErrors(bean: alertaInstance, field: 'usro', 'error')} required">
+        <div class="form-group keeptogether ${hasErrors(bean: alertaInstance, field: 'persona', 'error')} required">
             <span class="grupo">
                 <label for="usro" class="col-md-2 control-label">
                     Usro
                 </label>
                 <div class="col-md-6">
-                    <g:select id="usro" name="usro.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${alertaInstance?.usro?.id}" class="many-to-one form-control"/>
+                    <g:select id="usro" name="usro.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${alertaInstance?.persona?.id}" class="many-to-one form-control"/>
                 </div>
                  *
             </span>
         </div>
         
-        <div class="form-group keeptogether ${hasErrors(bean: alertaInstance, field: 'fec_envio', 'error')} required">
+        <div class="form-group keeptogether ${hasErrors(bean: alertaInstance, field: 'fechaEnvio', 'error')} required">
             <span class="grupo">
                 <label for="fec_envio" class="col-md-2 control-label">
                     Fecenvio
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fec_envio"  class="datepicker form-control required" value="${alertaInstance?.fec_envio}"  />
+                    <elm:datepicker name="fec_envio"  class="datepicker form-control required" value="${alertaInstance?.fechaEnvio}"  />
                 </div>
                  *
             </span>
         </div>
         
-        <div class="form-group keeptogether ${hasErrors(bean: alertaInstance, field: 'fec_recibido', 'error')} ">
+        <div class="form-group keeptogether ${hasErrors(bean: alertaInstance, field: 'fechaRecibido', 'error')} ">
             <span class="grupo">
                 <label for="fec_recibido" class="col-md-2 control-label">
                     Fecrecibido
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fec_recibido"  class="datepicker form-control" value="${alertaInstance?.fec_recibido}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fec_recibido"  class="datepicker form-control" value="${alertaInstance?.fechaRecibido}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>

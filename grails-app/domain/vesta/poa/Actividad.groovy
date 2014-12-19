@@ -7,7 +7,7 @@ package vesta.poa
  * Clase para conectar con la tabla 'actv' de la base de datos<br/>
  * Actividades de gasto corriente
  */
-class Actividad implements Serializable {
+class Actividad   {
     /**
      * Código de la actividad
      */

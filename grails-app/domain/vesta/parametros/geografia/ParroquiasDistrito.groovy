@@ -3,7 +3,7 @@ package vesta.parametros.geografia
  * Clase para conectar con la tabla 'prdt' de la base de datos<br/>
  * Tabla intermedia para unir distritos con parroquias
  */
-class ParroquiasDistrito implements Serializable {
+class ParroquiasDistrito   {
     /**
      * Id del distrito
      */

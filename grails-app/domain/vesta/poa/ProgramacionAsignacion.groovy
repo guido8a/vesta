@@ -10,7 +10,7 @@ import vesta.proyectos.ModificacionProyecto
  * Clase para conectar con la tabla 'pras' de la base de datos<br/>
  * Programación de la asignación presupuestaria por cuatrimestres.
  */
-class ProgramacionAsignacion implements Serializable {
+class ProgramacionAsignacion   {
     Asignacion asignacion
     DistribucionAsignacion distribucion
     Mes mes

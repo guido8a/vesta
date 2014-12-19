@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tpgs' de la base de datos
  */
-class TipoGasto implements Serializable {
+class TipoGasto   {
     /**
      * Descripción del tipo de gasto
      */

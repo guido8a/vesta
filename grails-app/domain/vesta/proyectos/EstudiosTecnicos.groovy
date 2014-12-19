@@ -3,7 +3,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'estc' de la base de datos
  */
-class EstudiosTecnicos implements Serializable {
+class EstudiosTecnicos   {
     /**
      * Proyecto del estudio técnico
      */

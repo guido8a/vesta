@@ -4,7 +4,7 @@ package vesta.parametros.proyectos
  * Clase para conectar con la tabla 'obgr' de la base de datos<br/>
  * Objetivos establecidos en el sistema de GPR
  */
-class ObjetivoGobiernoResultado implements Serializable {
+class ObjetivoGobiernoResultado   {
     /**
      * Descripción del objetivo gobierno resultado
      */

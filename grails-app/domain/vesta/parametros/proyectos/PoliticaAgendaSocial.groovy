@@ -3,7 +3,7 @@ package vesta.parametros.proyectos
 /**
  * Clase para conectar con la tabla 'plas' de la base de datos
  */
-class PoliticaAgendaSocial implements Serializable {
+class PoliticaAgendaSocial   {
     /**
      * Descripción de la política de agenda social
      */

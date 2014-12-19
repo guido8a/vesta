@@ -8,7 +8,7 @@ import vesta.parametros.UnidadEjecutora
  * Clase para conectar con la tabla 'prsn' de la base de datos<br/>
  * Usuario del sistema
  */
-class Persona implements Serializable {
+class Persona {
     /**
      * Cédula de la persona
      */

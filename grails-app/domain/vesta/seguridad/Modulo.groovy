@@ -3,7 +3,7 @@ package vesta.seguridad
 /**
  * Clase para conectar con la tabla 'mdlo' de la base de datos
  */
-class Modulo implements Serializable {
+class Modulo   {
     /**
      * Nombre del módulo
      */

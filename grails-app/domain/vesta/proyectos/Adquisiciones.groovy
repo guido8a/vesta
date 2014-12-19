@@ -6,7 +6,7 @@ import vesta.parametros.TipoProcedencia
 /**
  * Clase para conectar con la tabla 'adqc' de la base de datos
  */
-class Adquisiciones implements Serializable {
+class Adquisiciones   {
     /**
      * Tipo de adquisición
      */

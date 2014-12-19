@@ -6,7 +6,7 @@ import vesta.parametros.SubSector
 /**
  * Clase para conectar con la tabla 'intv' de la base de datos
  */
-class Intervencion implements Serializable {
+class Intervencion   {
     /**
      * Proyecto para la intervención
      */

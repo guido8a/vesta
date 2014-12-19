@@ -8,7 +8,7 @@ import vesta.seguridad.Persona
 /**
  * Clase para conectar con la tabla 'mdfc' de la base de datos
  */
-class ModificacionProyecto implements Serializable {
+class ModificacionProyecto   {
     /**
      * Informe de la modificación de proyecto
      */

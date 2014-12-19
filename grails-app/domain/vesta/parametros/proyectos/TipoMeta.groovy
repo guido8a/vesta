@@ -8,7 +8,7 @@ import vesta.proyectos.Meta
  * Clase para conectar con la tabla 'tpmt' de la base de datos<br/>
  * Tipo de meta para agregar o agrupar metas
  */
-class TipoMeta implements Serializable {
+class TipoMeta   {
     /**
      * Descripción del tipo de meta
      */

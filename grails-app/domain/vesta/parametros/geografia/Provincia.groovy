@@ -6,7 +6,7 @@ import vesta.proyectos.Meta
  * Clase para conectar con la tabla 'prov' de la base de datos<br/>
  * Guarda la lista de provincias
  */
-class Provincia implements Serializable {
+class Provincia   {
     /**
      * Zona a la cual pertenece la provincia
      */

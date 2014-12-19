@@ -4,7 +4,7 @@ package vesta.proyectos
  * Clase para conectar con la tabla 'mtpy' de la base de datos<br/>
  * Tabla intermedia que conecta proyectos con metas del buen vivir
  */
-class MetaBuenVivirProyecto implements Serializable {
+class MetaBuenVivirProyecto   {
     /**
      * Proyecto
      */

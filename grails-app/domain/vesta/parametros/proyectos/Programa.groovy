@@ -4,7 +4,7 @@ package vesta.parametros.proyectos
  * Clase para conectar con la tabla 'prgr' de la base de datos<br/>
  * Programa del cual es parte el proyecto.
  */
-class Programa implements Serializable {
+class Programa   {
     /**
      * Código del programa
      */

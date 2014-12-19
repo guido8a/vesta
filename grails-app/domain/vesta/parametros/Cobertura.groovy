@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'cbrt' de la base de datos
  */
-class Cobertura implements Serializable {
+class Cobertura   {
     /**
      * Descipción de la cobertura
      */

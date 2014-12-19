@@ -8,7 +8,7 @@ Nótese que la relación del supuesto es al elemento del marco lógico, no a los
  * Nótese que la relación del supuesto es al elemento del marco lógico,
  * no a los indicadores ni a los medios de comprobación de los indicadores.
  */
-class Supuesto implements Serializable {
+class Supuesto   {
     /**
      * Marco lógico del supuesto
      */

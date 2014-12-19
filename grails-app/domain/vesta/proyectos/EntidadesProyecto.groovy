@@ -6,7 +6,7 @@ import vesta.parametros.UnidadEjecutora
 /**
  * Clase para conectar con la tabla 'etpy' de la base de datos
  */
-class EntidadesProyecto implements Serializable {
+class EntidadesProyecto   {
     /**
      * Unidad ejecutora de la entidad del proyecto
      */

@@ -4,7 +4,7 @@ package vesta.parametros.geografia
  * Clase para conectar con la tabla 'regn' de la base de datos<br/>
  * Guarda la lista de regiones
  */
-class Region implements Serializable {
+class Region   {
     /**
      * Có de la región
      */

@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'sbsc' de la base de datos
  */
-class SubSecretaria implements Serializable {
+class SubSecretaria   {
     /**
      * Entidad de la subsecretaría
      */

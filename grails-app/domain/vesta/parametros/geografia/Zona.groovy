@@ -3,7 +3,7 @@ package vesta.parametros.geografia
  * Clase para conectar con la tabla 'zona' de la base de datos<br/>
  * Guarda la lista de zonas
  */
-class Zona implements Serializable {
+class Zona   {
     /**
      * Número de la zona
      */

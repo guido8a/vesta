@@ -4,7 +4,7 @@ package vesta.parametros.poaPac
  * Clase para conectar con la tabla 'mess' de la base de datos<br/>
  * Meses para el registro del cronograma valorado
  */
-class Mes implements Serializable {
+class Mes   {
     /**
      * Número del mes
      */

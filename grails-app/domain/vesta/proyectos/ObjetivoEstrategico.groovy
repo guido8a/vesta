@@ -3,7 +3,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'obet' de la base de datos
  */
-class ObjetivoEstrategico implements Serializable {
+class ObjetivoEstrategico   {
     /**
      * Proyecto del objetivo estratégico
      */

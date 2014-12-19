@@ -3,7 +3,7 @@ package vesta.seguridad
 /**
  * Clase para conectar con la tabla 'sstm' de la base de datos
  */
-class Sistema implements Serializable {
+class Sistema   {
     /**
      * Nombre del sistema
      */

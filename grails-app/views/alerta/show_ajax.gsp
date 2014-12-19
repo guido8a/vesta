@@ -19,40 +19,40 @@
         </div>
     </g:if>
     
-    <g:if test="${alertaInstance?.usro}">
+    <g:if test="${alertaInstance?.persona}">
         <div class="row">
             <div class="col-md-2">
                 Usro
             </div>
             
             <div class="col-md-3">
-                ${alertaInstance?.usro?.encodeAsHTML()}
+                ${alertaInstance?.persona?.encodeAsHTML()}
             </div>
             
         </div>
     </g:if>
     
-    <g:if test="${alertaInstance?.fec_envio}">
+    <g:if test="${alertaInstance?.fechaEnvio}">
         <div class="row">
             <div class="col-md-2">
                 Fecenvio
             </div>
             
             <div class="col-md-3">
-                <g:formatDate date="${alertaInstance?.fec_envio}" format="dd-MM-yyyy" />
+                <g:formatDate date="${alertaInstance?.fechaEnvio}" format="dd-MM-yyyy" />
             </div>
             
         </div>
     </g:if>
     
-    <g:if test="${alertaInstance?.fec_recibido}">
+    <g:if test="${alertaInstance?.fechaRecibido}">
         <div class="row">
             <div class="col-md-2">
                 Fecrecibido
             </div>
             
             <div class="col-md-3">
-                <g:formatDate date="${alertaInstance?.fec_recibido}" format="dd-MM-yyyy" />
+                <g:formatDate date="${alertaInstance?.fechaRecibido}" format="dd-MM-yyyy" />
             </div>
             
         </div>

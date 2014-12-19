@@ -4,7 +4,7 @@ package vesta.parametros.poaPac
  * Clase para conectar con la tabla 'tpcp' de la base de datos<br/>
  * Tipo de compra para el PAC, distingue entre bienes, servicios, etc.
  */
-class TipoCompra implements Serializable {
+class TipoCompra   {
     /**
      * Descripción del tipo de compra
      */

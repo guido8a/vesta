@@ -7,7 +7,7 @@ Esta tabla se toma tal como lo define el INCOP. No se maneja parámetro de nivel
  * Código del PAC para catalogar los bienes o servicios a adquirirse de acuerdo al (PAC).<br/>
  * Esta tabla se toma tal como lo define el INCOP. No se maneja parámetro de nivel, sólo el id del padre.
  */
-class CodigoComprasPublicas implements Serializable {
+class CodigoComprasPublicas   {
     /**
      * Código de compras públicas padre
      */

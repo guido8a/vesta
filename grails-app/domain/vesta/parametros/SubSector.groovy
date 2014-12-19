@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'sbst' de la base de datos
  */
-class SubSector implements Serializable {
+class SubSector   {
     /**
      * Descripción del subsector
      */

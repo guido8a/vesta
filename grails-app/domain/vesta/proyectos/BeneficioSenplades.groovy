@@ -3,7 +3,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'bfsp' de la base de datos
  */
-class BeneficioSenplades implements Serializable {
+class BeneficioSenplades   {
     /**
      * Proyecto del beneficio Semplades
      */

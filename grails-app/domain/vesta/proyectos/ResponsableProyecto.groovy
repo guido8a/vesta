@@ -9,7 +9,7 @@ import vesta.seguridad.Persona
  * Clase para conectar con la tabla 'rspy' de la base de datos<br/>
  * Responsable nombrado en la Unidad ejecutora para la ejecución de los proyectos
  */
-class ResponsableProyecto implements Serializable {
+class ResponsableProyecto   {
     /**
      * Usuario responsable
      */

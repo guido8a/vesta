@@ -20,9 +20,9 @@ class ShieldController {
     def internalServerError = {
         def msn = "Ha ocurrido un error interno."
         try {
-            println " \n<===Error Aqui===> " + request["javax.servlet.forward.request_uri"]
-            println " \n<===Que eres pal burro?????? ===> " + request["exception"].message?.encodeAsHTML()
-            println " \n<===Causa===> " + request["exception"].cause?.message?.encodeAsHTML()
+            println " \n<=== Error Aqui ===> " + request["javax.servlet.forward.request_uri"]
+            println " \n<=== Exception ===> " + request["exception"].message?.encodeAsHTML()
+            println " \n<=== Causa ===> " + request["exception"].cause?.message?.encodeAsHTML()
 
         } catch (e) {
             println "error en error " + e

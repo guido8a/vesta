@@ -5,7 +5,7 @@ import vesta.parametros.TipoGrupo
 /**
  * Clase para conectar con la tabla 'grat' de la base de datos
  */
-class GrupoDeAtencion implements Serializable {
+class GrupoDeAtencion   {
     /**
      * Tipo de grupo del grupo de atención
      */

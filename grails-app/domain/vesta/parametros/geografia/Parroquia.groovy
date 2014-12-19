@@ -4,7 +4,7 @@ package vesta.parametros.geografia
  * Clase para conectar con la tabla 'parr' de la base de datos<br/>
  * Guarda la lista de parroquias por cantón
  */
-class Parroquia implements Serializable {
+class Parroquia   {
     /**
      * Cantón al cual pertenece la parroquia
      */

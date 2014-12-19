@@ -11,7 +11,7 @@ import vesta.poa.Asignacion
  * Clase para conectar con la tabla 'meta' de la base de datos<br/>
  * Para cada componente se determinan las metas desagregadas conforme al marco lógico.
  */
-class Meta implements Serializable {
+class Meta   {
     /**
      * Tipo de meta
      */

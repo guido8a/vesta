@@ -3,7 +3,7 @@ package vesta.seguridad
 /**
  * Clase para conectar con la tabla 'prms' de la base de datos
  */
-class Prms implements Serializable {
+class Prms   {
     /**
      * Acción para el permiso
      */

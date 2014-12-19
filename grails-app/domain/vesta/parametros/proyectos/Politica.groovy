@@ -4,7 +4,7 @@ package vesta.parametros.proyectos
  * Clase para conectar con la tabla 'pltc' de la base de datos<br/>
  * Política que se aplica en el proyecto.
  */
-class Politica implements Serializable {
+class Politica   {
     /**
      * Descripción de la política
      */

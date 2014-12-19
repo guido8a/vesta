@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tppd' de la base de datos
  */
-class TipoProducto implements Serializable {
+class TipoProducto   {
     /**
      * Descripción del tipo de producto
      */

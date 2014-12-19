@@ -8,7 +8,7 @@ import vesta.parametros.poaPac.Fuente
  * Clase para conectar con la tabla 'fina' de la base de datos<br/>
  * Financiamiento del proyecto por fuente y año
  */
-class Financiamiento implements Serializable {
+class Financiamiento   {
     /**
      * Año del financiamiento
      */

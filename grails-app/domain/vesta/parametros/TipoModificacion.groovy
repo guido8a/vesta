@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tpmd' de la base de datos
  */
-class TipoModificacion implements Serializable {
+class TipoModificacion   {
     /**
      * Descripción del tipo de modificación
      */

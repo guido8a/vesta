@@ -4,7 +4,7 @@ package vesta.proyectos
  * Clase para conectar con la tabla 'obes' de la base de datos<br/>
  * Objetivo estratégico con el que puede estar alineado el proyecto
  */
-class ObjetivoEstrategicoProyecto implements Serializable {
+class ObjetivoEstrategicoProyecto   {
     /**
      * Orden del objetivo estratégico de proyecto
      */

@@ -10,7 +10,7 @@ import vesta.parametros.poaPac.Presupuesto
  * Clase para conectar con la tabla 'crng' de la base de datos<br/>
  * El cronograma valorado se registra por actividades del marco lógico, por año, mes y fuente de financiamiento
  */
-class Cronograma implements Serializable {
+class Cronograma   {
     /**
      * Cronograma padre del cronograma actual
      */

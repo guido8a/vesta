@@ -5,7 +5,7 @@ import vesta.seguridad.Persona
 /**
  * Clase para conectar con la tabla 'alertas' de la base de datos
  */
-class Alerta implements Serializable {
+class Alerta {
 
     /**
      * Usuario que envía la alerta
@@ -14,15 +14,15 @@ class Alerta implements Serializable {
     /**
      * Usuario que recibe la alerta
      */
-    Persona usro
+    Persona persona
     /**
      * Fecha de envío de la alerta
      */
-    Date fec_envio
+    Date fechaEnvio
     /**
      * Fecha de recepción de la alerta
      */
-    Date fec_recibido
+    Date fechaRecibido
     /**
      * Mensaje a enviar con la alerta
      */
@@ -43,7 +43,7 @@ class Alerta implements Serializable {
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
-    static auditable = [ignore: ['fec_envio', 'fec_recibido']]
+    static auditable = [ignore: ['fechaEnvio', 'fechaRecibido']]
 
     /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
@@ -57,9 +57,9 @@ class Alerta implements Serializable {
         columns {
             id column: 'aler__id'
             from column: 'alerfrom'
-            usro column: 'aler__to'
-            fec_envio column: 'alerfcen'
-            fec_recibido column: 'alerfcrc'
+            persona column: 'aler__to'
+            fechaEnvio column: 'alerfcen'
+            fechaRecibido column: 'alerfcrc'
             mensaje column: 'alermesn'
             controlador column: 'alerctrl'
             accion column: 'aleraccn'
@@ -72,9 +72,9 @@ class Alerta implements Serializable {
      */
     static constraints = {
         from(blank: false)
-        usro(blank: false)
-        fec_envio(blank: false)
-        fec_recibido(nullable: true, blank: true)
+        persona(blank: false)
+        fechaEnvio(blank: false)
+        fechaRecibido(nullable: true, blank: true)
         mensaje(size: 5..200, blank: false)
         controlador(nullable: true, blank: true)
         accion(nullable: true, blank: true)
