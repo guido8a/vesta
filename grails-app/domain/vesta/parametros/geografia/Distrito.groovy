@@ -4,7 +4,7 @@ package vesta.parametros.geografia
  * Clase para conectar con la tabla 'dstt' de la base de datos<br/>
  * Guarda la lista de distritos
  */
-class Distrito implements Serializable {
+class Distrito   {
     /**
      * Código del distrito
      */

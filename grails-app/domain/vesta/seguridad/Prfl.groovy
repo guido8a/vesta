@@ -3,7 +3,7 @@ package vesta.seguridad
 /**
  * Clase para conectar con la tabla 'prfl' de la base de datos
  */
-class Prfl implements Serializable {
+class Prfl   {
     /**
      * Nombre del perfil
      */

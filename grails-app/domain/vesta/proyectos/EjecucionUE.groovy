@@ -8,7 +8,7 @@ import vesta.parametros.poaPac.ProgramaPresupuestario
 /**
  * Clase para conectar con la tabla 'ejun' de la base de datos
  */
-class EjecucionUE implements Serializable {
+class EjecucionUE   {
     /**
      * SIGEF
      */

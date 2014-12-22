@@ -3,7 +3,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'prcs' de la base de datos
  */
-class Proceso implements Serializable {
+class Proceso   {
     /**
      * Nombre del proceso
      */

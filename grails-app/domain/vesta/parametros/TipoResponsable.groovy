@@ -6,7 +6,7 @@ package vesta.parametros
  * Clase para conectar con la tabla 'tprp' de la base de datos<br/>
  * Guarda un catálogo de posibles tipos de responsabilidad en el proyecto
  */
-class TipoResponsable implements Serializable {
+class TipoResponsable   {
     /**
      * Código del tipo de responsable
      */

@@ -4,7 +4,7 @@ package vesta.parametros.geografia
  * Clase para conectar con la tabla 'cndt' de la base de datos<br/>
  * Tabla intermedia para unir distritos con cantones
  */
-class CantonesDistrito implements Serializable {
+class CantonesDistrito   {
     /**
      * Id del distrito
      */

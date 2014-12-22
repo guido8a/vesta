@@ -5,7 +5,7 @@ package vesta.parametros
  * Clase para conectar con la tabla 'edpy' de la base de datos<br/>
  * Guarda un catálogo de posibles estados del proyecto
  */
-class EstadoProyecto implements Serializable {
+class EstadoProyecto   {
     /**
      * Descripción del estado del proyecto
      */

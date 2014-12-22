@@ -6,7 +6,7 @@ import vesta.parametros.UnidadEjecutora
 /**
  * Clase para conectar con la tabla 'mlrs' de la base de datos
  */
-class MarcoLogicoRespaldo implements Serializable {
+class MarcoLogicoRespaldo   {
     /**
      * Marco lógico original (del que se hizo el respaldo)
      */

@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tppc' de la base de datos
  */
-class TipoProcedencia implements Serializable {
+class TipoProcedencia   {
     /**
      * Descripción del tipo de procedencia
      */

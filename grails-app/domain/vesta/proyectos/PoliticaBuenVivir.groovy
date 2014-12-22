@@ -3,7 +3,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'plbv' de la base de datos
  */
-class PoliticaBuenVivir implements Serializable {
+class PoliticaBuenVivir   {
     /**
      * Objetivo del buen vivir de la política
      */

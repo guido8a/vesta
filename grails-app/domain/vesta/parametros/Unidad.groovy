@@ -6,7 +6,7 @@ package vesta.parametros
  * Clase para conectar con la tabla 'undd' de la base de datos<br/>
  * Unidad de control o conteo de obras para el plan anual de adquisiciones (PAC) y para fijar las metas
  */
-class Unidad implements Serializable {
+class Unidad   {
     /**
      * Código de la unidad
      */

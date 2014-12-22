@@ -4,7 +4,7 @@ package vesta.parametros.poaPac
  * Clase para conectar con la tabla 'prsp' de la base de datos<br/>
  * Presupuesto techo para elaborar la proforma presupuestaria
  */
-class Presupuesto implements Serializable {
+class Presupuesto   {
     /**
      * Presupuesto padre del presupuesto actual
      */

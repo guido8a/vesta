@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'sctr' de la base de datos
  */
-class Sector implements Serializable {
+class Sector   {
     /**
      * Descipción del sector
      */

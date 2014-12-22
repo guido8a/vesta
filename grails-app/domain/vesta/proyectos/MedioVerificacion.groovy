@@ -4,7 +4,7 @@ package vesta.proyectos
  * Clase para conectar con la tabla 'mdvf' de la base de datos<br/>
  * Para cada indicador del marco lógico se define uno o varios medios de verificación.
  */
-class MedioVerificacion implements Serializable {
+class MedioVerificacion   {
     /**
      * Indicador del medio de verificación
      */

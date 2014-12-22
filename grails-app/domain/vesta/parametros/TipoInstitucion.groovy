@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tpin' de la base de datos
  */
-class TipoInstitucion implements Serializable {
+class TipoInstitucion   {
     /**
      * Código del tipo de institución
      */

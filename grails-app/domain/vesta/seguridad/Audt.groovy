@@ -3,7 +3,7 @@ package vesta.seguridad
 /**
  * Clase para conectar con la tabla 'audt' de la base de datos
  */
-class Audt implements Serializable {
+class Audt   {
     /**
      * Usuario para la auditoría
      */

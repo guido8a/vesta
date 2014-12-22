@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tpif' de la base de datos
  */
-class TipoInforme implements Serializable {
+class TipoInforme   {
     /**
      * Descripción del tipo de informe
      */

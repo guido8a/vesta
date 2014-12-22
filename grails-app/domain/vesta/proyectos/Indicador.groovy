@@ -7,7 +7,7 @@ import vesta.poa.Asignacion
  * Clase para conectar con la tabla '' de la base de datos<br/>
  * Para cada elemento del marco lógico se define uno o varios indicadores
  */
-class Indicador implements Serializable {
+class Indicador   {
     /**
      * Marco lógico del indicador
      */

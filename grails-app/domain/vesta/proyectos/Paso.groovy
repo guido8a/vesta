@@ -2,7 +2,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'paso' de la base de datos
  */
-class Paso implements Serializable {
+class Paso   {
     /**
      * Proceso del paso
      */

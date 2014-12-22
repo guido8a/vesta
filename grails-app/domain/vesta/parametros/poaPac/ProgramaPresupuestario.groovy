@@ -3,7 +3,7 @@ package vesta.parametros.poaPac
 /**
  * Clase para conectar con la tabla 'pgps' de la base de datos
  */
-class ProgramaPresupuestario implements Serializable {
+class ProgramaPresupuestario   {
     /**
      * Código del programa presupuestario
      */

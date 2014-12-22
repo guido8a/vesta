@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tpgr' de la base de datos
  */
-class TipoGrupo implements Serializable {
+class TipoGrupo   {
     /**
      * Descripción del tipo de grupo
      */

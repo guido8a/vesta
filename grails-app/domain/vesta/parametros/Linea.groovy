@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'lnea' de la base de datos
  */
-class Linea implements Serializable {
+class Linea   {
     /**
      * Descipción de la línea
      */

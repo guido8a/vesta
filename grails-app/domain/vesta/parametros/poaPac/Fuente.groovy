@@ -4,7 +4,7 @@ package vesta.parametros.poaPac
  * Clase para conectar con la tabla 'fnte' de la base de datos<br/>
  * Fuente de financiamiento del proyecto, puede ser estado, préstamo a organismos internacionales, aporte propio, etc.
  */
-class Fuente implements Serializable {
+class Fuente   {
     /**
      * Descripción de la fuente
      */

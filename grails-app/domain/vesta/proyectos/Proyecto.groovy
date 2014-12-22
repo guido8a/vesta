@@ -10,7 +10,7 @@ import vesta.poa.Asignacion
 /**
  * Clase para conectar con la tabla 'proy' de la base de datos
  */
-class Proyecto  implements Serializable {
+class Proyecto    {
     /**
      * Unidad ejecutora del proyecto
      */

@@ -3,7 +3,7 @@ package vesta.seguridad
 /**
  * Clase para conectar con la tabla 'accs' de la base de datos
  */
-class Accs implements Serializable {
+class Accs   {
     /**
      * Fecha inicial del acceso
      */

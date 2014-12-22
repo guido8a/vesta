@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'ctlg' de la base de datos
  */
-class Catalogo implements Serializable {
+class Catalogo   {
     /**
      * Descipción de la catálogo
      */

@@ -14,7 +14,7 @@ import vesta.proyectos.ModificacionAsignacion
 /**
  * Clase para conectar con la tabla 'asgn' de la base de datos
  */
-class Asignacion implements Serializable {
+class Asignacion   {
     /**
      * Año de la asignación
      */

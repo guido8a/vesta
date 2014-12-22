@@ -3,7 +3,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'mtbv' de la base de datos
  */
-class MetaBuenVivir implements Serializable {
+class MetaBuenVivir   {
     /**
      * Política del buen vivir de la meta
      */

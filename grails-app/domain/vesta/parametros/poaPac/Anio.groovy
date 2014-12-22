@@ -5,7 +5,7 @@ package vesta.parametros.poaPac
  * Año al cual corresponde el PAPP, cada a&ntildeo debe iniciarse una nueva
  * gestión de proyectos. Es similar al periodo contable o año fiscal
  */
-class Anio implements Serializable {
+class Anio   {
     /**
      * Número de año
      */

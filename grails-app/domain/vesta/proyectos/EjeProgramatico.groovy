@@ -3,7 +3,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'ejpg' de la base de datos
  */
-class EjeProgramatico implements Serializable {
+class EjeProgramatico   {
     /**
      * Descripción del eje programático
      */

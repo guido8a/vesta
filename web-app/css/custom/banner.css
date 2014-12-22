@@ -3,11 +3,12 @@
 }
 
 .banner-top {
-    position   : absolute;
+    position   : fixed;
     top        : 0;
     left       : 0;
     height     : 50px;
     width      : 100%;
+    z-index    : 1030;
     background : url("../../images/barras/bg.jpg") repeat-x;
 }
 

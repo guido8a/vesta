@@ -5,7 +5,7 @@ package vesta.proyectos
  * Clase para conectar con la tabla 'avnc' de la base de datos<br/>
  * Cada período de días fijado en el proyecto se debe registrar el detalle de avance de actividades.
  */
-class Avance implements Serializable {
+class Avance   {
     /**
      * Informe del avance
      */

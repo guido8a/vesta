@@ -5,7 +5,7 @@ import vesta.parametros.proyectos.PoliticaAgendaSocial
 /**
  * Clase para conectar con la tabla 'papy' de la base de datos
  */
-class PoliticasAgendaProyecto implements Serializable {
+class PoliticasAgendaProyecto   {
     /**
      * Política de agenda social
      */

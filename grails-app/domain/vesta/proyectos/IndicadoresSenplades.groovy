@@ -2,7 +2,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'idsp' de la base de datos
  */
-class IndicadoresSenplades implements Serializable {
+class IndicadoresSenplades   {
     /**
      * Proyecto del indicador
      */

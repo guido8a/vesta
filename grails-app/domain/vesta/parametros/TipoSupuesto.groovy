@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tpsp' de la base de datos
  */
-class TipoSupuesto implements Serializable {
+class TipoSupuesto   {
     /**
      * Descripción del tipo de supuesto
      */

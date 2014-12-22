@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tppt' de la base de datos
  */
-class TipoParticipacion implements Serializable {
+class TipoParticipacion   {
     /**
      * Descripción del tipo de participación
      */

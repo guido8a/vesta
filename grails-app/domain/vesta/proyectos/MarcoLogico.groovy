@@ -10,7 +10,7 @@ import vesta.poa.Asignacion
  * Clase para conectar con la tabla 'mrlg' de la base de datos<br/>
  * Marco lógico con cada uno de sus componentes
  */
-class MarcoLogico implements Serializable {
+class MarcoLogico   {
     /**
      * Proyecto del marco lógico
      */

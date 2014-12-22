@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'fase' de la base de datos
  */
-class Fase implements Serializable {
+class Fase   {
     /**
      * Descipción de la fase
      */

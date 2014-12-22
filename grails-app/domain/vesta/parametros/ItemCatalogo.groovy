@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'itct' de la base de datos
  */
-class ItemCatalogo implements Serializable {
+class ItemCatalogo   {
     /**
      * Descipción de la tabla items del catálogo
      */

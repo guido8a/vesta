@@ -3,7 +3,7 @@ package vesta.proyectos
 /**
  * Clase para conectar con la tabla 'obbv' de la base de datos
  */
-class ObjetivoBuenVivir implements Serializable {
+class ObjetivoBuenVivir   {
     /**
      * Código del objetivo de buen vivir
      */

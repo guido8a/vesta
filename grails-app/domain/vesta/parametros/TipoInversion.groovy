@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'tpiv' de la base de datos
  */
-class TipoInversion implements Serializable {
+class TipoInversion   {
     /**
      * Descripción del tipo de inversión
      */

@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'entd' de la base de datos
  */
-class Entidad implements Serializable {
+class Entidad   {
     /**
      * Nombre de la entidad
      */

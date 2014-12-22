@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'ctrm' de la base de datos
  */
-class Cuatrimestre implements Serializable {
+class Cuatrimestre   {
     /**
      * Número de cuatrimestre
      */

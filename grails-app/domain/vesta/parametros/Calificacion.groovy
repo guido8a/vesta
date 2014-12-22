@@ -3,7 +3,7 @@ package vesta.parametros
 /**
  * Clase para conectar con la tabla 'calf' de la base de datos
  */
-class Calificacion implements Serializable {
+class Calificacion   {
     /**
      * Descipción de la calificación
      */

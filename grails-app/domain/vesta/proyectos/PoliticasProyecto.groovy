@@ -7,7 +7,7 @@ import vesta.parametros.proyectos.Politica
  * Clase para conectar con la tabla 'plpy' de la base de datos<br/>
  * Políticas que se aplican en el proyecto
  */
-class PoliticasProyecto implements Serializable {
+class PoliticasProyecto   {
     /**
      * Política
      */

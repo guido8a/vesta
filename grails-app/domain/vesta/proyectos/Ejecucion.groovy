@@ -6,7 +6,7 @@ import vesta.poa.Asignacion
 /**
  * Clase para conectar con la tabla 'ejec' de la base de datos
  */
-class Ejecucion implements Serializable {
+class Ejecucion   {
     /**
      * Asignación de la ejecución
      */

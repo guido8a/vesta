@@ -8,7 +8,7 @@ import vesta.seguridad.Persona
 /**
  * Clase para conectar con la tabla 'mdfc' de la base de datos
  */
-class ModificacionProyecto implements Serializable {
+class ModificacionProyecto   {
     /**
      * Informe de la modificación de proyecto
      */
@@ -87,10 +87,10 @@ class ModificacionProyecto implements Serializable {
             fecha column: 'mdfcfcha'
             fechaAprobacion column: 'mdfcfcap'
             observaciones column: 'mdfcobsr'
-            responsable column: 'usro__id'
+            responsable column: 'prsn__id'
             estado column: 'mdfcetdo'
             anio column: 'anio__id'
-            solicitante column: 'usroslct'
+            solicitante column: 'prsnslct'
         }
     }
 

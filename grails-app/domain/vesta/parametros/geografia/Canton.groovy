@@ -4,7 +4,7 @@ package vesta.parametros.geografia
  * Clase para conectar con la tabla 'cntn' de la base de datos<br/>
  * Guarda la lista de cantones por provincia y por zona
  */
-class Canton implements Serializable {
+class Canton   {
     /**
      * Provincia a la cual pertenece el cantón
      */

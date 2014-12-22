@@ -3,7 +3,7 @@ package vesta.seguridad
 /**
  * Clase para conectar con la tabla 'sesn' de la base de datos
  */
-class Sesn implements Serializable {
+class Sesn {
     /**
      * Usuario de la sesión
      */

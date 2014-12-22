@@ -10,7 +10,7 @@ import vesta.poa.Asignacion
  * Clase para conectar con la tabla 'obra' de la base de datos<br/>
  * Para cada actividad asignada a un presupuesto, se registra el plan anual de compras como obras a alcanzar, ejecutar o productos a adquirir
  */
-class Obra implements Serializable {
+class Obra   {
     /**
      * Unidad de la obra
      */

@@ -6,7 +6,7 @@ import vesta.parametros.UnidadEjecutora
 /**
  * Clase para conectar con la tabla 'resp' de la base de datos
  */
-class Responsable implements Serializable {
+class Responsable   {
     /**
      * Unidad ejecutora a la cual pertenece el responsable
      */
