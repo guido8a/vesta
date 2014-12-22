@@ -41,7 +41,7 @@
                     Collections.sort(props, comparator.constructors[0].newInstance([domainClass] as Object[]))
                     props.eachWithIndex { p, i ->
                         cant = (int)cant+1
-                        if (i < 10) {
+                        if (i < 6) {
                             if (p.isAssociation()) { %>
                     <th>${p.naturalName}</th>
                     <%      } else { %>
@@ -61,7 +61,7 @@
 
                                 if (i == 0) { %>
                             <td>\${${propertyName}.${p.name}}</td>
-                            <%      } else if (i < 10) {
+                            <%      } else if (i < 6) {
                                 if (bool) { %>
                             <td><g:formatBoolean boolean="\${${propertyName}.${p.name}}" false="No" true="Sí" /></td>
                             <%          } else if (date) { %>
