@@ -67,9 +67,12 @@ class MenuTagLib {
     def menu = { attrs ->
 
         def items = [:]
-        def usuario = session.usuario
-        def perfil = session.perfil
-        def dpto = session.departamento
+        def usuario, perfil, dpto
+        if (session.usuario) {
+            usuario = session.usuario
+            perfil = session.perfil
+            dpto = session.departamento
+        }
         def strItems = ""
         if (!attrs.title) {
             attrs.title = "Happy"
@@ -81,10 +84,10 @@ class MenuTagLib {
             acciones.each { ac ->
                 if (ac.tipo.id == 1) {
                     if (!items[ac.modulo.nombre]) {
-                        items.put(ac.modulo.nombre, [ac.accnDescripcion, g.createLink(controller: ac.control.ctrlNombre, action: ac.accnNombre)])
+                        items.put(ac.modulo.nombre, [ac.descripcion, g.createLink(controller: ac.control.nombre, action: ac.nombre)])
                     } else {
-                        items[ac.modulo.nombre].add(ac.accnDescripcion)
-                        items[ac.modulo.nombre].add(g.createLink(controller: ac.control.ctrlNombre, action: ac.accnNombre))
+                        items[ac.modulo.nombre].add(ac.descripcion)
+                        items[ac.modulo.nombre].add(g.createLink(controller: ac.control.nombre, action: ac.nombre))
                     }
                 }
             }

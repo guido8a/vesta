@@ -35,14 +35,17 @@
             $(function () {
                 $(".mdlo").click(function () {
                     var id = $(this).attr("id");
+                    $("#acciones").html(spinner);
+                    $(".active").removeClass("active");
+                    $(this).parent().addClass("active");
                     $.ajax({
-                        type: "POST",
-                        url: "${createLink(controller:'acciones', action:'acciones_ajax')}",
-                        data: {
+                        type   : "POST",
+                        url    : "${createLink(controller:'acciones', action:'acciones_ajax')}",
+                        data   : {
                             id: id
                         },
                         success: function (msg) {
-                            alert(msg)
+                            $("#acciones").html(msg);
                         }
                     });
                     return false;

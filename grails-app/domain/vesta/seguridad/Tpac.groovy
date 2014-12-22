@@ -10,6 +10,11 @@ class Tpac {
     String tipo
 
     /**
+     * Código
+     */
+    String codigo
+
+    /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
      */
     static mapping = {
@@ -20,6 +25,7 @@ class Tpac {
         columns {
             id column: 'tpac__id'
             tipo column: 'tpacdscr'
+            codigo column: 'tpaccdgo'
         }
     }
 
@@ -27,7 +33,8 @@ class Tpac {
      * Define las restricciones de cada uno de los campos
      */
     static constraints = {
-        tipo(blank: false, size: 0..31)
+        tipo(blank: false, maxSize: 31)
+        codigo(maxSize: 1, blank: false)
     }
 
     /**

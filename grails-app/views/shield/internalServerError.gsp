@@ -23,12 +23,13 @@
         <g:if test="${error}">
             <span style="font-size: 16px"><b>Por favor reporte este error al administrador del sistema de forma detallada.</b>
             </span><br>
-            <g:if test="${session.usuario}">
-                <span style="font-size: 16px"><b>Usuario: ${session.usuario}</b></span><br>
+            <g:if test="${session?.usuario}">
+                <span style="font-size: 16px"><b>Usuario: ${session?.usuario}</b></span><br>
             </g:if>
             <span style="font-size: 16px" id="spanContinuarSistema">
                 <b>
-                    Para continuar usando el sistema pulse <a href="${createLink(controller: 'inicio', action: 'index')}" id="regresar">Aquí</a>
+                    Para continuar usando el sistema pulse <a
+                        href="${createLink(controller: 'inicio', action: 'index')}" id="regresar">Aquí</a>
                 </b>
             </span>
             <br>

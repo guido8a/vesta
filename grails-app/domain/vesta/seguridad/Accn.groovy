@@ -7,11 +7,11 @@ class Accn {
     /**
      * Nombre de la acción
      */
-    String accnNombre
+    String nombre
     /**
      * Descripción de la acción
      */
-    String accnDescripcion
+    String descripcion
     /**
      * Indica si la acción es o no auditable
      */
@@ -43,11 +43,11 @@ class Accn {
         cache usage: 'read-write', include: 'non-lazy'
         version false
         id generator: 'identity'
-        control sort: ['ctrlNombre': 'asc']
+        control sort: ['nombre': 'asc']
         columns {
             id column: 'accn__id'
-            accnNombre column: 'accnnmbr'
-            accnDescripcion column: 'accndscr'
+            nombre column: 'accnnmbr'
+            descripcion column: 'accndscr'
             accnAuditable column: 'accnaudt'
             control column: 'ctrl__id'
             modulo column: 'mdlo__id'
@@ -59,7 +59,7 @@ class Accn {
      * Define las restricciones de cada uno de los campos
      */
     static constraints = {
-        accnNombre(blank: false, size: 0..50)
+        nombre(blank: false, size: 0..50)
         accnAuditable(blank: true, nullable: true)
     }
 
@@ -68,6 +68,6 @@ class Accn {
      * @return el nombre de controlador y el nombre de la acción concatenados
      */
     String toString() {
-        "${this.control.ctrlNombre} : ${this.accnNombre} "
+        "${this.control.nombre} : ${this.nombre} "
     }
 }

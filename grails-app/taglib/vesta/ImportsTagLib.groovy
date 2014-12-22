@@ -138,6 +138,13 @@ class ImportsTagLib {
         //validation
         text += imp.validation()
 
+        //tablas con headers fijos
+//        text += "<script src=\"${resource(dir: 'js/plugins/fixed-header-table-1.3', file: 'jquery.fixedheadertable.js')}\"></script>"
+//        text += "<link rel=\"stylesheet\" type=\"text/css\" href=\"${resource(dir: 'js/plugins/fixed-header-table-1.3/css', file: 'defaultTheme.css')}\"/>"
+        //switches
+        text += "<script src=\"${resource(dir: 'js/plugins/bootstrap-switch-3/dist/js', file: 'bootstrap-switch.js')}\"></script>"
+        text += "<link rel=\"stylesheet\" type=\"text/css\" href=\"${resource(dir: 'js/plugins/bootstrap-switch-3/dist/css/bootstrap3', file: 'bootstrap-switch.css')}\"/>"
+
         out << text
     }
 

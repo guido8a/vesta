@@ -7,7 +7,7 @@ class Ctrl {
     /**
      * Nombre del controlador
      */
-    String ctrlNombre
+    String nombre
     static hasMany = [acciones: Accn]
 
     /**
@@ -18,10 +18,10 @@ class Ctrl {
         cache usage: 'read-write', include: 'non-lazy'
         version false
         id generator: 'identity'
-        sort ctrlNombre: "asc"
+        sort nombre: "asc"
         columns {
             id column: 'ctrl__id'
-            ctrlNombre column: 'ctrlnmbr'
+            nombre column: 'ctrlnmbr'
         }
     }
 
@@ -29,7 +29,7 @@ class Ctrl {
      * Define las restricciones de cada uno de los campos
      */
     static constraints = {
-        ctrlNombre(blank: false, size: 0..50)
+        nombre(blank: false, size: 0..50)
     }
 
     /**
@@ -37,6 +37,6 @@ class Ctrl {
      * @return el nombre
      */
     String toString() {
-        "${this.ctrlNombre}"
+        "${this.nombre}"
     }
 }

@@ -6347,6 +6347,14 @@ button.close {
 .btn {
   font-family: "PT Sans Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+.table > thead > tr > th {
+  font-weight: bold;
+  color: #eee;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #3a5daa;
+  border-bottom: 2px solid #ddd;
+}
 legend {
   font-family: "PT Sans Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }

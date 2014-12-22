@@ -218,11 +218,11 @@ class LoginController {
         def permisos = Prms.findAllByPerfil(session.perfil)
         def hp = [:]
         permisos.each {
-//                println(it.accion.accnNombre+ " " + it.accion.control.ctrlNombre)
-            if (hp[it.accion.control.ctrlNombre.toLowerCase()]) {
-                hp[it.accion.control.ctrlNombre.toLowerCase()].add(it.accion.accnNombre.toLowerCase())
+//                println(it.accion.nombre+ " " + it.accion.control.nombre)
+            if (hp[it.accion.control.nombre.toLowerCase()]) {
+                hp[it.accion.control.nombre.toLowerCase()].add(it.accion.nombre.toLowerCase())
             } else {
-                hp.put(it.accion.control.ctrlNombre.toLowerCase(), [it.accion.accnNombre.toLowerCase()])
+                hp.put(it.accion.control.nombre.toLowerCase(), [it.accion.nombre.toLowerCase()])
             }
 
         }
