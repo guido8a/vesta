@@ -15,13 +15,13 @@
 
     <body>
         <div class="row">
-            <div class="col-md-3 col-md-offset-9">
-                <div class="tdn-tab tdn-tab-left tdn-tab-primary">
+            <div class="col-md-3 col-md-offset-9" style="background: none">
+                <div class="tdn-tab tdn-tab-left tdn-tab-primary" style="background: none">
                     <div class="tdn-tab-heading">
                         <a href="#" class="selected">Perfiles</a>
                     </div>
 
-                    <div class="tdn-tab-body">
+                    <div class="tdn-tab-body" style="background: white">
                         <img class="img-login" src="${resource(dir: 'images', file: 'logo-login.png')}"/>
 
                         <g:form name="frmLogin" action="savePerfil">
