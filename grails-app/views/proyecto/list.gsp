@@ -32,54 +32,29 @@
         <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    
-                    <th>Unidad Ejecutora</th>
-                    
-                    <th>Etapa</th>
-                    
-                    <th>Fase</th>
-                    
-                    <th>Tipo Producto</th>
-                    
-                    <th>Estado Proyecto</th>
-                    
-                    <th>Linea</th>
-                    
-                    <th>Tipo Inversion</th>
-                    
-                    <th>Cobertura</th>
-                    
-                    <th>Calificacion</th>
-                    
-                    <th>Programa</th>
-                    
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Monto</th>
+                    <th>Fecha inicio</th>
+                    <th>Fecha fin</th>
+
                 </tr>
             </thead>
             <tbody>
                 <g:if test="${proyectoInstanceCount > 0}">
                     <g:each in="${proyectoInstanceList}" status="i" var="proyectoInstance">
                         <tr data-id="${proyectoInstance.id}">
+
                             
-                            <td>${proyectoInstance.unidadEjecutora}</td>
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="codigoProyecto"/></elm:textoBusqueda></td>
                             
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="etapa"/></elm:textoBusqueda></td>
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="nombre"/></elm:textoBusqueda></td>
                             
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="fase"/></elm:textoBusqueda></td>
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="monto"/></elm:textoBusqueda></td>
                             
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="tipoProducto"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="estadoProyecto"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="linea"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="tipoInversion"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="cobertura"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="calificacion"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="programa"/></elm:textoBusqueda></td>
-                            
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="fechaInicioPlanificada"/></elm:textoBusqueda></td>
+
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="fechaFinPlanificada"/></elm:textoBusqueda></td>
                         </tr>
                     </g:each>
                 </g:if>
