@@ -14,7 +14,7 @@
 
     <body>
 
-        <div class="alert alert-primary">
+        <div class="alert alert-primary padding-sm">
             Seleccione el módulo para fijar permisos o editar acciones y procesos
         </div>
 
@@ -29,6 +29,17 @@
 
         <div class="well" id="acciones">
 
+        </div>
+
+        <div class="btn-toolbar">
+            <div class="btn-group">
+                <a href="#" class="btn btn-sm btn-default"><i class="fa fa-unlock-alt"></i> Gestionar permisos y módulos</a>
+            </div>
+
+            <div class="btn-group">
+                <a href="#" class="btn btn-sm btn-default"><i class="fa fa-paper-plane"></i> Cargar controladores</a>
+                <a href="#" class="btn btn-sm btn-default"><i class="fa fa-paper-plane-o"></i> Cargar acciones</a>
+            </div>
         </div>
 
         <script type="text/javascript">
@@ -49,7 +60,7 @@
                         }
                     });
                     return false;
-                });
+                }).first().click();
             });
         </script>
 

@@ -4,8 +4,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-@import url("//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700");
-@import url("//fonts.googleapis.com/css?family=PT+Sans:400,700");
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
@@ -902,7 +900,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "PT Sans", "Times New Roman", Times, serif;
+  font-family: "PT Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.42857143;
   color: #333;
@@ -1339,7 +1337,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: "PT Mono", Monaco, Consolas, "Courier New", monospace;
 }
 code {
   padding: 2px 4px;
@@ -5593,7 +5591,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "PT Sans", "Times New Roman", Times, serif;
+  font-family: "PT Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: normal;
   line-height: 1.4;
@@ -5701,7 +5699,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "PT Sans", "Times New Roman", Times, serif;
+  font-family: "PT Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: normal;
   line-height: 1.42857143;
@@ -6278,6 +6276,41 @@ button.close {
 .tdn-tab.tdn-tab-danger .tdn-tab-body {
   border-color: #ab3a3e;
 }
+@font-face {
+  font-family: 'PT Sans Narrow';
+  font-style: normal;
+  font-weight: normal;
+
+  src: url('../../../fonts/PT/PT_Sans_Narrow/PT_Sans-Narrow-Web-Regular.ttf');
+}
+@font-face {
+  font-family: 'PT Sans Narrow';
+  font-style: normal;
+  font-weight: bold;
+
+  src: url('../../../fonts/PT/PT_Sans_Narrow/PT_Sans-Narrow-Web-Bold.ttf');
+}
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: normal;
+
+  src: url('../../../fonts/PT/PT_Sans/PT_Sans-Web-Regular.ttf');
+}
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: bold;
+
+  src: url('../../../fonts/PT/PT_Sans/PT_Sans-Web-Bold.ttf');
+}
+@font-face {
+  font-family: 'PT Mono';
+  font-style: normal;
+  font-weight: normal;
+
+  src: url('../../../fonts/PT/PT_Mono/PTM55FT.ttf');
+}
 .navbar {
   font-family: "PT Sans Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -6354,6 +6387,20 @@ button.close {
   vertical-align: middle;
   background-color: #3a5daa;
   border-bottom: 2px solid #ddd;
+}
+.table > thead > tr > th.sortable {
+  background-image: url("../../../images/skin/upDown.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+.table > thead > tr > th.sortable.asc {
+  background-image: url("../../../images/skin/up.png");
+}
+.table > thead > tr > th.sortable.desc {
+  background-image: url("../../../images/skin/down.png");
+}
+.table > thead > tr > th > a {
+  color: #eee;
 }
 legend {
   font-family: "PT Sans Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;

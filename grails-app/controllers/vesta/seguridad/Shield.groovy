@@ -10,7 +10,7 @@ class Shield {
         session.an = actionName
         session.cn = controllerName
         session.pr = params
-        return true
+//        return true
         /** **************************************************************************/
         if (!session.usuario) {
             redirect(controller: 'login', action: 'login')

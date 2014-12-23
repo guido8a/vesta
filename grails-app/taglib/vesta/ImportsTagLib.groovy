@@ -55,7 +55,7 @@ class ImportsTagLib {
         def bootstrapTheme = attrs.bootstrap ?: "theme"
 
         // Bootstrap
-        def text = " <link href=\"${resource(dir: 'bootstrap-3.3.1/dist/css', file: 'bootstrap.min.css')}\" rel=\"stylesheet\">\n"
+        def text = " <link href=\"${resource(dir: 'bootstrap-3.3.1/dist/css', file: 'bootstrap.css')}\" rel=\"stylesheet\">\n"
         text += "    <link href=\"${resource(dir: 'bootstrap-3.3.1/dist/css', file: 'bootstrap-' + bootstrapTheme + '.min.css')}\" rel=\"stylesheet\">\n"
         // JQuery
         text += "    <link href=\"${resource(dir: 'js/jquery-ui-1.11.2', file: 'jquery-ui.min.css')}\" rel=\"stylesheet\">\n"

@@ -112,6 +112,20 @@
     background-color: @brand-info;
     color: @gray-lighter;
     border-bottom: 2px solid @table-border-color;
+    &.sortable {
+      background-image: url("../../../images/skin/upDown.png");
+      background-repeat: no-repeat;
+      background-position: right;
+      &.asc {
+        background-image: url("../../../images/skin/up.png");
+      }
+      &.desc {
+        background-image: url("../../../images/skin/down.png");
+      }
+    }
+    > a {
+      color: @gray-lighter;
+    }
   }
 }
 
