@@ -15,7 +15,7 @@
     <body>
 
         <div class="alert alert-primary padding-sm">
-            Seleccione el módulo para fijar permisos o editar acciones y procesos
+            Seleccione el módulo para editar acciones y procesos
         </div>
 
         <ul class="nav nav-pills corner-all" style="border: solid 1px #cccccc; margin-bottom: 10px;">
@@ -33,12 +33,18 @@
 
         <div class="btn-toolbar">
             <div class="btn-group">
-                <a href="#" class="btn btn-sm btn-default"><i class="fa fa-unlock-alt"></i> Gestionar permisos y módulos</a>
+                <g:link controller="acciones" action="permisos" class="btn btn-sm btn-default">
+                    <i class="fa fa-unlock-alt"></i> Gestionar permisos y módulos
+                </g:link>
             </div>
 
             <div class="btn-group">
-                <a href="#" class="btn btn-sm btn-default"><i class="fa fa-paper-plane"></i> Cargar controladores</a>
-                <a href="#" class="btn btn-sm btn-default"><i class="fa fa-paper-plane-o"></i> Cargar acciones</a>
+                <a href="#" id="btnCargarCont" class="btn btn-sm btn-default">
+                    <i class="fa fa-paper-plane"></i> Cargar controladores
+                </a>
+                <a href="#" id="btnCargarAcc" class="btn btn-sm btn-default">
+                    <i class="fa fa-paper-plane-o"></i> Cargar acciones
+                </a>
             </div>
         </div>
 
@@ -61,6 +67,41 @@
                     });
                     return false;
                 }).first().click();
+
+                $("#btnCargarCont").click(function () {
+                    bootbox.confirm("¿Está seguro de querer cargar los controladores desde Grails?", function (result) {
+                        if (result) {
+                            openLoader();
+                            $.ajax({
+                                type   : "POST",
+                                url    : "${createLink(controller:'acciones', action:'cargarControladores_ajax')}",
+                                success: function (msg) {
+                                    closeLoader();
+                                    var parts = msg.split("*");
+                                    log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                    $(".mdlo").first().click();
+                                }
+                            });
+                        }
+                    });
+                });
+                $("#btnCargarAcc").click(function () {
+                    bootbox.confirm("¿Está seguro de querer cargar las acciones desde Grails?", function (result) {
+                        if (result) {
+                            openLoader();
+                            $.ajax({
+                                type   : "POST",
+                                url    : "${createLink(controller:'acciones', action:'cargarAcciones_ajax')}",
+                                success: function (msg) {
+                                    closeLoader();
+                                    var parts = msg.split("*");
+                                    log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                    $(".mdlo").first().click();
+                                }
+                            });
+                        }
+                    });
+                });
             });
         </script>
 

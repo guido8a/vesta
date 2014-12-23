@@ -17,7 +17,8 @@
             <th width="25%">Módulo
                 <a href="#" title="Guardar todos los módulos modificados" class="btn btn-save-mod btn-success btn-sm pull-right">
                     <i class="fa fa-save"></i>
-                </a></th>
+                </a>
+            </th>
             <th width="14%">Tipo</th>
         </tr>
     </thead>
