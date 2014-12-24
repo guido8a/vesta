@@ -192,7 +192,7 @@
                             } //buttons
                         }); //dialog
                         setTimeout(function () {
-                            b.find(".form-control input-sm").first().focus()
+                            b.find(".form-control").first().focus()
                         }, 500);
                     } //success
                 }); //ajax
