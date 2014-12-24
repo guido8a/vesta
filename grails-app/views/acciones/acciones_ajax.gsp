@@ -30,7 +30,7 @@
                     ${accion.nombre}
                 </td>
                 <td>
-                    <input type="text" data-original="${accion.descripcion}" data-id="${accion.id}" class="form-control input-sm input-desc"
+                    <input type="text" data-original="${accion.descripcion}" data-id="${accion.id}" class="form-control input-sm input-sm input-desc"
                            value="${accion.descripcion}" tabindex="${i + 1}"/>
                 </td>
                 <td>
@@ -38,7 +38,7 @@
                 </td>
                 <td>
                     <g:select name="modulo" from="${Modulo.list([sort: 'nombre'])}" optionKey="id" optionValue="nombre" data-id="${accion.id}"
-                              value="${accion.modulo.id}" class="form-control input-sm select-mod" data-original="${accion.modulo.id}"
+                              value="${accion.modulo.id}" class="form-control input-sm input-sm select-mod" data-original="${accion.modulo.id}"
                               tabindex="${i + 1 + acciones.size()}"/>
                 </td>
                 <td>

@@ -17,7 +17,7 @@
                     Tipo Producto
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="tipoProducto" maxlength="31" required="" class="form-control required" value="${tipoProductoInstance?.tipoProducto}"/>
+                    <g:textField name="tipoProducto" maxlength="31" required="" class="form-control input-sm required" value="${tipoProductoInstance?.tipoProducto}"/>
                 </div>
                  *
             </span>

@@ -17,7 +17,7 @@
                     Fecha
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fecha"  class="datepicker form-control" value="${aprobacionInstance?.fecha}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm" value="${aprobacionInstance?.fecha}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Fecha Realizacion
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaRealizacion"  class="datepicker form-control" value="${aprobacionInstance?.fechaRealizacion}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaRealizacion"  class="datepicker form-control input-sm" value="${aprobacionInstance?.fechaRealizacion}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1023" class="form-control" value="${aprobacionInstance?.observaciones}"/>
+                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${aprobacionInstance?.observaciones}"/>
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Asistentes
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="asistentes" cols="40" rows="5" maxlength="1023" class="form-control" value="${aprobacionInstance?.asistentes}"/>
+                    <g:textArea name="asistentes" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${aprobacionInstance?.asistentes}"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Path Pdf
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="pathPdf" cols="40" rows="5" maxlength="255" class="form-control" value="${aprobacionInstance?.pathPdf}"/>
+                    <g:textArea name="pathPdf" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${aprobacionInstance?.pathPdf}"/>
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Numero
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="numero" class="form-control" value="${aprobacionInstance?.numero}"/>
+                    <g:textField name="numero" class="form-control input-sm" value="${aprobacionInstance?.numero}"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Aprobada
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="aprobada" class="form-control" value="${aprobacionInstance?.aprobada}"/>
+                    <g:textField name="aprobada" class="form-control input-sm" value="${aprobacionInstance?.aprobada}"/>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Creado Por
                 </label>
                 <div class="col-md-7">
-                    <g:select id="creadoPor" name="creadoPor.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${aprobacionInstance?.creadoPor?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="creadoPor" name="creadoPor.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${aprobacionInstance?.creadoPor?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -113,7 +113,7 @@
                     Firma Direccion Planificacion
                 </label>
                 <div class="col-md-7">
-                    <g:select id="firmaDireccionPlanificacion" name="firmaDireccionPlanificacion.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${aprobacionInstance?.firmaDireccionPlanificacion?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="firmaDireccionPlanificacion" name="firmaDireccionPlanificacion.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${aprobacionInstance?.firmaDireccionPlanificacion?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -125,7 +125,7 @@
                     Firma Gerencia Tecnica
                 </label>
                 <div class="col-md-7">
-                    <g:select id="firmaGerenciaTecnica" name="firmaGerenciaTecnica.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${aprobacionInstance?.firmaGerenciaTecnica?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="firmaGerenciaTecnica" name="firmaGerenciaTecnica.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${aprobacionInstance?.firmaGerenciaTecnica?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -137,7 +137,7 @@
                     Firma Gerencia Planificacion
                 </label>
                 <div class="col-md-7">
-                    <g:select id="firmaGerenciaPlanificacion" name="firmaGerenciaPlanificacion.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${aprobacionInstance?.firmaGerenciaPlanificacion?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="firmaGerenciaPlanificacion" name="firmaGerenciaPlanificacion.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${aprobacionInstance?.firmaGerenciaPlanificacion?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>

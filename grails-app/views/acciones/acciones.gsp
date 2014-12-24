@@ -34,7 +34,7 @@
         <div class="btn-toolbar">
             <div class="btn-group">
                 <g:link controller="acciones" action="permisos" class="btn btn-sm btn-default">
-                    <i class="fa fa-unlock-alt"></i> Gestionar permisos y módulos
+                    <i class="fa fa-unlock-alt"></i> Gestionar permisos
                 </g:link>
             </div>
 

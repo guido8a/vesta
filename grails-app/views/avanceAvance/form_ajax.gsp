@@ -17,7 +17,7 @@
                     Avance
                 </label>
                 <div class="col-md-2">
-                    <g:field name="avance" type="number" value="${fieldValue(bean: avanceAvanceInstance, field: 'avance')}" class="number form-control  required" required=""/>
+                    <g:field name="avance" type="number" value="${fieldValue(bean: avanceAvanceInstance, field: 'avance')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Avance Fisico
                 </label>
                 <div class="col-md-6">
-                    <g:select id="avanceFisico" name="avanceFisico.id" from="${vesta.hitos.AvanceFisico.list()}" optionKey="id" required="" value="${avanceAvanceInstance?.avanceFisico?.id}" class="many-to-one form-control"/>
+                    <g:select id="avanceFisico" name="avanceFisico.id" from="${vesta.hitos.AvanceFisico.list()}" optionKey="id" required="" value="${avanceAvanceInstance?.avanceFisico?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Fecha
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fecha"  class="datepicker form-control required" value="${avanceAvanceInstance?.fecha}"  />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm required" value="${avanceAvanceInstance?.fecha}"  />
                 </div>
                  *
             </span>

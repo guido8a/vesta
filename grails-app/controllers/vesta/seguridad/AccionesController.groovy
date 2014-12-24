@@ -104,7 +104,7 @@ class AccionesController extends Shield {
     }
 
     /**
-     * Acción que itera sobre todos los controladores creados en el proyecto grails, los busca en la base de datos y si no los encuentra los inserta dentro de la tabla representada en el dominio Ctrl
+     * Acción llamada con ajax que itera sobre todos los controladores creados en el proyecto grails, los busca en la base de datos y si no los encuentra los inserta dentro de la tabla representada en el dominio Ctrl
      */
     def cargarControladores_ajax() {
 //        println "cargar controladores"
@@ -123,7 +123,7 @@ class AccionesController extends Shield {
     }
 
     /**
-     * Acción que itera sobre todos los controladores creados en el proyecto, analiza las acciones de cada controlador, las busca en la base de datos y si no las encuentra las inserta en la tabla representada por el dominio Accn
+     * Acción llamada con ajax que itera sobre todos los controladores creados en el proyecto, analiza las acciones de cada controlador, las busca en la base de datos y si no las encuentra las inserta en la tabla representada por el dominio Accn
      */
     def cargarAcciones_ajax() {
 //        println "cargar acciones"
@@ -186,18 +186,80 @@ class AccionesController extends Shield {
     }
 
     /**
-     * Acción que muestra una lista de acciones filtrando por módulo y tipo para editar los permisos
+     * Acción llamada con ajax que muestra una lista de acciones filtrando por módulo y tipo para editar los permisos
      */
     def permisos_ajax() {
         def perfil = Prfl.get(params.perf.toLong())
+        def modulo = Modulo.get(params.id)
         def acciones = Accn.withCriteria {
-            eq("modulo", Modulo.get(params.id))
+            eq("modulo", modulo)
             order("tipo", "asc")
             control {
                 order("nombre", "asc")
             }
             order("nombre", "asc")
         }
-        return [acciones: acciones, perfil: perfil]
+        return [acciones: acciones, perfil: perfil, modulo: modulo]
+    }
+
+    /**
+     * Acción llamada con ajax que guarda los permisos de un perfil
+     */
+    def guardarPermisos_ajax() {
+        def perfil = Prfl.get(params.perfil.toLong())
+        def modulo = Modulo.get(params.modulo.toLong())
+
+        //todos los permisos actuales de este perfil en este modulo
+        def permisosOld = Prms.withCriteria {
+            eq("perfil", perfil)
+            accion {
+                eq("modulo", modulo)
+            }
+        }
+        def accionesSelected = []
+        def accionesInsertar = []
+        (params.accion.split(",")).each { accionId ->
+            def accion = Accn.get(accionId.toLong())
+            if (!permisosOld.accion.id.contains(accion.id)) {
+                accionesInsertar += accion
+            } else {
+                accionesSelected += accion
+            }
+        }
+
+        def commons = permisosOld.accion.intersect(accionesSelected)
+        def accionesDelete = permisosOld.accion.plus(accionesSelected)
+        accionesDelete.removeAll(commons)
+
+        def errores = ""
+
+        accionesInsertar.each { accion ->
+            def perm = new Prms()
+            perm.accion = accion
+            perm.perfil = perfil
+            if (!perm.save(flush: true)) {
+                errores += renderErrors(bean: perm)
+                println "error al guardar permiso: " + perm.errors
+            }
+        }
+        accionesDelete.each { accion ->
+            def perm = Prms.findAllByPerfilAndAccion(perfil, accion)
+            try {
+                if (perm.size() == 1) {
+                    perm.first().delete(flush: true)
+                } else {
+                    errores += "Existen ${perm.size()} registros del permiso " + accion.nombre
+                }
+            } catch (Exception e) {
+                errores += "Ha ocurrido un error al eliminar el permiso " + accion.nombre
+                println "error al eliminar permiso: " + e
+            }
+        }
+        if (errores == "") {
+            render "SUCCESS*${accionesInsertar.size()} acci${accionesInsertar.size() == 1 ? 'ón' : 'ones'} insertada${accionesInsertar.size() == 1 ? '' : 's'}" +
+                    " y ${accionesDelete.size()} acci${accionesDelete.size() == 1 ? 'ón' : 'ones'} eliminada${accionesDelete.size() == 1 ? '' : 's'} exitosamente"
+        } else {
+            render "ERROR*" + errores
+        }
     }
 }

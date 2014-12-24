@@ -17,7 +17,7 @@
                     Codigo
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="2" required="" class="form-control required unique noEspacios" value="${tipoAprobacionInstance?.codigo}"/>
+                    <g:textField name="codigo" maxlength="2" required="" class="form-control input-sm required unique noEspacios" value="${tipoAprobacionInstance?.codigo}"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="63" required="" class="form-control required" value="${tipoAprobacionInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="63" required="" class="form-control input-sm required" value="${tipoAprobacionInstance?.descripcion}"/>
                 </div>
                  *
             </span>

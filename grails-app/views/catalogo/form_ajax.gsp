@@ -17,7 +17,7 @@
                     Nombre
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="nombre" maxlength="63" required="" class="form-control required" value="${catalogoInstance?.nombre}"/>
+                    <g:textField name="nombre" maxlength="63" required="" class="form-control input-sm required" value="${catalogoInstance?.nombre}"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Código
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="8" required="" class="form-control required unique noEspacios" value="${catalogoInstance?.codigo}"/>
+                    <g:textField name="codigo" maxlength="8" required="" class="form-control input-sm required unique noEspacios" value="${catalogoInstance?.codigo}"/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Estado
                 </label>
                 <div class="col-md-2">
-                    <g:select name="estado" from="${catalogoInstance.constraints.estado.inList}" required="" class="inList form-control required" value="${fieldValue(bean: catalogoInstance, field: 'estado')}" valueMessagePrefix="catalogo.estado"/>
+                    <g:select name="estado" from="${catalogoInstance.constraints.estado.inList}" required="" class="inList form-control input-sm required" value="${fieldValue(bean: catalogoInstance, field: 'estado')}" valueMessagePrefix="catalogo.estado"/>
                 </div>
                  *
             </span>

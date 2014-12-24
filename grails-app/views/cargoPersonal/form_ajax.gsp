@@ -17,7 +17,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="63" pattern="${cargoPersonalInstance.constraints.descripcion.matches}" required="" class="form-control required" value="${cargoPersonalInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="63" pattern="${cargoPersonalInstance.constraints.descripcion.matches}" required="" class="form-control input-sm required" value="${cargoPersonalInstance?.descripcion}"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Codigo
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="4" class="form-control unique noEspacios" value="${cargoPersonalInstance?.codigo}"/>
+                    <g:textField name="codigo" maxlength="4" class="form-control input-sm unique noEspacios" value="${cargoPersonalInstance?.codigo}"/>
                 </div>
                 
             </span>

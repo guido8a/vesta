@@ -17,7 +17,7 @@
                     Anio
                 </label>
                 <div class="col-md-6">
-                    <g:select id="anio" name="anio.id" from="${vesta.parametros.poaPac.Anio.list()}" optionKey="id" required="" value="${detalleMontoSolicitudInstance?.anio?.id}" class="many-to-one form-control"/>
+                    <g:select id="anio" name="anio.id" from="${vesta.parametros.poaPac.Anio.list()}" optionKey="id" required="" value="${detalleMontoSolicitudInstance?.anio?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Monto
                 </label>
                 <div class="col-md-2">
-                    <g:field name="monto" type="number" value="${fieldValue(bean: detalleMontoSolicitudInstance, field: 'monto')}" class="number form-control  required" required=""/>
+                    <g:field name="monto" type="number" value="${fieldValue(bean: detalleMontoSolicitudInstance, field: 'monto')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Solicitud
                 </label>
                 <div class="col-md-6">
-                    <g:select id="solicitud" name="solicitud.id" from="${vesta.contratacion.Solicitud.list()}" optionKey="id" required="" value="${detalleMontoSolicitudInstance?.solicitud?.id}" class="many-to-one form-control"/>
+                    <g:select id="solicitud" name="solicitud.id" from="${vesta.contratacion.Solicitud.list()}" optionKey="id" required="" value="${detalleMontoSolicitudInstance?.solicitud?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>

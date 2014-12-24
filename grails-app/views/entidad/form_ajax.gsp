@@ -17,7 +17,7 @@
                     Nombre
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="nombre" maxlength="63" required="" class="form-control required" value="${entidadInstance?.nombre}"/>
+                    <g:textField name="nombre" maxlength="63" required="" class="form-control input-sm required" value="${entidadInstance?.nombre}"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Direccion
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="direccion" maxlength="127" class="form-control" value="${entidadInstance?.direccion}"/>
+                    <g:textField name="direccion" maxlength="127" class="form-control input-sm" value="${entidadInstance?.direccion}"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Sigla
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="sigla" maxlength="7" class="form-control" value="${entidadInstance?.sigla}"/>
+                    <g:textField name="sigla" maxlength="7" class="form-control input-sm" value="${entidadInstance?.sigla}"/>
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Objetivo
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="objetivo" maxlength="63" class="form-control" value="${entidadInstance?.objetivo}"/>
+                    <g:textField name="objetivo" maxlength="63" class="form-control input-sm" value="${entidadInstance?.objetivo}"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Telefono
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="telefono" maxlength="63" class="form-control" value="${entidadInstance?.telefono}"/>
+                    <g:textField name="telefono" maxlength="63" class="form-control input-sm" value="${entidadInstance?.telefono}"/>
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Fax
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="fax" maxlength="63" class="form-control" value="${entidadInstance?.fax}"/>
+                    <g:textField name="fax" maxlength="63" class="form-control input-sm" value="${entidadInstance?.fax}"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Email
                 </label>
                 <div class="col-md-6">
-                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="email" maxlength="63" class="form-control unique noEspacios" value="${entidadInstance?.email}"/></div>
+                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="email" maxlength="63" class="form-control input-sm unique noEspacios" value="${entidadInstance?.email}"/></div>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="observaciones" maxlength="127" class="form-control" value="${entidadInstance?.observaciones}"/>
+                    <g:textField name="observaciones" maxlength="127" class="form-control input-sm" value="${entidadInstance?.observaciones}"/>
                 </div>
                 
             </span>

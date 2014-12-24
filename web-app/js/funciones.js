@@ -23,10 +23,10 @@
  */
 function validarDec(ev) {
     return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-            ev.keyCode == 190 || ev.keyCode == 110 ||
-            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-            ev.keyCode == 37 || ev.keyCode == 39);
+    (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+    ev.keyCode == 190 || ev.keyCode == 110 ||
+    ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+    ev.keyCode == 37 || ev.keyCode == 39);
 }
 
 /**
@@ -36,9 +36,9 @@ function validarDec(ev) {
  */
 function validarInt(ev) {
     return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-            ev.keyCode == 37 || ev.keyCode == 39);
+    (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+    ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+    ev.keyCode == 37 || ev.keyCode == 39);
 }
 
 /**
@@ -65,18 +65,20 @@ function log(msg, type, title, hide) {
         title = type == 'error' ? "Ha ocurrido un error" : "Transacción exitosa";
     }
     var icon = type == 'error' ? "fa fa-warning fa-2x" : "fa fa-check fa-2x";
-
+    if (msg === undefined) {
+        msg = "";
+    }
     new PNotify({
-        title   : title,
-        icon    : icon,
-        buttons : {
-            closer_hover  : false,
-            sticker_hover : false
+        title  : title,
+        icon   : icon,
+        buttons: {
+            closer_hover : false,
+            sticker_hover: false
         },
-        styling : 'fontawesome',
-        text    : msg,
-        type    : type,
-        hide    : hide
+        styling: 'fontawesome',
+        text   : msg,
+        type   : type,
+        hide   : hide
     });
 }
 
@@ -94,10 +96,10 @@ function openLoader(msg, title) {
     $msg.append(spinnerSquare64);
 
     bootbox.dialog({
-        title       : title,
-        message     : $msg,
-        closeButton : false,
-        class       : "modal-sm"
+        title      : title,
+        message    : $msg,
+        closeButton: false,
+        class      : "modal-sm"
     });
 }
 function closeLoader() {

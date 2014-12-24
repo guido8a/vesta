@@ -17,7 +17,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="1024" required="" class="form-control required" value="${componenteInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="1024" required="" class="form-control input-sm required" value="${componenteInstance?.descripcion}"/>
                 </div>
                  *
             </span>

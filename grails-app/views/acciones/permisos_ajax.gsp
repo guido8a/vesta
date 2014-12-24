@@ -33,7 +33,8 @@
             <g:set var="esMenu" value="${accion.tipo.codigo == 'M'}"/>
             <g:set var="cantPermisos" value="${Prms.countByAccionAndPerfil(accion, perfil)}"/>
             <tr class="${esMenu ? 'success' : 'info'}">
-                <td data-id="${accion.id}" class="text-center check ${cantPermisos > 0 ? 'checked' : ''}">
+                <td data-id="${accion.id}" class="text-center check ${cantPermisos > 0 ? 'checked' : ''}"
+                    data-original="${cantPermisos > 0 ? 'checked' : 'unchecked'}">
                     <i class="fa ${cantPermisos > 0 ? 'fa-check-square-o' : 'fa-square-o'}"></i>
                 </td>
                 <td>
@@ -56,7 +57,7 @@
 <script type="text/javascript">
 
     $("#tblPermisos").fixedHeaderTable({
-        height    : 280,
+        height    : 263,
         autoResize: true,
         footer    : true
     });
@@ -73,22 +74,49 @@
 
     $(".check").click(function () {
         var $this = $(this);
+        var original = $(this).data("original");
         if ($this.hasClass("checked")) {
             $this.removeClass("checked");
             $this.find("i").removeClass("fa-check-square-o").addClass("fa-square-o")
+            if (original == "checked") {
+                $this.parents("tr").addClass("warning");
+            } else {
+                $this.parents("tr").removeClass("warning");
+            }
         } else {
             $this.addClass("checked");
             $this.find("i").removeClass("fa-square-o").addClass("fa-check-square-o")
+            if (original == "unchecked") {
+                $this.parents("tr").addClass("warning");
+            } else {
+                $this.parents("tr").removeClass("warning");
+            }
         }
     });
 
     $(".btn-save-perm").click(function () {
         var perfil = "${perfil.id}";
-        var acciones = "";
+        var data = {
+            accion: ""
+        };
         $(".checked").each(function () {
-            console.log($(this).data("id"));
+            data.accion += $(this).data("id") + ",";
         });
-        console.log(perfil);
+        data.perfil = "${perfil.id}";
+        data.modulo = "${modulo.id}";
+        openLoader();
+        $.ajax({
+            type   : "POST",
+            url    : "${createLink(controller:'acciones', action:'guardarPermisos_ajax')}",
+            data   : data,
+            success: function (msg) {
+                $('.qtip').qtip('hide');
+                var parts = msg.split("*");
+                log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                $(".active").find(".mdlo").click();
+                closeLoader();
+            }
+        });
         return false;
     });
 

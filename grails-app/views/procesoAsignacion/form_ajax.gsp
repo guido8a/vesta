@@ -17,7 +17,7 @@
                     Asignacion
                 </label>
                 <div class="col-md-6">
-                    <g:select id="asignacion" name="asignacion.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${procesoAsignacionInstance?.asignacion?.id}" class="many-to-one form-control"/>
+                    <g:select id="asignacion" name="asignacion.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${procesoAsignacionInstance?.asignacion?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Monto
                 </label>
                 <div class="col-md-2">
-                    <g:field name="monto" type="number" value="${fieldValue(bean: procesoAsignacionInstance, field: 'monto')}" class="number form-control  required" required=""/>
+                    <g:field name="monto" type="number" value="${fieldValue(bean: procesoAsignacionInstance, field: 'monto')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Proceso
                 </label>
                 <div class="col-md-6">
-                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" required="" value="${procesoAsignacionInstance?.proceso?.id}" class="many-to-one form-control"/>
+                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" required="" value="${procesoAsignacionInstance?.proceso?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>

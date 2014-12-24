@@ -17,7 +17,7 @@
                     Proceso
                 </label>
                 <div class="col-md-6">
-                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" value="${avanceFinancieroInstance?.proceso?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" value="${avanceFinancieroInstance?.proceso?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1024" class="form-control" value="${avanceFinancieroInstance?.observaciones}"/>
+                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1024" class="form-control input-sm" value="${avanceFinancieroInstance?.observaciones}"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Contrato
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="contrato" maxlength="30" required="" class="form-control required" value="${avanceFinancieroInstance?.contrato}"/>
+                    <g:textField name="contrato" maxlength="30" required="" class="form-control input-sm required" value="${avanceFinancieroInstance?.contrato}"/>
                 </div>
                  *
             </span>
@@ -53,7 +53,7 @@
                     Certificado
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="certificado" maxlength="30" class="form-control" value="${avanceFinancieroInstance?.certificado}"/>
+                    <g:textField name="certificado" maxlength="30" class="form-control input-sm" value="${avanceFinancieroInstance?.certificado}"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Aval
                 </label>
                 <div class="col-md-6">
-                    <g:select id="aval" name="aval.id" from="${vesta.avales.Aval.list()}" optionKey="id" value="${avanceFinancieroInstance?.aval?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="aval" name="aval.id" from="${vesta.avales.Aval.list()}" optionKey="id" value="${avanceFinancieroInstance?.aval?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Fecha
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fecha"  class="datepicker form-control required" value="${avanceFinancieroInstance?.fecha}"  />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm required" value="${avanceFinancieroInstance?.fecha}"  />
                 </div>
                  *
             </span>
@@ -89,7 +89,7 @@
                     Monto
                 </label>
                 <div class="col-md-2">
-                    <g:field name="monto" type="number" value="${fieldValue(bean: avanceFinancieroInstance, field: 'monto')}" class="number form-control  required" required=""/>
+                    <g:field name="monto" type="number" value="${fieldValue(bean: avanceFinancieroInstance, field: 'monto')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -101,7 +101,7 @@
                     Valor
                 </label>
                 <div class="col-md-2">
-                    <g:field name="valor" type="number" value="${fieldValue(bean: avanceFinancieroInstance, field: 'valor')}" class="number form-control  required" required=""/>
+                    <g:field name="valor" type="number" value="${fieldValue(bean: avanceFinancieroInstance, field: 'valor')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>

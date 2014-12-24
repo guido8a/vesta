@@ -17,7 +17,7 @@
                     Presupuesto
                 </label>
                 <div class="col-md-2">
-                    <g:field name="presupuesto" type="number" value="${fieldValue(bean: auxiliarInstance, field: 'presupuesto')}" class="number form-control  required" required=""/>
+                    <g:field name="presupuesto" type="number" value="${fieldValue(bean: auxiliarInstance, field: 'presupuesto')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>

@@ -17,7 +17,7 @@
                     Hito
                 </label>
                 <div class="col-md-6">
-                    <g:select id="hito" name="hito.id" from="${vesta.hitos.Hito.list()}" optionKey="id" required="" value="${composicionHitoInstance?.hito?.id}" class="many-to-one form-control"/>
+                    <g:select id="hito" name="hito.id" from="${vesta.hitos.Hito.list()}" optionKey="id" required="" value="${composicionHitoInstance?.hito?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Marco Logico
                 </label>
                 <div class="col-md-6">
-                    <g:select id="marcoLogico" name="marcoLogico.id" from="${vesta.proyectos.MarcoLogico.list()}" optionKey="id" value="${composicionHitoInstance?.marcoLogico?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="marcoLogico" name="marcoLogico.id" from="${vesta.proyectos.MarcoLogico.list()}" optionKey="id" value="${composicionHitoInstance?.marcoLogico?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Proyecto
                 </label>
                 <div class="col-md-6">
-                    <g:select id="proyecto" name="proyecto.id" from="${vesta.proyectos.Proyecto.list()}" optionKey="id" value="${composicionHitoInstance?.proyecto?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="proyecto" name="proyecto.id" from="${vesta.proyectos.Proyecto.list()}" optionKey="id" value="${composicionHitoInstance?.proyecto?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Proceso
                 </label>
                 <div class="col-md-6">
-                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" value="${composicionHitoInstance?.proceso?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" value="${composicionHitoInstance?.proceso?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Fecha
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fecha"  class="datepicker form-control required" value="${composicionHitoInstance?.fecha}"  />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm required" value="${composicionHitoInstance?.fecha}"  />
                 </div>
                  *
             </span>
@@ -77,7 +77,7 @@
                     Avance Financiero
                 </label>
                 <div class="col-md-2">
-                    <g:field name="avanceFinanciero" type="number" value="${fieldValue(bean: composicionHitoInstance, field: 'avanceFinanciero')}" class="number form-control  required" required=""/>
+                    <g:field name="avanceFinanciero" type="number" value="${fieldValue(bean: composicionHitoInstance, field: 'avanceFinanciero')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -89,7 +89,7 @@
                     Avance Fisico
                 </label>
                 <div class="col-md-2">
-                    <g:field name="avanceFisico" type="number" value="${fieldValue(bean: composicionHitoInstance, field: 'avanceFisico')}" class="number form-control  required" required=""/>
+                    <g:field name="avanceFisico" type="number" value="${fieldValue(bean: composicionHitoInstance, field: 'avanceFisico')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>

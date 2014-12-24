@@ -19,7 +19,7 @@
             </div>
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control input-search" placeholder="Buscar" value="${params.search}">
+                    <input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">
                     <span class="input-group-btn">
                         <g:link controller="tipoinstitucion" action="list" class="btn btn-default btn-search">
                             <i class="fa fa-search"></i>&nbsp;
@@ -168,7 +168,7 @@
                             } //buttons
                         }); //dialog
                         setTimeout(function () {
-                            b.find(".form-control").first().focus()
+                            b.find(".form-control input-sm").first().focus()
                         }, 500);
                     } //success
                 }); //ajax

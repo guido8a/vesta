@@ -17,7 +17,7 @@
                     Padre
                 </label>
                 <div class="col-md-6">
-                    <g:select id="padre" name="padre.id" from="${vesta.parametros.CodigoComprasPublicas.list()}" optionKey="id" value="${codigoComprasPublicasInstance?.padre?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="padre" name="padre.id" from="${vesta.parametros.CodigoComprasPublicas.list()}" optionKey="id" value="${codigoComprasPublicasInstance?.padre?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Numero
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="numero" maxlength="15" class="form-control" value="${codigoComprasPublicasInstance?.numero}"/>
+                    <g:textField name="numero" maxlength="15" class="form-control input-sm" value="${codigoComprasPublicasInstance?.numero}"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" class="form-control" value="${codigoComprasPublicasInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${codigoComprasPublicasInstance?.descripcion}"/>
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Nivel
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="nivel" class="form-control" value="${codigoComprasPublicasInstance?.nivel}"/>
+                    <g:textField name="nivel" class="form-control input-sm" value="${codigoComprasPublicasInstance?.nivel}"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Fecha
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fecha" mensaje="Fecha de creación"  class="datepicker form-control" value="${codigoComprasPublicasInstance?.fecha}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fecha" mensaje="Fecha de creación"  class="datepicker form-control input-sm" value="${codigoComprasPublicasInstance?.fecha}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Movimiento
                 </label>
                 <div class="col-md-2">
-                    <g:field name="movimiento" type="number" value="${codigoComprasPublicasInstance.movimiento}" class="digits form-control required" required=""/>
+                    <g:field name="movimiento" type="number" value="${codigoComprasPublicasInstance.movimiento}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>

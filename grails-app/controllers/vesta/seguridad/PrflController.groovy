@@ -74,12 +74,12 @@ class PrflController extends Shield {
         if (params.id) {
             def prflInstance = Prfl.get(params.id)
             if (!prflInstance) {
-                render "ERROR*No se encontró Prfl."
+                render "ERROR*No se encontró Perfil."
                 return
             }
             return [prflInstance: prflInstance]
         } else {
-            render "ERROR*No se encontró Prfl."
+            render "ERROR*No se encontró Perfil."
         }
     } //show para cargar con ajax en un dialog
 
@@ -93,7 +93,7 @@ class PrflController extends Shield {
         if (params.id) {
             prflInstance = Prfl.get(params.id)
             if (!prflInstance) {
-                render "ERROR*No se encontró Prfl."
+                render "ERROR*No se encontró Perfil."
                 return
             }
         }
@@ -110,16 +110,16 @@ class PrflController extends Shield {
         if (params.id) {
             prflInstance = Prfl.get(params.id)
             if (!prflInstance) {
-                render "ERROR*No se encontró Prfl."
+                render "ERROR*No se encontró Perfil."
                 return
             }
         }
         prflInstance.properties = params
         if (!prflInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Prfl: " + renderErrors(bean: prflInstance)
+            render "ERROR*Ha ocurrido un error al guardar Perfil: " + renderErrors(bean: prflInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Prfl exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Perfil exitosa."
         return
     } //save para grabar desde ajax
 
@@ -131,19 +131,19 @@ class PrflController extends Shield {
         if (params.id) {
             def prflInstance = Prfl.get(params.id)
             if (!prflInstance) {
-                render "ERROR*No se encontró Prfl."
+                render "ERROR*No se encontró Perfil."
                 return
             }
             try {
                 prflInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Prfl exitosa."
+                render "SUCCESS*Eliminación de Perfil exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Prfl"
+                render "ERROR*Ha ocurrido un error al eliminar Perfil"
                 return
             }
         } else {
-            render "ERROR*No se encontró Prfl."
+            render "ERROR*No se encontró Perfil."
             return
         }
     } //delete para eliminar via ajax

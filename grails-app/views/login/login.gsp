@@ -26,12 +26,12 @@
 
                         <g:form name="frmLogin" action="validar">
                             <div class="input-group input-login">
-                                <g:textField name="user" class="form-control required noEspacios" placeholder="Usuario"/>
+                                <g:textField name="user" class="form-control input-sm required noEspacios" placeholder="Usuario"/>
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
 
                             <div class="input-group input-login">
-                                <g:passwordField name="pass" class="form-control required" placeholder="Contraseña"/>
+                                <g:passwordField name="pass" class="form-control input-sm required" placeholder="Contraseña"/>
                                 <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span>
                             </div>
 
@@ -55,10 +55,12 @@
             }
 
             $(function () {
+                $("#user").focus();
+
                 $frm.validate({
-                    validClass     : "text-success",
-                    errorClass     : "text-danger",
-                    errorPlacement : function (error, element) {
+                    validClass    : "text-success",
+                    errorClass    : "text-danger",
+                    errorPlacement: function (error, element) {
                         if (element.parent().hasClass("input-group")) {
                             error.insertAfter(element.parent());
                         } else {
@@ -67,7 +69,7 @@
                         console.log("error ", error, element, element.parents(".input-group"));
                         element.parents(".input-group").addClass('has-error');
                     },
-                    success        : function (label) {
+                    success       : function (label) {
                         console.log("success ", label, label.parents(".input-group"));
                         label.hide();
                         label.prev().removeClass('has-error').addClass("has-success");

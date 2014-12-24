@@ -17,7 +17,7 @@
                     Fecha
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fecha"  class="datepicker form-control required" value="${hitoInstance?.fecha}"  />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm required" value="${hitoInstance?.fecha}"  />
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Fecha Cumplimiento
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fechaCumplimiento"  class="datepicker form-control" value="${hitoInstance?.fechaCumplimiento}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaCumplimiento"  class="datepicker form-control input-sm" value="${hitoInstance?.fechaCumplimiento}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Fecha Planificada
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fechaPlanificada"  class="datepicker form-control" value="${hitoInstance?.fechaPlanificada}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaPlanificada"  class="datepicker form-control input-sm" value="${hitoInstance?.fechaPlanificada}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Inicio
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="inicio"  class="datepicker form-control" value="${hitoInstance?.inicio}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="inicio"  class="datepicker form-control input-sm" value="${hitoInstance?.inicio}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="1024" required="" class="form-control required" value="${hitoInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="1024" required="" class="form-control input-sm required" value="${hitoInstance?.descripcion}"/>
                 </div>
                  *
             </span>
@@ -77,7 +77,7 @@
                     Avance Financiero
                 </label>
                 <div class="col-md-2">
-                    <g:field name="avanceFinanciero" type="number" value="${fieldValue(bean: hitoInstance, field: 'avanceFinanciero')}" class="number form-control  required" required=""/>
+                    <g:field name="avanceFinanciero" type="number" value="${fieldValue(bean: hitoInstance, field: 'avanceFinanciero')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -89,7 +89,7 @@
                     Avance Fisico
                 </label>
                 <div class="col-md-2">
-                    <g:field name="avanceFisico" type="number" value="${fieldValue(bean: hitoInstance, field: 'avanceFisico')}" class="number form-control  required" required=""/>
+                    <g:field name="avanceFisico" type="number" value="${fieldValue(bean: hitoInstance, field: 'avanceFisico')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -101,7 +101,7 @@
                     Tipo
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="tipo" required="" class="form-control required" value="${hitoInstance?.tipo}"/>
+                    <g:textField name="tipo" required="" class="form-control input-sm required" value="${hitoInstance?.tipo}"/>
                 </div>
                  *
             </span>

@@ -17,7 +17,7 @@
                     Codigo
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="20" class="form-control unique noEspacios" value="${actividadInstance?.codigo}"/>
+                    <g:textField name="codigo" maxlength="20" class="form-control input-sm unique noEspacios" value="${actividadInstance?.codigo}"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" class="form-control" value="${actividadInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${actividadInstance?.descripcion}"/>
                 </div>
                 
             </span>

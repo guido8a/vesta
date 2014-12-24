@@ -17,7 +17,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" class="form-control" value="${tipoPersonaInstance?.descripcion}"/>
+                    <g:textField name="descripcion" class="form-control input-sm" value="${tipoPersonaInstance?.descripcion}"/>
                 </div>
                 
             </span>

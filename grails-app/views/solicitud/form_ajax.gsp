@@ -17,7 +17,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1023" class="form-control" value="${solicitudInstance?.observaciones}"/>
+                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${solicitudInstance?.observaciones}"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Revisado Administrativa Financiera
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="revisadoAdministrativaFinanciera"  class="datepicker form-control" value="${solicitudInstance?.revisadoAdministrativaFinanciera}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="revisadoAdministrativaFinanciera"  class="datepicker form-control input-sm" value="${solicitudInstance?.revisadoAdministrativaFinanciera}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Revisado Juridica
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="revisadoJuridica"  class="datepicker form-control" value="${solicitudInstance?.revisadoJuridica}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="revisadoJuridica"  class="datepicker form-control input-sm" value="${solicitudInstance?.revisadoJuridica}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Revisado Direccion Proyectos
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="revisadoDireccionProyectos"  class="datepicker form-control" value="${solicitudInstance?.revisadoDireccionProyectos}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="revisadoDireccionProyectos"  class="datepicker form-control input-sm" value="${solicitudInstance?.revisadoDireccionProyectos}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Observaciones Administrativa Financiera
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="observacionesAdministrativaFinanciera" cols="40" rows="5" maxlength="1023" class="form-control" value="${solicitudInstance?.observacionesAdministrativaFinanciera}"/>
+                    <g:textArea name="observacionesAdministrativaFinanciera" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${solicitudInstance?.observacionesAdministrativaFinanciera}"/>
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Observaciones Juridica
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="observacionesJuridica" cols="40" rows="5" maxlength="1023" class="form-control" value="${solicitudInstance?.observacionesJuridica}"/>
+                    <g:textArea name="observacionesJuridica" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${solicitudInstance?.observacionesJuridica}"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Observaciones Direccion Proyectos
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="observacionesDireccionProyectos" cols="40" rows="5" maxlength="1023" class="form-control" value="${solicitudInstance?.observacionesDireccionProyectos}"/>
+                    <g:textArea name="observacionesDireccionProyectos" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${solicitudInstance?.observacionesDireccionProyectos}"/>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Path Pdf Tdr
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="pathPdfTdr" cols="40" rows="5" maxlength="255" class="form-control" value="${solicitudInstance?.pathPdfTdr}"/>
+                    <g:textArea name="pathPdfTdr" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${solicitudInstance?.pathPdfTdr}"/>
                 </div>
                 
             </span>
@@ -113,7 +113,7 @@
                     Estado
                 </label>
                 <div class="col-md-7">
-                    <g:select name="estado" from="${solicitudInstance.constraints.estado.inList}" class="form-control" value="${solicitudInstance?.estado}" valueMessagePrefix="solicitud.estado" noSelection="['': '']"/>
+                    <g:select name="estado" from="${solicitudInstance.constraints.estado.inList}" class="form-control input-sm" value="${solicitudInstance?.estado}" valueMessagePrefix="solicitud.estado" noSelection="['': '']"/>
                 </div>
                 
             </span>
@@ -125,7 +125,7 @@
                     Path Oferta1
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="pathOferta1" class="form-control" value="${solicitudInstance?.pathOferta1}"/>
+                    <g:textField name="pathOferta1" class="form-control input-sm" value="${solicitudInstance?.pathOferta1}"/>
                 </div>
                 
             </span>
@@ -137,7 +137,7 @@
                     Path Oferta2
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="pathOferta2" class="form-control" value="${solicitudInstance?.pathOferta2}"/>
+                    <g:textField name="pathOferta2" class="form-control input-sm" value="${solicitudInstance?.pathOferta2}"/>
                 </div>
                 
             </span>
@@ -149,7 +149,7 @@
                     Path Oferta3
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="pathOferta3" class="form-control" value="${solicitudInstance?.pathOferta3}"/>
+                    <g:textField name="pathOferta3" class="form-control input-sm" value="${solicitudInstance?.pathOferta3}"/>
                 </div>
                 
             </span>
@@ -161,7 +161,7 @@
                     Path Cuadro Comparativo
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="pathCuadroComparativo" class="form-control" value="${solicitudInstance?.pathCuadroComparativo}"/>
+                    <g:textField name="pathCuadroComparativo" class="form-control input-sm" value="${solicitudInstance?.pathCuadroComparativo}"/>
                 </div>
                 
             </span>
@@ -173,7 +173,7 @@
                     Path Analisis Costos
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="pathAnalisisCostos" class="form-control" value="${solicitudInstance?.pathAnalisisCostos}"/>
+                    <g:textField name="pathAnalisisCostos" class="form-control input-sm" value="${solicitudInstance?.pathAnalisisCostos}"/>
                 </div>
                 
             </span>
@@ -185,7 +185,7 @@
                     Incluir Reunion
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="incluirReunion" class="form-control" value="${solicitudInstance?.incluirReunion}"/>
+                    <g:textField name="incluirReunion" class="form-control input-sm" value="${solicitudInstance?.incluirReunion}"/>
                 </div>
                 
             </span>
@@ -197,7 +197,7 @@
                     Path Revision GAF
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="pathRevisionGAF" class="form-control" value="${solicitudInstance?.pathRevisionGAF}"/>
+                    <g:textField name="pathRevisionGAF" class="form-control input-sm" value="${solicitudInstance?.pathRevisionGAF}"/>
                 </div>
                 
             </span>
@@ -209,7 +209,7 @@
                     Path Revision GJ
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="pathRevisionGJ" class="form-control" value="${solicitudInstance?.pathRevisionGJ}"/>
+                    <g:textField name="pathRevisionGJ" class="form-control input-sm" value="${solicitudInstance?.pathRevisionGJ}"/>
                 </div>
                 
             </span>
@@ -221,7 +221,7 @@
                     Path Revision GDP
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="pathRevisionGDP" class="form-control" value="${solicitudInstance?.pathRevisionGDP}"/>
+                    <g:textField name="pathRevisionGDP" class="form-control input-sm" value="${solicitudInstance?.pathRevisionGDP}"/>
                 </div>
                 
             </span>
@@ -233,7 +233,7 @@
                     Validado Administrativa Financiera
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="validadoAdministrativaFinanciera"  class="datepicker form-control" value="${solicitudInstance?.validadoAdministrativaFinanciera}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="validadoAdministrativaFinanciera"  class="datepicker form-control input-sm" value="${solicitudInstance?.validadoAdministrativaFinanciera}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -245,7 +245,7 @@
                     Validado Juridica
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="validadoJuridica"  class="datepicker form-control" value="${solicitudInstance?.validadoJuridica}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="validadoJuridica"  class="datepicker form-control input-sm" value="${solicitudInstance?.validadoJuridica}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -257,7 +257,7 @@
                     Fecha Peticion Reunion
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaPeticionReunion"  class="datepicker form-control" value="${solicitudInstance?.fechaPeticionReunion}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaPeticionReunion"  class="datepicker form-control input-sm" value="${solicitudInstance?.fechaPeticionReunion}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -269,7 +269,7 @@
                     Aprobacion
                 </label>
                 <div class="col-md-7">
-                    <g:select id="aprobacion" name="aprobacion.id" from="${vesta.contratacion.Aprobacion.list()}" optionKey="id" value="${solicitudInstance?.aprobacion?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="aprobacion" name="aprobacion.id" from="${vesta.contratacion.Aprobacion.list()}" optionKey="id" value="${solicitudInstance?.aprobacion?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -281,7 +281,7 @@
                     Tipo Aprobacion
                 </label>
                 <div class="col-md-7">
-                    <g:select id="tipoAprobacion" name="tipoAprobacion.id" from="${vesta.parametros.TipoAprobacion.list()}" optionKey="id" value="${solicitudInstance?.tipoAprobacion?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="tipoAprobacion" name="tipoAprobacion.id" from="${vesta.parametros.TipoAprobacion.list()}" optionKey="id" value="${solicitudInstance?.tipoAprobacion?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -293,7 +293,7 @@
                     Observaciones Aprobacion
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="observacionesAprobacion" class="form-control" value="${solicitudInstance?.observacionesAprobacion}"/>
+                    <g:textField name="observacionesAprobacion" class="form-control input-sm" value="${solicitudInstance?.observacionesAprobacion}"/>
                 </div>
                 
             </span>
@@ -305,7 +305,7 @@
                     Path Aprobacion
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="pathAprobacion" class="form-control" value="${solicitudInstance?.pathAprobacion}"/>
+                    <g:textField name="pathAprobacion" class="form-control input-sm" value="${solicitudInstance?.pathAprobacion}"/>
                 </div>
                 
             </span>
@@ -317,7 +317,7 @@
                     Revision Direccion Planificacion Inversion
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="revisionDireccionPlanificacionInversion" class="form-control" value="${solicitudInstance?.revisionDireccionPlanificacionInversion}"/>
+                    <g:textField name="revisionDireccionPlanificacionInversion" class="form-control input-sm" value="${solicitudInstance?.revisionDireccionPlanificacionInversion}"/>
                 </div>
                 
             </span>
@@ -329,7 +329,7 @@
                     Asistentes Aprobacion
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="asistentesAprobacion" cols="40" rows="5" maxlength="1023" class="form-control" value="${solicitudInstance?.asistentesAprobacion}"/>
+                    <g:textArea name="asistentesAprobacion" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${solicitudInstance?.asistentesAprobacion}"/>
                 </div>
                 
             </span>
@@ -341,7 +341,7 @@
                     Fecha Para Revision
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaParaRevision"  class="datepicker form-control" value="${solicitudInstance?.fechaParaRevision}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaParaRevision"  class="datepicker form-control input-sm" value="${solicitudInstance?.fechaParaRevision}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -353,7 +353,7 @@
                     Actividad
                 </label>
                 <div class="col-md-7">
-                    <g:select id="actividad" name="actividad.id" from="${vesta.proyectos.MarcoLogico.list()}" optionKey="id" required="" value="${solicitudInstance?.actividad?.id}" class="many-to-one form-control"/>
+                    <g:select id="actividad" name="actividad.id" from="${vesta.proyectos.MarcoLogico.list()}" optionKey="id" required="" value="${solicitudInstance?.actividad?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -386,7 +386,7 @@
                     Fecha
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fecha"  class="datepicker form-control required" value="${solicitudInstance?.fecha}"  />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm required" value="${solicitudInstance?.fecha}"  />
                 </div>
                  *
             </span>
@@ -398,7 +398,7 @@
                     Forma Pago
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="formaPago" required="" class="form-control required" value="${solicitudInstance?.formaPago}"/>
+                    <g:textField name="formaPago" required="" class="form-control input-sm required" value="${solicitudInstance?.formaPago}"/>
                 </div>
                  *
             </span>
@@ -410,7 +410,7 @@
                     Monto Solicitado
                 </label>
                 <div class="col-md-3">
-                    <g:field name="montoSolicitado" type="number" value="${fieldValue(bean: solicitudInstance, field: 'montoSolicitado')}" class="number form-control  required" required=""/>
+                    <g:field name="montoSolicitado" type="number" value="${fieldValue(bean: solicitudInstance, field: 'montoSolicitado')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -422,7 +422,7 @@
                     Nombre Proceso
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="nombreProceso" required="" class="form-control required" value="${solicitudInstance?.nombreProceso}"/>
+                    <g:textField name="nombreProceso" required="" class="form-control input-sm required" value="${solicitudInstance?.nombreProceso}"/>
                 </div>
                  *
             </span>
@@ -434,7 +434,7 @@
                     Objeto Contrato
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="objetoContrato" required="" class="form-control required" value="${solicitudInstance?.objetoContrato}"/>
+                    <g:textField name="objetoContrato" required="" class="form-control input-sm required" value="${solicitudInstance?.objetoContrato}"/>
                 </div>
                  *
             </span>
@@ -446,7 +446,7 @@
                     Plazo Ejecucion
                 </label>
                 <div class="col-md-3">
-                    <g:field name="plazoEjecucion" type="number" value="${solicitudInstance.plazoEjecucion}" class="digits form-control required" required=""/>
+                    <g:field name="plazoEjecucion" type="number" value="${solicitudInstance.plazoEjecucion}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -458,7 +458,7 @@
                     Tipo Bien
                 </label>
                 <div class="col-md-7">
-                    <g:select id="tipoBien" name="tipoBien.id" from="${vesta.parametros.TipoBien.list()}" optionKey="id" required="" value="${solicitudInstance?.tipoBien?.id}" class="many-to-one form-control"/>
+                    <g:select id="tipoBien" name="tipoBien.id" from="${vesta.parametros.TipoBien.list()}" optionKey="id" required="" value="${solicitudInstance?.tipoBien?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -470,7 +470,7 @@
                     Tipo Contrato
                 </label>
                 <div class="col-md-7">
-                    <g:select id="tipoContrato" name="tipoContrato.id" from="${vesta.parametros.TipoContrato.list()}" optionKey="id" required="" value="${solicitudInstance?.tipoContrato?.id}" class="many-to-one form-control"/>
+                    <g:select id="tipoContrato" name="tipoContrato.id" from="${vesta.parametros.TipoContrato.list()}" optionKey="id" required="" value="${solicitudInstance?.tipoContrato?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -482,7 +482,7 @@
                     Unidad Ejecutora
                 </label>
                 <div class="col-md-7">
-                    <g:select id="unidadEjecutora" name="unidadEjecutora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" required="" value="${solicitudInstance?.unidadEjecutora?.id}" class="many-to-one form-control"/>
+                    <g:select id="unidadEjecutora" name="unidadEjecutora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" required="" value="${solicitudInstance?.unidadEjecutora?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -494,7 +494,7 @@
                     Usuario
                 </label>
                 <div class="col-md-7">
-                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${solicitudInstance?.usuario?.id}" class="many-to-one form-control"/>
+                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${solicitudInstance?.usuario?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
