@@ -1,6 +1,7 @@
 package vesta.parametros
 
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.seguridad.Persona
 import vesta.seguridad.Shield
 
 
@@ -171,6 +172,115 @@ class EntidadController extends Shield {
             render Entidad.countByEmailIlike(params.email) == 0
             return
         }
+    }
+
+    /**
+     * Acción que muestra la estructura institucional (entidades y usuarios) en forma de árbol
+     */
+    def arbol() {}
+
+    /**
+     * Acción llamada con ajax que carga el árbol de la estructura institucional
+     */
+    def loadTreePart() {
+        render(makeTreeNode(params))
+    }
+
+    def makeTreeNode(params) {
+        def id = params.id
+        if (!params.sort) {
+            params.sort = "apellido"
+        }
+        if (!params.order) {
+            params.order = "asc"
+        }
+        String tree = "", clase = "", rel = ""
+        def padre
+        def hijos = []
+
+        if (id == "#") {
+            //root
+            def hh = UnidadEjecutora.countByPadreIsNull([sort: "nombre"])
+            if (hh > 0) {
+                clase = "hasChildren jstree-closed"
+            }
+
+            tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' level='0' >" +
+                    "<a href='#' class='label_arbol'>Estructura institucional</a>" +
+                    "</li>"
+            if (clase == "") {
+                tree = ""
+            }
+        } else if (id == "root") {
+            hijos = UnidadEjecutora.findAllByPadreIsNull([sort: 'orden'])
+        } else {
+            def parts = id.split("_")
+            def node_id = parts[1].toLong()
+            padre = UnidadEjecutora.get(node_id)
+            if (padre) {
+                hijos = []
+                hijos += Persona.findAllByUnidad(padre, [sort: params.sort, order: params.order])
+                hijos += UnidadEjecutora.findAllByPadre(padre, [sort: "nombre"])
+            }
+        }
+
+        if (tree == "" && (padre || hijos.size() > 0)) {
+            tree += "<ul>"
+            def lbl = ""
+
+            hijos.each { hijo ->
+                def tp = ""
+                def data = ""
+                if (hijo instanceof UnidadEjecutora) {
+                    lbl = hijo.nombre
+                    if (hijo.codigo) {
+                        lbl += " (${hijo.codigo})"
+                    }
+                    tp = "dep"
+                    def hijosH = UnidadEjecutora.findAllByPadre(hijo, [sort: "nombre"])
+                    rel = (hijosH.size() > 0) ? "padre" : "hijo"
+
+                    /* aqui se deberia validar si está o no activo pero las unidades no tienen ese campo asiq se muestran todas como activas */
+                    rel += "Activo"
+
+                    hijosH += Persona.findAllByUnidad(hijo, [sort: "apellido"])
+                    clase = (hijosH.size() > 0) ? "jstree-closed hasChildren" : ""
+                    if (hijosH.size() > 0) {
+                        clase += " ocupado "
+                    }
+                } else if (hijo instanceof Persona) {
+                    switch (params.sort) {
+                        case 'apellido':
+                            lbl = "${hijo.apellido} ${hijo.nombre} ${hijo.login ? '(' + hijo.login + ')' : ''}"
+                            break;
+                        case 'nombre':
+                            lbl = "${hijo.nombre} ${hijo.apellido} ${hijo.login ? '(' + hijo.login + ')' : ''}"
+                            break;
+                        default:
+                            lbl = "${hijo.apellido} ${hijo.nombre} ${hijo.login ? '(' + hijo.login + ')' : ''}"
+                    }
+
+                    tp = "usu"
+                    rel = "usuario"
+                    clase = "usuario"
+
+                    data += "data-usuario='${hijo.login}'"
+
+                    if (hijo.estaActivo == 1) {
+                        rel += "Activo"
+                    } else {
+                        rel += "Inactivo"
+                    }
+                }
+
+                tree += "<li id='li${tp}_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${rel}\"}' >"
+                tree += "<a href='#' class='label_arbol'>" + lbl + "</a>"
+                tree += "</li>"
+            }
+
+            tree += "</ul>"
+        }
+        return tree
     }
 
 }

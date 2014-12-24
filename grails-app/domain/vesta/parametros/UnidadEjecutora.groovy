@@ -8,7 +8,7 @@ import vesta.parametros.proyectos.ObjetivoUnidad
  * Clase para conectar con la tabla 'unej' de la base de datos<br/>
  * Unidades ejecutoras de los proyectos, generalmente adscritas a los ministerios
  */
-class UnidadEjecutora   {
+class UnidadEjecutora {
     /**
      * Tipo de institución de la unidad ejecutora
      */
