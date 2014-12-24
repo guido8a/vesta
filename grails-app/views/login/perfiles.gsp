@@ -25,7 +25,7 @@
                         <img class="img-login" src="${resource(dir: 'images', file: 'logo-login.png')}"/>
 
                         <g:form name="frmLogin" action="savePerfil">
-                            <g:select from="${perfiles}" name="perfil" class="form-control input-sm input-login" optionKey="id"/>
+                            <g:select from="${perfiles}" name="perfil" class="form-control input-login" optionKey="id"/>
 
                             <div class="text-right">
                                 <a href="#" id="btn-login" class="btn btn-primary">Validar <i class="fa fa-unlock"></i>

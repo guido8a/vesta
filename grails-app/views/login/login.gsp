@@ -26,12 +26,12 @@
 
                         <g:form name="frmLogin" action="validar">
                             <div class="input-group input-login">
-                                <g:textField name="user" class="form-control input-sm required noEspacios" placeholder="Usuario"/>
+                                <g:textField name="user" class="form-control required noEspacios" placeholder="Usuario"/>
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
 
                             <div class="input-group input-login">
-                                <g:passwordField name="pass" class="form-control input-sm required" placeholder="Contraseña"/>
+                                <g:passwordField name="pass" class="form-control required" placeholder="Contraseña"/>
                                 <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span>
                             </div>
 

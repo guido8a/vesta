@@ -207,6 +207,110 @@
             /* **************************************** PERFIL ******************************************************** */
 
             /* **************************************** MODULO ******************************************************** */
+            function submitFormModulo() {
+                var $form = $("#frmModulo");
+                var $btn = $("#dlgCreateEdit").find("#btnSave");
+                if ($form.valid()) {
+                    $btn.replaceWith(spinner);
+                    openLoader("Guardando Módulo");
+                    $.ajax({
+                        type   : "POST",
+                        url    : $form.attr("action"),
+                        data   : $form.serialize(),
+                        success: function (msg) {
+                            var parts = msg.split("*");
+                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                            setTimeout(function () {
+                                if (parts[0] == "SUCCESS") {
+                                    location.reload(true);
+                                } else {
+                                    spinner.replaceWith($btn);
+                                    return false;
+                                }
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    return false;
+                } //else
+            }
+            function deleteModulo(itemId) {
+                bootbox.dialog({
+                    title  : "Alerta",
+                    message: "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
+                    "¿Está seguro que desea eliminar el Módulo seleccionado (<strong>" + $.trim($(".active").find(".mdlo").text()) + "</strong>)? " +
+                    "Esta acción no se puede deshacer.</p>",
+                    buttons: {
+                        cancelar: {
+                            label    : "Cancelar",
+                            className: "btn-primary",
+                            callback : function () {
+                            }
+                        },
+                        eliminar: {
+                            label    : "<i class='fa fa-trash-o'></i> Eliminar",
+                            className: "btn-danger",
+                            callback : function () {
+                                openLoader("Eliminando Módulo");
+                                $.ajax({
+                                    type   : "POST",
+                                    url    : '${createLink(controller: 'modulo', action:'delete_ajax')}',
+                                    data   : {
+                                        id: itemId
+                                    },
+                                    success: function (msg) {
+                                        var parts = msg.split("*");
+                                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                        if (parts[0] == "SUCCESS") {
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1000);
+                                        } else {
+                                            closeLoader();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+            function createEditModulo(id) {
+                var title = id ? "Editar" : "Crear";
+                var data = id ? {id: id} : {};
+                $.ajax({
+                    type   : "POST",
+                    url    : "${createLink(controller: 'modulo', action:'form_ajax')}",
+                    data   : data,
+                    success: function (msg) {
+                        var b = bootbox.dialog({
+                            id   : "dlgCreateEdit",
+                            title: title + " Módulo",
+
+                            message: msg,
+                            buttons: {
+                                cancelar: {
+                                    label    : "Cancelar",
+                                    className: "btn-primary",
+                                    callback : function () {
+                                    }
+                                },
+                                guardar : {
+                                    id       : "btnSave",
+                                    label    : "<i class='fa fa-save'></i> Guardar",
+                                    className: "btn-success",
+                                    callback : function () {
+                                        return submitFormModulo();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                        setTimeout(function () {
+                            b.find(".form-control input-sm").first().focus()
+                        }, 500);
+                    } //success
+                }); //ajax
+            } //createEdit
             /* **************************************** MODULO ******************************************************** */
 
             $(function () {
@@ -225,14 +329,25 @@
                     createEditPerfil();
                     return false;
                 });
-
                 $("#btnEditarPerfil").click(function () {
                     createEditPerfil($("#perfil").val());
                     return false;
                 });
-
                 $("#btnBorrarPerfil").click(function () {
                     deletePerfil($("#perfil").val());
+                    return false;
+                });
+
+                $("#btnCrearModulo").click(function () {
+                    createEditModulo();
+                    return false;
+                });
+                $("#btnEditarModulo").click(function () {
+                    createEditModulo($(".active").find(".mdlo").attr("id"));
+                    return false;
+                });
+                $("#btnBorrarModulo").click(function () {
+                    deleteModulo($(".active").find(".mdlo").attr("id"));
                     return false;
                 });
 
