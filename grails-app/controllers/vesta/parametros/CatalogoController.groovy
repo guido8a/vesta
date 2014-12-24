@@ -77,12 +77,12 @@ class CatalogoController extends Shield {
         if (params.id) {
             def catalogoInstance = Catalogo.get(params.id)
             if (!catalogoInstance) {
-                render "ERROR*No se encontró Catalogo."
+                render "ERROR*No se encontró Catálogo."
                 return
             }
             return [catalogoInstance: catalogoInstance]
         } else {
-            render "ERROR*No se encontró Catalogo."
+            render "ERROR*No se encontró Catálogo."
         }
     } //show para cargar con ajax en un dialog
 
@@ -96,7 +96,7 @@ class CatalogoController extends Shield {
         if (params.id) {
             catalogoInstance = Catalogo.get(params.id)
             if (!catalogoInstance) {
-                render "ERROR*No se encontró Catalogo."
+                render "ERROR*No se encontró Catálogo."
                 return
             }
         }
@@ -131,16 +131,16 @@ class CatalogoController extends Shield {
         if (params.id) {
             catalogoInstance = Catalogo.get(params.id)
             if (!catalogoInstance) {
-                render "ERROR*No se encontró Catalogo."
+                render "ERROR*No se encontró Catálogo."
                 return
             }
         }
         catalogoInstance.properties = params
         if (!catalogoInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Catalogo: " + renderErrors(bean: catalogoInstance)
+            render "ERROR*Ha ocurrido un error al guardar Catálogo: " + renderErrors(bean: catalogoInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Catalogo exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Catálogo exitosa."
         return
     } //save para grabar desde ajax
 
@@ -152,19 +152,19 @@ class CatalogoController extends Shield {
         if (params.id) {
             def catalogoInstance = Catalogo.get(params.id)
             if (!catalogoInstance) {
-                render "ERROR*No se encontró Catalogo."
+                render "ERROR*No se encontró Catálogo."
                 return
             }
             try {
                 catalogoInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Catalogo exitosa."
+                render "SUCCESS*Eliminación de Catálogo exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Catalogo"
+                render "ERROR*Ha ocurrido un error al eliminar Catálogo"
                 return
             }
         } else {
-            render "ERROR*No se encontró Catalogo."
+            render "ERROR*No se encontró Catálogo."
             return
         }
     } //delete para eliminar via ajax
@@ -239,19 +239,6 @@ class CatalogoController extends Shield {
     def saveItems = {
 
     }
-
-    /**
-     * Acción que borra un catálogo
-     * @param id es el identificador del catálogo
-     */
-    def borraCtlg = {
-//      println "------editCatalogo: " + params
-        params.controllerName = controllerName
-        params.actionName = "delete"
-//        kerberosService.delete(params, Catalogo, session.perfil, session.usuario)
-        render('borrado: ${params.id}')
-    }
-
 
     /**
      * Acción que muestra una lista de las acciones que puede ver un determinado catálogo
