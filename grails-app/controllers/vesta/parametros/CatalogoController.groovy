@@ -4,10 +4,15 @@ import org.springframework.dao.DataIntegrityViolationException
 import vesta.seguridad.Shield
 
 
+
 /**
  * Controlador que muestra las pantallas de manejo de Catalogo
  */
 class CatalogoController extends Shield {
+
+
+    def dbConnectionService
+    def kerberosService
 
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
@@ -99,6 +104,24 @@ class CatalogoController extends Shield {
         return [catalogoInstance: catalogoInstance]
     } //form para cargar con ajax en un dialog
 
+    def form_item() {
+        println("params " + params)
+        def catalogo = Catalogo.get(params.cata)
+        def itemCatalogoInstance
+
+        if(params.id && params.id != 'undefined'){
+            itemCatalogoInstance = ItemCatalogo.findByCatalogoAndId(catalogo,params.id)
+        }else{
+            itemCatalogoInstance = new ItemCatalogo()
+        }
+//        itemCatalogoInstance.properties = params
+
+        println("item " + itemCatalogoInstance)
+
+        return [itemCatalogoInstance: itemCatalogoInstance, catalogo: catalogo]
+    } //form para cargar con ajax en un dialog
+
+
     /**
      * Acción llamada con ajax que guarda la información de un elemento
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
@@ -166,5 +189,104 @@ class CatalogoController extends Shield {
             return
         }
     }
+
+    /**
+     * Acción llamada con ajax que valida que no se duplique la propiedad codigo
+     * @render boolean que indica si se puede o no utilizar el valor recibido
+     */
+    def validar_unique_codigoItem_ajax() {
+        params.codigo = params.codigo.toString().trim()
+        if (params.id) {
+            def obj = ItemCatalogo.get(params.id)
+            if (obj.codigo.toLowerCase() == params.codigo.toLowerCase()) {
+                render true
+                return
+            } else {
+                render ItemCatalogo.countByCodigoIlike(params.codigo) == 0
+                return
+            }
+        } else {
+            render ItemCatalogo.countByCodigoIlike(params.codigo) == 0
+            return
+        }
+    }
+
+
+
+
+    def items () {
+    }
+
+    /**
+     * Acción que muestra un formulario para la creación de un nuevo catálogo
+     */
+    def creaCtlg = {
+        def catalogoInstance = new Catalogo()
+        render(view: 'form_ajax', model: ['catalogoInstance': catalogoInstance])
+    }
+
+    /**
+     * Acción que muestra los datos de un catálogo en un formulario para su edición
+     * @param id es el identificador del catálogo
+     */
+    def editCtlg = {
+//      println "------editCatalogo: " + params
+        def catalogoInstance = Catalogo.get(params.id.toInteger())
+        render(view: 'crear', model: ['catalogoInstance': catalogoInstance])
+    }
+
+
+    def saveItems = {
+
+    }
+
+    /**
+     * Acción que borra un catálogo
+     * @param id es el identificador del catálogo
+     */
+    def borraCtlg = {
+//      println "------editCatalogo: " + params
+        params.controllerName = controllerName
+        params.actionName = "delete"
+//        kerberosService.delete(params, Catalogo, session.perfil, session.usuario)
+        render('borrado: ${params.id}')
+    }
+
+
+    /**
+     * Acción que muestra una lista de las acciones que puede ver un determinado catálogo
+     * @param Catalogo es el identificador del catálogo
+     * @param tpac es el identificador del tipo de acción.
+     * @param ids es la lista de los módulos
+     */
+    def cargaItem = {
+        println "---------parametros: ${params}"
+        def ctlg = params.ctlg.toInteger()
+        def resultado = []
+        def i = 0
+        def ids = params.ids
+
+        if (params.menu?.size() > 0) ids = params.menu
+        if (params.grabar) {
+            //println "a grabar... ${Catalogo}, ${ids}"
+        }
+
+        def cn = dbConnectionService.getConnection()
+        def tx = ""
+        // selecciona las acciones que no se han consedido permisos
+        tx = "select itct__id, itctcdgo, itctdscr, itctetdo, itctordn, itctorgn " +
+                "from itct " +
+                "where ctlg__id = " + ctlg + " order by itctnmbr"
+
+        println "ajaxPermisos SQL: ${tx}"
+        cn.eachRow(tx) { d ->
+            resultado[i] = [d.itct__id] + [d.itctcdgo] + [d.itctdscr] + [d.itctetdo] + [d.itctordn] + [d.itctorgn]
+            i++
+        }
+        cn.close()
+        //println "-------------------------" + resultado
+        render(view: 'lsta', model: [datos: resultado, mdlo__id: ids, catalogo: params.ctlg])
+    }
+
 
 }

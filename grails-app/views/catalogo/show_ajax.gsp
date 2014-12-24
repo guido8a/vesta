@@ -12,7 +12,7 @@
                 Nombre
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-7">
                 <g:fieldValue bean="${catalogoInstance}" field="nombre"/>
             </div>
             
@@ -22,7 +22,7 @@
     <g:if test="${catalogoInstance?.codigo}">
         <div class="row">
             <div class="col-md-2">
-                Codigo
+                Código
             </div>
             
             <div class="col-md-3">

@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Catalogo</title>
+        <title>Lista de Catálogos</title>
     </head>
     <body>
 
@@ -35,7 +35,7 @@
                     
                     <g:sortableColumn property="nombre" title="Nombre" />
                     
-                    <g:sortableColumn property="codigo" title="Codigo" />
+                    <g:sortableColumn property="codigo" title="Código" />
                     
                     <g:sortableColumn property="estado" title="Estado" />
                     
@@ -62,7 +62,7 @@
                                 No se encontraron resultados para su búsqueda
                             </g:if>
                             <g:else>
-                                No se econtraron registros que mostrar
+                                No se encontraron registros que mostrar
                             </g:else>
                         </td>
                     </tr>
@@ -79,7 +79,7 @@
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando Catalogo");
+                    openLoader("Guardando Catálogo");
                     $.ajax({
                         type    : "POST",
                         url     : $form.attr("action"),
@@ -117,7 +117,7 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando Catalogo");
+                                openLoader("Eliminando Catálogo");
                                 $.ajax({
                                     type    : "POST",
                                     url     : '${createLink(action:'delete_ajax')}',
@@ -151,7 +151,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Catalogo",
+                            title   : title + " Catálogo",
                             
                             message : msg,
                             buttons : {
@@ -204,7 +204,7 @@
                                     },
                                     success : function (msg) {
                                         bootbox.dialog({
-                                            title   : "Ver Catalogo",
+                                            title   : "Ver Catálogo",
                                             message : msg,
                                             buttons : {
                                                 ok : {

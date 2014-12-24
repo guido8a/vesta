@@ -105,6 +105,7 @@ class ItemCatalogoController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
+        println("params save " + params)
         def itemCatalogoInstance = new ItemCatalogo()
         if (params.id) {
             itemCatalogoInstance = ItemCatalogo.get(params.id)
@@ -164,6 +165,32 @@ class ItemCatalogoController extends Shield {
             }
         } else {
             render ItemCatalogo.countByCodigoIlike(params.codigo) == 0
+            return
+        }
+    }
+
+    /**
+     * Acción llamada con ajax para borrar un item de un catálogo
+     * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
+     */
+
+    def borrarItem () {
+        if(params.id){
+            def itemInstance = ItemCatalogo.get(params.id)
+            if(!itemInstance){
+                render "ERROR*No se encontró el Item."
+                return
+            }
+            try{
+               itemInstance.delete(flush: true)
+               render "SUCCESS*Eliminación de Item exitosa."
+                return
+            } catch (DataIntegrityViolationException e){
+                render "ERROR*Ha ocurrido un error al eliminar el Item"
+                return
+            }
+        }else{
+            render "ERROR*No se encontró el Item."
             return
         }
     }

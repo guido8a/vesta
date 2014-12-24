@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Auxiliar</title>
+        <title>Lista de Auxiliares</title>
     </head>
     <body>
 

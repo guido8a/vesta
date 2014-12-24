@@ -26,7 +26,7 @@
         <div class="form-group keeptogether ${hasErrors(bean: catalogoInstance, field: 'codigo', 'error')} required">
             <span class="grupo">
                 <label for="codigo" class="col-md-2 control-label">
-                    Codigo
+                    Código
                 </label>
                 <div class="col-md-6">
                     <g:textField name="codigo" maxlength="8" required="" class="form-control required unique noEspacios" value="${catalogoInstance?.codigo}"/>
@@ -81,7 +81,7 @@
             messages : {
                 
                 codigo: {
-                    remote: "Ya existe Codigo"
+                    remote: "Ya existe Código"
                 }
                 
             }

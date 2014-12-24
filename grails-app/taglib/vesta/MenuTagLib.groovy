@@ -75,7 +75,7 @@ class MenuTagLib {
         }
         def strItems = ""
         if (!attrs.title) {
-            attrs.title = "Happy"
+            attrs.title = "Vesta"
         }
 //        attrs.title = attrs.title.toUpperCase()
         if (usuario) {

@@ -46,8 +46,9 @@ class ItemCatalogo   {
      */
     static constraints = {
         nombre(size: 1..255, blank: true, nullable: true, attributes: [mensaje: 'Nombre del item'])
-        nombre(size: 1..15, blank: true, nullable: true, attributes: [mensaje: 'Código del item'])
-        nombre(size: 1..255, blank: false, nullable: false, attributes: [mensaje: 'Descripción del item'])
+        orden(size: 1..10, blank: true, nullable: true, attributes: [mensaje: 'Orden del item'])
+        codigo(size: 1..15, blank: true, nullable: true, attributes: [mensaje: 'Código del item'])
+        descripcion(size: 1..255, blank: false, nullable: false, attributes: [mensaje: 'Descripción del item'])
     }
 
     /**
