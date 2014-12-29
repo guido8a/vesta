@@ -8,7 +8,7 @@
 
     <g:if test="${detalleMontoSolicitudInstance?.anio}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Anio
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${detalleMontoSolicitudInstance?.monto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Monto
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${detalleMontoSolicitudInstance?.solicitud}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Solicitud
             </div>
             

@@ -8,7 +8,7 @@
 
     <g:if test="${contratistaInstance?.ruc}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Ruc
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${contratistaInstance?.direccion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Direccion
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${contratistaInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${contratistaInstance?.nombreCont}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre Cont
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${contratistaInstance?.nombre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${contratistaInstance?.apellido}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Apellido
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${contratistaInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${contratistaInstance?.telefono}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Telefono
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${contratistaInstance?.mail}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Mail
             </div>
             
@@ -125,7 +125,7 @@
     
     <g:if test="${contratistaInstance?.estado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Estado
             </div>
             

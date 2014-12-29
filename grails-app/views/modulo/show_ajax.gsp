@@ -8,7 +8,7 @@
 
     <g:if test="${moduloInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripcion
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${moduloInstance?.nombre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${moduloInstance?.orden}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Orden
             </div>
             

@@ -8,7 +8,7 @@
 
     <g:if test="${tipoModificacionInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripcion
             </div>
             

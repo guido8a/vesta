@@ -8,7 +8,7 @@
 
     <g:if test="${tipoContratoInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripcion
             </div>
             

@@ -5,6 +5,7 @@
 .modal-contenido {
     max-height : 480px;
     overflow-y : auto;
+    overflow-x : hidden;
 }
 
 .long .bootbox-body {

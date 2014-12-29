@@ -8,7 +8,7 @@
 
     <g:if test="${procesoAvalInstance?.nombre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${procesoAvalInstance?.fechaFin}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Fin
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${procesoAvalInstance?.fechaInicio}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Inicio
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${procesoAvalInstance?.informar}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Informar
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${procesoAvalInstance?.proyecto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Proyecto
             </div>
             

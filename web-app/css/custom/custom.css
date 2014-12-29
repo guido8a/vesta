@@ -1,8 +1,8 @@
 body {
-    font-size: 14px; /* gdo*/
-    color: #444;
-    padding-top: 120px;
-    padding-bottom: 30px;
+    font-size      : 14px; /* gdo*/
+    color          : #444;
+    padding-top    : 120px;
+    padding-bottom : 30px;
 }
 
 .container {
@@ -11,76 +11,80 @@ body {
     /*border-right : solid 1px #555;*/
 }
 
+.show-label {
+    font-weight : bold;
+}
+
 .toolbar {
-    margin-bottom: 10px;
+    margin-bottom : 10px;
 }
 
 /* para los iconos grandotes */
 .fa-6x {
-    font-size: 6em;
+    font-size : 6em;
 }
 
 /* el mensaje de not found */
 .not-found {
-    height: 110px;
-    margin-top: 25px;
+    height     : 110px;
+    margin-top : 25px;
 }
 
 .not-found > i {
-    margin-right: 10px;
-    margin-left: 20px;
+    margin-right : 10px;
+    margin-left  : 20px;
 }
 
 .not-found > p {
-    line-height: 75px;
-    font-size: 20px;
-    font-weight: bold;
+    line-height : 75px;
+    font-size   : 20px;
+    font-weight : bold;
 }
 
 .hasCountdown {
-    border-color: #1260B3 !important;
-    color: #1260B3 !important;
-    background-color: #ffab19;
+    border-color     : #1260B3 !important;
+    color            : #1260B3 !important;
+    background-color : #FFAB19;
 }
 
 .col2 {
-    -moz-column-count: 2; /* Firefox */
-    -webkit-column-count: 2; /* Safari and Chrome */
-    column-count: 2;
+    -moz-column-count    : 2; /* Firefox */
+    -webkit-column-count : 2; /* Safari and Chrome */
+    column-count         : 2;
 }
 
 .col3 {
-    -moz-column-count: 3; /* Firefox */
-    -webkit-column-count: 3; /* Safari and Chrome */
-    column-count: 3;
+    -moz-column-count    : 3; /* Firefox */
+    -webkit-column-count : 3; /* Safari and Chrome */
+    column-count         : 3;
 }
 
 .col4 {
-    -moz-column-count: 4; /* Firefox */
-    -webkit-column-count: 4; /* Safari and Chrome */
-    column-count: 4;
+    -moz-column-count    : 4; /* Firefox */
+    -webkit-column-count : 4; /* Safari and Chrome */
+    column-count         : 4;
 }
 
 .form-group, .grupo {
-    -webkit-column-break-inside: avoid;
-    -moz-column-break-inside: avoid;
-    -o-column-break-inside: avoid;
-    -ms-column-break-inside: avoid;
-    column-break-inside: avoid;
+    -webkit-column-break-inside : avoid;
+    -moz-column-break-inside    : avoid;
+    -o-column-break-inside      : avoid;
+    -ms-column-break-inside     : avoid;
+    column-break-inside         : avoid;
 }
 
 .keeptogether {
-    display: inline-block;
-    width: 100%;
+    display : inline-block;
+    width   : 100%;
 }
 
 .iconMargin {
-    margin-right: 10px;
+    margin-right : 10px;
 }
 
 .found {
-    background-color: #157ab5;
-    color: #f5f5f5;
+    background-color : #157AB5;
+    color            : #F5F5F5;
 }
 
 .stacktrace {
@@ -89,49 +93,49 @@ body {
     /*padding-left   : 15px;*/
     /*padding-top    : 20px;*/
     /*padding-bottom : 20px;*/
-    border: black dotted 1px
+    border : black dotted 1px
 }
 
 .row-low-margin-top {
-    margin-top: 0 !important;
+    margin-top : 0 !important;
 }
 
 .linea {
-    position: absolute;
-    left: 30px;
-    bottom: 5px;
-    width: 1px;
-    border-left: 1px solid #0088CC;
-    height: 95%;
+    position    : absolute;
+    left        : 30px;
+    bottom      : 5px;
+    width       : 1px;
+    border-left : 1px solid #0088CC;
+    height      : 95%;
 
 }
 
 .label-azul {
-    color: #0061CC;
+    color       : #0061CC;
     /*font-family : 'open sans condensed';*/
-    font-weight: bold;
-    font-size: 14px;
+    font-weight : bold;
+    font-size   : 14px;
     /*text-shadow : -2px 2px 1px rgba(0, 0, 0, 0.25);*/
-    line-height: 14px;
+    line-height : 14px;
 
 }
 
 .label-shared {
-    width: auto;
-    display: inline;
-    font-weight: normal;
+    width       : auto;
+    display     : inline;
+    font-weight : normal;
 }
 
 .row {
-    margin-top: 15px;
+    margin-top : 15px;
 }
 
 .padding-sm {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top    : 5px;
+    padding-bottom : 5px;
 }
 
 .margin-sm {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top    : 5px;
+    margin-bottom : 5px;
 }

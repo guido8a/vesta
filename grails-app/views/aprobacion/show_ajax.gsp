@@ -8,7 +8,7 @@
 
     <g:if test="${aprobacionInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${aprobacionInstance?.fechaRealizacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Realizacion
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${aprobacionInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${aprobacionInstance?.asistentes}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Asistentes
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${aprobacionInstance?.pathPdf}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Pdf
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${aprobacionInstance?.numero}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Numero
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${aprobacionInstance?.aprobada}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Aprobada
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${aprobacionInstance?.creadoPor}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Creado Por
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${aprobacionInstance?.firmaDireccionPlanificacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Firma Direccion Planificacion
             </div>
             
@@ -125,7 +125,7 @@
     
     <g:if test="${aprobacionInstance?.firmaGerenciaTecnica}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Firma Gerencia Tecnica
             </div>
             
@@ -138,7 +138,7 @@
     
     <g:if test="${aprobacionInstance?.firmaGerenciaPlanificacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Firma Gerencia Planificacion
             </div>
             
@@ -151,7 +151,7 @@
     
     <g:if test="${aprobacionInstance?.solicitudes}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Solicitudes
             </div>
             

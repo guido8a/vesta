@@ -8,7 +8,7 @@
 
     <g:if test="${itemCatalogoInstance?.nombre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${itemCatalogoInstance?.catalogo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Catalogo
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${itemCatalogoInstance?.codigo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Codigo
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${itemCatalogoInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripcion
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${itemCatalogoInstance?.estado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Estado
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${itemCatalogoInstance?.orden}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Orden
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${itemCatalogoInstance?.original}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Original
             </div>
             

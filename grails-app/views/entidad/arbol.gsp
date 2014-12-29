@@ -13,11 +13,12 @@
 
         <script src="${resource(dir: 'js/plugins/jstree-3.0.8/dist', file: 'jstree.min.js')}"></script>
         <link href="${resource(dir: 'js/plugins/jstree-3.0.8/dist/themes/default', file: 'style.min.css')}" rel="stylesheet">
+        <link href="${resource(dir: 'css/custom', file: 'jstree-context.css')}" rel="stylesheet">
 
         <style type="text/css">
         #tree {
-            overflow-y: auto;
-            height: 440px;
+            overflow-y : auto;
+            height     : 440px;
         }
         </style>
 
@@ -61,6 +62,153 @@
                 var nodeId = nodeStrId.split("_")[1];
                 var nodeType = $node.data("jstree").type;
                 var nodeUsu = $node.data("usuario");
+
+                var esRoot = nodeType == "root";
+                var esYachay = nodeType == "yachay";
+                var esUnidad = nodeType.contains("unidad");
+                var esUsuario = nodeType.contains("usuario");
+
+                var items = {};
+
+                var agregarEntidad = {
+                    label : "Agregar entidad",
+                    icon  : "fa fa-home text-success",
+                    action: function () {
+                    }
+                };
+                var docsEntidad = {
+                    label          : "Documentos entidad",
+                    icon           : "fa fa-files-o",
+                    separator_after: true,
+                    action         : function () {
+
+                    }
+                };
+                var agregarUsu = {
+                    label          : "Agregar usuario",
+                    icon           : "fa fa-user text-success",
+                    separator_after: true,
+                    action         : function () {
+
+                    }
+                };
+                var responsablesUnidad = {
+                    label : "Responsables",
+                    icon  : "fa fa-users text-info",
+                    action: function () {
+
+                    }
+                };
+                var verEntidad = {
+                    label           : "Ver datos de la entidad",
+                    icon            : "fa fa-laptop text-info",
+                    separator_before: true,
+                    action          : function () {
+                        $.ajax({
+                            type   : "POST",
+                            url    : "${createLink(controller: "unidadEjecutora", action:'show_ajax')}",
+                            data   : {
+                                id: nodeId
+                            },
+                            success: function (msg) {
+                                bootbox.dialog({
+                                    title  : "Ver Entidad",
+                                    message: msg,
+                                    buttons: {
+                                        ok: {
+                                            label    : "Aceptar",
+                                            className: "btn-primary",
+                                            callback : function () {
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                };
+                var editarEntidad = {
+                    label : "Editar datos de la entidad",
+                    icon  : "fa fa-pencil text-info",
+                    action: function () {
+
+                    }
+                };
+                var presupuestoEntidad = {
+                    label           : "Presupuesto entidad",
+                    icon            : "fa fa-money",
+                    separator_before: true,
+                    action          : function () {
+
+                    }
+                };
+                var modificarPresupuesto = {
+                    label : "Modificar presupuesto",
+                    icon  : "fa fa-calculator",
+                    action: function () {
+
+                    }
+                };
+
+                var verUsuario = {
+                    label           : "Ver datos del usuario",
+                    icon            : "fa fa-laptop text-info",
+                    separator_before: true,
+                    action          : function () {
+                        $.ajax({
+                            type   : "POST",
+                            url    : "${createLink(controller: "persona", action:'show_ajax')}",
+                            data   : {
+                                id: nodeId
+                            },
+                            success: function (msg) {
+                                bootbox.dialog({
+                                    title  : "Ver Usuario",
+                                    message: msg,
+                                    buttons: {
+                                        ok: {
+                                            label    : "Aceptar",
+                                            className: "btn-primary",
+                                            callback : function () {
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                };
+                var editarUsuario = {
+                    label           : "Editar datos del usuario",
+                    icon            : "fa fa-pencil text-info",
+                    separator_before: true,
+                    action          : function () {
+
+                    }
+                };
+
+                if (esRoot) {
+                    items.agregarEntidad = agregarEntidad;
+                } else if (esYachay) {
+                    items.agregarEntidad = agregarEntidad;
+                    items.presupuestoEntidad = presupuestoEntidad;
+                    items.modificarPresupuesto = modificarPresupuesto;
+                    items.documentos = docsEntidad;
+                    items.agregarUsuario = agregarUsu;
+                    items.ver = verEntidad;
+                    items.editar = editarEntidad;
+                } else if (esUnidad) {
+                    items.agregarEntidad = agregarEntidad;
+                    items.documentos = docsEntidad;
+                    items.agregarUsuario = agregarUsu;
+                    items.responsables = responsablesUnidad;
+                    items.ver = verEntidad;
+                    items.editar = editarEntidad;
+                } else if (esUsuario) {
+                    items.ver = verUsuario;
+                    items.editar = editarUsuario;
+                }
+                return items;
             }
 
             $(function () {
@@ -81,7 +229,7 @@
                         },
                         data          : {
                             async: false,
-                            url  : '${createLink(action:"loadTreePart")}',
+                            url  : '${createLink(action:"loadTreePart_ajax")}',
                             data : function (node) {
                                 return {
                                     id   : node.id,
@@ -112,25 +260,28 @@
                         }
                     },
                     types      : {
-                        root           : {
+                        root               : {
                             icon: "fa fa-folder text-warning"
                         },
-                        padreActivo    : {
+                        yachay             : {
+                            icon: "fa fa-building text-info"
+                        },
+                        unidadPadreActivo  : {
                             icon: "fa fa-building-o text-info"
                         },
-                        padreInactivo  : {
+                        unidadPadreInactivo: {
                             icon: "fa fa-building-o text-muted"
                         },
-                        hijoActivo     : {
+                        unidadHijoActivo   : {
                             icon: "fa fa-home text-success"
                         },
-                        hijoInactivo   : {
+                        unidadHijoInactivo : {
                             icon: "fa fa-home text-muted"
                         },
-                        usuarioActivo  : {
+                        usuarioActivo      : {
                             icon: "fa fa-user text-info"
                         },
-                        usuarioInactivo: {
+                        usuarioInactivo    : {
                             icon: "fa fa-user text-muted"
                         }
                     }

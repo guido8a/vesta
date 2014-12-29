@@ -8,7 +8,7 @@
 
     <g:if test="${asignacionInstance?.anio}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Anio
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${asignacionInstance?.fuente}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fuente
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${asignacionInstance?.marcoLogico}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Marco Logico
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${asignacionInstance?.actividad}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Actividad
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${asignacionInstance?.presupuesto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Presupuesto
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${asignacionInstance?.tipoGasto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Tipo Gasto
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${asignacionInstance?.componente}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Componente
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${asignacionInstance?.planificado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Planificado
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${asignacionInstance?.redistribucion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Redistribucion
             </div>
             
@@ -125,7 +125,7 @@
     
     <g:if test="${asignacionInstance?.unidad}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Unidad
             </div>
             
@@ -138,7 +138,7 @@
     
     <g:if test="${asignacionInstance?.reubicada}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Reubicada
             </div>
             
@@ -151,7 +151,7 @@
     
     <g:if test="${asignacionInstance?.programa}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Programa
             </div>
             
@@ -164,7 +164,7 @@
     
     <g:if test="${asignacionInstance?.meta}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Meta
             </div>
             
@@ -177,7 +177,7 @@
     
     <g:if test="${asignacionInstance?.indicador}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Indicador
             </div>
             
@@ -190,7 +190,7 @@
     
     <g:if test="${asignacionInstance?.padre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Padre
             </div>
             
@@ -203,7 +203,7 @@
     
     <g:if test="${asignacionInstance?.priorizado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Priorizado
             </div>
             

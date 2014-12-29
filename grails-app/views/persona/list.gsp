@@ -1,10 +1,10 @@
 
-<%@ page import="vesta.parametros.TipoBien" %>
+<%@ page import="vesta.seguridad.Persona" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de TipoBien</title>
+        <title>Lista de Persona</title>
     </head>
     <body>
 
@@ -19,9 +19,9 @@
             </div>
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">
+                    <input type="text" class="form-control input-search" placeholder="Buscar" value="${params.search}">
                     <span class="input-group-btn">
-                        <g:link controller="tipobien" action="list" class="btn btn-default btn-search">
+                        <g:link controller="persona" action="list" class="btn btn-default btn-search">
                             <i class="fa fa-search"></i>&nbsp;
                         </g:link>
                     </span>
@@ -33,23 +33,43 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="descripcion" title="Descripcion" />
+                    <g:sortableColumn property="cedula" title="Cedula" />
+                    
+                    <g:sortableColumn property="nombre" title="Nombre" />
+                    
+                    <g:sortableColumn property="apellido" title="Apellido" />
+                    
+                    <g:sortableColumn property="sexo" title="Sexo" />
+                    
+                    <g:sortableColumn property="discapacitado" title="Discapacitado" />
+                    
+                    <g:sortableColumn property="fechaNacimiento" title="Fecha Nacimiento" />
                     
                 </tr>
             </thead>
             <tbody>
-                <g:if test="${tipoBienInstanceCount > 0}">
-                    <g:each in="${tipoBienInstanceList}" status="i" var="tipoBienInstance">
-                        <tr data-id="${tipoBienInstance.id}">
+                <g:if test="${personaInstanceCount > 0}">
+                    <g:each in="${personaInstanceList}" status="i" var="personaInstance">
+                        <tr data-id="${personaInstance.id}">
                             
-                            <td>${tipoBienInstance.descripcion}</td>
+                            <td>${personaInstance.cedula}</td>
+                            
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${personaInstance}" field="nombre"/></elm:textoBusqueda></td>
+                            
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${personaInstance}" field="apellido"/></elm:textoBusqueda></td>
+                            
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${personaInstance}" field="sexo"/></elm:textoBusqueda></td>
+                            
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${personaInstance}" field="discapacitado"/></elm:textoBusqueda></td>
+                            
+                            <td><g:formatDate date="${personaInstance.fechaNacimiento}" format="dd-MM-yyyy" /></td>
                             
                         </tr>
                     </g:each>
                 </g:if>
                 <g:else>
                     <tr class="danger">
-                        <td class="text-center" colspan="1">
+                        <td class="text-center" colspan="18">
                             <g:if test="${params.search && params.search!= ''}">
                                 No se encontraron resultados para su búsqueda
                             </g:if>
@@ -62,16 +82,16 @@
             </tbody>
         </table>
 
-        <elm:pagination total="${tipoBienInstanceCount}" params="${params}"/>
+        <elm:pagination total="${personaInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmTipoBien");
+                var $form = $("#frmPersona");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando TipoBien");
+                    openLoader("Guardando Persona");
                     $.ajax({
                         type    : "POST",
                         url     : $form.attr("action"),
@@ -97,7 +117,7 @@
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                              "¿Está seguro que desea eliminar el TipoBien seleccionado? Esta acción no se puede deshacer.</p>",
+                              "¿Está seguro que desea eliminar el Persona seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -109,7 +129,7 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando TipoBien");
+                                openLoader("Eliminando Persona");
                                 $.ajax({
                                     type    : "POST",
                                     url     : '${createLink(action:'delete_ajax')}',
@@ -143,7 +163,9 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " TipoBien",
+                            title   : title + " Persona",
+                            
+                            class   : "modal-lg",
                             
                             message : msg,
                             buttons : {
@@ -196,7 +218,7 @@
                                     },
                                     success : function (msg) {
                                         bootbox.dialog({
-                                            title   : "Ver TipoBien",
+                                            title   : "Ver Persona",
                                             message : msg,
                                             buttons : {
                                                 ok : {

@@ -90,7 +90,7 @@
                                 No se encontraron resultados para su búsqueda
                             </g:if>
                             <g:else>
-                                No se econtraron registros que mostrar
+                                No se encontraron registros que mostrar
                             </g:else>
                         </td>
                     </tr>

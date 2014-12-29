@@ -8,7 +8,7 @@
 
     <g:if test="${avanceAvanceInstance?.avance}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Avance
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${avanceAvanceInstance?.avanceFisico}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Avance Fisico
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${avanceAvanceInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             

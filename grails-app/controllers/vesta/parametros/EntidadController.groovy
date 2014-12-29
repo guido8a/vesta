@@ -182,7 +182,7 @@ class EntidadController extends Shield {
     /**
      * Acción llamada con ajax que carga el árbol de la estructura institucional
      */
-    def loadTreePart() {
+    def loadTreePart_ajax() {
         render(makeTreeNode(params))
     }
 
@@ -238,10 +238,16 @@ class EntidadController extends Shield {
                     }
                     tp = "dep"
                     def hijosH = UnidadEjecutora.findAllByPadre(hijo, [sort: "nombre"])
-                    rel = (hijosH.size() > 0) ? "padre" : "hijo"
+                    if (hijo.padre) {
+                        rel = (hijosH.size() > 0) ? "unidadPadre" : "unidadHijo"
+                    } else {
+                        rel = "yachay"
+                    }
 
                     /* aqui se deberia validar si está o no activo pero las unidades no tienen ese campo asiq se muestran todas como activas */
-                    rel += "Activo"
+                    if (hijo.padre) {
+                        rel += "Activo"
+                    }
 
                     hijosH += Persona.findAllByUnidad(hijo, [sort: "apellido"])
                     clase = (hijosH.size() > 0) ? "jstree-closed hasChildren" : ""

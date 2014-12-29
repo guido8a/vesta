@@ -8,7 +8,7 @@
 
     <g:if test="${estrategiaInstance?.orden}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Orden
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${estrategiaInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripción
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${estrategiaInstance?.objetivoEstrategico}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Objetivo Estratégico
             </div>
             

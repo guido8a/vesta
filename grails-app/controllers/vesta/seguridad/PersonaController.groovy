@@ -1,13 +1,13 @@
-package vesta.parametros
+package vesta.seguridad
 
 import org.springframework.dao.DataIntegrityViolationException
 import vesta.seguridad.Shield
 
 
 /**
- * Controlador que muestra las pantallas de manejo de UnidadEjecutora
+ * Controlador que muestra las pantallas de manejo de Persona
  */
-class UnidadEjecutoraController extends Shield {
+class PersonaController extends Shield {
 
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
@@ -34,24 +34,28 @@ class UnidadEjecutoraController extends Shield {
         }
         def list
         if (params.search) {
-            def c = UnidadEjecutora.createCriteria()
+            def c = Persona.createCriteria()
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
 
-                    ilike("codigo", "%" + params.search + "%")
+                    ilike("apellido", "%" + params.search + "%")
+                    ilike("autorizacion", "%" + params.search + "%")
+                    ilike("cedula", "%" + params.search + "%")
                     ilike("direccion", "%" + params.search + "%")
-                    ilike("email", "%" + params.search + "%")
+                    ilike("discapacitado", "%" + params.search + "%")
                     ilike("fax", "%" + params.search + "%")
+                    ilike("login", "%" + params.search + "%")
+                    ilike("mail", "%" + params.search + "%")
                     ilike("nombre", "%" + params.search + "%")
-                    ilike("objetivo", "%" + params.search + "%")
                     ilike("observaciones", "%" + params.search + "%")
+                    ilike("sexo", "%" + params.search + "%")
                     ilike("sigla", "%" + params.search + "%")
                     ilike("telefono", "%" + params.search + "%")
                 }
             }
         } else {
-            list = UnidadEjecutora.list(params)
+            list = Persona.list(params)
         }
         if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
             params.offset = params.offset.toInteger() - 1
@@ -62,55 +66,48 @@ class UnidadEjecutoraController extends Shield {
 
     /**
      * Acción que muestra la lista de elementos
-     * @return unidadEjecutoraInstanceList: la lista de elementos filtrados, unidadEjecutoraInstanceCount: la cantidad total de elementos (sin máximo)
+     * @return personaInstanceList: la lista de elementos filtrados, personaInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
-        def unidadEjecutoraInstanceList = getList(params, false)
-        def unidadEjecutoraInstanceCount = getList(params, true).size()
-        return [unidadEjecutoraInstanceList: unidadEjecutoraInstanceList, unidadEjecutoraInstanceCount: unidadEjecutoraInstanceCount]
+        def personaInstanceList = getList(params, false)
+        def personaInstanceCount = getList(params, true).size()
+        return [personaInstanceList: personaInstanceList, personaInstanceCount: personaInstanceCount]
     }
 
     /**
      * Acción llamada con ajax que muestra la información de un elemento particular
-     * @return unidadEjecutoraInstance el objeto a mostrar cuando se encontró el elemento
+     * @return personaInstance el objeto a mostrar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def show_ajax() {
         if (params.id) {
-            def unidadEjecutoraInstance = UnidadEjecutora.get(params.id)
-            if (!unidadEjecutoraInstance) {
-                render "ERROR*No se encontró UnidadEjecutora."
+            def personaInstance = Persona.get(params.id)
+            if (!personaInstance) {
+                render "ERROR*No se encontró Persona."
                 return
             }
-            def c = PresupuestoUnidad.createCriteria()
-            def presupuestos = c.list {
-                eq("unidad", unidadEjecutoraInstance)
-                anio {
-                    order("anio", "asc")
-                }
-            }
-            return [unidadEjecutoraInstance: unidadEjecutoraInstance, presupuestos: presupuestos]
+            return [personaInstance: personaInstance]
         } else {
-            render "ERROR*No se encontró UnidadEjecutora."
+            render "ERROR*No se encontró Persona."
         }
     } //show para cargar con ajax en un dialog
 
     /**
      * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
-     * @return unidadEjecutoraInstance el objeto a modificar cuando se encontró el elemento
+     * @return personaInstance el objeto a modificar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def form_ajax() {
-        def unidadEjecutoraInstance = new UnidadEjecutora()
+        def personaInstance = new Persona()
         if (params.id) {
-            unidadEjecutoraInstance = UnidadEjecutora.get(params.id)
-            if (!unidadEjecutoraInstance) {
-                render "ERROR*No se encontró UnidadEjecutora."
+            personaInstance = Persona.get(params.id)
+            if (!personaInstance) {
+                render "ERROR*No se encontró Persona."
                 return
             }
         }
-        unidadEjecutoraInstance.properties = params
-        return [unidadEjecutoraInstance: unidadEjecutoraInstance]
+        personaInstance.properties = params
+        return [personaInstance: personaInstance]
     } //form para cargar con ajax en un dialog
 
     /**
@@ -118,20 +115,20 @@ class UnidadEjecutoraController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
-        def unidadEjecutoraInstance = new UnidadEjecutora()
+        def personaInstance = new Persona()
         if (params.id) {
-            unidadEjecutoraInstance = UnidadEjecutora.get(params.id)
-            if (!unidadEjecutoraInstance) {
-                render "ERROR*No se encontró UnidadEjecutora."
+            personaInstance = Persona.get(params.id)
+            if (!personaInstance) {
+                render "ERROR*No se encontró Persona."
                 return
             }
         }
-        unidadEjecutoraInstance.properties = params
-        if (!unidadEjecutoraInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar UnidadEjecutora: " + renderErrors(bean: unidadEjecutoraInstance)
+        personaInstance.properties = params
+        if (!personaInstance.save(flush: true)) {
+            render "ERROR*Ha ocurrido un error al guardar Persona: " + renderErrors(bean: personaInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de UnidadEjecutora exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Persona exitosa."
         return
     } //save para grabar desde ajax
 
@@ -141,63 +138,63 @@ class UnidadEjecutoraController extends Shield {
      */
     def delete_ajax() {
         if (params.id) {
-            def unidadEjecutoraInstance = UnidadEjecutora.get(params.id)
-            if (!unidadEjecutoraInstance) {
-                render "ERROR*No se encontró UnidadEjecutora."
+            def personaInstance = Persona.get(params.id)
+            if (!personaInstance) {
+                render "ERROR*No se encontró Persona."
                 return
             }
             try {
-                unidadEjecutoraInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de UnidadEjecutora exitosa."
+                personaInstance.delete(flush: true)
+                render "SUCCESS*Eliminación de Persona exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar UnidadEjecutora"
+                render "ERROR*Ha ocurrido un error al eliminar Persona"
                 return
             }
         } else {
-            render "ERROR*No se encontró UnidadEjecutora."
+            render "ERROR*No se encontró Persona."
             return
         }
     } //delete para eliminar via ajax
 
     /**
-     * Acción llamada con ajax que valida que no se duplique la propiedad codigo
+     * Acción llamada con ajax que valida que no se duplique la propiedad login
      * @render boolean que indica si se puede o no utilizar el valor recibido
      */
-    def validar_unique_codigo_ajax() {
-        params.codigo = params.codigo.toString().trim()
+    def validar_unique_login_ajax() {
+        params.login = params.login.toString().trim()
         if (params.id) {
-            def obj = UnidadEjecutora.get(params.id)
-            if (obj.codigo.toLowerCase() == params.codigo.toLowerCase()) {
+            def obj = Persona.get(params.id)
+            if (obj.login.toLowerCase() == params.login.toLowerCase()) {
                 render true
                 return
             } else {
-                render UnidadEjecutora.countByCodigoIlike(params.codigo) == 0
+                render Persona.countByLoginIlike(params.login) == 0
                 return
             }
         } else {
-            render UnidadEjecutora.countByCodigoIlike(params.codigo) == 0
+            render Persona.countByLoginIlike(params.login) == 0
             return
         }
     }
 
     /**
-     * Acción llamada con ajax que valida que no se duplique la propiedad email
+     * Acción llamada con ajax que valida que no se duplique la propiedad mail
      * @render boolean que indica si se puede o no utilizar el valor recibido
      */
-    def validar_unique_email_ajax() {
-        params.email = params.email.toString().trim()
+    def validar_unique_mail_ajax() {
+        params.mail = params.mail.toString().trim()
         if (params.id) {
-            def obj = UnidadEjecutora.get(params.id)
-            if (obj.email.toLowerCase() == params.email.toLowerCase()) {
+            def obj = Persona.get(params.id)
+            if (obj.mail.toLowerCase() == params.mail.toLowerCase()) {
                 render true
                 return
             } else {
-                render UnidadEjecutora.countByEmailIlike(params.email) == 0
+                render Persona.countByMailIlike(params.mail) == 0
                 return
             }
         } else {
-            render UnidadEjecutora.countByEmailIlike(params.email) == 0
+            render Persona.countByMailIlike(params.mail) == 0
             return
         }
     }

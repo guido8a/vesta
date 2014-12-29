@@ -8,7 +8,7 @@
 
     <g:if test="${certificacionInstance?.usuario}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Usuario
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${certificacionInstance?.asignacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Asignacion
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${certificacionInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${certificacionInstance?.fechaRevision}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Revision
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${certificacionInstance?.monto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Monto
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${certificacionInstance?.concepto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Concepto
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${certificacionInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${certificacionInstance?.estado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Estado
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${certificacionInstance?.memorandoSolicitud}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Memorando Solicitud
             </div>
             
@@ -125,7 +125,7 @@
     
     <g:if test="${certificacionInstance?.memorandoCertificado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Memorando Certificado
             </div>
             
@@ -138,7 +138,7 @@
     
     <g:if test="${certificacionInstance?.acuerdo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Acuerdo
             </div>
             
@@ -151,7 +151,7 @@
     
     <g:if test="${certificacionInstance?.archivo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Archivo
             </div>
             
@@ -164,7 +164,7 @@
     
     <g:if test="${certificacionInstance?.pathSolicitud}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Solicitud
             </div>
             
@@ -177,7 +177,7 @@
     
     <g:if test="${certificacionInstance?.pathAnulacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Anulacion
             </div>
             
@@ -190,7 +190,7 @@
     
     <g:if test="${certificacionInstance?.fechaAnulacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Anulacion
             </div>
             
@@ -203,7 +203,7 @@
     
     <g:if test="${certificacionInstance?.fechaLiberacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Liberacion
             </div>
             
@@ -216,7 +216,7 @@
     
     <g:if test="${certificacionInstance?.conceptoAnulacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Concepto Anulacion
             </div>
             
@@ -229,7 +229,7 @@
     
     <g:if test="${certificacionInstance?.pathSolicitudAnulacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Solicitud Anulacion
             </div>
             
@@ -242,7 +242,7 @@
     
     <g:if test="${certificacionInstance?.pathLiberacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Liberacion
             </div>
             
@@ -255,7 +255,7 @@
     
     <g:if test="${certificacionInstance?.numeroContrato}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Numero Contrato
             </div>
             
@@ -268,7 +268,7 @@
     
     <g:if test="${certificacionInstance?.fechaRevisionAnulacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Revision Anulacion
             </div>
             
@@ -281,7 +281,7 @@
     
     <g:if test="${certificacionInstance?.montoLiberacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Monto Liberacion
             </div>
             

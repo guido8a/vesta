@@ -8,7 +8,7 @@
 
     <g:if test="${cargoPersonalInstance?.codigo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Código
             </div>
 
@@ -21,7 +21,7 @@
 
     <g:if test="${cargoPersonalInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripción
             </div>
             

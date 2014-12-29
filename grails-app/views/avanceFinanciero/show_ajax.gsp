@@ -8,7 +8,7 @@
 
     <g:if test="${avanceFinancieroInstance?.proceso}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Proceso
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${avanceFinancieroInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${avanceFinancieroInstance?.contrato}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Contrato
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${avanceFinancieroInstance?.certificado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Certificado
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${avanceFinancieroInstance?.aval}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Aval
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${avanceFinancieroInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${avanceFinancieroInstance?.monto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Monto
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${avanceFinancieroInstance?.valor}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Valor
             </div>
             

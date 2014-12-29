@@ -8,7 +8,7 @@
 
     <g:if test="${avanceFisicoInstance?.proceso}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Proceso
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${avanceFisicoInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${avanceFisicoInstance?.completado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Completado
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${avanceFisicoInstance?.inicio}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Inicio
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${avanceFisicoInstance?.fin}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fin
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${avanceFisicoInstance?.avance}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Avance
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${avanceFisicoInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             

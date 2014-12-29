@@ -8,7 +8,7 @@
 
     <g:if test="${entidadInstance?.nombre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${entidadInstance?.direccion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Direccion
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${entidadInstance?.sigla}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Sigla
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${entidadInstance?.objetivo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Objetivo
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${entidadInstance?.telefono}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Telefono
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${entidadInstance?.fax}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fax
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${entidadInstance?.email}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Email
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${entidadInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             

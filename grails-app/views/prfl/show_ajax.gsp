@@ -8,7 +8,7 @@
 
     <g:if test="${prflInstance?.codigo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Codigo
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${prflInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripcion
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${prflInstance?.nombre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${prflInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${prflInstance?.padre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Padre
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${prflInstance?.perfiles}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Perfiles
             </div>
             
@@ -90,7 +90,7 @@
     
     <g:if test="${prflInstance?.permisos}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Permisos
             </div>
             

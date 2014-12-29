@@ -8,7 +8,7 @@
 
     <g:if test="${estadoAvalInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripcion
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${estadoAvalInstance?.codigo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Codigo
             </div>
             

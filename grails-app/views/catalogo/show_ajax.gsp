@@ -8,7 +8,7 @@
 
     <g:if test="${catalogoInstance?.nombre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${catalogoInstance?.codigo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Código
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${catalogoInstance?.estado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Estado
             </div>
             
