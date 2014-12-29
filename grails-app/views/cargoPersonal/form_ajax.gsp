@@ -9,31 +9,44 @@
     <div class="modal-contenido">
     <g:form class="form-horizontal" name="frmCargoPersonal" role="form" action="save_ajax" method="POST">
         <g:hiddenField name="id" value="${cargoPersonalInstance?.id}" />
+        <g:if test="${band == 1}">
+            <div class="form-group keeptogether ${hasErrors(bean: cargoPersonalInstance, field: 'codigo', 'error')} ">
+                <span class="grupo">
+                    <label for="codigo" class="col-md-2 control-label">
+                        Código
+                    </label>
+                    <div class="col-md-6">
+                        <g:textField name="codigo" maxlength="4" style="width: 100px;" class="form-control input-sm unique noEspacios text-uppercase"  value="${cargoPersonalInstance?.codigo}"/>
+                    </div>
 
-        
+                </span>
+            </div>
+        </g:if>
+        <g:else>
+            <div class="form-group keeptogether ${hasErrors(bean: cargoPersonalInstance, field: 'codigo', 'error')} ">
+                <span class="grupo">
+                    <label for="codigo" class="col-md-2 control-label">
+                        Código
+                    </label>
+                    <div class="col-md-6">
+                        <g:textField name="codigo" maxlength="4" style="width: 100px" class="form-control input-sm unique noEspacios"  disabled="disabled" value="${cargoPersonalInstance?.codigo}"/>
+                    </div>
+
+                </span>
+            </div>
+        </g:else>
         <div class="form-group keeptogether ${hasErrors(bean: cargoPersonalInstance, field: 'descripcion', 'error')} required">
             <span class="grupo">
                 <label for="descripcion" class="col-md-2 control-label">
-                    Descripcion
+                    Descripción
                 </label>
-                <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="63" pattern="${cargoPersonalInstance.constraints.descripcion.matches}" required="" class="form-control input-sm required" value="${cargoPersonalInstance?.descripcion}"/>
+                <div class="col-md-8">
+                    <g:textField name="descripcion" style="width: 350px" maxlength="63" pattern="${cargoPersonalInstance.constraints.descripcion.matches}" required="" class="form-control input-sm required" value="${cargoPersonalInstance?.descripcion}"/>
                 </div>
-                 *
+                *
             </span>
         </div>
-        
-        <div class="form-group keeptogether ${hasErrors(bean: cargoPersonalInstance, field: 'codigo', 'error')} ">
-            <span class="grupo">
-                <label for="codigo" class="col-md-2 control-label">
-                    Codigo
-                </label>
-                <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="4" class="form-control input-sm unique noEspacios" value="${cargoPersonalInstance?.codigo}"/>
-                </div>
-                
-            </span>
-        </div>
+
         
     </g:form>
         </div>

@@ -72,12 +72,12 @@ class TipoInstitucionController extends Shield {
         if (params.id) {
             def tipoInstitucionInstance = TipoInstitucion.get(params.id)
             if (!tipoInstitucionInstance) {
-                render "ERROR*No se encontró TipoInstitucion."
+                render "ERROR*No se encontró Área de Gestión."
                 return
             }
             return [tipoInstitucionInstance: tipoInstitucionInstance]
         } else {
-            render "ERROR*No se encontró TipoInstitucion."
+            render "ERROR*No se encontró Área de Gestión."
         }
     } //show para cargar con ajax en un dialog
 
@@ -91,7 +91,7 @@ class TipoInstitucionController extends Shield {
         if (params.id) {
             tipoInstitucionInstance = TipoInstitucion.get(params.id)
             if (!tipoInstitucionInstance) {
-                render "ERROR*No se encontró TipoInstitucion."
+                render "ERROR*No se encontró el Área de Gestión."
                 return
             }
         }
@@ -108,16 +108,16 @@ class TipoInstitucionController extends Shield {
         if (params.id) {
             tipoInstitucionInstance = TipoInstitucion.get(params.id)
             if (!tipoInstitucionInstance) {
-                render "ERROR*No se encontró TipoInstitucion."
+                render "ERROR*No se encontró el Área de Gestión."
                 return
             }
         }
         tipoInstitucionInstance.properties = params
         if (!tipoInstitucionInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar TipoInstitucion: " + renderErrors(bean: tipoInstitucionInstance)
+            render "ERROR*Ha ocurrido un error al guardar Área de Gestión: " + renderErrors(bean: tipoInstitucionInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de TipoInstitucion exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Área de Gestión exitosa."
         return
     } //save para grabar desde ajax
 
@@ -129,19 +129,19 @@ class TipoInstitucionController extends Shield {
         if (params.id) {
             def tipoInstitucionInstance = TipoInstitucion.get(params.id)
             if (!tipoInstitucionInstance) {
-                render "ERROR*No se encontró TipoInstitucion."
+                render "ERROR*No se encontró Área de Gestión."
                 return
             }
             try {
                 tipoInstitucionInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de TipoInstitucion exitosa."
+                render "SUCCESS*Eliminación de Área de Gestión exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar TipoInstitucion"
+                render "ERROR*Ha ocurrido un error al eliminar Área de Gestión"
                 return
             }
         } else {
-            render "ERROR*No se encontró TipoInstitucion."
+            render "ERROR*No se encontró Área de Gestión."
             return
         }
     } //delete para eliminar via ajax

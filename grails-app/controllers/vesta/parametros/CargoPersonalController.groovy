@@ -72,12 +72,12 @@ class CargoPersonalController extends Shield {
         if (params.id) {
             def cargoPersonalInstance = CargoPersonal.get(params.id)
             if (!cargoPersonalInstance) {
-                render "ERROR*No se encontró CargoPersonal."
+                render "ERROR*No se encontró Cargo del Personal."
                 return
             }
             return [cargoPersonalInstance: cargoPersonalInstance]
         } else {
-            render "ERROR*No se encontró CargoPersonal."
+            render "ERROR*No se encontró Cargo del Personal."
         }
     } //show para cargar con ajax en un dialog
 
@@ -87,16 +87,20 @@ class CargoPersonalController extends Shield {
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def form_ajax() {
+        def band
         def cargoPersonalInstance = new CargoPersonal()
         if (params.id) {
             cargoPersonalInstance = CargoPersonal.get(params.id)
             if (!cargoPersonalInstance) {
-                render "ERROR*No se encontró CargoPersonal."
+                render "ERROR*No se encontró Cargo del Personal."
                 return
             }
+        }else{
+            band = 1
+            cargoPersonalInstance.properties = params
         }
-        cargoPersonalInstance.properties = params
-        return [cargoPersonalInstance: cargoPersonalInstance]
+
+        return [cargoPersonalInstance: cargoPersonalInstance, band: band]
     } //form para cargar con ajax en un dialog
 
     /**
@@ -108,16 +112,16 @@ class CargoPersonalController extends Shield {
         if (params.id) {
             cargoPersonalInstance = CargoPersonal.get(params.id)
             if (!cargoPersonalInstance) {
-                render "ERROR*No se encontró CargoPersonal."
+                render "ERROR*No se encontró Cargo del Personal."
                 return
             }
         }
         cargoPersonalInstance.properties = params
         if (!cargoPersonalInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar CargoPersonal: " + renderErrors(bean: cargoPersonalInstance)
+            render "ERROR*Ha ocurrido un error al guardar Cargo del Personal: " + renderErrors(bean: cargoPersonalInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de CargoPersonal exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Cargo del Personal exitosa."
         return
     } //save para grabar desde ajax
 
@@ -129,19 +133,19 @@ class CargoPersonalController extends Shield {
         if (params.id) {
             def cargoPersonalInstance = CargoPersonal.get(params.id)
             if (!cargoPersonalInstance) {
-                render "ERROR*No se encontró CargoPersonal."
+                render "ERROR*No se encontró Cargo del Personal."
                 return
             }
             try {
                 cargoPersonalInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de CargoPersonal exitosa."
+                render "SUCCESS*Eliminación de Cargo del Personal exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar CargoPersonal"
+                render "ERROR*Ha ocurrido un error al eliminar Cargo del Personal"
                 return
             }
         } else {
-            render "ERROR*No se encontró CargoPersonal."
+            render "ERROR*No se encontró Cargo del Personal."
             return
         }
     } //delete para eliminar via ajax

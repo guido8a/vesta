@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de CargoPersonal</title>
+        <title>Lista de Cargos del Personal</title>
     </head>
     <body>
 
@@ -14,7 +14,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <a href="#" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Nuevo Cargo
                 </a>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -32,10 +32,11 @@
         <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    
-                    <g:sortableColumn property="descripcion" title="Descripcion" />
-                    
-                    <g:sortableColumn property="codigo" title="Codigo" />
+
+                    <g:sortableColumn property="id" title="Id" />
+                    <g:sortableColumn property="codigo" title="Código" />
+                    <g:sortableColumn property="descripcion" title="Descripción" />
+
                     
                 </tr>
             </thead>
@@ -43,10 +44,12 @@
                 <g:if test="${cargoPersonalInstanceCount > 0}">
                     <g:each in="${cargoPersonalInstanceList}" status="i" var="cargoPersonalInstance">
                         <tr data-id="${cargoPersonalInstance.id}">
-                            
+
+                            <td>${cargoPersonalInstance?.id}</td>
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${cargoPersonalInstance}" field="codigo"/></elm:textoBusqueda></td>
                             <td>${cargoPersonalInstance.descripcion}</td>
                             
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${cargoPersonalInstance}" field="codigo"/></elm:textoBusqueda></td>
+
                             
                         </tr>
                     </g:each>
@@ -75,7 +78,7 @@
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando CargoPersonal");
+                    openLoader("Guardando Cargo del Personal");
                     $.ajax({
                         type    : "POST",
                         url     : $form.attr("action"),
@@ -101,7 +104,7 @@
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                              "¿Está seguro que desea eliminar el CargoPersonal seleccionado? Esta acción no se puede deshacer.</p>",
+                              "¿Está seguro que desea eliminar el Cargo del Personal seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -113,7 +116,7 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando CargoPersonal");
+                                openLoader("Eliminando Cargo del Personal");
                                 $.ajax({
                                     type    : "POST",
                                     url     : '${createLink(action:'delete_ajax')}',
@@ -139,7 +142,7 @@
             }
             function createEditRow(id) {
                 var title = id ? "Editar" : "Crear";
-                var data = id ? { id: id } : {};
+                var data = id ? { id: id} : {};
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(action:'form_ajax')}",
@@ -147,7 +150,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " CargoPersonal",
+                            title   : title + " Cargo del Personal",
                             
                             message : msg,
                             buttons : {
@@ -200,7 +203,7 @@
                                     },
                                     success : function (msg) {
                                         bootbox.dialog({
-                                            title   : "Ver CargoPersonal",
+                                            title   : "Ver Cargo del Personal",
                                             message : msg,
                                             buttons : {
                                                 ok : {

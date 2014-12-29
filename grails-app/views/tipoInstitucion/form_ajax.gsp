@@ -14,7 +14,7 @@
         <div class="form-group keeptogether ${hasErrors(bean: tipoInstitucionInstance, field: 'codigo', 'error')} required">
             <span class="grupo">
                 <label for="codigo" class="col-md-2 control-label">
-                    Codigo
+                    Código
                 </label>
                 <div class="col-md-6">
                     <g:textField name="codigo" maxlength="2" required="" class="form-control input-sm required unique noEspacios" value="${tipoInstitucionInstance?.codigo}"/>
@@ -26,7 +26,7 @@
         <div class="form-group keeptogether ${hasErrors(bean: tipoInstitucionInstance, field: 'descripcion', 'error')} ">
             <span class="grupo">
                 <label for="descripcion" class="col-md-2 control-label">
-                    Descripcion
+                    Descripción
                 </label>
                 <div class="col-md-6">
                     <g:textField name="descripcion" maxlength="31" class="form-control input-sm" value="${tipoInstitucionInstance?.descripcion}"/>
@@ -69,7 +69,7 @@
             messages : {
                 
                 codigo: {
-                    remote: "Ya existe Codigo"
+                    remote: "Ya existe Código"
                 }
                 
             }

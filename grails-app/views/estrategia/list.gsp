@@ -1,10 +1,10 @@
 
-<%@ page import="vesta.parametros.TipoInstitucion" %>
+<%@ page import="vesta.proyectos.Estrategia" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Áreas de Gestión</title>
+        <title>Lista de Estrategias</title>
     </head>
     <body>
 
@@ -14,14 +14,14 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <a href="#" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Nueva Área de Gestión
+                    <i class="fa fa-file-o"></i> Nueva Estrategia
                 </a>
             </div>
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">
+                    <input type="text" class="form-control input-search" placeholder="Buscar" value="${params.search}">
                     <span class="input-group-btn">
-                        <g:link controller="tipoinstitucion" action="list" class="btn btn-default btn-search">
+                        <g:link controller="estrategia" action="list" class="btn btn-default btn-search">
                             <i class="fa fa-search"></i>&nbsp;
                         </g:link>
                     </span>
@@ -33,32 +33,36 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="codigo" title="Código" />
+                    <g:sortableColumn property="orden" title="Orden" />
                     
                     <g:sortableColumn property="descripcion" title="Descripción" />
+                    
+                    <th>Objetivo Estratégico</th>
                     
                 </tr>
             </thead>
             <tbody>
-                <g:if test="${tipoInstitucionInstanceCount > 0}">
-                    <g:each in="${tipoInstitucionInstanceList}" status="i" var="tipoInstitucionInstance">
-                        <tr data-id="${tipoInstitucionInstance.id}">
+                <g:if test="${estrategiaInstanceCount > 0}">
+                    <g:each in="${estrategiaInstanceList}" status="i" var="estrategiaInstance">
+                        <tr data-id="${estrategiaInstance.id}">
                             
-                            <td>${tipoInstitucionInstance.codigo}</td>
+                            <td>${estrategiaInstance.orden}</td>
                             
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${tipoInstitucionInstance}" field="descripcion"/></elm:textoBusqueda></td>
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${estrategiaInstance}" field="descripcion"/></elm:textoBusqueda></td>
+                            
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${estrategiaInstance}" field="objetivoEstrategico"/></elm:textoBusqueda></td>
                             
                         </tr>
                     </g:each>
                 </g:if>
                 <g:else>
                     <tr class="danger">
-                        <td class="text-center" colspan="2">
+                        <td class="text-center" colspan="3">
                             <g:if test="${params.search && params.search!= ''}">
                                 No se encontraron resultados para su búsqueda
                             </g:if>
                             <g:else>
-                                No se encontraron registros que mostrar
+                                No se econtraron registros que mostrar
                             </g:else>
                         </td>
                     </tr>
@@ -66,16 +70,16 @@
             </tbody>
         </table>
 
-        <elm:pagination total="${tipoInstitucionInstanceCount}" params="${params}"/>
+        <elm:pagination total="${estrategiaInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmTipoInstitucion");
+                var $form = $("#frmEstrategia");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando Área de Gestión");
+                    openLoader("Guardando Estrategia");
                     $.ajax({
                         type    : "POST",
                         url     : $form.attr("action"),
@@ -101,7 +105,7 @@
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                              "¿Está seguro que desea eliminar el Área de Gestión seleccionada? Esta acción no se puede deshacer.</p>",
+                              "¿Está seguro que desea eliminar el Estrategia seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -113,7 +117,7 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando Área de Gestión");
+                                openLoader("Eliminando Estrategia");
                                 $.ajax({
                                     type    : "POST",
                                     url     : '${createLink(action:'delete_ajax')}',
@@ -147,7 +151,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Área de Gestión",
+                            title   : title + " Estrategia",
                             
                             message : msg,
                             buttons : {
@@ -200,7 +204,7 @@
                                     },
                                     success : function (msg) {
                                         bootbox.dialog({
-                                            title   : "Ver Área de Gestión",
+                                            title   : "Ver Estrategia",
                                             message : msg,
                                             buttons : {
                                                 ok : {
