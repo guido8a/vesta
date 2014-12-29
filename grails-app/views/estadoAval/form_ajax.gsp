@@ -17,7 +17,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="50" required="" class="form-control required" value="${estadoAvalInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="50" required="" class="form-control input-sm required" value="${estadoAvalInstance?.descripcion}"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Codigo
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="3" required="" class="form-control required unique noEspacios" value="${estadoAvalInstance?.codigo}"/>
+                    <g:textField name="codigo" maxlength="3" required="" class="form-control input-sm required unique noEspacios" value="${estadoAvalInstance?.codigo}"/>
                 </div>
                  *
             </span>

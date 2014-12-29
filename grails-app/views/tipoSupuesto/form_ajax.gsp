@@ -17,7 +17,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" class="form-control" value="${tipoSupuestoInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${tipoSupuestoInstance?.descripcion}"/>
                 </div>
                 
             </span>

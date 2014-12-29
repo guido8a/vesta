@@ -17,7 +17,7 @@
                     Nombre
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="nombre" cols="40" rows="5" maxlength="255" required="" class="form-control required" value="${itemCatalogoInstance?.nombre}"/>
+                    <g:textArea name="nombre" cols="40" rows="5" maxlength="255" required="" class="form-control input-sm required" value="${itemCatalogoInstance?.nombre}"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Catalogo
                 </label>
                 <div class="col-md-6">
-                    <g:select id="catalogo" name="catalogo.id" from="${vesta.parametros.Catalogo.list()}" optionKey="id" required="" value="${itemCatalogoInstance?.catalogo?.id}" class="many-to-one form-control"/>
+                    <g:select id="catalogo" name="catalogo.id" from="${vesta.parametros.Catalogo.list()}" optionKey="id" required="" value="${itemCatalogoInstance?.catalogo?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Codigo
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="codigo" required="" class="form-control required unique noEspacios" value="${itemCatalogoInstance?.codigo}"/>
+                    <g:textField name="codigo" required="" class="form-control input-sm required unique noEspacios" value="${itemCatalogoInstance?.codigo}"/>
                 </div>
                  *
             </span>
@@ -53,7 +53,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" required="" class="form-control required" value="${itemCatalogoInstance?.descripcion}"/>
+                    <g:textField name="descripcion" required="" class="form-control input-sm required" value="${itemCatalogoInstance?.descripcion}"/>
                 </div>
                  *
             </span>
@@ -65,7 +65,7 @@
                     Estado
                 </label>
                 <div class="col-md-2">
-                    <g:field name="estado" type="number" value="${itemCatalogoInstance.estado}" class="digits form-control required" required=""/>
+                    <g:field name="estado" type="number" value="${itemCatalogoInstance.estado}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -77,7 +77,7 @@
                     Orden
                 </label>
                 <div class="col-md-2">
-                    <g:field name="orden" type="number" value="${itemCatalogoInstance.orden}" class="digits form-control required" required=""/>
+                    <g:field name="orden" type="number" value="${itemCatalogoInstance.orden}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -89,7 +89,7 @@
                     Original
                 </label>
                 <div class="col-md-2">
-                    <g:field name="original" type="number" value="${itemCatalogoInstance.original}" class="digits form-control required" required=""/>
+                    <g:field name="original" type="number" value="${itemCatalogoInstance.original}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>

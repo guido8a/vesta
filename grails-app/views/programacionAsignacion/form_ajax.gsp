@@ -17,7 +17,7 @@
                     Asignacion
                 </label>
                 <div class="col-md-6">
-                    <g:select id="asignacion" name="asignacion.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" value="${programacionAsignacionInstance?.asignacion?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="asignacion" name="asignacion.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" value="${programacionAsignacionInstance?.asignacion?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Distribucion
                 </label>
                 <div class="col-md-6">
-                    <g:select id="distribucion" name="distribucion.id" from="${vesta.avales.DistribucionAsignacion.list()}" optionKey="id" value="${programacionAsignacionInstance?.distribucion?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="distribucion" name="distribucion.id" from="${vesta.avales.DistribucionAsignacion.list()}" optionKey="id" value="${programacionAsignacionInstance?.distribucion?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Mes
                 </label>
                 <div class="col-md-6">
-                    <g:select id="mes" name="mes.id" from="${vesta.parametros.poaPac.Mes.list()}" optionKey="id" required="" value="${programacionAsignacionInstance?.mes?.id}" class="many-to-one form-control"/>
+                    <g:select id="mes" name="mes.id" from="${vesta.parametros.poaPac.Mes.list()}" optionKey="id" required="" value="${programacionAsignacionInstance?.mes?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -53,7 +53,7 @@
                     Padre
                 </label>
                 <div class="col-md-6">
-                    <g:select id="padre" name="padre.id" from="${vesta.poa.ProgramacionAsignacion.list()}" optionKey="id" value="${programacionAsignacionInstance?.padre?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="padre" name="padre.id" from="${vesta.poa.ProgramacionAsignacion.list()}" optionKey="id" value="${programacionAsignacionInstance?.padre?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Modificacion
                 </label>
                 <div class="col-md-6">
-                    <g:select id="modificacion" name="modificacion.id" from="${vesta.proyectos.ModificacionProyecto.list()}" optionKey="id" value="${programacionAsignacionInstance?.modificacion?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="modificacion" name="modificacion.id" from="${vesta.proyectos.ModificacionProyecto.list()}" optionKey="id" value="${programacionAsignacionInstance?.modificacion?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Valor
                 </label>
                 <div class="col-md-2">
-                    <g:field name="valor" type="number" value="${fieldValue(bean: programacionAsignacionInstance, field: 'valor')}" class="number form-control  required" required=""/>
+                    <g:field name="valor" type="number" value="${fieldValue(bean: programacionAsignacionInstance, field: 'valor')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -89,7 +89,7 @@
                     Estado
                 </label>
                 <div class="col-md-2">
-                    <g:field name="estado" type="number" value="${programacionAsignacionInstance.estado}" class="digits form-control required" required=""/>
+                    <g:field name="estado" type="number" value="${programacionAsignacionInstance.estado}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -101,7 +101,7 @@
                     Cronograma
                 </label>
                 <div class="col-md-6">
-                    <g:select id="cronograma" name="cronograma.id" from="${vesta.proyectos.Cronograma.list()}" optionKey="id" value="${programacionAsignacionInstance?.cronograma?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="cronograma" name="cronograma.id" from="${vesta.proyectos.Cronograma.list()}" optionKey="id" value="${programacionAsignacionInstance?.cronograma?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>

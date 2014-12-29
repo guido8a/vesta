@@ -17,7 +17,7 @@
                     Tipo Institucion
                 </label>
                 <div class="col-md-7">
-                    <g:select id="tipoInstitucion" name="tipoInstitucion.id" from="${vesta.parametros.TipoInstitucion.list()}" optionKey="id" required="" value="${unidadEjecutoraInstance?.tipoInstitucion?.id}" class="many-to-one form-control"/>
+                    <g:select id="tipoInstitucion" name="tipoInstitucion.id" from="${vesta.parametros.TipoInstitucion.list()}" optionKey="id" required="" value="${unidadEjecutoraInstance?.tipoInstitucion?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Provincia
                 </label>
                 <div class="col-md-7">
-                    <g:select id="provincia" name="provincia.id" from="${vesta.parametros.geografia.Provincia.list()}" optionKey="id" value="${unidadEjecutoraInstance?.provincia?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="provincia" name="provincia.id" from="${vesta.parametros.geografia.Provincia.list()}" optionKey="id" value="${unidadEjecutoraInstance?.provincia?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Codigo
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="codigo" maxlength="4" class="form-control unique noEspacios" value="${unidadEjecutoraInstance?.codigo}"/>
+                    <g:textField name="codigo" maxlength="4" class="form-control input-sm unique noEspacios" value="${unidadEjecutoraInstance?.codigo}"/>
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Fecha Inicio
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaInicio" mensaje="Fecha de creación"  class="datepicker form-control" value="${unidadEjecutoraInstance?.fechaInicio}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaInicio" mensaje="Fecha de creación"  class="datepicker form-control input-sm" value="${unidadEjecutoraInstance?.fechaInicio}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Fecha Fin
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaFin" mensaje="Fecha de cierre o final"  class="datepicker form-control" value="${unidadEjecutoraInstance?.fechaFin}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaFin" mensaje="Fecha de cierre o final"  class="datepicker form-control input-sm" value="${unidadEjecutoraInstance?.fechaFin}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Padre
                 </label>
                 <div class="col-md-7">
-                    <g:select id="padre" name="padre.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${unidadEjecutoraInstance?.padre?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="padre" name="padre.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${unidadEjecutoraInstance?.padre?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Nombre
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="nombre" maxlength="127" required="" class="form-control required" value="${unidadEjecutoraInstance?.nombre}"/>
+                    <g:textField name="nombre" maxlength="127" required="" class="form-control input-sm required" value="${unidadEjecutoraInstance?.nombre}"/>
                 </div>
                  *
             </span>
@@ -101,7 +101,7 @@
                     Direccion
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="direccion" maxlength="127" class="form-control" value="${unidadEjecutoraInstance?.direccion}"/>
+                    <g:textField name="direccion" maxlength="127" class="form-control input-sm" value="${unidadEjecutoraInstance?.direccion}"/>
                 </div>
                 
             </span>
@@ -113,7 +113,7 @@
                     Sigla
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="sigla" maxlength="7" class="form-control" value="${unidadEjecutoraInstance?.sigla}"/>
+                    <g:textField name="sigla" maxlength="7" class="form-control input-sm" value="${unidadEjecutoraInstance?.sigla}"/>
                 </div>
                 
             </span>
@@ -125,7 +125,7 @@
                     Objetivo
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="objetivo" cols="40" rows="5" maxlength="1023" class="form-control" value="${unidadEjecutoraInstance?.objetivo}"/>
+                    <g:textArea name="objetivo" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${unidadEjecutoraInstance?.objetivo}"/>
                 </div>
                 
             </span>
@@ -137,7 +137,7 @@
                     Telefono
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="telefono" maxlength="63" class="form-control" value="${unidadEjecutoraInstance?.telefono}"/>
+                    <g:textField name="telefono" maxlength="63" class="form-control input-sm" value="${unidadEjecutoraInstance?.telefono}"/>
                 </div>
                 
             </span>
@@ -149,7 +149,7 @@
                     Fax
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="fax" maxlength="63" class="form-control" value="${unidadEjecutoraInstance?.fax}"/>
+                    <g:textField name="fax" maxlength="63" class="form-control input-sm" value="${unidadEjecutoraInstance?.fax}"/>
                 </div>
                 
             </span>
@@ -161,7 +161,7 @@
                     Email
                 </label>
                 <div class="col-md-7">
-                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="email" maxlength="63" class="form-control unique noEspacios" value="${unidadEjecutoraInstance?.email}"/></div>
+                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="email" maxlength="63" class="form-control input-sm unique noEspacios" value="${unidadEjecutoraInstance?.email}"/></div>
                 </div>
                 
             </span>
@@ -173,7 +173,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="observaciones" maxlength="127" class="form-control" value="${unidadEjecutoraInstance?.observaciones}"/>
+                    <g:textField name="observaciones" maxlength="127" class="form-control input-sm" value="${unidadEjecutoraInstance?.observaciones}"/>
                 </div>
                 
             </span>
@@ -185,7 +185,7 @@
                     Objetivo Unidad
                 </label>
                 <div class="col-md-7">
-                    <g:select id="objetivoUnidad" name="objetivoUnidad.id" from="${vesta.parametros.proyectos.ObjetivoUnidad.list()}" optionKey="id" value="${unidadEjecutoraInstance?.objetivoUnidad?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="objetivoUnidad" name="objetivoUnidad.id" from="${vesta.parametros.proyectos.ObjetivoUnidad.list()}" optionKey="id" value="${unidadEjecutoraInstance?.objetivoUnidad?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -197,7 +197,7 @@
                     Orden
                 </label>
                 <div class="col-md-3">
-                    <g:field name="orden" type="number" value="${unidadEjecutoraInstance.orden}" class="digits form-control required" required=""/>
+                    <g:field name="orden" type="number" value="${unidadEjecutoraInstance.orden}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>

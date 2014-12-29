@@ -17,7 +17,7 @@
                     Concepto
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="concepto" cols="40" rows="5" maxlength="500" class="form-control" value="${solicitudAvalInstance?.concepto}"/>
+                    <g:textArea name="concepto" cols="40" rows="5" maxlength="500" class="form-control input-sm" value="${solicitudAvalInstance?.concepto}"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Proceso
                 </label>
                 <div class="col-md-7">
-                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" required="" value="${solicitudAvalInstance?.proceso?.id}" class="many-to-one form-control"/>
+                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" required="" value="${solicitudAvalInstance?.proceso?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Aval
                 </label>
                 <div class="col-md-7">
-                    <g:select id="aval" name="aval.id" from="${vesta.avales.Aval.list()}" optionKey="id" value="${solicitudAvalInstance?.aval?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="aval" name="aval.id" from="${vesta.avales.Aval.list()}" optionKey="id" value="${solicitudAvalInstance?.aval?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Fecha Revision
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaRevision"  class="datepicker form-control" value="${solicitudAvalInstance?.fechaRevision}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaRevision"  class="datepicker form-control input-sm" value="${solicitudAvalInstance?.fechaRevision}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Estado
                 </label>
                 <div class="col-md-7">
-                    <g:select id="estado" name="estado.id" from="${vesta.avales.EstadoAval.list()}" optionKey="id" required="" value="${solicitudAvalInstance?.estado?.id}" class="many-to-one form-control"/>
+                    <g:select id="estado" name="estado.id" from="${vesta.avales.EstadoAval.list()}" optionKey="id" required="" value="${solicitudAvalInstance?.estado?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -77,7 +77,7 @@
                     Path
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="path" cols="40" rows="5" maxlength="350" class="form-control" value="${solicitudAvalInstance?.path}"/>
+                    <g:textArea name="path" cols="40" rows="5" maxlength="350" class="form-control input-sm" value="${solicitudAvalInstance?.path}"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Contrato
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="contrato" maxlength="30" class="form-control" value="${solicitudAvalInstance?.contrato}"/>
+                    <g:textField name="contrato" maxlength="30" class="form-control input-sm" value="${solicitudAvalInstance?.contrato}"/>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Memo
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="memo" maxlength="30" class="form-control" value="${solicitudAvalInstance?.memo}"/>
+                    <g:textField name="memo" maxlength="30" class="form-control input-sm" value="${solicitudAvalInstance?.memo}"/>
                 </div>
                 
             </span>
@@ -113,7 +113,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="observaciones" class="form-control" value="${solicitudAvalInstance?.observaciones}"/>
+                    <g:textField name="observaciones" class="form-control input-sm" value="${solicitudAvalInstance?.observaciones}"/>
                 </div>
                 
             </span>
@@ -125,7 +125,7 @@
                     Numero
                 </label>
                 <div class="col-md-3">
-                    <g:field name="numero" type="number" value="${solicitudAvalInstance.numero}" class="digits form-control required" required=""/>
+                    <g:field name="numero" type="number" value="${solicitudAvalInstance.numero}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -137,7 +137,7 @@
                     Tipo
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="tipo" maxlength="1" class="form-control" value="${solicitudAvalInstance?.tipo}"/>
+                    <g:textField name="tipo" maxlength="1" class="form-control input-sm" value="${solicitudAvalInstance?.tipo}"/>
                 </div>
                 
             </span>
@@ -149,7 +149,7 @@
                     Firma
                 </label>
                 <div class="col-md-7">
-                    <g:select id="firma" name="firma.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${solicitudAvalInstance?.firma?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="firma" name="firma.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${solicitudAvalInstance?.firma?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -161,7 +161,7 @@
                     Unidad
                 </label>
                 <div class="col-md-7">
-                    <g:select id="unidad" name="unidad.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${solicitudAvalInstance?.unidad?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="unidad" name="unidad.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${solicitudAvalInstance?.unidad?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -173,7 +173,7 @@
                     Fecha
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fecha"  class="datepicker form-control required" value="${solicitudAvalInstance?.fecha}"  />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm required" value="${solicitudAvalInstance?.fecha}"  />
                 </div>
                  *
             </span>
@@ -185,7 +185,7 @@
                     Monto
                 </label>
                 <div class="col-md-3">
-                    <g:field name="monto" type="number" value="${fieldValue(bean: solicitudAvalInstance, field: 'monto')}" class="number form-control  required" required=""/>
+                    <g:field name="monto" type="number" value="${fieldValue(bean: solicitudAvalInstance, field: 'monto')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -197,7 +197,7 @@
                     Usuario
                 </label>
                 <div class="col-md-7">
-                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${solicitudAvalInstance?.usuario?.id}" class="many-to-one form-control"/>
+                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${solicitudAvalInstance?.usuario?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>

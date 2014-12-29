@@ -8,7 +8,7 @@
 
     <g:if test="${solicitudInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${solicitudInstance?.revisadoAdministrativaFinanciera}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Revisado Administrativa Financiera
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${solicitudInstance?.revisadoJuridica}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Revisado Juridica
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${solicitudInstance?.revisadoDireccionProyectos}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Revisado Direccion Proyectos
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${solicitudInstance?.observacionesAdministrativaFinanciera}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones Administrativa Financiera
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${solicitudInstance?.observacionesJuridica}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones Juridica
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${solicitudInstance?.observacionesDireccionProyectos}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones Direccion Proyectos
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${solicitudInstance?.pathPdfTdr}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Pdf Tdr
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${solicitudInstance?.estado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Estado
             </div>
             
@@ -125,7 +125,7 @@
     
     <g:if test="${solicitudInstance?.pathOferta1}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Oferta1
             </div>
             
@@ -138,7 +138,7 @@
     
     <g:if test="${solicitudInstance?.pathOferta2}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Oferta2
             </div>
             
@@ -151,7 +151,7 @@
     
     <g:if test="${solicitudInstance?.pathOferta3}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Oferta3
             </div>
             
@@ -164,7 +164,7 @@
     
     <g:if test="${solicitudInstance?.pathCuadroComparativo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Cuadro Comparativo
             </div>
             
@@ -177,7 +177,7 @@
     
     <g:if test="${solicitudInstance?.pathAnalisisCostos}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Analisis Costos
             </div>
             
@@ -190,7 +190,7 @@
     
     <g:if test="${solicitudInstance?.incluirReunion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Incluir Reunion
             </div>
             
@@ -203,7 +203,7 @@
     
     <g:if test="${solicitudInstance?.pathRevisionGAF}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Revision GAF
             </div>
             
@@ -216,7 +216,7 @@
     
     <g:if test="${solicitudInstance?.pathRevisionGJ}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Revision GJ
             </div>
             
@@ -229,7 +229,7 @@
     
     <g:if test="${solicitudInstance?.pathRevisionGDP}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Revision GDP
             </div>
             
@@ -242,7 +242,7 @@
     
     <g:if test="${solicitudInstance?.validadoAdministrativaFinanciera}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Validado Administrativa Financiera
             </div>
             
@@ -255,7 +255,7 @@
     
     <g:if test="${solicitudInstance?.validadoJuridica}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Validado Juridica
             </div>
             
@@ -268,7 +268,7 @@
     
     <g:if test="${solicitudInstance?.fechaPeticionReunion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Peticion Reunion
             </div>
             
@@ -281,7 +281,7 @@
     
     <g:if test="${solicitudInstance?.aprobacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Aprobacion
             </div>
             
@@ -294,7 +294,7 @@
     
     <g:if test="${solicitudInstance?.tipoAprobacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Tipo Aprobacion
             </div>
             
@@ -307,7 +307,7 @@
     
     <g:if test="${solicitudInstance?.observacionesAprobacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones Aprobacion
             </div>
             
@@ -320,7 +320,7 @@
     
     <g:if test="${solicitudInstance?.pathAprobacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Aprobacion
             </div>
             
@@ -333,7 +333,7 @@
     
     <g:if test="${solicitudInstance?.revisionDireccionPlanificacionInversion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Revision Direccion Planificacion Inversion
             </div>
             
@@ -346,7 +346,7 @@
     
     <g:if test="${solicitudInstance?.asistentesAprobacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Asistentes Aprobacion
             </div>
             
@@ -359,7 +359,7 @@
     
     <g:if test="${solicitudInstance?.fechaParaRevision}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Para Revision
             </div>
             
@@ -372,7 +372,7 @@
     
     <g:if test="${solicitudInstance?.actividad}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Actividad
             </div>
             
@@ -385,7 +385,7 @@
     
     <g:if test="${solicitudInstance?.detallesMonto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Detalles Monto
             </div>
             
@@ -402,7 +402,7 @@
     
     <g:if test="${solicitudInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -415,7 +415,7 @@
     
     <g:if test="${solicitudInstance?.formaPago}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Forma Pago
             </div>
             
@@ -428,7 +428,7 @@
     
     <g:if test="${solicitudInstance?.montoSolicitado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Monto Solicitado
             </div>
             
@@ -441,7 +441,7 @@
     
     <g:if test="${solicitudInstance?.nombreProceso}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre Proceso
             </div>
             
@@ -454,7 +454,7 @@
     
     <g:if test="${solicitudInstance?.objetoContrato}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Objeto Contrato
             </div>
             
@@ -467,7 +467,7 @@
     
     <g:if test="${solicitudInstance?.plazoEjecucion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Plazo Ejecucion
             </div>
             
@@ -480,7 +480,7 @@
     
     <g:if test="${solicitudInstance?.tipoBien}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Tipo Bien
             </div>
             
@@ -493,7 +493,7 @@
     
     <g:if test="${solicitudInstance?.tipoContrato}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Tipo Contrato
             </div>
             
@@ -506,7 +506,7 @@
     
     <g:if test="${solicitudInstance?.unidadEjecutora}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Unidad Ejecutora
             </div>
             
@@ -519,7 +519,7 @@
     
     <g:if test="${solicitudInstance?.usuario}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Usuario
             </div>
             

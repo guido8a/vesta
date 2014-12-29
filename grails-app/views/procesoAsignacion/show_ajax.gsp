@@ -8,7 +8,7 @@
 
     <g:if test="${procesoAsignacionInstance?.asignacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Asignacion
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${procesoAsignacionInstance?.monto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Monto
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${procesoAsignacionInstance?.proceso}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Proceso
             </div>
             

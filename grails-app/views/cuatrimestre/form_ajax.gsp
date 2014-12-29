@@ -17,7 +17,7 @@
                     Numero
                 </label>
                 <div class="col-md-2">
-                    <g:field name="numero" type="number" value="${cuatrimestreInstance.numero}" class="digits form-control"/>
+                    <g:field name="numero" type="number" value="${cuatrimestreInstance.numero}" class="digits form-control input-sm"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="15" class="form-control" value="${cuatrimestreInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="15" class="form-control input-sm" value="${cuatrimestreInstance?.descripcion}"/>
                 </div>
                 
             </span>

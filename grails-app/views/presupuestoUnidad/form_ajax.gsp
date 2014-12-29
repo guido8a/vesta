@@ -17,7 +17,7 @@
                     Unidad
                 </label>
                 <div class="col-md-7">
-                    <g:select id="unidad" name="unidad.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" required="" value="${presupuestoUnidadInstance?.unidad?.id}" class="many-to-one form-control"/>
+                    <g:select id="unidad" name="unidad.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" required="" value="${presupuestoUnidadInstance?.unidad?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Anio
                 </label>
                 <div class="col-md-7">
-                    <g:select id="anio" name="anio.id" from="${vesta.parametros.poaPac.Anio.list()}" optionKey="id" required="" value="${presupuestoUnidadInstance?.anio?.id}" class="many-to-one form-control"/>
+                    <g:select id="anio" name="anio.id" from="${vesta.parametros.poaPac.Anio.list()}" optionKey="id" required="" value="${presupuestoUnidadInstance?.anio?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Max Inversion
                 </label>
                 <div class="col-md-3">
-                    <g:field name="maxInversion" type="number" value="${fieldValue(bean: presupuestoUnidadInstance, field: 'maxInversion')}" class="number form-control  required" required=""/>
+                    <g:field name="maxInversion" type="number" value="${fieldValue(bean: presupuestoUnidadInstance, field: 'maxInversion')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -53,7 +53,7 @@
                     Max Corrientes
                 </label>
                 <div class="col-md-3">
-                    <g:field name="maxCorrientes" type="number" value="${fieldValue(bean: presupuestoUnidadInstance, field: 'maxCorrientes')}" class="number form-control  required" required=""/>
+                    <g:field name="maxCorrientes" type="number" value="${fieldValue(bean: presupuestoUnidadInstance, field: 'maxCorrientes')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -65,7 +65,7 @@
                     Eje Programatico
                 </label>
                 <div class="col-md-7">
-                    <g:select id="ejeProgramatico" name="ejeProgramatico.id" from="${vesta.proyectos.EjeProgramatico.list()}" optionKey="id" value="${presupuestoUnidadInstance?.ejeProgramatico?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="ejeProgramatico" name="ejeProgramatico.id" from="${vesta.proyectos.EjeProgramatico.list()}" optionKey="id" value="${presupuestoUnidadInstance?.ejeProgramatico?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Objetivo Estrategico
                 </label>
                 <div class="col-md-7">
-                    <g:select id="objetivoEstrategico" name="objetivoEstrategico.id" from="${vesta.proyectos.ObjetivoEstrategicoProyecto.list()}" optionKey="id" value="${presupuestoUnidadInstance?.objetivoEstrategico?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="objetivoEstrategico" name="objetivoEstrategico.id" from="${vesta.proyectos.ObjetivoEstrategicoProyecto.list()}" optionKey="id" value="${presupuestoUnidadInstance?.objetivoEstrategico?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Objetivo Gobierno Resultado
                 </label>
                 <div class="col-md-7">
-                    <g:select id="objetivoGobiernoResultado" name="objetivoGobiernoResultado.id" from="${vesta.parametros.proyectos.ObjetivoGobiernoResultado.list()}" optionKey="id" value="${presupuestoUnidadInstance?.objetivoGobiernoResultado?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="objetivoGobiernoResultado" name="objetivoGobiernoResultado.id" from="${vesta.parametros.proyectos.ObjetivoGobiernoResultado.list()}" optionKey="id" value="${presupuestoUnidadInstance?.objetivoGobiernoResultado?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Politica
                 </label>
                 <div class="col-md-7">
-                    <g:select id="politica" name="politica.id" from="${vesta.parametros.proyectos.Politica.list()}" optionKey="id" value="${presupuestoUnidadInstance?.politica?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="politica" name="politica.id" from="${vesta.parametros.proyectos.Politica.list()}" optionKey="id" value="${presupuestoUnidadInstance?.politica?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -113,7 +113,7 @@
                     Aprobado Corrientes
                 </label>
                 <div class="col-md-3">
-                    <g:field name="aprobadoCorrientes" type="number" value="${presupuestoUnidadInstance.aprobadoCorrientes}" class="digits form-control required" required=""/>
+                    <g:field name="aprobadoCorrientes" type="number" value="${presupuestoUnidadInstance.aprobadoCorrientes}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -125,7 +125,7 @@
                     Aprobado Inversion
                 </label>
                 <div class="col-md-3">
-                    <g:field name="aprobadoInversion" type="number" value="${presupuestoUnidadInstance.aprobadoInversion}" class="digits form-control required" required=""/>
+                    <g:field name="aprobadoInversion" type="number" value="${presupuestoUnidadInstance.aprobadoInversion}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -137,7 +137,7 @@
                     Original Corrientes
                 </label>
                 <div class="col-md-3">
-                    <g:field name="originalCorrientes" type="number" value="${fieldValue(bean: presupuestoUnidadInstance, field: 'originalCorrientes')}" class="number form-control  required" required=""/>
+                    <g:field name="originalCorrientes" type="number" value="${fieldValue(bean: presupuestoUnidadInstance, field: 'originalCorrientes')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -149,7 +149,7 @@
                     Original Inversion
                 </label>
                 <div class="col-md-3">
-                    <g:field name="originalInversion" type="number" value="${fieldValue(bean: presupuestoUnidadInstance, field: 'originalInversion')}" class="number form-control  required" required=""/>
+                    <g:field name="originalInversion" type="number" value="${fieldValue(bean: presupuestoUnidadInstance, field: 'originalInversion')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>

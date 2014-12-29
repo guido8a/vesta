@@ -1,28 +1,27 @@
-<%@ page import="vesta.test.Test" %>
+
+<%@ page import="vesta.seguridad.Modulo" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Test</title>
+        <title>Lista de Modulo</title>
     </head>
-
     <body>
 
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
-        <!-- botones -->
+    <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <a href="#" class="btn btn-default btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </a>
             </div>
-
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control input-search" placeholder="Buscar" value="${params.search}">
+                    <input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">
                     <span class="input-group-btn">
-                        <g:link controller="test" action="list" class="btn btn-default btn-search">
+                        <g:link controller="modulo" action="list" class="btn btn-default btn-search">
                             <i class="fa fa-search"></i>&nbsp;
                         </g:link>
                     </span>
@@ -33,65 +32,37 @@
         <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
                 <tr>
-
-                    <g:sortableColumn property="codigo" title="Codigo"/>
-
-                    <g:sortableColumn property="email" title="Email"/>
-
-                    <g:sortableColumn property="existe" title="Existe"/>
-
-                    <g:sortableColumn property="fecha" title="Fecha"/>
-
-                    <g:sortableColumn property="fechaHora" title="Fecha Hora"/>
-
-                    <g:sortableColumn property="login" title="Login"/>
-
-                    <g:sortableColumn property="mail" title="Mail"/>
-
-                    <g:sortableColumn property="nombre" title="Nombre"/>
-
-                    <g:sortableColumn property="numeroDecimal" title="Numero Decimal"/>
-
-                    <g:sortableColumn property="numeroEntero" title="Numero Entero"/>
-
+                    
+                    <g:sortableColumn property="descripcion" title="Descripcion" />
+                    
+                    <g:sortableColumn property="nombre" title="Nombre" />
+                    
+                    <g:sortableColumn property="orden" title="Orden" />
+                    
                 </tr>
             </thead>
             <tbody>
-                <g:if test="${testInstanceCount > 0}">
-                    <g:each in="${testInstanceList}" status="i" var="testInstance">
-                        <tr data-id="${testInstance.id}">
-
-                            <td>${testInstance.codigo}</td>
-
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${testInstance}" field="email"/></elm:textoBusqueda></td>
-
-                            <td><g:formatBoolean boolean="${testInstance.existe}" false="No" true="Sí"/></td>
-
-                            <td><g:formatDate date="${testInstance.fecha}" format="dd-MM-yyyy"/></td>
-
-                            <td><g:formatDate date="${testInstance.fechaHora}" format="dd-MM-yyyy"/></td>
-
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${testInstance}" field="login"/></elm:textoBusqueda></td>
-
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${testInstance}" field="mail"/></elm:textoBusqueda></td>
-
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${testInstance}" field="nombre"/></elm:textoBusqueda></td>
-
-                            <td><g:fieldValue bean="${testInstance}" field="numeroDecimal"/></td>
-
-                            <td><g:fieldValue bean="${testInstance}" field="numeroEntero"/></td>
-
+                <g:if test="${moduloInstanceCount > 0}">
+                    <g:each in="${moduloInstanceList}" status="i" var="moduloInstance">
+                        <tr data-id="${moduloInstance.id}">
+                            
+                            <td>${moduloInstance.descripcion}</td>
+                            
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${moduloInstance}" field="nombre"/></elm:textoBusqueda></td>
+                            
+                            <td><g:fieldValue bean="${moduloInstance}" field="orden"/></td>
+                            
                         </tr>
                     </g:each>
                 </g:if>
                 <g:else>
-                    <tr class="info">
-                        <td class="text-center text-info" colspan="10">
-                            <g:if test="${params.search && params.search != ''}">
-                                <i class="text-shadow fa fa-2x icon-ghost"></i> No se encontraron resultados para su búsqueda
+                    <tr class="danger">
+                        <td class="text-center" colspan="3">
+                            <g:if test="${params.search && params.search!= ''}">
+                                No se encontraron resultados para su búsqueda
                             </g:if>
                             <g:else>
-                                <i class="text-shadow fa fa-2x fa-folder-open-o"></i> No se econtraron registros que mostrar
+                                No se encontraron registros que mostrar
                             </g:else>
                         </td>
                     </tr>
@@ -99,42 +70,42 @@
             </tbody>
         </table>
 
-        <elm:pagination total="${testInstanceCount}" params="${params}"/>
+        <elm:pagination total="${moduloInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmTest");
+                var $form = $("#frmModulo");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando Test");
+                    openLoader("Guardando Modulo");
                     $.ajax({
                         type    : "POST",
                         url     : $form.attr("action"),
                         data    : $form.serialize(),
-                        success : function (msg) {
-                            var parts = msg.split("*");
-                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                            setTimeout(function () {
-                                if (parts[0] == "SUCCESS") {
-                                    location.reload(true);
-                                } else {
-                                    spinner.replaceWith($btn);
-                                    return false;
-                                }
-                            }, 1000);
-                        }
-                    });
-                } else {
-                    return false;
-                } //else
+                            success : function (msg) {
+                        var parts = msg.split("*");
+                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                        setTimeout(function() {
+                            if (parts[0] == "SUCCESS") {
+                                location.reload(true);
+                            } else {
+                                spinner.replaceWith($btn);
+                                return false;
+                            }
+                        }, 1000);
+                    }
+                });
+            } else {
+                return false;
+            } //else
             }
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                            "¿Está seguro que desea eliminar el Test seleccionado? Esta acción no se puede deshacer.</p>",
+                              "¿Está seguro que desea eliminar el Modulo seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -146,7 +117,7 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando Test");
+                                openLoader("Eliminando Modulo");
                                 $.ajax({
                                     type    : "POST",
                                     url     : '${createLink(action:'delete_ajax')}',
@@ -157,7 +128,7 @@
                                         var parts = msg.split("*");
                                         log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "SUCCESS") {
-                                            setTimeout(function () {
+                                            setTimeout(function() {
                                                 location.reload(true);
                                             }, 1000);
                                         } else {
@@ -172,18 +143,16 @@
             }
             function createEditRow(id) {
                 var title = id ? "Editar" : "Crear";
-                var data = id ? {id : id} : {};
+                var data = id ? { id: id } : {};
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(action:'form_ajax')}",
                     data    : data,
                     success : function (msg) {
                         var b = bootbox.dialog({
-                            id    : "dlgCreateEdit",
-                            title : title + " Test",
-
-                            class : "modal-lg",
-
+                            id      : "dlgCreateEdit",
+                            title   : title + " Modulo",
+                            
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -203,7 +172,7 @@
                             } //buttons
                         }); //dialog
                         setTimeout(function () {
-                            b.find(".form-control").first().focus()
+                            b.find(".form-control input-sm").first().focus()
                         }, 500);
                     } //success
                 }); //ajax
@@ -211,7 +180,7 @@
 
             $(function () {
 
-                $(".btnCrear").click(function () {
+                $(".btnCrear").click(function() {
                     createEditRow();
                     return false;
                 });
@@ -235,7 +204,7 @@
                                     },
                                     success : function (msg) {
                                         bootbox.dialog({
-                                            title   : "Ver Test",
+                                            title   : "Ver Modulo",
                                             message : msg,
                                             buttons : {
                                                 ok : {

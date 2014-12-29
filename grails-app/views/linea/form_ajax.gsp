@@ -17,7 +17,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="127" required="" class="form-control required" value="${lineaInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="127" required="" class="form-control input-sm required" value="${lineaInstance?.descripcion}"/>
                 </div>
                  *
             </span>

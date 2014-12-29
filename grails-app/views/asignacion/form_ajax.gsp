@@ -17,7 +17,7 @@
                     Anio
                 </label>
                 <div class="col-md-7">
-                    <g:select id="anio" name="anio.id" from="${vesta.parametros.poaPac.Anio.list()}" optionKey="id" value="${asignacionInstance?.anio?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="anio" name="anio.id" from="${vesta.parametros.poaPac.Anio.list()}" optionKey="id" value="${asignacionInstance?.anio?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Fuente
                 </label>
                 <div class="col-md-7">
-                    <g:select id="fuente" name="fuente.id" from="${vesta.parametros.poaPac.Fuente.list()}" optionKey="id" value="${asignacionInstance?.fuente?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="fuente" name="fuente.id" from="${vesta.parametros.poaPac.Fuente.list()}" optionKey="id" value="${asignacionInstance?.fuente?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Marco Logico
                 </label>
                 <div class="col-md-7">
-                    <g:select id="marcoLogico" name="marcoLogico.id" from="${vesta.proyectos.MarcoLogico.list()}" optionKey="id" value="${asignacionInstance?.marcoLogico?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="marcoLogico" name="marcoLogico.id" from="${vesta.proyectos.MarcoLogico.list()}" optionKey="id" value="${asignacionInstance?.marcoLogico?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Actividad
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="actividad" cols="40" rows="5" maxlength="1024" class="form-control" value="${asignacionInstance?.actividad}"/>
+                    <g:textArea name="actividad" cols="40" rows="5" maxlength="1024" class="form-control input-sm" value="${asignacionInstance?.actividad}"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Presupuesto
                 </label>
                 <div class="col-md-7">
-                    <g:select id="presupuesto" name="presupuesto.id" from="${vesta.parametros.poaPac.Presupuesto.list()}" optionKey="id" value="${asignacionInstance?.presupuesto?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="presupuesto" name="presupuesto.id" from="${vesta.parametros.poaPac.Presupuesto.list()}" optionKey="id" value="${asignacionInstance?.presupuesto?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Tipo Gasto
                 </label>
                 <div class="col-md-7">
-                    <g:select id="tipoGasto" name="tipoGasto.id" from="${vesta.parametros.TipoGasto.list()}" optionKey="id" value="${asignacionInstance?.tipoGasto?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="tipoGasto" name="tipoGasto.id" from="${vesta.parametros.TipoGasto.list()}" optionKey="id" value="${asignacionInstance?.tipoGasto?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Componente
                 </label>
                 <div class="col-md-7">
-                    <g:select id="componente" name="componente.id" from="${vesta.poa.Componente.list()}" optionKey="id" value="${asignacionInstance?.componente?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="componente" name="componente.id" from="${vesta.poa.Componente.list()}" optionKey="id" value="${asignacionInstance?.componente?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Planificado
                 </label>
                 <div class="col-md-3">
-                    <g:field name="planificado" type="number" value="${fieldValue(bean: asignacionInstance, field: 'planificado')}" class="number form-control  required" required=""/>
+                    <g:field name="planificado" type="number" value="${fieldValue(bean: asignacionInstance, field: 'planificado')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -113,7 +113,7 @@
                     Redistribucion
                 </label>
                 <div class="col-md-3">
-                    <g:field name="redistribucion" type="number" value="${fieldValue(bean: asignacionInstance, field: 'redistribucion')}" class="number form-control  required" required=""/>
+                    <g:field name="redistribucion" type="number" value="${fieldValue(bean: asignacionInstance, field: 'redistribucion')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -125,7 +125,7 @@
                     Unidad
                 </label>
                 <div class="col-md-7">
-                    <g:select id="unidad" name="unidad.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${asignacionInstance?.unidad?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="unidad" name="unidad.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${asignacionInstance?.unidad?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -137,7 +137,7 @@
                     Reubicada
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="reubicada" maxlength="2" class="form-control" value="${asignacionInstance?.reubicada}"/>
+                    <g:textField name="reubicada" maxlength="2" class="form-control input-sm" value="${asignacionInstance?.reubicada}"/>
                 </div>
                 
             </span>
@@ -149,7 +149,7 @@
                     Programa
                 </label>
                 <div class="col-md-7">
-                    <g:select id="programa" name="programa.id" from="${vesta.parametros.poaPac.ProgramaPresupuestario.list()}" optionKey="id" value="${asignacionInstance?.programa?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="programa" name="programa.id" from="${vesta.parametros.poaPac.ProgramaPresupuestario.list()}" optionKey="id" value="${asignacionInstance?.programa?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -161,7 +161,7 @@
                     Meta
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="meta" cols="40" rows="5" maxlength="255" class="form-control" value="${asignacionInstance?.meta}"/>
+                    <g:textArea name="meta" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${asignacionInstance?.meta}"/>
                 </div>
                 
             </span>
@@ -173,7 +173,7 @@
                     Indicador
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="indicador" cols="40" rows="5" maxlength="255" class="form-control" value="${asignacionInstance?.indicador}"/>
+                    <g:textArea name="indicador" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${asignacionInstance?.indicador}"/>
                 </div>
                 
             </span>
@@ -185,7 +185,7 @@
                     Padre
                 </label>
                 <div class="col-md-7">
-                    <g:select id="padre" name="padre.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${asignacionInstance?.padre?.id}" class="many-to-one form-control"/>
+                    <g:select id="padre" name="padre.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${asignacionInstance?.padre?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -197,7 +197,7 @@
                     Priorizado
                 </label>
                 <div class="col-md-3">
-                    <g:field name="priorizado" type="number" value="${fieldValue(bean: asignacionInstance, field: 'priorizado')}" class="number form-control  required" required=""/>
+                    <g:field name="priorizado" type="number" value="${fieldValue(bean: asignacionInstance, field: 'priorizado')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>

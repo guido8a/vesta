@@ -17,7 +17,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="31" required="" class="form-control required" value="${tipoInversionInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="31" required="" class="form-control input-sm required" value="${tipoInversionInstance?.descripcion}"/>
                 </div>
                  *
             </span>

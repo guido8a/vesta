@@ -17,7 +17,7 @@
                     Fecha Revision
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaRevision"  class="datepicker form-control" value="${solicitudModPoaInstance?.fechaRevision}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaRevision"  class="datepicker form-control input-sm" value="${solicitudModPoaInstance?.fechaRevision}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Origen
                 </label>
                 <div class="col-md-7">
-                    <g:select id="origen" name="origen.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${solicitudModPoaInstance?.origen?.id}" class="many-to-one form-control"/>
+                    <g:select id="origen" name="origen.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${solicitudModPoaInstance?.origen?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Destino
                 </label>
                 <div class="col-md-7">
-                    <g:select id="destino" name="destino.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" value="${solicitudModPoaInstance?.destino?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="destino" name="destino.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" value="${solicitudModPoaInstance?.destino?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Anio
                 </label>
                 <div class="col-md-7">
-                    <g:select id="anio" name="anio.id" from="${vesta.parametros.poaPac.Anio.list()}" optionKey="id" value="${solicitudModPoaInstance?.anio?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="anio" name="anio.id" from="${vesta.parametros.poaPac.Anio.list()}" optionKey="id" value="${solicitudModPoaInstance?.anio?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Fuente
                 </label>
                 <div class="col-md-7">
-                    <g:select id="fuente" name="fuente.id" from="${vesta.parametros.poaPac.Fuente.list()}" optionKey="id" value="${solicitudModPoaInstance?.fuente?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="fuente" name="fuente.id" from="${vesta.parametros.poaPac.Fuente.list()}" optionKey="id" value="${solicitudModPoaInstance?.fuente?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Marco Logico
                 </label>
                 <div class="col-md-7">
-                    <g:select id="marcoLogico" name="marcoLogico.id" from="${vesta.proyectos.MarcoLogico.list()}" optionKey="id" value="${solicitudModPoaInstance?.marcoLogico?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="marcoLogico" name="marcoLogico.id" from="${vesta.proyectos.MarcoLogico.list()}" optionKey="id" value="${solicitudModPoaInstance?.marcoLogico?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Presupuesto
                 </label>
                 <div class="col-md-7">
-                    <g:select id="presupuesto" name="presupuesto.id" from="${vesta.parametros.poaPac.Presupuesto.list()}" optionKey="id" value="${solicitudModPoaInstance?.presupuesto?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="presupuesto" name="presupuesto.id" from="${vesta.parametros.poaPac.Presupuesto.list()}" optionKey="id" value="${solicitudModPoaInstance?.presupuesto?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Valor
                 </label>
                 <div class="col-md-3">
-                    <g:field name="valor" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valor')}" class="number form-control  required" required=""/>
+                    <g:field name="valor" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valor')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -113,7 +113,7 @@
                     Concepto
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="concepto" cols="40" rows="5" maxlength="1024" required="" class="form-control required" value="${solicitudModPoaInstance?.concepto}"/>
+                    <g:textArea name="concepto" cols="40" rows="5" maxlength="1024" required="" class="form-control input-sm required" value="${solicitudModPoaInstance?.concepto}"/>
                 </div>
                  *
             </span>
@@ -125,7 +125,7 @@
                     Estado
                 </label>
                 <div class="col-md-3">
-                    <g:field name="estado" type="number" value="${solicitudModPoaInstance.estado}" class="digits form-control required" required=""/>
+                    <g:field name="estado" type="number" value="${solicitudModPoaInstance.estado}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -137,7 +137,7 @@
                     Usuario
                 </label>
                 <div class="col-md-7">
-                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${solicitudModPoaInstance?.usuario?.id}" class="many-to-one form-control"/>
+                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${solicitudModPoaInstance?.usuario?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -149,7 +149,7 @@
                     Revisor
                 </label>
                 <div class="col-md-7">
-                    <g:select id="revisor" name="revisor.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${solicitudModPoaInstance?.revisor?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="revisor" name="revisor.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" value="${solicitudModPoaInstance?.revisor?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -161,7 +161,7 @@
                     Tipo
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="tipo" maxlength="1" required="" class="form-control required" value="${solicitudModPoaInstance?.tipo}"/>
+                    <g:textField name="tipo" maxlength="1" required="" class="form-control input-sm required" value="${solicitudModPoaInstance?.tipo}"/>
                 </div>
                  *
             </span>
@@ -173,7 +173,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1024" class="form-control" value="${solicitudModPoaInstance?.observaciones}"/>
+                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1024" class="form-control input-sm" value="${solicitudModPoaInstance?.observaciones}"/>
                 </div>
                 
             </span>
@@ -185,7 +185,7 @@
                     Actividad
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="actividad" cols="40" rows="5" maxlength="1024" class="form-control" value="${solicitudModPoaInstance?.actividad}"/>
+                    <g:textArea name="actividad" cols="40" rows="5" maxlength="1024" class="form-control input-sm" value="${solicitudModPoaInstance?.actividad}"/>
                 </div>
                 
             </span>
@@ -197,7 +197,7 @@
                     Inicio
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="inicio"  class="datepicker form-control" value="${solicitudModPoaInstance?.inicio}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="inicio"  class="datepicker form-control input-sm" value="${solicitudModPoaInstance?.inicio}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -209,7 +209,7 @@
                     Fin
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fin"  class="datepicker form-control" value="${solicitudModPoaInstance?.fin}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fin"  class="datepicker form-control input-sm" value="${solicitudModPoaInstance?.fin}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -221,7 +221,7 @@
                     Firma Sol
                 </label>
                 <div class="col-md-7">
-                    <g:select id="firmaSol" name="firmaSol.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${solicitudModPoaInstance?.firmaSol?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="firmaSol" name="firmaSol.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${solicitudModPoaInstance?.firmaSol?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -233,7 +233,7 @@
                     Firma1
                 </label>
                 <div class="col-md-7">
-                    <g:select id="firma1" name="firma1.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${solicitudModPoaInstance?.firma1?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="firma1" name="firma1.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${solicitudModPoaInstance?.firma1?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -245,7 +245,7 @@
                     Firma2
                 </label>
                 <div class="col-md-7">
-                    <g:select id="firma2" name="firma2.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${solicitudModPoaInstance?.firma2?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="firma2" name="firma2.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${solicitudModPoaInstance?.firma2?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -257,7 +257,7 @@
                     Fecha
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fecha"  class="datepicker form-control required" value="${solicitudModPoaInstance?.fecha}"  />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm required" value="${solicitudModPoaInstance?.fecha}"  />
                 </div>
                  *
             </span>
@@ -269,7 +269,7 @@
                     Valor Destino
                 </label>
                 <div class="col-md-3">
-                    <g:field name="valorDestino" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valorDestino')}" class="number form-control  required" required=""/>
+                    <g:field name="valorDestino" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valorDestino')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -281,7 +281,7 @@
                     Valor Destino Solicitado
                 </label>
                 <div class="col-md-3">
-                    <g:field name="valorDestinoSolicitado" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valorDestinoSolicitado')}" class="number form-control  required" required=""/>
+                    <g:field name="valorDestinoSolicitado" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valorDestinoSolicitado')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -293,7 +293,7 @@
                     Valor Origen
                 </label>
                 <div class="col-md-3">
-                    <g:field name="valorOrigen" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valorOrigen')}" class="number form-control  required" required=""/>
+                    <g:field name="valorOrigen" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valorOrigen')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -305,7 +305,7 @@
                     Valor Origen Solicitado
                 </label>
                 <div class="col-md-3">
-                    <g:field name="valorOrigenSolicitado" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valorOrigenSolicitado')}" class="number form-control  required" required=""/>
+                    <g:field name="valorOrigenSolicitado" type="number" value="${fieldValue(bean: solicitudModPoaInstance, field: 'valorOrigenSolicitado')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>

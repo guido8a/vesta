@@ -8,7 +8,7 @@
 
     <g:if test="${solicitudModPoaInstance?.fechaRevision}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Revision
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${solicitudModPoaInstance?.origen}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Origen
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${solicitudModPoaInstance?.destino}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Destino
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${solicitudModPoaInstance?.anio}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Anio
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${solicitudModPoaInstance?.fuente}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fuente
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${solicitudModPoaInstance?.marcoLogico}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Marco Logico
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${solicitudModPoaInstance?.presupuesto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Presupuesto
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${solicitudModPoaInstance?.valor}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Valor
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${solicitudModPoaInstance?.concepto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Concepto
             </div>
             
@@ -125,7 +125,7 @@
     
     <g:if test="${solicitudModPoaInstance?.estado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Estado
             </div>
             
@@ -138,7 +138,7 @@
     
     <g:if test="${solicitudModPoaInstance?.usuario}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Usuario
             </div>
             
@@ -151,7 +151,7 @@
     
     <g:if test="${solicitudModPoaInstance?.revisor}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Revisor
             </div>
             
@@ -164,7 +164,7 @@
     
     <g:if test="${solicitudModPoaInstance?.tipo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Tipo
             </div>
             
@@ -177,7 +177,7 @@
     
     <g:if test="${solicitudModPoaInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             
@@ -190,7 +190,7 @@
     
     <g:if test="${solicitudModPoaInstance?.actividad}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Actividad
             </div>
             
@@ -203,7 +203,7 @@
     
     <g:if test="${solicitudModPoaInstance?.inicio}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Inicio
             </div>
             
@@ -216,7 +216,7 @@
     
     <g:if test="${solicitudModPoaInstance?.fin}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fin
             </div>
             
@@ -229,7 +229,7 @@
     
     <g:if test="${solicitudModPoaInstance?.firmaSol}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Firma Sol
             </div>
             
@@ -242,7 +242,7 @@
     
     <g:if test="${solicitudModPoaInstance?.firma1}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Firma1
             </div>
             
@@ -255,7 +255,7 @@
     
     <g:if test="${solicitudModPoaInstance?.firma2}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Firma2
             </div>
             
@@ -268,7 +268,7 @@
     
     <g:if test="${solicitudModPoaInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -281,7 +281,7 @@
     
     <g:if test="${solicitudModPoaInstance?.valorDestino}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Valor Destino
             </div>
             
@@ -294,7 +294,7 @@
     
     <g:if test="${solicitudModPoaInstance?.valorDestinoSolicitado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Valor Destino Solicitado
             </div>
             
@@ -307,7 +307,7 @@
     
     <g:if test="${solicitudModPoaInstance?.valorOrigen}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Valor Origen
             </div>
             
@@ -320,7 +320,7 @@
     
     <g:if test="${solicitudModPoaInstance?.valorOrigenSolicitado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Valor Origen Solicitado
             </div>
             

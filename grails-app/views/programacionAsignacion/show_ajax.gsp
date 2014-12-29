@@ -8,7 +8,7 @@
 
     <g:if test="${programacionAsignacionInstance?.asignacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Asignacion
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${programacionAsignacionInstance?.distribucion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Distribucion
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${programacionAsignacionInstance?.mes}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Mes
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${programacionAsignacionInstance?.padre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Padre
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${programacionAsignacionInstance?.modificacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Modificacion
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${programacionAsignacionInstance?.valor}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Valor
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${programacionAsignacionInstance?.estado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Estado
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${programacionAsignacionInstance?.cronograma}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Cronograma
             </div>
             

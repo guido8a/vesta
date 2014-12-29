@@ -17,7 +17,7 @@
                     Usuario
                 </label>
                 <div class="col-md-7">
-                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${certificacionInstance?.usuario?.id}" class="many-to-one form-control"/>
+                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${certificacionInstance?.usuario?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Asignacion
                 </label>
                 <div class="col-md-7">
-                    <g:select id="asignacion" name="asignacion.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${certificacionInstance?.asignacion?.id}" class="many-to-one form-control"/>
+                    <g:select id="asignacion" name="asignacion.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${certificacionInstance?.asignacion?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Fecha
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fecha"  class="datepicker form-control required" value="${certificacionInstance?.fecha}"  />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm required" value="${certificacionInstance?.fecha}"  />
                 </div>
                  *
             </span>
@@ -53,7 +53,7 @@
                     Fecha Revision
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaRevision"  class="datepicker form-control" value="${certificacionInstance?.fechaRevision}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaRevision"  class="datepicker form-control input-sm" value="${certificacionInstance?.fechaRevision}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Monto
                 </label>
                 <div class="col-md-3">
-                    <g:field name="monto" type="number" value="${fieldValue(bean: certificacionInstance, field: 'monto')}" class="number form-control  required" required=""/>
+                    <g:field name="monto" type="number" value="${fieldValue(bean: certificacionInstance, field: 'monto')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -77,7 +77,7 @@
                     Concepto
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="concepto" cols="40" rows="5" maxlength="1024" required="" class="form-control required" value="${certificacionInstance?.concepto}"/>
+                    <g:textArea name="concepto" cols="40" rows="5" maxlength="1024" required="" class="form-control input-sm required" value="${certificacionInstance?.concepto}"/>
                 </div>
                  *
             </span>
@@ -89,7 +89,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="255" class="form-control" value="${certificacionInstance?.observaciones}"/>
+                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${certificacionInstance?.observaciones}"/>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Estado
                 </label>
                 <div class="col-md-3">
-                    <g:field name="estado" type="number" value="${certificacionInstance.estado}" class="digits form-control required" required=""/>
+                    <g:field name="estado" type="number" value="${certificacionInstance.estado}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -113,7 +113,7 @@
                     Memorando Solicitud
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="memorandoSolicitud" maxlength="40" required="" class="form-control required" value="${certificacionInstance?.memorandoSolicitud}"/>
+                    <g:textField name="memorandoSolicitud" maxlength="40" required="" class="form-control input-sm required" value="${certificacionInstance?.memorandoSolicitud}"/>
                 </div>
                  *
             </span>
@@ -125,7 +125,7 @@
                     Memorando Certificado
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="memorandoCertificado" maxlength="40" class="form-control" value="${certificacionInstance?.memorandoCertificado}"/>
+                    <g:textField name="memorandoCertificado" maxlength="40" class="form-control input-sm" value="${certificacionInstance?.memorandoCertificado}"/>
                 </div>
                 
             </span>
@@ -137,7 +137,7 @@
                     Acuerdo
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="acuerdo" maxlength="40" class="form-control" value="${certificacionInstance?.acuerdo}"/>
+                    <g:textField name="acuerdo" maxlength="40" class="form-control input-sm" value="${certificacionInstance?.acuerdo}"/>
                 </div>
                 
             </span>
@@ -149,7 +149,7 @@
                     Archivo
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="archivo" cols="40" rows="5" maxlength="500" class="form-control" value="${certificacionInstance?.archivo}"/>
+                    <g:textArea name="archivo" cols="40" rows="5" maxlength="500" class="form-control input-sm" value="${certificacionInstance?.archivo}"/>
                 </div>
                 
             </span>
@@ -161,7 +161,7 @@
                     Path Solicitud
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="pathSolicitud" cols="40" rows="5" maxlength="500" class="form-control" value="${certificacionInstance?.pathSolicitud}"/>
+                    <g:textArea name="pathSolicitud" cols="40" rows="5" maxlength="500" class="form-control input-sm" value="${certificacionInstance?.pathSolicitud}"/>
                 </div>
                 
             </span>
@@ -173,7 +173,7 @@
                     Path Anulacion
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="pathAnulacion" cols="40" rows="5" maxlength="500" class="form-control" value="${certificacionInstance?.pathAnulacion}"/>
+                    <g:textArea name="pathAnulacion" cols="40" rows="5" maxlength="500" class="form-control input-sm" value="${certificacionInstance?.pathAnulacion}"/>
                 </div>
                 
             </span>
@@ -185,7 +185,7 @@
                     Fecha Anulacion
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaAnulacion"  class="datepicker form-control" value="${certificacionInstance?.fechaAnulacion}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaAnulacion"  class="datepicker form-control input-sm" value="${certificacionInstance?.fechaAnulacion}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -197,7 +197,7 @@
                     Fecha Liberacion
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaLiberacion"  class="datepicker form-control" value="${certificacionInstance?.fechaLiberacion}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaLiberacion"  class="datepicker form-control input-sm" value="${certificacionInstance?.fechaLiberacion}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -209,7 +209,7 @@
                     Concepto Anulacion
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="conceptoAnulacion" cols="40" rows="5" maxlength="1024" class="form-control" value="${certificacionInstance?.conceptoAnulacion}"/>
+                    <g:textArea name="conceptoAnulacion" cols="40" rows="5" maxlength="1024" class="form-control input-sm" value="${certificacionInstance?.conceptoAnulacion}"/>
                 </div>
                 
             </span>
@@ -221,7 +221,7 @@
                     Path Solicitud Anulacion
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="pathSolicitudAnulacion" cols="40" rows="5" maxlength="500" class="form-control" value="${certificacionInstance?.pathSolicitudAnulacion}"/>
+                    <g:textArea name="pathSolicitudAnulacion" cols="40" rows="5" maxlength="500" class="form-control input-sm" value="${certificacionInstance?.pathSolicitudAnulacion}"/>
                 </div>
                 
             </span>
@@ -233,7 +233,7 @@
                     Path Liberacion
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="pathLiberacion" cols="40" rows="5" maxlength="500" class="form-control" value="${certificacionInstance?.pathLiberacion}"/>
+                    <g:textArea name="pathLiberacion" cols="40" rows="5" maxlength="500" class="form-control input-sm" value="${certificacionInstance?.pathLiberacion}"/>
                 </div>
                 
             </span>
@@ -245,7 +245,7 @@
                     Numero Contrato
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="numeroContrato" maxlength="20" class="form-control" value="${certificacionInstance?.numeroContrato}"/>
+                    <g:textField name="numeroContrato" maxlength="20" class="form-control input-sm" value="${certificacionInstance?.numeroContrato}"/>
                 </div>
                 
             </span>
@@ -257,7 +257,7 @@
                     Fecha Revision Anulacion
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaRevisionAnulacion"  class="datepicker form-control" value="${certificacionInstance?.fechaRevisionAnulacion}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaRevisionAnulacion"  class="datepicker form-control input-sm" value="${certificacionInstance?.fechaRevisionAnulacion}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -269,7 +269,7 @@
                     Monto Liberacion
                 </label>
                 <div class="col-md-3">
-                    <g:field name="montoLiberacion" type="number" value="${fieldValue(bean: certificacionInstance, field: 'montoLiberacion')}" class="number form-control  required" required=""/>
+                    <g:field name="montoLiberacion" type="number" value="${fieldValue(bean: certificacionInstance, field: 'montoLiberacion')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>

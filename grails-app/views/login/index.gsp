@@ -51,12 +51,12 @@
                         <img class="img-login" src="${resource(dir: 'images', file: 'logo-login.png')}"/>
 
                         <div class="input-group input-login">
-                            <g:textField name="user" class="form-control" placeholder="Usuario"/>
+                            <g:textField name="user" class="form-control input-sm" placeholder="Usuario"/>
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                         </div>
 
                         <div class="input-group input-login">
-                            <g:passwordField name="pass" class="form-control" placeholder="Contraseña"/>
+                            <g:passwordField name="pass" class="form-control input-sm" placeholder="Contraseña"/>
                             <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span>
                         </div>
 

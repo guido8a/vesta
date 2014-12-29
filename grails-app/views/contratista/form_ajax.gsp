@@ -17,7 +17,7 @@
                     Ruc
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="ruc" maxlength="13" required="" class="form-control required" value="${contratistaInstance?.ruc}"/>
+                    <g:textField name="ruc" maxlength="13" required="" class="form-control input-sm required" value="${contratistaInstance?.ruc}"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Direccion
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="direccion" cols="40" rows="5" maxlength="255" class="form-control" value="${contratistaInstance?.direccion}"/>
+                    <g:textArea name="direccion" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${contratistaInstance?.direccion}"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Fecha
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fecha" mensaje="Fecha"  class="datepicker form-control" value="${contratistaInstance?.fecha}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fecha" mensaje="Fecha"  class="datepicker form-control input-sm" value="${contratistaInstance?.fecha}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Nombre Cont
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="nombreCont" maxlength="63" class="form-control" value="${contratistaInstance?.nombreCont}"/>
+                    <g:textField name="nombreCont" maxlength="63" class="form-control input-sm" value="${contratistaInstance?.nombreCont}"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Nombre
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="nombre" maxlength="63" required="" class="form-control required" value="${contratistaInstance?.nombre}"/>
+                    <g:textField name="nombre" maxlength="63" required="" class="form-control input-sm required" value="${contratistaInstance?.nombre}"/>
                 </div>
                  *
             </span>
@@ -77,7 +77,7 @@
                     Apellido
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="apellido" maxlength="63" class="form-control" value="${contratistaInstance?.apellido}"/>
+                    <g:textField name="apellido" maxlength="63" class="form-control input-sm" value="${contratistaInstance?.apellido}"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="255" class="form-control" value="${contratistaInstance?.observaciones}"/>
+                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="255" class="form-control input-sm" value="${contratistaInstance?.observaciones}"/>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Telefono
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="telefono" maxlength="40" class="form-control" value="${contratistaInstance?.telefono}"/>
+                    <g:textField name="telefono" maxlength="40" class="form-control input-sm" value="${contratistaInstance?.telefono}"/>
                 </div>
                 
             </span>
@@ -113,7 +113,7 @@
                     Mail
                 </label>
                 <div class="col-md-7">
-                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="mail" maxlength="40" class="form-control unique noEspacios" value="${contratistaInstance?.mail}"/></div>
+                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="mail" maxlength="40" class="form-control input-sm unique noEspacios" value="${contratistaInstance?.mail}"/></div>
                 </div>
                 
             </span>
@@ -125,7 +125,7 @@
                     Estado
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="estado" class="form-control" value="${contratistaInstance?.estado}"/>
+                    <g:textField name="estado" class="form-control input-sm" value="${contratistaInstance?.estado}"/>
                 </div>
                 
             </span>

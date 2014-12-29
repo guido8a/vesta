@@ -8,7 +8,7 @@
 
     <g:if test="${avalInstance?.proceso}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Proceso
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${avalInstance?.fechaAprobacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Aprobación
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${avalInstance?.fechaLiberacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Liberación
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${avalInstance?.fechaAnulacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Anulación
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${avalInstance?.estado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Estado
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${avalInstance?.memo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Memo
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${avalInstance?.path}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${avalInstance?.pathLiberacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Liberación
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${avalInstance?.pathAnulacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path Anulación
             </div>
             
@@ -125,7 +125,7 @@
     
     <g:if test="${avalInstance?.contrato}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Contrato
             </div>
             
@@ -138,7 +138,7 @@
     
     <g:if test="${avalInstance?.numero}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Número
             </div>
             
@@ -151,7 +151,7 @@
     
     <g:if test="${avalInstance?.concepto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Concepto
             </div>
             
@@ -164,7 +164,7 @@
     
     <g:if test="${avalInstance?.certificacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Certificación
             </div>
             
@@ -177,7 +177,7 @@
     
     <g:if test="${avalInstance?.firma1}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Firma1
             </div>
             
@@ -190,7 +190,7 @@
     
     <g:if test="${avalInstance?.firma2}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Firma2
             </div>
             
@@ -203,7 +203,7 @@
     
     <g:if test="${avalInstance?.liberacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Liberación
             </div>
             
@@ -216,7 +216,7 @@
     
     <g:if test="${avalInstance?.monto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Monto
             </div>
             

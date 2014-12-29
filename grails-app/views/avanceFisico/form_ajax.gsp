@@ -17,7 +17,7 @@
                     Proceso
                 </label>
                 <div class="col-md-6">
-                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" required="" value="${avanceFisicoInstance?.proceso?.id}" class="many-to-one form-control"/>
+                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" required="" value="${avanceFisicoInstance?.proceso?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1024" class="form-control" value="${avanceFisicoInstance?.observaciones}"/>
+                    <g:textArea name="observaciones" cols="40" rows="5" maxlength="1024" class="form-control input-sm" value="${avanceFisicoInstance?.observaciones}"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Completado
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="completado"  class="datepicker form-control" value="${avanceFisicoInstance?.completado}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="completado"  class="datepicker form-control input-sm" value="${avanceFisicoInstance?.completado}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Inicio
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="inicio"  class="datepicker form-control" value="${avanceFisicoInstance?.inicio}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="inicio"  class="datepicker form-control input-sm" value="${avanceFisicoInstance?.inicio}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Fin
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fin"  class="datepicker form-control" value="${avanceFisicoInstance?.fin}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fin"  class="datepicker form-control input-sm" value="${avanceFisicoInstance?.fin}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Avance
                 </label>
                 <div class="col-md-2">
-                    <g:field name="avance" type="number" value="${fieldValue(bean: avanceFisicoInstance, field: 'avance')}" class="number form-control  required" required=""/>
+                    <g:field name="avance" type="number" value="${fieldValue(bean: avanceFisicoInstance, field: 'avance')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -89,7 +89,7 @@
                     Fecha
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fecha"  class="datepicker form-control required" value="${avanceFisicoInstance?.fecha}"  />
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm required" value="${avanceFisicoInstance?.fecha}"  />
                 </div>
                  *
             </span>

@@ -19,7 +19,7 @@
                     Proceso
                 </label>
                 <div class="col-md-7">
-                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" optionValue="nombre" required="" value="${avalInstance?.proceso?.id}" class="many-to-one form-control"/>
+                    <g:select id="proceso" name="proceso.id" from="${vesta.avales.ProcesoAval.list()}" optionKey="id" optionValue="nombre" required="" value="${avalInstance?.proceso?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -31,7 +31,7 @@
                     Fecha Aprobación
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaAprobacion"  class="datepicker form-control" value="${avalInstance?.fechaAprobacion}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaAprobacion"  class="datepicker form-control input-sm" value="${avalInstance?.fechaAprobacion}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -43,7 +43,7 @@
                     Fecha Liberación
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaLiberacion"  class="datepicker form-control" value="${avalInstance?.fechaLiberacion}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaLiberacion"  class="datepicker form-control input-sm" value="${avalInstance?.fechaLiberacion}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -55,7 +55,7 @@
                     Fecha Anulación
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaAnulacion"  class="datepicker form-control" value="${avalInstance?.fechaAnulacion}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaAnulacion"  class="datepicker form-control input-sm" value="${avalInstance?.fechaAnulacion}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -67,7 +67,7 @@
                     Estado
                 </label>
                 <div class="col-md-7">
-                    <g:select id="estado" name="estado.id" from="${vesta.avales.EstadoAval.list()}" optionKey="id" optionValue="descripcion" required="" value="${avalInstance?.estado?.id}" class="many-to-one form-control"/>
+                    <g:select id="estado" name="estado.id" from="${vesta.avales.EstadoAval.list()}" optionKey="id" optionValue="descripcion" required="" value="${avalInstance?.estado?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -79,7 +79,7 @@
                     Memo
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="memo" maxlength="30" class="form-control" value="${avalInstance?.memo}"/>
+                    <g:textField name="memo" maxlength="30" class="form-control input-sm" value="${avalInstance?.memo}"/>
                 </div>
                 
             </span>
@@ -91,7 +91,7 @@
                     Path
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="path" cols="40" rows="5" maxlength="350" class="form-control" value="${avalInstance?.path}"/>
+                    <g:textArea name="path" cols="40" rows="5" maxlength="350" class="form-control input-sm" value="${avalInstance?.path}"/>
                 </div>
                 
             </span>
@@ -103,7 +103,7 @@
                     Path Liberación
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="pathLiberacion" cols="40" rows="5" maxlength="350" class="form-control" value="${avalInstance?.pathLiberacion}"/>
+                    <g:textArea name="pathLiberacion" cols="40" rows="5" maxlength="350" class="form-control input-sm" value="${avalInstance?.pathLiberacion}"/>
                 </div>
                 
             </span>
@@ -115,7 +115,7 @@
                     Path Anulación
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="pathAnulacion" cols="40" rows="5" maxlength="350" class="form-control" value="${avalInstance?.pathAnulacion}"/>
+                    <g:textArea name="pathAnulacion" cols="40" rows="5" maxlength="350" class="form-control input-sm" value="${avalInstance?.pathAnulacion}"/>
                 </div>
                 
             </span>
@@ -127,7 +127,7 @@
                     Contrato
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="contrato" maxlength="30" class="form-control" value="${avalInstance?.contrato}"/>
+                    <g:textField name="contrato" maxlength="30" class="form-control input-sm" value="${avalInstance?.contrato}"/>
                 </div>
                 
             </span>
@@ -139,7 +139,7 @@
                     Número
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="numero" maxlength="10" class="form-control" value="${avalInstance?.numero}"/>
+                    <g:textField name="numero" maxlength="10" class="form-control input-sm" value="${avalInstance?.numero}"/>
                 </div>
                 
             </span>
@@ -151,7 +151,7 @@
                     Concepto
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="concepto" cols="40" rows="5" maxlength="500" class="form-control" value="${avalInstance?.concepto}"/>
+                    <g:textArea name="concepto" cols="40" rows="5" maxlength="500" class="form-control input-sm" value="${avalInstance?.concepto}"/>
                 </div>
                 
             </span>
@@ -163,7 +163,7 @@
                     Certificacion
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="certificacion" maxlength="50" class="form-control" value="${avalInstance?.certificacion}"/>
+                    <g:textField name="certificacion" maxlength="50" class="form-control input-sm" value="${avalInstance?.certificacion}"/>
                 </div>
                 
             </span>
@@ -175,7 +175,7 @@
                     Firma1
                 </label>
                 <div class="col-md-7">
-                    <g:select id="firma1" name="firma1.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${avalInstance?.firma1?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="firma1" name="firma1.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${avalInstance?.firma1?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -187,7 +187,7 @@
                     Firma2
                 </label>
                 <div class="col-md-7">
-                    <g:select id="firma2" name="firma2.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${avalInstance?.firma2?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="firma2" name="firma2.id" from="${vesta.seguridad.Firma.list()}" optionKey="id" value="${avalInstance?.firma2?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -199,7 +199,7 @@
                     Liberacion
                 </label>
                 <div class="col-md-3">
-                    <g:field name="liberacion" type="number" value="${fieldValue(bean: avalInstance, field: 'liberacion')}" class="number form-control  required" required=""/>
+                    <g:field name="liberacion" type="number" value="${fieldValue(bean: avalInstance, field: 'liberacion')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>
@@ -211,7 +211,7 @@
                     Monto
                 </label>
                 <div class="col-md-3">
-                    <g:field name="monto" type="number" value="${fieldValue(bean: avalInstance, field: 'monto')}" class="number form-control  required" required=""/>
+                    <g:field name="monto" type="number" value="${fieldValue(bean: avalInstance, field: 'monto')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>

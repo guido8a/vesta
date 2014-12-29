@@ -8,7 +8,7 @@
 
     <g:if test="${tipoProductoInstance?.tipoProducto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Tipo Producto
             </div>
             

@@ -17,7 +17,7 @@
                     Asignacion
                 </label>
                 <div class="col-md-6">
-                    <g:select id="asignacion" name="asignacion.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${distribucionAsignacionInstance?.asignacion?.id}" class="many-to-one form-control"/>
+                    <g:select id="asignacion" name="asignacion.id" from="${vesta.poa.Asignacion.list()}" optionKey="id" required="" value="${distribucionAsignacionInstance?.asignacion?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Unidad Ejecutora
                 </label>
                 <div class="col-md-6">
-                    <g:select id="unidadEjecutora" name="unidadEjecutora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" required="" value="${distribucionAsignacionInstance?.unidadEjecutora?.id}" class="many-to-one form-control"/>
+                    <g:select id="unidadEjecutora" name="unidadEjecutora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" required="" value="${distribucionAsignacionInstance?.unidadEjecutora?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Valor
                 </label>
                 <div class="col-md-2">
-                    <g:field name="valor" type="number" value="${fieldValue(bean: distribucionAsignacionInstance, field: 'valor')}" class="number form-control  required" required=""/>
+                    <g:field name="valor" type="number" value="${fieldValue(bean: distribucionAsignacionInstance, field: 'valor')}" class="number form-control input-sm  required" required=""/>
                 </div>
                  *
             </span>

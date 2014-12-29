@@ -8,7 +8,7 @@
 
     <g:if test="${codigoComprasPublicasInstance?.padre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Padre
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${codigoComprasPublicasInstance?.numero}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Numero
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${codigoComprasPublicasInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripcion
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${codigoComprasPublicasInstance?.nivel}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nivel
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${codigoComprasPublicasInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${codigoComprasPublicasInstance?.movimiento}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Movimiento
             </div>
             

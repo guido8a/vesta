@@ -8,7 +8,7 @@
 
     <g:if test="${distribucionAsignacionInstance?.asignacion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Asignacion
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${distribucionAsignacionInstance?.unidadEjecutora}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Unidad Ejecutora
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${distribucionAsignacionInstance?.valor}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Valor
             </div>
             

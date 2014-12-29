@@ -82,7 +82,14 @@ class UnidadEjecutoraController extends Shield {
                 render "ERROR*No se encontró UnidadEjecutora."
                 return
             }
-            return [unidadEjecutoraInstance: unidadEjecutoraInstance]
+            def c = PresupuestoUnidad.createCriteria()
+            def presupuestos = c.list {
+                eq("unidad", unidadEjecutoraInstance)
+                anio {
+                    order("anio", "asc")
+                }
+            }
+            return [unidadEjecutoraInstance: unidadEjecutoraInstance, presupuestos: presupuestos]
         } else {
             render "ERROR*No se encontró UnidadEjecutora."
         }

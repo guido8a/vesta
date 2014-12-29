@@ -17,7 +17,7 @@
                     Unidad Ejecutora
                 </label>
                 <div class="col-md-7">
-                    <g:select id="unidadEjecutora" name="unidadEjecutora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${proyectoInstance?.unidadEjecutora?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="unidadEjecutora" name="unidadEjecutora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${proyectoInstance?.unidadEjecutora?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Etapa
                 </label>
                 <div class="col-md-7">
-                    <g:select id="etapa" name="etapa.id" from="${vesta.parametros.Etapa.list()}" optionKey="id" value="${proyectoInstance?.etapa?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="etapa" name="etapa.id" from="${vesta.parametros.Etapa.list()}" optionKey="id" value="${proyectoInstance?.etapa?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -41,7 +41,7 @@
                     Fase
                 </label>
                 <div class="col-md-7">
-                    <g:select id="fase" name="fase.id" from="${vesta.parametros.Fase.list()}" optionKey="id" value="${proyectoInstance?.fase?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="fase" name="fase.id" from="${vesta.parametros.Fase.list()}" optionKey="id" value="${proyectoInstance?.fase?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -53,7 +53,7 @@
                     Tipo Producto
                 </label>
                 <div class="col-md-7">
-                    <g:select id="tipoProducto" name="tipoProducto.id" from="${vesta.parametros.TipoProducto.list()}" optionKey="id" value="${proyectoInstance?.tipoProducto?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="tipoProducto" name="tipoProducto.id" from="${vesta.parametros.TipoProducto.list()}" optionKey="id" value="${proyectoInstance?.tipoProducto?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -65,7 +65,7 @@
                     Estado Proyecto
                 </label>
                 <div class="col-md-7">
-                    <g:select id="estadoProyecto" name="estadoProyecto.id" from="${vesta.parametros.EstadoProyecto.list()}" optionKey="id" value="${proyectoInstance?.estadoProyecto?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="estadoProyecto" name="estadoProyecto.id" from="${vesta.parametros.EstadoProyecto.list()}" optionKey="id" value="${proyectoInstance?.estadoProyecto?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -77,7 +77,7 @@
                     Linea
                 </label>
                 <div class="col-md-7">
-                    <g:select id="linea" name="linea.id" from="${vesta.parametros.Linea.list()}" optionKey="id" value="${proyectoInstance?.linea?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="linea" name="linea.id" from="${vesta.parametros.Linea.list()}" optionKey="id" value="${proyectoInstance?.linea?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -89,7 +89,7 @@
                     Tipo Inversion
                 </label>
                 <div class="col-md-7">
-                    <g:select id="tipoInversion" name="tipoInversion.id" from="${vesta.parametros.TipoInversion.list()}" optionKey="id" value="${proyectoInstance?.tipoInversion?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="tipoInversion" name="tipoInversion.id" from="${vesta.parametros.TipoInversion.list()}" optionKey="id" value="${proyectoInstance?.tipoInversion?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -101,7 +101,7 @@
                     Cobertura
                 </label>
                 <div class="col-md-7">
-                    <g:select id="cobertura" name="cobertura.id" from="${vesta.parametros.Cobertura.list()}" optionKey="id" value="${proyectoInstance?.cobertura?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="cobertura" name="cobertura.id" from="${vesta.parametros.Cobertura.list()}" optionKey="id" value="${proyectoInstance?.cobertura?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -113,7 +113,7 @@
                     Calificacion
                 </label>
                 <div class="col-md-7">
-                    <g:select id="calificacion" name="calificacion.id" from="${vesta.parametros.Calificacion.list()}" optionKey="id" value="${proyectoInstance?.calificacion?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="calificacion" name="calificacion.id" from="${vesta.parametros.Calificacion.list()}" optionKey="id" value="${proyectoInstance?.calificacion?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -125,7 +125,7 @@
                     Programa
                 </label>
                 <div class="col-md-7">
-                    <g:select id="programa" name="programa.id" from="${vesta.parametros.proyectos.Programa.list()}" optionKey="id" value="${proyectoInstance?.programa?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="programa" name="programa.id" from="${vesta.parametros.proyectos.Programa.list()}" optionKey="id" value="${proyectoInstance?.programa?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -137,7 +137,7 @@
                     Codigo Proyecto
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="codigoProyecto" maxlength="24" class="form-control unique noEspacios" value="${proyectoInstance?.codigoProyecto}"/>
+                    <g:textField name="codigoProyecto" maxlength="24" class="form-control input-sm unique noEspacios" value="${proyectoInstance?.codigoProyecto}"/>
                 </div>
                 
             </span>
@@ -149,7 +149,7 @@
                     Fecha Registro
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaRegistro" mensaje="Fecha de Registro en la SENPLADES"  class="datepicker form-control" value="${proyectoInstance?.fechaRegistro}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaRegistro" mensaje="Fecha de Registro en la SENPLADES"  class="datepicker form-control input-sm" value="${proyectoInstance?.fechaRegistro}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -161,7 +161,7 @@
                     Fecha Modificacion
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaModificacion" mensaje="Fecha de Modificación del proyecto"  class="datepicker form-control" value="${proyectoInstance?.fechaModificacion}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaModificacion" mensaje="Fecha de Modificación del proyecto"  class="datepicker form-control input-sm" value="${proyectoInstance?.fechaModificacion}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -173,7 +173,7 @@
                     Nombre
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="nombre" cols="40" rows="5" maxlength="255" required="" class="form-control required" value="${proyectoInstance?.nombre}"/>
+                    <g:textArea name="nombre" cols="40" rows="5" maxlength="255" required="" class="form-control input-sm required" value="${proyectoInstance?.nombre}"/>
                 </div>
                  *
             </span>
@@ -185,7 +185,7 @@
                     Monto
                 </label>
                 <div class="col-md-3">
-                    <g:field name="monto" type="number" value="${fieldValue(bean: proyectoInstance, field: 'monto')}" class="number form-control "/>
+                    <g:field name="monto" type="number" value="${fieldValue(bean: proyectoInstance, field: 'monto')}" class="number form-control input-sm "/>
                 </div>
                 
             </span>
@@ -197,7 +197,7 @@
                     Producto
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="producto" cols="40" rows="5" maxlength="1023" class="form-control" value="${proyectoInstance?.producto}"/>
+                    <g:textArea name="producto" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.producto}"/>
                 </div>
                 
             </span>
@@ -209,7 +209,7 @@
                     Descripcion
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="1024" class="form-control" value="${proyectoInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.descripcion}"/>
                 </div>
                 
             </span>
@@ -221,7 +221,7 @@
                     Fecha Inicio Planificada
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaInicioPlanificada" mensaje="Fecha de inicio según el plan o programada"  class="datepicker form-control" value="${proyectoInstance?.fechaInicioPlanificada}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaInicioPlanificada" mensaje="Fecha de inicio según el plan o programada"  class="datepicker form-control input-sm" value="${proyectoInstance?.fechaInicioPlanificada}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -233,7 +233,7 @@
                     Fecha Inicio
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaInicio" mensaje="Fecha de Inicio real"  class="datepicker form-control" value="${proyectoInstance?.fechaInicio}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaInicio" mensaje="Fecha de Inicio real"  class="datepicker form-control input-sm" value="${proyectoInstance?.fechaInicio}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -245,7 +245,7 @@
                     Fecha Fin Planificada
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaFinPlanificada" mensaje="Fecha de finalización según el plan o programada"  class="datepicker form-control" value="${proyectoInstance?.fechaFinPlanificada}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaFinPlanificada" mensaje="Fecha de finalización según el plan o programada"  class="datepicker form-control input-sm" value="${proyectoInstance?.fechaFinPlanificada}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -257,7 +257,7 @@
                     Fecha Fin
                 </label>
                 <div class="col-md-5">
-                    <elm:datepicker name="fechaFin" mensaje="Fecha de finalización real"  class="datepicker form-control" value="${proyectoInstance?.fechaFin}" default="none" noSelection="['': '']" />
+                    <elm:datepicker name="fechaFin" mensaje="Fecha de finalización real"  class="datepicker form-control input-sm" value="${proyectoInstance?.fechaFin}" default="none" noSelection="['': '']" />
                 </div>
                 
             </span>
@@ -269,7 +269,7 @@
                     Mes
                 </label>
                 <div class="col-md-3">
-                    <g:field name="mes" type="number" value="${proyectoInstance.mes}" class="digits form-control"/>
+                    <g:field name="mes" type="number" value="${proyectoInstance.mes}" class="digits form-control input-sm"/>
                 </div>
                 
             </span>
@@ -281,7 +281,7 @@
                     Problema
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="problema" cols="40" rows="5" maxlength="1024" class="form-control" value="${proyectoInstance?.problema}"/>
+                    <g:textArea name="problema" cols="40" rows="5" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.problema}"/>
                 </div>
                 
             </span>
@@ -293,7 +293,7 @@
                     Informacion Dias
                 </label>
                 <div class="col-md-3">
-                    <g:field name="informacionDias" type="number" value="${proyectoInstance.informacionDias}" class="digits form-control"/>
+                    <g:field name="informacionDias" type="number" value="${proyectoInstance.informacionDias}" class="digits form-control input-sm"/>
                 </div>
                 
             </span>
@@ -305,7 +305,7 @@
                     Sub Programa
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="subPrograma" maxlength="2" class="form-control" value="${proyectoInstance?.subPrograma}"/>
+                    <g:textField name="subPrograma" maxlength="2" class="form-control input-sm" value="${proyectoInstance?.subPrograma}"/>
                 </div>
                 
             </span>
@@ -317,7 +317,7 @@
                     Aprobado
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="aprobado" maxlength="1" class="form-control" value="${proyectoInstance?.aprobado}"/>
+                    <g:textField name="aprobado" maxlength="1" class="form-control input-sm" value="${proyectoInstance?.aprobado}"/>
                 </div>
                 
             </span>
@@ -329,7 +329,7 @@
                     Aprobado Poa
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="aprobadoPoa" maxlength="1" class="form-control" value="${proyectoInstance?.aprobadoPoa}"/>
+                    <g:textField name="aprobadoPoa" maxlength="1" class="form-control input-sm" value="${proyectoInstance?.aprobadoPoa}"/>
                 </div>
                 
             </span>
@@ -341,7 +341,7 @@
                     Objetivo Estrategico
                 </label>
                 <div class="col-md-7">
-                    <g:select id="objetivoEstrategico" name="objetivoEstrategico.id" from="${vesta.proyectos.ObjetivoEstrategicoProyecto.list()}" optionKey="id" value="${proyectoInstance?.objetivoEstrategico?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="objetivoEstrategico" name="objetivoEstrategico.id" from="${vesta.proyectos.ObjetivoEstrategicoProyecto.list()}" optionKey="id" value="${proyectoInstance?.objetivoEstrategico?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -353,7 +353,7 @@
                     Eje Programatico
                 </label>
                 <div class="col-md-7">
-                    <g:select id="ejeProgramatico" name="ejeProgramatico.id" from="${vesta.proyectos.EjeProgramatico.list()}" optionKey="id" value="${proyectoInstance?.ejeProgramatico?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="ejeProgramatico" name="ejeProgramatico.id" from="${vesta.proyectos.EjeProgramatico.list()}" optionKey="id" value="${proyectoInstance?.ejeProgramatico?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -365,7 +365,7 @@
                     Linea Base
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="lineaBase" cols="40" rows="5" maxlength="1023" class="form-control" value="${proyectoInstance?.lineaBase}"/>
+                    <g:textArea name="lineaBase" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.lineaBase}"/>
                 </div>
                 
             </span>
@@ -377,7 +377,7 @@
                     Poblacion Objetivo
                 </label>
                 <div class="col-md-7">
-                    <g:textArea name="poblacionObjetivo" cols="40" rows="5" maxlength="1023" class="form-control" value="${proyectoInstance?.poblacionObjetivo}"/>
+                    <g:textArea name="poblacionObjetivo" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.poblacionObjetivo}"/>
                 </div>
                 
             </span>
@@ -389,7 +389,7 @@
                     Objetivo Gobierno Resultado
                 </label>
                 <div class="col-md-7">
-                    <g:select id="objetivoGobiernoResultado" name="objetivoGobiernoResultado.id" from="${vesta.parametros.proyectos.ObjetivoGobiernoResultado.list()}" optionKey="id" value="${proyectoInstance?.objetivoGobiernoResultado?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="objetivoGobiernoResultado" name="objetivoGobiernoResultado.id" from="${vesta.parametros.proyectos.ObjetivoGobiernoResultado.list()}" optionKey="id" value="${proyectoInstance?.objetivoGobiernoResultado?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -401,7 +401,7 @@
                     Programa Presupuestario
                 </label>
                 <div class="col-md-7">
-                    <g:select id="programaPresupuestario" name="programaPresupuestario.id" from="${vesta.parametros.poaPac.ProgramaPresupuestario.list()}" optionKey="id" value="${proyectoInstance?.programaPresupuestario?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="programaPresupuestario" name="programaPresupuestario.id" from="${vesta.parametros.poaPac.ProgramaPresupuestario.list()}" optionKey="id" value="${proyectoInstance?.programaPresupuestario?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -413,7 +413,7 @@
                     Codigo Esigef
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="codigoEsigef" maxlength="3" class="form-control unique noEspacios" value="${proyectoInstance?.codigoEsigef}"/>
+                    <g:textField name="codigoEsigef" maxlength="3" class="form-control input-sm unique noEspacios" value="${proyectoInstance?.codigoEsigef}"/>
                 </div>
                 
             </span>
@@ -425,7 +425,7 @@
                     Unidad Administradora
                 </label>
                 <div class="col-md-7">
-                    <g:select id="unidadAdministradora" name="unidadAdministradora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${proyectoInstance?.unidadAdministradora?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="unidadAdministradora" name="unidadAdministradora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${proyectoInstance?.unidadAdministradora?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -437,7 +437,7 @@
                     Portafolio
                 </label>
                 <div class="col-md-7">
-                    <g:select id="portafolio" name="portafolio.id" from="${vesta.proyectos.Portafolio.list()}" optionKey="id" value="${proyectoInstance?.portafolio?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="portafolio" name="portafolio.id" from="${vesta.proyectos.Portafolio.list()}" optionKey="id" value="${proyectoInstance?.portafolio?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -449,7 +449,7 @@
                     Codigo
                 </label>
                 <div class="col-md-7">
-                    <g:textField name="codigo" class="form-control unique noEspacios" value="${proyectoInstance?.codigo}"/>
+                    <g:textField name="codigo" class="form-control input-sm unique noEspacios" value="${proyectoInstance?.codigo}"/>
                 </div>
                 
             </span>
@@ -461,7 +461,7 @@
                     Estrategia
                 </label>
                 <div class="col-md-7">
-                    <g:select id="estrategia" name="estrategia.id" from="${vesta.proyectos.Estrategia.list()}" optionKey="id" value="${proyectoInstance?.estrategia?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="estrategia" name="estrategia.id" from="${vesta.proyectos.Estrategia.list()}" optionKey="id" value="${proyectoInstance?.estrategia?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>

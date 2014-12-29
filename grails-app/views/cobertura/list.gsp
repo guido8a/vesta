@@ -19,7 +19,7 @@
             </div>
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control input-search" placeholder="Buscar" value="${params.search}">
+                    <input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">
                     <span class="input-group-btn">
                         <g:link controller="cobertura" action="list" class="btn btn-default btn-search">
                             <i class="fa fa-search"></i>&nbsp;
@@ -54,7 +54,7 @@
                                 No se encontraron resultados para su búsqueda
                             </g:if>
                             <g:else>
-                                No se econtraron registros que mostrar
+                                No se encontraron registros que mostrar
                             </g:else>
                         </td>
                     </tr>

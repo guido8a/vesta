@@ -8,7 +8,7 @@
 
     <g:if test="${hitoInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${hitoInstance?.fechaCumplimiento}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Cumplimiento
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${hitoInstance?.fechaPlanificada}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Planificada
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${hitoInstance?.inicio}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Inicio
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${hitoInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Descripcion
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${hitoInstance?.avanceFinanciero}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Avance Financiero
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${hitoInstance?.avanceFisico}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Avance Fisico
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${hitoInstance?.tipo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Tipo
             </div>
             

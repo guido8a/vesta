@@ -8,7 +8,7 @@
 
     <g:if test="${solicitudAvalInstance?.concepto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Concepto
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${solicitudAvalInstance?.proceso}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Proceso
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${solicitudAvalInstance?.aval}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Aval
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${solicitudAvalInstance?.fechaRevision}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha Revision
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${solicitudAvalInstance?.estado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Estado
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${solicitudAvalInstance?.path}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Path
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${solicitudAvalInstance?.contrato}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Contrato
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${solicitudAvalInstance?.memo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Memo
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${solicitudAvalInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Observaciones
             </div>
             
@@ -125,7 +125,7 @@
     
     <g:if test="${solicitudAvalInstance?.numero}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Numero
             </div>
             
@@ -138,7 +138,7 @@
     
     <g:if test="${solicitudAvalInstance?.tipo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Tipo
             </div>
             
@@ -151,7 +151,7 @@
     
     <g:if test="${solicitudAvalInstance?.firma}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Firma
             </div>
             
@@ -164,7 +164,7 @@
     
     <g:if test="${solicitudAvalInstance?.unidad}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Unidad
             </div>
             
@@ -177,7 +177,7 @@
     
     <g:if test="${solicitudAvalInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -190,7 +190,7 @@
     
     <g:if test="${solicitudAvalInstance?.monto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Monto
             </div>
             
@@ -203,7 +203,7 @@
     
     <g:if test="${solicitudAvalInstance?.usuario}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Usuario
             </div>
             

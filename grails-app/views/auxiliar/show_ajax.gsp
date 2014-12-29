@@ -8,7 +8,7 @@
 
     <g:if test="${auxiliarInstance?.presupuesto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Presupuesto
             </div>
             

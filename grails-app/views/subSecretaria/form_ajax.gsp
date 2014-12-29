@@ -17,7 +17,7 @@
                     Entidad
                 </label>
                 <div class="col-md-6">
-                    <g:select id="entidad" name="entidad.id" from="${vesta.parametros.Entidad.list()}" optionKey="id" value="${subSecretariaInstance?.entidad?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="entidad" name="entidad.id" from="${vesta.parametros.Entidad.list()}" optionKey="id" value="${subSecretariaInstance?.entidad?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                 </div>
                 
             </span>
@@ -29,7 +29,7 @@
                     Nombre
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="nombre" maxlength="63" required="" class="form-control required" value="${subSecretariaInstance?.nombre}"/>
+                    <g:textField name="nombre" maxlength="63" required="" class="form-control input-sm required" value="${subSecretariaInstance?.nombre}"/>
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Titulo
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="titulo" maxlength="63" class="form-control" value="${subSecretariaInstance?.titulo}"/>
+                    <g:textField name="titulo" maxlength="63" class="form-control input-sm" value="${subSecretariaInstance?.titulo}"/>
                 </div>
                 
             </span>

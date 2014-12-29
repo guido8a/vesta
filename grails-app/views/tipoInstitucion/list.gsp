@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de TipoInstitucion</title>
+        <title>Lista de Áreas de Gestión</title>
     </head>
     <body>
 
@@ -14,12 +14,12 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <a href="#" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Nueva Área de Gestión
                 </a>
             </div>
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control input-search" placeholder="Buscar" value="${params.search}">
+                    <input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">
                     <span class="input-group-btn">
                         <g:link controller="tipoinstitucion" action="list" class="btn btn-default btn-search">
                             <i class="fa fa-search"></i>&nbsp;
@@ -33,9 +33,9 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="codigo" title="Codigo" />
+                    <g:sortableColumn property="codigo" title="Código" />
                     
-                    <g:sortableColumn property="descripcion" title="Descripcion" />
+                    <g:sortableColumn property="descripcion" title="Descripción" />
                     
                 </tr>
             </thead>
@@ -58,7 +58,7 @@
                                 No se encontraron resultados para su búsqueda
                             </g:if>
                             <g:else>
-                                No se econtraron registros que mostrar
+                                No se encontraron registros que mostrar
                             </g:else>
                         </td>
                     </tr>
@@ -75,7 +75,7 @@
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando TipoInstitucion");
+                    openLoader("Guardando Área de Gestión");
                     $.ajax({
                         type    : "POST",
                         url     : $form.attr("action"),
@@ -101,7 +101,7 @@
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                              "¿Está seguro que desea eliminar el TipoInstitucion seleccionado? Esta acción no se puede deshacer.</p>",
+                              "¿Está seguro que desea eliminar el Área de Gestión seleccionada? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -113,7 +113,7 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando TipoInstitucion");
+                                openLoader("Eliminando Área de Gestión");
                                 $.ajax({
                                     type    : "POST",
                                     url     : '${createLink(action:'delete_ajax')}',
@@ -147,7 +147,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " TipoInstitucion",
+                            title   : title + " Área de Gestión",
                             
                             message : msg,
                             buttons : {
@@ -200,7 +200,7 @@
                                     },
                                     success : function (msg) {
                                         bootbox.dialog({
-                                            title   : "Ver TipoInstitucion",
+                                            title   : "Ver Área de Gestión",
                                             message : msg,
                                             buttons : {
                                                 ok : {

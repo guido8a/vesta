@@ -8,7 +8,7 @@
 
     <g:if test="${subSecretariaInstance?.entidad}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Entidad
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${subSecretariaInstance?.nombre}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Nombre
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${subSecretariaInstance?.titulo}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Titulo
             </div>
             

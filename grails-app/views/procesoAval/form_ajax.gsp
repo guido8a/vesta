@@ -17,7 +17,7 @@
                     Nombre
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="nombre" cols="40" rows="5" maxlength="255" required="" class="form-control required" value="${procesoAvalInstance?.nombre}"/>
+                    <g:textArea name="nombre" cols="40" rows="5" maxlength="255" required="" class="form-control input-sm required" value="${procesoAvalInstance?.nombre}"/>
                 </div>
                  *
             </span>
@@ -29,7 +29,7 @@
                     Fecha Fin
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fechaFin"  class="datepicker form-control required" value="${procesoAvalInstance?.fechaFin}"  />
+                    <elm:datepicker name="fechaFin"  class="datepicker form-control input-sm required" value="${procesoAvalInstance?.fechaFin}"  />
                 </div>
                  *
             </span>
@@ -41,7 +41,7 @@
                     Fecha Inicio
                 </label>
                 <div class="col-md-4">
-                    <elm:datepicker name="fechaInicio"  class="datepicker form-control required" value="${procesoAvalInstance?.fechaInicio}"  />
+                    <elm:datepicker name="fechaInicio"  class="datepicker form-control input-sm required" value="${procesoAvalInstance?.fechaInicio}"  />
                 </div>
                  *
             </span>
@@ -53,7 +53,7 @@
                     Informar
                 </label>
                 <div class="col-md-2">
-                    <g:field name="informar" type="number" value="${procesoAvalInstance.informar}" class="digits form-control required" required=""/>
+                    <g:field name="informar" type="number" value="${procesoAvalInstance.informar}" class="digits form-control input-sm required" required=""/>
                 </div>
                  *
             </span>
@@ -65,7 +65,7 @@
                     Proyecto
                 </label>
                 <div class="col-md-6">
-                    <g:select id="proyecto" name="proyecto.id" from="${vesta.proyectos.Proyecto.list()}" optionKey="id" required="" value="${procesoAvalInstance?.proyecto?.id}" class="many-to-one form-control"/>
+                    <g:select id="proyecto" name="proyecto.id" from="${vesta.proyectos.Proyecto.list()}" optionKey="id" required="" value="${procesoAvalInstance?.proyecto?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>

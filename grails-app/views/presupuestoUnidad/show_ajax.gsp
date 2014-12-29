@@ -8,7 +8,7 @@
 
     <g:if test="${presupuestoUnidadInstance?.unidad}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Unidad
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.anio}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Anio
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.maxInversion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Max Inversion
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.maxCorrientes}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Max Corrientes
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.ejeProgramatico}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Eje Programatico
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.objetivoEstrategico}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Objetivo Estrategico
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.objetivoGobiernoResultado}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Objetivo Gobierno Resultado
             </div>
             
@@ -99,7 +99,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.politica}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Politica
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.aprobadoCorrientes}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Aprobado Corrientes
             </div>
             
@@ -125,7 +125,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.aprobadoInversion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Aprobado Inversion
             </div>
             
@@ -138,7 +138,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.originalCorrientes}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Original Corrientes
             </div>
             
@@ -151,7 +151,7 @@
     
     <g:if test="${presupuestoUnidadInstance?.originalInversion}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Original Inversion
             </div>
             

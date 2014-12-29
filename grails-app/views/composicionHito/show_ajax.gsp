@@ -8,7 +8,7 @@
 
     <g:if test="${composicionHitoInstance?.hito}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Hito
             </div>
             
@@ -21,7 +21,7 @@
     
     <g:if test="${composicionHitoInstance?.marcoLogico}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Marco Logico
             </div>
             
@@ -34,7 +34,7 @@
     
     <g:if test="${composicionHitoInstance?.proyecto}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Proyecto
             </div>
             
@@ -47,7 +47,7 @@
     
     <g:if test="${composicionHitoInstance?.proceso}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Proceso
             </div>
             
@@ -60,7 +60,7 @@
     
     <g:if test="${composicionHitoInstance?.fecha}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Fecha
             </div>
             
@@ -73,7 +73,7 @@
     
     <g:if test="${composicionHitoInstance?.avanceFinanciero}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Avance Financiero
             </div>
             
@@ -86,7 +86,7 @@
     
     <g:if test="${composicionHitoInstance?.avanceFisico}">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 show-label">
                 Avance Fisico
             </div>
             
