@@ -14,7 +14,16 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <a href="#" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Nuevo proyecto
+                </a>
+               <g:link class=" btn btn-success excel " action="cargarExcel" >
+                   <i class="fa fa-file-excel-o"></i>
+                   Cargar Excel
+               </g:link>
+
+                <a class="btn btn-success" id="reporte">
+                    <i class="fa fa-file-excel-o"></i>
+                    Reporte de Total de Priorización
                 </a>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -32,29 +41,30 @@
         <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>Codigo</th>
-                    <th>Nombre</th>
-                    <th>Monto</th>
-                    <th>Fecha inicio</th>
-                    <th>Fecha fin</th>
-
+                    <g:sortableColumn property="codigoProyecto" title="CUP" />
+                    <g:sortableColumn property="nombre" title="Nombre" />
+                    <th>Unidad <br>Administradora</th>
+                    <g:sortableColumn property="monto" title="Monto" />
+                    <g:sortableColumn property="descripcion" title="Descripción" />
+                    <th>Programa</th>
                 </tr>
             </thead>
             <tbody>
                 <g:if test="${proyectoInstanceCount > 0}">
                     <g:each in="${proyectoInstanceList}" status="i" var="proyectoInstance">
                         <tr data-id="${proyectoInstance.id}">
-
                             
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="codigoProyecto"/></elm:textoBusqueda></td>
                             
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="nombre"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="monto"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="fechaInicioPlanificada"/></elm:textoBusqueda></td>
+                            <td>${proyectoInstance.unidadAdministradora}</td>
 
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="fechaFinPlanificada"/></elm:textoBusqueda></td>
+                            <td style="text-align: right;"><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="monto"/></elm:textoBusqueda></td>
+                            
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="descripcion"/></elm:textoBusqueda></td>
+
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${proyectoInstance}" field="programa"/></elm:textoBusqueda></td>
+
                         </tr>
                     </g:each>
                 </g:if>
@@ -184,7 +194,10 @@
             } //createEdit
 
             $(function () {
-
+                $("#reporte").click(function(){
+                    var url = "${createLink(controller: 'reportes2', action: 'reporteTotalPriorizacion')}";
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;
+                })
                 $(".btnCrear").click(function() {
                     createEditRow();
                     return false;

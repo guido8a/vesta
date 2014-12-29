@@ -1,0 +1,57 @@
+<tr>
+    <td>
+        ${it.ejercicio}
+    </td>
+    <td>
+        ${it.entidad}
+    </td>
+    <td>
+        ${it.unidadEjecutora}
+    </td>
+    <td>
+        ${it.programa}
+    </td>
+    <td>
+        ${it.proyecto}
+    </td>
+    <td>
+        ${it.actividad}
+    </td>
+    <td>
+        ${it.renglon}
+    </td>
+    <td>
+        ${it.presupuesto}
+    </td>
+    <td>
+        ${it.fuente}
+    </td>
+    <td>
+        ${it.codigo}
+    </td>
+    <td>
+        ${it.tipoCompra}
+    </td>
+    <td>
+        ${it.detalle}
+    </td>
+    <td>
+        ${it.cantidadAnual}
+    </td>
+    <td>
+        ${it.unidad}
+    </td>
+    <td>
+        <g:formatNumber number="${it.costoUnitario}" format="###,##0"
+                        minFractionDigits="2" maxFractionDigits="2"/>
+    </td>
+    <td>
+        ${it.cuatrimestre1}
+    </td>
+    <td>
+        ${it.cuatrimestre2}
+    </td>
+    <td>
+        ${it.cuatrimestre3}
+    </td>
+</tr>
