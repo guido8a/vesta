@@ -89,7 +89,7 @@
                     Email
                 </label>
                 <div class="col-md-6">
-                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="email" maxlength="63" class="form-control input-sm unique noEspacios" value="${entidadInstance?.email}"/></div>
+                    <div class="input-group input-group-sm"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="email" maxlength="63" class="form-control input-sm unique noEspacios" value="${entidadInstance?.email}"/></div>
                 </div>
                 
             </span>

@@ -244,9 +244,12 @@ class EntidadController extends Shield {
                         rel = "yachay"
                     }
 
-                    /* aqui se deberia validar si está o no activo pero las unidades no tienen ese campo asiq se muestran todas como activas */
                     if (hijo.padre) {
-                        rel += "Activo"
+                        if (!hijo.fechaFin || hijo.fechaFin > new Date()) {
+                            rel += "Activo"
+                        } else {
+                            rel += "Inactivo"
+                        }
                     }
 
                     hijosH += Persona.findAllByUnidad(hijo, [sort: "apellido"])

@@ -1,6 +1,7 @@
 package vesta.seguridad
 
 import org.springframework.dao.DataIntegrityViolationException
+import sun.misc.Perf
 import vesta.seguridad.Shield
 
 
@@ -86,7 +87,13 @@ class PersonaController extends Shield {
                 render "ERROR*No se encontró Persona."
                 return
             }
-            return [personaInstance: personaInstance]
+            def perfiles = Sesn.withCriteria {
+                eq("usuario", personaInstance)
+                perfil {
+                    order("nombre", "asc")
+                }
+            }
+            return [personaInstance: personaInstance, perfiles: perfiles]
         } else {
             render "ERROR*No se encontró Persona."
         }
@@ -99,15 +106,22 @@ class PersonaController extends Shield {
      */
     def form_ajax() {
         def personaInstance = new Persona()
+        def perfiles = []
         if (params.id) {
             personaInstance = Persona.get(params.id)
             if (!personaInstance) {
                 render "ERROR*No se encontró Persona."
                 return
             }
+            perfiles = Sesn.withCriteria {
+                eq("usuario", personaInstance)
+                perfil {
+                    order("nombre", "asc")
+                }
+            }
         }
         personaInstance.properties = params
-        return [personaInstance: personaInstance]
+        return [personaInstance: personaInstance, perfiles: perfiles]
     } //form para cargar con ajax en un dialog
 
     /**
@@ -127,6 +141,56 @@ class PersonaController extends Shield {
         if (!personaInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar Persona: " + renderErrors(bean: personaInstance)
             return
+        }
+
+        def perfiles = params.perfiles
+//        println params
+//        println "PERFILES: " + perfiles
+        if (perfiles) {
+            def perfilesOld = Sesn.findAllByUsuario(personaInstance)
+            def perfilesSelected = []
+            def perfilesInsertar = []
+            (perfiles.split("_")).each { perfId ->
+                def perf = Prfl.get(perfId.toLong())
+                if (!perfilesOld.perfil.id.contains(perf.id)) {
+                    perfilesInsertar += perf
+                } else {
+                    perfilesSelected += perf
+                }
+            }
+            def commons = perfilesOld.perfil.intersect(perfilesSelected)
+            def perfilesDelete = perfilesOld.perfil.plus(perfilesSelected)
+            perfilesDelete.removeAll(commons)
+
+//            println "perfiles old      : " + perfilesOld
+//            println "perfiles selected : " + perfilesSelected
+//            println "perfiles insertar : " + perfilesInsertar
+//            println "perfiles delete   : " + perfilesDelete
+
+            def errores = ""
+
+            perfilesInsertar.each { perfil ->
+                def sesion = new Sesn()
+                sesion.usuario = personaInstance
+                sesion.perfil = perfil
+                if (!sesion.save(flush: true)) {
+                    errores += renderErrors(bean: sesion)
+                    println "error al guardar sesion: " + sesion.errors
+                }
+            }
+            perfilesDelete.each { perfil ->
+                def sesion = Sesn.findAllByPerfilAndUsuario(perfil, personaInstance)
+                try {
+                    if (sesion.size() == 1) {
+                        sesion.first().delete(flush: true)
+                    } else {
+                        errores += "Existen ${sesion.size()} registros del permiso " + perfil.nombre
+                    }
+                } catch (Exception e) {
+                    errores += "Ha ocurrido un error al eliminar el perfil " + perfil.nombre
+                    println "error al eliminar perfil: " + e
+                }
+            }
         }
         render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Persona exitosa."
         return
@@ -196,6 +260,21 @@ class PersonaController extends Shield {
         } else {
             render Persona.countByMailIlike(params.mail) == 0
             return
+        }
+    }
+
+    /**
+     * Acción llamada con ajax que valida que el valor ingresado corresponda con el valor almacenado de la autorización
+     * @render boolean que indica si se puede o no utilizar el valor recibido
+     */
+    def validar_aut_previa_ajax() {
+        println "AQUIII"
+        params.input1 = params.input1.trim()
+        def obj = Persona.get(params.id)
+        if (obj.autorizacion == params.input1.encodeAsMD5()) {
+            render true
+        } else {
+            render false
         }
     }
 

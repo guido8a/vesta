@@ -34,7 +34,7 @@
                 </g:if>
             </div>
             <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
+                <div class="input-group input-group-sm">
                     <input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">
                     <span class="input-group-btn">
                         <g:link controller="solicitud" action="list" class="btn btn-default btn-search">

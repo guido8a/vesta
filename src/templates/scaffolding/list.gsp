@@ -93,7 +93,7 @@
 
         <script type="text/javascript">
             var id = null;
-            function submitForm() {
+            function submitForm${domainClass.propertyName.capitalize()}() {
                 var \$form = \$("#frm${className}");
                 var \$btn = \$("#dlgCreateEdit").find("#btnSave");
                 if (\$form.valid()) {
@@ -139,7 +139,7 @@
                                 openLoader("Eliminando ${className}");
                                 \$.ajax({
                                     type    : "POST",
-                                    url     : '\${createLink(action:'delete_ajax')}',
+                                    url     : '\${createLink(controller:'${domainClass.propertyName.toLowerCase()}', action:'delete_ajax')}',
                                     data    : {
                                         id : itemId
                                     },
@@ -165,7 +165,7 @@
                 var data = id ? { id: id } : {};
                 \$.ajax({
                     type    : "POST",
-                    url     : "\${createLink(action:'form_ajax')}",
+                    url     : "\${createLink(controller:'${domainClass.propertyName.toLowerCase()}', action:'form_ajax')}",
                     data    : data,
                     success : function (msg) {
                         var b = bootbox.dialog({
@@ -219,7 +219,7 @@
                                 var id = \$element.data("id");
                                 \$.ajax({
                                     type    : "POST",
-                                    url     : "\${createLink(action:'show_ajax')}",
+                                    url     : "\${createLink(controller:'${domainClass.propertyName.toLowerCase()}', action:'show_ajax')}",
                                     data    : {
                                         id : id
                                     },

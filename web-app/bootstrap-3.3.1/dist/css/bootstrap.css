@@ -6408,6 +6408,9 @@ legend {
 .input-group-addon {
   font-family: "PT Sans Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+.form-group {
+  margin-bottom: 5px;
+}
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
