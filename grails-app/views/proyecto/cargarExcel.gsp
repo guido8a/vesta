@@ -22,6 +22,7 @@
 <body>
 <g:if test="${flash.message}">
     <div class="message">${flash.message}</div>
+
 </g:if>
 <div style="width: 800px; margin-bottom:5px; margin-top:10px; padding: 4px;" class="ui-corner-all ui-widget-content">
     <g:form name="frmUpload" enctype="multipart/form-data" method="post" action="subirExcel">
@@ -34,6 +35,7 @@
     </g:form>
 </div>
 <div class="colorf">
+
     * El archivo a cargar solo puede ser de tipo XLS
 </div>
 

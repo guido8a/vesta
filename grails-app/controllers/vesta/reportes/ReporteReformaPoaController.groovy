@@ -9,6 +9,10 @@ import vesta.seguridad.Sesn
  */
 class ReporteReformaPoaController {
 
+
+
+
+
     /**
      * Genera el reporte PDF de solicitud de reforma al POA
      */
@@ -17,6 +21,11 @@ class ReporteReformaPoaController {
         def sol = SolicitudModPoa.get(params.id)
         [sol:sol]
     }
+
+
+
+
+
 
     /**
      * Genera el reporte PDF de la reforma al POA
