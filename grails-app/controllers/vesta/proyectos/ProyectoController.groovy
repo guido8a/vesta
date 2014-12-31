@@ -1527,7 +1527,7 @@ response.outputStream << file.newInputStream()
         [proyecto: proyecto, financiamientos: financiamientos]
     }
 
-    /*FUnción para guardar un nuevo financiamiento*/
+    /*Función para guardar un nuevo financiamiento*/
     /**
      * Acción
      */

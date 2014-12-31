@@ -34,6 +34,7 @@
         </div>
     </g:form>
 </div>
+
 <div class="colorf">
 
     * El archivo a cargar solo puede ser de tipo XLS
