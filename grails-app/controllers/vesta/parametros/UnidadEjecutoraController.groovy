@@ -105,11 +105,15 @@ class UnidadEjecutoraController extends Shield {
         if (params.id) {
             unidadEjecutoraInstance = UnidadEjecutora.get(params.id)
             if (!unidadEjecutoraInstance) {
-                render "ERROR*No se encontró UnidadEjecutora."
+                render "ERROR*No se encontró Entidad."
                 return
             }
         }
         unidadEjecutoraInstance.properties = params
+        if (params.padre) {
+            def padre = UnidadEjecutora.get(params.padre.toLong())
+            unidadEjecutoraInstance.padre = padre;
+        }
         return [unidadEjecutoraInstance: unidadEjecutoraInstance]
     } //form para cargar con ajax en un dialog
 
@@ -122,16 +126,19 @@ class UnidadEjecutoraController extends Shield {
         if (params.id) {
             unidadEjecutoraInstance = UnidadEjecutora.get(params.id)
             if (!unidadEjecutoraInstance) {
-                render "ERROR*No se encontró UnidadEjecutora."
+                render "ERROR*No se encontró Entidad."
                 return
             }
         }
+        if (params.codigo) {
+            params.codigo = params.codigo.trim()
+        }
         unidadEjecutoraInstance.properties = params
         if (!unidadEjecutoraInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar UnidadEjecutora: " + renderErrors(bean: unidadEjecutoraInstance)
+            render "ERROR*Ha ocurrido un error al guardar Entidad: " + renderErrors(bean: unidadEjecutoraInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de UnidadEjecutora exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Entidad exitosa."
         return
     } //save para grabar desde ajax
 
@@ -148,14 +155,14 @@ class UnidadEjecutoraController extends Shield {
             }
             try {
                 unidadEjecutoraInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de UnidadEjecutora exitosa."
+                render "SUCCESS*Eliminación de Entidad exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar UnidadEjecutora"
+                render "ERROR*Ha ocurrido un error al eliminar Entidad"
                 return
             }
         } else {
-            render "ERROR*No se encontró UnidadEjecutora."
+            render "ERROR*No se encontró Entidad."
             return
         }
     } //delete para eliminar via ajax

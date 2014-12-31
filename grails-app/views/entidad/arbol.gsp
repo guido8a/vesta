@@ -42,7 +42,7 @@
 
         <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-2">
-                <div class="input-group">
+                <div class="input-group input-group-sm">
                     <input type="text" class="form-control input-sm" placeholder="Buscador">
                     <span class="input-group-btn">
                         <a href="#" class="btn btn-sm btn-success" type="button"><i class="fa fa-search"></i></a>
@@ -56,12 +56,283 @@
         </div>
 
         <script type="text/javascript">
+            function submitFormUnidad() {
+                var $form = $("#frmUnidadEjecutora");
+                var $btn = $("#dlgCreateEdit").find("#btnSave");
+                if ($form.valid()) {
+                    $btn.replaceWith(spinner);
+                    openLoader("Guardando Entidad");
+                    $.ajax({
+                        type   : "POST",
+                        url    : $form.attr("action"),
+                        data   : $form.serialize(),
+                        success: function (msg) {
+                            var parts = msg.split("*");
+                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                            setTimeout(function () {
+                                if (parts[0] == "SUCCESS") {
+                                    location.reload(true);
+                                } else {
+                                    spinner.replaceWith($btn);
+                                    return false;
+                                }
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    return false;
+                } //else
+            }
+
+            function createEditUnidad(id, parentId) {
+                var title = id ? "Editar" : "Crear";
+                var data = id ? {id: id} : {};
+                if (parentId) {
+                    data.padre = parentId;
+                }
+                $.ajax({
+                    type   : "POST",
+                    url    : "${createLink(controller: 'unidadEjecutora', action:'form_ajax')}",
+                    data   : data,
+                    success: function (msg) {
+                        var b = bootbox.dialog({
+                            id   : "dlgCreateEdit",
+                            title: title + " Entidad",
+
+                            class: "modal-lg",
+
+                            message: msg,
+                            buttons: {
+                                cancelar: {
+                                    label    : "Cancelar",
+                                    className: "btn-primary",
+                                    callback : function () {
+                                    }
+                                },
+                                guardar : {
+                                    id       : "btnSave",
+                                    label    : "<i class='fa fa-save'></i> Guardar",
+                                    className: "btn-success",
+                                    callback : function () {
+                                        return submitFormUnidad();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                        setTimeout(function () {
+                            b.find(".form-control").first().focus()
+                        }, 500);
+                    } //success
+                }); //ajax
+            } //createEdit
+
+            function submitFormPersona() {
+                var $form = $("#frmPersona");
+                var $btn = $("#dlgCreateEdit").find("#btnSave");
+                if ($form.valid()) {
+                    var data = $form.serialize();
+                    data += "&perfiles=";
+                    $(".perfiles").each(function () {
+                        data += $(this).data("id") + "_";
+                    });
+                    $btn.replaceWith(spinner);
+                    openLoader("Guardando Persona");
+                    $.ajax({
+                        type   : "POST",
+                        url    : $form.attr("action"),
+                        data   : data,
+                        success: function (msg) {
+                            var parts = msg.split("*");
+                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                            setTimeout(function () {
+                                if (parts[0] == "SUCCESS") {
+                                    location.reload(true);
+                                } else {
+                                    closeLoader();
+                                    spinner.replaceWith($btn);
+                                    return false;
+                                }
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    return false;
+                } //else
+            }
+            function createEditPersona(id, unidadId) {
+                var title = id ? "Editar" : "Crear";
+                var data = id ? {id: id} : {};
+                if (unidadId) {
+                    data.unidad = unidadId;
+                }
+                $.ajax({
+                    type   : "POST",
+                    url    : "${createLink(controller: 'persona', action:'form_ajax')}",
+                    data   : data,
+                    success: function (msg) {
+                        var b = bootbox.dialog({
+                            id   : "dlgCreateEdit",
+                            title: title + " Persona",
+
+                            class: "modal-lg",
+
+                            message: msg,
+                            buttons: {
+                                cancelar: {
+                                    label    : "Cancelar",
+                                    className: "btn-primary",
+                                    callback : function () {
+                                    }
+                                },
+                                guardar : {
+                                    id       : "btnSave",
+                                    label    : "<i class='fa fa-save'></i> Guardar",
+                                    className: "btn-success",
+                                    callback : function () {
+                                        return submitFormPersona();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                        setTimeout(function () {
+                            b.find(".form-control").first().focus()
+                        }, 500);
+                    } //success
+                }); //ajax
+            } //createEdit
+            function cambiarPassPersona(id, tipo) {
+                var title = "";
+                var $alert = $("<div class='alert alert-info'>");
+
+                var createInput = function (num) {
+                    var $grupo = $("<div class='grupo'>");
+                    var $inputGroup = $("<div class='input-group input-group-sm'>");
+                    var $input = $("<input type='password' id='input" + num + "' name='input" + num + "' class='form-control input-sm required'>");
+                    var $span = $("<span class='input-group-addon'>");
+                    if (tipo == "pass") {
+                        $span.html("<i class='fa fa-unlock'></i> ");
+                    } else if (tipo == "auth") {
+                        $span.html("<i class='fa fa-unlock-alt'></i> ");
+                    }
+                    var $row = $("<div class='row'>");
+                    var $cell1 = $("<div class='col-md-4'>");
+                    var $cell2 = $("<div class='col-md-6'>");
+                    $inputGroup.append($input);
+                    $inputGroup.append($span);
+                    $grupo.append($inputGroup);
+                    $cell2.append($grupo);
+                    $row.append($cell1);
+                    $row.append($cell2);
+                    return {input: $input, row: $row, cell: $cell1};
+                };
+
+                var set1 = createInput(1);
+                var set2 = createInput(2);
+                var set3 = createInput(3);
+
+                var $form = $("<form>");
+
+                if (tipo == "pass") {
+                    $alert.text("Ingrese la nueva contraseña del usuario");
+                    title = "Cambio de contraseña del usuario";
+                    set2.cell.text("Contraseña nueva");
+                    set3.cell.text("Verifique la contraseña");
+                    $form.append(set2.row).append(set3.row);
+                } else if (tipo == "auth") {
+                    $alert.text("Ingrese su autorización actual y la nueva");
+                    title = "Cambio de autorización del usuario";
+                    set1.cell.text("Autorización actual");
+                    set2.cell.text("Autorización nueva");
+                    set3.cell.text("Verifique la autorización");
+                    $form.append(set1.row).append(set2.row).append(set3.row);
+                }
+
+                $form.prepend($alert);
+
+                $form.validate({
+                    errorClass    : "help-block",
+                    errorPlacement: function (error, element) {
+                        if (element.parent().hasClass("input-group")) {
+                            error.insertAfter(element.parent());
+                        } else {
+                            error.insertAfter(element);
+                        }
+                        element.parents(".grupo").addClass('has-error');
+                    },
+                    success       : function (label) {
+                        label.parents(".grupo").removeClass('has-error');
+                    },
+                    rules         : {
+                        input1: {
+                            remote: {
+                                url : "${createLink(controller:'persona',action: 'validar_aut_previa_ajax')}",
+                                type: "post",
+                                data: {
+                                    id: id
+                                }
+                            }
+                        },
+                        input3: {
+                            equalTo: $("#input2")
+                        }
+                    },
+                    messages      : {
+                        input1: {
+                            remote: "La autorización no concuerda con la ingresada"
+                        }
+                    }
+                });
+
+                bootbox.dialog({
+                    title  : title,
+                    message: $form,
+                    buttons: {
+                        cancelar: {
+                            label    : "Cancelar",
+                            className: "btn-primary",
+                            callback : function () {
+                            }
+                        },
+                        guardar : {
+                            label    : "<i class='fa fa-save'></i> Guardar",
+                            className: "btn-success",
+                            callback : function () {
+                                console.log(tipo, set1.input.val(), set2.input.val(), set3.input.val());
+                                %{--openLoader("Guardando");--}%
+                                %{--$.ajax({--}%
+                                %{--type   : "POST",--}%
+                                %{--url    : '${createLink(action:'delete_ajax')}',--}%
+                                %{--data   : {--}%
+                                %{--id: id--}%
+                                %{--},--}%
+                                %{--success: function (msg) {--}%
+                                %{--var parts = msg.split("*");--}%
+                                %{--log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)--}%
+                                %{--if (parts[0] == "SUCCESS") {--}%
+                                %{--setTimeout(function () {--}%
+                                %{--location.reload(true);--}%
+                                %{--}, 1000);--}%
+                                %{--} else {--}%
+                                %{--closeLoader();--}%
+                                %{--}--}%
+                                %{--}--}%
+                                %{--});--}%
+                            }
+                        }
+                    }
+                });
+            }
+
             function createContextMenu(node) {
                 var nodeStrId = node.id;
                 var $node = $("#" + nodeStrId);
                 var nodeId = nodeStrId.split("_")[1];
                 var nodeType = $node.data("jstree").type;
-                var nodeUsu = $node.data("usuario");
+
+//                var $parent = $node.parent().parent();
+//                var parentStrId = $parent.attr("id");
+//                var parentId = parentStrId.split("_")[1];
+//                var tienePadre = parentId !== undefined;
 
                 var esRoot = nodeType == "root";
                 var esYachay = nodeType == "yachay";
@@ -74,6 +345,7 @@
                     label : "Agregar entidad",
                     icon  : "fa fa-home text-success",
                     action: function () {
+                        createEditUnidad(null, nodeId);
                     }
                 };
                 var docsEntidad = {
@@ -89,7 +361,7 @@
                     icon           : "fa fa-user text-success",
                     separator_after: true,
                     action         : function () {
-
+                        createEditPersona(null, nodeId);
                     }
                 };
                 var responsablesUnidad = {
@@ -131,7 +403,7 @@
                     label : "Editar datos de la entidad",
                     icon  : "fa fa-pencil text-info",
                     action: function () {
-
+                        createEditUnidad(nodeId, null);
                     }
                 };
                 var presupuestoEntidad = {
@@ -165,6 +437,7 @@
                                 bootbox.dialog({
                                     title  : "Ver Usuario",
                                     message: msg,
+                                    class  : "modal-lg",
                                     buttons: {
                                         ok: {
                                             label    : "Aceptar",
@@ -183,12 +456,27 @@
                     icon            : "fa fa-pencil text-info",
                     separator_before: true,
                     action          : function () {
-
+                        createEditPersona(nodeId, null);
+                    }
+                };
+                var editarPass = {
+                    label           : "Modificar contraseña",
+                    icon            : "fa fa-unlock text-info",
+                    separator_before: true,
+                    action          : function () {
+                        cambiarPassPersona(nodeId, "pass");
+                    }
+                };
+                var editarAuth = {
+                    label : "Modificar autorización",
+                    icon  : "fa fa-unlock-alt text-info",
+                    action: function () {
+                        cambiarPassPersona(nodeId, "auth");
                     }
                 };
 
                 if (esRoot) {
-                    items.agregarEntidad = agregarEntidad;
+//                    items.agregarEntidad = agregarEntidad;
                 } else if (esYachay) {
                     items.agregarEntidad = agregarEntidad;
                     items.presupuestoEntidad = presupuestoEntidad;
@@ -207,6 +495,10 @@
                 } else if (esUsuario) {
                     items.ver = verUsuario;
                     items.editar = editarUsuario;
+                    items.editarPass = editarPass;
+                    if (nodeId == "${session.usuario.id}") {
+                        items.editarAuth = editarAuth;
+                    }
                 }
                 return items;
             }

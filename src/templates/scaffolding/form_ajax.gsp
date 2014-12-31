@@ -123,7 +123,7 @@
         });
         \$(".form-control").keydown(function (ev) {
             if (ev.keyCode == 13) {
-                submitForm();
+                submitForm${domainClass.propertyName.capitalize()}();
                 return false;
             }
             return true;

@@ -113,7 +113,7 @@
                     Mail
                 </label>
                 <div class="col-md-7">
-                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="mail" maxlength="40" class="form-control input-sm unique noEspacios" value="${contratistaInstance?.mail}"/></div>
+                    <div class="input-group input-group-sm"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><g:field type="email" name="mail" maxlength="40" class="form-control input-sm unique noEspacios" value="${contratistaInstance?.mail}"/></div>
                 </div>
                 
             </span>

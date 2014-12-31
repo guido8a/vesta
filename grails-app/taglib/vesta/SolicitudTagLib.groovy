@@ -36,19 +36,19 @@ class SolicitudTagLib {
             html = '<table style="width: ' + w + ';">'
 
             html += '<tr>'
-            html += '<td class="label">Fecha</td>'
+            html += '<td class="show-label">Fecha</td>'
             html += '<td >'
             html += solicitud.fecha?.format("dd-MM-yyyy")
             html += '</td>'
             html += "</tr>"
 
             html += '<tr>'
-            html += '<td class="label">Unidad requirente</td>'
+            html += '<td class="show-label">Unidad requirente</td>'
             html += '<td >'
             html += (solicitud.unidadEjecutora?.nombre ?: "")
             html += '</td>'
 
-            html += '<td class="label">Proyecto</td>'
+            html += '<td class="show-label">Proyecto</td>'
             html += '<td >'
             html += (solicitud.actividad?.proyecto?.nombre ?: "")
             html += '</td>'
@@ -56,30 +56,30 @@ class SolicitudTagLib {
             html += "</tr>"
 
             html += '<tr>'
-            html += '<td class="label">Nombre del proceso</td>'
+            html += '<td class="show-label">Nombre del proceso</td>'
             html += '<td >'
             html += (solicitud.nombreProceso ?: "")
             html += '</td>'
 
-            html += '<td class="label">Componente</td>'
+            html += '<td class="show-label">Componente</td>'
             html += '<td>'
             html += (solicitud.actividad?.marcoLogico?.objeto ?: "")
             html += '</td>'
             html += "</tr>"
 
             html += '<tr>'
-            html += '<td class="label">Objeto del contrato</td>'
+            html += '<td class="show-label">Objeto del contrato</td>'
             html += '<td>'
             html += (solicitud.objetoContrato ?: "")
             html += '</td>'
 
-            html += '<td class="label">Actividad</td>'
+            html += '<td class="show-label">Actividad</td>'
             html += '<td>'
             html += solicitud.actividad?.objeto
             def anio = Anio.findByAnio(new Date().format('yyyy'))
             def tieneAsignacion = Asignacion.countByMarcoLogicoAndAnio(solicitud.actividad, anio) > 0
             if (!tieneAsignacion) {
-                html += "<div class='ui-widget-content ui-corner-all ui-state-error' style='padding:5px;'> " +
+                html += "<div class='alert alert-danger' style='padding:5px;'> " +
                         "La actividad no se encuentra en el POA </div>"
             }
             html += '</td>'
@@ -92,7 +92,7 @@ class SolicitudTagLib {
             html += "</tr>"
 
             html += "<tr>"
-            html += '<td class="label">Monto solicitado</td>'
+            html += '<td class="show-label">Monto solicitado</td>'
             html += '<td>'
             html += g.formatNumber(number: solicitud.montoSolicitado, type: "currency")
             def asignado = 0
@@ -102,26 +102,26 @@ class SolicitudTagLib {
             html += "<br/>(Detallado: ${formatNumber(number: asignado, type: 'currency')})"
             html += '</td>'
 
-            html += '<td class="label">Forma de pago</td>'
+            html += '<td class="show-label">Forma de pago</td>'
             html += '<td>'
             html += (solicitud.formaPago ?: "")
             html += '</td>'
             html += "</tr>"
 
             html += "<tr>"
-            html += '<td class="label">Plazo de ejecución</td>'
+            html += '<td class="show-label">Plazo de ejecución</td>'
             html += '<td>'
             html += solicitud.plazoEjecucion + " días"
             html += '</td>'
 
-            html += '<td class="label">Tipo de bien</td>'
+            html += '<td class="show-label">Tipo de bien</td>'
             html += '<td>'
             html += (solicitud.tipoBien?.descripcion ?: "")
             html += '</td>'
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Modalidad de contratación</td>'
+            html += '<td class="show-label">Modalidad de contratación</td>'
             html += '<td>'
             html += (solicitud.tipoContrato?.descripcion ?: "")
             html += '</td>'
@@ -134,14 +134,14 @@ class SolicitudTagLib {
             html += "</tr>"
 
             html += '<tr>'
-            html += '<td class="label">Archivo TDR</td>'
+            html += '<td class="show-label">Archivo TDR</td>'
             html += '<td>'
-            html += g.link(controller: 'solicitud', action: "downloadSolicitud", params: [tipo: "tdr"], id: solicitud.id) {
+            html += g.link(controller: 'solicitud', action: "downloadSolicitud", class: "btn btn-default button", params: [tipo: "tdr"], id: solicitud.id) {
                 solicitud.pathPdfTdr
             }
             html += '</td>'
 
-            html += '<td class="label">Oferta 1</td>'
+            html += '<td class="show-label">Oferta 1</td>'
             html += '<td>'
             html += g.link(controller: 'solicitud', action: "downloadSolicitud", params: [tipo: "oferta1"], id: solicitud.id) {
                 solicitud.pathOferta1
@@ -150,14 +150,14 @@ class SolicitudTagLib {
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Oferta 2</td>'
+            html += '<td class="show-label">Oferta 2</td>'
             html += '<td>'
             html += g.link(controller: 'solicitud', action: "downloadSolicitud", params: [tipo: "oferta2"], id: solicitud.id) {
                 solicitud.pathOferta2
             }
             html += '</td>'
 
-            html += '<td class="label">Oferta 3</td>'
+            html += '<td class="show-label">Oferta 3</td>'
             html += '<td>'
             html += g.link(controller: 'solicitud', action: "downloadSolicitud", params: [tipo: "oferta3"], id: solicitud.id) {
                 solicitud.pathOferta3
@@ -166,14 +166,14 @@ class SolicitudTagLib {
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Cuadro comparativo</td>'
+            html += '<td class="show-label">Cuadro comparativo</td>'
             html += '<td>'
             html += g.link(controller: 'solicitud', action: "downloadSolicitud", params: [tipo: "comparativo"], id: solicitud.id) {
                 solicitud.pathCuadroComparativo
             }
             html += '</td>'
 
-            html += '<td class="label">Análisis de costos</td>'
+            html += '<td class="show-label">Análisis de costos</td>'
             html += '<td>'
             html += g.link(controller: 'solicitud', action: "downloadSolicitud", params: [tipo: "analisis"], id: solicitud.id) {
                 solicitud.pathAnalisisCostos
@@ -469,7 +469,7 @@ class SolicitudTagLib {
         html += '</thead>'
         html += '<tbody>'
         html += "<tr>"
-        html += '<td style="width: 98px;" class="label">Observaciones</td>'
+        html += '<td style="width: 98px;" class="show-label">Observaciones</td>'
         if (!editableA) {
             html += '<td>'
             html += (observaciones ?: '- Sin observaciones-')
@@ -483,12 +483,12 @@ class SolicitudTagLib {
         if (editableA || editableG) {
             html += '<td style="width: 127px;">'
             if (editableA) {
-                html += '<label class="label" for="gaf">Revisado'
+                html += '<label class="show-label" for="gaf">Revisado'
                 html += g.checkBox(name: name, checked: checked)
                 html += '</label>'
             }
             if (editableG) {
-                html += '<label class="label" for="gaf">Validado'
+                html += '<label class="show-label" for="gaf">Validado'
                 html += g.checkBox(name: nameV, checked: checkedV)
                 html += '</label>'
             }
@@ -497,7 +497,7 @@ class SolicitudTagLib {
 
         html += "</tr>"
         html += "<tr>"
-        html += '<td class="label">Archivo</td>'
+        html += '<td class="show-label">Archivo</td>'
         html += '<td>'
         if (!editableA) {
             html += g.link(controller: "solicitud", action: "downloadSolicitud", params: [tipo: "revision" + name], id: solicitud.id) {
@@ -550,7 +550,7 @@ class SolicitudTagLib {
         if (solicitud) {
             html = '<table>'
             html += '<tr>'
-            html += '<td class="label">Estado</td>'
+            html += '<td style="width: 158px;" class="show-label">Estado</td>'
             html += '<td>'
             if (editable) {
                 def name = "tipoAprobacion.id"
@@ -560,7 +560,7 @@ class SolicitudTagLib {
                 html += g.select(from: TipoAprobacion.list(), name: name, id: "tipoAprobacion", "class": "tipoAprobacion",
                         optionKey: "id", optionValue: "descripcion", value: solicitud.tipoAprobacionId)
             } else {
-                html += (solicitud.tipoAprobacion ? solicitud.tipoAprobacion.descripcion : "-Sin tipo de aprobación-")
+                html += (solicitud.tipoAprobacion ? solicitud.tipoAprobacion.descripcion : "-Sin tipo de aprobación -")
             }
             html += '</td>'
 //            html += '<td class="label">Fondos</td>'
@@ -601,9 +601,12 @@ class SolicitudTagLib {
 //            }
 //            html += '</td>'
 
+            html += '<td>'
+            html += '</td>'
+
             html += '</tr>'
             html += '<tr>'
-            html += '<td class="label">Observaciones</td>'
+            html += '<td class="show-label">Observaciones</td>'
             html += '<td colspan="4">'
             if (editable) {
                 def name = "observaciones"
@@ -617,7 +620,7 @@ class SolicitudTagLib {
             html += '</td>'
             html += '</tr>'
             html += '<tr>'
-            html += '<td class="label">Asistentes</td>'
+            html += '<td class="show-label">Asistentes</td>'
             html += '<td colspan="4">'
             if (editable) {
                 def name = "asistentes"
@@ -713,28 +716,28 @@ class SolicitudTagLib {
         if (solicitud) {
             html += '<table style="width: 100%;">'
             html += '<tr>'
-            html += '<td style="width:5.5cm;" class="label">Unidad requirente</td>'
+            html += '<td style="width:5.5cm;" class="show-label">Unidad requirente</td>'
             html += '<td colspan="5">'
             html += (solicitud.unidadEjecutora?.nombre ?: "")
             html += '</td>'
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Proyecto</td>'
+            html += '<td class="show-label">Proyecto</td>'
             html += '<td colspan="5">'
             html += (solicitud.actividad?.proyecto?.nombre ?: "")
             html += '</td>'
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Componente</td>'
+            html += '<td class="show-label">Componente</td>'
             html += '<td colspan="5">'
             html += (solicitud.actividad?.marcoLogico?.objeto ?: "")
             html += '</td>'
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Actividad</td>'
+            html += '<td class="show-label">Actividad</td>'
             html += '<td colspan="5">'
             html += solicitud.actividad?.numero + " - " + solicitud.actividad?.objeto
             def anio = Anio.findByAnio(new Date().format('yyyy'))
@@ -753,35 +756,35 @@ class SolicitudTagLib {
 //            html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Nombre del proceso</td>'
+            html += '<td class="show-label">Nombre del proceso</td>'
             html += '<td colspan="5">'
             html += (solicitud.nombreProceso ?: "")
             html += '</td>'
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Objeto del contrato</td>'
+            html += '<td class="show-label">Objeto del contrato</td>'
             html += '<td colspan="7">'
             html += (solicitud.objetoContrato ?: "")
             html += '</td>'
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Monto solicitado</td>'
+            html += '<td class="show-label">Monto solicitado</td>'
             html += '<td>'
             html += g.formatNumber(number: solicitud.montoSolicitado, type: "currency")
             html += '</td>'
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Forma de pago</td>'
+            html += '<td class="show-label">Forma de pago</td>'
             html += '<td>'
             html += (solicitud.formaPago ?: "")
             html += '</td>'
             html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Plazo de ejecución</td>'
+            html += '<td class="show-label">Plazo de ejecución</td>'
             html += '<td>'
             html += solicitud.plazoEjecucion + " días"
             html += '</td>'
@@ -795,7 +798,7 @@ class SolicitudTagLib {
 //            html += '</tr>'
 
             html += '<tr>'
-            html += '<td class="label">Modalidad de contratación</td>'
+            html += '<td class="show-label">Modalidad de contratación</td>'
             html += '<td colspan="3">'
             html += (solicitud.tipoContrato?.descripcion ?: "")
             html += '</td>'
@@ -898,7 +901,7 @@ class SolicitudTagLib {
         if (solicitud && aprobacion) {
             html += '<table width="100%">'
             html += '<tr>'
-            html += '<td style="width:5.5cm;" class="label">Estado</td>'
+            html += '<td style="width:5.5cm;" class="show-label">Estado</td>'
             html += '<td>'
             html += (solicitud.tipoAprobacion?.descripcion ?: "")
             html += '</td>'
@@ -910,13 +913,13 @@ class SolicitudTagLib {
 //            html += '</td>'
 //            html += '</tr>'
             html += '<tr>'
-            html += '<td class="label">Observaciones</td>'
+            html += '<td class="show-label">Observaciones</td>'
             html += '<td>'
             html += (aprobacion.observaciones ?: "")
             html += '</td>'
             html += '</tr>'
             html += '<tr>'
-            html += '<td class="label">Asistentes</td>'
+            html += '<td class="show-label">Asistentes</td>'
             html += '<td>'
             html += (aprobacion.asistentes ?: "")
             html += '</td>'

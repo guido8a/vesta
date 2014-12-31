@@ -122,7 +122,7 @@ class UnidadEjecutora {
     static constraints = {
         tipoInstitucion(blank: false, nullable: false, attributes: [mensaje: 'Tipo de institución'])
         provincia(blank: true, nullable: true, attributes: [mensaje: 'Provincia de la unidad ejecutora'])
-        codigo(size: 1..4, blank: true, nullable: true, attributes: [mensaje: 'Código según el ESIGEF'])
+        codigo(maxSize: 4, blank: true, nullable: true, attributes: [mensaje: 'Código según el ESIGEF'])
         fechaInicio(blank: true, nullable: true, attributes: [mensaje: 'Fecha de creación'])
         fechaFin(blank: true, nullable: true, attributes: [mensaje: 'Fecha de cierre o final'])
         padre(blank: true, nullable: true, attributes: [mensaje: 'Unidad Ejecutora padre'])

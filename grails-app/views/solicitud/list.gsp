@@ -1,10 +1,12 @@
 
-<%@ page import="vesta.contratacion.Solicitud" %>
+<%@ page import="vesta.contratacion.DetalleMontoSolicitud; vesta.contratacion.Solicitud" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Solicitud</title>
+        <g:set var="entityName"
+               value="${message(code: 'solicitud.label', default: 'Año')}"/>
+        <title>Lista de Solicitudes</title>
     </head>
     <body>
 
@@ -13,12 +15,26 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
+            <g:if test="${session.perfil.codigo == 'RQ'}">
                 <a href="#" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Nueva Solicitud
                 </a>
+            </g:if>
+                <a href="#" class="btn btn-default button print">
+                    PDF
+                </a>
+                <g:link controller="reporteSolicitud" action="solicitudesXls" class="btn btn-default button xls">
+                    XLS
+                </g:link>
+
+                <g:if test="${session.perfil.codigo == 'GP'}">
+                    <g:link class="button aprobacion" controller="aprobacion" action="list">
+                        Reuniones de aprobación
+                    </g:link>
+                </g:if>
             </div>
             <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
+                <div class="input-group input-group-sm">
                     <input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">
                     <span class="input-group-btn">
                         <g:link controller="solicitud" action="list" class="btn btn-default btn-search">
@@ -33,54 +49,68 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="observaciones" title="Observaciones" />
-                    
-                    <g:sortableColumn property="revisadoAdministrativaFinanciera" title="Revisado Administrativa Financiera" />
-                    
-                    <g:sortableColumn property="revisadoJuridica" title="Revisado Juridica" />
-                    
-                    <g:sortableColumn property="revisadoDireccionProyectos" title="Revisado Direccion Proyectos" />
-                    
-                    <g:sortableColumn property="observacionesAdministrativaFinanciera" title="Observaciones Administrativa Financiera" />
-                    
-                    <g:sortableColumn property="observacionesJuridica" title="Observaciones Juridica" />
-                    
-                    <g:sortableColumn property="observacionesDireccionProyectos" title="Observaciones Direccion Proyectos" />
-                    
-                    <g:sortableColumn property="pathPdfTdr" title="Path Pdf Tdr" />
-                    
-                    <g:sortableColumn property="estado" title="Estado" />
-                    
-                    <g:sortableColumn property="pathOferta1" title="Path Oferta1" />
-                    
+                    %{--<g:sortableColumn property="observaciones" title="Observaciones" />--}%
+                    %{----}%
+                    %{--<g:sortableColumn property="revisadoAdministrativaFinanciera" title="Revisado Administrativa Financiera" />--}%
+                    %{----}%
+                    %{--<g:sortableColumn property="revisadoJuridica" title="Revisado Juridica" />--}%
+                    %{----}%
+                    %{--<g:sortableColumn property="revisadoDireccionProyectos" title="Revisado Direccion Proyectos" />--}%
+                    %{----}%
+                    %{--<g:sortableColumn property="observacionesAdministrativaFinanciera" title="Observaciones Administrativa Financiera" />--}%
+                    %{----}%
+                    %{--<g:sortableColumn property="observacionesJuridica" title="Observaciones Juridica" />--}%
+                    %{----}%
+                    %{--<g:sortableColumn property="observacionesDireccionProyectos" title="Observaciones Direccion Proyectos" />--}%
+                    %{----}%
+                    %{--<g:sortableColumn property="pathPdfTdr" title="Path Pdf Tdr" />--}%
+                    %{----}%
+                    %{--<g:sortableColumn property="estado" title="Estado" />--}%
+                    %{----}%
+                    %{--<g:sortableColumn property="pathOferta1" title="Path Oferta1" />--}%
+
+                    <g:sortableColumn property="unidadEjecutora" title="Unidad Ejecutora" />
+                    <g:sortableColumn property="actividad" title="Actividad" />
+                    <g:sortableColumn property="fecha" title="Fecha" />
+                    <g:sortableColumn property="montoSolicitado" title="Monto Solicitado" />
+                    <g:sortableColumn property="tipoContrato" title="Modalidad de Contratación" />
+                    <g:sortableColumn property="nombreProceso" title="Nombre del Proceso" />
+                    <g:sortableColumn property="plazoEjecución" title="Plazo de Ejecución" />
+
                 </tr>
             </thead>
             <tbody>
                 <g:if test="${solicitudInstanceCount > 0}">
                     <g:each in="${solicitudInstanceList}" status="i" var="solicitudInstance">
-                        <tr data-id="${solicitudInstance.id}">
-                            
-                            <td>${solicitudInstance.observaciones}</td>
-                            
-                            <td><g:formatDate date="${solicitudInstance.revisadoAdministrativaFinanciera}" format="dd-MM-yyyy" /></td>
-                            
-                            <td><g:formatDate date="${solicitudInstance.revisadoJuridica}" format="dd-MM-yyyy" /></td>
-                            
-                            <td><g:formatDate date="${solicitudInstance.revisadoDireccionProyectos}" format="dd-MM-yyyy" /></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="observacionesAdministrativaFinanciera"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="observacionesJuridica"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="observacionesDireccionProyectos"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="pathPdfTdr"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="estado"/></elm:textoBusqueda></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="pathOferta1"/></elm:textoBusqueda></td>
-                            
+                        <g:if test="${session.perfil.codigo != 'GP' || (session.perfil.codigo == 'GP' && vesta.contratacion.DetalleMontoSolicitud.countBySolicitud(solicitudInstance) > 0)}">
+
+                            <tr data-id="${solicitudInstance.id}">
+
+                                <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="unidadEjecutora.nombre"/></elm:textoBusqueda></td>
+                                <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="actividad.objeto"/></elm:textoBusqueda></td>
+                                <td><g:formatDate date="${solicitudInstance.fecha}" format="dd-MM-yyyy" /></td>
+                                <td style="text-align: right"><g:formatNumber number="${solicitudInstance.montoSolicitado}" type="currency"/></td>
+                                <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="tipoContrato.descripcion"/></elm:textoBusqueda></td>
+                                <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="nombreProceso"/></elm:textoBusqueda></td>
+                                <td><g:formatNumber number="${solicitudInstance.plazoEjecucion}" maxFractionDigits="0"/> días</td>
+
+                            %{--<td>${solicitudInstance.observaciones}</td>--}%
+                            %{--<td><g:formatDate date="${solicitudInstance.revisadoAdministrativaFinanciera}" format="dd-MM-yyyy" /></td>--}%
+                            %{--<td><g:formatDate date="${solicitudInstance.revisadoJuridica}" format="dd-MM-yyyy" /></td>--}%
+                            %{--<td><g:formatDate date="${solicitudInstance.revisadoDireccionProyectos}" format="dd-MM-yyyy" /></td>--}%
+                            %{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="observacionesAdministrativaFinanciera"/></elm:textoBusqueda></td>--}%
+                            %{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="observacionesJuridica"/></elm:textoBusqueda></td>--}%
+                            %{----}%
+                            %{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="observacionesDireccionProyectos"/></elm:textoBusqueda></td>--}%
+                            %{----}%
+                            %{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="pathPdfTdr"/></elm:textoBusqueda></td>--}%
+                            %{----}%
+                            %{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="estado"/></elm:textoBusqueda></td>--}%
+                            %{----}%
+                            %{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="pathOferta1"/></elm:textoBusqueda></td>--}%
+                            %{----}%
                         </tr>
+                    </g:if>
                     </g:each>
                 </g:if>
                 <g:else>
@@ -96,6 +126,8 @@
                     </tr>
                 </g:else>
             </tbody>
+
+
         </table>
 
         <elm:pagination total="${solicitudInstanceCount}" params="${params}"/>
@@ -222,50 +254,40 @@
                             header : true
                         },
                         ver      : {
-                            label  : "Ver",
+                            label  : "Ver Solicitud",
                             icon   : "fa fa-search",
                             action : function ($element) {
                                 var id = $element.data("id");
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action:'show_ajax')}",
-                                    data    : {
-                                        id : id
-                                    },
-                                    success : function (msg) {
-                                        bootbox.dialog({
-                                            title   : "Ver Solicitud",
-                                            message : msg,
-                                            buttons : {
-                                                ok : {
-                                                    label     : "Aceptar",
-                                                    className : "btn-primary",
-                                                    callback  : function () {
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        },
-                        editar   : {
-                            label  : "Editar",
-                            icon   : "fa fa-pencil",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                createEditRow(id);
-                            }
-                        },
-                        eliminar : {
-                            label            : "Eliminar",
-                            icon             : "fa fa-trash-o",
-                            separator_before : true,
-                            action           : function ($element) {
-                                var id = $element.data("id");
-                                deleteRow(id);
+                                location.href = "${createLink(action: 'show')}?id=" + id;
+
+                                %{--$.ajax({--}%
+                                    %{--type    : "POST",--}%
+                                    %{--url     : "${createLink(action:'show_ajax')}",--}%
+                                    %{--data    : {--}%
+                                        %{--id : id--}%
+                                    %{--},--}%
+                                    %{--success : function (msg) {--}%
+                                    %{--}--}%
+                                %{--});--}%
                             }
                         }
+//                        editar   : {
+//                            label  : "Editar",
+//                            icon   : "fa fa-pencil",
+//                            action : function ($element) {
+//                                var id = $element.data("id");
+//                                createEditRow(id);
+//                            }
+//                        },
+//                        eliminar : {
+//                            label            : "Eliminar",
+//                            icon             : "fa fa-trash-o",
+//                            separator_before : true,
+//                            action           : function ($element) {
+//                                var id = $element.data("id");
+//                                deleteRow(id);
+//                            }
+//                        }
                     },
                     onShow : function ($element) {
                         $element.addClass("success");
