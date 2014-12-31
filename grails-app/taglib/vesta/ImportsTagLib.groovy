@@ -101,6 +101,7 @@ class ImportsTagLib {
         //context js
         def text = "    <script src=\"${resource(dir: 'js/plugins/jquery-validation-1.13.1/dist/', file: 'jquery.validate.min.js')}\"></script>"
         text += "    <script src=\"${resource(dir: 'js/plugins/jquery-validation-1.13.1/dist/localization', file: 'messages_es.min.js')}\"></script>"
+        text += "    <script src=\"${resource(dir: 'js', file: 'jquery.validate.custom.tdn.js')}\"></script>"
 
         out << text
     }

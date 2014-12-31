@@ -186,6 +186,11 @@ class EntidadController extends Shield {
         render(makeTreeNode(params))
     }
 
+    /**
+     * Función que genera el string del nodo requerido para el árbol de la estructura institucional
+     * @param params
+     * @return String
+     */
     def makeTreeNode(params) {
         def id = params.id
         if (!params.sort) {
@@ -290,6 +295,14 @@ class EntidadController extends Shield {
             tree += "</ul>"
         }
         return tree
+    }
+
+    /**
+     * Acción llamada con ajax que carga el presupuesto de la entidad
+     */
+    def presupuestoEntidad_ajax() {
+        def unidad = UnidadEjecutora.get(params.id)
+        return [unidad: unidad]
     }
 
 }

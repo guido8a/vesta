@@ -204,10 +204,39 @@
                 var title = "";
                 var $alert = $("<div class='alert alert-info'>");
 
+                var submitFormPass = function () {
+                    if ($form.valid()) {
+                        openLoader("Guardando");
+                        $.ajax({
+                            type   : "POST",
+                            url    : '${createLink(controller: 'persona', action:'savePass_ajax')}',
+                            data   : {
+                                id    : id,
+                                tipo  : tipo,
+                                input1: set1.input.val(),
+                                input2: set2.input.val(),
+                                input3: set3.input.val()
+                            },
+                            success: function (msg) {
+                                var parts = msg.split("*");
+                                log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                closeLoader();
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                };
+
                 var createInput = function (num) {
                     var $grupo = $("<div class='grupo'>");
                     var $inputGroup = $("<div class='input-group input-group-sm'>");
                     var $input = $("<input type='password' id='input" + num + "' name='input" + num + "' class='form-control input-sm required'>");
+                    $input.keyup(function (ev) {
+                        if (ev.keyCode == 13) {
+                            submitFormPass();
+                        }
+                    });
                     var $span = $("<span class='input-group-addon'>");
                     if (tipo == "pass") {
                         $span.html("<i class='fa fa-unlock'></i> ");
@@ -231,6 +260,8 @@
                 var set3 = createInput(3);
 
                 var $form = $("<form>");
+                $form.attr("id", "frmPass");
+                var strEqualTo = "";
 
                 if (tipo == "pass") {
                     $alert.text("Ingrese la nueva contraseña del usuario");
@@ -238,6 +269,7 @@
                     set2.cell.text("Contraseña nueva");
                     set3.cell.text("Verifique la contraseña");
                     $form.append(set2.row).append(set3.row);
+                    strEqualTo = "Repita la nueva contraseña";
                 } else if (tipo == "auth") {
                     $alert.text("Ingrese su autorización actual y la nueva");
                     title = "Cambio de autorización del usuario";
@@ -245,6 +277,7 @@
                     set2.cell.text("Autorización nueva");
                     set3.cell.text("Verifique la autorización");
                     $form.append(set1.row).append(set2.row).append(set3.row);
+                    strEqualTo = "Repita su nueva autorización";
                 }
 
                 $form.prepend($alert);
@@ -272,18 +305,27 @@
                                 }
                             }
                         },
+                        input2: {
+                            notEqualTo: "#input1"
+                        },
                         input3: {
-                            equalTo: $("#input2")
+                            equalTo: "#input2"
                         }
                     },
                     messages      : {
                         input1: {
                             remote: "La autorización no concuerda con la ingresada"
+                        },
+                        input2: {
+                            notEqualTo: "No ingrese su autorización actual"
+                        },
+                        input3: {
+                            equalTo: strEqualTo
                         }
                     }
                 });
 
-                bootbox.dialog({
+                var b = bootbox.dialog({
                     title  : title,
                     message: $form,
                     buttons: {
@@ -297,30 +339,14 @@
                             label    : "<i class='fa fa-save'></i> Guardar",
                             className: "btn-success",
                             callback : function () {
-                                console.log(tipo, set1.input.val(), set2.input.val(), set3.input.val());
-                                %{--openLoader("Guardando");--}%
-                                %{--$.ajax({--}%
-                                %{--type   : "POST",--}%
-                                %{--url    : '${createLink(action:'delete_ajax')}',--}%
-                                %{--data   : {--}%
-                                %{--id: id--}%
-                                %{--},--}%
-                                %{--success: function (msg) {--}%
-                                %{--var parts = msg.split("*");--}%
-                                %{--log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)--}%
-                                %{--if (parts[0] == "SUCCESS") {--}%
-                                %{--setTimeout(function () {--}%
-                                %{--location.reload(true);--}%
-                                %{--}, 1000);--}%
-                                %{--} else {--}%
-                                %{--closeLoader();--}%
-                                %{--}--}%
-                                %{--}--}%
-                                %{--});--}%
+                                submitFormPass();
                             }
                         }
                     }
                 });
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
             }
 
             function createContextMenu(node) {
@@ -411,7 +437,34 @@
                     icon            : "fa fa-money",
                     separator_before: true,
                     action          : function () {
-
+                        $.ajax({
+                            type   : "POST",
+                            url    : "${createLink(action:'presupuestoEntidad_ajax')}",
+                            data   : {
+                                id: nodeId
+                            },
+                            success: function (msg) {
+                                bootbox.dialog({
+                                    title  : "Presupuesto entidad",
+                                    message: msg,
+                                    buttons: {
+                                        cancelar: {
+                                            label    : "Cancelar",
+                                            className: "btn-primary",
+                                            callback : function () {
+                                            }
+                                        },
+                                        guardar : {
+                                            label    : "Guardar",
+                                            icon     : "fa fa-save",
+                                            className: "btn-success",
+                                            callback : function () {
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
                     }
                 };
                 var modificarPresupuesto = {

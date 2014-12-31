@@ -119,7 +119,7 @@ jQuery.validator.addMethod("cedula", function (value, element) {
      *                                                      40-31 = 9 <-- ultimo digito
      */
 
-    var cant = value.length
+    var cant = value.length;
     if (cant == 10) {
         var provincia = value.substr(0, 2);
         if (parseInt(provincia) >= 1 && parseInt(provincia) <= 24) {

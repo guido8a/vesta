@@ -222,6 +222,34 @@ class PersonaController extends Shield {
     } //delete para eliminar via ajax
 
     /**
+     * Acción llamada con ajax que modifica la contraseña o la autorización de un usuario
+     * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
+     */
+    def savePass_ajax() {
+        println params
+        def persona = Persona.get(params.id)
+        def str = params.tipo == "pass" ? "contraseña" : "autorización"
+        params.input2 = params.input2.trim()
+        params.input3 = params.input3.trim()
+        if (params.input2 == params.input3) {
+            if (params.tipo == "pass") {
+                persona.password = params.input2.encodeAsMD5()
+            } else {
+                if (persona.autorizacion == params.input1.trim().encodeAsMD5()) {
+                    persona.autorizacion = params.input2.encodeAsMD5()
+                } else {
+                    render "ERROR*La autorización actual es incorrecta"
+                    return
+                }
+            }
+        } else {
+            render "ERROR*La ${str} y la verificación no coinciden"
+            return
+        }
+        render "SUCCESS*La ${str} ha sido modificada exitosamente"
+    }
+
+    /**
      * Acción llamada con ajax que valida que no se duplique la propiedad login
      * @render boolean que indica si se puede o no utilizar el valor recibido
      */
@@ -268,7 +296,6 @@ class PersonaController extends Shield {
      * @render boolean que indica si se puede o no utilizar el valor recibido
      */
     def validar_aut_previa_ajax() {
-        println "AQUIII"
         params.input1 = params.input1.trim()
         def obj = Persona.get(params.id)
         if (obj.autorizacion == params.input1.encodeAsMD5()) {
