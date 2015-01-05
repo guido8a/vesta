@@ -1,6 +1,9 @@
-<%@ page import="vesta.parametros.poaPac.Anio" %>
+<%@ page import="vesta.parametros.PresupuestoUnidad; vesta.parametros.poaPac.Anio" %>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js/plugins/jquery-inputmask-3.1.49/dist', file: 'jquery.inputmask.bundle.min.js')}"></script>
+
+<g:set var="anio" value="${new Date().format('yyyy')}"/>
+<g:set var="anioObj" value="${Anio.findByAnio(anio)}"/>
+<g:set var="presupuesto" value="${PresupuestoUnidad.findByAnioAndUnidad(anioObj, unidad)}"/>
 
 <form class="form-horizontal">
     <div class="form-group">
@@ -8,7 +11,7 @@
 
         <div class="col-md-3">
             <g:select name="anio" from="${Anio.list([sort: 'anio'])}" optionKey="id" optionValue="anio"
-                      class="form-control input-sm"/>
+                      class="form-control input-sm" value="${anioObj.id}"/>
         </div>
     </div>
 
@@ -17,7 +20,8 @@
 
         <div class="col-md-4">
             <div class='input-group input-group-sm'>
-                <g:textField name="maxInversion" class="form-control input-sm required number money"/>
+                <g:textField name="maxInversion" class="form-control input-sm required number money"
+                             value="${presupuesto ? g.formatNumber(number: presupuesto.maxInversion, maxFractionDigits: 2, minFractionDigits: 2) : ''}"/>
                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
             </div>
         </div>
@@ -28,7 +32,8 @@
 
         <div class="col-md-4">
             <div class='input-group input-group-sm'>
-                <g:textField name="inversionOriginal" class="form-control input-sm required number money"/>
+                <g:textField name="inversionOriginal" class="form-control input-sm required number money"
+                             value="${presupuesto ? g.formatNumber(number: presupuesto.originalCorrientes, maxFractionDigits: 2, minFractionDigits: 2) : ''}"/>
                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
             </div>
         </div>
@@ -37,12 +42,5 @@
 </form>
 
 <script type="text/javascript">
-    $(".money").inputmask({
-        alias         : 'numeric',
-        placeholder   : '0',
-        digitsOptional: false,
-        digits        : 2,
-        autoGroup     : true,
-        groupSeparator: ','
-    });
+
 </script>

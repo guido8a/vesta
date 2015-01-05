@@ -146,6 +146,8 @@ class ImportsTagLib {
         text += "<script src=\"${resource(dir: 'js/plugins/bootstrap-switch-3/dist/js', file: 'bootstrap-switch.js')}\"></script>"
         text += "<link rel=\"stylesheet\" type=\"text/css\" href=\"${resource(dir: 'js/plugins/bootstrap-switch-3/dist/css/bootstrap3', file: 'bootstrap-switch.css')}\"/>"
 
+        //para el formato de los numeros en los inputs
+        text += "<script type=\"text/javascript\" src=\"${resource(dir: 'js/plugins/jquery-inputmask-3.1.49/dist', file: 'jquery.inputmask.bundle.min.js')}\"></script>"
         out << text
     }
 
