@@ -1,6 +1,8 @@
 package vesta.parametros
 
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.parametros.poaPac.Anio
+import vesta.proyectos.ModificacionTechos
 import vesta.seguridad.Persona
 import vesta.seguridad.Shield
 
@@ -305,4 +307,99 @@ class EntidadController extends Shield {
         return [unidad: unidad]
     }
 
+    /**
+     * Acción llamada con ajax que busca el presupuesto de un año de una unidad ejecutora
+     * @param anio el id del año
+     * @param unidad el id de la unidad
+     */
+    def getPresupuestoAnio_ajax() {
+        def anio = Anio.get(params.anio)
+        def unidad = UnidadEjecutora.get(params.unidad)
+        def presupuesto = PresupuestoUnidad.findByAnioAndUnidad(anio, unidad)
+        def str = (presupuesto ? g.formatNumber(number: presupuesto.maxInversion, maxFractionDigits: 2, minFractionDigits: 2) : '0,00')
+        str += "_"
+        str += (presupuesto ? g.formatNumber(number: presupuesto?.originalCorrientes, maxFractionDigits: 2, minFractionDigits: 2) : '0,00')
+        render(str)
+    }
+
+    /**
+     * Acción llamada con ajax que guarda las modificaciones del presupuesto anual de una unidad ejecutora
+     */
+    def savePresupuestoEntidad_ajax() {
+        def unidad = UnidadEjecutora.get(params.unidad)
+        def anio = Anio.get(params.anio)
+        def inversion = params.maxInversion
+        def originalCorrientes = params.originalCorrientes
+
+        if (!inversion) {
+            inversion = 0
+        }
+        if (!originalCorrientes) {
+            originalCorrientes = 0
+        }
+
+        inversion = (inversion.toString().replaceAll(",", "")).toDouble()
+        originalCorrientes = (originalCorrientes.toString().replaceAll(",", "")).toDouble()
+
+        def presupuestoUnidad = PresupuestoUnidad.findAllByUnidadAndAnio(unidad, anio)
+        if (presupuestoUnidad.size() == 1) {
+            presupuestoUnidad = presupuestoUnidad.first()
+        } else if (presupuestoUnidad.size() == 0) {
+            presupuestoUnidad = new PresupuestoUnidad()
+            presupuestoUnidad.unidad = unidad
+            presupuestoUnidad.anio = anio
+        } else {
+            println "Hay ${presupuestoUnidad.size()} presupuestos para el anio ${anio.anio}, unidad ${unidad.codigo}"
+            presupuestoUnidad = presupuestoUnidad.first()
+        }
+        presupuestoUnidad.originalCorrientes = originalCorrientes
+        presupuestoUnidad.maxInversion = inversion
+
+        if (!presupuestoUnidad.save(flush: true)) {
+            render "ERROR*" + renderErrors(bean: presupuestoUnidad)
+        } else {
+            render "SUCCESS*Presupuesto modificado exitosamente"
+        }
+    }
+
+    /**
+     * Acción llamada con ajax que carga los techos
+     */
+    def modificarPresupuesto_ajax() {
+        def unidad = UnidadEjecutora.get(params.id)
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+        def techo = PresupuestoUnidad.findByUnidadAndAnio(unidad, actual)
+        [unidad: unidad, techo: techo, actual: actual]
+    }
+
+    def saveModificarPresupuesto_ajax() {
+        def techo = PresupuestoUnidad.get(params.id)
+        params.inversiones = (params.inversiones.toString().replaceAll(",", "")).toDouble()
+        if (techo.maxInversion != params.inversiones) {
+            def mod = new ModificacionTechos()
+            mod.desde = techo
+            mod.fecha = new Date()
+            mod.tipo = 4
+            mod.usuario = session.usuario
+            mod.valor = params.inversiones.toDouble() - techo.maxInversion
+            if (mod.save(flush: true)) {
+                techo.maxInversion = params.inversiones.toDouble()
+                if (techo.save(flush: true)) {
+                    render "SUCCESS*Persupuesto modificado exitosamente"
+                } else {
+                    render "ERROR*" + renderErrors(bean: techo)
+                }
+            } else {
+                render "ERROR*" + renderErrors(bean: mod)
+            }
+        } else {
+            render "ERROR*El valor del máximo de inversión del presupuesto de la unidad debe ser diferente de " +
+                    g.formatNumber(number: params.inversiones.toDouble(), maxFractionDigits: 2, minFractionDigits: 2)
+        }
+    }
 }

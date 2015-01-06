@@ -63,10 +63,10 @@
                     $btn.replaceWith(spinner);
                     openLoader("Guardando Entidad");
                     $.ajax({
-                        type   : "POST",
-                        url    : $form.attr("action"),
-                        data   : $form.serialize(),
-                        success: function (msg) {
+                        type    : "POST",
+                        url     : $form.attr("action"),
+                        data    : $form.serialize(),
+                        success : function (msg) {
                             var parts = msg.split("*");
                             log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                             setTimeout(function () {
@@ -86,34 +86,34 @@
 
             function createEditUnidad(id, parentId) {
                 var title = id ? "Editar" : "Crear";
-                var data = id ? {id: id} : {};
+                var data = id ? {id : id} : {};
                 if (parentId) {
                     data.padre = parentId;
                 }
                 $.ajax({
-                    type   : "POST",
-                    url    : "${createLink(controller: 'unidadEjecutora', action:'form_ajax')}",
-                    data   : data,
-                    success: function (msg) {
+                    type    : "POST",
+                    url     : "${createLink(controller: 'unidadEjecutora', action:'form_ajax')}",
+                    data    : data,
+                    success : function (msg) {
                         var b = bootbox.dialog({
-                            id   : "dlgCreateEdit",
-                            title: title + " Entidad",
+                            id    : "dlgCreateEdit",
+                            title : title + " Entidad",
 
-                            class: "modal-lg",
+                            class : "modal-lg",
 
-                            message: msg,
-                            buttons: {
-                                cancelar: {
-                                    label    : "Cancelar",
-                                    className: "btn-primary",
-                                    callback : function () {
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
                                     }
                                 },
-                                guardar : {
-                                    id       : "btnSave",
-                                    label    : "<i class='fa fa-save'></i> Guardar",
-                                    className: "btn-success",
-                                    callback : function () {
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
                                         return submitFormUnidad();
                                     } //callback
                                 } //guardar
@@ -138,10 +138,10 @@
                     $btn.replaceWith(spinner);
                     openLoader("Guardando Persona");
                     $.ajax({
-                        type   : "POST",
-                        url    : $form.attr("action"),
-                        data   : data,
-                        success: function (msg) {
+                        type    : "POST",
+                        url     : $form.attr("action"),
+                        data    : data,
+                        success : function (msg) {
                             var parts = msg.split("*");
                             log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                             setTimeout(function () {
@@ -161,34 +161,34 @@
             }
             function createEditPersona(id, unidadId) {
                 var title = id ? "Editar" : "Crear";
-                var data = id ? {id: id} : {};
+                var data = id ? {id : id} : {};
                 if (unidadId) {
                     data.unidad = unidadId;
                 }
                 $.ajax({
-                    type   : "POST",
-                    url    : "${createLink(controller: 'persona', action:'form_ajax')}",
-                    data   : data,
-                    success: function (msg) {
+                    type    : "POST",
+                    url     : "${createLink(controller: 'persona', action:'form_ajax')}",
+                    data    : data,
+                    success : function (msg) {
                         var b = bootbox.dialog({
-                            id   : "dlgCreateEdit",
-                            title: title + " Persona",
+                            id    : "dlgCreateEdit",
+                            title : title + " Persona",
 
-                            class: "modal-lg",
+                            class : "modal-lg",
 
-                            message: msg,
-                            buttons: {
-                                cancelar: {
-                                    label    : "Cancelar",
-                                    className: "btn-primary",
-                                    callback : function () {
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
                                     }
                                 },
-                                guardar : {
-                                    id       : "btnSave",
-                                    label    : "<i class='fa fa-save'></i> Guardar",
-                                    className: "btn-success",
-                                    callback : function () {
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
                                         return submitFormPersona();
                                     } //callback
                                 } //guardar
@@ -208,16 +208,16 @@
                     if ($form.valid()) {
                         openLoader("Guardando");
                         $.ajax({
-                            type   : "POST",
-                            url    : '${createLink(controller: 'persona', action:'savePass_ajax')}',
-                            data   : {
-                                id    : id,
-                                tipo  : tipo,
-                                input1: set1.input.val(),
-                                input2: set2.input.val(),
-                                input3: set3.input.val()
+                            type    : "POST",
+                            url     : '${createLink(controller: 'persona', action:'savePass_ajax')}',
+                            data    : {
+                                id     : id,
+                                tipo   : tipo,
+                                input1 : set1.input.val(),
+                                input2 : set2.input.val(),
+                                input3 : set3.input.val()
                             },
-                            success: function (msg) {
+                            success : function (msg) {
                                 var parts = msg.split("*");
                                 log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                 closeLoader();
@@ -252,7 +252,7 @@
                     $cell2.append($grupo);
                     $row.append($cell1);
                     $row.append($cell2);
-                    return {input: $input, row: $row, cell: $cell1};
+                    return {input : $input, row : $row, cell : $cell1};
                 };
 
                 var set1 = createInput(1);
@@ -283,8 +283,8 @@
                 $form.prepend($alert);
 
                 $form.validate({
-                    errorClass    : "help-block",
-                    errorPlacement: function (error, element) {
+                    errorClass     : "help-block",
+                    errorPlacement : function (error, element) {
                         if (element.parent().hasClass("input-group")) {
                             error.insertAfter(element.parent());
                         } else {
@@ -292,53 +292,53 @@
                         }
                         element.parents(".grupo").addClass('has-error');
                     },
-                    success       : function (label) {
+                    success        : function (label) {
                         label.parents(".grupo").removeClass('has-error');
                     },
-                    rules         : {
-                        input1: {
-                            remote: {
-                                url : "${createLink(controller:'persona',action: 'validar_aut_previa_ajax')}",
-                                type: "post",
-                                data: {
-                                    id: id
+                    rules          : {
+                        input1 : {
+                            remote : {
+                                url  : "${createLink(controller:'persona',action: 'validar_aut_previa_ajax')}",
+                                type : "post",
+                                data : {
+                                    id : id
                                 }
                             }
                         },
-                        input2: {
-                            notEqualTo: "#input1"
+                        input2 : {
+                            notEqualTo : "#input1"
                         },
-                        input3: {
-                            equalTo: "#input2"
+                        input3 : {
+                            equalTo : "#input2"
                         }
                     },
-                    messages      : {
-                        input1: {
-                            remote: "La autorización no concuerda con la ingresada"
+                    messages       : {
+                        input1 : {
+                            remote : "La autorización no concuerda con la ingresada"
                         },
-                        input2: {
-                            notEqualTo: "No ingrese su autorización actual"
+                        input2 : {
+                            notEqualTo : "No ingrese su autorización actual"
                         },
-                        input3: {
-                            equalTo: strEqualTo
+                        input3 : {
+                            equalTo : strEqualTo
                         }
                     }
                 });
 
                 var b = bootbox.dialog({
-                    title  : title,
-                    message: $form,
-                    buttons: {
-                        cancelar: {
-                            label    : "Cancelar",
-                            className: "btn-primary",
-                            callback : function () {
+                    title   : title,
+                    message : $form,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
                         },
-                        guardar : {
-                            label    : "<i class='fa fa-save'></i> Guardar",
-                            className: "btn-success",
-                            callback : function () {
+                        guardar  : {
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
                                 submitFormPass();
                             }
                         }
@@ -368,55 +368,55 @@
                 var items = {};
 
                 var agregarEntidad = {
-                    label : "Agregar entidad",
-                    icon  : "fa fa-home text-success",
-                    action: function () {
+                    label  : "Agregar entidad",
+                    icon   : "fa fa-home text-success",
+                    action : function () {
                         createEditUnidad(null, nodeId);
                     }
                 };
                 var docsEntidad = {
-                    label          : "Documentos entidad",
-                    icon           : "fa fa-files-o",
-                    separator_after: true,
-                    action         : function () {
+                    label           : "Documentos entidad",
+                    icon            : "fa fa-files-o",
+                    separator_after : true,
+                    action          : function () {
 
                     }
                 };
                 var agregarUsu = {
-                    label          : "Agregar usuario",
-                    icon           : "fa fa-user text-success",
-                    separator_after: true,
-                    action         : function () {
+                    label           : "Agregar usuario",
+                    icon            : "fa fa-user text-success",
+                    separator_after : true,
+                    action          : function () {
                         createEditPersona(null, nodeId);
                     }
                 };
                 var responsablesUnidad = {
-                    label : "Responsables",
-                    icon  : "fa fa-users text-info",
-                    action: function () {
+                    label  : "Responsables",
+                    icon   : "fa fa-users text-info",
+                    action : function () {
 
                     }
                 };
                 var verEntidad = {
-                    label           : "Ver datos de la entidad",
-                    icon            : "fa fa-laptop text-info",
-                    separator_before: true,
-                    action          : function () {
+                    label            : "Ver datos de la entidad",
+                    icon             : "fa fa-laptop text-info",
+                    separator_before : true,
+                    action           : function () {
                         $.ajax({
-                            type   : "POST",
-                            url    : "${createLink(controller: "unidadEjecutora", action:'show_ajax')}",
-                            data   : {
-                                id: nodeId
+                            type    : "POST",
+                            url     : "${createLink(controller: "unidadEjecutora", action:'show_ajax')}",
+                            data    : {
+                                id : nodeId
                             },
-                            success: function (msg) {
+                            success : function (msg) {
                                 bootbox.dialog({
-                                    title  : "Ver Entidad",
-                                    message: msg,
-                                    buttons: {
-                                        ok: {
-                                            label    : "Aceptar",
-                                            className: "btn-primary",
-                                            callback : function () {
+                                    title   : "Ver Entidad",
+                                    message : msg,
+                                    buttons : {
+                                        ok : {
+                                            label     : "Aceptar",
+                                            className : "btn-primary",
+                                            callback  : function () {
                                             }
                                         }
                                     }
@@ -426,39 +426,58 @@
                     }
                 };
                 var editarEntidad = {
-                    label : "Editar datos de la entidad",
-                    icon  : "fa fa-pencil text-info",
-                    action: function () {
+                    label  : "Editar datos de la entidad",
+                    icon   : "fa fa-pencil text-info",
+                    action : function () {
                         createEditUnidad(nodeId, null);
                     }
                 };
                 var presupuestoEntidad = {
-                    label           : "Presupuesto entidad",
-                    icon            : "fa fa-money",
-                    separator_before: true,
-                    action          : function () {
+                    label            : "Presupuesto entidad",
+                    icon             : "fa fa-money",
+                    separator_before : true,
+                    action           : function () {
                         $.ajax({
-                            type   : "POST",
-                            url    : "${createLink(action:'presupuestoEntidad_ajax')}",
-                            data   : {
-                                id: nodeId
+                            type    : "POST",
+                            url     : "${createLink(action:'presupuestoEntidad_ajax')}",
+                            data    : {
+                                id : nodeId
                             },
-                            success: function (msg) {
+                            success : function (msg) {
                                 bootbox.dialog({
-                                    title  : "Presupuesto entidad",
-                                    message: msg,
-                                    buttons: {
-                                        cancelar: {
-                                            label    : "Cancelar",
-                                            className: "btn-primary",
-                                            callback : function () {
+                                    title   : "Presupuesto entidad",
+                                    message : msg,
+                                    buttons : {
+                                        cancelar : {
+                                            label     : "Cancelar",
+                                            className : "btn-primary",
+                                            callback  : function () {
                                             }
                                         },
-                                        guardar : {
-                                            label    : "Guardar",
-                                            icon     : "fa fa-save",
-                                            className: "btn-success",
-                                            callback : function () {
+                                        guardar  : {
+                                            label     : "Guardar",
+                                            icon      : "fa fa-save",
+                                            className : "btn-success",
+                                            callback  : function () {
+                                                var $frm = $("#frmPresupuestoEntidad");
+                                                if ($frm.valid()) {
+                                                    openLoader();
+                                                    var data = $frm.serialize();
+                                                    data += "&unidad=" + nodeId;
+                                                    $.ajax({
+                                                        type    : "POST",
+                                                        url     : "${createLink(action:'savePresupuestoEntidad_ajax')}",
+                                                        data    : data,
+                                                        success : function (msg) {
+                                                            var parts = msg.split("*");
+                                                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                                            closeLoader();
+                                                        }
+                                                    });
+
+                                                    return true;
+                                                }
+                                                return false;
                                             }
                                         }
                                     }
@@ -468,34 +487,84 @@
                     }
                 };
                 var modificarPresupuesto = {
-                    label : "Modificar presupuesto",
-                    icon  : "fa fa-calculator",
-                    action: function () {
+                    label  : "Modificar presupuesto",
+                    icon   : "fa fa-calculator",
+                    action : function () {
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(action:'modificarPresupuesto_ajax')}",
+                            data    : {
+                                id : nodeId
+                            },
+                            success : function (msg) {
+                                bootbox.dialog({
+                                    title   : "Modificar presupuesto",
+                                    message : msg,
+                                    buttons : {
+                                        cancelar : {
+                                            label     : "Cancelar",
+                                            className : "btn-primary",
+                                            callback  : function () {
+                                            }
+                                        },
+                                        guardar  : {
+                                            label     : "Guardar",
+                                            icon      : "fa fa-save",
+                                            className : "btn-success",
+                                            callback  : function () {
+                                                var $frm = $("#frmModificarPresupuesto");
+                                                if ($frm.valid()) {
+                                                    openLoader();
+                                                    var data = $frm.serialize();
+                                                    data += "&unidad=" + nodeId;
+                                                    $.ajax({
+                                                        type    : "POST",
+                                                        url     : "${createLink(action:'saveModificarPresupuesto_ajax')}",
+                                                        data    : data,
+                                                        success : function (msg) {
+                                                            var parts = msg.split("*");
+                                                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                                            closeLoader();
+                                                        },
+                                                        error   : function (jqXHR, textStatus, errorThrown) {
+                                                            log(errorThrown, "error"); // log(msg, type, title, hide)
+                                                            closeLoader();
+                                                        }
+                                                    });
 
+                                                    return true;
+                                                }
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
                     }
                 };
 
                 var verUsuario = {
-                    label           : "Ver datos del usuario",
-                    icon            : "fa fa-laptop text-info",
-                    separator_before: true,
-                    action          : function () {
+                    label            : "Ver datos del usuario",
+                    icon             : "fa fa-laptop text-info",
+                    separator_before : true,
+                    action           : function () {
                         $.ajax({
-                            type   : "POST",
-                            url    : "${createLink(controller: "persona", action:'show_ajax')}",
-                            data   : {
-                                id: nodeId
+                            type    : "POST",
+                            url     : "${createLink(controller: "persona", action:'show_ajax')}",
+                            data    : {
+                                id : nodeId
                             },
-                            success: function (msg) {
+                            success : function (msg) {
                                 bootbox.dialog({
-                                    title  : "Ver Usuario",
-                                    message: msg,
-                                    class  : "modal-lg",
-                                    buttons: {
-                                        ok: {
-                                            label    : "Aceptar",
-                                            className: "btn-primary",
-                                            callback : function () {
+                                    title   : "Ver Usuario",
+                                    message : msg,
+                                    class   : "modal-lg",
+                                    buttons : {
+                                        ok : {
+                                            label     : "Aceptar",
+                                            className : "btn-primary",
+                                            callback  : function () {
                                             }
                                         }
                                     }
@@ -505,25 +574,25 @@
                     }
                 };
                 var editarUsuario = {
-                    label           : "Editar datos del usuario",
-                    icon            : "fa fa-pencil text-info",
-                    separator_before: true,
-                    action          : function () {
+                    label            : "Editar datos del usuario",
+                    icon             : "fa fa-pencil text-info",
+                    separator_before : true,
+                    action           : function () {
                         createEditPersona(nodeId, null);
                     }
                 };
                 var editarPass = {
-                    label           : "Modificar contraseña",
-                    icon            : "fa fa-unlock text-info",
-                    separator_before: true,
-                    action          : function () {
+                    label            : "Modificar contraseña",
+                    icon             : "fa fa-unlock text-info",
+                    separator_before : true,
+                    action           : function () {
                         cambiarPassPersona(nodeId, "pass");
                     }
                 };
                 var editarAuth = {
-                    label : "Modificar autorización",
-                    icon  : "fa fa-unlock-alt text-info",
-                    action: function () {
+                    label  : "Modificar autorización",
+                    icon   : "fa fa-unlock-alt text-info",
+                    action : function () {
                         cambiarPassPersona(nodeId, "auth");
                     }
                 };
@@ -563,40 +632,40 @@
                 }).on("select_node.jstree", function (node, selected, event) {
 //                    $('#tree').jstree('toggle_node', selected.selected[0]);
                 }).jstree({
-                    plugins    : ["types", "state", "contextmenu", "search"],
-                    core       : {
-                        multiple      : false,
-                        check_callback: true,
-                        themes        : {
-                            variant: "small",
-                            dots   : true,
-                            stripes: true
+                    plugins     : ["types", "state", "contextmenu", "search"],
+                    core        : {
+                        multiple       : false,
+                        check_callback : true,
+                        themes         : {
+                            variant : "small",
+                            dots    : true,
+                            stripes : true
                         },
-                        data          : {
-                            async: false,
-                            url  : '${createLink(action:"loadTreePart_ajax")}',
-                            data : function (node) {
+                        data           : {
+                            async : false,
+                            url   : '${createLink(action:"loadTreePart_ajax")}',
+                            data  : function (node) {
                                 return {
-                                    id   : node.id,
-                                    sort : "${params.sort?:'apellido'}",
-                                    order: "${params.order?:'asc'}"
+                                    id    : node.id,
+                                    sort  : "${params.sort?:'apellido'}",
+                                    order : "${params.order?:'asc'}"
                                 };
                             }
                         }
                     },
-                    contextmenu: {
-                        show_at_node: false,
-                        items       : createContextMenu
+                    contextmenu : {
+                        show_at_node : false,
+                        items        : createContextMenu
                     },
-                    state      : {
-                        key: "unidades"
+                    state       : {
+                        key : "unidades"
                     },
-                    search     : {
-                        fuzzy            : false,
-                        show_only_matches: true,
-                        ajax             : {
-                            url    : "${createLink(action:'arbolSearch_ajax')}",
-                            success: function (msg) {
+                    search      : {
+                        fuzzy             : false,
+                        show_only_matches : true,
+                        ajax              : {
+                            url     : "${createLink(action:'arbolSearch_ajax')}",
+                            success : function (msg) {
                                 var json = $.parseJSON(msg);
                                 $.each(json, function (i, obj) {
                                     $('#tree').jstree("open_node", obj);
@@ -604,30 +673,30 @@
                             }
                         }
                     },
-                    types      : {
-                        root               : {
-                            icon: "fa fa-folder text-warning"
+                    types       : {
+                        root                : {
+                            icon : "fa fa-folder text-warning"
                         },
-                        yachay             : {
-                            icon: "fa fa-building text-info"
+                        yachay              : {
+                            icon : "fa fa-building text-info"
                         },
-                        unidadPadreActivo  : {
-                            icon: "fa fa-building-o text-info"
+                        unidadPadreActivo   : {
+                            icon : "fa fa-building-o text-info"
                         },
-                        unidadPadreInactivo: {
-                            icon: "fa fa-building-o text-muted"
+                        unidadPadreInactivo : {
+                            icon : "fa fa-building-o text-muted"
                         },
-                        unidadHijoActivo   : {
-                            icon: "fa fa-home text-success"
+                        unidadHijoActivo    : {
+                            icon : "fa fa-home text-success"
                         },
-                        unidadHijoInactivo : {
-                            icon: "fa fa-home text-muted"
+                        unidadHijoInactivo  : {
+                            icon : "fa fa-home text-muted"
                         },
-                        usuarioActivo      : {
-                            icon: "fa fa-user text-info"
+                        usuarioActivo       : {
+                            icon : "fa fa-user text-info"
                         },
-                        usuarioInactivo    : {
-                            icon: "fa fa-user text-muted"
+                        usuarioInactivo     : {
+                            icon : "fa fa-user text-muted"
                         }
                     }
                 });

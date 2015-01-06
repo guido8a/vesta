@@ -16,9 +16,9 @@ class ModificacionTechos {
      */
     PresupuestoUnidad recibe
     /**
-     * Tipo de modificación (1: corriente a corriente, 2: corriente a inversi&oacuet;n, 3: eliminar asignación)
+     * Tipo de modificación (1: corriente a corriente, 2: corriente a inversión, 3: eliminar asignación)
      */
-    int tipo /*  1-> corriente a corriente    2-> corriente a inversion  3-> eliminar asignacion */
+    int tipo
     /**
      * Valor de la modificación
      */
