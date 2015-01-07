@@ -76,6 +76,7 @@ class ImportsTagLib {
         text += "    <link href=\"${resource(dir: 'css/custom', file: 'modals.css')}\" rel=\"stylesheet\">"
         text += "    <link href=\"${resource(dir: 'css/custom', file: 'inputs.css')}\" rel=\"stylesheet\">"
         text += "    <link href=\"${resource(dir: 'css/custom', file: 'texto.css')}\" rel=\"stylesheet\">"
+        text += "    <link href=\"${resource(dir: 'css/custom', file: 'texto-vertical.css')}\" rel=\"stylesheet\">"
 
         out << text
     }
