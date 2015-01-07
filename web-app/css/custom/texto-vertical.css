@@ -30,3 +30,13 @@
 .titulo-vertical {
     font-size : 35px;
 }
+
+.linea {
+    position    : absolute;
+    left        : 30px;
+    bottom      : 5px;
+    width       : 1px;
+    border-left : 1px solid #0088CC;
+    height      : 95%;
+
+}
