@@ -164,6 +164,10 @@ class Proyecto    {
      * Estrategia
      */
     Estrategia estrategia
+    /**
+     * Justificación
+     */
+    String justificacion
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -224,6 +228,7 @@ class Proyecto    {
             portafolio column: 'prtf__id'
             codigo column: 'proycdgo'
             estrategia column: 'estr__id'
+            justificacion column: 'proyjust'
 
         }
     }
@@ -275,6 +280,7 @@ class Proyecto    {
         portafolio(blank: true, nullable: true, attributes: [mensaje: 'Portafolio'])
         codigo(blank: true, nullable: true, attributes: [mensaje: 'Código'])
         estrategia(blank: true, nullable: true, attributes: [mensaje: 'Estrategia'])
+        justificacion(size: 0..1023, blank: true, nullable: true, attributes: [mensaje: 'Justificación del Proyecto'])
     }
 
     /**

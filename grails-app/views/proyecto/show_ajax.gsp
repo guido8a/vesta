@@ -1,503 +1,169 @@
-
 <%@ page import="vesta.proyectos.Proyecto" %>
 
 <g:if test="${!proyectoInstance}">
-    <elm:notFound elem="Proyecto" genero="o" />
+    <elm:notFound elem="Proyecto" genero="o"/>
 </g:if>
 <g:else>
+    <div class="modal-contenido">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Detalles del proyecto
+                        </a>
+                    </h4>
+                </div>
 
-    <g:if test="${proyectoInstance?.unidadEjecutora}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Unidad Ejecutora
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <g:if test="${proyectoInstance?.unidadEjecutora}">
+                            <div class="row">
+                                <div class="col-md-2 show-label">Pertenece a</div>
+
+                                <div class="col-md-5">${proyectoInstance?.unidadEjecutora}</div>
+
+                                <div class="col-md-2 show-label">Aprobado</div>
+
+                                <div class="col-md-3">${(proyectoInstance.aprobado == "a") ? "Si" : "No"}</div>
+                            </div>
+                        </g:if>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Nombre</div>
+
+                            <div class="col-md-10">${proyectoInstance.nombre}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Obj. estratégico</div>
+
+                            <div class="col-md-10">${proyectoInstance?.objetivoEstrategico?.descripcion}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Estrategia</div>
+
+                            <div class="col-md-10">${proyectoInstance?.estrategia?.descripcion}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Portafolio</div>
+
+                            <div class="col-md-10">${proyectoInstance?.portafolio?.descripcion}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Programa</div>
+
+                            <div class="col-md-10">${proyectoInstance?.programa?.descripcion}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">U. Administradora</div>
+
+                            <div class="col-md-10">${proyectoInstance?.unidadAdministradora?.nombre}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Código</div>
+
+                            <div class="col-md-5">${proyectoInstance?.codigo}</div>
+
+                            <div class="col-md-2 show-label">C.U.P.</div>
+
+                            <div class="col-md-3">${proyectoInstance?.codigoProyecto}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Monto</div>
+
+                            <div class="col-md-5"><g:formatNumber number="${proyectoInstance.monto}"
+                                                                  format="###,##0"
+                                                                  minFractionDigits="2" maxFractionDigits="2"/></div>
+
+                            <div class="col-md-2 show-label">Código financiero</div>
+
+                            <div class="col-md-3">${proyectoInstance?.codigoEsigef}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">F. ini. planificada</div>
+
+                            <div class="col-md-5"><g:formatDate date="${proyectoInstance?.fechaInicioPlanificada}"
+                                                                format="dd-MM-yyyy"/></div>
+
+                            <div class="col-md-2 show-label">F. ini. ejecución</div>
+
+                            <div class="col-md-3"><g:formatDate date="${proyectoInstance?.fechaInicio}"
+                                                                format="dd-MM-yyyy"/></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">F. fin planificada</div>
+
+                            <div class="col-md-5"><g:formatDate date="${proyectoInstance?.fechaFinPlanificada}"
+                                                                format="dd-MM-yyyy"/></div>
+
+                            <div class="col-md-2 show-label">F. fin ejecución</div>
+
+                            <div class="col-md-3"><g:formatDate date="${proyectoInstance?.fechaFin}"
+                                                                format="dd-MM-yyyy"/></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Justificación</div>
+
+                            <div class="col-md-10">${proyectoInstance?.justificacion}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Descripción</div>
+
+                            <div class="col-md-10">${proyectoInstance?.descripcion}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 show-label">Propósito</div>
+
+                            <div class="col-md-10">${proyectoInstance?.problema}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.unidadEjecutora?.encodeAsHTML()}
-            </div>
-            
         </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.etapa}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Etapa
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Plan Nacional de Desarrollo (Buen Vivir)
+                    </a>
+                </h4>
             </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.etapa?.encodeAsHTML()}
+
+            <div id="collapseTwo" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+
+                </div>
             </div>
-            
         </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.fase}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Fase
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Presupuestos / Fuentes
+                    </a>
+                </h4>
             </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.fase?.encodeAsHTML()}
+
+            <div id="collapseThree" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+
+                </div>
             </div>
-            
         </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.tipoProducto}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Tipo Producto
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.tipoProducto?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.estadoProyecto}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Estado Proyecto
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.estadoProyecto?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.linea}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Linea
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.linea?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.tipoInversion}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Tipo Inversion
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.tipoInversion?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.cobertura}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Cobertura
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.cobertura?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.calificacion}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Calificacion
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.calificacion?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.programa}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Programa
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.programa?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.codigoProyecto}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Codigo Proyecto
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="codigoProyecto"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.fechaRegistro}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Fecha Registro
-            </div>
-            
-            <div class="col-md-3">
-                <g:formatDate date="${proyectoInstance?.fechaRegistro}" format="dd-MM-yyyy" />
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.fechaModificacion}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Fecha Modificacion
-            </div>
-            
-            <div class="col-md-3">
-                <g:formatDate date="${proyectoInstance?.fechaModificacion}" format="dd-MM-yyyy" />
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.nombre}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Nombre
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="nombre"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.monto}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Monto
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="monto"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.producto}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Producto
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="producto"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.descripcion}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Descripcion
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="descripcion"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.fechaInicioPlanificada}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Fecha Inicio Planificada
-            </div>
-            
-            <div class="col-md-3">
-                <g:formatDate date="${proyectoInstance?.fechaInicioPlanificada}" format="dd-MM-yyyy" />
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.fechaInicio}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Fecha Inicio
-            </div>
-            
-            <div class="col-md-3">
-                <g:formatDate date="${proyectoInstance?.fechaInicio}" format="dd-MM-yyyy" />
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.fechaFinPlanificada}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Fecha Fin Planificada
-            </div>
-            
-            <div class="col-md-3">
-                <g:formatDate date="${proyectoInstance?.fechaFinPlanificada}" format="dd-MM-yyyy" />
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.fechaFin}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Fecha Fin
-            </div>
-            
-            <div class="col-md-3">
-                <g:formatDate date="${proyectoInstance?.fechaFin}" format="dd-MM-yyyy" />
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.mes}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Mes
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="mes"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.problema}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Problema
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="problema"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.informacionDias}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Informacion Dias
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="informacionDias"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.subPrograma}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Sub Programa
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="subPrograma"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.aprobado}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Aprobado
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="aprobado"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.aprobadoPoa}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Aprobado Poa
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="aprobadoPoa"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.objetivoEstrategico}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Objetivo Estrategico
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.objetivoEstrategico?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.ejeProgramatico}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Eje Programatico
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.ejeProgramatico?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.lineaBase}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Linea Base
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="lineaBase"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.poblacionObjetivo}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Poblacion Objetivo
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="poblacionObjetivo"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.objetivoGobiernoResultado}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Objetivo Gobierno Resultado
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.objetivoGobiernoResultado?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.programaPresupuestario}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Programa Presupuestario
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.programaPresupuestario?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.codigoEsigef}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Codigo Esigef
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="codigoEsigef"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.unidadAdministradora}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Unidad Administradora
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.unidadAdministradora?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.portafolio}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Portafolio
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.portafolio?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.codigo}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Codigo
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${proyectoInstance}" field="codigo"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${proyectoInstance?.estrategia}">
-        <div class="row">
-            <div class="col-md-2 show-label">
-                Estrategia
-            </div>
-            
-            <div class="col-md-3">
-                ${proyectoInstance?.estrategia?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
+    </div>
+    </div>
 </g:else>

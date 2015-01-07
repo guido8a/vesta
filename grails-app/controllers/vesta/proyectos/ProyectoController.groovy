@@ -30,7 +30,7 @@ class ProyectoController extends Shield {
      * Acción que redirecciona a la lista (acción "list")
      */
     def index() {
-        redirect(action:"list", params: params)
+        redirect(action: "list", params: params)
     }
 
     /**
@@ -43,29 +43,27 @@ class ProyectoController extends Shield {
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
         params.offset = params.offset ?: 0
-        if(all) {
+        if (all) {
             params.remove("max")
             params.remove("offset")
         }
         def list
-        if(params.search) {
+        if (params.search_programa || params.search_nombre || params.search_desde || params.search_hasta) {
             def c = Proyecto.createCriteria()
             list = c.list(params) {
-                or {
-                    /* TODO: cambiar aqui segun sea necesario */
-
-                    ilike("aprobado", "%" + params.search + "%")
-                    ilike("aprobadoPoa", "%" + params.search + "%")
-                    ilike("codigo", "%" + params.search + "%")
-                    ilike("codigoEsigef", "%" + params.search + "%")
-                    ilike("codigoProyecto", "%" + params.search + "%")
-                    ilike("descripcion", "%" + params.search + "%")
-                    ilike("lineaBase", "%" + params.search + "%")
-                    ilike("nombre", "%" + params.search + "%")
-                    ilike("poblacionObjetivo", "%" + params.search + "%")
-                    ilike("problema", "%" + params.search + "%")
-                    ilike("producto", "%" + params.search + "%")
-                    ilike("subPrograma", "%" + params.search + "%")
+                if (params.search_programa) {
+                    programa {
+                        ilike("descripcion", "%" + params.search_programa + "%")
+                    }
+                }
+                if (params.search_nombre) {
+                    ilike("nombre", "%" + params.search_nombre + "%")
+                }
+                if (params.search_desde) {
+                    ge("monto", params.search_desde.replaceAll(",", "").toDouble())
+                }
+                if (params.search_hasta) {
+                    le("monto", params.search_hasta.replaceAll(",", "").toDouble())
                 }
             }
         } else {
@@ -94,9 +92,9 @@ class ProyectoController extends Shield {
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def show_ajax() {
-        if(params.id) {
+        if (params.id) {
             def proyectoInstance = Proyecto.get(params.id)
-            if(!proyectoInstance) {
+            if (!proyectoInstance) {
                 render "ERROR*No se encontró Proyecto."
                 return
             }
@@ -107,15 +105,33 @@ class ProyectoController extends Shield {
     } //show para cargar con ajax en un dialog
 
     /**
+     * Acción que muestra la información de un elemento particular
+     * @return proyectoInstance el objeto a mostrar cuando se encontró el elemento
+     * @render ERROR*[mensaje] cuando no se encontró el elemento
+     */
+    def show() {
+        if (params.id) {
+            def proyectoInstance = Proyecto.get(params.id)
+            if (!proyectoInstance) {
+                render "ERROR*No se encontró Proyecto."
+                return
+            }
+            return [proyectoInstance: proyectoInstance]
+        } else {
+            render "ERROR*No se encontró Proyecto."
+        }
+    } //show
+
+    /**
      * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
      * @return proyectoInstance el objeto a modificar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def form_ajax() {
         def proyectoInstance = new Proyecto()
-        if(params.id) {
+        if (params.id) {
             proyectoInstance = Proyecto.get(params.id)
-            if(!proyectoInstance) {
+            if (!proyectoInstance) {
                 render "ERROR*No se encontró Proyecto."
                 return
             }
@@ -130,15 +146,15 @@ class ProyectoController extends Shield {
      */
     def save_ajax() {
         def proyectoInstance = new Proyecto()
-        if(params.id) {
+        if (params.id) {
             proyectoInstance = Proyecto.get(params.id)
-            if(!proyectoInstance) {
+            if (!proyectoInstance) {
                 render "ERROR*No se encontró Proyecto."
                 return
             }
         }
         proyectoInstance.properties = params
-        if(!proyectoInstance.save(flush: true)) {
+        if (!proyectoInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar Proyecto: " + renderErrors(bean: proyectoInstance)
             return
         }
@@ -151,7 +167,7 @@ class ProyectoController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
      */
     def delete_ajax() {
-        if(params.id) {
+        if (params.id) {
             def proyectoInstance = Proyecto.get(params.id)
             if (!proyectoInstance) {
                 render "ERROR*No se encontró Proyecto."
@@ -239,7 +255,7 @@ class ProyectoController extends Shield {
     /**
      * Acción que muestra el formulario para crear/editar proyecto
      */
-    def formProyecto (){
+    def formProyecto() {
         def proyecto = new Proyecto()
         params.links = false
         params.type = "create"
@@ -268,7 +284,7 @@ class ProyectoController extends Shield {
     /**
      * Acción que guarda los datos ingresados en el formulario de proyecto
      */
-    def saveProyecto () {
+    def saveProyecto() {
 //        println "save proyecto " + params
         if (params.mes) {
             params.mes = (params.mes).toInteger()
@@ -291,7 +307,7 @@ class ProyectoController extends Shield {
     /**
      * Acción
      */
-    def listaAprobarProyecto(){
+    def listaAprobarProyecto() {
 
         params.max = Math.min(params.max ? params.int('max') : 25, 100)
         def proyectos = []
@@ -312,7 +328,7 @@ class ProyectoController extends Shield {
     /**
      * Acción
      */
-    def aprobarProyecto (){
+    def aprobarProyecto() {
         if (request.method == 'POST') {
             println "params " + params
             if (session.usuario.autorizacion == params.ssap.encodeAsMD5()) {
@@ -331,7 +347,7 @@ class ProyectoController extends Shield {
     /**
      * Acción
      */
-    def estadoProyecto(){
+    def estadoProyecto() {
         def proyectoInstance = Proyecto.get(params.id)
 
         /*
@@ -437,7 +453,7 @@ class ProyectoController extends Shield {
         def cont = 0
         def b = true
         elems.each {
-            if (it.delete(flush:true)) {
+            if (it.delete(flush: true)) {
                 b = false
             } else {
                 cont++
@@ -662,7 +678,6 @@ class ProyectoController extends Shield {
         js += "</script>"
         render select.toString() + js
     }
-
 
     /**
      * Acción
@@ -1364,7 +1379,7 @@ response.outputStream << file.newInputStream()
     def deleteEntidadesProyecto = {
         if (params.id.class != java.lang.String) {
             (params.id).each { id ->
-               def ep = EntidadesProyecto.get(id)
+                def ep = EntidadesProyecto.get(id)
                 ep.delete(flush: true)
             }
         } else {
@@ -1392,7 +1407,7 @@ response.outputStream << file.newInputStream()
     def deleteIntervencion = {
         if (params.id.class != java.lang.String) {
             (params.id).each { id ->
-            def inv = Intervencion.get(id)
+                def inv = Intervencion.get(id)
                 inv.delete(flush: true)
             }
         } else {
@@ -1647,9 +1662,6 @@ response.outputStream << file.newInputStream()
 
     }
 
-
-
-
     /*Función para cargar un archivo excel con componentes y actividades*/
     /**
      * Acción
@@ -1864,7 +1876,6 @@ response.outputStream << file.newInputStream()
                                             if (nuevaAct.save(flush: true)) {
 
 
-
                                             } else {
                                                 flash.message = 'Error al generar actividades' + errors
                                                 flash.estado = "error"
@@ -1978,7 +1989,6 @@ response.outputStream << file.newInputStream()
 
                     f.transferTo(new File(pathFile))
 //                    println("Guardado!!")
-
 
 
                     flash.message = 'Archivo cargado existosamente.'

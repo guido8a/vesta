@@ -58,9 +58,9 @@
                 $("#user").focus();
 
                 $frm.validate({
-                    validClass    : "text-success",
-                    errorClass    : "text-danger",
-                    errorPlacement: function (error, element) {
+//                    validClass    : "text-success",
+                    errorClass     : "text-danger",
+                    errorPlacement : function (error, element) {
                         if (element.parent().hasClass("input-group")) {
                             error.insertAfter(element.parent());
                         } else {
@@ -68,12 +68,12 @@
                         }
                         console.log("error ", error, element, element.parents(".input-group"));
                         element.parents(".input-group").addClass('has-error');
-                    },
-                    success       : function (label) {
-                        console.log("success ", label, label.parents(".input-group"));
-                        label.hide();
-                        label.prev().removeClass('has-error').addClass("has-success");
-                    }
+                    }/*,
+                     success       : function (label) {
+                     console.log("success ", label, label.parents(".input-group"));
+                     label.hide();
+                     label.prev().removeClass('has-error').addClass("has-success");
+                     }*/
                 });
                 $("#btn-login").click(function () {
                     doLogin();
