@@ -10,6 +10,39 @@ class ElementosTagLib {
     static namespace = "elm"
 
     /**
+     * pone un contenedor vertical u horizontal
+     * Ejemplo de como usar en asignacion/asignacionProyectov2
+     * @param tipo es el tipo de container, puede ser vertica u horizontal
+     * @param border indica si el container debe tener borde
+     * @param style cualqueir estilo para el container
+     * @param linea indica si debe llevar o no linea bajo el título
+     * @param color es el color del título
+     * @param titulo un String con el título del container
+     */
+
+    def container = {attrs, body->
+        def tipo = attrs.tipo
+        def clase =""
+        def titulo=""
+
+        if(tipo=="vertical"){
+            clase="vertical-container ${attrs.border?'bordered ui-corner-all':''}"
+            titulo='<div class="css-vertical-text" style="color:'+attrs.color+'">'+attrs.titulo+'</div>'
+            if(!attrs.linea){
+                titulo+='<div class="linea"></div>'
+            }
+        }else{
+            clase="horizontal-container ${attrs.border?'bordered ui-corner-all':''}"
+            titulo='<div class="titulo-azul"  style="color:'+attrs.color+'">'+attrs.titulo+'</div>'
+        }
+
+        def html =""
+        html+='<div class="'+clase+'" style="'+attrs.style+'">'
+        html+=titulo
+        out<<html<<body()+"</div>"
+    }
+
+    /**
      * crea un div para el not found (con el fantasmita)
      */
     def notFound = { attrs ->
