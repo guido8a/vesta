@@ -494,7 +494,7 @@
                     Usuario
                 </label>
                 <div class="col-md-7">
-                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Usro.list()}" optionKey="id" required="" value="${solicitudInstance?.usuario?.id}" class="many-to-one form-control input-sm"/>
+                    <g:select id="usuario" name="usuario.id" from="${vesta.seguridad.Persona.list()}" optionKey="id" required="" value="${solicitudInstance?.usuario?.id}" class="many-to-one form-control input-sm"/>
                 </div>
                  *
             </span>

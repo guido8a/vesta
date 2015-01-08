@@ -96,6 +96,7 @@ function openLoader(msg, title) {
     $msg.append(spinnerSquare64);
 
     bootbox.dialog({
+        id: 'dlgLoader',
         title      : title,
         message    : $msg,
         closeButton: false,
@@ -104,4 +105,5 @@ function openLoader(msg, title) {
 }
 function closeLoader() {
     bootbox.hideAll();
+    //$("#dlgLoader").modal('hide');
 }

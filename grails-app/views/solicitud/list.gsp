@@ -206,7 +206,8 @@
                 var data = id ? { id: id } : {};
                 $.ajax({
                     type    : "POST",
-                    url     : "${createLink(action:'form_ajax')}",
+                    %{--url     : "${createLink(action:'form_ajax')}",--}%
+                    url     : "${createLink(action:'ingreso')}",
                     data    : data,
                     success : function (msg) {
                         var b = bootbox.dialog({

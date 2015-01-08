@@ -6,6 +6,7 @@ import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.poa.Asignacion
+import vesta.poa.Componente
 import vesta.proyectos.Categoria
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.Proyecto
@@ -388,6 +389,8 @@ class SolicitudController extends Shield {
      * Acción que guarda una nueva solicitud
      */
     def save = {
+
+        println("entro save")
         def usuario = Persona.get(session.usuario.id)
         def unidadEjecutora = usuario.unidad
 
@@ -498,7 +501,7 @@ class SolicitudController extends Shield {
         def proyecto = Proyecto.get(params.id?.toLong())
         def componentes = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, tipoComponente)
 
-        def parms = [from     : componentes, name: "componente.id", id: "selComponente", class: "requiredCmb ui-widget-content ui-corner-all",
+        def parms = [from     : componentes, name: "componente.id", id: "selComponente", class: "form-control input-sm",
                      optionKey: "id", optionValue: "objeto"]
         if (params.val) {
             parms.value = params.val
@@ -508,7 +511,7 @@ class SolicitudController extends Shield {
         def js = "<script type=\"text/javascript\">" +
                 "\$(\"#selComponente\").change(function() {" +
                 "   loadActividades();" +
-                "}).selectmenu({width : ${params.width}});" +
+                "});" +
                 "</script>"
         render sel + js
     }
@@ -540,22 +543,22 @@ class SolicitudController extends Shield {
             }
             actividades.add([id: id, objeto: str])
         }
-        def parms = [from     : actividades, name: "actividad.id", id: "selActividad", class: "requiredCmb ui-widget-content ui-corner-all",
+        def parms = [from     : actividades, name: "actividad.id", id: "selActividad", class: "form-control input-sm",
                      optionKey: "id", optionValue: "objeto"]
         if (selected) {
             parms.value = selected
         }
         def sel = g.select(parms)
-        def btn = "<a href='#' id='btnAddActividad' style='margin-left: 3px;'>Agregar</a>"
+//        def btn = "<div class='col-md-2'><a href='#' id='btnAddActividad' class='button btn btn-success btn-sm' style='margin-left: 3px;'><i class='fa fa-plus'></i></a></div>"
         def js = "<script type=\"text/javascript\">" +
                 "\$(\"#selActividad\").change(function() {" +
                 "   loadDatosActividad();" +
-                "}).selectmenu({width : ${width}});" +
-                "\$('#btnAddActividad').button({text:false,icons:{primary:'ui-icon-plusthick'}}).click(function() {" +
-                "crearActividad();" +
                 "});" +
+//                "\$('#btnAddActividad').button({text:false,icons:{primary:'ui-icon-plusthick'}}).click(function() {" +
+//                "crearActividad();" +
+//                "});" +
                 "</script>"
-        return sel + btn + js
+        return sel + /*btn + */js
     }
 
 
@@ -595,39 +598,56 @@ class SolicitudController extends Shield {
      * @Renders el combo de actividades con la nueva actividad seleccionada
      */
     def newActividad_ajax = {
+        println("entro save " + params)
         def usuario = Persona.get(session.usuario.id)
         def unidadEjecutora = usuario.unidad
         def tipoActividad = TipoElemento.get(3)
         def actividad = new MarcoLogico()
 
-        def proyecto = Proyecto.get(params.proy.toLong())
-        def componente = MarcoLogico.get(params.comp.toLong())
+        def proyecto = Proyecto.get(params."proyecto.id".toLong())
+        def componente = MarcoLogico.get(params."componente.id".toLong())
         def categoria = null
-        if (params.cat.trim() != "") {
-            categoria = Categoria.get(params.cat.toLong())
-        }
-        def fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaIni)
-        def fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
+//        if (params.cat.trim() != "") {
+            categoria = Categoria.get(params.nuevaCategoria.toLong())
+//        }
 
-        params.monto = params.monto.replaceAll("\\.", "")
-        params.monto = params.monto.replaceAll(",", ".")
+        def fechaInicio
+        def fechaFin
+
+        if(params.fechaInicio_input){
+            fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio_input)
+        }
+
+        if(params.fechaFin_input){
+            fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin_input)
+        }
+
+//        params.monto = params.monto.replaceAll("\\.", "")
+        params.nuevoMonto = params.nuevoMonto.replaceAll(",", "")
 
         actividad.proyecto = proyecto
         actividad.tipoElemento = tipoActividad
         actividad.marcoLogico = componente
-        actividad.objeto = params.actividad
-        actividad.monto = params.monto.toDouble()
+        actividad.objeto = params.nuevaActividad
+        actividad.monto = params.nuevoMonto.toDouble()
         actividad.estado = 0
         actividad.categoria = categoria
         actividad.fechaInicio = fechaInicio
         actividad.fechaFin = fechaFin
         actividad.responsable = unidadEjecutora
-//        actividad.aporte = params.aporte.toDouble()
         actividad.tieneAsignacion = "N"
+
         if (!actividad.save(flush: true)) {
-            println "Error al guardar actividad: " + actividad.errors
+//            println "Error al guardar actividad: " + actividad.errors
+            render "ERROR*Ha ocurrido un error al guardar la actividad: " + renderErrors(bean: actividad)
+            return
         }
-        render comboActividades(componente.id, actividad.id, params.width)
+
+        render "SUCCESS*Creación de Actividad exitosa."
+        return
+
+
+//        render comboActividades(componente.id, actividad.id, params.width)
     }
 
     /**
@@ -778,7 +798,7 @@ class SolicitudController extends Shield {
      */
     def ingreso = {
         if (session.perfil.codigo == "RQ" || session.perfil.codigo == "DRRQ") {
-            def usuario = Usro.get(session.usuario.id)
+            def usuario = Persona.get(session.usuario.id)
             def unidadEjecutora = usuario.unidad
             def solicitud = new Solicitud()
             def title = "Nueva"
@@ -1035,6 +1055,26 @@ class SolicitudController extends Shield {
         return [solicitudInstance: solicitudInstance]
     } //form para cargar con ajax en un dialog
 
+
+
+//    /**
+//     * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
+//     * @return solicitudInstance el objeto a modificar cuando se encontró el elemento
+//     * @render ERROR*[mensaje] cuando no se encontró el elemento
+//     */
+//    def ingreso() {
+//        def solicitudInstance = new Solicitud()
+//        if (params.id) {
+//            solicitudInstance = Solicitud.get(params.id)
+//            if (!solicitudInstance) {
+//                render "ERROR*No se encontró Solicitud."
+//                return
+//            }
+//        }
+//        solicitudInstance.properties = params
+//        return [solicitudInstance: solicitudInstance]
+//    } //form para cargar con ajax en un dialog
+
     /**
      * Acción llamada con ajax que guarda la información de un elemento
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
@@ -1081,5 +1121,21 @@ class SolicitudController extends Shield {
             return
         }
     } //delete para eliminar via ajax
+
+
+    def nuevaActividad () {
+
+        println("params " + params)
+
+        def actividad = new MarcoLogico()
+        def proyecto = Proyecto.get(params.proy)
+        def componente = MarcoLogico.get(params.comp)
+
+
+        println("proy " + proyecto)
+
+        return [actividadInstance : actividad, proyecto: proyecto, componente: componente]
+
+    }
 
 }
