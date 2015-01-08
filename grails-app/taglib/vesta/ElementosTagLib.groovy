@@ -243,6 +243,10 @@ class ElementosTagLib {
         def value = attrs.value
 
         def clase = attrs["class"]
+        def claseGrupo = ""
+        if (clase.contains("input-sm")) {
+            claseGrupo = "input-group-sm"
+        }
 
         def showDate = attrs.showDate ?: true
         def showTime = attrs.showTime ?: false
@@ -329,7 +333,7 @@ class ElementosTagLib {
             div += hiddenMin + br
         }
         div += hidden + br
-        div += "<div class='input-group'>" + br
+        div += "<div class='input-group ${claseGrupo}'>" + br
         div += textfield + br
         div += "<span class=\"input-group-addon\"><i class=\"${img}\"></i></span>" + br
         div += "</div>" + br

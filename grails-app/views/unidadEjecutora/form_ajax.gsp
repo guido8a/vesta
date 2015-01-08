@@ -166,7 +166,7 @@
                         </label>
 
                         <div class="col-md-8">
-                            <elm:datepicker name="fechaInicio" mensaje="Fecha de creación" class="datepicker form-control input-sm" value="${unidadEjecutoraInstance?.fechaInicio}" default="none" noSelection="['': '']"/>
+                            <elm:datepicker name="fechaInicio" mensaje="Fecha de creación" class="datepicker form-control input-sm" value="${unidadEjecutoraInstance?.fechaInicio}"/>
                         </div>
 
                     </span>
@@ -179,7 +179,7 @@
                         </label>
 
                         <div class="col-md-8">
-                            <elm:datepicker name="fechaFin" mensaje="Fecha de cierre o final" class="datepicker form-control input-sm" value="${unidadEjecutoraInstance?.fechaFin}" default="none" noSelection="['': '']"/>
+                            <elm:datepicker name="fechaFin" mensaje="Fecha de cierre o final" class="datepicker form-control input-sm" value="${unidadEjecutoraInstance?.fechaFin}"/>
                         </div>
 
                     </span>
@@ -204,8 +204,8 @@
 
     <script type="text/javascript">
         var validator = $("#frmUnidadEjecutora").validate({
-            errorClass    : "help-block",
-            errorPlacement: function (error, element) {
+            errorClass     : "help-block",
+            errorPlacement : function (error, element) {
                 if (element.parent().hasClass("input-group")) {
                     error.insertAfter(element.parent());
                 } else {
@@ -213,37 +213,37 @@
                 }
                 element.parents(".grupo").addClass('has-error');
             },
-            success       : function (label) {
+            success        : function (label) {
                 label.parents(".grupo").removeClass('has-error');
             }, rules       : {
-                codigo: {
-                    remote: {
-                        url : "${createLink(action: 'validar_unique_codigo_ajax')}",
-                        type: "post",
-                        data: {
-                            id: "${unidadEjecutoraInstance?.id}"
+                codigo : {
+                    remote : {
+                        url  : "${createLink(action: 'validar_unique_codigo_ajax')}",
+                        type : "post",
+                        data : {
+                            id : "${unidadEjecutoraInstance?.id}"
                         }
                     }
                 },
-                email: {
-                    remote: {
-                        url : "${createLink(action: 'validar_unique_email_ajax')}",
-                        type: "post",
-                        data: {
-                            id: "${unidadEjecutoraInstance?.id}"
+                email  : {
+                    remote : {
+                        url  : "${createLink(action: 'validar_unique_email_ajax')}",
+                        type : "post",
+                        data : {
+                            id : "${unidadEjecutoraInstance?.id}"
                         }
                     }
                 }
 
             },
-            messages      : {
+            messages       : {
 
-                codigo: {
-                    remote: "Ya existe Código"
+                codigo : {
+                    remote : "Ya existe Código"
                 },
 
-                email: {
-                    remote: "Ya existe E-mail"
+                email : {
+                    remote : "Ya existe E-mail"
                 }
 
             }

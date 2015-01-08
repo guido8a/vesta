@@ -1,6 +1,8 @@
 package vesta.proyectos
 
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
 import vesta.seguridad.Shield
 
 
@@ -12,112 +14,64 @@ class FinanciamientoController extends Shield {
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
     /**
-     * Acción que redirecciona a la lista (acción "list")
+     * Acción llamada con ajax que muestra y permite modificar los financiamientos de un proyecto
      */
-    def index() {
-        redirect(action: "list", params: params)
+    def list_ajax() {
+        def proyecto = Proyecto.get(params.id)
+        return [proyecto: proyecto]
     }
 
     /**
-     * Función que saca la lista de elementos según los parámetros recibidos
-     * @param params objeto que contiene los parámetros para la búsqueda:: max: el máximo de respuestas, offset: índice del primer elemento (para la paginación), search: para efectuar búsquedas
-     * @param all boolean que indica si saca todos los resultados, ignorando el parámetro max (true) o no (false)
-     * @return lista de los elementos encontrados
+     * Acción llamada con ajax que llena la tabla de los financiamientos de un proyecto
      */
-    def getList(params, all) {
-        params = params.clone()
-        params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
-        params.offset = params.offset ?: 0
-        if (all) {
-            params.remove("max")
-            params.remove("offset")
-        }
-        def list
-        if (params.search) {
-            def c = Financiamiento.createCriteria()
-            list = c.list(params) {
-                or {
-                    /* TODO: cambiar aqui segun sea necesario */
+    def tablaFinanciamientosProyecto_ajax() {
+        def proyecto = Proyecto.get(params.id)
 
-                }
+        def financiamientos = Financiamiento.withCriteria {
+            eq("proyecto", proyecto)
+            anio {
+                order("anio", "asc")
             }
-        } else {
-            list = Financiamiento.list(params)
+            fuente {
+                order("descripcion", "asc")
+            }
         }
-        if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
-            params.offset = params.offset.toInteger() - 1
-            list = getList(params, all)
-        }
-        return list
+
+        return [proyecto: proyecto, financiamientos: financiamientos]
     }
 
     /**
-     * Acción que muestra la lista de elementos
-     * @return financiamientoInstanceList: la lista de elementos filtrados, financiamientoInstanceCount: la cantidad total de elementos (sin máximo)
-     */
-    def list() {
-        def financiamientoInstanceList = getList(params, false)
-        def financiamientoInstanceCount = getList(params, true).size()
-        return [financiamientoInstanceList: financiamientoInstanceList, financiamientoInstanceCount: financiamientoInstanceCount]
-    }
-
-    /**
-     * Acción llamada con ajax que muestra la información de un elemento particular
-     * @return financiamientoInstance el objeto a mostrar cuando se encontró el elemento
-     * @render ERROR*[mensaje] cuando no se encontró el elemento
-     */
-    def show_ajax() {
-        if (params.id) {
-            def financiamientoInstance = Financiamiento.get(params.id)
-            if (!financiamientoInstance) {
-                render "ERROR*No se encontró Financiamiento."
-                return
-            }
-            return [financiamientoInstance: financiamientoInstance]
-        } else {
-            render "ERROR*No se encontró Financiamiento."
-        }
-    } //show para cargar con ajax en un dialog
-
-    /**
-     * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
-     * @return financiamientoInstance el objeto a modificar cuando se encontró el elemento
-     * @render ERROR*[mensaje] cuando no se encontró el elemento
-     */
-    def form_ajax() {
-        def financiamientoInstance = new Financiamiento()
-        if (params.id) {
-            financiamientoInstance = Financiamiento.get(params.id)
-            if (!financiamientoInstance) {
-                render "ERROR*No se encontró Financiamiento."
-                return
-            }
-        }
-        financiamientoInstance.properties = params
-        return [financiamientoInstance: financiamientoInstance]
-    } //form para cargar con ajax en un dialog
-
-    /**
-     * Acción llamada con ajax que guarda la información de un elemento
-     * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
+     * Acción llamada con ajax que guarda un nuevo financiamiento de un proyecto
      */
     def save_ajax() {
-        def financiamientoInstance = new Financiamiento()
-        if (params.id) {
-            financiamientoInstance = Financiamiento.get(params.id)
-            if (!financiamientoInstance) {
-                render "ERROR*No se encontró Financiamiento."
-                return
-            }
+        def proyecto = Proyecto.get(params.id.toLong())
+        def anio = Anio.get(params.anio.toLong())
+        def fuente = Fuente.get(params.fuente.toLong())
+
+        def financiamientos = Financiamiento.withCriteria {
+            eq("proyecto", proyecto)
+            eq("anio", anio)
+            eq("fuente", fuente)
         }
-        financiamientoInstance.properties = params
-        if (!financiamientoInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Financiamiento: " + renderErrors(bean: financiamientoInstance)
-            return
+        def financiamiento
+        if (financiamientos.size() == 0) {
+            financiamiento = new Financiamiento()
+        } else if (financiamientos.size() == 1) {
+            financiamiento = financiamientos.first()
+        } else {
+            financiamiento = financiamientos.first()
+            println "Existen ${financiamientos.size()} financiamientos............"
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Financiamiento exitosa."
-        return
-    } //save para grabar desde ajax
+        financiamiento.proyecto = proyecto
+        financiamiento.anio = anio
+        financiamiento.fuente = fuente
+        financiamiento.monto = params.monto.toDouble()
+        if (financiamiento.save(flush: true)) {
+            render "SUCCESS*Financiamiento agregado*" + financiamiento.id
+        } else {
+            "ERROR*" + renderErrors(bean: financiamiento)
+        }
+    }
 
     /**
      * Acción llamada con ajax que permite eliminar un elemento
@@ -143,5 +97,4 @@ class FinanciamientoController extends Shield {
             return
         }
     } //delete para eliminar via ajax
-
 }

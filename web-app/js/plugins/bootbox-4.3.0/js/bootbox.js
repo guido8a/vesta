@@ -569,7 +569,7 @@
     var innerDialog = dialog.find(".modal-dialog");
     var body = dialog.find(".modal-body");
     if(options.id) {
-      dialog.find(".modal-dialog").attr("id", options.id);
+      dialog.attr("id", options.id);
     }
     if(options.class) {
       dialog.find(".modal-dialog").addClass(options.class);

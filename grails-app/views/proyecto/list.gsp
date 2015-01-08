@@ -106,7 +106,7 @@
                             </td>
 
                             <td class="text-right">
-                                <g:fieldValue bean="${proyectoInstance}" field="monto"/>
+                                <g:formatNumber number="${proyectoInstance.monto}" type="currency"/>
                             </td>
 
                             <td>
@@ -363,6 +363,28 @@
                             separator_before : true,
                             action           : function ($element) {
                                 var id = $element.data("id");
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(controller: 'financiamiento', action:'list_ajax')}",
+                                    data    : {
+                                        id : id
+                                    },
+                                    success : function (msg) {
+                                        bootbox.dialog({
+                                            title   : "Presupuesto/Fuentes",
+                                            class   : "modal-lg",
+                                            message : msg,
+                                            buttons : {
+                                                ok : {
+                                                    label     : "Aceptar",
+                                                    className : "btn-primary",
+                                                    callback  : function () {
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         },
                         documentos  : {
@@ -370,6 +392,28 @@
                             icon   : "fa fa-files-o",
                             action : function ($element) {
                                 var id = $element.data("id");
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(controller: 'documento', action:'list_ajax')}",
+                                    data    : {
+                                        id : id
+                                    },
+                                    success : function (msg) {
+                                        bootbox.dialog({
+                                            title   : "Documentos",
+                                            class   : "modal-lg",
+                                            message : msg,
+                                            buttons : {
+                                                ok : {
+                                                    label     : "Aceptar",
+                                                    className : "btn-primary",
+                                                    callback  : function () {
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         },
                         plan        : {
