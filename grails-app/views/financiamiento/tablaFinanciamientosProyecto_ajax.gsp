@@ -63,9 +63,9 @@
     var total = parseFloat("${proyecto.monto}");
     var suma = parseFloat("${suma}");
     var restante = total - suma;
-
-    setSuma(suma);
-    setRestante(restante);
+    $(function () {
+        setSuma(suma);
+        setRestante(restante);
 
     setTimeout(function () {
         $("#tblFinanciamiento").fixedHeaderTable({
@@ -74,22 +74,23 @@
         });
     }, 500);
 
-    $(".btn-delete-fin").click(function () {
-        var id = $(this).attr("id");
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller:'financiamiento', action:'delete_ajax')}",
-            data    : {
-                id : id
-            },
-            success : function (msg) {
-                var parts = msg.split("*");
-                log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                if (parts[0] == "SUCCESS") {
+        $(".btn-delete-fin").click(function () {
+            var id = $(this).attr("id");
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(controller:'financiamiento', action:'delete_ajax')}",
+                data    : {
+                    id : id
+                },
+                success : function (msg) {
+                    var parts = msg.split("*");
+                    log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                    if (parts[0] == "SUCCESS") {
 //                        $("#tr_" + id).remove();
-                    reloadTabla();
+                        reloadTabla();
+                    }
                 }
-            }
+            });
         });
     });
 </script>

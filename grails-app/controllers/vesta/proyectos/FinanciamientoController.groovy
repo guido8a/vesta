@@ -36,7 +36,6 @@ class FinanciamientoController extends Shield {
                 order("descripcion", "asc")
             }
         }
-
         return [proyecto: proyecto, financiamientos: financiamientos]
     }
 
