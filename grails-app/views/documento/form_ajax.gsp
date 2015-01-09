@@ -1,6 +1,7 @@
 <%@ page import="vesta.proyectos.Documento" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js/plugins/jquery-validation-1.13.1/dist', file: 'additional-methods.min.js')}"></script>
 <g:if test="${!documentoInstance}">
     <elm:notFound elem="Documento" genero="o"/>
 </g:if>
@@ -9,6 +10,7 @@
     <div class="modal-contenido">
         <g:uploadForm class="form-horizontal" name="frmDocumento" role="form" action="save_ajax" method="POST">
             <g:hiddenField name="id" value="${documentoInstance?.id}"/>
+            <g:hiddenField name="proyecto.id" value="${documentoInstance?.proyectoId}"/>
 
             <div class="form-group keeptogether ${hasErrors(bean: documentoInstance, field: 'grupoProcesos', 'error')} ">
                 <span class="grupo">
@@ -29,7 +31,8 @@
                     </label>
 
                     <div class="col-md-6">
-                        <g:textField name="descripcion" maxlength="63" class="form-control input-sm" value="${documentoInstance?.descripcion}"/>
+                        <g:textField name="descripcion" maxlength="63" class="form-control input-sm required"
+                                     value="${documentoInstance?.descripcion}"/>
                     </div>
                 </span>
             </div>
@@ -65,7 +68,7 @@
                     </label>
 
                     <div class="col-md-6">
-                        <input type="file" name="documento" class="form-control input-sm"/>
+                        <input type="file" name="documento" id="documento" class="form-control input-sm required"/>
                     </div>
 
                 </span>
@@ -74,6 +77,43 @@
     </div>
 
     <script type="text/javascript">
+        var okContents = {
+            'image/png'  : "png",
+            'image/jpeg' : "jpeg",
+            'image/jpg'  : "jpg",
+
+            'application/pdf'      : 'pdf',
+            'application/download' : 'pdf',
+
+            'application/excel'                                                 : 'xls',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'xlsx',
+
+            'application/mspowerpoint'                                                  : 'pps',
+            'application/vnd.ms-powerpoint'                                             : 'pps',
+            'application/powerpoint'                                                    : 'ppt',
+            'application/x-mspowerpoint'                                                : 'ppt',
+            'application/vnd.openxmlformats-officedocument.presentationml.slideshow'    : 'ppsx',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation' : 'pptx',
+
+            'application/msword'                                                      : 'doc',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : 'docx',
+
+            'application/vnd.oasis.opendocument.text'         : 'odt',
+            'application/vnd.oasis.opendocument.presentation' : 'odp',
+            'application/vnd.oasis.opendocument.spreadsheet'  : 'ods'
+        };
+
+        var okExt = "", okExt2 = "";
+        $.each(okContents, function (mime, ext) {
+            if (okExt != "") {
+                okExt += "|";
+                okExt2 += ", ";
+            }
+            okExt += ext;
+            okExt2 += ext;
+        });
+        console.log(okExt);
+
         var validator = $("#frmDocumento").validate({
             errorClass     : "help-block",
             errorPlacement : function (error, element) {
@@ -86,9 +126,20 @@
             },
             success        : function (label) {
                 label.parents(".grupo").removeClass('has-error');
+            },
+            rules          : {
+                documento : {
+                    required  : true,
+                    extension : okExt
+                }
+            },
+            messages       : {
+                documento : {
+                    extension : "Por favor ingrese un archivo de tipo " + okExt2
+                }
             }
-
         });
+
         $(".form-control").keydown(function (ev) {
             if (ev.keyCode == 13) {
                 submitFormDocumento();

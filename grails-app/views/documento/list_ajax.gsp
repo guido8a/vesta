@@ -50,11 +50,13 @@
         if ($form.valid()) {
             $btn.replaceWith(spinner);
             openLoader("Guardando Documento");
+            var formData = new FormData($form[0]);
             $.ajax({
-                type    : "POST",
-                url     : $form.attr("action"),
-                data    : $form.serialize(),
-                success : function (msg) {
+                url         : $form.attr("action"),
+                type        : 'POST',
+                data        : formData,
+                async       : false,
+                success     : function (msg) {
                     var parts = msg.split("*");
                     log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                     closeLoader();
@@ -64,7 +66,10 @@
                         spinner.replaceWith($btn);
                         return false;
                     }
-                }
+                },
+                cache       : false,
+                contentType : false,
+                processData : false
             });
         } else {
             return false;
@@ -110,15 +115,15 @@
     function createEditDocumento(id) {
         var title = id ? "Editar" : "Crear";
         var data = id ? { id : id } : {};
+        data.proyecto = "${proyecto.id}";
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller:'documento', action:'form_ajax')}",
             data    : data,
             success : function (msg) {
                 var b = bootbox.dialog({
-                    id    : "dlgCreateEdit",
-                    title : title + " Documento",
-
+                    id      : "dlgCreateEdit",
+                    title   : title + " Documento",
                     message : msg,
                     buttons : {
                         cancelar : {
