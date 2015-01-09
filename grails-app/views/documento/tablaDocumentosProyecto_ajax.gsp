@@ -19,16 +19,13 @@
                 <td><elm:textoBusqueda busca="${params.search}">${doc.descripcion}</elm:textoBusqueda></td>
                 <td><elm:textoBusqueda busca="${params.search}">${doc.clave}</elm:textoBusqueda></td>
                 <td><elm:textoBusqueda busca="${params.search}">${doc.resumen}</elm:textoBusqueda></td>
-                <td style="width: 115px;">
+                <td style="width: 90px;">
                     <div class="btn-group" role="group">
                         <a href="#" class="btn btn-xs btn-danger btnDelDoc" data-id="${doc.id}" title="Eliminar">
                             <i class="fa fa-trash-o"></i>
                         </a>
                         <a href="#" class="btn btn-xs btn-success btnDownDoc" data-id="${doc.id}" title="Descargar">
                             <i class="fa fa-download"></i>
-                        </a>
-                        <a href="#" class="btn btn-xs btn-default btnShowDoc" data-id="${doc.id}" title="Ver">
-                            <i class="fa fa-laptop"></i>
                         </a>
                         <a href="#" class="btn btn-xs btn-info btnEditDoc" data-id="${doc.id}" title="Editar">
                             <i class="fa fa-pencil"></i>
@@ -50,6 +47,12 @@
 
         $(".btnDelDoc").click(function () {
             deleteDocumento($(this).data("id"));
+        });
+        $(".btnDownDoc").click(function () {
+            downloadDocumento($(this).data("id"));
+        });
+        $(".btnEditDoc").click(function () {
+            createEditDocumento($(this).data("id"));
         });
 
     });

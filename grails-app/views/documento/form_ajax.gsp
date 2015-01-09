@@ -61,18 +61,20 @@
                 </span>
             </div>
 
-            <div class="form-group keeptogether ${hasErrors(bean: documentoInstance, field: 'documento', 'error')} ">
-                <span class="grupo">
-                    <label for="documento" class="col-md-4 control-label">
-                        Documento
-                    </label>
+            <g:if test="${!documentoInstance.id}">
+                <div class="form-group keeptogether ${hasErrors(bean: documentoInstance, field: 'documento', 'error')} ">
+                    <span class="grupo">
+                        <label for="documento" class="col-md-4 control-label">
+                            Documento
+                        </label>
 
-                    <div class="col-md-6">
-                        <input type="file" name="documento" id="documento" class="form-control input-sm required"/>
-                    </div>
+                        <div class="col-md-6">
+                            <input type="file" name="documento" id="documento" class="form-control input-sm required"/>
+                        </div>
 
-                </span>
-            </div>
+                    </span>
+                </div>
+            </g:if>
         </g:uploadForm>
     </div>
 
@@ -112,7 +114,6 @@
             okExt += ext;
             okExt2 += ext;
         });
-        console.log(okExt);
 
         var validator = $("#frmDocumento").validate({
             errorClass     : "help-block",

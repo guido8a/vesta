@@ -74,8 +74,9 @@ class DocumentoController extends Shield {
         if (params.id) {
             documentoInstance = Documento.get(params.id)
             if (!documentoInstance) {
-                render "ERROR*No se encontró Documento."
-                return
+//                render "ERROR*No se encontró Documento."
+//                return
+                documentoInstance = new Documento()
             }
         }
         documentoInstance.properties = params
@@ -91,7 +92,8 @@ class DocumentoController extends Shield {
         def proyecto = Proyecto.get(params.proyecto.id)
         def proyName = proyecto.nombre.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
         def anio = new Date().format("yyyy")
-        def path = servletContext.getRealPath("/") + "documentosProyecto/${session.unidad.codigo}/" + anio + "/" + proyName + "/"
+        def pathSave = "${session.unidad.codigo}/" + anio + "/" + proyName + "/"
+        def path = servletContext.getRealPath("/") + "documentosProyecto/" + pathSave
         //web-app/archivos
         new File(path).mkdirs()
         def f = request.getFile('documento')  //archivo = name del input type file
@@ -211,7 +213,7 @@ class DocumentoController extends Shield {
                 }
                 params.remove("documento")
                 documentoInstance.properties = params
-                documentoInstance.documento = nombre
+                documentoInstance.documento = pathSave + nombre
                 documentoInstance.unidadEjecutora = session.unidad
                 if (!documentoInstance.save(flush: true)) {
                     render "ERROR*Ha ocurrido un error al guardar Documento: " + renderErrors(bean: documentoInstance)
@@ -228,6 +230,28 @@ class DocumentoController extends Shield {
                 return
             }
         } //f && !f.empty
+        else {
+            if (params.id) {
+                def documentoInstance = new Documento()
+                documentoInstance = Documento.get(params.id)
+                if (!documentoInstance) {
+                    documentoInstance = new Documento()
+                    println "ERROR*No se encontró Documento."
+                }
+                params.remove("documento")
+                documentoInstance.properties = params
+                documentoInstance.unidadEjecutora = session.unidad
+                if (!documentoInstance.save(flush: true)) {
+                    render "ERROR*Ha ocurrido un error al guardar Documento: " + renderErrors(bean: documentoInstance)
+                    return
+                }
+                render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Documento exitosa."
+                return
+            } else {
+                render "ERROR*No se encontró un Documento que modificar"
+                return
+            }
+        }
     } //save para grabar desde ajax
 
     /**
@@ -242,7 +266,11 @@ class DocumentoController extends Shield {
                 return
             }
             try {
+                def path = servletContext.getRealPath("/") + "documentosProyecto/" + documentoInstance.documento
                 documentoInstance.delete(flush: true)
+                println path
+                def f = new File(path)
+                println f.delete()
                 render "SUCCESS*Eliminación de Documento exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
@@ -254,5 +282,50 @@ class DocumentoController extends Shield {
             return
         }
     } //delete para eliminar via ajax
+
+    /**
+     * Acción que permite descargar un documento del proyecto
+     */
+    def downloadDoc() {
+        def doc = Documento.get(params.id)
+        def path = servletContext.getRealPath("/") + "documentosProyecto/" + doc.documento
+        def nombre = doc.documento.split("/").last()
+        def parts = nombre.split("\\.")
+        def tipo = parts[1]
+        switch (tipo) {
+            case "jpeg":
+            case "gif":
+            case "jpg":
+            case "bmp":
+            case "png":
+                tipo = "application/image"
+                break;
+            case "pdf":
+                tipo = "application/pdf"
+                break;
+            case "doc":
+            case "docx":
+            case "odt":
+                tipo = "application/msword"
+                break;
+            case "xls":
+            case "xlsx":
+                tipo = "application/vnd.ms-excel"
+                break;
+            default:
+                tipo = "application/pdf"
+                break;
+        }
+        try {
+            def file = new File(path)
+            def b = file.getBytes()
+            response.setContentType(tipo)
+            response.setHeader("Content-disposition", "attachment; filename=" + (nombre))
+            response.setContentLength(b.length)
+            response.getOutputStream().write(b)
+        } catch (e) {
+            response.sendError(404)
+        }
+    }
 
 }

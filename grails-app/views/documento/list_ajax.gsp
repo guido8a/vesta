@@ -67,6 +67,9 @@
                         return false;
                     }
                 },
+                error       : function () {
+
+                },
                 cache       : false,
                 contentType : false,
                 processData : false
@@ -148,6 +151,10 @@
             } //success
         }); //ajax
     } //createEdit
+    function downloadDocumento(id) {
+        location.href = "${createLink(controller: 'documento', action: 'downloadDoc')}/" + id;
+    }
+
     $(function () {
         reloadTablaDocumento();
 
@@ -159,7 +166,6 @@
                 reloadTablaDocumento($.trim($("#searchDoc").val()));
             }
         });
-
         $("#btnAddDoc").click(function () {
             createEditDocumento();
         });
