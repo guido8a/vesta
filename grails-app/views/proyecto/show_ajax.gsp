@@ -15,7 +15,7 @@
                     </h4>
                 </div>
 
-                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-2 show-label">Pertenece a</div>
@@ -203,7 +203,7 @@
                 </h4>
             </div>
 
-            <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                 <table class="table table-condensed table-striped table-bordered">
                     <thead>
                         <tr>

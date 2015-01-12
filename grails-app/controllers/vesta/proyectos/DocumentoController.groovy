@@ -1,7 +1,14 @@
 package vesta.proyectos
 
+import groovy.json.JsonBuilder
 import org.springframework.dao.DataIntegrityViolationException
 import vesta.seguridad.Shield
+
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
+
+import static java.awt.RenderingHints.KEY_INTERPOLATION
+import static java.awt.RenderingHints.VALUE_INTERPOLATION_BICUBIC
 
 
 /**
@@ -62,15 +69,18 @@ class DocumentoController extends Shield {
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def form_ajax() {
+        def proyecto = Proyecto.get(params.proyecto.toLong())
         def documentoInstance = new Documento()
         if (params.id) {
             documentoInstance = Documento.get(params.id)
             if (!documentoInstance) {
-                render "ERROR*No se encontró Documento."
-                return
+//                render "ERROR*No se encontró Documento."
+//                return
+                documentoInstance = new Documento()
             }
         }
         documentoInstance.properties = params
+        documentoInstance.proyecto = proyecto
         return [documentoInstance: documentoInstance]
     } //form para cargar con ajax en un dialog
 
@@ -79,21 +89,169 @@ class DocumentoController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
-        def documentoInstance = new Documento()
-        if (params.id) {
-            documentoInstance = Documento.get(params.id)
-            if (!documentoInstance) {
-                render "ERROR*No se encontró Documento."
+        def proyecto = Proyecto.get(params.proyecto.id)
+        def proyName = proyecto.nombre.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
+        def anio = new Date().format("yyyy")
+        def pathSave = "${session.unidad.codigo}/" + anio + "/" + proyName + "/"
+        def path = servletContext.getRealPath("/") + "documentosProyecto/" + pathSave
+        //web-app/archivos
+        new File(path).mkdirs()
+        def f = request.getFile('documento')  //archivo = name del input type file
+        def imageContent = ['image/png': "png", 'image/jpeg': "jpeg", 'image/jpg': "jpg"]
+        def okContents = [
+                'image/png'                                                                : "png",
+                'image/jpeg'                                                               : "jpeg",
+                'image/jpg'                                                                : "jpg",
+
+                'application/pdf'                                                          : 'pdf',
+                'application/download'                                                     : 'pdf',
+
+                'application/excel'                                                        : 'xls',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'        : 'xlsx',
+
+                'application/mspowerpoint'                                                 : 'pps',
+                'application/vnd.ms-powerpoint'                                            : 'pps',
+                'application/powerpoint'                                                   : 'ppt',
+                'application/x-mspowerpoint'                                               : 'ppt',
+                'application/vnd.openxmlformats-officedocument.presentationml.slideshow'   : 'ppsx',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
+
+                'application/msword'                                                       : 'doc',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'  : 'docx',
+
+                'application/vnd.oasis.opendocument.text'                                  : 'odt',
+
+                'application/vnd.oasis.opendocument.presentation'                          : 'odp',
+
+                'application/vnd.oasis.opendocument.spreadsheet'                           : 'ods'
+        ]
+
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                }
+            }
+
+            if (okContents.containsKey(f.getContentType())) {
+                ext = okContents[f.getContentType()]
+                fileName = fileName.size() < 40 ? fileName : fileName[0..39]
+                fileName = fileName.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
+
+                def nombre = fileName + "." + ext
+                def pathFile = path + nombre
+                def fn = fileName
+                def src = new File(pathFile)
+                def i = 1
+                while (src.exists()) {
+                    nombre = fn + "_" + i + "." + ext
+                    pathFile = path + nombre
+                    src = new File(pathFile)
+                    i++
+                }
+                try {
+                    f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+                } catch (e) {
+                    println "????????\n" + e + "\n???????????"
+                }
+
+                if (imageContent.containsKey(f.getContentType())) {
+                    /* RESIZE */
+                    def img = ImageIO.read(new File(pathFile))
+
+                    def scale = 0.5
+
+                    def minW = 200
+                    def minH = 200
+
+                    def maxW = minW * 4
+                    def maxH = minH * 4
+
+                    def w = img.width
+                    def h = img.height
+
+                    if (w > maxW || h > maxH) {
+                        int newW = w * scale
+                        int newH = h * scale
+                        int r = 1
+                        if (w > h) {
+                            r = w / maxW
+                            newW = maxW
+                            newH = h / r
+                        } else {
+                            r = h / maxH
+                            newH = maxH
+                            newW = w / r
+                        }
+
+                        new BufferedImage(newW, newH, img.type).with { j ->
+                            createGraphics().with {
+                                setRenderingHint(KEY_INTERPOLATION, VALUE_INTERPOLATION_BICUBIC)
+                                drawImage(img, 0, 0, newW, newH, null)
+                                dispose()
+                            }
+                            ImageIO.write(j, ext, new File(pathFile))
+                        }
+                    }
+                    /* fin resize */
+                } //si es imagen hace resize para que no exceda 800x800
+//                println "llego hasta aca"
+
+                //aqui guarda el obj en la base
+                def documentoInstance = new Documento()
+                if (params.id) {
+                    documentoInstance = Documento.get(params.id)
+                    if (!documentoInstance) {
+                        documentoInstance = new Documento()
+                        println "ERROR*No se encontró Documento."
+                    }
+                }
+                params.remove("documento")
+                documentoInstance.properties = params
+                documentoInstance.documento = pathSave + nombre
+                documentoInstance.unidadEjecutora = session.unidad
+                if (!documentoInstance.save(flush: true)) {
+                    render "ERROR*Ha ocurrido un error al guardar Documento: " + renderErrors(bean: documentoInstance)
+                    def file = new File(pathFile)
+                    file.delete()
+                    return
+                }
+                render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Documento exitosa."
+                return
+            } //ok contents
+            else {
+                println "llego else no se acepta"
+                render "ERROR*Extensión no permitida."
+                return
+            }
+        } //f && !f.empty
+        else {
+            if (params.id) {
+                def documentoInstance = new Documento()
+                documentoInstance = Documento.get(params.id)
+                if (!documentoInstance) {
+                    documentoInstance = new Documento()
+                    println "ERROR*No se encontró Documento."
+                }
+                params.remove("documento")
+                documentoInstance.properties = params
+                documentoInstance.unidadEjecutora = session.unidad
+                if (!documentoInstance.save(flush: true)) {
+                    render "ERROR*Ha ocurrido un error al guardar Documento: " + renderErrors(bean: documentoInstance)
+                    return
+                }
+                render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Documento exitosa."
+                return
+            } else {
+                render "ERROR*No se encontró un Documento que modificar"
                 return
             }
         }
-        documentoInstance.properties = params
-        if (!documentoInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Documento: " + renderErrors(bean: documentoInstance)
-            return
-        }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Documento exitosa."
-        return
     } //save para grabar desde ajax
 
     /**
@@ -108,7 +266,11 @@ class DocumentoController extends Shield {
                 return
             }
             try {
+                def path = servletContext.getRealPath("/") + "documentosProyecto/" + documentoInstance.documento
                 documentoInstance.delete(flush: true)
+                println path
+                def f = new File(path)
+                println f.delete()
                 render "SUCCESS*Eliminación de Documento exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
@@ -120,5 +282,50 @@ class DocumentoController extends Shield {
             return
         }
     } //delete para eliminar via ajax
+
+    /**
+     * Acción que permite descargar un documento del proyecto
+     */
+    def downloadDoc() {
+        def doc = Documento.get(params.id)
+        def path = servletContext.getRealPath("/") + "documentosProyecto/" + doc.documento
+        def nombre = doc.documento.split("/").last()
+        def parts = nombre.split("\\.")
+        def tipo = parts[1]
+        switch (tipo) {
+            case "jpeg":
+            case "gif":
+            case "jpg":
+            case "bmp":
+            case "png":
+                tipo = "application/image"
+                break;
+            case "pdf":
+                tipo = "application/pdf"
+                break;
+            case "doc":
+            case "docx":
+            case "odt":
+                tipo = "application/msword"
+                break;
+            case "xls":
+            case "xlsx":
+                tipo = "application/vnd.ms-excel"
+                break;
+            default:
+                tipo = "application/pdf"
+                break;
+        }
+        try {
+            def file = new File(path)
+            def b = file.getBytes()
+            response.setContentType(tipo)
+            response.setHeader("Content-disposition", "attachment; filename=" + (nombre))
+            response.setContentLength(b.length)
+            response.getOutputStream().write(b)
+        } catch (e) {
+            response.sendError(404)
+        }
+    }
 
 }
