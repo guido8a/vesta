@@ -290,7 +290,7 @@
                        (typeof inline !== 'undefined' ? ' style="' + inline + '"' : '') +
                        (typeof optgroup !== 'undefined' ? 'data-optgroup="' + optgroup + '"' : '') +
                        ' data-normalized-text="' + normText + '"' +
-                       '>' + text +
+                       '>' /*+ "<div class='tdn-select-opt' style='width:" + that.options.width + "'>" */ + text /*+ "</div>" */ +
                        '<span class="' + that.options.iconBase + ' ' + that.options.tickIcon + ' check-mark"></span>' +
                        '</a>';
             };
@@ -314,11 +314,12 @@
                     // Prepend any icon and append any subtext to the main text.
                     //text = icon + '<span class="text">' + text + subtext + '</span>';
                     //text = icon + "<div class='tdn-select-opt' style='" + that.options.width + "; white-space: normal;'>" + text + subtext + '</div>';
-                    text = icon + "<div class='tdn-select-opt' style='white-space: normal; ";
+                    var txt = icon + "<div class='tdn-select-opt' ";
                     if (that.options.limitWidth) {
-                        text += that.options.width;
+                        txt += " style='white-space: normal;'";
                     }
-                    text += ">" + text + subtext + "</div>";
+                    txt += ">" + text + subtext + "</div>";
+                    text = txt;
                 }
 
                 if (that.options.hideDisabled && isDisabled) {
@@ -567,11 +568,7 @@
                 var btnWidth = selectClone.css('width', 'auto').find('> button').css('width');
                 selectClone.remove();
                 // Set width to whatever's larger, button title or longest option
-                if(this.options.limitWidth) {
-                    this.$newElement.css('width', Math.min(parseInt(ulWidth), parseInt(btnWidth)) + 'px');
-                } else {
-                    this.$newElement.css('width', Math.max(parseInt(ulWidth), parseInt(btnWidth)) + 'px');
-                }
+                this.$newElement.css('width', Math.max(parseInt(ulWidth), parseInt(btnWidth)) + 'px');
             } else if (this.options.width == 'fit') {
                 // Remove inline min-width so width can be changed from 'auto'
                 this.$menu.css('min-width', '');

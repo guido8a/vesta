@@ -142,7 +142,7 @@ class ProyectoController extends Shield {
             render "ERROR*Ha ocurrido un error al guardar Proyecto: " + renderErrors(bean: proyectoInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Proyecto exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Proyecto exitosa.*" + proyectoInstance.id
         return
     } //save para grabar desde ajax
 

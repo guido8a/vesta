@@ -34,7 +34,8 @@
                     ${fin.anio.anio}
                 </td>
                 <td class="text-center">
-                    <a id="${fin.id}" href="#" class="btn btn-sm btn-danger btn-delete-fin"><i class="fa fa-trash-o"></i>
+                    <a id="${fin.id}" href="#" class="btn btn-sm btn-danger btn-delete-fin">
+                        <i class="fa fa-trash-o"></i>
                     </a>
                 </td>
             </tr>
@@ -67,12 +68,12 @@
         setSuma(suma);
         setRestante(restante);
 
-    setTimeout(function () {
-        $("#tblFinanciamiento").fixedHeaderTable({
-            height : 250,
-            footer : true
-        });
-    }, 500);
+        setTimeout(function () {
+            $("#tblFinanciamiento").fixedHeaderTable({
+                height : 250,
+                footer : true
+            });
+        }, 500);
 
         $(".btn-delete-fin").click(function () {
             var id = $(this).attr("id");

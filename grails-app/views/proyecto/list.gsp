@@ -147,7 +147,7 @@
 
         <script type="text/javascript">
             var id = null;
-            function submitForm() {
+            function submitFormProyecto(id) {
                 var $form = $("#frmProyecto");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
@@ -162,7 +162,11 @@
                             log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                             setTimeout(function () {
                                 if (parts[0] == "SUCCESS") {
-                                    location.reload(true);
+                                    if (id) {
+                                        location.reload(true);
+                                    } else {
+                                        metasProyecto(parts[2], true);
+                                    }
                                 } else {
                                     spinner.replaceWith($btn);
                                     return false;
@@ -174,7 +178,7 @@
                     return false;
                 } //else
             }
-            function deleteRow(itemId) {
+            function deleteProyecto(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
@@ -214,7 +218,7 @@
                     }
                 });
             }
-            function createEditRow(id) {
+            function createEditProyecto(id) {
                 openLoader();
                 var title = id ? "Editar" : "Crear";
                 var data = id ? {id : id} : {};
@@ -241,7 +245,7 @@
                                     label     : "<i class='fa fa-save'></i> Guardar",
                                     className : "btn-success",
                                     callback  : function () {
-                                        return submitForm();
+                                        return submitFormProyecto(id);
                                     } //callback
                                 } //guardar
                             } //buttons
@@ -253,7 +257,7 @@
                 }); //ajax
             } //createEdit
 
-            function metasProyecto(id) {
+            function metasProyecto(id, reload) {
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(controller: 'metaBuenVivirProyecto', action:'list_ajax')}",
@@ -270,6 +274,9 @@
                                     label     : "Aceptar",
                                     className : "btn-primary",
                                     callback  : function () {
+                                        if (reload) {
+                                            location.reload(true);
+                                        }
                                     }
                                 }
                             }
@@ -284,7 +291,7 @@
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;
                 });
                 $(".btnCrear").click(function () {
-                    createEditRow();
+                    createEditProyecto();
                     return false;
                 });
 
@@ -385,7 +392,7 @@
                             icon   : "fa fa-pencil",
                             action : function ($element) {
                                 var id = $element.data("id");
-                                createEditRow(id);
+                                createEditProyecto(id);
                             }
                         },
                         metas       : {
@@ -483,7 +490,7 @@
                             separator_before : true,
                             action           : function ($element) {
                                 var id = $element.data("id");
-                                deleteRow(id);
+                                deleteProyecto(id);
                             }
                         }
                     },

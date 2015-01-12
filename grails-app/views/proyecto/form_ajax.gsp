@@ -127,8 +127,11 @@
                         </label>
 
                         <div class="col-md-6">
-                            <g:field name="monto" type="number" value="${fieldValue(bean: proyectoInstance, field: 'monto')}"
-                                     class="number money form-control input-sm "/>
+                            <div class="input-group input-group-sm">
+                                <g:textField name="monto" value="${fieldValue(bean: proyectoInstance, field: 'monto')}"
+                                             class="number money form-control input-sm "/>
+                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                            </div>
                         </div>
                     </span>
                 </div>
@@ -157,7 +160,7 @@
 
                         <div class="col-md-6">
                             <elm:datepicker name="fechaInicioPlanificada" class="datepicker form-control input-sm"
-                                            value="${proyectoInstance?.fechaInicioPlanificada}"/>
+                                            value="${proyectoInstance?.fechaInicioPlanificada}" onChangeDate="validaFechasPlan"/>
                         </div>
                     </span>
                 </div>
@@ -170,7 +173,7 @@
 
                         <div class="col-md-6">
                             <elm:datepicker name="fechaInicio" class="datepicker form-control input-sm"
-                                            value="${proyectoInstance?.fechaInicio}"/>
+                                            value="${proyectoInstance?.fechaInicio}" onChangeDate="validaFechas"/>
                         </div>
                     </span>
                 </div>
@@ -246,6 +249,13 @@
     </div>
 
     <script type="text/javascript">
+        function validaFechasPlan($elm, e) {
+            $("#fechaFinPlanificada_input").data("DateTimePicker").setMinDate(e.date);
+        }
+        function validaFechas($elm, e) {
+            $("#fechaFin_input").data("DateTimePicker").setMinDate(e.date);
+        }
+
         function loadEstrategias() {
             var spinnerUrl = "${resource(dir:'images', file:'spinner.gif')}";
             var spinner = "<img src='" + spinnerUrl + "'/>";

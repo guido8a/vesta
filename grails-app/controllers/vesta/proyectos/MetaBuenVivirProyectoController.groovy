@@ -77,7 +77,13 @@ class MetaBuenVivirProyectoController extends Shield {
         def metas = MetaBuenVivirProyecto.withCriteria {
             eq("proyecto", proyecto)
             metaBuenVivir {
-                order("descripcion", "asc")
+                politica {
+                    objetivo {
+                        order("codigo", "asc")
+                    }
+                    order("codigo", "asc")
+                }
+                order("codigo", "asc")
             }
         }
         return [proyecto: proyecto, metas: metas]
@@ -165,5 +171,53 @@ class MetaBuenVivirProyectoController extends Shield {
             return
         }
     } //delete para eliminar via ajax
+
+    /**
+     * Acción llamada con ajax que carga los combo box de políticas/metas
+     */
+    def loadCombo_ajax() {
+        def str = ""
+        switch (params.tipo) {
+            case "politica":
+
+                if (params.padre != null && params.padre != "null") {
+                    def objetivo = ObjetivoBuenVivir.get(params.padre)
+                    def politicas = PoliticaBuenVivir.findAllByObjetivo(objetivo, [sort: "codigo"])
+
+                    str += "<label for='politica'>Política</label>"
+                    str += g.select(from: politicas, name: "politica", optionKey: "id", class: "form-control input-sm selectpicker")
+
+                    str += '<script type="text/javascript">'
+                    str += '$("#politica").selectpicker({' +
+                            'width      : "200px",\n' +
+                            'limitWidth : true,\n' +
+                            'style      : "btn-sm"' +
+                            '}).change(function() {' +
+                            'reloadCombo($(this), "meta");' +
+                            '});'
+                    str += '</script>'
+                }
+                break;
+            case "meta":
+                if (params.padre != null && params.padre != "null") {
+                    def politica = PoliticaBuenVivir.get(params.padre)
+                    def metas = MetaBuenVivir.findAllByPolitica(politica, [sort: "codigo"])
+
+                    str += "<label form='meta'>Meta</label>"
+                    str += g.select(from: metas, name: "meta", optionKey: "id", class: "form-control input-sm selectpicker")
+
+                    str += '<script type="text/javascript">'
+                    str += '$("#meta").selectpicker({' +
+                            'width      : "200px",\n' +
+                            'limitWidth : true,\n' +
+                            'style      : "btn-sm"' +
+                            '});'
+                    str += '</script>'
+                }
+                break;
+        }
+
+        render(str)
+    }
 
 }

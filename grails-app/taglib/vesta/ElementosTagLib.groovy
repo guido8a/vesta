@@ -220,21 +220,28 @@ class ElementosTagLib {
      *      todayHighlight  boolean. default: true marca la fecha actual
      *      beforeShowDay   funcion. funcion que se ejecuta antes de mostrar el día. se puede utilizar para deshabilitar una fecha en particular
      *                          ej:
-     *                               beforeShowDay: function (date){*                                   if (date.getMonth() == (new Date()).getMonth())
-     *                                       switch (date.getDate()){*                                           case 4:
-     *                                               return {*                                                   tooltip: 'Example tooltip',
+     *                               beforeShowDay: function (date){
+     *                                   if (date.getMonth() == (new Date()).getMonth())
+     *                                       switch (date.getDate()){
+     *                                           case 4:
+     *                                               return {
+     *                                                   tooltip: 'Example tooltip',
      *                                                   classes: 'active'
-     *};
+     *                                               };
      *                                           case 8:
      *                                               return false;
      *                                           case 12:
      *                                               return "green";
-     *}*}*                                }
+     *                                       }
+     *                                   }
+     *                                }
      *      onChangeDate    funcion. funcion q se ejecuta al cambiar una fecha. se manda solo el nombre, sin parentesis, como parametro recibe el datepicker y el objeto
      *                          ej: onChangeDate="miFuncion"
-     *                          function miFuncion($elm, e) {*                              console.log($elm); //el objeto jquery del datepicker, el textfield
+     *                          function miFuncion($elm, e) {*
+     *                              console.log($elm); //el objeto jquery del datepicker, el textfield
      *                              console.log(e); //el objeto que pasa el plugin
-     *}*      daysOfWeekDisabled  lista de números para deshabilitar ciertos días: 0:domingo, 1:lunes, 2:martes, 3:miercoles, 4:jueves, 5:viernes, 6:sabado
+     *                          }
+     *      daysOfWeekDisabled  lista de números para deshabilitar ciertos días: 0:domingo, 1:lunes, 2:martes, 3:miercoles, 4:jueves, 5:viernes, 6:sabado
      *      img             imagen del calendario. clase de glyphicons o font awsome
      **/
     def datepicker = { attrs ->
