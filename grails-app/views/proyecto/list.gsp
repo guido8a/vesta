@@ -32,8 +32,14 @@
 
             <div class="btn-group">
                 <a class="btn btn-sm btn-default" id="btn_buscar">
-                    <i class="fa fa-search-plus"></i>
-                    Mostrar opciones de búsqueda
+                    <g:if test="${params.search_programa || params.search_nombre || params.search_desde || params.search_hasta}">
+                        <i class="fa fa-search-minus"></i>
+                        Ocultar opciones de búsqueda
+                    </g:if>
+                    <g:else>
+                        <i class="fa fa-search-plus"></i>
+                        Mostrar opciones de búsqueda
+                    </g:else>
                 </a>
             </div>
         </div>
@@ -172,7 +178,7 @@
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                              "¿Está seguro que desea eliminar el Proyecto seleccionado? Esta acción no se puede deshacer.</p>",
+                            "¿Está seguro que desea eliminar el Proyecto seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -209,19 +215,19 @@
                 });
             }
             function createEditRow(id) {
+                openLoader();
                 var title = id ? "Editar" : "Crear";
-                var data = id ? { id : id } : {};
+                var data = id ? {id : id} : {};
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(action:'form_ajax')}",
                     data    : data,
                     success : function (msg) {
+                        closeLoader();
                         var b = bootbox.dialog({
-                            id    : "dlgCreateEdit",
-                            title : title + " Proyecto",
-
-                            class : "modal-lg",
-
+                            id      : "dlgCreateEdit",
+                            title   : title + " Proyecto",
+                            class   : "modal-lg",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -246,6 +252,31 @@
                     } //success
                 }); //ajax
             } //createEdit
+
+            function metasProyecto(id) {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller: 'metaBuenVivirProyecto', action:'list_ajax')}",
+                    data    : {
+                        id : id
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Metas del Plan Nacional de Desarrollo",
+                            class   : "modal-lg",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
 
             $(function () {
                 $("#reporte").click(function () {
@@ -355,6 +386,14 @@
                             action : function ($element) {
                                 var id = $element.data("id");
                                 createEditRow(id);
+                            }
+                        },
+                        metas       : {
+                            label  : "Metas del P.N.D.",
+                            icon   : "fa fa-flag-checkered",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                metasProyecto(id);
                             }
                         },
                         presupuesto : {

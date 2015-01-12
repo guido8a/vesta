@@ -62,6 +62,28 @@ class MetaBuenVivirProyectoController extends Shield {
     }
 
     /**
+     * Acción llamada con ajax que muestra y permite modificar las metas de PND de un proyecto
+     */
+    def list_ajax() {
+        def proyecto = Proyecto.get(params.id)
+        return [proyecto: proyecto]
+    }
+
+    /**
+     * Acción llamada con ajax que llena la tabla de las metas de un proyecto
+     */
+    def tablaMetasProyecto_ajax() {
+        def proyecto = Proyecto.get(params.id)
+        def metas = MetaBuenVivirProyecto.withCriteria {
+            eq("proyecto", proyecto)
+            metaBuenVivir {
+                order("descripcion", "asc")
+            }
+        }
+        return [proyecto: proyecto, metas: metas]
+    }
+
+    /**
      * Acción llamada con ajax que muestra la información de un elemento particular
      * @return metaBuenVivirProyectoInstance el objeto a mostrar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento

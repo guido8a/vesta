@@ -234,4 +234,29 @@ class ProyectoController extends Shield {
         }
     }
 
+    /**
+     * Acción llamada con ajax que carga un combo box de estrategias de un objetivo estratégico en particular
+     */
+    def estrategiaPorObjetivo_ajax = {
+        println "params...: " + params
+        def estrategias = []
+        def estr = new Estrategia()
+        if (params.proy__id) {
+            if (Proyecto.get(params.proy__id).estrategia?.id)
+                estr = Estrategia.get(Proyecto.get(params.proy__id))
+        }
+        if (params.id != "null") {
+//            println params
+            def obj = ObjetivoEstrategicoProyecto.get(params.id.toLong())
+//            println "OBJ: " + obj
+            estrategias = Estrategia.findAllByObjetivoEstrategico(obj, [sort: 'descripcion'])
+        }
+        def select = g.select(id: "estrategia", name: "estrategia.id", from: estrategias,
+                optionKey: "id", optionValue: "descripcion", value: estr?.id,
+                class: "estrategia many-to-one form-control input-sm")
+
+        render select.toString()
+    }
+
+
 }
