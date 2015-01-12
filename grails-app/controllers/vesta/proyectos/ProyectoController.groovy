@@ -238,12 +238,13 @@ class ProyectoController extends Shield {
      * Acción llamada con ajax que carga un combo box de estrategias de un objetivo estratégico en particular
      */
     def estrategiaPorObjetivo_ajax = {
-        println "params...: " + params
+//        println "params...: " + params
         def estrategias = []
         def estr = new Estrategia()
         if (params.proy__id) {
-            if (Proyecto.get(params.proy__id).estrategia?.id)
-                estr = Estrategia.get(Proyecto.get(params.proy__id))
+            def proyecto = Proyecto.get(params.proy__id.toLong())
+            if (proyecto.estrategia)
+                estr = proyecto.estrategia
         }
         if (params.id != "null") {
 //            println params
