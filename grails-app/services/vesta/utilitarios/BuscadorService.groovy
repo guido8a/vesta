@@ -1,8 +1,5 @@
 package vesta.utilitarios
 
-/**
- * Servicio para efetuar búsquedas
- */
 class BuscadorService {
 
     def dbConnectionService
@@ -10,11 +7,6 @@ class BuscadorService {
     boolean transactional = true
     def numFilas
 
-    /**
-     * Transforma un dominio a HashMap
-     * @param dominio el dominio a transformar
-     * @return un hashMap con los datos del dominio
-     */
     HashMap toMap(dominio) {
         def mapa = [:]
         dominio.properties.declaredFields.each {
@@ -25,23 +17,15 @@ class BuscadorService {
         return mapa
     }
 
-    /**
-     * Crea el sql para efectuar una búsqueda
-     * @param operador el operador para la búsqueda (AND, OR)
-     * @param parametros parámetros de búsqueda. En posición 1 recibe el comparador ('igual', 'mayor', 'menor', 'between',
-     * 'like', 'not like', 'like izq', 'like der', 'not like izq'
-     * @param common el subconjunto entre los parámetros y los campos del dominio
-     * @param mapa mapa con los campos del dominio
-     * @param ignoreCase boolean que indica si se debe ignorar mayúsculas y minúsculas
-     * @return la cadena del HQL
-     */
-    String filtro(operador, parametros, common, mapa, ignoreCase) {
-        def where = " where "
-
-        common.each {
-
-//            println "parametros[it][0]: " + parametros[it][0]
-//            println parametros[it][0].class
+    def filtro(operador, parametros, common, mapa, ignoreCase) {
+        // println "mapa "+mapa
+        def parts = []
+        parts.add(" where ")
+        def comparador =""
+        def band=false
+        def campo =""
+        def dato
+        common.eachWithIndex {it,k->
 
             if (!parametros[it][0]) {
                 parametros[it] = [[]]
@@ -59,222 +43,192 @@ class BuscadorService {
                 }
             }
 
-//            println "despues"
-//            println parametros
-//            println ""
+            campo=it.replaceFirst("&","")
+            dato=mapa[campo]
+//            println "dato "+dato
 
+            if(ignoreCase){
+                //println "si ignorecase"
+                if(dato =~ "java.lang.String")
+                    campo="lower("+campo+")"
+            }
             parametros[it].each { par ->
-
                 if (par[0] != "null" && par[0] != " " && par[0] != null && par[0] != "") {
-                    if (mapa[it].isPrimitive() || mapa[it].toString().substring(6, 10) != "java") {
-                        if (where.length() > 7) {
-                            where += " " + operador + " "
-                        }
-                        switch (par[1]) {
-                            case "igual":
-                                where += it + " = " + par[0]
-                                break
-
-                            case "mayor":
-                                where += it + " > " + par[0]
-                                break
-
-                            case "menor":
-                                where += it + " < " + par[0]
-                                break
-
-                            case "between":
-                                where += it + " between " + par[0] + " and " + par[2]
-                                break
-
-                            case "like":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") like '%" + par[0].toLowerCase() + "%'"
-                                } else {
-                                    where += it + " like '" + par[0] + "%'"
-                                }
-                                break
-
-                            case "not like":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") not like '" + par[0].toLowerCase() + "%'"
-                                } else {
-                                    where += it + " not like '" + par[0] + "%'"
-                                }
-                                break
-
-                            case "like izq":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") like '%" + par[0].toLowerCase() + "'"
-                                } else {
-                                    where += it + "  like '%" + par[0] + "'"
-                                }
-                                break
-                            case "like der":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") like '" + par[0].toLowerCase() + "%'"
-                                } else {
-                                    where += it + "  like '" + par[0] + "%'"
-                                }
-                                break
-
-                            case "not like izq":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") not like '%" + par[0].toLowerCase() + "'"
-                                } else {
-                                    where += it + " not like '%" + par[0] + "'"
-                                }
-                                break
-
-                            default:
-                                where += it + " = '" + par[0] + "'"
-                                break
-
-                        }
-                    } else {
-                        try {
-
-                            if (ignoreCase) {
-                                par[0] = par[0].toLowerCase()
+                    // println "parametro "+par[0]+" dato "+dato +"  "+it+" "+" "+par[1]
+                    comparador=par[1]
+                    if(dato =~ "java.util.Date"){
+                        // println "es date"
+                        def fecha = par[0]
+                        def qrt=[]
+                        def str=""
+                        def anio="",mes="",dia=""
+                        fecha.toCharArray().each {f->
+                            if(f.isDigit()){
+                                str+=f
+                            }else{
+                                qrt.add(str)
+                                str=""
                             }
-                        } catch (e) {
-
                         }
-                        if (where.length() > 7) {
-                            where += " " + operador + " "
+                        qrt.add(str)
+                        //println "qrt "+qrt
+                        mes=qrt[1]
+                        if(qrt[0].size()==4){
+                            anio=qrt[0]
+                            dia=qrt[2]
+                        }else{
+                            dia = qrt[0]
+                            anio=qrt[2]
                         }
-                        switch (par[1]) {
-                            case "igual":
-                                where += it + " = '" + par[0] + "'"
-                                break
-
-                            case "mayor":
-                                where += it + " > '" + par[0] + "'"
-                                break
-
-                            case "menor":
-                                where += it + " < '" + par[0] + "'"
-                                break
-
-                            case "between":
-                                where += it + " between '" + par[0] + "' and '" + par[2] + "'"
-                                break
-
-                            case "like":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") like '%" + par[0].toLowerCase() + "%'"
-                                } else {
-                                    where += it + " like '%" + par[0] + "%'"
-                                }
-
-                                break
-
-                            case "not like":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") not like '" + par[0].toLowerCase() + "%'"
-                                } else {
-                                    where += it + " not like '" + par[0] + "%'"
-                                }
-                                break
-
-                            case "like izq":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") like '%" + par[0].toLowerCase() + "'"
-                                } else {
-                                    where += it + "  like '%" + par[0] + "'"
-                                }
-                                break
-                            case "like der":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") like '" + par[0].toLowerCase() + "%'"
-                                } else {
-                                    where += it + "  like '" + par[0] + "%'"
-                                }
-                                break
-                            case "not like izq":
-                                if (ignoreCase) {
-                                    where += "lower(" + it + ") not like '%" + par[0].toLowerCase() + "'"
-                                } else {
-                                    where += it + " not like '%" + par[0] + "'"
-                                }
-                                break
-
-                            default:
-                                if (mapa[it].toString() != "class java.util.Date") {
-                                    if (ignoreCase) {
-                                        where += "lower(" + it + ") like '%" + par[0].toLowerCase() + "%'"
-                                    } else {
-                                        where += it + " like '%" + par[0] + "%'"
-                                    }
-                                } else {
-                                    if (ignoreCase) {
-                                        where += "lower(" + it + ") = '" + par[0].toLowerCase() + "'"
-                                    } else {
-                                        where += it + " = '" + par[0] + "'"
-                                    }
-                                }
-                                break
+                        def pattern =dia+"-"+mes+"-"+anio
+                        try{
+                            fecha=new Date().parse("dd-MM-yyyy",pattern)
+                        }catch (e){
+                            println "error del parse!! en la fecha "+fecha
+                            fecha=new Date().parse("dd-MM-yyyy","01-01-2012")
                         }
+                        parts[0]+=" "+campo+" "+comparador+" ? "
+                        parts.add(fecha)
+                        //println "pattern "+pattern
+
+                    }else{
+                        if(dato =~"happy"){
+                            parts[0]+=" "+campo+" "+comparador+" "+par[0]
+                        }else{
+                            if(par[0] instanceof java.lang.String && ignoreCase)
+                                par[0]=par[0].toLowerCase()
+                            switch (par[1]) {
+                                case "like" :
+                                    // println "like"
+                                    comparador="like '%"+par[0]+"%'"
+                                    band=true
+                                    break
+                                case "like izq":
+                                    // println "like 1"
+                                    comparador="like '%"+par[0]+"'"
+                                    band=true
+                                    break
+                                case "like der":
+                                    // println "like 2"
+                                    comparador="like '"+par[0]+"%'"
+                                    band=true
+                                    break
+                                case "not like izq":
+                                    //println "like 3"
+                                    comparador="not like '%"+par[0]+"'"
+                                    band=true
+                                    break
+                                case "igual" :
+                                    // println "like"
+                                    comparador=" = '"+par[0]+"'"
+                                    band=true
+                                    break
+                                default:
+                                    // println "default"
+                                    comparador=par[1]
+                                    break
+                            }
+                            if(band){
+                                //println "s like"
+                                parts[0]+=" "+campo+" "+comparador
+                                band=false
+                            } else{
+                                //println "no es like "
+                                parts[0]+=" "+campo+" "+comparador+" ? "
+
+                                try{
+                                    if(dato=~"int" || dato=~"Int" )
+                                        par[0]=par[0].toInteger()
+                                    if(dato=~"double" || dato=~"Double" )
+                                        par[0]=par[0].toDouble()
+//                                    println "aqui  "+par[0]+"  "+par[0].class
+                                }catch (e){
+                                    println " e to double "+e
+                                }
+                                parts.add(par[0])
+
+                            }
+
+                            comparador=""
+                        }
+
                     }
-                } /* * *********************************************** FIN           ***********************************************************************/
-            } /* * *** FIN EACH          *********/
+                    if(k<common.size()-1){
+                        if(parts[0].trim() !="where")
+                            parts[0]+=" "+operador+" "
+                    }
+
+                } /** *********************************************** FIN           ***********************************************************************/
+            } /** *** FIN EACH          *********/
+
         }
-        if (where.length() > 7) {
-            return where
-        } else {
-            return " "
+        if(parts[1]==null && parts[0].trim()=="where"){
+            parts[0]=""
         }
+        return  parts
     }
 
-    /**
-     * Efectúa la búsqueda
-     * @param dominio el dominio donde se va a hacer la búsqueda
-     * @param tabla el nombre del dominio (String)
-     * @param tipo 'excluyente' para OR, otra cosa para AND
-     * @param parametros los parámetros para la búsqueda
-     * @param ignoreCase un boolean que indica si deben o no ignorarse mayúsculas y minúsculas
-     * @param max la cantidad máxima de registros
-     * @param offset el offset para el SQL
-     * @param sort el nombre de la columna para ordenamiento
-     * @param order tipo de ordenamiento (ASC o DESC)
-     * @return los resultados de la búsqueda
-     */
-    List buscar(dominio, tabla, tipo, parametros, ignoreCase, max, offset, sort, order) {
+    List buscar(dominio, tabla, tipo, params, ignoreCase,extras="") {
+//        println "params "+params
         def sql = "from " + tabla
         def mapa = toMap(dominio)
-        def common = parametros.keySet().intersect(mapa.keySet()).toArray()
+        def parametros =[:]
+        def alterna =[:]
+        def common
         def lista = []
         def orderby = ""
-        println "parametros " + " \n" + parametros
+        def sort = params.ordenado
+        def order = params.orden
         if (sort) {
             orderby = " ORDER BY ${sort} ${order}"
         }
-        println "sql " + sql + filtro("and", parametros, common, mapa, ignoreCase) + orderby
-        numFilas = dominio.findAll(sql + filtro("and", parametros, common, mapa, ignoreCase)).size()
-        lista = dominio.findAll(sql + filtro("and", parametros, common, mapa, ignoreCase) + orderby, [max: max, offset: 0])
-        lista.add(numFilas)
-        println "lista " + lista
-        println "parametros:" + parametros
-        println "common:" + common
+        if(params.campos instanceof java.lang.String){
+            parametros.put(params.campos,[params.criterios,params.operadores])
+        }else{
+            params.campos.eachWithIndex{p,i->
+                if(parametros[p])
+                    alterna.put(p+"&",[params.criterios[i],params.operadores[i]])
+                else
+                    parametros.put(p,[params.criterios[i],params.operadores[i]])
+            }
+        }
+
+        common=parametros.keySet().intersect(mapa.keySet())
+        alterna.each {
+
+            def llave = it.key.toString().replaceFirst("&","")
+            if(common.contains(llave)){
+                parametros.put(it.key,it.value)
+                common.add(it.key)
+            }
+        }
+        def res
+        if(tipo=="excluyente")
+            res = filtro("and", parametros, common, mapa, ignoreCase)
+        else
+            res = filtro("or", parametros, common, mapa, ignoreCase)
+
+        sql += res[0]
+        res.remove(0)
+        if(extras.size()>1){
+            if(sql=~"where")
+                sql += extras
+            else
+                sql+= " where "+extras.replaceFirst(" and ","").replaceFirst(" or ","")
+        }
+        println "sql " + sql  + orderby+" --> pars "+res
+        lista = dominio.findAll((sql+orderby).toString(), res,[max: 200])
+        lista.add(lista.size())
         if (lista.size() < 1 && tipo != "excluyente") {
-            numFilas = dominio.findAll(sql + filtro("or", parametros, common, mapa, ignoreCase)).size()
-            lista = dominio.findAll(sql + filtro("or", parametros, common, mapa, ignoreCase), [max: max, offset: offset])
-            println "sql " + sql + filtro("or", parametros, common, mapa, truesu)
+            res = filtro("or", parametros, common, mapa, ignoreCase)
+            sql ="from " + tabla+" "+res[0]
+            res.remove(0)
+            lista = dominio.refresh().findAll(sql+orderby, res,[max: 200])
+            lista.add(lista.size())
         }
         return lista
     }
 
-    /**
-     * Efectúa una búsqueda en la base de datos basado en una sentencia sSQL
-     * @param qry parte del SQL que contiene el select
-     * @param qrwh parte where del SQL
-     * @param campos listado de campos a ser consultados
-     * @param orden sección order by del SQL
-     * @param tpOrdn tipo de ordenamiento (ASC o DESC)
-     * @param numero número de registros retornados
-     * @param qord columnas por las que se puede ordenar
-     * @return los resultados de la búsqueda
-     */
     List buscarSQL(qry, qrwh = 'w', campos, orden, tpOrdn, numero, qord) {
         def m = []
         def cn = dbConnectionService.getConnection()
@@ -324,7 +278,7 @@ class BuscadorService {
 
         println "sql..........:" + sql
 
-        cn.eachRow(sql) { d ->
+        cn.getDb().eachRow(sql) { d ->
             //m.add([d[0],d[1],d[2]])
             //println "registro: " + d[4]
             reg = []
@@ -335,21 +289,11 @@ class BuscadorService {
             m.add(reg)
             i++
         }
-        cn.close()
+        cn.disconnect()
         m.add(i)
         return m
     }
 
-    /**
-     * Construye la sección del WHERE del HQL
-     * @param mapa un mapa con: <br/>
-     * <ul>
-     *     <li>op: el oerador ('igual', '=','mayor', '>', 'menor', '<', 'like', 'not like', 'like izq', 'like der', 'not like izq'</li>
-     *     <li>cmpo: el nombre del campo</li>
-     *     <li>vlor: el valor</li>
-     * </ul>
-     * @return la cadena del WHERE
-     */
     String condicion(mapa) {
         println "condicion: ${mapa}"
         def where = ""

@@ -41,7 +41,19 @@ class ElementosTagLib {
         html+=titulo
         out<<html<<body()+"</div>"
     }
-
+/**
+ * crea un modal, al modal hay que agregarle el modal-body y el modal-footer
+ */
+    def modal = {attrs, body->
+        def id = attrs.id
+        def html ='<div class="modal fade '+attrs.clase+' " id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel'+attrs.id+'" aria-hidden="true" style="'+attrs.style+'">'
+        html +='<div class="modal-dialog">\n' +
+                '    <div class="modal-content">\n' +
+                '      <div class="modal-header">'
+        html+=' <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+        html+=' <h4 class="modal-title" id="myModalLabel-'+attrs.id+'">'+attrs.titulo+'</h4></div>'
+        out<<html<<body()<<'</div></div></div>'
+    }
     /**
      * crea un div para el not found (con el fantasmita)
      */

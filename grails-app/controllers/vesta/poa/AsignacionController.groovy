@@ -1,9 +1,12 @@
 package vesta.poa
 
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.avales.DistribucionAsignacion
 import vesta.parametros.PresupuestoUnidad
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Presupuesto
+import vesta.proyectos.Financiamiento
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.Proyecto
 import vesta.seguridad.Shield
@@ -15,7 +18,7 @@ import vesta.seguridad.Shield
 class AsignacionController extends Shield {
 
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
-
+    def buscadorService
     /**
      * Acción que redirecciona a la lista (acción "list")
      */
@@ -238,8 +241,6 @@ class AsignacionController extends Shield {
             if (!actual) {
                 actual = Anio.list([sort: 'anio', order: 'desc']).pop()
             }
-
-
             def total = 0
             def totalUnidad = 0
             def maxInv = 0
@@ -268,9 +269,61 @@ class AsignacionController extends Shield {
     }
 
 
+    def agregaAsignacionPrio () {
+        def listaFuentes = Financiamiento.findAllByProyectoAndAnio(Proyecto.get(params.proy), Anio.get(params.anio)).fuente
+        def asgnInstance = Asignacion.get(params.id)
+
+        return ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes]
+    }
 
 
+    def agregaAsignacion () {
+        def campos = ["numero": ["Número", "string"],"descripcion": ["Descripción", "string"]]
+        def listaFuentes = Financiamiento.findAllByProyectoAndAnio(Proyecto.get(params.proy), Anio.get(params.anio)).fuente
+        def asgnInstance = Asignacion.get(params.id)
+        def dist = null
+        if (params.dist && params.dist != "" && params.dist != "undefined")
+            dist = DistribucionAsignacion.get(params.dist)
+       ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes, 'dist': dist,campos:campos]
+    }
 
+     def buscarPresupuesto () {
+
+         def listaTitulos = ["Número","Descripción"]
+         def listaCampos = ["numero","descripcion"]
+         def funciones = [null, null]
+         def url = g.createLink(action: "buscarPresupuesto", controller: "asignacion")
+         def funcionJs = "function(){"
+         funcionJs += '$("#modal-busqueda").modal("hide");'
+         funcionJs += ''
+         funcionJs += '}'
+         def numRegistros = 20
+         def extras =""
+
+         if (!params.reporte) {
+             if (params.excel) {
+                 session.dominio = Presupuesto
+                 session.funciones = funciones
+                 def anchos = [30,70]
+                 /*anchos para el set column view en excel (no son porcentajes)*/
+                 redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
+             } else {
+                 def lista = buscadorService.buscar(Presupuesto, "Presupuesto", "excluyente", params, true, extras)
+                 /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
+                 lista.pop()
+                 render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "obra", numRegistros: numRegistros, funcionJs: funcionJs, paginas: 12])
+             }
+
+         } else {
+//            println "entro reporte"
+             /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
+             session.dominio = Obra
+             session.funciones = funciones
+             def anchos = [30, 70]
+             /*el ancho de las columnas en porcentajes... solo enteros*/
+             redirect(controller: "reportes", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
+         }
+    }
 
 
 

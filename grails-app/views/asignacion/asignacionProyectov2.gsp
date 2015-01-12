@@ -193,6 +193,7 @@
                     format="###,##0"
                     minFractionDigits="2" maxFractionDigits="2"/>
 </div>
+
 <div id="dlg_env">
     <input type="hidden" id="env_id" value="">
     <input type="hidden" id="env_btn" value="">
@@ -207,9 +208,16 @@
         <legend>Detalle</legend>
         <div id="detalle" style="width: 430px;height:360px;overflow-y: auto;margin: auto "></div>
     </fieldset>
-
-
 </div>
+
+<elm:modal titulo="Dividir asignación" id="modal-dividir">
+    <div class="modal-body" id="body-dividir"></div>
+    <div class="modal-footer">
+        <a href="#"  class="btn btn-default" data-dismiss="modal">Cerrar</a>
+        <a href="#"  class="btn btn-primary" id="btn-dividir">Guardar</a>
+    </div>
+</elm:modal>
+
 <script type="text/javascript">
 
     $("#filtro").change(function (){
@@ -286,18 +294,7 @@
 
     });
 
-    $("#load").dialog({
-        width:100,
-        height:100,
-        position:"center",
-        title:"Procesando",
-        modal:true,
-        autoOpen:false,
-        resizable:false,
-        open: function(event, ui) {
-            $(event.target).parent().find(".ui-dialog-titlebar-close").remove()
-        }
-    });
+
 
     $("#env").click(function(){
         var band = true
@@ -370,11 +367,10 @@
             type:"POST", url:"${createLink(action:'agregaAsignacion', controller: 'asignacion')}",
             data:"id=" + $(this).attr("asgn") + "&proy=" + $(this).attr("proy") + "&anio=" + $(this).attr("anio"),
             success:function (msg) {
-                $("#ajx_asgn").dialog("option", "title", "Dividir la asignación para ..")
-                $("#ajx_asgn").html(msg).show("puff", 100)
+                $("#body-dividir").html(msg)
             }
         });
-        $("#ajx_asgn").dialog("open");
+        $('#modal-dividir').modal("show")
 
     });
     $(".btn_agregar_prio").click(function () {
@@ -412,7 +408,7 @@
         }
     });
     $(".btn_borrar_prio").click(function () {
-        $("#load").dialog("open")
+
         if (confirm("Eliminar esta asignación: \n Su valor se sumará a su asignación original y\n la programación deberá revisarse. La asignación no se eliminara si tiene distribuciones derivadas")) {
 
             $.ajax({
