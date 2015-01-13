@@ -22,8 +22,7 @@
             </g:if>
                 <a href="#" class="btn btn-default button print">
                     PDF
-                </a>
-                <g:link controller="reporteSolicitud" action="solicitudesXls" class="btn btn-default button xls">
+                </a>               <g:link controller="reporteSolicitud" action="solicitudesXls" class="btn btn-default button xls">
                     XLS
                 </g:link>
 
