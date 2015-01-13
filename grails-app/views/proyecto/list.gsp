@@ -285,6 +285,43 @@
                 });
             }
 
+            function buscar() {
+                var $btn = $(".btnSearch");
+                var str = "";
+                var desde = $.trim($("#search_desde").val());
+                var hasta = $.trim($("#search_hasta").val());
+                var nombre = $.trim($("#search_nombre").val());
+                var programa = $.trim($("#search_programa").val());
+
+                if (desde != "") {
+                    str += "search_desde=" + desde;
+                }
+                if (hasta != "") {
+                    if (str != "") {
+                        str += "&";
+                    }
+                    str += "search_hasta=" + hasta;
+                }
+                if (nombre != "") {
+                    if (str != "") {
+                        str += "&";
+                    }
+                    str += "search_nombre=" + nombre;
+                }
+                if (programa != "") {
+                    if (str != "") {
+                        str += "&";
+                    }
+                    str += "search_programa=" + programa;
+                }
+
+                var url = $btn.attr("href") + "?" + str;
+                if (str == "") {
+                    url = $btn.attr("href");
+                }
+                location.href = url;
+            }
+
             $(function () {
                 $("#reporte").click(function () {
                     var url = "${createLink(controller: 'reportes2', action: 'reporteTotalPriorizacion')}";
@@ -305,43 +342,6 @@
                         $(this).html(' <i class="fa fa-search-minus"></i> Ocultar opciones de búsqueda');
                     }
                 });
-
-                function buscar() {
-                    var $btn = $(".btnSearch");
-                    var str = "";
-                    var desde = $.trim($("#search_desde").val());
-                    var hasta = $.trim($("#search_hasta").val());
-                    var nombre = $.trim($("#search_nombre").val());
-                    var programa = $.trim($("#search_programa").val());
-
-                    if (desde != "") {
-                        str += "search_desde=" + desde;
-                    }
-                    if (hasta != "") {
-                        if (str != "") {
-                            str += "&";
-                        }
-                        str += "search_hasta=" + hasta;
-                    }
-                    if (nombre != "") {
-                        if (str != "") {
-                            str += "&";
-                        }
-                        str += "search_nombre=" + nombre;
-                    }
-                    if (programa != "") {
-                        if (str != "") {
-                            str += "&";
-                        }
-                        str += "search_programa=" + programa;
-                    }
-
-                    var url = $btn.attr("href") + "?" + str;
-                    if (str == "") {
-                        url = $btn.attr("href");
-                    }
-                    location.href = url;
-                }
 
                 $(".btnSearch").click(function () {
                     buscar();
@@ -468,6 +468,33 @@
                             separator_before : true,
                             action           : function ($element) {
                                 var id = $element.data("id");
+                                var url = "${createLink(controller:'marcoLogico', action:'marcoLogicoProyecto')}/" + id;
+                                var params = "";
+                                if ("${params.search_programa}" != "") {
+                                    params += "search_programa=${params.search_programa}";
+                                }
+                                if ("${params.search_nombre}" != "") {
+                                    if (params != "") {
+                                        params += "&";
+                                    }
+                                    params += "search_nombre=${params.search_nombre}";
+                                }
+                                if ("${params.search_desde}" != "") {
+                                    if (params != "") {
+                                        params += "&";
+                                    }
+                                    params += "search_desde=${params.search_desde}";
+                                }
+                                if ("${params.search_hasta}" != "") {
+                                    if (params != "") {
+                                        params += "&";
+                                    }
+                                    params += "search_hasta=${params.search_hasta}";
+                                }
+                                if (params != "") {
+                                    params = "?" + params;
+                                }
+                                location.href = url + params;
                             }
                         },
                         cronograma  : {

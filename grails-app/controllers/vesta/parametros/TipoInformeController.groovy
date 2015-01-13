@@ -81,7 +81,7 @@ class TipoInformeController extends Shield {
     } //show para cargar con ajax en un dialog
 
     /**
-     * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
+     * Acción llamada con ajax que muestra un formulario para crear o modificar un elemento
      * @return tipoInformeInstance el objeto a modificar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
