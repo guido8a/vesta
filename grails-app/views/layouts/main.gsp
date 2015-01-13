@@ -29,7 +29,10 @@
     }
     </script>
     <style type="text/css">
+            i{
+                margin-right: 5px;
 
+            }
     </style>
 </head>
 

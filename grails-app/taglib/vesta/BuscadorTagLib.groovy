@@ -59,10 +59,10 @@ class BuscadorTagLib {
 
     def buscadorReload(name,value,fields,controller,action,type,id,title,clase){
         def salida = ""
-        salida+='<input type="text" class="form-control '+clase+' input-sm" id="bsc-desc-'+id+'" style="width:247px;display:inline-block;margin-right:5px" >'
-        salida+='<input type="hidden"  id="'+id+'" >'
+        salida+='<input type="text" class="form-control bsc_desc '+clase+' input-sm" id="bsc-desc-'+id+'" style="width:247px;display:inline-block;margin-right:5px" >'
+        salida+='<input type="hidden"  id="'+id+'" class="bsc_id" name="'+name+'" value="'+value+'" >'
         salida+='<a href="#" id="btn-abrir-'+id+'" class="btn btn-info input-sm" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>'
-        salida+='<div class="modal fade  " id="modal-'+id+'" tabindex="-1" role="dialog" aria-labelledby="buscador-'+id+'" aria-hidden="true" >'
+        salida+='<div class="modal fade modal-search " id="modal-'+id+'" tabindex="-1" role="dialog" aria-labelledby="buscador-'+id+'" aria-hidden="true" >'
         salida +='<div class="modal-dialog long">\n' +
                 '<div class="modal-content">\n' +
                 '<div class="modal-header">'
@@ -107,9 +107,9 @@ class BuscadorTagLib {
         salida += '<a href="#" title="Buscar" id="buscarDialog" class="btn  btn-info" style="margin-left:5px">Buscar</a>'
         salida += '</div>'
         salida += '<div id="criterios" style="width:95%;height:35px;float:left"></div>'
-        salida += '<div class="contenidoBuscador  ui-corner-all" id="contenidoBuscador" style="float:left;width:95%;margin-top:5px;margin-left:10px;overflow-y:auto"></div>'
-        salida += '<a href="#" id="btn_reporte" class="btn btn-default" style="margin:10px;margin-left:10px">Reporte</a>'
-        salida += '<a href="#" id="btn_excel"  class="btn btn-default" style="margin-left:10px;">Excel</a>'
+        salida += '<div class="contenidoBuscador  ui-corner-all" id="contenidoBuscador" style="float:left;width:95%;margin-top:5px;margin-left:10px;overflow-y:auto;min-height: 200px;"></div>'
+        salida += '<a href="#" id="btn_reporte" class="btn btn-default btn-xs" style="margin:10px;margin-left:10px"><i class="fa fa-file-pdf-o"></i>Reporte</a>'
+        salida += '<a href="#" id="btn_excel"  class="btn btn-default btn-xs" style="margin-left:10px;"><i class="fa fa-file-excel-o"></i>Excel</a>'
         /*body*/
 
         salida+='</div>'

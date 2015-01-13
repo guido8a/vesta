@@ -72,21 +72,21 @@
         }
 
         <g:if test="${funcionJs}">
-        $(".ok").click(${funcionJs});
+        $(".ok").click(${raw(funcionJs)});
         </g:if>
         <g:else>
         $(".ok").click(function () {
             var idReg = $(this).attr("regId");
             var txtReg = $(this).attr("txtReg");
-            $("#hidVal").val(idReg);
-            $("#txtValor").val(txtReg);
-            $(".buscador").dialog("close");
+            $(".bsc_id").val(idReg);
+            $(".bsc_desc").val(txtReg);
+            $(".modal-search").modal("hide");
 
         });
         </g:else>
 
         function paginar(id, mostrar) {
-            console.log("paginate")
+
             var tbody = $("#" + id)
             var num = mostrar
             var rows = tbody.find("tr")
@@ -100,8 +100,8 @@
                 var body = $("#" + $(this).attr("body"))
                 body.find("tr").addClass("hiden")
                 body.find("." + pag).removeClass("hiden").show()
-                $(".paginateButon").css("background", "none")
-                $(".b" + pag).css("background", "#B2D1FF")
+                $(".paginateButon").addClass("btn-info")
+                $(".b" + pag).addClass("btn-default").removeClass("btn-info")
                 $(".hiden").hide()
 
             }
@@ -122,20 +122,13 @@
             fila.css("padding-left", 5).css("padding-rigth", 5).css("padding-top", 2).css("marginBottom", 15)
 
             for (i = 0; i < paginas; i++) {
-                var boton = $("<div>")
+                var boton = $("<div class='btn btn-xs btn-info'>")
                 boton.css({
-                    cursor      : "pointer",
-                    width       : 15,
-                    height      : 20,
-                    float       : "left",
                     marginLeft  : 5,
-                    border      : "1px solid black",
-                    lineHeight  : "20px",
-                    paddingLeft : "7px"
-
+                    width : 30
                 }).html(i + 1).bind("click", show).attr("body", id).addClass("b" + (i + 1) + " paginateButon");
                 if (i == 0)
-                    boton.css("background", "#B2D1FF")
+                    boton.addClass("btn-default").removeClass("btn-info")
                 fila.append(boton)
             }
 

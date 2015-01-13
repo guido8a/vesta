@@ -293,10 +293,7 @@ class AsignacionController extends Shield {
          def listaCampos = ["numero","descripcion"]
          def funciones = [null, null]
          def url = g.createLink(action: "buscarPresupuesto", controller: "asignacion")
-         def funcionJs = "function(){"
-         funcionJs += '$("#modal-busqueda").modal("hide");'
-         funcionJs += ''
-         funcionJs += '}'
+         def funcionJs = null
          def numRegistros = 20
          def extras =""
 
@@ -306,12 +303,12 @@ class AsignacionController extends Shield {
                  session.funciones = funciones
                  def anchos = [30,70]
                  /*anchos para el set column view en excel (no son porcentajes)*/
-                 redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
+                 redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Partidas presupuestarias", anchos: anchos, extras: extras, landscape: true])
              } else {
                  def lista = buscadorService.buscar(Presupuesto, "Presupuesto", "excluyente", params, true, extras)
                  /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
                  lista.pop()
-                 render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "obra", numRegistros: numRegistros, funcionJs: funcionJs, paginas: 12])
+                 render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "asignacion", numRegistros: numRegistros, funcionJs: funcionJs, paginas: 10])
              }
 
          } else {
