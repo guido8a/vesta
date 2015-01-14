@@ -548,7 +548,50 @@ class AsignacionController extends Shield {
         }
     }
 
+    def filtro = {
 
+//        println("params " + params)
+        def proyecto = Proyecto.get(params.id)
+        def asignaciones = []
+        def actual
+        def componentes = []
+        def responsables = []
+        params.anio = params.anio.toDouble();
+        if (params.anio)
+            actual = Anio.get(params.anio)
+        else
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        if (!actual)
+            actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+
+        def total = 0
+        def totalUnidad = 0
+        def maxInv = 0
+        MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+            def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}   order by id")
+            if (asig) {
+                asignaciones += asig
+                asig.each { asg ->
+                    total = total + asg.getValorReal()
+                }
+            }
+        }
+        asignaciones.sort { it.unidad.nombre }
+
+        asignaciones.each {
+
+            componentes += it.marcoLogico.marcoLogico
+            responsables += it.unidad
+
+        }
+
+//        println("componentes " + componentes)
+//        println("responsables " + responsables)
+
+        return [asignaciones: asignaciones, camp: params.camp, componentes: componentes, responsables: responsables, proyecto: proyecto, anio: params.anio]
+
+
+    }
 
 
 }
