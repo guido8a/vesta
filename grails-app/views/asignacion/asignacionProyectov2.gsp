@@ -49,12 +49,11 @@
                 <a href="#" id="aprobPrio" class="btn btn-info">Aprobar priorización</a>
             </g:if>
         </g:if>
+        <a href="#" class="btn btn-info" id="btn-filtros">Filtros</a>
         <div style="margin-left: 15px;display: inline-block;">
             <b style="font-size: 11px">Año:</b>
             <g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}" style="font-size: 11px;width: 150px;display: inline" class="form-control"/>
-            <b style="font-size: 11px">Filtro: </b>
-            <g:select from="${['Todos','Componente', 'Responsable']}" name="filtro" style="font-size: 11px;width: 150px;display: inline" class="form-control"/>
-            <div id="filtrados" style="margin-left: 375px"></div>
+
         </div>
     </div>
 </div>
@@ -185,19 +184,19 @@
         <b>Año:</b><g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio-asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}"/>
     </div>
 </div>
-<div style="position: absolute;top:5px;right:10px;font-size: 10px;">
+<div style="position: absolute;top:5px;right:10px;font-size: 11px;">
     <b>Total invertido proyecto actual:</b>
-    <g:formatNumber number="${total?.toFloat()}"                        format="###,##0"
+    <g:formatNumber number="${total?.toFloat()}" format="###,##0"
                     minFractionDigits="2" maxFractionDigits="2"/>
 </div>
-<div style="position: absolute;top:25px;right:10px;font-size: 10px;">
+<div style="position: absolute;top:25px;right:10px;font-size: 11px;">
     <b>M&aacute;ximo Inversiones:</b>
     <g:formatNumber number="${maxInv}"
                     format="###,##0"
                     minFractionDigits="2" maxFractionDigits="2"/>
 </div>
 
-<div style="position: absolute;top:45px;right:10px;font-size: 10px;">
+<div style="position: absolute;top:45px;right:10px;font-size: 11px;">
     <b>Restante:</b>
     <g:formatNumber number="${maxInv - total}"
                     format="###,##0"
@@ -210,7 +209,26 @@
         <a href="#"  class="btn btn-primary" id="btn-dividir">Guardar</a>
     </div>
 </elm:modal>
+<elm:modal titulo="Filtrar las asignaciones" id="modal-filtros">
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group keeptogether">
+                    <label class="col-md-2 control-label">
+                        Filtro:
+                    </label>
+                    <div class="col-md-7">
+                        <g:select from="${['Todos','Componente', 'Responsable']}" name="filtro"  class="form-control input-sm" id="filtro"/>
+                    </div>
+            </div>
+        </div>
+        <div id="filtrados" class="row">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#"  class="btn btn-default" data-dismiss="modal">Cerrar</a>
+    </div>
 
+</elm:modal>
 <script type="text/javascript">
 
     $("#filtro").change(function (){
@@ -231,13 +249,9 @@
         }
     })
 
-    %{--function loadTodos () {--}%
-    %{--var aniof = new Date().format('yyyy')--}%
-    %{--location.href = "${createLink(controller:'asignacion',action:'asignacionProyectov2')}?id=${proyecto.id}&anio=" + aniof--}%
-    %{--}--}%
-
-
-    %{--loadTodos();--}%
+    $("#btn-filtros").click(function(){
+        $("#modal-filtros").modal("show")
+    })
 
     $("#aprobPrio").click(function(){
         if(confirm("Esta seguro?")){
@@ -322,7 +336,7 @@
     $(".btn_borrar").click(function () {
         var boton = $(this)
         bootbox.confirm({
-                    message: "Al Eliminar esta asignación su valor se sumará a su asignación original y\n la programación deberá revisarse. La asignación no se eliminara si tiene distribuciones derivadas",
+                    message: "Al eliminar esta asignación su valor se sumará a su asignación original y\n la programación deberá revisarse. La asignación no se eliminara si tiene distribuciones derivadas",
                     title :"Advertencia",
                     class : "modal-error",
                     callback : function (result){
@@ -355,24 +369,36 @@
     });
     $(".btn_borrar_prio").click(function () {
         var boton = $(this)
-        if (confirm("Eliminar esta asignación: \n Su valor se sumará a su asignación original y\n la programación deberá revisarse. La asignación no se eliminara si tiene distribuciones derivadas")) {
+        bootbox.confirm({
+                    message: "Al eliminar esta asignación su valor se sumará a su asignación original y\n la programación deberá revisarse. La asignación no se eliminara si tiene distribuciones derivadas",
+                    title :"Advertencia",
+                    class : "modal-error",
+                    callback : function (result){
+                        if(result){
+                            openLoader()
+                            $.ajax({
+                                type:"POST", url:"${createLink(action:'borrarAsignacionPrio', controller: 'asignacion')}",
+                                data:"id=" + boton.attr("asgn"),
+                                success:function (msg) {
+                                    closeLoader()
+                                    if(msg=="ok")
+                                        location.reload(true);
+                                    else{
+                                        bootbox.alert({
+                                                    message: "Error al eliminar la asignación. Asegurese que no tenga distribuciones ni asignaciones hijas",
+                                                    title :"Error",
+                                                    class : "modal-error"
+                                                }
+                                        );
+                                    }
 
-            $.ajax({
-                type:"POST", url:"${createLink(action:'borrarAsignacionPrio', controller: 'asignacion')}",
-                data:"id=" + boton.attr("asgn"),
-                success:function (msg) {
-                    if(msg=="ok")
-                        location.reload(true);
-                    else{
-                        $("#load").dialog("close")
-                        alert("Error al eliminar la asignación. Asegurese que no tenga distribuciones ni asignaciones hijas")
+                                }
+                            });
+                        }
+
                     }
-
                 }
-            });
-        }else{
-            $("#load").dialog("close")
-        }
+        );
     });
 
 

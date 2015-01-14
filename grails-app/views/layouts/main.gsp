@@ -41,7 +41,7 @@
 
 <mn:menu title="${g.layoutTitle(default: 'Vesta')}"/>
 
-<div class="container" id="mass-container">
+<div class="container" id="mass-container" style="position: relative">
     <g:layoutBody/>
 </div>
 
