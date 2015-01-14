@@ -146,7 +146,36 @@
         <elm:pagination total="${proyectoInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
-            var id = null;
+
+            function armaParams() {
+                var params = "";
+                if ("${params.search_programa}" != "") {
+                    params += "search_programa=${params.search_programa}";
+                }
+                if ("${params.search_nombre}" != "") {
+                    if (params != "") {
+                        params += "&";
+                    }
+                    params += "search_nombre=${params.search_nombre}";
+                }
+                if ("${params.search_desde}" != "") {
+                    if (params != "") {
+                        params += "&";
+                    }
+                    params += "search_desde=${params.search_desde}";
+                }
+                if ("${params.search_hasta}" != "") {
+                    if (params != "") {
+                        params += "&";
+                    }
+                    params += "search_hasta=${params.search_hasta}";
+                }
+                if (params != "") {
+                    params = "?" + params;
+                }
+                return params;
+            }
+
             function submitFormProyecto(id) {
                 var $form = $("#frmProyecto");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
@@ -468,33 +497,7 @@
                             separator_before : true,
                             action           : function ($element) {
                                 var id = $element.data("id");
-                                var url = "${createLink(controller:'marcoLogico', action:'marcoLogicoProyecto')}/" + id;
-                                var params = "";
-                                if ("${params.search_programa}" != "") {
-                                    params += "search_programa=${params.search_programa}";
-                                }
-                                if ("${params.search_nombre}" != "") {
-                                    if (params != "") {
-                                        params += "&";
-                                    }
-                                    params += "search_nombre=${params.search_nombre}";
-                                }
-                                if ("${params.search_desde}" != "") {
-                                    if (params != "") {
-                                        params += "&";
-                                    }
-                                    params += "search_desde=${params.search_desde}";
-                                }
-                                if ("${params.search_hasta}" != "") {
-                                    if (params != "") {
-                                        params += "&";
-                                    }
-                                    params += "search_hasta=${params.search_hasta}";
-                                }
-                                if (params != "") {
-                                    params = "?" + params;
-                                }
-                                location.href = url + params;
+                                location.href = "${createLink(controller:'marcoLogico', action:'marcoLogicoProyecto')}/" + id + armaParams();
                             }
                         },
                         cronograma  : {
@@ -502,6 +505,7 @@
                             icon   : "fa fa-calendar",
                             action : function ($element) {
                                 var id = $element.data("id");
+                                location.href = "${createLink(controller: 'cronograma', action:'show')}/" + id + armaParams();
                             }
                         },
                         pac         : {

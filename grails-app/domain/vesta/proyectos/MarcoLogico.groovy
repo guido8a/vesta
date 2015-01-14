@@ -10,7 +10,7 @@ import vesta.poa.Asignacion
  * Clase para conectar con la tabla 'mrlg' de la base de datos<br/>
  * Marco lógico con cada uno de sus componentes
  */
-class MarcoLogico   {
+class MarcoLogico {
     /**
      * Proyecto del marco lógico
      */
@@ -160,46 +160,55 @@ class MarcoLogico   {
         return total
     }
 
-    def getTotalPriorizado(){
+    def getTotalPriorizado() {
         def total = 0
-        if(this.tipoElemento.id==3){
+        if (this.tipoElemento.id == 3) {
             Asignacion.findAllByMarcoLogico(this).each {
-                total+=it.priorizado
+                total += it.priorizado
             }
             return total
-        }else{
+        } else {
             def marcos = MarcoLogico.findAllByMarcoLogico(this)
-            if(marcos.size()>0){
-                Asignacion.findAllByMarcoLogicoInList(marcos).each {a->
-                    total+=a.priorizado
+            if (marcos.size() > 0) {
+                Asignacion.findAllByMarcoLogicoInList(marcos).each { a ->
+                    total += a.priorizado
                 }
                 return total
-            }else{
+            } else {
                 return 0
             }
         }
     }
 
-    def getAvanceFisico(){
-        if(this.tipoElemento.id==3){
+    def getAvanceFisico() {
+        if (this.tipoElemento.id == 3) {
             /*actividad*/
             println "-->actividad!!! "
-            def  avance = 0
+            def avance = 0
             def totalP = this.getTotalPriorizado()
-            println "total marco "+totalP
-            def asgs = Asignacion.findAllByMarcoLogicoAndPriorizadoGreaterThan(this,0)
+            println "total marco " + totalP
+            def asgs = Asignacion.findAllByMarcoLogicoAndPriorizadoGreaterThan(this, 0)
             def representacion = 0
-            asgs.each {a->
-                representacion = a.priorizado*100/totalP
+            asgs.each { a ->
+                representacion = a.priorizado * 100 / totalP
                 def avanceAsig = a.getAvanceFisico()
-                println "Asignacion "+a.marcoLogico+"representacion "+representacion+" avance "+avanceAsig
-                avance+=representacion*avanceAsig/100
+                println "Asignacion " + a.marcoLogico + "representacion " + representacion + " avance " + avanceAsig
+                avance += representacion * avanceAsig / 100
             }
-            println "return "+avance
+            println "return " + avance
             return avance
-        }else{
+        } else {
             return 0
         }
+    }
+
+    def getTotalCronograma() {
+        def cronos = Cronograma.findAllByMarcoLogico(this)
+        def total = 0
+        cronos.each { c ->
+            total += c.valor + c.valor2
+        }
+        return total
     }
 
 }
