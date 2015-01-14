@@ -59,9 +59,15 @@ class BuscadorTagLib {
 
     def buscadorReload(name,value,fields,controller,action,type,id,title,clase){
         def salida = ""
-        salida+='<input type="text" class="form-control bsc_desc '+clase+' input-sm" id="bsc-desc-'+id+'" style="width:247px;display:inline-block;margin-right:5px" >'
-        salida+='<input type="hidden"  id="'+id+'" class="bsc_id" name="'+name+'" value="'+value+'" >'
+        salida+='<span class="grupo">'
+        salida+='<div class="input-group" style="width:294px;">'
+        salida+='<input type="text" class="form-control bsc_desc '+clase+' input-sm" id="bsc-desc-'+id+'"  dialog="modal-'+id+'"  >'
+        salida+='<span class="input-group-btn">'
         salida+='<a href="#" id="btn-abrir-'+id+'" class="btn btn-info input-sm" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>'
+        salida+='</span>'
+        salida+='</div>'
+        salida+=' </span>'
+        salida+='<input type="hidden"  id="'+id+'" class="bsc_id " name="'+name+'" value="'+value+'" >'
         salida+='<div class="modal fade modal-search " id="modal-'+id+'" tabindex="-1" role="dialog" aria-labelledby="buscador-'+id+'" aria-hidden="true" >'
         salida +='<div class="modal-dialog long">\n' +
                 '<div class="modal-content">\n' +
@@ -102,9 +108,9 @@ class BuscadorTagLib {
         }
         salida += '</select>'
         salida += '<select name="orden" id="orden" class="input-sm form-control comboBuscador" style="width:70px;display:inline-block" ><option value="asc" selected>Asc.</option><option value="desc">Desc.</option></select>'
-        salida += '<a href="#" title="Agregar" id="mas" class="btn  btn-default" style="margin:5px"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>'
-        salida += '<a href="#" title="Resetear" id="reset" class="btn  btn-default" style="margin-rigth:5px"><span class="glyphicon glyphicon-refresh" aria-hidden="true" ></span></a>'
-        salida += '<a href="#" title="Buscar" id="buscarDialog" class="btn  btn-info" style="margin-left:5px">Buscar</a>'
+        salida += '<a href="#" title="Agregar" id="mas" class="btn  btn-default btn-xs" style="margin:5px"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>'
+        salida += '<a href="#" title="Resetear" id="reset" class="btn  btn-default btn-xs" style="margin-rigth:5px"><span class="glyphicon glyphicon-refresh" aria-hidden="true" ></span></a>'
+        salida += '<a href="#" title="Buscar" id="buscarDialog" class="btn  btn-info btn-xs" style="margin-left:5px">Buscar</a>'
         salida += '</div>'
         salida += '<div id="criterios" style="width:95%;height:35px;float:left"></div>'
         salida += '<div class="contenidoBuscador  ui-corner-all" id="contenidoBuscador" style="float:left;width:95%;margin-top:5px;margin-left:10px;overflow-y:auto;min-height: 200px;"></div>'
@@ -116,17 +122,7 @@ class BuscadorTagLib {
         salida+='    <div class="modal-footer">\n' +
                 '        <a href="#"  class="btn btn-default" data-dismiss="modal">Cancelar</a>\n'+
                 '    </div>'
-        salida+=''
-        salida+=''
-        salida+=''
-        salida+=''
-        salida+=''
-        salida+=''
-        salida+=''
-        salida+=''
-        salida+=''
-        salida+=''
-        salida+=''
+
         salida+='</div></div></div>'
 
         /*JS*/

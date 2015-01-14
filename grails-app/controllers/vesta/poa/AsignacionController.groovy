@@ -5,6 +5,8 @@ import vesta.avales.DistribucionAsignacion
 import vesta.parametros.PresupuestoUnidad
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
+import vesta.parametros.poaPac.Mes
 import vesta.parametros.poaPac.Presupuesto
 import vesta.proyectos.Financiamiento
 import vesta.proyectos.MarcoLogico
@@ -284,42 +286,266 @@ class AsignacionController extends Shield {
         def dist = null
         if (params.dist && params.dist != "" && params.dist != "undefined")
             dist = DistribucionAsignacion.get(params.dist)
-       ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes, 'dist': dist,campos:campos]
+        ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes, 'dist': dist,campos:campos]
     }
 
-     def buscarPresupuesto () {
+    def buscarPresupuesto () {
 
-         def listaTitulos = ["Número","Descripción"]
-         def listaCampos = ["numero","descripcion"]
-         def funciones = [null, null]
-         def url = g.createLink(action: "buscarPresupuesto", controller: "asignacion")
-         def funcionJs = null
-         def numRegistros = 20
-         def extras =""
+        def listaTitulos = ["Número","Descripción"]
+        def listaCampos = ["numero","descripcion"]
+        def funciones = [null, null]
+        def url = g.createLink(action: "buscarPresupuesto", controller: "asignacion")
+        def funcionJs = null
+        def numRegistros = 20
+        def extras =""
 
-         if (!params.reporte) {
-             if (params.excel) {
-                 session.dominio = Presupuesto
-                 session.funciones = funciones
-                 def anchos = [30,70]
-                 /*anchos para el set column view en excel (no son porcentajes)*/
-                 redirect(controller: "reportes", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Partidas presupuestarias", anchos: anchos, extras: extras, landscape: true])
-             } else {
-                 def lista = buscadorService.buscar(Presupuesto, "Presupuesto", "excluyente", params, true, extras)
-                 /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
-                 lista.pop()
-                 render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "asignacion", numRegistros: numRegistros, funcionJs: funcionJs, paginas: 10])
-             }
+        if (!params.reporte) {
+            if (params.excel) {
+                session.dominio = Presupuesto
+                session.funciones = funciones
+                def anchos = [30,70]
+                /*anchos para el set column view en excel (no son porcentajes)*/
+                redirect(controller: "reportesBuscador", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Partidas presupuestarias", anchos: anchos, extras: extras, landscape: true])
+            } else {
+                def lista = buscadorService.buscar(Presupuesto, "Presupuesto", "excluyente", params, true, extras)
+                /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
+                lista.pop()
+                render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "asignacion", numRegistros: numRegistros, funcionJs: funcionJs, paginas: 10])
+            }
 
-         } else {
+        } else {
 //            println "entro reporte"
-             /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
-             session.dominio = Obra
-             session.funciones = funciones
-             def anchos = [30, 70]
-             /*el ancho de las columnas en porcentajes... solo enteros*/
-             redirect(controller: "reportes", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
-         }
+            /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
+            session.dominio = Presupuesto
+            session.funciones = funciones
+            def anchos = [30, 70]
+            /*el ancho de las columnas en porcentajes... solo enteros*/
+            redirect(controller: "reportesBuscador", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
+        }
+    }
+
+
+    /**
+     * Acción
+     */
+    def creaHijo = {
+//        println "parametros creaHijo:" + params
+        if (params.id) {
+            def nueva = new Asignacion()
+            def valor = params.valor.toFloat()
+            def asgn = Asignacion.get(params.id)
+            def fnte = Fuente.get(params.fuente)
+            def prsp = Presupuesto.get(params.partida)
+            def resultado = 0
+            // debe borrar el registro actual de pras y crear uno nuevo con los nuevos valores
+            ProgramacionAsignacion.findAllByAsignacion(Asignacion.get(params.id)).each {
+                it.delete(flush: true)
+            }
+            asgn.planificado -= valor
+            asgn.save(flush: true)
+            if (asgn.errors.getErrorCount() == 0) {
+                resultado += guardarPras(asgn)
+            } else {
+                resultado = 0
+            }
+            if (resultado) {
+                nueva.marcoLogico = asgn.marcoLogico
+                nueva.programa = asgn.programa
+                nueva.actividad = asgn.actividad
+                nueva.anio = asgn.anio
+                nueva.indicador = asgn.indicador
+                nueva.meta = asgn.meta
+                nueva.componente = asgn.componente
+                nueva.padre = asgn
+                nueva.fuente = fnte
+                nueva.presupuesto = prsp
+                nueva.planificado = valor
+                nueva.unidad = asgn.unidad
+
+//            println "pone padre: ${nueva.padre}  ${nueva.unidad}"
+                nueva.save(flush: true)
+                if (nueva.errors.getErrorCount() == 0) {
+                    println "crea la progrmaación de " + nueva.id
+                    resultado += guardarPras(nueva)
+                } else {
+                    resultado = 0
+                }
+            }
+            render(nueva.id)
+        }
+
+    }
+
+    /**
+     * Acción
+     */
+    def creaHijoPrio = {
+//        println "parametros creaHijo:" + params
+        if (params.id) {
+            def nueva = new Asignacion()
+            def valor = params.valor.toFloat()
+            def asgn = Asignacion.get(params.id)
+            def fnte = Fuente.get(params.fuente)
+            def prsp = Presupuesto.get(params.partida)
+            def resultado = 0
+            // debe borrar el registro actual de pras y crear uno nuevo con los nuevos valores
+            ProgramacionAsignacion.findAllByAsignacion(Asignacion.get(params.id)).each {
+                it.delete(flush: true)
+            }
+            asgn.priorizado -= valor
+            asgn.save(flush: true)
+            if (asgn.errors.getErrorCount() == 0) {
+                resultado += guardarPrasPrio(asgn)
+            } else {
+                resultado = 0
+            }
+            if (resultado) {
+                nueva.marcoLogico = asgn.marcoLogico
+                nueva.programa = asgn.programa
+                nueva.actividad = asgn.actividad
+                nueva.anio = asgn.anio
+                nueva.indicador = asgn.indicador
+                nueva.meta = asgn.meta
+                nueva.componente = asgn.componente
+                nueva.padre = asgn
+                nueva.fuente = fnte
+                nueva.presupuesto = prsp
+                nueva.planificado = valor
+                nueva.priorizado = valor
+                nueva.unidad = asgn.unidad
+
+//            println "pone padre: ${nueva.padre}  ${nueva.unidad}"
+                nueva.save(flush: true)
+                if (nueva.errors.getErrorCount() == 0) {
+                    println "crea la progrmaación de " + nueva.id
+                    resultado += guardarPrasPrio(nueva)
+                } else {
+                    resultado = 0
+                }
+            }
+            render(nueva.id)
+        }
+
+    }
+
+
+    /**
+     * Acción
+     */
+    def borrarAsignacion () {
+//        println "parametros borrarAsignacion:" + params
+        def asgn = Asignacion.get(params.id)
+        def pdre = Asignacion.get(asgn.padre.id)
+        def p = [:]
+        // debe borrar el registro actual de pras y crear uno nuevo con los nuevos valores
+        ProgramacionAsignacion.findAllByAsignacion(asgn).each {
+            it.delete(flush: true)
+        }
+        def del = true
+        try {
+            asgn.delete(flush: true)
+        }catch (e){
+            del=false
+        }
+        if (del) {
+            pdre.planificado += asgn.planificado
+            pdre.save(flush: true)
+            ProgramacionAsignacion.findAllByAsignacion(pdre).each {
+                it.delete(flush: true)
+            }
+            if (pdre.errors.getErrorCount() == 0) {
+                guardarPras(pdre)
+            }
+            render("ok")
+        } else {
+            render("Error")
+        }
+    }
+    /**
+     * Acción
+     */
+    def borrarAsignacionPrio () {
+        def asgn = Asignacion.get(params.id)
+        def pdre = Asignacion.get(asgn.padre.id)
+        ProgramacionAsignacion.findAllByAsignacion(asgn).each {
+            it.delete(flush: true)
+        }
+        def del = true
+        try {
+            asgn.delete(flush: true)
+        }catch (e){
+            del=false
+        }
+        if (del) {
+            pdre.priorizado += asgn.priorizado
+            pdre.save(flush: true)
+            ProgramacionAsignacion.findAllByAsignacion(pdre).each {
+               it.delete(flush: true)
+            }
+            if (pdre.errors.getErrorCount() == 0) {
+                guardarPrasPrio(pdre)
+            }
+            render("ok")
+        } else {
+            render("Error")
+        }
+    }
+
+
+
+    def guardarPras(asg) {
+        if (asg) {
+            def total = (asg.redistribucion == 0) ? (asg.planificado) : (asg.redistribucion)
+            def valor = (total / 12).toFloat().round(2)
+            def residuo = 0
+            if (valor * 12 != total) {
+                residuo = (total.toDouble() - valor.toDouble() * 12).toFloat().round(2)
+            }
+
+            12.times {
+                def mes = Mes.get(it + 1)
+                ProgramacionAsignacion.findByAsignacionAndMes(asg, mes)?.delete(flush: true)
+                def programacion = new ProgramacionAsignacion()
+                programacion.asignacion = asg
+                programacion.mes = mes
+                if (it < 11) {
+                    programacion.valor = valor
+                } else {
+                    programacion.valor = valor + residuo
+                }
+                programacion.save(flush: true)
+            }
+            return asg.id
+        } else {
+            return 0
+        }
+    }
+
+    def guardarPrasPrio(asg) {
+        if (asg) {
+            def total = asg.priorizado
+            def valor = (total / 12).toFloat().round(2)
+            def residuo = 0
+            if (valor * 12 != total) {
+                residuo = (total.toDouble() - valor.toDouble() * 12).toFloat().round(2)
+            }
+            12.times {
+                def mes = Mes.get(it + 1)
+                ProgramacionAsignacion.findByAsignacionAndMes(asg, mes)?.delete(flush: true)
+                def programacion = new ProgramacionAsignacion()
+                programacion.asignacion = asg
+                programacion.mes = mes
+                if (it < 11) {
+                    programacion.valor = valor
+                } else {
+                    programacion.valor = valor + residuo
+                }
+                programacion.save(flush: true)
+            }
+            return asg.id
+        } else {
+            return 0
+        }
     }
 
 

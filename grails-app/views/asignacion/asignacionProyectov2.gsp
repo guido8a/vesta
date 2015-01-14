@@ -23,6 +23,16 @@
 </head>
 
 <body>
+%{--<div class="row">--}%
+%{--<span class="grupo">--}%
+%{--<div class="input-group" style="width:277px;">--}%
+%{--<input type="text" class="form-control bsc_desc input-sm" id="bsc-desc" style="" disabled >--}%
+%{--<span class="input-group-btn">--}%
+%{--<a href="#" id="btn-abrir" class="btn btn-info input-sm" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>--}%
+%{--</span>--}%
+%{--</div>--}%
+%{--</span>--}%
+%{--</div>--}%
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
         <g:link class="btn btn-info " controller="asignacion" action="programacionAsignacionesInversion" id="${proyecto?.id}">Programación</g:link>
@@ -49,8 +59,8 @@
     </div>
 </div>
 %{--<div style="margin-top: 30px; min-height: 400px;font-size: 11px" class="vertical-container">--}%
-    %{--<p class="css-vertical-text">Asignaciones para el año ${actual}</p>--}%
-    %{--<div class="linea"></div>--}%
+%{--<p class="css-vertical-text">Asignaciones para el año ${actual}</p>--}%
+%{--<div class="linea"></div>--}%
 <elm:container tipo="horizontal" titulo="Asignaciones del proyecto: ${proyecto?.toStringLargo()}, para el año ${actual}" color="black" >
     <table style="font-size: 11px" class="table table-condensed table-bordered table-striped">
         <thead>
@@ -193,23 +203,6 @@
                     format="###,##0"
                     minFractionDigits="2" maxFractionDigits="2"/>
 </div>
-
-<div id="dlg_env">
-    <input type="hidden" id="env_id" value="">
-    <input type="hidden" id="env_btn" value="">
-    <input type="hidden" id="max" value="">
-    <fieldset style="width: 450px;height: 160px;" class="ui-corner-all">
-        <legend>Ingreso de datos</legend>
-        Monto: <input type="text" id="monto_env" style="width: 100px;height: 20px;margin-left: 7px" class="ui-corner-all"> Máximo: <span id="lbl_max"></span><br> <br>
-        Unidad: <g:select from="${UnidadEjecutora.list([sort:'nombre'])}" id="cmb_env" name="unrb" optionKey="id" optionValue="nombre" noSelection="['-1':'Seleccione...']" style="width: 400px" class="ui-corner-all"></g:select>  <br><br>
-        <a href="#" class="btn" id="env">Enviar</a>
-    </fieldset>
-    <fieldset style="width: 450px;height: 400px;" class="ui-corner-all">
-        <legend>Detalle</legend>
-        <div id="detalle" style="width: 430px;height:360px;overflow-y: auto;margin: auto "></div>
-    </fieldset>
-</div>
-
 <elm:modal titulo="Dividir asignación" id="modal-dividir">
     <div class="modal-body" id="body-dividir"></div>
     <div class="modal-footer">
@@ -296,66 +289,6 @@
 
 
 
-    $("#env").click(function(){
-        var band = true
-        if($("#cmb_env").val()=="-1"){
-            alert("Seleccione una unidad ejecutora")
-            band=false
-        }else{
-
-            var monto = $("#monto_env").val()
-            monto = str_replace(".","",monto)
-            monto = str_replace(",",".",monto)
-            monto=monto*1
-            if(isNaN(monto))
-                monto=0
-            if(monto<=0){
-                alert("El monto deber ser un número mayor a 0")
-                band=false
-            }else{
-                var max = $("#max").val()*1
-                if(monto>max){
-                    alert("El monto deber ser menor a "+number_format(max, 2, ",", "."))
-                    band = false
-                }
-            }
-        }
-
-
-        if(band){
-            $.ajax({
-                type:"POST", url:"${createLink(action:'enviarUnidad', controller: 'asignacion')}",
-                data:"id=" + $("#env_id").val() + "&unidad=" +$("#cmb_env").val()+"&monto="+monto,
-                success:function (msg) {
-                    $("#detalle").html(msg).show("slide")
-                    var dist = $("#max").val()*1-monto
-                    $("#lbl_max").html(number_format(dist, 2, ",", "."))
-                }
-            });
-        }
-
-    }) ;
-
-    $(".btn_env").click(function(){
-        $("#monto_env").val("0,00")
-        $("#env_id").val($(this).attr("asgn"))
-        $("#cmb_env").val($(this).attr("env"))
-        $("#env_btn").val($(this).attr("id"))
-        $("#max").val($(this).attr("valor"))
-        //console.log("max 1" +$("#max").val())
-        $.ajax({
-            type:"POST", url:"${createLink(action:'enviarUnidad', controller: 'asignacion')}",
-            data:"id=" + $("#env_id").val(),
-            success:function (msg) {
-                $("#dlg_env").dialog("open")
-                $("#detalle").html(msg).show("slide")
-                $("#lbl_max").html(number_format($("#max").val()*1, 2, ",", "."))
-                //console.log("dis 1 " +$("#dist").val()*1)
-
-            }
-        });
-
-    });
 
     $("#anio_asg").change(function () {
         location.href = "${createLink(controller:'asignacion',action:'asignacionProyectov2')}?id=${proyecto.id}&anio=" + $(this).val()
@@ -387,33 +320,46 @@
     });
 
     $(".btn_borrar").click(function () {
-        $("#load").dialog("open")
-        if (confirm("Eliminar esta asignación: \n Su valor se sumará a su asignación original y\n la programación deberá revisarse. La asignación no se eliminara si tiene distribuciones derivadas")) {
+        var boton = $(this)
+        bootbox.confirm({
+                    message: "Al Eliminar esta asignación su valor se sumará a su asignación original y\n la programación deberá revisarse. La asignación no se eliminara si tiene distribuciones derivadas",
+                    title :"Advertencia",
+                    class : "modal-error",
+                    callback : function (result){
+                        if(result){
+                            openLoader()
+                            $.ajax({
+                                type:"POST", url:"${createLink(action:'borrarAsignacion', controller: 'asignacion')}",
+                                data:"id=" + boton.attr("asgn"),
+                                success:function (msg) {
+                                    closeLoader()
+                                    if(msg=="ok")
+                                        location.reload(true);
+                                    else{
+                                        bootbox.alert({
+                                                    message: "Error al eliminar la asignación. Asegurese que no tenga distribuciones ni asignaciones hijas",
+                                                    title :"Error",
+                                                    class : "modal-error"
+                                                }
+                                        );
+                                    }
 
-            $.ajax({
-                type:"POST", url:"${createLink(action:'borrarAsignacion', controller: 'asignacion')}",
-                data:"id=" + $(this).attr("asgn"),
-                success:function (msg) {
-                    if(msg=="ok")
-                        location.reload(true);
-                    else{
-                        $("#load").dialog("close")
-                        alert("Error al eliminar la asignación. Asegurese que no tenga distribuciones ni asignaciones hijas")
+                                }
+                            });
+                        }
+
                     }
-
                 }
-            });
-        }else{
-            $("#load").dialog("close")
-        }
+        );
+
     });
     $(".btn_borrar_prio").click(function () {
-
+        var boton = $(this)
         if (confirm("Eliminar esta asignación: \n Su valor se sumará a su asignación original y\n la programación deberá revisarse. La asignación no se eliminara si tiene distribuciones derivadas")) {
 
             $.ajax({
                 type:"POST", url:"${createLink(action:'borrarAsignacionPrio', controller: 'asignacion')}",
-                data:"id=" + $(this).attr("asgn"),
+                data:"id=" + boton.attr("asgn"),
                 success:function (msg) {
                     if(msg=="ok")
                         location.reload(true);
@@ -430,68 +376,39 @@
     });
 
 
-    $("#dlg_env").dialog({
-        autoOpen:false,
-        resizable:false,
-        title:'Enviar esta asignación al P.O.A. de una unidad ejecutora',
-        modal:true,
-        draggable:true,
-        width:520,
-        height:750,
-        position:'center',
-        open:function (event, ui) {
-            $(".ui-dialog-titlebar-close").hide();
-        },
-        buttons:{
-            "Cerrar":function () {
-                window.location.reload(true)
-                $(this).dialog("close");
-            }
-        }
-    });
 
-    $("#ajx_asgn").dialog({
-        autoOpen:false,
-        resizable:false,
-        title:'Crear un Perfil',
-        modal:true,
-        draggable:true,
-        width:480,
-        height:300,
-        position:'center',
-        open:function (event, ui) {
-            $(".ui-dialog-titlebar-close").hide();
-        },
-        buttons:{
-            "Grabar":function () {
-                var asgn = $('#padre').val()
-                var mxmo = parseFloat($('#maximo').val());
-                var valor = str_replace(".", "", $('#vlor').val());
-                valor = str_replace(",", ".", valor);
-                valor = parseFloat(valor);
-                //alert("Valores: maximo " + mxmo + " valor: " + valor);
-                if (valor >= mxmo) {
-                    alert("La nueva asignación debe ser menor a " + mxmo);
-                } else {
-                    var partida = $('#prsp2').val()
-                    var fuente = $('#fuente').val();
-                    $(this).dialog("close");
-                    $.ajax({
-                        type:"POST", url:"${createLink(action:'creaHijo', controller: 'asignacion')}",
-                        data:"id=" + asgn + "&fuente=" + fuente + "&partida=" + partida + "&valor=" + valor,
-                        success:function (msg) {
-                            //alert("se ha creado la asignación: " + msg)
-                            location.reload(true);
 
+    $("#btn-dividir").click(function () {
+        if($(".frmAsignacion").valid()){
+            var asgn = $('#padre').val()
+            var mxmo = parseFloat($('#maximo').val());
+            var valor = str_replace(",", "", $('#vlor').val());
+            valor = parseFloat(valor);
+            if (valor > mxmo) {
+                bootbox.alert({
+                            message: "La nueva asignación debe ser menor a " +number_format(mxmo, 2, ".", ","),
+                            title :"Error",
+                            class : "modal-error"
                         }
-                    });
-                }
-            },
-            "Cancelar":function () {
-                $(this).dialog("close");
+                );
+            } else {
+                var partida = $('#prsp').val()
+                var fuente = $('#fuente').val();
+                openLoader()
+                $.ajax({
+                    type:"POST", url:"${createLink(action:'creaHijo', controller: 'asignacion')}",
+                    data:"id=" + asgn + "&fuente=" + fuente + "&partida=" + partida + "&valor=" + valor,
+                    success:function (msg) {
+                        closeLoader()
+                        location.reload(true);
+
+                    }
+                });
             }
         }
+
     });
+
     $("#ajx_asgn_prio").dialog({
         autoOpen:false,
         resizable:false,

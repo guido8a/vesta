@@ -17,7 +17,7 @@
 
     <g:layoutHead/>
     <script type="text/javascript">
-    var index = 99999;
+    var index = 1041;
     function bringToTop(element){
 //        console.log("btt",element)
         element.css({"zIndex":index})

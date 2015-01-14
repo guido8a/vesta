@@ -64,17 +64,6 @@ $("#mas").bind("click",function(){
 
     });
 
-//$(".btnpq").livequery(function() {
-//    $(this).hover(
-//        function () {
-//            $(this).addClass("ui-state-hover");
-//        },
-//        function () {
-//            $(this).removeClass("ui-state-hover");
-//        }
-//    );
-//});
-
 
 function cambiaOperador() {
     if ($("#campo option:selected").attr("tipo") == 'string') {
@@ -99,4 +88,13 @@ $("#criterio").keypress(function(event){
     if(parseInt(event.keyCode) == 13){
         $("#buscarDialog").click()
     }
+});
+$(".bsc_desc").keypress(function(){
+    return false
+});
+$(".bsc_desc").click(function(){
+    $("#"+$(this).attr("dialog")).modal("show")
+});
+$(".bsc_desc").focus(function(){
+    $("#"+$(this).attr("dialog")).modal("show")
 });

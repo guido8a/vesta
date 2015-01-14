@@ -61,44 +61,30 @@
 
         </span>
     </div>
-    %{--<div id="buscar">--}%
-        %{--<input type="hidden" id="id_txt">--}%
-        %{--<input type="hidden" id="id_desc">--}%
-        %{--<div>--}%
-            %{--Buscar por:--}%
-            %{--<select id="tipo">--}%
-                %{--<option value="1">Número</option>--}%
-                %{--<option value="2">Descripción</option>--}%
-            %{--</select>--}%
-            %{--<input type="text" id="par" style="width: 160px;"><a href="#" class="btn" id="btn_buscar">Buscar</a>--}%
-        %{--</div>--}%
 
-        %{--<div id="resultado" style="width: 480px;margin-top: 10px;" class="ui-corner-all"></div>--}%
-    %{--</div>--}%
 
 </g:form>
 <script type="text/javascript">
-
-    $(".buscar").click(function() {
-        $("#id_txt").val($(this).attr("id"))
-        $("#id_desc").val($(this).attr("desc"))
-        $("#buscar").dialog("open")
-    });
-    $("#btn_buscar").click(function() {
-        $.ajax({
-            type: "POST",
-            url: "${createLink(action:'buscarPresupuesto',controller:'asignacion')}",
-            data: "parametro=" + $("#par").val() + "&tipo=" + $("#tipo").val(),
-            success: function(msg) {
-                $("#resultado").html(msg)
+    var validator = $(".frmAsignacion").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
             }
-        });
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
+        }
+
     });
-    $("#buscar").dialog({
-        title:"Cuentas presupuestarias",
-        width:520,
-        height:480,
-        autoOpen:false,
-        modal:true
-    })
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode == 13) {
+            submitForm();
+            return false;
+        }
+        return true;
+    });
 </script>

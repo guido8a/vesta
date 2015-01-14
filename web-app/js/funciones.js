@@ -102,6 +102,7 @@ function openLoader(msg, title) {
         closeButton : false,
         class       : "modal-sm"
     });
+    $("#dlgLoader").css({zIndex:1061})
 }
 function closeLoader() {
     $("#dlgLoader").modal('hide');

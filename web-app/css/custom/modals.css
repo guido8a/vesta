@@ -17,3 +17,11 @@
 .long.modal-dialog {
     width : 1100px;
 }
+.modal-error .modal-title{
+    color: red;
+
+}
+.modal-error .modal-header{
+   border-bottom: 1px solid red;
+
+}
