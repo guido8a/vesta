@@ -10,7 +10,7 @@ import vesta.poa.Asignacion
 /**
  * Clase para conectar con la tabla 'proy' de la base de datos
  */
-class Proyecto    {
+class Proyecto {
     /**
      * Unidad ejecutora del proyecto
      */
@@ -307,6 +307,28 @@ class Proyecto    {
 
     /**
      * Genera un string para mostrar
+     * @return el nombre limitado a 40 caracteres
+     */
+    String toStringMedio() {
+        if (nombre.size() > 40) {
+            def partes = nombre.split(" ")
+            def cont = 0
+            def des = ""
+            partes.each {
+                cont += it.size()
+                if (cont < 40)
+                    des += " " + it
+            }
+            return des + "... "
+
+        } else {
+            return "${this.nombre}"
+        }
+
+    }
+
+    /**
+     * Genera un string para mostrar
      * @return el nombre limitado a 65 caracteres
      */
     String toStringLargo() {
@@ -354,15 +376,15 @@ class Proyecto    {
         return [metasCoords: metasCoords, metasTotal: metas]
     }
 
-    def getValorPriorizado(){
+    def getValorPriorizado() {
         def total = 0
-        def marcos = MarcoLogico.findAllByProyectoAndTipoElemento(this,TipoElemento.get(3))
-        if(marcos.size()>0){
-            Asignacion.findAllByMarcoLogicoInList(marcos).each {a->
-                total+=a.priorizado
+        def marcos = MarcoLogico.findAllByProyectoAndTipoElemento(this, TipoElemento.get(3))
+        if (marcos.size() > 0) {
+            Asignacion.findAllByMarcoLogicoInList(marcos).each { a ->
+                total += a.priorizado
             }
             return total
-        }else{
+        } else {
             return 0
         }
 

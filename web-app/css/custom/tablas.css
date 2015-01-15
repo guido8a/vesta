@@ -3,8 +3,8 @@ table {
 }
 
 /*th {*/
-    /*background-color : #1260B3;*/
-    /*color            : #ffab19;*/
+/*background-color : #1260B3;*/
+/*color            : #ffab19;*/
 /*}*/
 
 th.sortable {
@@ -50,14 +50,15 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table > thead > tr.amarillo > th,
 .table > tbody > tr.amarillo > th,
 .table > tfoot > tr.amarillo > th {
-    background-color: #f5f45c;
+    background-color : #f5f45c;
 }
+
 .table-hover > tbody > tr > td.amarillo:hover,
 .table-hover > tbody > tr > th.amarillo:hover,
 .table-hover > tbody > tr.amarillo:hover > td,
 .table-hover > tbody > tr:hover > .amarillo,
 .table-hover > tbody > tr.amarillo:hover > th {
-    background-color: #dfde57;
+    background-color : #dfde57;
 }
 
 .table > thead > tr > td.rojo,
@@ -72,14 +73,15 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table > thead > tr.rojo > th,
 .table > tbody > tr.rojo > th,
 .table > tfoot > tr.rojo > th {
-    background-color: #f59196;
+    background-color : #f59196;
 }
+
 .table-hover > tbody > tr > td.rojo:hover,
 .table-hover > tbody > tr > th.rojo:hover,
 .table-hover > tbody > tr.rojo:hover > td,
 .table-hover > tbody > tr:hover > .rojo,
 .table-hover > tbody > tr.rojo:hover > th {
-    background-color: #d1787d;
+    background-color : #d1787d;
 }
 
 .table > thead > tr > td.verde,
@@ -94,12 +96,61 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table > thead > tr.verde > th,
 .table > tbody > tr.verde > th,
 .table > tfoot > tr.verde > th {
-    background-color: #94f571;
+    background-color : #94f571;
 }
+
 .table-hover > tbody > tr > td.verde:hover,
 .table-hover > tbody > tr > th.verde:hover,
 .table-hover > tbody > tr.verde:hover > td,
 .table-hover > tbody > tr:hover > .verde,
 .table-hover > tbody > tr.verde:hover > th {
-    background-color: #7bd468;
+    background-color : #7bd468;
+}
+
+.table > thead > tr > td.azul,
+.table > tbody > tr > td.azul,
+.table > tfoot > tr > td.azul,
+.table > thead > tr > th.azul,
+.table > tbody > tr > th.azul,
+.table > tfoot > tr > th.azul,
+.table > thead > tr.azul > td,
+.table > tbody > tr.azul > td,
+.table > tfoot > tr.azul > td,
+.table > thead > tr.azul > th,
+.table > tbody > tr.azul > th,
+.table > tfoot > tr.azul > th {
+    background-color : #a2e9ff;
+}
+
+.table-hover > tbody > tr > td.azul:hover,
+.table-hover > tbody > tr > th.azul:hover,
+.table-hover > tbody > tr.azul:hover > td,
+.table-hover > tbody > tr:hover > .azul,
+.table-hover > tbody > tr.azul:hover > th {
+    background-color : #80bdd2;
+}
+
+.table > thead > tr > td.disabled,
+.table > tbody > tr > td.disabled,
+.table > tfoot > tr > td.disabled,
+.table > thead > tr > th.disabled,
+.table > tbody > tr > th.disabled,
+.table > tfoot > tr > th.disabled,
+.table > thead > tr.disabled > td,
+.table > tbody > tr.disabled > td,
+.table > tfoot > tr.disabled > td,
+.table > thead > tr.disabled > th,
+.table > tbody > tr.disabled > th,
+.table > tfoot > tr.disabled > th {
+    background-color : #ddd;
+    border-color     : #cdcdcd;
+}
+
+.table-hover > tbody > tr > td.disabled:hover,
+.table-hover > tbody > tr > th.disabled:hover,
+.table-hover > tbody > tr.disabled:hover > td,
+.table-hover > tbody > tr:hover > .disabled,
+.table-hover > tbody > tr.disabled:hover > th {
+    background-color : #aaa;
+    border-color     : #ededed;
 }
