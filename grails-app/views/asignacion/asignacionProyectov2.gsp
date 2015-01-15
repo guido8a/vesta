@@ -7,49 +7,28 @@
     %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'svt.css')}" type="text/css"/>--}%
     <style type="text/css">
 
-    /*th {*/
-    /*background-color : #363636 !important;*/
-    /*color: white;*/
-    /*}*/
-    /*.btn{*/
-    /*font-size: 11px !important;*/
-    /*}*/
-
-    /*.btn-info{*/
-    /*border: 1px solid white;*/
-    /*}*/
-
     </style>
 </head>
 
 <body>
-%{--<div class="row">--}%
-%{--<span class="grupo">--}%
-%{--<div class="input-group" style="width:277px;">--}%
-%{--<input type="text" class="form-control bsc_desc input-sm" id="bsc-desc" style="" disabled >--}%
-%{--<span class="input-group-btn">--}%
-%{--<a href="#" id="btn-abrir" class="btn btn-info input-sm" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>--}%
-%{--</span>--}%
-%{--</div>--}%
-%{--</span>--}%
-%{--</div>--}%
+
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn btn-info " controller="asignacion" action="programacionAsignacionesInversion" id="${proyecto?.id}">Programación</g:link>
-        <g:link class="btn btn-info" controller="asignacion" action="agregarAsignacionInv" id="${proyecto?.id}">Agregar asignaciones</g:link>
-        <a class="btn btn-info" id="reporte">Reporte Asignaciones</a>
-        <g:link class="btn btn-info" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>
+        <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" id="${proyecto?.id}">Programación</g:link>
+        <g:link class="btn btn-default btn-sm" controller="asignacion" action="agregarAsignacionInv" id="${proyecto?.id}">Agregar asignaciones</g:link>
+        <a class="btn btn-default btn-sm" id="reporte">Reporte Asignaciones</a>
+        <g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>
         <g:if test="${actual?.estado==1}">
             <g:if test="${proyecto.aprobadoPoa=='S'}">
-                <g:link class="btn btn-info" controller="modificacion" action="poaInversionesMod" id="${proyecto?.id}">Modificaciones</g:link>
+                <g:link class="btn btn-default btn-sm" controller="modificacion" action="poaInversionesMod" id="${proyecto?.id}">Modificaciones</g:link>
             </g:if>
         </g:if>
         <g:if test="${actual?.estado==1}">
             <g:if test="${proyecto.aprobadoPoa!='S'}">
-                <a href="#" id="aprobPrio" class="btn btn-info">Aprobar priorización</a>
+                <a href="#" id="aprobPrio" class="btn btn-default btn-sm">Aprobar priorización</a>
             </g:if>
         </g:if>
-        <a href="#" class="btn btn-info" id="btn-filtros">Filtros</a>
+        <a href="#" class="btn btn-default btn-sm" id="btn-filtros">Filtros</a>
         <div style="margin-left: 15px;display: inline-block;">
             <b style="font-size: 11px">Año:</b>
             <g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}" style="font-size: 11px;width: 150px;display: inline" class="form-control"/>
@@ -78,13 +57,15 @@
         </thead>
         <tbody>
         <g:set var="total" value="${0}"></g:set>
+        <g:set var="totalP" value="${0}"></g:set>
         <g:each in="${asignaciones}" var="asg" status="i">
             <g:if test="${asg.planificado>0}">
                 <g:if test="${actual?.estado==0}">
                     <g:set var="total" value="${total.toDouble()+asg.getValorReal()}"></g:set>
                 </g:if>
                 <g:else>
-                    <g:set var="total" value="${total.toDouble()+asg.priorizado}"></g:set>
+                    <g:set var="total" value="${total.toDouble()+asg.getValorReal()}"></g:set>
+                    <g:set var="totalP" value="${totalP.toDouble()+asg.priorizado}"></g:set>
                 </g:else>
             </g:if>
             <tr>
@@ -111,23 +92,21 @@
                     ${asg.presupuesto.numero}
                 </td>
                 <td class="valor" style="text-align: right">
-                    <g:formatNumber number="${asg.getValorReal()}" format="###,##0" minFractionDigits="2"
-                                    maxFractionDigits="2"/>
+                    <g:formatNumber number="${asg.getValorReal().toDouble()}" type="currency"/>
                 </td>
                 <g:if test="${actual.estado==1}">
                     <g:if test="${proyecto.aprobadoPoa!='S'}">
                         <td class="valor" style="text-align: right">
-                            <div style="width: 150px">
-                                <input type="text" style="width: 100px;text-align: right;display: inline-block" id="prio_${asg.id}" value="${asg.priorizado}">
-                                <a href="#" style="width: 30px;display: inline-block" class="savePrio" iden="${asg.id}">Guardar</a>
+                            <div style="">
+                                <input type="text" name="prio_${asg.id}"  class="form-control txt-prio input-sm number money" style="width: 100px;text-align: right;display: inline-block" id="prio_${asg.id}" value="${asg.priorizado}">
+                                <a href="#prio_${asg.id}"  class="savePrio btn btn-info btn-xs" iden="${asg.id}" title="Guardar">
+                                    <i class="fa fa-floppy-o"></i></a>
                             </div>
                         </td>
                     </g:if><g:else>
                     <td class="valor" style="text-align: right">
-                        <div style="width: 150px">
-                            <g:formatNumber number="${asg.priorizado}" format="###,##0" minFractionDigits="2"
-                                            maxFractionDigits="2"/>
-
+                        <div style="">
+                            <g:formatNumber number="${asg.priorizado.toDouble()}" type="currency"/>
                         </div>
                     </td>
                 </g:else>
@@ -167,8 +146,13 @@
             <td></td>
             <td></td>
             <td class="valor" style="text-align: right; font-weight: bold;">
-                <g:formatNumber number="${total}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
+                <g:formatNumber number="${total.toDouble()}" type="currency"/>
             </td>
+            <g:if test="${actual?.estado!=0}">
+                <td style="text-align: right; font-weight: bold;" id="totalPrio">
+                    <g:formatNumber number="${totalP.toDouble()}" type="currency"/>
+                </td>
+            </g:if>
         </tr>
         </tbody>
     </table>
@@ -186,21 +170,21 @@
 </div>
 <div style="position: absolute;top:5px;right:10px;font-size: 11px;">
     <b>Total invertido proyecto actual:</b>
-    <g:formatNumber number="${total?.toFloat()}" format="###,##0"
-                    minFractionDigits="2" maxFractionDigits="2"/>
+    <g:if test="${actual?.estado==0}">
+        <g:formatNumber number="${total?.toFloat()}" type="currency"/>
+    </g:if>
+    <g:else>
+        <g:formatNumber number="${totalP?.toFloat()}" type="currency"/>
+    </g:else>
 </div>
 <div style="position: absolute;top:25px;right:10px;font-size: 11px;">
     <b>M&aacute;ximo Inversiones:</b>
-    <g:formatNumber number="${maxInv}"
-                    format="###,##0"
-                    minFractionDigits="2" maxFractionDigits="2"/>
+    <g:formatNumber number="${maxInv}" type="currency"/>
 </div>
 
 <div style="position: absolute;top:45px;right:10px;font-size: 11px;">
     <b>Restante:</b>
-    <g:formatNumber number="${maxInv - total}"
-                    format="###,##0"
-                    minFractionDigits="2" maxFractionDigits="2"/>
+    <g:formatNumber number="${maxInv - total}" type="currency"/>
 </div>
 <elm:modal titulo="Dividir asignación" id="modal-dividir">
     <div class="modal-body" id="body-dividir"></div>
@@ -209,16 +193,23 @@
         <a href="#"  class="btn btn-primary" id="btn-dividir">Guardar</a>
     </div>
 </elm:modal>
+<elm:modal titulo="Dividir asignación" id="modal-dividir-prio">
+    <div class="modal-body" id="body-dividir-prio"></div>
+    <div class="modal-footer">
+        <a href="#"  class="btn btn-default" data-dismiss="modal">Cerrar</a>
+        <a href="#"  class="btn btn-primary" id="btn-dividir-prio">Guardar</a>
+    </div>
+</elm:modal>
 <elm:modal titulo="Filtrar las asignaciones" id="modal-filtros">
     <div class="modal-body">
         <div class="row">
             <div class="form-group keeptogether">
-                    <label class="col-md-2 control-label">
-                        Filtro:
-                    </label>
-                    <div class="col-md-7">
-                        <g:select from="${['Todos','Componente', 'Responsable']}" name="filtro"  class="form-control input-sm" id="filtro"/>
-                    </div>
+                <label class="col-md-2 control-label">
+                    Filtro:
+                </label>
+                <div class="col-md-7">
+                    <g:select from="${['Todos','Componente', 'Responsable']}" name="filtro"  class="form-control input-sm" id="filtro"/>
+                </div>
             </div>
         </div>
         <div id="filtrados" class="row">
@@ -230,6 +221,20 @@
 
 </elm:modal>
 <script type="text/javascript">
+    function calcularTotal(){
+        var total = 0
+        $("#totalPrio").html("0.00")
+        $(".txt-prio").each(function(){
+            var valor = str_replace(",", "", $(this).val());
+            if(isNaN(valor))
+                valor=0
+            var tot =str_replace(",", "",  $("#totalPrio").html());
+            $("#totalPrio").html(number_format(tot*1+valor*1,2,".",","))
+
+        })
+
+
+    }
 
     $("#filtro").change(function (){
         var aniof = $("#anio_asg").val();
@@ -273,32 +278,43 @@
 
 
 
-    $(".savePrio").click(function(){
+    $(".savePrio").click(function(e){
         var id = $(this).attr("iden")
+
         var monto =$("#prio_"+id).val()
-        $.ajax({
-            type:"POST", url:"${createLink(action:'guardarPrio', controller: 'asignacion')}",
-            data:"id="+id+"&prio="+monto,
-            success:function (msg) {
-                if(msg=="ok"){
-                    $.box({
-                        title:"Guardar",
-                        text:"Datos guardados",
-                        dialog: {
-                            resizable: false,
-                            buttons  : {
-                                "Cerrar":function(){
-
-                                }
-                            }
-                        }
-                    });
-                    location.reload(true)
-                }
-
+        monto =  str_replace(",", "", monto);
+        var msg=""
+        if(isNaN(monto)){
+            msg="El valor de la asignación debe ser un número positivo"
+        }else{
+            if(monto*1<0){
+                msg="El valor de la asignación debe ser un número positivo1"
             }
-        });
+        }
+        if(msg==""){
+            $.ajax({
+                type:"POST", url:"${createLink(action:'guardarPrio', controller: 'asignacion')}",
+                data:"id="+id+"&prio="+monto,
+                success:function (msg) {
+                    if(msg=="ok"){
+//                        bootbox.alert("Datos guardados",function(){location.reload(true)})
+                        log("Datos guardados.","success")
+                        calcularTotal()
 
+                    }
+
+                }
+            });
+        }else{
+            bootbox.alert({
+                        message: msg,
+                        title :"Error",
+                        class : "modal-error"
+                    }
+            );
+        }
+
+        e.preventDefault();
     });
 
 
@@ -325,11 +341,10 @@
             type:"POST", url:"${createLink(action:'agregaAsignacionPrio', controller: 'asignacion')}",
             data:"id=" + $(this).attr("asgn") + "&proy=" + $(this).attr("proy") + "&anio=" + $(this).attr("anio"),
             success:function (msg) {
-                $("#ajx_asgn_prio").dialog("option", "title", "Dividir la asignación para ..")
-                $("#ajx_asgn_prio").html(msg).show("puff", 100)
+                $("#body-dividir-prio").html(msg)
             }
         });
-        $("#ajx_asgn_prio").dialog("open");
+        $('#modal-dividir-prio').modal("show")
 
     });
 
@@ -434,49 +449,39 @@
         }
 
     });
-
-    $("#ajx_asgn_prio").dialog({
-        autoOpen:false,
-        resizable:false,
-        title:'Crear un Perfil',
-        modal:true,
-        draggable:true,
-        width:480,
-        height:300,
-        position:'center',
-        open:function (event, ui) {
-            $(".ui-dialog-titlebar-close").hide();
-        },
-        buttons:{
-            "Grabar":function () {
-                var asgn = $('#padre').val()
-                var mxmo = parseFloat($('#maximo').val());
-                var valor = str_replace(".", "", $('#vlor').val());
-                valor = str_replace(",", ".", valor);
-                valor = parseFloat(valor);
-                //alert("Valores: maximo " + mxmo + " valor: " + valor);
-                if (valor >= mxmo) {
-                    alert("La nueva asignación debe ser menor a " + mxmo);
-                } else {
-                    var partida = $('#prsp2').val()
-                    var fuente = $('#fuente').val();
-                    $(this).dialog("close");
-                    $.ajax({
-                        type:"POST", url:"${createLink(action:'creaHijoPrio', controller: 'asignacion')}",
-                        data:"id=" + asgn + "&fuente=" + fuente + "&partida=" + partida + "&valor=" + valor,
-                        success:function (msg) {
-                            //alert("se ha creado la asignación: " + msg)
-                            location.reload(true);
-
+    $("#btn-dividir-prio").click(function () {
+        if($(".frmAsignacionPrio").valid()){
+            var asgn = $('#padre').val()
+            var mxmo = parseFloat($('#maximo').val());
+            var valor = str_replace(",", "", $('#vlor').val());
+            valor = parseFloat(valor);
+            if (valor > mxmo) {
+                bootbox.alert({
+                            message: "La nueva asignación debe ser menor a " +number_format(mxmo, 2, ".", ","),
+                            title :"Error",
+                            class : "modal-error"
                         }
-                    });
-                }
-            },
-            "Cancelar":function () {
-                $(this).dialog("close");
+                );
+            } else {
+                var partida = $('#prsp').val()
+                var fuente = $('#fuente').val();
+                openLoader()
+                $.ajax({
+                    type:"POST", url:"${createLink(action:'creaHijoPrio', controller: 'asignacion')}",
+                    data:"id=" + asgn + "&fuente=" + fuente + "&partida=" + partida + "&valor=" + valor,
+                    success:function (msg) {
+                        closeLoader()
+                        location.reload(true);
+
+                    }
+                });
             }
         }
+
+
+
     });
+
 
     $("#reporteDialogo").dialog({
         autoOpen:false,

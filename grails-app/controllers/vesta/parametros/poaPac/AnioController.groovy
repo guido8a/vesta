@@ -1,6 +1,7 @@
 package vesta.parametros.poaPac
 
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.parametros.UnidadEjecutora
 import vesta.seguridad.Shield
 
 
@@ -10,7 +11,7 @@ import vesta.seguridad.Shield
 class AnioController extends Shield {
 
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
-
+    def dbConnectionService
     /**
      * Acción que redirecciona a la lista (acción "list")
      */
@@ -144,5 +145,92 @@ class AnioController extends Shield {
             return
         }
     } //delete para eliminar via ajax
-    
+
+
+    /*Yachay */
+
+    /*Vista para la aprobación de una proforma dependiendo el año*/
+    def vistaAprobarAño () {
+        def anios = Anio.findAllByEstado(0)
+        [anios:anios]
+    }
+    /**
+     * Acción
+     */
+    def aprobarAnio () {
+        if (request.method == 'POST') {
+
+            def anio = Anio.get(params.anio)
+            anio.estado=1
+            anio.save(flush: true)
+            flash.message="Las asignaciones del año ${anio.anio} han sido aprobadas."
+            render "ok"
+
+        } else {
+            redirect(controller: "shield", action: "ataques")
+        }
+    }
+
+    /**
+     * Acción
+     */
+    def detalleAnio () {
+        def anio = Anio.get(params.anio)
+        def unidades = UnidadEjecutora.list([sort:"nombre"])
+        def cn = dbConnectionService.getConnection()
+        def datos = [:]
+        unidades.each {
+            def temp = []
+            cn.eachRow("select count(asgn__id) as cont,sum(asgnplan) as suma from asgn where unej__id=${it.id} and anio__id = ${anio.id} and mrlg__id is not null "){d->
+                if(d.suma==null)
+                    temp.add(0)
+                else
+                    temp.add(d.suma.toFloat().round(2))
+                if(d.cont==null)
+                    temp.add(0)
+                else
+                    temp.add(d.cont)
+            }
+            cn.eachRow("select count(obra__id) as cont,sum(obracntd*obracsto) as suma from obra,asgn where asgn.asgn__id=obra.asgn__id and   asgn.unej__id=${it.id} and asgn.anio__id = ${anio.id} and asgn.mrlg__id is not null "){d->
+                if(d.suma==null)
+                    temp.add(0)
+                else
+                    temp.add(d.suma.toFloat().round(2))
+                if(d.cont==null)
+                    temp.add(0)
+                else
+                    temp.add(d.cont)
+            }
+
+            cn.eachRow("select count(asgn__id) as cont,sum(asgnplan) as suma from asgn where unej__id=${it.id} and anio__id = ${anio.id} "){d->
+                if(d.suma==null)
+                    temp.add(0)
+                else
+                    temp.add(d.suma.toFloat().round(2))
+                if(d.cont==null)
+                    temp.add(0)
+                else
+                    temp.add(d.cont)
+            }
+            cn.eachRow("select count(obra__id) as cont,sum(obracntd*obracsto) as suma from obra,asgn where asgn.asgn__id=obra.asgn__id and   asgn.unej__id=${it.id} and asgn.anio__id = ${anio.id}  "){d->
+                if(d.suma==null)
+                    temp.add(0)
+                else
+                    temp.add(d.suma.toFloat().round(2))
+                if(d.cont==null)
+                    temp.add(0)
+                else
+                    temp.add(d.cont)
+            }
+            temp.add(it.id)
+            if((temp[0]+temp[2]+temp[4]+temp[6])>0)
+                datos.put(it.nombre,temp)
+            temp=[]
+
+        }
+
+        cn.close()
+
+        [datos:datos,anio:anio]
+    }
 }

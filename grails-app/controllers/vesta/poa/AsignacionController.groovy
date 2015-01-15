@@ -272,10 +272,11 @@ class AsignacionController extends Shield {
 
 
     def agregaAsignacionPrio () {
+        def campos = ["numero": ["Número", "string"],"descripcion": ["Descripción", "string"]]
         def listaFuentes = Financiamiento.findAllByProyectoAndAnio(Proyecto.get(params.proy), Anio.get(params.anio)).fuente
         def asgnInstance = Asignacion.get(params.id)
 
-        return ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes]
+        return ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes,campos:campos]
     }
 
 
@@ -591,6 +592,18 @@ class AsignacionController extends Shield {
         return [asignaciones: asignaciones, camp: params.camp, componentes: componentes, responsables: responsables, proyecto: proyecto, anio: params.anio]
 
 
+    }
+
+    /**
+     * Acción
+     */
+    def guardarPrio = {
+//        println "params "+params
+        def asg = Asignacion.get(params.id)
+        def monto = params.prio.toDouble()
+        asg.priorizado = monto
+        asg.save(flush: true)
+        render "ok"
     }
 
 
