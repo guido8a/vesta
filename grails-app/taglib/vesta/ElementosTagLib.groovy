@@ -4,6 +4,8 @@ import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler
 import org.springframework.beans.SimpleTypeConverter
 import org.springframework.context.MessageSourceResolvable
 import org.springframework.web.servlet.support.RequestContextUtils
+import vesta.avales.Aval
+import vesta.avales.SolicitudAval
 
 class ElementosTagLib {
 
@@ -818,5 +820,34 @@ class ElementosTagLib {
             writer << 'selected="selected" '
         }
     }
+
+    /**
+     * Imprime el número del aval o de la solicidud con el formato '003'
+     * @param aval (opcional) el id del aval
+     * @param solicitud (opcional) el id de la solicitud
+     */
+    def imprimeNumero = { attrs ->
+        def aval = null
+        def sol = null
+        if (attrs.aval)
+            aval = Aval.get(attrs.aval)
+        if (attrs.solicitud)
+            sol = SolicitudAval.get(attrs.solicitud)
+        def num = null
+        def output = ""
+        if (aval) {
+            num = aval.numero
+        }
+        if (sol)
+            num = sol.numero.toString()
+        if (num) {
+            (3 - num.length()).times {
+                output += "0"
+            }
+            output += num
+        }
+        out << output
+    }
+
 
 }

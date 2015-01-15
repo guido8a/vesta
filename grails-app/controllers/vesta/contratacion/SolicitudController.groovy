@@ -191,7 +191,7 @@ class SolicitudController extends Shield {
                     }
                 }
                 def fileName = f.getOriginalFilename() //nombre original del archivo
-                def ext = "pdf"
+                def ext = ""
 
                 def parts = fileName.split("\\.")
                 fileName = ""
@@ -362,7 +362,8 @@ class SolicitudController extends Shield {
         params.max = Math.min(params.max ? params.int('max') : 25, 100)
         def list = Solicitud.findAllByAprobacionIsNullAndIncluirReunion("S", params)
         def count = Solicitud.countByAprobacionIsNullAndIncluirReunion("S")
-        [solicitudInstanceList: list, solicitudInstanceTotal: count, title: title, params: params]
+        def solicitudInstanceCount = list.size()
+        [solicitudInstanceList: list, solicitudInstanceTotal: count, title: title, params: params, solicitudInstanceCount: solicitudInstanceCount]
     }
 
 
@@ -391,6 +392,7 @@ class SolicitudController extends Shield {
     def save = {
 
         println("entro save")
+        println(params)
         def usuario = Persona.get(session.usuario.id)
         def unidadEjecutora = usuario.unidad
 
@@ -405,7 +407,7 @@ class SolicitudController extends Shield {
         if (!solicitud.usuario) {
             solicitud.usuario = usuario
         }
-        params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+        params.fecha = new Date().parse("dd-MM-yyyy", params.fecha_input)
         solicitud.properties = params
         if (!solicitud.save(flush: true)) {
             println "error save1 solicitud " + solicitud.errors
