@@ -2,10 +2,10 @@ table {
     font-size : 13px;
 }
 
-th {
-    background-color : #1260B3;
-    color            : #ffab19;
-}
+/*th {*/
+/*background-color : #1260B3;*/
+/*color            : #ffab19;*/
+/*}*/
 
 th.sortable {
     background-position : right;
@@ -38,3 +38,119 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
     background : #72cb8e !important;
 }
 
+.table > thead > tr > td.amarillo,
+.table > tbody > tr > td.amarillo,
+.table > tfoot > tr > td.amarillo,
+.table > thead > tr > th.amarillo,
+.table > tbody > tr > th.amarillo,
+.table > tfoot > tr > th.amarillo,
+.table > thead > tr.amarillo > td,
+.table > tbody > tr.amarillo > td,
+.table > tfoot > tr.amarillo > td,
+.table > thead > tr.amarillo > th,
+.table > tbody > tr.amarillo > th,
+.table > tfoot > tr.amarillo > th {
+    background-color : #f5f45c;
+}
+
+.table-hover > tbody > tr > td.amarillo:hover,
+.table-hover > tbody > tr > th.amarillo:hover,
+.table-hover > tbody > tr.amarillo:hover > td,
+.table-hover > tbody > tr:hover > .amarillo,
+.table-hover > tbody > tr.amarillo:hover > th {
+    background-color : #dfde57;
+}
+
+.table > thead > tr > td.rojo,
+.table > tbody > tr > td.rojo,
+.table > tfoot > tr > td.rojo,
+.table > thead > tr > th.rojo,
+.table > tbody > tr > th.rojo,
+.table > tfoot > tr > th.rojo,
+.table > thead > tr.rojo > td,
+.table > tbody > tr.rojo > td,
+.table > tfoot > tr.rojo > td,
+.table > thead > tr.rojo > th,
+.table > tbody > tr.rojo > th,
+.table > tfoot > tr.rojo > th {
+    background-color : #f59196;
+}
+
+.table-hover > tbody > tr > td.rojo:hover,
+.table-hover > tbody > tr > th.rojo:hover,
+.table-hover > tbody > tr.rojo:hover > td,
+.table-hover > tbody > tr:hover > .rojo,
+.table-hover > tbody > tr.rojo:hover > th {
+    background-color : #d1787d;
+}
+
+.table > thead > tr > td.verde,
+.table > tbody > tr > td.verde,
+.table > tfoot > tr > td.verde,
+.table > thead > tr > th.verde,
+.table > tbody > tr > th.verde,
+.table > tfoot > tr > th.verde,
+.table > thead > tr.verde > td,
+.table > tbody > tr.verde > td,
+.table > tfoot > tr.verde > td,
+.table > thead > tr.verde > th,
+.table > tbody > tr.verde > th,
+.table > tfoot > tr.verde > th {
+    background-color : #94f571;
+}
+
+.table-hover > tbody > tr > td.verde:hover,
+.table-hover > tbody > tr > th.verde:hover,
+.table-hover > tbody > tr.verde:hover > td,
+.table-hover > tbody > tr:hover > .verde,
+.table-hover > tbody > tr.verde:hover > th {
+    background-color : #7bd468;
+}
+
+.table > thead > tr > td.azul,
+.table > tbody > tr > td.azul,
+.table > tfoot > tr > td.azul,
+.table > thead > tr > th.azul,
+.table > tbody > tr > th.azul,
+.table > tfoot > tr > th.azul,
+.table > thead > tr.azul > td,
+.table > tbody > tr.azul > td,
+.table > tfoot > tr.azul > td,
+.table > thead > tr.azul > th,
+.table > tbody > tr.azul > th,
+.table > tfoot > tr.azul > th {
+    background-color : #a2e9ff;
+}
+
+.table-hover > tbody > tr > td.azul:hover,
+.table-hover > tbody > tr > th.azul:hover,
+.table-hover > tbody > tr.azul:hover > td,
+.table-hover > tbody > tr:hover > .azul,
+.table-hover > tbody > tr.azul:hover > th {
+    background-color : #80bdd2;
+}
+
+.table > thead > tr > td.disabled,
+.table > tbody > tr > td.disabled,
+.table > tfoot > tr > td.disabled,
+.table > thead > tr > th.disabled,
+.table > tbody > tr > th.disabled,
+.table > tfoot > tr > th.disabled,
+.table > thead > tr.disabled > td,
+.table > tbody > tr.disabled > td,
+.table > tfoot > tr.disabled > td,
+.table > thead > tr.disabled > th,
+.table > tbody > tr.disabled > th,
+.table > tfoot > tr.disabled > th {
+    background-color : #ddd;
+    border-color     : #cdcdcd;
+}
+
+.table-hover > tbody > tr > td.disabled:hover,
+.table-hover > tbody > tr > th.disabled:hover,
+.table-hover > tbody > tr.disabled:hover > td,
+.table-hover > tbody > tr:hover > .disabled,
+.table-hover > tbody > tr.disabled:hover > th {
+    background-color : #aaa;
+    border-color     : #ededed;
+}

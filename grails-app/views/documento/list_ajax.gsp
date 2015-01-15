@@ -56,6 +56,9 @@
                 type        : 'POST',
                 data        : formData,
                 async       : false,
+                cache       : false,
+                contentType : false,
+                processData : false,
                 success     : function (msg) {
                     var parts = msg.split("*");
                     log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
@@ -69,10 +72,7 @@
                 },
                 error       : function () {
 
-                },
-                cache       : false,
-                contentType : false,
-                processData : false
+                }
             });
         } else {
             return false;

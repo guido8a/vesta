@@ -15,6 +15,8 @@
 <%@ page import="vesta.parametros.TipoBien; vesta.parametros.FormaPago; vesta.parametros.TipoContrato; vesta.poa.Actividad; vesta.poa.Componente; vesta.proyectos.Proyecto" contentType="text/html;charset=UTF-8" %>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 
+<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
+
 <g:if test="${!solicitud}">
     <elm:notFound elem="Solicitud" genero="o" />
 </g:if>
@@ -78,11 +80,11 @@
         </div>
         <div class="form-group keeptogether">
             <span class="grupo">
-                <label for="formaPago" class="col-md-2 control-label">
+                <label for="formaPago" class="col-md-2 control-label required">
                     Forma de Pago
                 </label>
                 <div class="col-md-3">
-                    <g:textField class="form-control input-sm"
+                    <g:textField class="form-control input-sm required"
                                  name="formaPago" title="Forma de Pago" value="${solicitud?.formaPago}"/>
                 </div>
             </span>
@@ -107,7 +109,7 @@
                     Fecha
                 </label>
                 <div class="col-md-3">
-                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm"/>
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm" value="${new Date()}"/>
                 </div>
             </span>
         </div>
@@ -121,6 +123,7 @@
                         <g:textField class="form-control input-sm number money"
                                      name="montoSolicitado" title="Monto Solicitado" value="${solicitud?.montoSolicitado}" readonly=""/>
                     </div>
+                <a href="#" class="btn btn-info btnMontoDetalle">Detalle</a>
                 </g:if>
                 <g:else>
                     <div class="col-md-3">
@@ -559,15 +562,11 @@
         var proySt = $("#selProyecto").find("option:selected").text();
         var compSt = $("#selComponente").find("option:selected").text();
 
-
         var proyId = $("#selProyecto").val();
         var compId = $("#selComponente").val();
 
         $("#proyectoLabel").text(proySt);
         $("#componenteLabel").text(compSt);
-
-//        $("#dlgActividad").dialog('option', 'title', 'Crea nueva Actividad').dialog('open');
-
 
         $.ajax({
             type    : "POST",
@@ -595,7 +594,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                return submitForm();
+                                return submitFormActividad();
                             } //callback
                         } //guardar
                     } //buttons
@@ -627,60 +626,146 @@
         return parseInt((t2 - t1) / (24 * 3600 * 1000));
     }
 
-    function editarMonto() {
+    function editarMonto () {
         $.ajax({
-            type    : "POST",
-            url     : "${createLink(action:'detalleMonto')}",
-            data    : {
-                id        : "${solicitud.id}",
-                actividad : $("#selActividad").val()
-            },
-            success : function (msg) {
-                $("#dlgDetalleMontoContent").html(msg);
-                $("#dlgDetalleMonto").dialog("open");
-            }
-        });
-    }
+           type : "POST",
+           url  :  "${createLink(action: 'detalleMonto')}",
+           data :  {
+               id: "${solicitud?.id}",
+               actividad : $("#selActividad").val()
+           },
+           success : function (msg){
+               var b = bootbox.dialog({
+                   id : "dlgMonto",
+                   title: "Detalle anual del monto solicitado",
+                   class :"modal-lg",
+                   message : msg,
+                   buttons : {
+                       cancelar : {
+                           label : "Cancelar",
+                           className: "btn-primary",
+                           callback : function () {}
+                       },
+                       guardar : {
+                           id : "btnSave",
+                           label : "<i class='fa fa-save'></i> Guardar ",
+                           className : "btn-success",
+                           callback   : function () {
+                               var $dlg = $(this);
+                               var total = 0;
+                               var maximo = parseFloat($("#spanMax").attr("max"));
+                               var data = "";
+                               $("#tb").children().each(function () {
+                                   var val = parseFloat($(this).attr("val"));
+                                   var anio = parseFloat($(this).attr("class"));
+                                   data += anio + "_" + val + ";";
+                                   total += val;
+                               });
+                               if (total != maximo) {
+                                   log("Por favor ingrese valores cuya sumatoria sea igual a $" + number_format(maximo, 2, ".", ","), 'error')
+                                   return false
+                               } else {
+                                   $.ajax({
+                                       type    : "POST",
+                                       url     : "${createLink(action:'updateDetalleMonto_ajax')}",
+                                       data    : {
+                                           id      : "${solicitud.id}",
+                                           valores : data
+                                       },
+                                       success : function (msg) {
+                                               var parts1 = msg.split("*");
+                                               var solicitado = parts1[2];
+                                               var asignado = parts1[3];
+
+                                               $("#spanAsg").text(asignado);
+                                               $("#montoSolicitado").val(solicitado);
+                                           var parts = msg.split("*");
+                                           log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                           if (parts[0] == "SUCCESS") {
+//                                               setTimeout(function() {
+//                                                   location.reload(true);
+//                                               }, 1000);
+                                           } else {
+                                               closeLoader();
+                                           }
+
+
+                                       }
+                                   });
+                               }
+
+
+                           }//callback
+                       }//guardar
+                   }//buttons
+               });//dialog
+               setTimeout(function () {
+                   b.find(".form-control").first().focus()
+               }, 500);
+           }//success
+        });//ajax
+    }//createEdit
+
+    function submitFormActividad() {
+        var $form = $("#frmNuevaActividad");
+        var $btn = $("#dlgCreateEdit").find("#btnSave");
+        if ($form.valid()) {
+            $btn.replaceWith(spinner);
+            openLoader("Guardando Actividad");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : $form.serialize(),
+                success : function (msg) {
+                    var parts = msg.split("*");
+                    log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                    setTimeout(function() {
+                        closeLoader();
+                        if (parts[0] == "SUCCESS") {
+//                            location.reload(true);
+                            loadActividades();
+                        } else {
+                            spinner.replaceWith($btn);
+                            return false;
+                        }
+                    }, 1000);
+                }
+            });
+        } else {
+            return false;
+        } //else
+//    }
 
     $(function () {
 
-        $("#btnPrint").button("option", "icons", {primary : 'ui-icon-print'}).click(function () {
+        var validator = $("#frmSolicitud").validate({
+            errorClass     : "help-block",
+            errorPlacement : function (error, element) {
+                if (element.parent().hasClass("input-group")) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+                element.parents(".grupo").addClass('has-error');
+            },
+            success        : function (label) {
+                label.parents(".grupo").removeClass('has-error');
+            }
+        });
+
+        $("#btnPrint").click(function () {
             var url = "${createLink(controller: 'reporteSolicitud', action: 'imprimirSolicitud')}/?id=${solicitud.id}";
 //                    console.log(url);
             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud.pdf";
             return false;
         });
 
-        $(".button").button();
-        $(".home").button("option", "icons", {primary : 'ui-icon-home'});
-        $(".list").button("option", "icons", {primary : 'ui-icon-clipboard'});
-        $(".create").button("option", "icons", {primary : 'ui-icon-document'});
-
-        var myForm = $("#frmSolicitud");
-        $("#btnSave").button({
-            icons : {
-                primary : "ui-icon-disk"
-            }
-        }).click(function () {
-            console.log("click")
-            myForm.submit();
-            return false;
+        %{--<g:if test="${solicitud.id}">--}%
+        $(".btnMontoDetalle").click(function () {
+           editarMonto()
+           return false;
         });
-
-        <g:if test="${solicitud.id}">
-        $("#btnMontoDetalle").button({
-            icons : {
-                primary : "ui-icon-folder-open"
-            },
-            text  : false
-        }).click(function () {
-            editarMonto();
-            return false;
-        });
-        $("#montoSolicitado").click(function () {
-            editarMonto();
-        });
-        </g:if>
+        %{--</g:if>--}%
 
         $("#btnIncluir").click(function () {
             var txt = "¿Está seguro de querer ";
@@ -710,58 +795,61 @@
             return false;
         });
 
-        $("#dlgDetalleMonto").dialog({
-            modal     : true,
-            resizable : false,
-            autoOpen  : false,
-            width     : 350,
-            buttons   : {
-                "Guardar" : function () {
-                    var $dlg = $(this);
-                    var total = 0;
-                    var maximo = parseFloat($("#spanMax").attr("max"));
-                    var data = "";
-                    $("#tb").children().each(function () {
-                        var val = parseFloat($(this).attr("val"));
-                        var anio = parseFloat($(this).attr("class"));
-                        data += anio + "_" + val + ";";
-                        total += val;
-                    });
-                    if (total != maximo) {
-                        $("#spanError").text("Por favor ingrese valores cuya sumatoria sea igual a $" + number_format(maximo, 2, ",", "."));
-                        $("#divError").removeClass("ui-state-highlight").addClass("ui-state-error").show();
-                    } else {
-                        $("#divError").hide();
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(action:'updateDetalleMonto_ajax')}",
-                            data    : {
-                                id      : "${solicitud.id}",
-                                valores : data
-                            },
-                            success : function (msg) {
-                                var parts = msg.split("_");
-                                if (parts[0] == "OK") {
-                                    $(this).dialog("close");
-                                    var solicitado = parts[1];
-                                    var asignado = parts[2];
+        %{--$("#dlgDetalleMonto").dialog({--}%
+            %{--modal     : true,--}%
+            %{--resizable : false,--}%
+            %{--autoOpen  : false,--}%
+            %{--width     : 350,--}%
+            %{--buttons   : {--}%
+                %{--"Guardar" : function () {--}%
+                    %{--var $dlg = $(this);--}%
+                    %{--var total = 0;--}%
+                    %{--var maximo = parseFloat($("#spanMax").attr("max"));--}%
+                    %{--var data = "";--}%
+                    %{--$("#tb").children().each(function () {--}%
+                        %{--var val = parseFloat($(this).attr("val"));--}%
+                        %{--var anio = parseFloat($(this).attr("class"));--}%
+                        %{--data += anio + "_" + val + ";";--}%
+                        %{--total += val;--}%
+                    %{--});--}%
+                    %{--if (total != maximo) {--}%
+                        %{--$("#spanError").text("Por favor ingrese valores cuya sumatoria sea igual a $" + number_format(maximo, 2, ",", "."));--}%
+                        %{--$("#divError").removeClass("ui-state-highlight").addClass("ui-state-error").show();--}%
+                    %{--} else {--}%
+                        %{--$("#divError").hide();--}%
+                        %{--$.ajax({--}%
+                            %{--type    : "POST",--}%
+                            %{--url     : "${createLink(action:'updateDetalleMonto_ajax')}",--}%
+                            %{--data    : {--}%
+                                %{--id      : "${solicitud.id}",--}%
+                                %{--valores : data--}%
+                            %{--},--}%
+                            %{--success : function (msg) {--}%
+                                %{--var parts = msg.split("_");--}%
+                                %{--if (parts[0] == "OK") {--}%
+                                    %{--$(this).dialog("close");--}%
+                                    %{--var solicitado = parts[1];--}%
+                                    %{--var asignado = parts[2];--}%
 
-                                    $("#spanAsg").text(asignado);
-                                    $("#montoSolicitado").val(solicitado).setMask("decimal");
-                                    $dlg.dialog("close");
-                                } else {
-                                    $("#spanError").html(parts[1]);
-                                    $("#divError").removeClass("ui-state-highlight").addClass("ui-state-error").show();
-                                }
-                            }
-                        });
-                    }
-                },
-                "Cerrar"  : function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
+                                    %{--$("#spanAsg").text(asignado);--}%
+                                    %{--$("#montoSolicitado").val(solicitado).setMask("decimal");--}%
+                                    %{--$dlg.dialog("close");--}%
+                                %{--} else {--}%
+                                    %{--$("#spanError").html(parts[1]);--}%
+                                    %{--$("#divError").removeClass("ui-state-highlight").addClass("ui-state-error").show();--}%
+                                %{--}--}%
+                            %{--}--}%
+                        %{--});--}%
+                    %{--}--}%
+                %{--},--}%
+                %{--"Cerrar"  : function () {--}%
+                    %{--$(this).dialog("close");--}%
+                %{--}--}%
+            %{--}--}%
+        %{--});--}%
+
+
+
         $("#selProyecto").change(function () {
             loadComponentes();
         })
@@ -773,63 +861,5 @@
 //        $("#selFormaPago").selectmenu({width : 150});
 
     });
-    function submitForm() {
-        var $form = $("#frmNuevaActividad");
-        var $btn = $("#dlgCreateEdit").find("#btnSave");
-        if ($form.valid()) {
-            $btn.replaceWith(spinner);
-            openLoader("Guardando Actividad");
-            $.ajax({
-                type    : "POST",
-                url     : $form.attr("action"),
-                data    : $form.serialize(),
-                success : function (msg) {
-                    var parts = msg.split("*");
-                    log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                    setTimeout(function() {
-                        closeLoader();
-                        if (parts[0] == "SUCCESS") {
-//                            location.reload(true);
-                            loadActividades();
-                        } else {
-                            spinner.replaceWith($btn);
-                            return false;
-                        }
-                    }, 1000);
-                }
-            });
-        } else {
-            return false;
-        } //else
-    }
-
-    function submitFormSolicitud() {
-        var $form = $("#frmNuevaActividad");
-        var $btn = $("#dlgCreateEdit").find("#btnSave");
-        if ($form.valid()) {
-            $btn.replaceWith(spinner);
-            openLoader("Guardando Actividad");
-            $.ajax({
-                type    : "POST",
-                url     : $form.attr("action"),
-                data    : $form.serialize(),
-                success : function (msg) {
-                    var parts = msg.split("*");
-                    log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                    setTimeout(function() {
-                        if (parts[0] == "SUCCESS") {
-                            location.reload(true);
-                        } else {
-                            spinner.replaceWith($btn);
-                            return false;
-                        }
-                    }, 1000);
-                }
-            });
-        } else {
-            return false;
-        } //else
-    }
-
 </script>
 
