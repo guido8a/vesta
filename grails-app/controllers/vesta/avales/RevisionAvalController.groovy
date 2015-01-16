@@ -453,9 +453,8 @@ class RevisionAvalController {
 
             } else {
                 def band = false
-                def usuario = Usro.get(session.usuario.id)
+                def usuario = Persona.get(session.usuario.id)
                 def aval = Aval.get(params.id)
-                /*Todo aqui validar quien puede*/
                 band = true
                 def datos = params.datos.split("&")
                 datos.each {
@@ -478,16 +477,12 @@ class RevisionAvalController {
                     aval.contrato = params.contrato
                     aval.certificacion = params.certificacion
                     aval.save(flush: true)
-//                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numero + " Liberado"
-//                    redirect(action: 'listaAvales', controller: 'revisionAval')
                     render "SUCCESS*Aval " +  aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numero + " Liberado"
                     return
 
                 } else {
                     render "ERROR*Usted no tiene permisos para liberar avales"
                     return
-//                    flash.message = "Usted no tiene permisos para liberar avales"
-//                    redirect(controller: 'listaAvales', action: 'revisionAval')
                 }
             }
         }

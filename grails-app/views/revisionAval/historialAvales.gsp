@@ -33,7 +33,8 @@
             <td>
                 ${aval.fechaAprobacion?.format("dd-MM-yyyy")}
             </td>
-            <td style="text-align: center" class="${aval.estado?.codigo}">
+            <g:set var="avalEstado" value="${aval.estado?.codigo}"/>
+            <td style="text-align: center" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : 'verde'}">
                 ${aval.estado?.descripcion}
             </td>
         </tr>
@@ -42,28 +43,18 @@
 </table>
 </div>
 
-<div id="dlgCaducar">
-    <g:form action="caducarAval" class="frmCaducar" enctype="multipart/form-data">
-        <input type="hidden" name="id" id="idCaducar">
-    </g:form>
-</div>
+%{--<div id="dlgCaducar">--}%
+    %{--<g:form action="caducarAval" class="frmCaducar" enctype="multipart/form-data">--}%
+        %{--<input type="hidden" name="id" id="idCaducar">--}%
+    %{--</g:form>--}%
+%{--</div>--}%
 
 <script>
-    %{--$(".liberar").button({icons:{ primary:"ui-icon-extlink"},text:false}).click(function(){--}%
-%{--//        $("#idLiberar").val($(this).attr("iden"))--}%
-%{--//        $("#max").html($(this).attr("max"))--}%
-%{--//        $("#monto").val("")--}%
-%{--//        $("#contrato").val("")--}%
-%{--//        $("#archivo").val("")--}%
-%{--//        $("#dlgLiberar").dialog("open")--}%
-        %{--location.href="${g.createLink(action: 'liberarAval')}/"+$(this).attr("iden")--}%
-    %{--})--}%
-    %{----}%
 
-    $(".caducar").button({icons:{ primary:"ui-icon-alert"},text:false}).click(function(){
-        $("#idCaducar").val($(this).attr("iden"))
-        $("#dlgCaducar").dialog("open")
-    })
+//    $(".caducar").button({icons:{ primary:"ui-icon-alert"},text:false}).click(function(){
+//        $("#idCaducar").val($(this).attr("iden"))
+//        $("#dlgCaducar").dialog("open")
+//    })
 
     function submitForm() {
         var $form = $("#frmLiberar");
@@ -112,9 +103,7 @@
                 var b = bootbox.dialog({
                     id      : "dlgLiberar",
                     title   : "Liberar Aval",
-
                     class   : "modal-lg",
-
                     message : msg,
                     buttons : {
                         cancelar : {
@@ -204,39 +193,38 @@
 //        }
 //    })
 
-    $("#dlgCaducar").dialog({
-        autoOpen:false,
-        position:"center",
-        title:'Caducar Aval',
-        width:500,
-        modal:true,
-        buttons:{
-            "Caducar":function(){
-
-                var msg =""
-
-                if(msg==""){
-                    $(".frmCaducar").submit()
-                }else{
-                    $.box({
-                        title:"Error",
-                        text:msg,
-                        dialog: {
-                            resizable: false,
-                            buttons  : {
-                                "Cerrar":function(){
-
-                                }
-                            }
-                        }
-                    });
-                }
-
-            },"Cerrar":function(){
-                $("#dlgCaducar").dialog("close")
-            }
-        }
-    })
+//    $("#dlgCaducar").dialog({
+//        autoOpen:false,
+//        position:"center",
+//        title:'Caducar Aval',
+//        width:500,
+//        modal:true,
+//        buttons:{
+//            "Caducar":function(){
+//                var msg =""
+//                if(msg==""){
+//                    $(".frmCaducar").submit()
+//                }else{
+////                    $.box({
+//                    var b = bootbox.dialog({
+//                        title:"Error",
+//                        text:msg,
+//                        dialog: {
+//                            resizable: false,
+//                            buttons  : {
+//                                "Cerrar":function(){
+//
+//                                }
+//                            }
+//                        }
+//                    });
+//                }
+//
+//            },"Cerrar":function(){
+//                $("#dlgCaducar").dialog("close")
+//            }
+//        }
+//    })
 
     $(".imprimiAval").button({icons:{ primary:"ui-icon-print"},text:false}).click(function(){
         //location.href = "${createLink(controller:'avales',action:'descargaAval')}/"+$(this).attr("iden")
