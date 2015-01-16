@@ -372,9 +372,8 @@ class SolicitudController extends Shield {
     /**
      * Acción que muestra una pantalla que permite ver los datos de la solicitud
      */
-    def show (){
-
-        println("params " + params)
+    def show_ajax (){
+//        println("params " + params)
         def solicitud = Solicitud.get(params.id)
         if (!solicitud) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'solicitud.label', default: 'Solicitud'), params.id])}"
@@ -410,7 +409,9 @@ class SolicitudController extends Shield {
         params.fecha = new Date().parse("dd-MM-yyyy", params.fecha_input)
         solicitud.properties = params
         if (!solicitud.save(flush: true)) {
-            println "error save1 solicitud " + solicitud.errors
+//            println "error save1 solicitud " + solicitud.errors
+            render "ERROR*Ha ocurrido un error al guardar la solicitud: " + renderErrors(bean: solicitud)
+            return
         }
 
         uploadFile("tdr", request.getFile('tdr'), solicitud)
@@ -421,7 +422,9 @@ class SolicitudController extends Shield {
         uploadFile("analisis", request.getFile('analisis'), solicitud)
 
         if (!solicitud.save(flush: true)) {
-            flash.message = "<h5>Ha ocurrido un error al crear la solicitud</h5>" + renderErrors(bean: solicitud)
+//            flash.message = "<h5>Ha ocurrido un error al crear la solicitud</h5>" + renderErrors(bean: solicitud)
+            render "ERROR*Ha ocurrido un error al guardar la solicitud: " + renderErrors(bean: solicitud)
+            return
         } else {
             println solicitud.formaPago
             def perfilGAF = Prfl.findByCodigo("GAF")
@@ -448,8 +451,18 @@ class SolicitudController extends Shield {
                     println "error alerta: " + alerta.errors
                 }
             }
+
         }
-        redirect(action: 'show', id: solicitud.id)
+
+        def texto
+        if(params.id){
+            texto = "Actualización de solicitud exitosa."
+        }else{
+            texto = "Creación de Solicitud exitosa."
+        }
+        render "SUCCESS*"+texto
+//        render "SUCCESS*Creación de Solicitud exitosa."
+        return
     }
 
 
@@ -489,7 +502,7 @@ class SolicitudController extends Shield {
             println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
         }
 
-        redirect(action: "show", id: solicitud.id)
+        redirect(action: "show_ajax", id: solicitud.id)
     }
 
 
@@ -798,7 +811,7 @@ class SolicitudController extends Shield {
      * dependiendo de si se envía o no el parámetro id
      * @param id el id de la solicitud en caso de que sea edición
      */
-    def ingreso = {
+    def ingreso_ajax = {
         if (session.perfil.codigo == "RQ" || session.perfil.codigo == "DRRQ") {
             def usuario = Persona.get(session.usuario.id)
             def unidadEjecutora = usuario.unidad
@@ -806,7 +819,7 @@ class SolicitudController extends Shield {
             def title = "Nueva"
             def asignado = 0
             if (params.id) {
-                solicitud = solicitud.get(params.id)
+                solicitud = Solicitud.get(params.id)
 /*
                 println session.unidad.id
                 println solicitud.unidadEjecutora.id
@@ -819,7 +832,7 @@ class SolicitudController extends Shield {
                     return
                 }
                 if (solicitud.estado == 'A') {
-                    redirect(action: "show", id: solicitud.id)
+                    redirect(action: "show_ajax", id: solicitud.id)
                     return
                 }
                 title = "Modificar"
@@ -845,7 +858,7 @@ class SolicitudController extends Shield {
                     asignado        : formatNumber(number: asignado, type: "currency"), perfil: session.perfil]
         } else {
             if (params.id) {
-                redirect(action: "show", id: params.id)
+                redirect(action: "show_ajax", id: params.id)
             } else {
                 redirect(action: "list")
             }
@@ -862,7 +875,7 @@ class SolicitudController extends Shield {
         def perfil = Prfl.get(session.perfil.id)
         def title = "Aprobar solicitud"
         if (!(solicitud.revisadoJuridica && solicitud.revisadoAdministrativaFinanciera/* && solicitud.revisadoDireccionProyectos*/)) {
-            redirect(action: "show", id: solicitud.id)
+            redirect(action: "show_ajax", id: solicitud.id)
             return
         }
         Aprobacion aprobacion = new Aprobacion()
@@ -912,7 +925,7 @@ class SolicitudController extends Shield {
         } else {
             println "error al guardar aprobacion: " + aprobacion.errors
         }
-        redirect(action: "show", id: aprobacion.solicitudId)
+        redirect(action: "show_ajax", id: aprobacion.solicitudId)
     }
 
 

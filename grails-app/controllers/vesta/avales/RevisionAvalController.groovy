@@ -389,7 +389,7 @@ class RevisionAvalController {
         println "liberacion " + params
 
         if (params.monto) {
-            params.monto = params.monto.replaceAll("\\.", "")
+//            params.monto = params.monto.replaceAll("\\.", "")
             params.monto = params.monto.replaceAll(",", ".")
         }
 
@@ -445,8 +445,10 @@ class RevisionAvalController {
 
             if (src.exists()) {
 
-                flash.message = "Ya existe un archivo con ese nombre. Por favor cámbielo."
-                redirect(action: 'listaAvales')
+//                flash.message = "Ya existe un archivo con ese nombre. Por favor cámbielo."
+//                redirect(action: 'listaAvales')
+                render "ERROR*Ya existe un archivo con ese nombre. Por favor cámbielo."
+                return
 
 
             } else {
@@ -466,8 +468,6 @@ class RevisionAvalController {
                             det.save(flush: true)
                         }
                     }
-
-
                 }
                 if (band) {
                     f.transferTo(new File(pathFile))
@@ -478,11 +478,16 @@ class RevisionAvalController {
                     aval.contrato = params.contrato
                     aval.certificacion = params.certificacion
                     aval.save(flush: true)
-                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numero + " Liberado"
-                    redirect(action: 'listaAvales', controller: 'revisionAval')
+//                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numero + " Liberado"
+//                    redirect(action: 'listaAvales', controller: 'revisionAval')
+                    render "SUCCESS*Aval " +  aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numero + " Liberado"
+                    return
+
                 } else {
-                    flash.message = "Usted no tiene permisos para liberar avales"
-                    redirect(controller: 'listaAvales', action: 'revisionAval')
+                    render "ERROR*Usted no tiene permisos para liberar avales"
+                    return
+//                    flash.message = "Usted no tiene permisos para liberar avales"
+//                    redirect(controller: 'listaAvales', action: 'revisionAval')
                 }
             }
         }

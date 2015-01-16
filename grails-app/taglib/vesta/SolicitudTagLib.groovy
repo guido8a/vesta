@@ -24,7 +24,7 @@ class SolicitudTagLib {
      */
     def showSolicitud = { attrs ->
         def solicitud = attrs.solicitud
-        def w = attrs.w ?: "1030px"
+        def w = attrs.w ?: "800px"
         def editable = attrs.editable ?: false
         def aprobacion = attrs.aprobacion ?: false
         def perfil = attrs.perfil ?: null

@@ -23,7 +23,7 @@
 <g:else>
     <div class="modal-contenido">
 
-    <g:form class="form-horizontal" name="frmSolicitud" role="form" action="save" method="POST">
+    <g:form class="form-horizontal" name="frmSolicitud" role="form" action="save" method="POST" id="${solicitud?.id}">
 
         <div class="form-group keeptogether">
             <span class="grupo">
@@ -49,7 +49,7 @@
         </div>
         <div class="form-group keeptogether">
             <span class="grupo">
-                <label for="componente" class="col-md-2 control-label">
+                <label for="tdComponente" class="col-md-2 control-label">
                     Componente
                 </label>
                 <div class="col-md-7" id="tdComponente">
@@ -265,226 +265,6 @@
 
 <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
-%{--<div class="dialog" title="${title}">--}%
-    %{--<div class="ui-widget-content ui-state-error ui-corner-all ui-helper-hidden" id="divPoa" style="padding:5px; margin-bottom: 10px;">--}%
-        %{--<p>La actividad seleccionada no se encuentra en el POA</p>--}%
-    %{--</div>--}%
-
-    %{--<g:uploadForm action="save" method="post" name="frmSolicitud" id="${solicitud.id}">--}%
-        %{--<table width="100%" border="0">--}%
-            %{--<g:if test="${solicitud.id}">--}%
-                %{--<tr>--}%
-                    %{--<td colspan="6" style="padding-bottom: 15px; font-size: larger; font-weight: bold;">--}%
-                        %{--<g:if test="${solicitud.incluirReunion == 'S'}">--}%
-                            %{--Se incluirá en la próxima reunión de aprobación--}%
-                            %{--<g:if test="${perfil.codigo == 'DRRQ'}">--}%
-                                %{--<a href="#" class="button boton-color" id="btnIncluir" data-tipo="N">No incluir</a>--}%
-                            %{--</g:if>--}%
-                        %{--</g:if>--}%
-                        %{--<g:else>--}%
-                            %{--<g:if test="${perfil.codigo == 'DRRQ'}">--}%
-                                %{--Solicitar la inclusión de la actividad en la próxima reunión de planificación de contratación--}%
-                                %{--<g:if test="${vesta.contratacion.DetalleMontoSolicitud.countBySolicitud(solicitud) > 0}">--}%
-                                    %{--<a href="#" class="button boton-color" id="btnIncluir" data-tipo="S">Solicitar</a>--}%
-                                %{--</g:if>--}%
-                            %{--</g:if>--}%
-                            %{--<g:else>--}%
-                                %{--No se incluirá en la próxima reunión de aprobación--}%
-                            %{--</g:else>--}%
-                        %{--</g:else>--}%
-                    %{--</td>--}%
-                %{--</tr>--}%
-            %{--</g:if>--}%
-            %{--<tr>--}%
-                %{--<td class="show-label">Unidad requirente</td>--}%
-                %{--<td colspan="3">--}%
-                    %{--${unidadRequirente.nombre}--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td class="show-label">Proyecto</td>--}%
-                %{--<td colspan="6">--}%
-                    %{--<g:select from="${proyectos}" name="proyecto.id" id="selProyecto" class="form-control input-sm"--}%
-                              %{--optionKey="id" optionValue="nombre" value="${solicitud.actividad?.proyectoId}" required="" style="width: 720px"/>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td class="show-label">Componente</td>--}%
-                %{--<td colspan="6" id="tdComponente">--}%
-                    %{--<g:select from="${Componente.list()}" name="componente.id" id="selComponente" class="ui-widget-content ui-corner-all"/>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-
-                %{--<td class="show-label">Actividad</td>--}%
-                %{--<td colspan="6" id="tdActividad">--}%
-                    %{--<g:select from="${Actividad.list()}" name="proyecto.id" id="selActividad" class="ui-widget-content ui-corner-all"/>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td class="show-label">Nombre del proceso</td>--}%
-                %{--<td colspan="6">--}%
-                    %{--<g:textField class="required field wide ui-widget-content ui-corner-all"--}%
-                                 %{--name="nombreProceso" title="Nombre del proceso" value="${solicitud.nombreProceso}" style="width:720px;"/>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td class="show-label">Forma de pago</td>--}%
-                %{--<td>--}%
-                    %{--<g:textField class="required wide field ui-widget-content ui-corner-all"--}%
-                                 %{--name="formaPago" title="Forma de pago" value="${solicitud.formaPago}"/>--}%
-                %{--</td>--}%
-
-                %{--<td class="show-label">Plazo de ejecución</td>--}%
-                %{--<td>--}%
-                    %{--<g:textField class="required digits field wide tiny ui-widget-content ui-corner-all"--}%
-                                 %{--name="plazoEjecucion" title="Plazo de ejecución" value="${solicitud.plazoEjecucion}"/> días--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td class="show-label">Fecha</td>--}%
-                %{--<td colspan="1">--}%
-                    %{--<g:textField class="required datepicker field wide short ui-widget-content ui-corner-all"--}%
-                                 %{--name="fecha" title="Fecha" autocomplete="off" value="${solicitud.fecha?.format('dd-MM-yyyy') ?: new Date().format('dd-MM-yyyy')}"/>--}%
-                %{--</td>--}%
-
-                %{--<td class="show-label">Monto solicitado</td>--}%
-                %{--<td>--}%
-                    %{--<g:if test="${solicitud.id}">--}%
-                        %{--<g:textField class="required number2 field wide short ui-widget-content ui-corner-all"--}%
-                                     %{--name="montoSolicitado" title="Monto solicitado" autocomplete="off"--}%
-                                     %{--value="${solicitud.montoSolicitado}" readonly="readonly"/>--}%
-                        %{--<a href="#" id="btnMontoDetalle">Detalle</a>--}%
-                    %{--</g:if>--}%
-                    %{--<g:else>--}%
-                        %{--<g:textField class="required number2 field wide short ui-widget-content ui-corner-all"--}%
-                                     %{--name="montoSolicitado" title="Monto solicitado" autocomplete="off"--}%
-                                     %{--value="${solicitud.montoSolicitado}"/>--}%
-                    %{--</g:else>--}%
-                    %{--(Detallado: <span id="spanAsg">${asignado}</span>)--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td class="show-label">Tipo de bien</td>--}%
-                %{--<td>--}%
-                    %{--<g:select name="tipoBien.id" id="selBien" from="${vesta.parametros.TipoBien.list()}"--}%
-                              %{--optionKey="id" optionValue="descripcion" class="requiredCmb" value="${solicitud.tipoBienId}"/>--}%
-                %{--</td>--}%
-                %{--<td class="show-label">Modalidad de contratación</td>--}%
-                %{--<td>--}%
-                    %{--<g:select name="tipoContrato.id" id="selContrato" from="${TipoContrato.list()}"--}%
-                              %{--optionKey="id" optionValue="descripcion" class="requiredCmb" value="${solicitud.tipoContratoId}"/>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td class="show-label">Objeto del contrato</td>--}%
-                %{--<td colspan="7">--}%
-                    %{--<g:textArea name="objetoContrato" rows="4" cols="115" class="ta required ui-widget-content ui-corner-all"--}%
-                                %{--value="${solicitud.objetoContrato}" style="width: 720px; resize: none"/>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td colspan="2" class="show-label">T.D.R.</td>--}%
-                %{--<td colspan="6">--}%
-                    %{--<input type="file" name="tdr" class="${solicitud.pathPdfTdr ? '' : 'required'}"/>--}%
-                    %{--<g:if test="${solicitud.pathPdfTdr}">--}%
-                        %{--<br/>--}%
-                        %{--Archivo actual:--}%
-                        %{--${solicitud.pathPdfTdr}--}%
-                    %{--</g:if>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td colspan="2" class="show-label">Oferta 1</td>--}%
-                %{--<td colspan="6">--}%
-                    %{--<input type="file" name="oferta1"/>--}%
-                    %{--<g:if test="${solicitud.pathOferta1}">--}%
-                        %{--<br/>--}%
-                        %{--Archivo actual:--}%
-                        %{--${solicitud.pathOferta1}--}%
-                    %{--</g:if>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td colspan="2" class="show-label">Oferta 2</td>--}%
-                %{--<td colspan="6">--}%
-                    %{--<input type="file" name="oferta2"/>--}%
-                    %{--<g:if test="${solicitud.pathOferta2}">--}%
-                        %{--<br/>--}%
-                        %{--Archivo actual:--}%
-                        %{--${solicitud.pathOferta2}--}%
-                    %{--</g:if>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td colspan="2" class="show-label">Oferta 3</td>--}%
-                %{--<td colspan="6">--}%
-                    %{--<input type="file" name="oferta3"/>--}%
-                    %{--<g:if test="${solicitud.pathOferta3}">--}%
-                        %{--<br/>--}%
-                        %{--Archivo actual:--}%
-                        %{--${solicitud.pathOferta3}--}%
-                    %{--</g:if>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td colspan="2" class="show-label">Cuadro comparativo</td>--}%
-                %{--<td colspan="6">--}%
-                    %{--<input type="file" name="comparativo"/>--}%
-                    %{--<g:if test="${solicitud.pathCuadroComparativo}">--}%
-                        %{--<br/>--}%
-                        %{--Archivo actual:--}%
-                        %{--${solicitud.pathCuadroComparativo}--}%
-                    %{--</g:if>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-                %{--<td colspan="2" class="show-label">Análisis de costos</td>--}%
-                %{--<td colspan="6">--}%
-                    %{--<input type="file" name="analisis"/>--}%
-                    %{--<g:if test="${solicitud.pathAnalisisCostos}">--}%
-                        %{--<br/>--}%
-                        %{--Archivo actual:--}%
-                        %{--${solicitud.pathAnalisisCostos}--}%
-                    %{--</g:if>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-
-            %{--<tr>--}%
-
-                %{--<td colspan="2" style="text-align:left;">--}%
-                    %{--<g:if test="${solicitud.id}">--}%
-                        %{--<g:link action="show" id="${solicitud.id}" class="btn btn-default button">--}%
-                            %{--Cancelar--}%
-                        %{--</g:link>--}%
-                    %{--</g:if>--}%
-                    %{--<g:else>--}%
-                        %{--<g:link action="list" class="btn btn-default button">--}%
-                            %{--Cancelar--}%
-                        %{--</g:link>--}%
-                    %{--</g:else>--}%
-                    %{--<a href="#" id="btnSave" class="btn btn-success button">--}%
-                    %{--<i class="fa fa-floppy-o"></i> Guardar</a>--}%
-                %{--</td>--}%
-            %{--</tr>--}%
-        %{--</table>--}%
-    %{--</g:uploadForm>--}%
-%{--</div>--}%
-
 <div id="dlgDetalleMonto" title="Detalle anual del monto solicitado">
     <div id="dlgDetalleMontoContent">
     </div>
@@ -605,9 +385,6 @@
 
             }
         });
-
-
-
     }
 
     function resetActividadForm() {
@@ -734,7 +511,7 @@
         } else {
             return false;
         } //else
-//    }
+    }
 
     $(function () {
 

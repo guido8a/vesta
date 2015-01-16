@@ -106,6 +106,7 @@
     function submitForm() {
         var $form = $("#frmSolicitud");
         var $btn = $("#dlgCreateEdit").find("#btnSave");
+
         if ($form.valid()) {
             $btn.replaceWith(spinner);
             openLoader("Guardando Solicitud");
@@ -133,8 +134,6 @@
             });
         } else {
             //error
-//            console.log("e", $('.modal-contenido'),$(".has-error")[0]/*,$(".has-error")[0].offset().top*/);
-//            $('.modal-contenido').scrollTop($($(".has-error")[0]).offset().top);
             $('.modal-contenido').animate({
                 scrollTop: $($(".has-error")[0]).offset().top-100
             }, 1000);
@@ -145,7 +144,7 @@
         bootbox.dialog({
             title   : "Alerta",
             message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-            "¿Está seguro que desea eliminar el Solicitud seleccionado? Esta acción no se puede deshacer.</p>",
+            "¿Está seguro que desea eliminar la Solicitud seleccionado? Esta acción no se puede deshacer.</p>",
             buttons : {
                 cancelar : {
                     label     : "Cancelar",
@@ -184,10 +183,10 @@
     function createEditRow(id) {
         var title = id ? "Editar" : "Crear";
         var data = id ? { id: id } : {};
+        console.log("idf " + data)
         $.ajax({
             type    : "POST",
-            %{--url     : "${createLink(action:'form_ajax')}",--}%
-            url     : "${createLink(action:'ingreso')}",
+            url     : "${createLink(action:'ingreso_ajax')}",
             data    : data,
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -221,6 +220,36 @@
         }); //ajax
     } //createEdit
 
+    function showSolicitud(id) {
+        var data = id ? { id: id } : {};
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'show_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgVer",
+                    title   : "Detalles de la Solicitud",
+
+                    class   : "modal-lg",
+
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
     function createContextMenu (node) {
         var $tr = $(node);
 
@@ -238,7 +267,7 @@
                 icon   : "fa fa-search",
                 action : function ($element) {
                     var id = $element.data("id");
-                    %{--location.href = "${createLink(action: 'show')}?id=" + id;--}%
+                    showSolicitud(id)
                 }
             }
         };

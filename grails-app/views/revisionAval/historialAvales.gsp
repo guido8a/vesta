@@ -6,11 +6,11 @@
   Time: 01:13 PM
 --%>
 
-
+<div class="modal-contenido">
 <table class="table table-condensed table-bordered table-striped table-hover">
-    <thead>
-    <tr>
-        <th sort="numero" class="sort ${(sort=='numero')?order:''}">Número</th>
+  <thead>
+  <tr>
+      <th sort="numero" class="sort ${(sort=='numero')?order:''}">Número</th>
         <th sort="proyecto" class="sort ${(sort=='proyecto')?order:''}">Proyecto</th>
         <th sort="proceso" class="sort ${(sort=='proceso')?order:''}">Proceso</th>
         <th sort="monto" class="sort ${(sort=='monto')?order:''}">Monto</th>
@@ -40,6 +40,8 @@
     </g:each>
     </tbody>
 </table>
+</div>
+
 <div id="dlgCaducar">
     <g:form action="caducarAval" class="frmCaducar" enctype="multipart/form-data">
         <input type="hidden" name="id" id="idCaducar">
@@ -47,15 +49,17 @@
 </div>
 
 <script>
-    $(".liberar").button({icons:{ primary:"ui-icon-extlink"},text:false}).click(function(){
-//        $("#idLiberar").val($(this).attr("iden"))
-//        $("#max").html($(this).attr("max"))
-//        $("#monto").val("")
-//        $("#contrato").val("")
-//        $("#archivo").val("")
-//        $("#dlgLiberar").dialog("open")
-        location.href="${g.createLink(action: 'liberarAval')}/"+$(this).attr("iden")
-    })
+    %{--$(".liberar").button({icons:{ primary:"ui-icon-extlink"},text:false}).click(function(){--}%
+%{--//        $("#idLiberar").val($(this).attr("iden"))--}%
+%{--//        $("#max").html($(this).attr("max"))--}%
+%{--//        $("#monto").val("")--}%
+%{--//        $("#contrato").val("")--}%
+%{--//        $("#archivo").val("")--}%
+%{--//        $("#dlgLiberar").dialog("open")--}%
+        %{--location.href="${g.createLink(action: 'liberarAval')}/"+$(this).attr("iden")--}%
+    %{--})--}%
+    %{----}%
+
     $(".caducar").button({icons:{ primary:"ui-icon-alert"},text:false}).click(function(){
         $("#idCaducar").val($(this).attr("iden"))
         $("#dlgCaducar").dialog("open")
@@ -63,14 +67,19 @@
 
     function submitForm() {
         var $form = $("#frmLiberar");
-        var $btn = $("#dlgCreateEdit").find("#btnSave");
+        var $btn = $("#dlgLiberar").find("#btnSave");
         if ($form.valid()) {
             $btn.replaceWith(spinner);
             openLoader("Liberando Aval");
+            var formData = new FormData($form[0]);
             $.ajax({
                 type    : "POST",
                 url     : $form.attr("action"),
-                data    : $form.serialize(),
+                data        : formData,
+                async       : false,
+                cache       : false,
+                contentType : false,
+                processData : false,
                 success : function (msg) {
                     var parts = msg.split("*");
                     log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
@@ -85,6 +94,9 @@
                 }
             });
         } else {
+            $('.modal-contenido').animate({
+                scrollTop: $($(".has-error")[0]).offset().top-100
+            }, 1000);
             return false;
         } //else
     }
@@ -92,14 +104,13 @@
 
     function liberarAval(id) {
         var data = id ? { id: id } : {};
-
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'liberarAval')}",
             data    : data,
             success : function (msg) {
                 var b = bootbox.dialog({
-                    id      : "dlgCreateEdit",
+                    id      : "dlgLiberar",
                     title   : "Liberar Aval",
 
                     class   : "modal-lg",
@@ -117,7 +128,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-//                                return submitForm();
+                                return submitForm();
 
                             } //callback
                         } //guardar
