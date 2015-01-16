@@ -41,28 +41,28 @@ $("#campo").change(function() {
     cambiaOperador()
 });
 $("#reset").click(function(){
-        $(".crit").remove()
-    });
+    $(".crit").remove()
+});
 
 $("#mas").unbind()
 $("#mas").bind("click",function(){
-        var tipoCampo=$("#tipoCampo")
-        var campo = $("#campo :selected")
-        var operador = $("#operador :selected")
-        var criterio = $("#criterio")
-        var div =$("<div>")
-        div.html(campo.text()+" "+operador.text()+" a '"+criterio.val()+"'").addClass("crit ui-corner-all")
-        div.attr("campo",campo.val()).attr("operador",operador.val()).attr("criterio",criterio.val())
-        div.css({float:"left",height:"25px",minWith :"60px",background:"rgba(248, 192, 60,0.5)",lineHeight:"25px",paddingLeft:"5px",paddingRight:"5px",marginLeft:"5px",marginTop:"5px",border:"1px solid rgb(248, 192, 60)",cursor:"pointer"})
-        div.click(function(){
-            $(this).remove()
-        })
-        $("#criterios").append(div)
+    var tipoCampo=$("#tipoCampo")
+    var campo = $("#campo :selected")
+    var operador = $("#operador :selected")
+    var criterio = $("#criterio")
+    var div =$("<div>")
+    div.html(campo.text()+" "+operador.text()+" a '"+criterio.val()+"'").addClass("crit ui-corner-all")
+    div.attr("campo",campo.val()).attr("operador",operador.val()).attr("criterio",criterio.val())
+    div.css({float:"left",height:"25px",minWith :"60px",background:"rgba(248, 192, 60,0.5)",lineHeight:"25px",paddingLeft:"5px",paddingRight:"5px",marginLeft:"5px",marginTop:"5px",border:"1px solid rgb(248, 192, 60)",cursor:"pointer"})
+    div.click(function(){
+        $(this).remove()
+    })
+    $("#criterios").append(div)
 
 
 
 
-    });
+});
 
 
 function cambiaOperador() {

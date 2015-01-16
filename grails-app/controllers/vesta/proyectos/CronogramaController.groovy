@@ -20,7 +20,7 @@ class CronogramaController extends Shield {
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
     def dbConnectionService
-
+    def buscadorService
     /**
      * Acción que muestra el cronograma de un proyecto
      */
@@ -263,6 +263,48 @@ class CronogramaController extends Shield {
             }
         }
         return res
+    }
+
+    def buscarPresupuesto () {
+        println "presupuesto en cronograma"
+        def listaTitulos = ["Número","Descripción"]
+        def listaCampos = ["numero","descripcion"]
+        def funciones = [null, null]
+        def url = g.createLink(action: "buscarPresupuesto", controller: "asignacion")
+        def funcionJs = ""
+        funcionJs+='function(){'
+        funcionJs+=' var idReg = $(this).attr("regId");\n' +
+                '            var txtReg = $(this).attr("txtReg");\n' +
+                '            $("#partida2").val(idReg);\n' +
+                '            $(".bsc_desc-2").val(txtReg);\n' +
+                '            $(".modal-search").modal("hide");'
+        funcionJs+='}'
+        def numRegistros = 20
+        def extras =""
+
+        if (!params.reporte) {
+            if (params.excel) {
+                session.dominio = Presupuesto
+                session.funciones = funciones
+                def anchos = [30,70]
+                /*anchos para el set column view en excel (no son porcentajes)*/
+                redirect(controller: "reportesBuscador", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Partidas presupuestarias", anchos: anchos, extras: extras, landscape: true])
+            } else {
+                def lista = buscadorService.buscar(Presupuesto, "Presupuesto", "excluyente", params, true, extras)
+                /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
+                lista.pop()
+                render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "asignacion", numRegistros: numRegistros, funcionJs: funcionJs, paginas: 10])
+            }
+
+        } else {
+//            println "entro reporte"
+            /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
+            session.dominio = Presupuesto
+            session.funciones = funciones
+            def anchos = [30, 70]
+            /*el ancho de las columnas en porcentajes... solo enteros*/
+            redirect(controller: "reportesBuscador", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
+        }
     }
 
 }
