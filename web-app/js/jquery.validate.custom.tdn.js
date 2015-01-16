@@ -16,4 +16,4 @@ jQuery.validator.addMethod("notEqualTo", function (value, element, param) {
 jQuery.validator.addMethod("tdnMax", function (value, element, param) {
     value = parseFloat(str_replace(",", "", value));
     return this.optional(element) || value <= param;
-}, jQuery.validator.format("Ingrese un valor inferior a {0}."));
+}, jQuery.validator.format("Ingrese un valor inferior o igual a {0}."));

@@ -75,8 +75,8 @@ class CronogramaController extends Shield {
             fuentes.add(it.fuente)
             totAnios.put(it.fuente.id, it.monto)
         }
-        //println "anio "+anio+" total anios "+totAnios
-        return [proyecto: proyecto, componentes: componentes, anio: anio, fuentes: fuentes, totAnios: totAnios, actSel: act]
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+        return [proyecto: proyecto, componentes: componentes, anio: anio, fuentes: fuentes, totAnios: totAnios, actSel: act, campos: campos]
     }
 
     def calcularAsignaciones_ajax() {

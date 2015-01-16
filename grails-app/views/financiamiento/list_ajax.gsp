@@ -89,11 +89,12 @@
             },
             success        : function (label) {
                 label.parents(".grupo").removeClass('has-error');
+label.remove();
             },
             rules          : {
                 monto : {
                     tdnMax : function () {
-                        return restante;
+                        return parseFloat(number_format(restante, 2, ".", ""));
                     }
                 }
             },

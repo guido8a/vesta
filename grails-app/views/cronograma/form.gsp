@@ -14,7 +14,7 @@
             font-size : 9pt;
         }
 
-        td {
+        td, th {
             vertical-align : middle !important;
         }
 
@@ -26,6 +26,10 @@
 
         tr:hover .disabled {
             background : #ccc !important;
+        }
+
+        tfoot {
+            font-size : larger;
         }
         </style>
     </head>
@@ -75,10 +79,10 @@
                             </th>
                         </tr>
 
-                        <tr>
+                        <tr id="trMeses">
                             <th style="width: 300px;">Componentes/Rubros</th>
                             <g:each in="${Mes.list()}" var="mes">
-                                <th style="width:100px;">${mes.descripcion[0..2]}.</th>
+                                <th style="width:100px;" title="${mes.descripcion} ${anio.anio}">${mes.descripcion[0..2]}.</th>
                             </g:each>
                             <th>Asignado</th>
                             <th>Sin asignar</th>
@@ -86,7 +90,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <g:set var="indice" value="${0}"/>
                         <g:set var="totProy" value="${0}"/>
                         <g:set var="totProyAsig" value="${0}"/>
                         <g:set var="totalMetas" value="${0}"/>
@@ -95,6 +98,9 @@
                         <g:each in="${componentes}" var="comp" status="j">
                             <g:set var="totComp" value="${0}"/>
                             <g:set var="totCompAsig" value="${0}"/>
+
+                            <g:set var="totProyAsig" value="${totProyAsig.toDouble() + totCompAsig.toDouble()}"/>
+                            <g:set var="totProy" value="${totProy.toDouble() + totComp.toDouble()}"/>
                             <tr id="comp${comp.id}" class="success">
                                 <th colspan="17">
                                     <strong>Componente ${comp.numeroComp}</strong>:
@@ -102,7 +108,7 @@
                                 </th>
                             </tr>
                             <g:each in="${MarcoLogico.findAllByMarcoLogicoAndEstado(comp, 0, [sort: 'id'])}" var="act" status="i">
-                                <g:if test="${!actSel}">
+                                <g:if test="${!actSel || (actSel && actSel.id == act.id)}">
                                     <g:set var="monto" value="${act.monto}"/>
                                     <g:set var="totComp" value="${totComp.toDouble() + monto}"/>
                                     <g:set var="tot" value="${0}"/>
@@ -112,7 +118,7 @@
                                     <g:set var="totalMetas" value="${totalMetas.toDouble() + monto}"/>
 
                                     <tr>
-                                        <th class="success" title="${act.responsable} - ${act.objeto}" style="width:300px;">
+                                        <th class="success actividad" title="${act.responsable} - ${act.objeto}" style="width:300px;">
                                             ${(act.objeto.length() > 100) ? act.objeto.substring(0, 100) + "..." : act.objeto}
                                         </th>
                                         <g:each in="${Mes.list()}" var="mes" status="k">
@@ -130,175 +136,124 @@
                                                 <g:if test="${crg}">
                                                     <g:set var="val" value="${crg.valor + crg.valor2}"/>
                                                     <g:set var="crg" value="${null}"/>
-                                                    <g:set var="clase" value=""/>
+                                                    <g:set var="clase" value="clickable"/>
                                                 </g:if>
                                             </g:if>
                                             <g:if test="${monto.toDouble() > 0}">
-                                                <g:set var="clase" value=""/>
+                                                <g:set var="clase" value="clickable"/>
                                             </g:if>
                                             <td class="text-right ${clase}">
                                                 <g:formatNumber number="${val}" type="currency"/>
                                             </td>
                                         </g:each>
-                                        <td class="disabled text-right" id="tot_${j}${i}">
+                                        <th class="disabled text-right asignado" data-val="${tot}">
                                             <g:formatNumber number="${tot}" type="currency"/>
-                                        </td>
-                                        <td class="disabled text-right" id="tot_${j}${i}a">
+                                        </th>
+                                        <th class="disabled text-right sinAsignar" data-val="${act.monto - tot}">
                                             <g:formatNumber number="${act.monto - tot}" type="currency"/>
-                                        </td>
-                                        <td class="disabled text-right">
+                                        </th>
+                                        <th class="disabled text-right total" data-val="${monto}">
                                             <g:formatNumber number="${monto}" type="currency"/>
-                                        </td>
+                                        </th>
 
                                     </tr>
                                 </g:if>
-                                <g:else>
-                                    <g:if test="${actSel.id == act.id}">
-                                        <g:set var="monto" value="${act.monto}"/>
-                                        <g:set var="totComp" value="${totComp.toDouble() + monto}"/>
-                                        <tr>
-
-                                            <td class="colGrande" style="width: 220px;font-weight: bold" title="${act.responsable} - ${act.objeto}">
-                                                ${(act.objeto.length() > 100) ? act.objeto.substring(0, 100) + "..." : act.objeto}
-                                            </td>
-                                            <g:set var="tot" value="${0}"/>
-                                            <g:set var="totAct" value="${monto}"/>
-                                            <g:each in="${Mes.list()}" var="mes" status="k">
-                                                <g:set var="crga" value='${Cronograma.findAllByMarcoLogicoAndMes(act, mes)}'/>
-                                                <g:if test="${crga.size() > 0}">
-                                                    <g:each in="${crga}" var="c">
-                                                        <g:if test="${c?.anio == anio && c?.cronograma == null}">
-                                                            <g:set var="crg" value='${c}'/>
-                                                        </g:if>
-                                                    </g:each>
-                                                    <g:if test="${crg}">
-                                                        <g:if test="${true}">
-                                                            <td style="width: 60px">
-
-                                                                <input type="text" id="crg_${crg.id}" value='${formatNumber(number: crg.valor + crg.valor2, minFractionDigits: 2, maxFractionDigits: 2)}'
-                                                                       class="num fa_${crg.fuente.id}" mes="${mes.id} " identificador="${crg.id}"
-                                                                       actividad="${act.id}" tot="${monto}"
-                                                                       div="tot_${j}${i}"
-                                                                       mt="${mes.descripcion}" style="width: 60px"
-                                                                       prsp_desc="${crg.presupuesto.descripcion}" prsp="${crg.presupuesto.id}" prsp_num="${crg.presupuesto.numero}"
-                                                                       fuente="${crg.fuente.id}"
-                                                                       prsp2="${crg.presupuesto2?.id}" prsp_num2="${crg.presupuesto2?.numero}" prsp_desc2="${crg.presupuesto2?.descripcion}"
-                                                                       valor1="${formatNumber(number: crg.valor, minFractionDigits: 2, maxFractionDigits: 2)}"
-                                                                       valor2="${formatNumber(number: crg.valor2, minFractionDigits: 2, maxFractionDigits: 2)}">
-
-                                                            </td>
-                                                        </g:if>
-                                                        <g:else>
-                                                            <td class="disabled" style="width: 60px">0,00</td>
-                                                        </g:else>
-                                                        <g:set var="crg" value="${null}"/>
-                                                    </g:if>
-                                                    <g:else>
-                                                        <g:if test="${monto.toDouble() > 0}">
-                                                            <td style="width: 60px">
-                                                                <input type="text" id="crg_0${j}${i}${k}" value="0,00" class="num"
-                                                                       mes="${mes.id} " actividad="${act.id}" identificador="0"
-                                                                       tot="${monto}" div="tot_${j}${i}"
-                                                                       mt="${mes.descripcion}" style="width: 60px" valor1="0,00" valor2="0,00">
-                                                            </td>
-                                                        </g:if>
-                                                        <g:else>
-                                                            <td class="disabled">0,00</td>
-                                                        </g:else>
-                                                    </g:else>
-                                                </g:if>
-                                                <g:else>
-                                                    <g:if test="${monto.toDouble() > 0}">
-                                                        <td style="width: 60px">
-                                                            <input type="text" id="crg_0${j}${i}${k}" value="0,00" class="num"
-                                                                   mes="${mes.id} " actividad="${act.id}" identificador="0"
-                                                                   tot="${monto}" div="tot_${j}${i}"
-                                                                   mt="${mes.descripcion}" style="width: 60px" valor1="0,00" valor2="0,00">
-                                                        </td>
-                                                    </g:if>
-                                                    <g:else>
-                                                        <td class="disabled">0,00</td>
-                                                    </g:else>
-                                                </g:else>
-                                            </g:each>
-                                        %{--<<----------------<<<<<<<< >>>>>>>>>>>>> <br>--}%
-                                            <td class="disabled text-right" id="tot_${j}${i}" div="totComp_${j}">
-                                                <g:set var="tot" value="${act.getTotalCronograma()}"/>
-                                                <g:set var="totCompAsig" value="${totCompAsig.toDouble() + act.getTotalCronograma()}"/>
-                                                <g:formatNumber number="${tot}" type="currency"/>
-                                            </td>
-                                            <td class="disabled text-right" id="tot_${j}${i}a" div="totComp_${j}a">
-                                                <g:formatNumber number="${totAct.toDouble() - (tot.toDouble() + 0)}" type="currency"/>
-
-                                            </td>
-                                            <td class="disabled text-right">
-                                                <g:formatNumber number="${monto}" type="currency"/>
-                                                <g:set var="totalMetas" value="${totalMetas.toDouble() + monto}"/>
-                                            </td>
-
-                                        </tr>
-                                    </g:if>
-                                </g:else>
-
                             </g:each>
                         %{--<<----------------<<<<<<<< <br>--}%
-                            <tr>
-                                <td class="colGrande " colspan="13"><b>TOTAL</b>
-                                </td>
-                                <td class="text-center">
-                                    <b><div id="totComp_${j}a" class="totCompsa text-right">
-                                        <g:formatNumber number="${totCompAsig}" type="currency"/>
-                                    </div></b>
-                                </td>
-                                <td class="text-center">
-                                    <b>
-                                        <div id="totComp_${j}" class="totComps text-right">
-                                            <g:formatNumber number="${(totComp.toDouble() - totCompAsig.toDouble())}" type="currency"/>
-                                        </div>
-                                    </b>
-                                </td>
-                                <td class="text-right">
+                            <tr class="warning">
+                                <th class="colGrande " colspan="13">TOTAL</th>
+                                <th class="text-right">
+                                    <g:formatNumber number="${totCompAsig}" type="currency"/>
+                                </th>
+                                <th class="text-right">
+                                    <g:formatNumber number="${(totComp.toDouble() - totCompAsig.toDouble())}" type="currency"/>
+                                </th>
+                                <th class="text-right">
                                     <g:formatNumber number="${totalMetas}" type="currency"/>
 
                                     <g:set var="totalMetasCronograma" value="${totalMetasCronograma.toDouble() + totalMetas}"/>
                                     <g:set var="totalMetas" value="${0}"/>
-                                </td>
-                                <g:set var="totProyAsig"
-                                       value="${totProyAsig.toDouble() + totCompAsig.toDouble()}"/>
-                                <g:set var="totProy" value="${totProy.toDouble() + totComp.toDouble()}"/>
-                                <g:set var="indice" value="${indice.toInteger() + 1}"/>
-                                <g:if test="${indice > 4}">
-                                    <g:set var="indice" value="${0}"/>
-                                </g:if>
+                                </th>
                             </tr>
                         </g:each>
-                        <tr>
-                            <td class="colGrande " style="background: #e8e8e8" colspan="13"><b>TOTAL DEL PROYECTO</b>
-                            </td>
-                            <td class="text-right">
-                                <b>
-                                    <div id="totGeneralAsignado">
-                                        <g:formatNumber number="${totProyAsig}" type="currency"/>
-                                        %{--${totProyAsig.toFloat().round(2)}--}%
-                                    </div>
-                                </b>
-                            </td>
-                            <td class="text-right">
-                                <b>
-                                    <div id="totGeneral">
-                                        <g:formatNumber number="${(totProy.toDouble() - (totProyAsig.toDouble()))}" type="currency"/>
-                                        %{--${(totProy.toDouble() - (totProyAsig.toDouble()+totOtroAnioProyecto.toDouble())).toFloat().round(2)}--}%
-                                    </div>
-                                </b>
-                            </td>
-                            <td class="text-right">
-                                <g:formatNumber number="${(totalMetasCronograma)}" type="currency"/>
-                            </td>
-                        </tr>
                     </tbody>
+                    <tfoot>
+                        <tr class="danger">
+                            <th colspan="13">TOTAL DEL PROYECTO</th>
+                            <th class="text-right">
+                                <g:formatNumber number="${totProyAsig}" type="currency"/>
+                            </th>
+                            <th class="text-right">
+                                <g:formatNumber number="${(totProy.toDouble() - (totProyAsig.toDouble()))}" type="currency"/>
+                            </th>
+                            <th class="text-right">
+                                <g:formatNumber number="${(totalMetasCronograma)}" type="currency"/>
+                            </th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </elm:container>
+
+        <div class="modal fade" id="modalCrono">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="modalTitle">Cronograma</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <div id="divActividad"></div>
+
+                            <div id="divInfo" class="text-warning"></div>
+                        </div>
+
+                        <form class="form-horizontal" id="frmCrono" style="height: 300px; overflow:auto;">
+                            <elm:fieldRapido label="Presupuesto (1)" claseLabel="col-md-3" claseField="col-md-4">
+                                <div class="input-group input-group-sm">
+                                    <g:textField name="presupuesto1" class="form-control required number money"/>
+                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                </div>
+                            </elm:fieldRapido>
+                            <elm:fieldRapido label="Partida (1)" claseLabel="col-md-3" claseField="col-md-4">
+                                <bsc:buscador name="partida1" id="partida1" controlador="asignacion"
+                                              accion="buscarPresupuesto" tipo="search" titulo="Busque una partida"
+                                              campos="${campos}" clase="required"/>
+                            </elm:fieldRapido>
+                            <elm:fieldRapido label="Fuente (1)" claseLabel="col-md-3" claseField="col-md-7">
+                                <g:select name="fuente1" from="${fuentes}" id="fuente"
+                                          optionKey="id" optionValue="descripcion" class="form-control input-sm"/>
+                            </elm:fieldRapido>
+                            <hr/>
+                            <elm:fieldRapido label="Presupuesto (2)" claseLabel="col-md-3" claseField="col-md-4">
+                                <div class="input-group input-group-sm">
+                                    <g:textField name="presupuesto2" class="form-control number money"/>
+                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                </div>
+                            </elm:fieldRapido>
+                            <elm:fieldRapido label="Partida (2)" claseLabel="col-md-3" claseField="col-md-4">
+                                <bsc:buscador name="partida2" id="partida2" controlador="asignacion"
+                                              accion="buscarPresupuesto" tipo="search" titulo="Busque una partida"
+                                              campos="${campos}" clase=""/>
+                            </elm:fieldRapido>
+                            <elm:fieldRapido label="Fuente (2)" claseLabel="col-md-3" claseField="col-md-7">
+                                <g:select name="fuente2" from="${fuentes}" id="fuente"
+                                          optionKey="id" optionValue="descripcion" class="form-control input-sm"/>
+                            </elm:fieldRapido>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-default" id="btnModalCancel">Cancelar</a>
+                        <a href="#" class="btn btn-success" id="btnModalSave"><i class="fa fa-save"></i> Guardar</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <script type="text/javascript">
             function armaParams() {
                 var params = "";
@@ -329,7 +284,76 @@
                 return params;
             }
 
+            function resetForm() {
+                $("#presupuesto1").val("");
+                $("#bsc-desc-partida1").val("");
+                $("#partida1").val("");
+                $("#fuente1").find("option").first().attr("selected");
+
+                $("#presupuesto2").val("");
+                $("#bsc-desc-partida2").val("");
+                $("#partida2").val("");
+                $("#fuente2").find("option").first().attr("selected");
+            }
+
             $(function () {
+
+                var validator = $("#frmCrono").validate({
+                    errorClass     : "help-block",
+                    errorPlacement : function (error, element) {
+                        if (element.parent().hasClass("input-group")) {
+                            error.insertAfter(element.parent());
+                        } else {
+                            error.insertAfter(element);
+                        }
+                        element.parents(".grupo").addClass('has-error');
+                    },
+                    success        : function (label) {
+                        label.parents(".grupo").removeClass('has-error');
+                        label.remove();
+                    }
+                });
+
+                $("#btnModalCancel").click(function () {
+                    validator.resetForm();
+                    resetForm();
+                    $(".has-error").removeClass("has-error");
+                    $('#modalCrono').modal("hide");
+                    return false;
+                });
+
+                $("#btnModalSave").click(function () {
+                    if ($("#frmCrono").valid()) {
+
+                    }
+                    return false;
+                });
+
+                $(".clickable").click(function () {
+                    var $this = $(this);
+                    var $tr = $this.parents("tr");
+                    var mes = $("#trMeses").children().eq($this.index()).attr("title");
+
+                    var $actividad = $tr.find(".actividad");
+                    var $asignado = $tr.find(".asignado");
+                    var $sinAsignar = $tr.find(".sinAsignar");
+                    var $total = $tr.find(".total");
+
+                    var actividad = $actividad.attr("title");
+                    var asignado = $asignado.data("val");
+                    var sinAsignar = $sinAsignar.data("val");
+                    var total = $total.data("val");
+                    $('#modalCrono').modal("show");
+
+                    $("#modalTitle").text("Cronograma - " + mes);
+                    $("#divActividad").text(actividad);
+                    $("#divInfo").html("<ul>" +
+                                       "<li><strong>Monto total:</strong> $" + number_format(total, 2, ".", ",") + "</li>" +
+                                       "<li><strong>Asignado:</strong> $" + number_format(asignado, 2, ".", ",") + "</li>" +
+                                       "<li><strong>Por asignar:</strong> $" + number_format(sinAsignar, 2, ".", ",") + "</li>" +
+                                       "</ul>");
+                });
+
                 var $container = $(".divTabla");
                 $container.scrollTop(0 - $container.offset().top + $container.scrollTop());
                 $("#anio").change(function () {

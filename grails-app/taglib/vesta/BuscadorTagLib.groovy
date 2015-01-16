@@ -60,10 +60,10 @@ class BuscadorTagLib {
     def buscadorReload(name,value,fields,controller,action,type,id,title,clase){
         def salida = ""
         salida+='<span class="grupo">'
-        salida+='<div class="input-group" style="width:294px;">'
-        salida+='<input type="text" class="form-control bsc_desc '+clase+' input-sm" id="bsc-desc-'+id+'"  dialog="modal-'+id+'"  >'
+        salida+='<div class="input-group input-group-sm" style="width:294px;">'
+        salida+='<input type="text" class="form-control bsc_desc '+clase+'" id="bsc-desc-'+id+'"  dialog="modal-'+id+'"  >'
         salida+='<span class="input-group-btn">'
-        salida+='<a href="#" id="btn-abrir-'+id+'" class="btn btn-info input-sm" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>'
+        salida+='<a href="#" id="btn-abrir-'+id+'" class="btn btn-info" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>'
         salida+='</span>'
         salida+='</div>'
         salida+=' </span>'

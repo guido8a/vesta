@@ -127,6 +127,7 @@
             },
             success        : function (label) {
                 label.parents(".grupo").removeClass('has-error');
+label.remove();
             },
             rules          : {
                 documento : {

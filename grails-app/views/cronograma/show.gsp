@@ -22,7 +22,7 @@
             font-size : 9pt;
         }
 
-        td {
+        td, th {
             vertical-align : middle !important;
         }
 
@@ -30,6 +30,10 @@
             max-height : 450px;
             overflow-y : auto;
             overflow-x : hidden;
+        }
+
+        tfoot {
+            font-size : larger;
         }
         </style>
 
@@ -134,50 +138,43 @@
                                             <g:formatNumber number="${valor}" type="currency"/>
                                         </td>
                                     </g:each>
-                                    <td class="text-right" id="tot_${j}${i}">
+                                    <th class="text-right">
                                         <g:formatNumber number="${tot}" type="currency"/>
-                                    </td>
-                                    <td class="text-right" id="tot_${j}${i}a">
+                                    </th>
+                                    <th class="text-right">
                                         <g:formatNumber number="${act.monto - tot.toDouble()}" type="currency"/>
-                                    </td>
-                                    <td class="text-right" id="tot_${j}${i}a">
+                                    </th>
+                                    <th class="text-right">
                                         <g:formatNumber number="${monto}" type="currency"/>
-                                    </td>
+                                    </th>
                                 </tr>
                             </g:each>
                             <tr class="warning">
-                                %{--<g:each in="${0..11}" var="lzmk">--}%
-                                %{--<th>k= ${lzmk}</th>--}%
-                                %{--</g:each>--}%
-                                <td colspan="13"><strong>TOTAL</strong></td>
-                                <td class="text-right">
+                                <th colspan="13">TOTAL</th>
+                                <th class="text-right">
                                     <g:formatNumber number="${totCompAsig}" type="currency"/>
-                                </td>
-                                <td class="text-right">
+                                </th>
+                                <th class="text-right">
                                     <g:formatNumber number="${(totComp.toDouble() - totCompAsig.toDouble())}" type="currency"/>
-                                </td>
-                                <td class="text-right">
+                                </th>
+                                <th class="text-right">
                                     <g:formatNumber number="${totalMetas}" type="currency"/>
-                                </td>
+                                </th>
                             </tr>
                         </g:each>
                     </tbody>
                     <tfoot>
                         <tr class="danger">
-                            %{--<g:each in="${0..11}" var="lzml">--}%
-                            %{--<th>l= ${lzml}</th>--}%
-                            %{--</g:each>--}%
-                            <td colspan="13"><b>TOTAL DEL PROYECTO</b>
-                            </td>
-                            <td class="text-right">
+                            <th colspan="13">TOTAL DEL PROYECTO</th>
+                            <th class="text-right">
                                 <g:formatNumber number="${totProyAsig}" type="currency"/>
-                            </td>
-                            <td class="text-right">
+                            </th>
+                            <th class="text-right">
                                 <g:formatNumber number="${(totProy.toDouble() - totProyAsig.toDouble())}" type="currency"/>
-                            </td>
-                            <td class="text-right">
+                            </th>
+                            <th class="text-right">
                                 <g:formatNumber number="${(totalMetasCronograma)}" type="currency"/>
-                            </td>
+                            </th>
                         </tr>
                     </tfoot>
                 </table>
