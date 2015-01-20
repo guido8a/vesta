@@ -51,10 +51,10 @@ class MenuTagLib {
             html += "</div>"
         } else {
             html += "<div class='banner-search'>"
-            html += "<div class='input-group'>"
-            html += "<input type='text' class='form-control input-sm' placeholder='Buscador'>"
+            html += "<div class='input-group input-group-sm'>"
+            html += "<input type='text' class='form-control' placeholder='Buscador'>"
             html += "<span class='input-group-btn'>"
-            html += "<a href='#' class='btn btn-default btn-sm'><i class='fa fa-search'></i>&nbsp;</a>"
+            html += "<a href='#' class='btn btn-default' style='margin-top:-4px;'><i class='fa fa-search'></i>&nbsp;</a>"
             html += "</span>"
             html += "</div><!-- /input-group -->"
             html += "</div>"

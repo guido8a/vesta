@@ -6,6 +6,7 @@ import vesta.avales.DistribucionAsignacion
 import vesta.parametros.TipoElemento
 import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
+import vesta.parametros.poaPac.Mes
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.poa.ProgramacionAsignacion
@@ -72,11 +73,64 @@ class CronogramaController extends Shield {
         def fuentes = []
         def totAnios = [:]
         finan.each {
-            fuentes.add(it.fuente)
+            fuentes.add(it)
             totAnios.put(it.fuente.id, it.monto)
         }
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
         return [proyecto: proyecto, componentes: componentes, anio: anio, fuentes: fuentes, totAnios: totAnios, actSel: act, campos: campos]
+    }
+
+    /**
+     * Acción llamada con ajax que guarda los datos de un cronograma modificado
+     */
+    def save_ajax() {
+        println "PARAMS"
+        println params
+
+        def actividad = MarcoLogico.get(params.act)
+        def valor = 0
+        if (params.id) {
+            Cronograma.findAllByMarcoLogicoAndCronogramaIsNull(actividad).each {
+                if (it.id.toLong() != params.id.toLong())
+                    valor += (it.valor + it.valor2)
+            }
+        }
+        if (!params.presupuesto2) {
+            params.presupuesto2 = 0
+        }
+        if (actividad.monto >= valor + params.presupuesto1.toDouble() + params.presupuesto2.toDouble()) {
+            def crono = new Cronograma()
+            if (params.id) {
+                crono = Cronograma.get(params.id)
+            }
+            def mes = Mes.get(params.mes.toLong())
+
+            crono.mes = mes
+            crono.anio = Anio.get(params.anio.toLong())
+            crono.marcoLogico = actividad
+
+            crono.fuente = Fuente.get(params.fuente1.toLong())
+            crono.presupuesto = Presupuesto.get(params.partida1)
+            crono.valor = params.presupuesto1.toDouble()
+
+            if (params.presupuesto2.toDouble() > 0) {
+                crono.fuente2 = Fuente.get(params.fuente2.toLong())
+                crono.presupuesto2 = Presupuesto.get(params.partida2)
+                crono.valor2 = params.presupuesto2.toDouble()
+            } else {
+                crono.fuente2 = null
+                crono.presupuesto2 = null
+                crono.valor2 = params.presupuesto2.toDouble()
+            }
+
+            if (crono.save(flush: true)) {
+                render "SUCCESS*Cronograma guardado exitosamente"
+            } else {
+                render "ERROR*" + renderErrors(bean: crono)
+            }
+        } else {
+            render "ERROR*Los valores ingresados superan el máximo disponible para la actividad"
+        }
     }
 
     def calcularAsignaciones_ajax() {
@@ -265,28 +319,28 @@ class CronogramaController extends Shield {
         return res
     }
 
-    def buscarPresupuesto () {
+    def buscarPresupuesto() {
         println "presupuesto en cronograma"
-        def listaTitulos = ["Número","Descripción"]
-        def listaCampos = ["numero","descripcion"]
+        def listaTitulos = ["Número", "Descripción"]
+        def listaCampos = ["numero", "descripcion"]
         def funciones = [null, null]
         def url = g.createLink(action: "buscarPresupuesto", controller: "asignacion")
         def funcionJs = ""
-        funcionJs+='function(){'
-        funcionJs+=' var idReg = $(this).attr("regId");\n' +
+        funcionJs += 'function(){'
+        funcionJs += ' var idReg = $(this).attr("regId");\n' +
                 '            var txtReg = $(this).attr("txtReg");\n' +
                 '            $("#partida2").val(idReg);\n' +
                 '            $(".bsc_desc-2").val(txtReg);\n' +
                 '            $(".modal-search").modal("hide");'
-        funcionJs+='}'
+        funcionJs += '}'
         def numRegistros = 20
-        def extras =""
+        def extras = ""
 
         if (!params.reporte) {
             if (params.excel) {
                 session.dominio = Presupuesto
                 session.funciones = funciones
-                def anchos = [30,70]
+                def anchos = [30, 70]
                 /*anchos para el set column view en excel (no son porcentajes)*/
                 redirect(controller: "reportesBuscador", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Partidas presupuestarias", anchos: anchos, extras: extras, landscape: true])
             } else {

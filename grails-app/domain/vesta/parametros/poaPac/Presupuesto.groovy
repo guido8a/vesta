@@ -66,6 +66,6 @@ class Presupuesto   {
      @return el número y la descripción concatenados
      */
     String toString() {
-        "${this.numero}(${this.descripcion})"
+        "${this.numero} (${this.descripcion})"
     }
 }

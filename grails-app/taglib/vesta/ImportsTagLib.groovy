@@ -55,8 +55,8 @@ class ImportsTagLib {
         def bootstrapTheme = attrs.bootstrap ?: "theme"
 
         // Bootstrap
-        def text = " <link href=\"${resource(dir: 'bootstrap-3.3.1/dist/css', file: 'bootstrap.css')}\" rel=\"stylesheet\">\n"
-        text += "    <link href=\"${resource(dir: 'bootstrap-3.3.1/dist/css', file: 'bootstrap-' + bootstrapTheme + '.min.css')}\" rel=\"stylesheet\">\n"
+        def text = " <link href=\"${resource(dir: 'bootstrap-3.3.2/dist/css', file: 'bootstrap.css')}\" rel=\"stylesheet\">\n"
+        text += "    <link href=\"${resource(dir: 'bootstrap-3.3.2/dist/css', file: 'bootstrap-' + bootstrapTheme + '.min.css')}\" rel=\"stylesheet\">\n"
         // JQuery
         text += "    <link href=\"${resource(dir: 'js/jquery-ui-1.11.2', file: 'jquery-ui.min.css')}\" rel=\"stylesheet\">\n"
         text += "    <link href=\"${resource(dir: 'js/jquery-ui-1.11.2', file: 'jquery-ui.structure.min.css')}\" rel=\"stylesheet\">\n"
@@ -87,7 +87,7 @@ class ImportsTagLib {
         def text = " <script src=\"${resource(dir: 'js/jquery-ui-1.11.2/external/jquery', file: 'jquery.js')}\"></script>\n"
         text += "    <script src=\"${resource(dir: 'js/jquery-ui-1.11.2/', file: 'jquery-ui.min.js')}\"></script>\n"
         // Include all compiled plugins (below), or include individual files as needed
-        text += "    <script src=\"${resource(dir: 'bootstrap-3.3.1/dist/js', file: 'bootstrap.min.js')}\"></script>\n"
+        text += "    <script src=\"${resource(dir: 'bootstrap-3.3.2/dist/js', file: 'bootstrap.min.js')}\"></script>\n"
 
         out << text
     }

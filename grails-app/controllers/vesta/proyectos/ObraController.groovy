@@ -1,6 +1,7 @@
 package vesta.proyectos
 
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.parametros.poaPac.Anio
 import vesta.seguridad.Shield
 
 
@@ -170,6 +171,30 @@ class ObraController extends Shield {
             render Obra.countByCodigoComprasPublicasIlike(params.codigoComprasPublicas) == 0
             return
         }
+    }
+
+    def pacProyecto_ajax() {
+        def proyecto = Proyecto.get(params.id)
+        def anio = Anio.findByAnio(new Date().format("yyyy"))
+
+        if (!anio && !params.anio) {
+            response.sendError(500)
+        }
+
+        if (params.anio) {
+            anio = Anio.get(params.anio.toLong())
+            if (!anio) {
+                anio = Anio.findByAnio(new Date().format("yyyy"))
+            }
+        }
+
+        return [proyecto: proyecto, anio: anio]
+    }
+
+    def tablaPacProyecto_ajax() {
+        def proyecto = Proyecto.get(params.id)
+        def anio = Anio.get(params.anio.toLong())
+
     }
 
 }

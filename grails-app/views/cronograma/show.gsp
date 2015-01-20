@@ -52,7 +52,7 @@
             </div>
             <g:if test="${editable}">
                 <div class="btn-group">
-                    <g:link controller="cronograma" action="form" params="${params}" class="btn btn-sm btn-info">
+                    <g:link controller="cronograma" action="form" params="${params}" class="btn btn-sm btn-info btn-edit">
                         <i class="fa fa-pencil"></i> Editar
                     </g:link>
                 </div>
@@ -90,13 +90,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <g:set var="totProy" value="0"/>
-                        <g:set var="totProyAsig" value="0"/>
-                        <g:set var="totalMetas" value="0"/>
+                        <g:set var="totProy" value="${0}"/>
+                        <g:set var="totProyAsig" value="${0}"/>
+                        <g:set var="totalMetas" value="${0}"/>
                         <g:set var="totalMetasCronograma" value="${0}"/>
 
                         <g:each in="${componentes}" var="comp" status="j">
-                            <g:set var="totComp" value="0"/>
+                            <g:set var="totComp" value="${0}"/>
                             <g:set var="totCompAsig" value="${0}"/>
                             <tr id="comp${comp.id}">
                                 <th colspan="16" class="success">
@@ -107,7 +107,7 @@
                             <g:each in="${MarcoLogico.findAllByMarcoLogicoAndEstado(comp, 0, [sort: 'id'])}" var="act" status="i">
                                 <g:set var="monto" value="${act.monto}"/>
                                 <g:set var="totComp" value="${totComp.toDouble() + monto}"/>
-                                <g:set var="tot" value="0"/>
+                                <g:set var="tot" value="${0}"/>
                                 <g:set var="totAct" value="${monto}"/>
                                 <g:set var="tot" value="${act.getTotalCronograma()}"/>
                                 <g:set var="totCompAsig" value="${totCompAsig + act.getTotalCronograma()}"/>
@@ -214,6 +214,9 @@
             var $container = $(".divTabla");
             $container.scrollTop(0 - $container.offset().top + $container.scrollTop());
             $(function () {
+                $(".btn-edit").click(function () {
+                    openLoader();
+                });
                 $("#anio").change(function () {
                     openLoader();
                     location.href = "${createLink(controller: 'cronograma', action: 'form', id: proyecto.id)}?anio=" + $("#anio").val() + armaParams();

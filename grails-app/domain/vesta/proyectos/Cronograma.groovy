@@ -28,6 +28,10 @@ class Cronograma   {
      */
     Fuente fuente
     /**
+     * Fuente del cronograma
+     */
+    Fuente fuente2
+    /**
      * Año del cronograma
      */
     Anio anio
@@ -80,6 +84,7 @@ class Cronograma   {
             mes column: 'mess__id'
             marcoLogico column: 'mrlg__id'
             fuente column: 'fnte__id'
+            fuente2 column: 'fnte2_id'
             anio column: 'anio__id'
             modificacionProyecto column: 'mdfc__id'
             presupuesto column: 'prsp__id'
@@ -99,6 +104,7 @@ class Cronograma   {
         mes(blank: true, nullable: true, attributes: [mensaje: 'Mes'])
         marcoLogico(blank: true, nullable: true, attributes: [mensaje: 'Actividad del marco lógico'])
         fuente(blank: true, nullable: true, attributes: [mensaje: 'Fuente'])
+        fuente2(blank: true, nullable: true, attributes: [mensaje: 'Fuente'])
         anio(blank: true, nullable: true, attributes: [mensaje: 'Año'])
         modificacionProyecto(blank: true, nullable: true, attributes: [mensaje: 'Modificación en base a la cual se crea el nuevo registro'])
         presupuesto(nullable: false, blank: false)
