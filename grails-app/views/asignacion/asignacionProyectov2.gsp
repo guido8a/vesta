@@ -14,10 +14,10 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" id="${proyecto?.id}">Programación</g:link>
+        <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" params="[id:proyecto.id,anio:actual.id]" >Programación</g:link>
         <g:link class="btn btn-default btn-sm" controller="asignacion" action="agregarAsignacionInv" id="${proyecto?.id}">Agregar asignaciones</g:link>
         <a class="btn btn-default btn-sm" id="reporte">Reporte Asignaciones</a>
-        <g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>
+        %{--<g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>--}%
         <g:if test="${actual?.estado==1}">
             <g:if test="${proyecto.aprobadoPoa=='S'}">
                 <g:link class="btn btn-default btn-sm" controller="modificacion" action="poaInversionesMod" id="${proyecto?.id}">Modificaciones</g:link>
@@ -88,7 +88,7 @@
                 <td>
                     ${asg.unidad}
                 </td>
-                <td>
+                <td title="${asg.presupuesto.descripcion}">
                     ${asg.presupuesto.numero}
                 </td>
                 <td class="valor" style="text-align: right">
@@ -162,12 +162,12 @@
 <div id="ajx_asgn" style="width:520px;"></div>
 <div id="ajx_asgn_prio" style="width:520px;"></div>
 
-<div id="reporteDialogo" style="width:250px;">
-    <div>Seleccione el año para generar el reporte.</div>
-    <div style="margin-left: 100px; margin-top: 30px">
-        <b>Año:</b><g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio-asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}"/>
-    </div>
-</div>
+%{--<div id="reporteDialogo" style="width:250px;">--}%
+    %{--<div>Seleccione el año para generar el reporte.</div>--}%
+    %{--<div style="margin-left: 100px; margin-top: 30px">--}%
+        %{--<b>Año:</b><g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio-asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}"/>--}%
+    %{--</div>--}%
+%{--</div>--}%
 <div style="position: absolute;top:5px;right:10px;font-size: 11px;">
     <b>Total invertido proyecto actual:</b>
     <g:if test="${actual?.estado==0}">
@@ -259,20 +259,30 @@
     })
 
     $("#aprobPrio").click(function(){
-        if(confirm("Esta seguro?")){
-            $.ajax({
-                type:"POST",
-                url:"${createLink(action:'aprobarPrio', controller: 'asignacion')}",
-                data:"id=${proyecto.id}",
-                success:function (msg) {
-                    if(msg=="ok"){
+        bootbox.confirm({
+                    message: "Esta seguro?. Al aprobar la priorización no podrá realizar modificaciones a las asignaciones",
+                    title :"Advertencia",
+                    class : "modal-error",
+                    callback : function (result){
+                        if(result){
+                            openLoader()
+                            $.ajax({
+                                type:"POST",
+                                url:"${createLink(action:'aprobarPrio', controller: 'asignacion')}",
+                                data:"id=${proyecto.id}",
+                                success:function (msg) {
+                                    if(msg=="ok"){
+                                        location.reload(true)
+                                    }
 
-                        location.reload(true)
+                                }
+                            });
+                        }
+
                     }
-
                 }
-            });
-        }
+        );
+
 
     });
 
@@ -483,33 +493,35 @@
     });
 
 
-    $("#reporteDialogo").dialog({
-        autoOpen:false,
-        resizable:false,
-        title:'Reporte de Asignaciones del Proyecto',
-        modal:true,
-        draggable:true,
-        width:350,
-        height:200,
-        position:'center',
-        open:function (event, ui) {
-            $(".ui-dialog-titlebar-close").hide();
-        },
-        buttons:{
-            "Cancelar": function () {
-                $(this).dialog("close");
-            },
-            "Aceptar":function () {
-                var anio = $("#anio-asg").val();
-                var url = "${createLink(controller: 'reportes2', action: 'reporteAsignacionProyecto')}?id=" + ${proyecto?.id} + "Wanio=" + anio;
-                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;
-                $(this).dialog("close");
-            }
-        }
-    });
+    %{--$("#reporteDialogo").dialog({--}%
+        %{--autoOpen:false,--}%
+        %{--resizable:false,--}%
+        %{--title:'Reporte de Asignaciones del Proyecto',--}%
+        %{--modal:true,--}%
+        %{--draggable:true,--}%
+        %{--width:350,--}%
+        %{--height:200,--}%
+        %{--position:'center',--}%
+        %{--open:function (event, ui) {--}%
+            %{--$(".ui-dialog-titlebar-close").hide();--}%
+        %{--},--}%
+        %{--buttons:{--}%
+            %{--"Cancelar": function () {--}%
+                %{--$(this).dialog("close");--}%
+            %{--},--}%
+            %{--"Aceptar":function () {--}%
+                %{--var anio = $("#anio-asg").val();--}%
+                %{--var url = "${createLink(controller: 'reportes2', action: 'reporteAsignacionProyecto')}?id=" + ${proyecto?.id} + "Wanio=" + anio;--}%
+                %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;--}%
+                %{--$(this).dialog("close");--}%
+            %{--}--}%
+        %{--}--}%
+    %{--});--}%
 
     $("#reporte").click(function(){
-        $("#reporteDialogo").dialog("open")
+        var anio = $("#anio_asg").val();
+        var url = "${createLink(controller: 'reportes2', action: 'reporteAsignacionProyecto')}?id=" + ${proyecto?.id} + "Wanio=" + anio;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;
     })
 
 

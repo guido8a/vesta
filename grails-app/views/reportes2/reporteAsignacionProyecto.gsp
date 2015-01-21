@@ -149,7 +149,7 @@
 
 <body>
 
-<slc:headerReporte title="Reporte de Asignaciones del Proyecto" codigo="FR-PLA-AVAL-02"/>
+<slc:headerReporte title="Reporte de Asignaciones del Proyecto: ${proyecto.nombre}" codigo="FR-PLA-AVAL-02"/>
 <div class="titulo2">Año: ${actual?.anio}</div>
 
 <table>
@@ -168,30 +168,29 @@
     </thead>
     <tbody>
     <g:set var="total" value="${0}"></g:set>
+    <g:set var="totalP" value="${0}"></g:set>
     <g:each in="${asignaciones}" var="asg" status="i">
         <g:if test="${asg.planificado>0}">
-            <g:if test="${actual?.estado==0}">
                 <g:set var="total" value="${total.toDouble()+asg.getValorReal()}"></g:set>
-            </g:if>
-            <g:else>
-                <g:set var="total" value="${total.toDouble()+asg.priorizado}"></g:set>
-            </g:else>
+                <g:set var="totalP" value="${totalP.toDouble()+asg.priorizado}"></g:set>
+
         </g:if>
         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}"  style='${(asg.reubicada=='S')?"background: #d5f0d4":""}'>
             <td class="dscr" style="width: 150px; text-align: left">
                 ${asg.marcoLogico.proyecto}
             </td>
-            <td class="dscr" style="width: 170px; text-align: left"
-                title="${asg.marcoLogico.marcoLogico.toStringCompleto()}">${asg.marcoLogico.marcoLogico}
+            <td class="dscr" style="width: 170px; text-align: left">
+                ${asg.marcoLogico.marcoLogico}
             </td>
             <td style="width: 20px">
                 ${asg.marcoLogico.numero}
             </td>
-            <td class="dscr" style="width: 180px;text-align: left" title="${asg.marcoLogico.toStringCompleto()}">
+            <td class="dscr" style="width: 180px;text-align: left" >
                  ${asg.marcoLogico}
             </td>
             <td style="text-align: left">
-                ${asg.unidad}
+                ${asg.unidad.toString()}
+                %{--${raw(asg.unidad)}--}%
             </td>
             <td style="width: 80px; text-align: left">
                 ${asg.marcoLogico.fechaInicio.format("dd-MM-yyyy")} / ${asg.marcoLogico.fechaFin.format("dd-MM-yyyy")}
@@ -200,30 +199,10 @@
                 ${asg.presupuesto.numero}
             </td>
             <td class="valor" style="text-align: right">
-                <g:formatNumber number="${asg.getValorReal()}" format="###,##0" minFractionDigits="2"
-                                maxFractionDigits="2"/>
+                <g:formatNumber number="${asg.getValorReal()}"  type="currency"/>
             </td>
-            <g:if test="${actual.estado==1}">
-                <g:if test="${proyecto.aprobadoPoa!='S'}">
-                    <td class="valor" style="text-align: right">
-                        <div style="width: 150px">
-                            <input type="text" style="width: 100px;text-align: right;display: inline-block" id="prio_${asg.id}" value="${asg.priorizado}">
-                            %{--<a href="#" style="width: 30px;display: inline-block" class="savePrio" iden="${asg.id}">Guardar</a>--}%
-                        </div>
-                    </td>
-                </g:if><g:else>
-                <td class="valor" style="text-align: right">
-                    <div style="width: 150px">
-                        <g:formatNumber number="${asg.priorizado}" format="###,##0" minFractionDigits="2"
-                                        maxFractionDigits="2"/>
-
-                    </div>
-                </td>
-            </g:else>
-            </g:if>
             <td class="agr" style="text-align: right">
-                <g:formatNumber number="${asg.priorizado}" format="###,##0" minFractionDigits="2"
-                                maxFractionDigits="2"/>
+                <g:formatNumber number="${asg.priorizado}"  type="currency"/>
             </td>
         </tr>
     </g:each>
@@ -234,10 +213,12 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
         <td><b>TOTAL</b></td>
         <td class="valor" style="text-align: right; font-weight: bold; border-top : solid 1px #000000;">
-            <g:formatNumber number="${total}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
+            <g:formatNumber number="${total.toDouble()}" type="currency"/>
+        </td>
+        <td class="valor" style="text-align: right; font-weight: bold; border-top : solid 1px #000000;">
+            <g:formatNumber number="${totalP.toDouble()}" type="currency"/>
         </td>
     </tr>
     </tbody>

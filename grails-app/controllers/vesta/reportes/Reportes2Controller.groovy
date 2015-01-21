@@ -314,7 +314,7 @@ class Reportes2Controller {
 
     def reporteAsignacionProyecto = {
 
-        println("params " + params)
+//        println("reporteAsignacionProyecto " + params)
 
         def proyecto = Proyecto.get(params.id)
         def asignaciones = []
@@ -411,7 +411,7 @@ class Reportes2Controller {
                 def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}   order by id")
                 if (asig) {
                     asignaciones += asig
-                    println "add " + asig.id + " " + asig.unidad
+//                    println "add " + asig.id + " " + asig.unidad
                     asig.each { asg ->
                         total = total + asg.getValorReal()
                     }

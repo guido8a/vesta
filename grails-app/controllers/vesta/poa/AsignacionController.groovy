@@ -3,6 +3,7 @@ package vesta.poa
 import org.springframework.dao.DataIntegrityViolationException
 import vesta.avales.DistribucionAsignacion
 import vesta.parametros.PresupuestoUnidad
+import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
@@ -605,6 +606,165 @@ class AsignacionController extends Shield {
         asg.save(flush: true)
         render "ok"
     }
+
+    /**
+     * Acción
+     */
+    def aprobarPrio = {
+//        println "aprob prio " + params
+        def proy = Proyecto.get(params.id)
+        proy.aprobadoPoa = "S"
+        proy.save(flush: true)
+        render "ok"
+    }
+
+    /**
+     * Acción
+     */
+    def programacionAsignacionesInversion () {
+        def actual
+        if (params.anio)
+            actual = Anio.get(params.anio)
+        else
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        if (!actual)
+            actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+        //def unidad =UnidadEjecutora.get(params.id)
+        if (actual.estado != 0)
+            redirect(action: 'programacionAsignacionesInversionPrio', params: params)
+
+        def proyecto = Proyecto.get(params.id)
+
+        def asgProy = []
+        MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+            def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
+            if (asig)
+                asgProy += asig
+        }
+
+        def meses = Mes.list([sort:"id"])
+        [inversiones: asgProy, actual: actual, meses: meses, proyecto: proyecto]
+    }
+
+    /**
+     * Acción
+     */
+    def programacionAsignacionesInversionPrio() {
+
+        def actual
+        if (params.anio)
+            actual = Anio.get(params.anio)
+        else
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        if (!actual)
+            actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+        //def unidad =UnidadEjecutora.get(params.id)
+
+        def proyecto = Proyecto.get(params.id)
+
+        def asgProy = []
+        MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+            def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
+            if (asig)
+                asgProy += asig
+        }
+        def meses = Mes.list([sort:"id"])
+        [inversiones: asgProy, actual: actual, meses: meses, proyecto: proyecto]
+    }
+
+    /**
+     * Acción
+     */
+    def guardarProgramacion () {
+        println "guardar prog "+params
+        def asig = Asignacion.get(params.asignacion)
+        def datos = params.datos.split(";")
+        datos.each {
+            def partes = it.split(":")
+
+            def prog = ProgramacionAsignacion.findByAsignacionAndMes(asig, Mes.get(partes[0]))
+            if (!prog) {
+                prog = new ProgramacionAsignacion()
+                prog.asignacion = asig
+                prog.mes = Mes.get(partes[0])
+            }
+            prog.valor = partes[1].toDouble()
+            if(!prog.save(flush: true))
+                println "errors "+prog.errors
+
+
+
+        }
+        render "ok"
+    }
+
+    /**
+     * Acción
+     */
+    def agregarAsignacionInv () {
+
+        println "crear asgn inv " + params
+        def proy = Proyecto.get(params.id)
+        def unidad = proy.unidadEjecutora
+
+        def comp = MarcoLogico.findAllByProyectoAndTipoElemento(proy, TipoElemento.get(2), [sort: "id"])
+        def cmp
+        def acts = []
+
+        def fuentes = Fuente.list()
+
+        def actual
+        if (params.anio)
+            actual = Anio.get(params.anio)
+        else
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+
+        if (params.comp) {
+            cmp = MarcoLogico.get(params.comp)
+
+        } else {
+            if (comp.size() > 0)
+                cmp = comp[0]
+        }
+
+        if (cmp)
+            acts = MarcoLogico.findAllByMarcoLogico(cmp)
+
+        def asgn = []
+        def totalUnidad = 0
+        acts.each {
+            def a = Asignacion.findAllByMarcoLogico(it)
+            a.each { asignacion ->
+                if (asignacion.anio.id == actual.id) {
+                    asgn.add(asignacion)
+                    totalUnidad += asignacion.getValorReal()
+                }
+
+            }
+
+
+        }
+
+//        Asignacion.findAll("from Asignacion where anio=${actual.id} and unidad=${unidad.id} and marcoLogico is not null").each{
+//            totalUnidad+= it.getValorReal()
+//        }
+        def un = UnidadEjecutora.findByPadreIsNull()
+        def maxUnidad = PresupuestoUnidad.findByAnioAndUnidad(actual, un)
+        if (maxUnidad)
+            maxUnidad = maxUnidad.maxInversion
+        else
+            maxUnidad = 0
+
+        def totalPriorizado = asgn.sum { it.priorizado }
+        def financiamientos = Financiamiento.findAllByProyectoAndAnio(proy, actual)
+        def totalAnio = financiamientos.sum { it.monto }
+
+        [proy       : proy, comp: comp, fuentes: fuentes, unidad: unidad, actual: actual, cmp: cmp, acts: acts, asgn: asgn,
+         totalUnidad: totalUnidad, maxUnidad: maxUnidad, totalPriorizado: totalPriorizado, totalAnio: totalAnio]
+
+    }
+
+
 
 
 }
