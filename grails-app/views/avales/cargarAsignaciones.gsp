@@ -11,13 +11,14 @@
 
 <g:select name="asg" from="${asgs}" optionKey="id" id="asignacion" optionValue='${{
     "<b>Responsable:</b> " + it.unidad + " <b>Partida:</b> " + it.presupuesto.numero + " <b>Monto:</b> " + g.formatNumber(number: it.priorizado, type: "currency")
-}}' style="width: 100%" noSelection="['-1': 'Seleccione..']" class="form-control input-sm"/>
+}}' noSelection="['-1': 'Seleccione..']" class="form-control input-sm"/>
 <script>
     $("#asignacion").change(function () {
         getMaximo($("#asignacion").val())
-    }).selectpicker({
-        width      : "200px",
-        limitWidth : true,
-        style      : "btn-sm"
-    });
+    })
+//            .selectpicker({
+//        width      : "200px",
+//        limitWidth : true,
+//        style      : "btn-sm"
+//    });
 </script>

@@ -133,7 +133,7 @@ class Aval {
         def dias = proceso.fechaFin - proceso.fechaInicio
         def fechaInicio = proceso.fechaInicio
         def fechaFin = proceso.fechaFin
-        println "dias "+dias
+//        println "dias "+dias
         def esperado = 0
         def now = new Date()
         if(now>fechaFin){
@@ -148,13 +148,16 @@ class Aval {
             else{
                 esperado = this.monto*(now - fechaInicio)/dias
 //                esperado=esperado*this.monto
-                def verde = esperado*0.8
-                def amarillo = esperado*0.5
+                def verde = esperado * 0.75
+                def naranja = esperado * 0.25
+                def amarillo = esperado * 0.50
                 def avance = this.getAvanceFinanciero()
                 if(avance>=verde)
                     return [esperado,this.getAvanceFinanciero(),"green",this.getUltimoAvance()]
                 if(avance>=amarillo)
                     return [esperado,this.getAvanceFinanciero(),"yellow",this.getUltimoAvance()]
+                if(avance>=naranja)
+                    return [esperado,this.getAvanceFinanciero(),"orange",this.getUltimoAvance()]
                 else
                     return [esperado,this.getAvanceFinanciero(),"red",this.getUltimoAvance()]
             }

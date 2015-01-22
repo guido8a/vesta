@@ -11,12 +11,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main"/>
     <title>Lista de Procesos</title>
+    <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'semaforos.css')}" type="text/css"/>
 </head>
 
 <body>
 
 <div class="fila">
-    %{--<g:link controller="avales" action="crearProceso" class="btn btn-default"> <i class="fa fa-file-o"></i> Crear nuevo Proceso de contratación</g:link>--}%
     <a href="#" class="btn btn-default btnCrear">
         <i class="fa fa-file-o"></i>  Crear nuevo Proceso de contratación
     </a>
@@ -29,10 +29,8 @@
         <th>Inicio</th>
         <th>Fin</th>
         <th>Monto</th>
-        %{--<th></th>--}%
-        %{--<th></th>--}%
-        %{--<th></th>--}%
-        %{--<th></th>--}%
+        <th>Avance</th>
+        <th>Último<br>Avance</th>
     </tr>
     </thead>
     <tbody>
@@ -45,18 +43,16 @@
             <td style="text-align: right">
                 <g:formatNumber number="${p.getMonto()}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
             </td>
-            %{--<td style="text-align: center">--}%
-                %{--<a href="${g.createLink(action: 'crearProceso', id: p.id)}" class="btn editar">Editar</a>--}%
-            %{--</td>--}%
-            %{--<td style="text-align: center">--}%
-                %{--<a href="${g.createLink(action: 'avalesProceso', id: p.id)}" class="btn">Avales</a>--}%
-            %{--</td>--}%
-            %{--<td style="text-align: center">--}%
-                %{--<a href="${g.createLink(controller: 'avanceFisico', action: 'list', id: p.id)}" class="btn">Actividades</a>--}%
-            %{--</td>--}%
-            %{--<td style="text-align: center">--}%
-                %{--<a href="${g.createLink(controller: 'hito', action: 'avancesFinancieros', id: p.id)}" class="btn">Av. Financiero</a>--}%
-            %{--</td>--}%
+            <g:set var="semaforo" value="${p.getColorSemaforo()}"/>
+            <td style="text-align: center">
+                <div class="semaforo ${semaforo[2]}" title="Avance esperado al ${new Date().format('dd/MM/yyyy')}: ${semaforo[0].toDouble().round(2)}%, avance registrado: ${semaforo[1].toDouble().round(2)}%"></div>
+            </td>
+            <td style="text-align: center">
+                <g:if test="${semaforo[3]}">
+                    ${semaforo[3]?.fecha?.format("dd-MM-yyyy")}
+                </g:if>
+            </td>
+
         </tr>
     </g:each>
 

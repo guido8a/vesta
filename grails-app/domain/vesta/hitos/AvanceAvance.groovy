@@ -1,18 +1,22 @@
 package vesta.hitos
 
 class AvanceAvance {
-    /*
-    * Avance
-    */
+    /**
+     * Avance
+     */
     double avance
-    /*
-    * Fecha de registro
-    */
+    /**
+     * Fecha de registro
+     */
     Date fecha = new Date()
-    /*
-    * Avance físico
-    */
+    /**
+     * Avance físico
+     */
     AvanceFisico avanceFisico
+    /**
+     * Descripción
+     */
+    String descripcion
 
     /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
@@ -28,10 +32,11 @@ class AvanceAvance {
             avance column: 'avavavcn'
             fecha column: 'avavfcrg'
             avanceFisico column: 'avfs__id'
+            descripcion column: 'avavdscr'
         }
     }
 
-    String toString(){
+    String toString() {
         return "${this.avanceFisico.observaciones} - ${this.fecha.format('dd/MM/yyyy')}, ${avance.round(2)}%"
     }
 

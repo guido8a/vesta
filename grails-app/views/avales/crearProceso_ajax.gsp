@@ -160,96 +160,45 @@
                 <label class="col-md-2 control-label">
                     Año:
                 </label>
-                <div class="col-md-2" id="div_comp">
-                    <g:select name="anio" from="${vesta.parametros.poaPac.Anio.list([sort: 'anio'])}" class="form-control input-sm" id="anio" optionKey="id" optionValue="anio"/>
+                <div class="col-md-2">
+                    <g:select name="anio" from="${vesta.parametros.poaPac.Anio.list([sort: 'anio'])}" value="${actual?.id}" class="form-control input-sm" id="anio" optionKey="id" optionValue="anio"/>
                 </div>
             </span>
         </div>
-
-
-        %{--<div class="fila">--}%
-            %{--<div class="labelSvt">Año:</div>--}%
-
-            %{--<div class="fieldSvt-small" id="">--}%
-                %{--<g:select from="${vesta.parametros.poaPac.Anio.list([sort: 'anio'])}" value="${actual?.id}" optionKey="id" optionValue="anio" id="anio" name="anio" />--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-        %{--<div class="fila">--}%
-            %{--<div class="labelSvt">Componente:</div>--}%
-
-            %{--<div class="fieldSvt-xxxl" id="div_comp">--}%
-                %{--<g:if test="${proceso}">--}%
-                    %{--<g:select from="${vesta.proyectos.MarcoLogico.findAllByProyectoAndTipoElemento(proceso?.proyecto, TipoElemento.get(2))}" optionValue="objeto" optionKey="id" name="comp" id="comp" noSelection="['-1': 'Seleccione...']" style="width: 100%"/>--}%
-                %{--</g:if>--}%
-            %{--</div>--}%
-        %{--</div>--}%
 
         <div class="form-group keeptogether">
             <span class="grupo">
                 <label class="col-md-2 control-label">
                     Componente
                 </label>
-                <div class="col-md-4" id="divAct">
+                <div class="col-md-4" id="div_comp">
                     <g:select name="comp" from="${vesta.proyectos.MarcoLogico.findAllByProyectoAndTipoElemento(proceso?.proyecto, TipoElemento.get(2))}" class="form-control input-sm" optionKey="id" optionValue="objeto" id="comp" noSelection="['-1': 'Seleccione...']"/>
                 </div>
             </span>
         </div>
-
-        %{--<div class="fila">--}%
-            %{--<div class="labelSvt">Actividad:</div>--}%
-
-            %{--<div class="fieldSvt-xxxl" id="divAct">--}%
-                %{--<g:select from="${[]}" id="actividad" name="actividad" style="width:100%" noSelection="['-1': 'Seleccione']"/>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
 
         <div class="form-group keeptogether">
             <span class="grupo">
                 <label class="col-md-2 control-label">
                     Actividad
                 </label>
-                <div class="col-md-4">
-                    <g:select name="actividadName" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>
+                <div class="col-md-4" id="divAct">
+                    <g:select name="actividad" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>
                 </div>
             </span>
         </div>
-
-
-        %{--<div class="fila">--}%
-            %{--<div class="labelSvt">Asignacion:</div>--}%
-
-            %{--<div class="fieldSvt-xxxl" id="divAsg">--}%
-                %{--<g:select from="${[]}" id="asignacion" name="actividad" style="width:100%" noSelection="['-1': 'Seleccione']"/>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
 
         <div class="form-group keeptogether">
             <span class="grupo">
                 <label class="col-md-2 control-label">
                     Asignación
                 </label>
-                <div class="col-md-4">
-                    <g:select name="asignacionName" from="${[]}" class="form-control input-sm" id="asignacion" noSelection="['-1': 'Seleccione...']"/>
+                <div class="col-md-4" id="divAsg">
+                    <g:select name="asignacion" from="${[]}" class="form-control input-sm" id="asignacion" noSelection="['-1': 'Seleccione...']"/>
                 </div>
             </span>
         </div>
 
-
-        %{--<div class="fila">--}%
-            %{--<div class="labelSvt">Monto:</div>--}%
-
-            %{--<div class="fieldSvt-large">--}%
-                %{--<input type="text" id="monto" class="ui-corner-all decimal" style="width: 100px;text-align: right;margin-right: 10px">--}%
-                %{--Máximo: <span id="max" style="display: inline-block"></span> $--}%
-            %{--</div>--}%
-
-            %{--<div class="fieldSvt-small" style="margin-left: 20px">--}%
-                %{--<a href="#" class="btn" id="agregar">Agregar</a>--}%
-            %{--</div>--}%
-        %{--</div>--}%
 
         <div class="form-group keeptogether">
             <span class="grupo">
@@ -259,9 +208,13 @@
                 <div class="col-md-3">
                     <g:textField class="form-control input-sm number money" name="montoName" style="text-align: right; margin-right: 10px" id="monto"/>
                 </div>
-                <div>
-                    Máximo <span id="max" style="display: inline-block"></span> $
+                <div class="col-md-3">
+                   <label> Máximo <span id="max" style="display: inline-block"></span> $ </label>
                 </div>
+                <div class="col-md-1">
+                    <a href="#" class="btn btn-success" id="agregar"><i class="fa fa-plus"></i> </a>
+                </div>
+
             </span>
         </div>
 
@@ -276,26 +229,26 @@
 </fieldset>
 
 <div id="dlgEditar">
-    %{--<g:if test="${band}">--}%
-        %{--<input type="hidden" id="dlgId">--}%
+    <g:if test="${band}">
+        <input type="hidden" id="dlgId">
 
-        %{--<div class="fila">--}%
-            %{--<div class="labelSvt">Monto:</div>--}%
-            %{--<input class="decimal" type="text" style="width: 100px;text-align: right;display: inline-block" id="dlgMonto">--}%
-        %{--</div>--}%
+        <div class="fila">
+            <div class="labelSvt">Monto:</div>
+            <input class="decimal" type="text" style="width: 100px;text-align: right;display: inline-block" id="dlgMonto">
+        </div>
 
-        %{--<div class="fila">--}%
-            %{--<div class="labelSvt">Máximo:</div> <span id="dlgMax" style="display: inline-block"></span> $--}%
-        %{--</div>--}%
-    %{--</g:if>--}%
-    %{--<g:else>--}%
-        %{--<div class="fila">--}%
-            %{--No puede editar este proceso porque ya tiene un aval o una solicitud pendiente--}%
-        %{--</div>--}%
-    %{--</g:else>--}%
+        <div class="fila">
+            <div class="labelSvt">Máximo:</div> <span id="dlgMax" style="display: inline-block"></span> $
+        </div>
+    </g:if>
+    <g:else>
+        <div class="fila">
+            No puede editar este proceso porque ya tiene un aval o una solicitud pendiente
+        </div>
+    </g:else>
 </div>
-<script>
 
+<script>
     function getMaximo(asg) {
         $.ajax({
             type    : "POST",
@@ -309,7 +262,6 @@
                 else {
                     var valor = parseFloat(msg);
                     var monto = $("#dlgMonto").val();
-//                    monto = monto.replace(new RegExp("\\.", 'g'), "");
                     monto = monto.replace(new RegExp(",", 'g'), ".");
                     monto = parseFloat(monto);
                     $("#dlgMax").html(number_format(valor + monto, 2, ",", "."));
@@ -340,7 +292,11 @@
     </g:if>
 
     $("#anio").change(function () {
-        %{--location.href = "${g.createLink(controller: 'avales',action: 'crearProceso_ajax')}?id=${proceso?.id}&anio=" + $(this).val()--}%
+        $("#comp").val("-1");
+        $("#actividad").val("-1");
+        $("#asignacion").val("-1");
+        $("#monto").val("");
+        $("#max").html("");
     });
 
 
@@ -388,24 +344,19 @@
         }
     });
 
-//    $(".btn").button();
 
-    $("#agregar").button().click(function () {
+    $("#agregar").click(function () {
         var id = $("#idAgregar").val();
         var monto = $("#monto").val();
-
-//        monto = monto.replace(new RegExp("\\.", 'g'), "");
         monto = monto.replace(new RegExp(",", 'g'), ".");
-
         var max = $("#max").html();
-//        max = max.replace(new RegExp("\\.", 'g'), "");
         max = max.replace(new RegExp(",", 'g'), ".");
         var asg = $("#asignacion").val();
         var proceso = "${proceso?.id}";
 
         var msg = "";
         if (asg == "-1" || isNaN(asg)) {
-            msg += "<br>Seleccione una asignación";
+            msg += "<br>Debe seleccionar una asignación.";
         } else {
 
             if (isNaN(monto) || monto == "") {
@@ -434,116 +385,81 @@
                 }
             });
         } else {
-            $.box({
-                title  : "Error",
-                text   : msg,
-                dialog : {
-                    resizable : false,
-                    buttons   : {
-                        "Cerrar" : function () {
-
+            bootbox.dialog({
+                title : "Error",
+                message : msg,
+                buttons : {
+                    cancelar : {
+                        label     : "Cancelar",
+                        className : "btn-primary",
+                        callback  : function () {
                         }
                     }
                 }
             });
         }
-
     });
 
-    function editar () {
-        var monto = $("#dlgMonto").val();
-        monto = monto.replace(new RegExp(",", 'g'), ".");
-        var id = $("#dlgId").val();
-        var max = $("#dlgMax").html();
-        var msg = "";
 
-        if(msg == ''){
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'editarDetalle')}",
-                data    : {
-                    id    : id,
-                    monto : monto
-                },
-                success : function (msg) {
-                    getDetalle();
-                    vaciar();
+    $("#dlgEditar").dialog({
+        width     : 300,
+        height    : 300,
+        position  : [450, 300],
+        title     : "Editar",
+        modal     : true,
+        autoOpen  : false,
+        resizable : false,
+        buttons   : {
+            "Aceptar" : function () {
+                var monto = $("#dlgMonto").val();
+                monto = monto.replace(new RegExp(",", 'g'), ".");
+                var id = $("#dlgId").val();
+                var max = $("#dlgMax").html();
+                var msg = "";
+                if (isNaN(monto) || monto == "") {
+                    msg += "<br>El monto tiene que ser un número positivo.";
+                } else {
+                    if (monto * 1 < 0)
+                        msg += "<br>El monto tiene que ser un número positivo.";
+                    if (monto * 1 > max * 1)
+                        msg += "<br>El monto no puede ser mayor al máximo.";
                 }
-            });
-        }else{
-            bootbox.dialog({
-                title  : "Error",
-                message   : msg,
-                buttons : {
-                    label     : "Cancelar",
-                    className : "btn-primary",
-                    callback  : function () {
-                    }
+                if (msg == "") {
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(action:'editarDetalle')}",
+                        data    : {
+                            id    : id,
+                            monto : monto
+                        },
+                        success : function (msg) {
+                            getDetalle();
+                            vaciar();
+//                            $("#dlgEditar").dialog("close");
+
+                        }
+                    });
+                } else {
+                    bootbox.dialog({
+                        title  : "Error",
+                        message   : msg,
+                        buttons : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+
+                    });
+
                 }
-            });
+
+            },
+            "Cerrar"  : function () {
+                $("#dlgEditar").dialog("close")
+            }
         }
-    }
-
-
-    %{--$("#dlgEditar").dialog({--}%
-        %{--width     : 300,--}%
-        %{--height    : 300,--}%
-        %{--position  : [450, 300],--}%
-        %{--title     : "Editar",--}%
-        %{--modal     : true,--}%
-        %{--autoOpen  : false,--}%
-        %{--resizable : false,--}%
-        %{--buttons   : {--}%
-            %{--"Aceptar" : function () {--}%
-                %{--var monto = $("#dlgMonto").val();--}%
-                %{--monto = monto.replace(new RegExp(",", 'g'), ".");--}%
-                %{--var id = $("#dlgId").val();--}%
-                %{--var max = $("#dlgMax").html();--}%
-                %{--var msg = "";--}%
-                %{--if (isNaN(monto) || monto == "") {--}%
-                    %{--msg += "<br>El monto tiene que ser un número positivo.";--}%
-                %{--} else {--}%
-                    %{--if (monto * 1 < 0)--}%
-                        %{--msg += "<br>El monto tiene que ser un número positivo.";--}%
-                    %{--if (monto * 1 > max * 1)--}%
-                        %{--msg += "<br>El monto no puede ser mayor al máximo.";--}%
-                %{--}--}%
-                %{--if (msg == "") {--}%
-                    %{--$.ajax({--}%
-                        %{--type    : "POST",--}%
-                        %{--url     : "${createLink(action:'editarDetalle')}",--}%
-                        %{--data    : {--}%
-                            %{--id    : id,--}%
-                            %{--monto : monto--}%
-                        %{--},--}%
-                        %{--success : function (msg) {--}%
-                            %{--getDetalle();--}%
-                            %{--vaciar();--}%
-%{--//                            $("#dlgEditar").dialog("close");--}%
-
-                        %{--}--}%
-                    %{--});--}%
-                %{--} else {--}%
-                    %{--bootbox.dialog({--}%
-                        %{--title  : "Error",--}%
-                        %{--message   : msg,--}%
-                        %{--buttons : {--}%
-                            %{--label     : "Cancelar",--}%
-                            %{--className : "btn-primary",--}%
-                            %{--callback  : function () {--}%
-                            %{--}--}%
-                        %{--}--}%
-
-                    %{--});--}%
-
-                %{--}--}%
-
-            %{--},--}%
-            %{--"Cerrar"  : function () {--}%
-                %{--$("#dlgEditar").dialog("close")--}%
-            %{--}--}%
-        %{--}--}%
-    %{--});--}%
+    });
 
     $("#comp").change(function () {
         $.ajax({
@@ -557,10 +473,6 @@
                 $("#divAct").html(msg)
             }
         });
-    })
-    $("#proyecto").selectmenu({width : 600});
-    $("#actividad").selectmenu({width : 600});
-    $("#asignacion").selectmenu({width : 600});
+    });
+
 </script>
-%{--</body>--}%
-%{--</html>--}%

@@ -90,13 +90,16 @@ class AvanceFisico {
                 return [0, this.getAvanceFisico(), "green"]
             else {
                 esperado = 100 * (now - inicio) / dias
-                def verde = esperado * 0.8
-                def amarillo = esperado * 0.5
+                def verde = esperado * 0.75
+                def naranja = esperado * 0.25
+                def amarillo = esperado * 0.50
                 def avance = this.getAvanceFisico()
                 if (avance >= verde)
                     return [esperado, this.getAvanceFisico(), "green"]
                 if (avance >= amarillo)
                     return [esperado, this.getAvanceFisico(), "yellow"]
+                if (avance >= naranja)
+                    return [esperado, this.getAvanceFisico(), "orange"]
                 else
                     return [esperado, this.getAvanceFisico(), "red"]
             }
@@ -119,7 +122,7 @@ class AvanceFisico {
 
     def getColorSemaforoAl(Date fecha) {
         def dias = fin - inicio
-        println "dias " + dias
+//        println "dias " + dias
         def esperado = 0
         def now = fecha
         if (now > fin) {
@@ -133,13 +136,16 @@ class AvanceFisico {
                 return [0, this.getAvanceFisicoAl(fecha), "green"]
             else {
                 esperado = 100 * (now - inicio) / dias
-                def verde = esperado * 0.8
-                def amarillo = esperado * 0.5
+                def verde = esperado * 0.75
+                def naranja = esperado * 0.25
+                def amarillo = esperado * 0.50
                 def avance = this.getAvanceFisicoAl(fecha)
                 if (avance >= verde)
                     return [esperado, this.getAvanceFisicoAl(fecha), "green"]
                 if (avance >= amarillo)
                     return [esperado, this.getAvanceFisicoAl(fecha), "yellow"]
+                if (avance >= naranja)
+                    return [esperado, this.getAvanceFisicoAl(fecha), "orange"]
                 else
                     return [esperado, this.getAvanceFisicoAl(fecha), "red"]
             }

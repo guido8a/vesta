@@ -22,7 +22,7 @@
     <g:set var="total" value="${0}"/>
     <g:each in="${detalle}" var="asg">
         <g:set var="total" value="${total.toDouble() + asg.monto}"/>
-        <tr>
+        <tr iden="${asg?.id}">
             <td>${asg.asignacion.marcoLogico.marcoLogico}</td>
             <td>${asg.asignacion.marcoLogico.numero} - ${asg.asignacion.marcoLogico}</td>
             <td>${asg.asignacion.presupuesto.numero}</td>
@@ -64,31 +64,52 @@
         $("#dlgEditar").dialog("open");
     });
     $(".borrar").button({icons : { primary : "ui-icon-trash"}, text : false}).click(function () {
-        if (confirm("Esta seguro?")) {
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'borrarDetalle')}",
-                data    : {
-                    id : $(this).attr("iden")
-                },
-                success : function (msg) {
-                    if (msg == "ok") {
-                        getDetalle();
-                        vaciar();
-                    } else {
-                        bootbox.dialog({
-                           title : "Error",
-                           message : "No se puede borrar porque el proceso tiene un aval o una solicitud de aval pendiente",
-                           buttons : {
-                               label     : "Cancelar",
-                               className : "btn-primary",
-                               callback  : function () {
-                               }
-                           }
-                        });
+
+        var idTr = $(this).attr("iden")
+
+        var b = bootbox.dialog({
+                title : "Borrar asignación",
+                message :"Esta seguro de borrar la asignación?",
+                buttons : {
+                    aceptar : {
+                        label     : "Aceptar",
+                        className : "btn-success",
+                        callback  : function () {
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action:'borrarDetalle')}",
+                                data    : {
+                                    id : idTr
+                                },
+                                success : function (msg) {
+                                    if (msg == "ok") {
+                                        getDetalle();
+                                        vaciar();
+                                    } else {
+                                        bootbox.dialog({
+                                            title : "Error",
+                                            message : "No se puede borrar porque el proceso tiene un aval o una solicitud de aval pendiente",
+                                            buttons : {
+                                                cancelar : {
+                                                    label     : "Cancelar",
+                                                    className : "btn-primary",
+                                                    callback  : function () {
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancelar : {
+                        label     : "Cancelar",
+                        className : "btn-primary",
+                        callback  : function () {
+                        }
                     }
                 }
-            });
-        }
+        });
     });
 </script>

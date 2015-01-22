@@ -10,11 +10,16 @@ import vesta.parametros.UnidadEjecutora
 import vesta.alertas.Alerta
 import vesta.seguridad.Firma
 import vesta.seguridad.Persona
+import vesta.seguridad.Prfl
+import vesta.seguridad.Sesn
+import vesta.seguridad.Persona
 
 /**
  * Controlador que muestra las pantallas de manejo de avales
  */
 class AvalesController extends vesta.seguridad.Shield {
+
+    def mailService
 
     /**
      * Acción que muestra la pantalla de lista de procesos por proyecto
@@ -320,7 +325,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * @param params los parámetros enviados por el submit del formulario
      */
     def guardarSolicitud = {
-        println "solicitud aval " + params
+        //println "solicitud aval " + params
         /*TODO enviar alertas*/
 
         if (params.monto) {
@@ -329,7 +334,7 @@ class AvalesController extends vesta.seguridad.Shield {
         }
         def referencial = params.referencial?.toDouble()
         def montoProceso = params.monto?.toDouble()
-        println "ref "+referencial+" monto "+montoProceso
+//        println "ref "+referencial+" monto "+montoProceso
         if(montoProceso>referencial){
             def path = servletContext.getRealPath("/") + "pdf/solicitudAval/"
             new File(path).mkdirs()
@@ -424,6 +429,22 @@ class AvalesController extends vesta.seguridad.Shield {
                             println "error alerta: " + alerta.errors
                         }
                     }
+                    try{
+                        def mail = sol.firma.usuario.persona.mail
+                        if(mail) {
+
+                            mailService.sendMail {
+                                to mail
+                                subject "Nueve solicitud de aval"
+                                body "Tiene una solicitud de aval pendiente que requiere su firma para aprobación "
+                            }
+
+                        } else {
+                            println "El usuario ${sol.firma.usuario.usroLogin} no tiene email"
+                        }
+                    }catch (e){
+                        println "eror email "+e.printStackTrace()
+                    }
                     flash.message = "Solicitud enviada"
                     redirect(action: 'avalesProceso', params: [id: params.proceso])
                     //println pathFile
@@ -489,9 +510,27 @@ class AvalesController extends vesta.seguridad.Shield {
                     println "error alerta: " + alerta.errors
                 }
             }
+            try{
+                def mail = sol.firma.usuario.persona.mail
+                if(mail) {
+
+                    mailService.sendMail {
+                        to mail
+                        subject "Nueve solicitud de aval"
+                        body "Tiene una solicitud de aval pendiente que requiere su firma para aprobación "
+                    }
+
+                } else {
+                    println "El usuario ${sol.firma.usuario.usroLogin} no tiene email"
+                }
+            }catch (e){
+                println "eror email "+e.printStackTrace()
+            }
+
             flash.message = "Solicitud enviada"
             redirect(action: 'avalesProceso', params: [id: params.proceso])
         }
+
 
 
 
@@ -509,6 +548,37 @@ class AvalesController extends vesta.seguridad.Shield {
             def sol = SolicitudAval.findByFirma(firma)
             sol.estado=EstadoAval.findByCodigo("E01")
             sol.save(flush: true)
+            try {
+                def perfilDireccionPlanificacion = Prfl.findByCodigo("DP")
+//            def perfilDireccionComprasPublicas = Prfl.findByCodigo("GJ")
+                def perfiles = [perfilDireccionPlanificacion]
+                def sesiones = Sesn.findAllByPerfilInList(perfiles)
+
+                if (sesiones.size() > 0) {
+                    def persona = Persona.get(session.usuario.personaId)
+
+//                    println "Se enviaran ${sesiones.size()} mails"
+                    sesiones.each { sesn ->
+                        Persona usro = sesn.usuario
+                        def mail = usro.persona.mail
+                        if(mail) {
+
+                            mailService.sendMail {
+                                to mail
+                                subject "Nueve solicitud de aval"
+                                body "Ha recibido una nueva solicitud de aval de la unidad "+sol.unidad
+                            }
+
+                        } else {
+                            println "El usuario ${usro.usroLogin} no tiene email"
+                        }
+                    }
+                } else {
+                    println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
+                }
+            } catch (e) {
+                println "Error al enviar mail: ${e.printStackTrace()}"
+            }
 //            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
             def url =g.createLink(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
             render "${url}"
@@ -558,3 +628,4 @@ class AvalesController extends vesta.seguridad.Shield {
 
 
 }
+

@@ -4,11 +4,16 @@ import vesta.parametros.poaPac.Anio
 import vesta.parametros.UnidadEjecutora
 import vesta.seguridad.Firma
 import vesta.seguridad.Persona
+import vesta.seguridad.Prfl
+import vesta.seguridad.Sesn
+import vesta.seguridad.Persona
 
 /**
  * Controlador que muestra las pantallas de manejo de revisiones de avales
  */
 class RevisionAvalController {
+
+    def mailService
 
     /**
      * Acción que muestra la lista de solicitudes de aval pendientes (estadoAval código E01)
@@ -31,13 +36,14 @@ class RevisionAvalController {
     def negarAval = {
 
         def band = false
-        def usuario = Persona.get(session.usuario.id)
+        def usuario = Usro.get(session.usuario.id)
         def sol = SolicitudAval.get(params.id)
         /*todo aqui validar quien puede*/
         band = true
         if (band) {
 
             sol.estado = EstadoAval.findByCodigo("E03")
+            sol.observaciones=params.obs
             sol.fechaRevision = new Date()
             sol.save(flush: true)
             render "ok"
@@ -65,7 +71,6 @@ class RevisionAvalController {
      * @param id el id del aval a liberar
      */
     def liberarAval = {
-        println("params " + params)
         def aval = Aval.get(params.id)
         def detalle = ProcesoAsignacion.findAllByProceso(aval.proceso)
         [aval: aval, detalle: detalle]
@@ -104,6 +109,7 @@ class RevisionAvalController {
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy HH:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy HH:mm:ss", "31-12-" + anio + " 23:59:59")
+
             def avales = Aval.withCriteria {
                 or {
                     and {
@@ -178,6 +184,7 @@ class RevisionAvalController {
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy hh:mm:ss", "31-12-" + anio + " 23:59:59")
+//            println "inicio "+fechaInicio+"  fin  "+fechaFin
             datos += SolicitudAval.findAllByFechaBetween(fechaInicio, fechaFin)
 //            println "datos fecha "+datos
         }
@@ -217,7 +224,8 @@ class RevisionAvalController {
      */
     def aprobarAval = {
         def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Persona.findAllByUnidad(unidad)
+        def personasFirmas = Usro.findAllByUnidad(unidad)
+        def gerentes = Usro.findAllByUnidad(unidad.padre)
         def numero = 0
         def max = Aval.list([sort: "numero", order: "desc", max: 1])
 //        println "max " + max.numero
@@ -225,12 +233,12 @@ class RevisionAvalController {
             numero = max[0].numero + 1
         def solicitud = SolicitudAval.get(params.id)
         def band = false
-        def usuario = Persona.get(session.usuario.id)
+        def usuario = Usro.get(session.usuario.id)
         /*todo validar quien puede*/
         band = true
         if (!band)
             response.sendError(403)
-        [solicitud: solicitud, personas: personasFirmas, numero: numero]
+        [solicitud: solicitud, personas: personasFirmas,personasGerente:gerentes, numero: numero]
     }
 
     /**
@@ -240,7 +248,7 @@ class RevisionAvalController {
     def aprobarAnulacion = {
         def solicitud = SolicitudAval.get(params.id)
         def band = false
-        def usuario = Persona.get(session.usuario.id)
+        def usuario = Usro.get(session.usuario.id)
         /*todo validar quien puede*/
         band = true
         if (!band)
@@ -290,7 +298,7 @@ class RevisionAvalController {
             if(params.enviar=="true"){
                 println "enviar =true"
                 def band = false
-                def usuario = Persona.get(session.usuario.id)
+                def usuario = Usro.get(session.usuario.id)
                 /*Todo aqui validar quien puede*/
                 band = true
                 if (band) {
@@ -337,6 +345,34 @@ class RevisionAvalController {
                     sol.aval = aval;
                     sol.estado = aval.estado
                     sol.save(flush: true)
+                    try{
+                        def mail = aval.firma1.usuario.persona.mail
+                        if(mail) {
+
+                            mailService.sendMail {
+                                to mail
+                                subject "Un nuevo aval requiere aprobación"
+                                body "Tiene un aval pendiente que requiere su firma para aprobación "
+                            }
+
+                        } else {
+                            println "El usuario ${aval.firma1.usuario.usroLogin} no tiene email"
+                        }
+                        mail = aval.firma2.usuario.persona.mail
+                        if(mail) {
+
+                            mailService.sendMail {
+                                to mail
+                                subject "Un nuevo aval requiere aprobación"
+                                body "Tiene un aval pendiente que requiere su firma para aprobación "
+                            }
+
+                        } else {
+                            println "El usuario ${aval.firma2.usuario.usroLogin} no tiene email"
+                        }
+                    }catch (e){
+                        println "eror email "+e.printStackTrace()
+                    }
                     //flash.message = "Solciitud de firmas enviada para aprobación"
                 } else {
                     def msn = "Usted no tiene permisos para aprobar esta solicitud"
@@ -371,6 +407,38 @@ class RevisionAvalController {
                 def sol = SolicitudAval.findByAval(aval)
                 sol.estado=aval.estado
                 sol.save(flush: true)
+                try {
+                    def perDir = Prfl.findByCodigo("DRRQ")
+                    def sesiones = []
+                    /*drrq*/
+                    Usro.findAllByUnidad(sol.unidad).each {
+                        def ses = Sesn.findAllByPerfilAndUsuario(perDir,it)
+                        if(ses.size()>0)
+                            sesiones+=ses
+                    }
+                    if (sesiones.size() > 0) {
+                        println "Se enviaran ${sesiones.size()} mails"
+                        sesiones.each { sesn ->
+                            Persona usro = sesn.usuario
+                            def mail = usro.persona.mail
+                            if(mail) {
+
+                                mailService.sendMail {
+                                    to mail
+                                    subject "Nuevo aval emitido"
+                                    body "Se ha emitido el aval #"+aval.numero
+                                }
+
+                            } else {
+                                println "El usuario ${usro.usroLogin} no tiene email"
+                            }
+                        }
+                    } else {
+                        println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
+                    }
+                } catch (e) {
+                    println "Error al enviar mail: ${e.printStackTrace()}"
+                }
 //            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
 
             }
@@ -389,7 +457,7 @@ class RevisionAvalController {
         println "liberacion " + params
 
         if (params.monto) {
-//            params.monto = params.monto.replaceAll("\\.", "")
+            params.monto = params.monto.replaceAll("\\.", "")
             params.monto = params.monto.replaceAll(",", ".")
         }
 
@@ -445,16 +513,15 @@ class RevisionAvalController {
 
             if (src.exists()) {
 
-//                flash.message = "Ya existe un archivo con ese nombre. Por favor cámbielo."
-//                redirect(action: 'listaAvales')
-                render "ERROR*Ya existe un archivo con ese nombre. Por favor cámbielo."
-                return
+                flash.message = "Ya existe un archivo con ese nombre. Por favor cámbielo."
+                redirect(action: 'listaAvales')
 
 
             } else {
                 def band = false
-                def usuario = Persona.get(session.usuario.id)
+                def usuario = Usro.get(session.usuario.id)
                 def aval = Aval.get(params.id)
+                /*Todo aqui validar quien puede*/
                 band = true
                 def datos = params.datos.split("&")
                 datos.each {
@@ -467,6 +534,8 @@ class RevisionAvalController {
                             det.save(flush: true)
                         }
                     }
+
+
                 }
                 if (band) {
                     f.transferTo(new File(pathFile))
@@ -477,12 +546,11 @@ class RevisionAvalController {
                     aval.contrato = params.contrato
                     aval.certificacion = params.certificacion
                     aval.save(flush: true)
-                    render "SUCCESS*Aval " +  aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numero + " Liberado"
-                    return
-
+                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numero + " Liberado"
+                    redirect(action: 'listaAvales', controller: 'revisionAval')
                 } else {
-                    render "ERROR*Usted no tiene permisos para liberar avales"
-                    return
+                    flash.message = "Usted no tiene permisos para liberar avales"
+                    redirect(controller: 'listaAvales', action: 'revisionAval')
                 }
             }
         }
@@ -561,7 +629,7 @@ class RevisionAvalController {
 
             } else {
                 def band = false
-                def usuario = Persona.get(session.usuario.id)
+                def usuario = Usro.get(session.usuario.id)
                 def sol = SolicitudAval.get(params.id)
                 /*Todo aqui validar quien puede*/
                 band = true
@@ -651,7 +719,7 @@ class RevisionAvalController {
 
             } else {
                 def band = false
-                def usuario = Persona.get(session.usuario.id)
+                def usuario = Usro.get(session.usuario.id)
                 def sol = SolicitudAval.get(params.id)
                 /*Todo aqui validar quien puede*/
                 band = true

@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 21/01/15
-  Time: 02:17 PM
---%>
-
-<%@ page import="vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
+<%@ page import="yachay.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -20,8 +13,8 @@
     </div>
 </g:if>
 <div class="fila">
-    <g:link controller="avales" action="listaProcesos" class="btn">Procesos</g:link>
-    <g:link controller="avales" action="solicitarAval" class="btn" id="${proceso.id}">Nueva solicitud</g:link>
+    <g:link controller="avales" action="listaProcesos" class="btn btn-default">Procesos</g:link>
+    <g:link controller="avales" action="solicitarAval" class="btn btn-default" id="${proceso.id}">Nueva solicitud</g:link>
 </div>
 
 <div id="tabs" style="width: 1050px;margin-top: 10px;">
@@ -53,7 +46,7 @@
                         <td style="text-align: center">${p.fechaAprobacion?.format("dd-MM-yyyy")}</td>
                         <td style="text-align: center">${p.numero}</td>
                         <td style="text-align: right">
-                            <g:formatNumber number="${p.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"></g:formatNumber>
+                            <g:formatNumber number="${p.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
                         </td>
                         <td style="text-align: center" class="${p.estado?.codigo}">${p.estado?.descripcion}</td>
                         <td style="text-align: center">
@@ -66,15 +59,14 @@
                         </td>
                     </tr>
                 </g:each>
-
                 </tbody>
             </table>
         </g:if>
     </div>
 
-    <div id="solicitudes" style="width: 960px;">
+    <div id="solicitudes" style="width: 100%">
         <g:if test="${solicitudes.size() > 0}">
-            <table style="width: 95%;margin-top: 10px">
+            <table style="width: 95%;margin-top: 10px;font-size: 11px">
                 <thead>
                 <tr>
                     <th>Fecha</th>
@@ -83,8 +75,9 @@
                     <th>Concepto</th>
                     <th>Monto</th>
                     <th>Estado</th>
-                    <th>Doc. Respaldo</th>
+                    <th>Doc. <br>Respaldo</th>
                     <th>Solicitud</th>
+                    <th>Observaciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -106,6 +99,11 @@
                         <td style="text-align: center">
                             <g:if test="${p.tipo != 'A'}">
                                 <a href="#" class="imprimiSolicitud" iden="${p.id}">Imprimir</a>
+                            </g:if>
+                        </td>
+                        <td>
+                            <g:if test="${p.estado?.codigo=='E03'}">
+                                ${p.observaciones}
                             </g:if>
                         </td>
                     </tr>
