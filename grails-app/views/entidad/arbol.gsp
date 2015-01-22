@@ -410,7 +410,28 @@
                     icon            : "fa fa-files-o",
                     separator_after : true,
                     action          : function () {
-
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(controller: 'documento', action:'listUnidad_ajax')}",
+                            data    : {
+                                id : nodeId
+                            },
+                            success : function (msg) {
+                                bootbox.dialog({
+                                    title   : "Documentos",
+                                    class   : "modal-lg",
+                                    message : msg,
+                                    buttons : {
+                                        ok : {
+                                            label     : "Aceptar",
+                                            className : "btn-primary",
+                                            callback  : function () {
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
                     }
                 };
                 var agregarUsu = {

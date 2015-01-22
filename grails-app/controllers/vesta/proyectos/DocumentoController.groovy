@@ -2,6 +2,7 @@ package vesta.proyectos
 
 import groovy.json.JsonBuilder
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.parametros.UnidadEjecutora
 import vesta.seguridad.Shield
 
 import javax.imageio.ImageIO
@@ -19,9 +20,57 @@ class DocumentoController extends Shield {
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
     /**
+     * Acción llamada con ajax que muestra y permite modificar los documentos de una unidad ejecutora
+     */
+    def listUnidad_ajax() {
+        def unidad = UnidadEjecutora.get(params.id)
+        return [unidad: unidad]
+    }
+
+    /**
+     * Acción llamada con ajax que llena la tabla de los documentos de una unidad
+     */
+    def tablaDocumentosUnidad_ajax() {
+        def unidad = UnidadEjecutora.get(params.id)
+        def documentos = Documento.withCriteria {
+            eq("unidadEjecutora", unidad)
+            if (params.search && params.search != "") {
+                or {
+                    ilike("descripcion", "%" + params.search + "%")
+                    ilike("clave", "%" + params.search + "%")
+                    ilike("resumen", "%" + params.search + "%")
+                }
+            }
+            order("descripcion", "asc")
+        }
+        return [unidad: unidad, documentos: documentos]
+    }
+
+    /**
+     * Acción llamada con ajax que muestra un formulario para crear o modificar un elemento
+     * @return documentoInstance el objeto a modificar cuando se encontró el elemento
+     * @render ERROR*[mensaje] cuando no se encontró el elemento
+     */
+    def formUnidad_ajax() {
+        def unidad = UnidadEjecutora.get(params.unidad.toLong())
+        def documentoInstance = new Documento()
+        if (params.id) {
+            documentoInstance = Documento.get(params.id)
+            if (!documentoInstance) {
+//                render "ERROR*No se encontró Documento."
+//                return
+                documentoInstance = new Documento()
+            }
+        }
+        documentoInstance.properties = params
+        documentoInstance.unidadEjecutora = unidad
+        return [documentoInstance: documentoInstance]
+    } //form para cargar con ajax en un dialog
+
+    /**
      * Acción llamada con ajax que muestra y permite modificar los documentos de un proyecto
      */
-    def list_ajax() {
+    def listProyecto_ajax() {
         def proyecto = Proyecto.get(params.id)
         return [proyecto: proyecto]
     }
@@ -68,7 +117,7 @@ class DocumentoController extends Shield {
      * @return documentoInstance el objeto a modificar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
-    def form_ajax() {
+    def formProyecto_ajax() {
         def proyecto = Proyecto.get(params.proyecto.toLong())
         def documentoInstance = new Documento()
         if (params.id) {
@@ -89,11 +138,29 @@ class DocumentoController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
-        def proyecto = Proyecto.get(params.proyecto.id)
-        def proyName = proyecto.nombre.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
+        def proyecto, unidad, proyName, uniName
+        if (params.proyecto && params.proyecto.id) {
+            proyecto = Proyecto.get(params.proyecto.id.toLong())
+            proyName = proyecto.nombre.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
+        }
+        if (params.unidad && params.unidad.id) {
+            unidad = UnidadEjecutora.get(params.unidad.id.toLong())
+            uniName = (unidad.nombre + "_" + unidad.codigo).tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
+        }
+
         def anio = new Date().format("yyyy")
-        def pathSave = "${session.unidad.codigo}/" + anio + "/" + proyName + "/"
-        def path = servletContext.getRealPath("/") + "documentosProyecto/" + pathSave
+        def pathSave = ""
+        if (proyName) {
+            pathSave = "${session.unidad.codigo}/" + anio + "/" + proyName + "/"
+        } else if (uniName) {
+            pathSave = uniName + "/" + anio + "/"
+        }
+        def path = servletContext.getRealPath("/") //+ "documentosProyecto/" + pathSave
+        if (proyName) {
+            path += "documentosProyecto/" + pathSave
+        } else if (uniName) {
+            path += "documentosUnidad/" + pathSave
+        }
         //web-app/archivos
         new File(path).mkdirs()
         def f = request.getFile('documento')  //archivo = name del input type file
@@ -214,7 +281,10 @@ class DocumentoController extends Shield {
                 params.remove("documento")
                 documentoInstance.properties = params
                 documentoInstance.documento = pathSave + nombre
-                documentoInstance.unidadEjecutora = session.unidad
+                if (unidad) {
+                    documentoInstance.unidadEjecutora = unidad
+                }
+//                documentoInstance.unidadEjecutora = session.unidad
                 if (!documentoInstance.save(flush: true)) {
                     render "ERROR*Ha ocurrido un error al guardar Documento: " + renderErrors(bean: documentoInstance)
                     def file = new File(pathFile)
@@ -232,15 +302,19 @@ class DocumentoController extends Shield {
         } //f && !f.empty
         else {
             if (params.id) {
-                def documentoInstance = new Documento()
-                documentoInstance = Documento.get(params.id)
+//                def documentoInstance = new Documento()
+                def documentoInstance = Documento.get(params.id)
                 if (!documentoInstance) {
                     documentoInstance = new Documento()
                     println "ERROR*No se encontró Documento."
                 }
                 params.remove("documento")
                 documentoInstance.properties = params
-                documentoInstance.unidadEjecutora = session.unidad
+                if (params.unidad && params.unidad.id) {
+                    documentoInstance.unidadEjecutora = UnidadEjecutora.get(params.unidad.id.toLong())
+                } else {
+                    documentoInstance.unidadEjecutora = session.unidad
+                }
                 if (!documentoInstance.save(flush: true)) {
                     render "ERROR*Ha ocurrido un error al guardar Documento: " + renderErrors(bean: documentoInstance)
                     return
@@ -284,11 +358,35 @@ class DocumentoController extends Shield {
     } //delete para eliminar via ajax
 
     /**
+     * Acción llamada con ajax que verifica la existencia de un documento antes de ser descargado
+     */
+    def existeDoc_ajax() {
+        def doc = Documento.get(params.id)
+        def path
+        if (doc.proyecto) {
+            path = servletContext.getRealPath("/") + "documentosProyecto/" + doc.documento
+        } else {
+            path = servletContext.getRealPath("/") + "documentosUnidad/" + doc.documento
+        }
+        def file = new File(path)
+        if (file.exists()) {
+            render "OK"
+        } else {
+            render "NO"
+        }
+    }
+
+    /**
      * Acción que permite descargar un documento del proyecto
      */
     def downloadDoc() {
         def doc = Documento.get(params.id)
-        def path = servletContext.getRealPath("/") + "documentosProyecto/" + doc.documento
+        def path
+        if (doc.proyecto) {
+            path = servletContext.getRealPath("/") + "documentosProyecto/" + doc.documento
+        } else {
+            path = servletContext.getRealPath("/") + "documentosUnidad/" + doc.documento
+        }
         def nombre = doc.documento.split("/").last()
         def parts = nombre.split("\\.")
         def tipo = parts[1]

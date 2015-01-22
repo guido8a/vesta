@@ -8,12 +8,7 @@
         <a href="#" class="btn btn-sm btn-success" id="btnAddDoc">
             <i class="fa fa-plus"></i> Agregar
         </a>
-    </div><!-- /input-group -->
-%{--<div class="btn-group">--}%
-%{--<a class="btn btn-sm btn-danger">--}%
-%{--<i class="fa fa-trash-o"></i> Eliminar--}%
-%{--</a>--}%
-%{--</div><!-- /input-group -->--}%
+    </div>
 
     <div class="btn-group col-md-3 pull-right">
         <div class="input-group input-group-sm">
@@ -30,14 +25,14 @@
 <script type="text/javascript">
     function reloadTablaDocumento(search) {
         var data = {
-            id : "${proyecto.id}"
+            id : "${unidad.id}"
         };
         if (search) {
             data.search = search;
         }
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller:'documento', action:'tablaDocumentosProyecto_ajax')}",
+            url     : "${createLink(controller:'documento', action:'tablaDocumentosUnidad_ajax')}",
             data    : data,
             success : function (msg) {
                 $("#tabla").html(msg);
@@ -65,6 +60,7 @@
                     closeLoader();
                     if (parts[0] == "SUCCESS") {
                         reloadTablaDocumento();
+                        $("#dlgCreateEdit").modal("hide");
                     } else {
                         spinner.replaceWith($btn);
                         return false;
@@ -82,7 +78,7 @@
         bootbox.dialog({
             title   : "Alerta",
             message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                      "¿Está seguro que desea eliminar el Documento seleccionado? Esta acción no se puede deshacer.</p>",
+                    "¿Está seguro que desea eliminar el Documento seleccionado? Esta acción no se puede deshacer.</p>",
             buttons : {
                 cancelar : {
                     label     : "Cancelar",
@@ -117,11 +113,11 @@
     }
     function createEditDocumento(id) {
         var title = id ? "Editar" : "Crear";
-        var data = id ? { id : id } : {};
-        data.proyecto = "${proyecto.id}";
+        var data = id ? {id : id} : {};
+        data.unidad = "${unidad.id}";
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller:'documento', action:'form_ajax')}",
+            url     : "${createLink(controller:'documento', action:'formUnidad_ajax')}",
             data    : data,
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -152,7 +148,20 @@
         }); //ajax
     } //createEdit
     function downloadDocumento(id) {
-        location.href = "${createLink(controller: 'documento', action: 'downloadDoc')}/" + id;
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller:'documento', action:'existeDoc_ajax')}",
+            data    : {
+                id : id
+            },
+            success : function (msg) {
+                if (msg == "OK") {
+                    location.href = "${createLink(controller: 'documento', action: 'downloadDoc')}/" + id;
+                } else {
+                    log("El documento solicitado no se encontró en el servidor", "error"); // log(msg, type, title, hide)
+                }
+            }
+        });
     }
 
     $(function () {

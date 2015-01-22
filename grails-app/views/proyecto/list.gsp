@@ -469,7 +469,7 @@
                                 var id = $element.data("id");
                                 $.ajax({
                                     type    : "POST",
-                                    url     : "${createLink(controller: 'documento', action:'list_ajax')}",
+                                    url     : "${createLink(controller: 'documento', action:'listProyecto_ajax')}",
                                     data    : {
                                         id : id
                                     },
