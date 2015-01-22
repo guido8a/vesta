@@ -509,32 +509,11 @@
                             }
                         },
                         pac         : {
-                            label  : "P.A.C.",
-                            icon   : "fa fa-shopping-cart",
+                            label  : "Asignaciones",
+                            icon   : "fa fa-money",
                             action : function ($element) {
                                 var id = $element.data("id");
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(controller: 'obra', action:'pacProyecto_ajax')}",
-                                    data    : {
-                                        id : id
-                                    },
-                                    success : function (msg) {
-                                        bootbox.dialog({
-                                            title   : "P.A.C. del proyecto",
-                                            class   : "modal-lg",
-                                            message : msg,
-                                            buttons : {
-                                                ok : {
-                                                    label     : "Aceptar",
-                                                    className : "btn-primary",
-                                                    callback  : function () {
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
+                                location.href = "${createLink(controller: 'asignacion', action:'asignacionProyectov2')}/" + id
                             }
                         },
                         eliminar    : {

@@ -1,4 +1,3 @@
-
 <%@ page import="vesta.seguridad.Persona" %>
 <!DOCTYPE html>
 <html>
@@ -6,17 +5,19 @@
         <meta name="layout" content="main">
         <title>Lista de Persona</title>
     </head>
+
     <body>
 
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
-    <!-- botones -->
+        <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <a href="#" class="btn btn-default btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </a>
             </div>
+
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group input-group-sm">
                     <input type="text" class="form-control input-search" placeholder="Buscar" value="${params.search}">
@@ -32,45 +33,45 @@
         <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    
-                    <g:sortableColumn property="cedula" title="Cedula" />
-                    
-                    <g:sortableColumn property="nombre" title="Nombre" />
-                    
-                    <g:sortableColumn property="apellido" title="Apellido" />
-                    
-                    <g:sortableColumn property="sexo" title="Sexo" />
-                    
-                    <g:sortableColumn property="discapacitado" title="Discapacitado" />
-                    
-                    <g:sortableColumn property="fechaNacimiento" title="Fecha Nacimiento" />
-                    
+
+                    <g:sortableColumn property="cedula" title="Cedula"/>
+
+                    <g:sortableColumn property="nombre" title="Nombre"/>
+
+                    <g:sortableColumn property="apellido" title="Apellido"/>
+
+                    <g:sortableColumn property="sexo" title="Sexo"/>
+
+                    <g:sortableColumn property="discapacitado" title="Discapacitado"/>
+
+                    <g:sortableColumn property="fechaNacimiento" title="Fecha Nacimiento"/>
+
                 </tr>
             </thead>
             <tbody>
                 <g:if test="${personaInstanceCount > 0}">
                     <g:each in="${personaInstanceList}" status="i" var="personaInstance">
                         <tr data-id="${personaInstance.id}">
-                            
+
                             <td>${personaInstance.cedula}</td>
-                            
+
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${personaInstance}" field="nombre"/></elm:textoBusqueda></td>
-                            
+
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${personaInstance}" field="apellido"/></elm:textoBusqueda></td>
-                            
+
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${personaInstance}" field="sexo"/></elm:textoBusqueda></td>
-                            
+
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${personaInstance}" field="discapacitado"/></elm:textoBusqueda></td>
-                            
-                            <td><g:formatDate date="${personaInstance.fechaNacimiento}" format="dd-MM-yyyy" /></td>
-                            
+
+                            <td><g:formatDate date="${personaInstance.fechaNacimiento}" format="dd-MM-yyyy"/></td>
+
                         </tr>
                     </g:each>
                 </g:if>
                 <g:else>
                     <tr class="danger">
                         <td class="text-center" colspan="18">
-                            <g:if test="${params.search && params.search!= ''}">
+                            <g:if test="${params.search && params.search != ''}">
                                 No se encontraron resultados para su búsqueda
                             </g:if>
                             <g:else>
@@ -96,28 +97,28 @@
                         type    : "POST",
                         url     : $form.attr("action"),
                         data    : $form.serialize(),
-                            success : function (msg) {
-                        var parts = msg.split("*");
-                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                        setTimeout(function() {
-                            if (parts[0] == "SUCCESS") {
-                                location.reload(true);
-                            } else {
-                                spinner.replaceWith($btn);
-                                return false;
-                            }
-                        }, 1000);
-                    }
-                });
-            } else {
-                return false;
-            } //else
+                        success : function (msg) {
+                            var parts = msg.split("*");
+                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                            setTimeout(function () {
+                                if (parts[0] == "SUCCESS") {
+                                    location.reload(true);
+                                } else {
+                                    spinner.replaceWith($btn);
+                                    return false;
+                                }
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    return false;
+                } //else
             }
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                              "¿Está seguro que desea eliminar el Persona seleccionado? Esta acción no se puede deshacer.</p>",
+                            "¿Está seguro que desea eliminar el Persona seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -140,7 +141,7 @@
                                         var parts = msg.split("*");
                                         log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "SUCCESS") {
-                                            setTimeout(function() {
+                                            setTimeout(function () {
                                                 location.reload(true);
                                             }, 1000);
                                         } else {
@@ -155,18 +156,18 @@
             }
             function createEditRow(id) {
                 var title = id ? "Editar" : "Crear";
-                var data = id ? { id: id } : {};
+                var data = id ? {id : id} : {};
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(action:'form_ajax')}",
                     data    : data,
                     success : function (msg) {
                         var b = bootbox.dialog({
-                            id      : "dlgCreateEdit",
-                            title   : title + " Persona",
-                            
-                            class   : "modal-lg",
-                            
+                            id    : "dlgCreateEdit",
+                            title : title + " Persona",
+
+                            class : "modal-lg",
+
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -194,7 +195,7 @@
 
             $(function () {
 
-                $(".btnCrear").click(function() {
+                $(".btnCrear").click(function () {
                     createEditRow();
                     return false;
                 });

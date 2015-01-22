@@ -182,6 +182,57 @@ class EntidadController extends Shield {
     def arbol() {}
 
     /**
+     * Acción llamada con ajax que permite realizar búsquedas en el árbol
+     */
+    def arbolSearch_ajax() {
+        def search = params.str.trim()
+        if (search != "") {
+            def c = Persona.createCriteria()
+            def find = c.list(params) {
+                or {
+                    ilike("nombre", "%" + search + "%")
+                    ilike("apellido", "%" + search + "%")
+                    ilike("login", "%" + search + "%")
+                    unidad {
+                        or {
+                            ilike("nombre", "%" + search + "%")
+                        }
+                    }
+                }
+            }
+            println find
+            def departamentos = []
+            find.each { pers ->
+                if (pers.unidad && !departamentos.contains(pers.unidad)) {
+                    departamentos.add(pers.unidad)
+                    def dep = pers.unidad
+                    def padre = dep.padre
+                    while (padre) {
+                        dep = padre
+                        padre = dep.padre
+                        if (!departamentos.contains(dep)) {
+                            departamentos.add(dep)
+                        }
+                    }
+                }
+            }
+            departamentos = departamentos.reverse()
+            def ids = "["
+            if (find.size() > 0) {
+                ids += "\"#root\","
+                departamentos.each { dp ->
+                    ids += "\"#lidep_" + dp.id + "\","
+                }
+                ids = ids[0..-2]
+            }
+            ids += "]"
+            render ids
+        } else {
+            render ""
+        }
+    }
+
+    /**
      * Acción llamada con ajax que carga el árbol de la estructura institucional
      */
     def loadTreePart_ajax() {

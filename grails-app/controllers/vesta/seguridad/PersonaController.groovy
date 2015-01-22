@@ -2,6 +2,9 @@ package vesta.seguridad
 
 import org.springframework.dao.DataIntegrityViolationException
 import sun.misc.Perf
+import vesta.parametros.TipoResponsable
+import vesta.parametros.UnidadEjecutora
+import vesta.proyectos.ResponsableProyecto
 import vesta.seguridad.Shield
 
 
@@ -305,4 +308,220 @@ class PersonaController extends Shield {
         }
     }
 
+    /**
+     * Acción llamada con ajax que muestra y permite modificar los responsables de una unidad
+     */
+    def responsablesUnidad_ajax() {
+        def unidad = UnidadEjecutora.get(params.id)
+        def usuarios = Persona.findAllByUnidad(unidad)
+
+        def responsableProyectoInstanceList = []
+        def ls = ResponsableProyecto.findAllByUnidad(unidad, [sort: "desde"])
+        def cont = 0
+        def ahora = new Date()
+        ls.each {
+            if (it.unidad.id == unidad.id) {
+                def m = [:]
+                m.obj = it
+                if (it) {
+                    if (it?.desde <= ahora && it?.hasta >= ahora) {
+                        m.clase = "activo"
+                    } else {
+                        if (it?.desde < ahora) {
+                            m.clase = "pasado"
+                        } else {
+                            if (it?.hasta > ahora) {
+                                m.clase = "futuro"
+                            }
+                        }
+                    }
+                    m.estado = m.clase
+                    m.clase += " " + (it?.tipo.descripcion).toLowerCase()
+                    responsableProyectoInstanceList.add(m)
+                    cont++
+                }
+            }
+        }
+        responsableProyectoInstanceList.sort { it.activo }
+        def responsableProyectoInstanceTotal = cont
+
+        return [usuarios: usuarios, unidad: unidad, responsableProyectoInstanceList: responsableProyectoInstanceList, responsableProyectoInstanceTotal: responsableProyectoInstanceTotal]
+    }
+
+    /**
+     * Acción llamada con ajax que carga la lista de los responsables de una unidad
+     */
+    def tablaResponsables_ajax() {
+        def unidad = UnidadEjecutora.get(params.id)
+
+        def now = new Date()
+
+        def responsables = ResponsableProyecto.withCriteria {
+            eq("unidad", unidad)
+            le("desde", now)
+            ge("hasta", now)
+            and {
+                order("tipo", "asc")
+                order("desde", "asc")
+            }
+        }
+        return [unidad: unidad, responsables: responsables]
+    }
+
+    /**
+     * Acción llamada con ajax que permite agregar responsables
+     */
+    def formResponsable_ajax() {
+        def unidad = UnidadEjecutora.get(params.id)
+        return [unidad: unidad]
+    }
+
+    /**
+     * Acción llamada con ajax que guarda un nuevo responsable
+     */
+    def addResponsable_ajax() {
+        def unidad = UnidadEjecutora.get(params.unidad.toLong())
+        def usuario = Persona.get(params.responsable.toLong())
+        def tipo = TipoResponsable.get(params.tipo.toLong())
+
+        def desde = new Date().parse("dd-MM-yyyy", params.desde_input)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta_input)
+
+        def responsable = new ResponsableProyecto()
+
+        if (params.id) {
+            responsable = ResponsableProyecto.get(params.id)
+        }
+
+        responsable.responsable = usuario
+        responsable.unidad = unidad
+        responsable.desde = desde
+        responsable.hasta = hasta
+        responsable.tipo = tipo
+        responsable.observaciones = params.observaciones
+
+        if (!responsable.save(flush: true)) {
+            println responsable.errors
+            render("ERROR*" + renderErrors(bean: responsable))
+        } else {
+            render "SUCCESS*Responsable asignado correctamente"
+        }
+    }
+
+    /**
+     * Acción llamada con ajax que da de baja a un responsable
+     */
+    def removeResponable_ajax() {
+        def responsable = ResponsableProyecto.get(params.id)
+        responsable.hasta = new Date()
+
+        if (!responsable.save(flush: true)) {
+            println responsable.errors
+            render "ERROR*" + renderErrors(bean: responsable)
+        } else {
+            render "SUCCESS*Responsable dado de baja exitosamente"
+        }
+    }
+
+    /**
+     * Acción llamada con ajax que carga los responsables de un cierto tipo
+     */
+    def responsablesPorTipo_ajax() {
+        /*
+       'E' 'Ejecución'
+       'I' 'Planificación'
+       'S' 'Seguimiento'
+       'A' 'Administrativo'
+       'F' 'Financiero'
+
+       administrativo
+       si esigef = 9999 -> solo de la direccion administrativa // id=93
+       else -> de la unidad
+
+       ejecucion
+       de la unidad
+
+       financiero
+       si esigef = 9999 -> solo de la direccion financiera // id=94
+       else -> de la unidad
+
+       planificacion
+       si esigef = 9999 -> solo de la direccion de planificacion // id=85
+       else -> de la unidad
+
+       seguimiento
+       si esigef = 9999 -> solo de la direccion de planificacion // id=85
+       else -> de la unidad
+       */
+
+        def unidad = UnidadEjecutora.get(params.unidad)
+        def tipo = TipoResponsable.get(params.tipo)
+
+        def dirAdmin = UnidadEjecutora.get(93)
+        def dirFinan = UnidadEjecutora.get(94)
+        def dirPlan = UnidadEjecutora.get(85)
+
+        def usuarios = []
+        if (tipo) {
+            switch (tipo.codigo) {
+                case 'A':
+                    if (unidad.codigo == "9999") {
+                        usuarios = Persona.findAllByUnidad(dirAdmin)
+                    } else {
+                        if (unidad) {
+                            usuarios = Persona.findAllByUnidad(unidad)
+                        }
+                    }
+                    break;
+                case 'E':
+                    usuarios = Persona.findAllByUnidad(unidad)
+                    break;
+                case 'F':
+                    if (unidad.codigo == "9999") {
+                        usuarios = Persona.findAllByUnidad(dirFinan)
+                    } else {
+                        if (unidad) {
+                            usuarios = Persona.findAllByUnidad(unidad)
+                        }
+                    }
+                    break;
+                case 'I':
+/*
+                    if (unidad.codigo == "9999") {
+                        usuarios = Usro.findAllByUnidad(dirPlan)
+                    } else {
+*/
+                    if (unidad) {
+                        usuarios = Persona.findAllByUnidad(unidad)
+                    }
+/*
+                    }
+*/
+                    break;
+                case 'S':
+                    if (unidad.codigo == "9999") {
+                        usuarios = Persona.findAllByUnidad(dirPlan)
+                    } else {
+                        if (unidad) {
+                            usuarios = Persona.findAllByUnidad(unidad)
+                        }
+                    }
+                    break;
+            }
+        }
+        usuarios.sort { it.nombre }
+
+        def ls = []
+        usuarios.each { u ->
+            def m = [:]
+            m.key = u.id
+            m.value = u.nombre.toLowerCase().split(' ').collect {
+                it.capitalize()
+            }.join(' ') + " " + u.apellido.toLowerCase().split(' ').collect { it.capitalize() }.join(' ')
+            ls.add(m)
+        }
+
+        render g.select(from: ls, optionKey: 'key', optionValue: 'value', name: "responsable",
+                "class": "form-control input-sm required")
+    }
 }

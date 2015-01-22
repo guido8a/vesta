@@ -20,6 +20,10 @@
             overflow-y : auto;
             height     : 440px;
         }
+
+        .jstree-search {
+            color : #5F87B2 !important;
+        }
         </style>
 
     </head>
@@ -43,11 +47,31 @@
         <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-2">
                 <div class="input-group input-group-sm">
-                    <input type="text" class="form-control input-sm" placeholder="Buscador">
+                    <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>
                     <span class="input-group-btn">
-                        <a href="#" class="btn btn-sm btn-success" type="button"><i class="fa fa-search"></i></a>
+                        <a href="#" id="btnSearchArbol" class="btn btn-sm btn-info">
+                            <i class="fa fa-search"></i>&nbsp;
+                        </a>
                     </span>
                 </div><!-- /input-group -->
+            </div>
+
+            <div class="col-md-3 hidden" id="divSearchRes">
+                <span id="spanSearchRes">
+                    5 resultados
+                </span>
+
+                <div class="btn-group">
+                    <a href="#" class="btn btn-xs btn-default" id="btnNextSearch" title="Siguiente">
+                        <i class="fa fa-chevron-down"></i>&nbsp;
+                    </a>
+                    <a href="#" class="btn btn-xs btn-default" id="btnPrevSearch" title="Anterior">
+                        <i class="fa fa-chevron-up"></i>&nbsp;
+                    </a>
+                    <a href="#" class="btn btn-xs btn-default" id="btnClearSearch" title="Limpiar búsqueda">
+                        <i class="fa fa-close"></i>&nbsp;
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -56,6 +80,10 @@
         </div>
 
         <script type="text/javascript">
+            var searchRes = [];
+            var posSearchShow = 0;
+            var $treeContainer = $("#tree");
+
             function submitFormUnidad() {
                 var $form = $("#frmUnidadEjecutora");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
@@ -294,7 +322,7 @@
                     },
                     success        : function (label) {
                         label.parents(".grupo").removeClass('has-error');
-label.remove();
+                        label.remove();
                     },
                     rules          : {
                         input1 : {
@@ -356,6 +384,8 @@ label.remove();
                 var nodeId = nodeStrId.split("_")[1];
                 var nodeType = $node.data("jstree").type;
 
+                var nodeText = $node.children("a").first().text();
+
 //                var $parent = $node.parent().parent();
 //                var parentStrId = $parent.attr("id");
 //                var parentId = parentStrId.split("_")[1];
@@ -395,7 +425,28 @@ label.remove();
                     label  : "Responsables",
                     icon   : "fa fa-users text-info",
                     action : function () {
-
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(controller: "persona", action:'responsablesUnidad_ajax')}",
+                            data    : {
+                                id : nodeId
+                            },
+                            success : function (msg) {
+                                bootbox.dialog({
+                                    title   : "Responsables de " + nodeText,
+                                    message : msg,
+                                    class   : "modal-lg",
+                                    buttons : {
+                                        ok : {
+                                            label     : "Aceptar",
+                                            className : "btn-primary",
+                                            callback  : function () {
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
                     }
                 };
                 var verEntidad = {
@@ -626,8 +677,16 @@ label.remove();
                 return items;
             }
 
+            function scrollToSearchRes() {
+                var $scrollTo = $(searchRes[posSearchShow]).parents("li").first();
+                $treeContainer.jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                    scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+                });
+            }
+
             $(function () {
-                $('#tree').on("loaded.jstree", function () {
+
+                $treeContainer.on("loaded.jstree", function () {
                     $("#loading").hide();
                     $("#tree").removeClass("hide");
                 }).on("select_node.jstree", function (node, selected, event) {
@@ -663,7 +722,7 @@ label.remove();
                     },
                     search      : {
                         fuzzy             : false,
-                        show_only_matches : true,
+                        show_only_matches : false,
                         ajax              : {
                             url     : "${createLink(action:'arbolSearch_ajax')}",
                             success : function (msg) {
@@ -671,6 +730,15 @@ label.remove();
                                 $.each(json, function (i, obj) {
                                     $('#tree').jstree("open_node", obj);
                                 });
+                                setTimeout(function () {
+                                    searchRes = $(".jstree-search");
+                                    var cantRes = searchRes.length;
+                                    posSearchShow = 0;
+                                    $("#divSearchRes").removeClass("hidden");
+                                    $("#spanSearchRes").text(cantRes + " resultados");
+                                    scrollToSearchRes();
+                                }, 300);
+
                             }
                         }
                     },
@@ -701,6 +769,47 @@ label.remove();
                         }
                     }
                 });
+
+                $('#btnSearchArbol').click(function () {
+                    $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+                    return false;
+                });
+                $("#searchArbol").keypress(function (ev) {
+                    if (ev.keyCode == 13) {
+                        $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+                        return false;
+                    }
+                });
+
+                $("#btnPrevSearch").click(function () {
+                    if (posSearchShow > 0) {
+                        posSearchShow--;
+                    } else {
+                        posSearchShow = searchRes.length - 1;
+                    }
+                    scrollToSearchRes();
+                    return false;
+                });
+
+                $("#btnNextSearch").click(function () {
+                    if (posSearchShow < searchRes.length - 1) {
+                        posSearchShow++;
+                    } else {
+                        posSearchShow = 0;
+                    }
+                    scrollToSearchRes();
+                    return false;
+                });
+
+                $("#btnClearSearch").click(function () {
+                    $treeContainer.jstree("clear_search");
+                    $("#searchArbol").val("");
+                    posSearchShow = 0;
+                    searchRes = [];
+                    $("#divSearchRes").addClass("hidden");
+                    $("#spanSearchRes").text("");
+                });
+
             });
         </script>
 

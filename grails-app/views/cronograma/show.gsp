@@ -57,6 +57,11 @@
                     </g:link>
                 </div>
             </g:if>
+            <div class="btn-group">
+                <g:link controller="asignacion" action="asignacionProyectov2" id="${proyecto.id}" class="btn btn-sm btn-default">
+                    <i class="fa fa-money"></i> Asignaciones
+                </g:link>
+            </div>
         </div>
         <elm:container tipo="horizontal" titulo="Cronograma del proyecto ${proyecto?.toStringMedio()}, para el año ${anio}" color="black">
             <div class="divIndice ">
