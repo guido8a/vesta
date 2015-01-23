@@ -170,10 +170,14 @@
                     }
                     params += "search_hasta=${params.search_hasta}";
                 }
+//                if (params != "") {
+//                    params = "?" + params;
+//                }
+                var returnParams = "?list=list";
                 if (params != "") {
-                    params = "?" + params;
+                    returnParams += "&" + params;
                 }
-                return params;
+                return returnParams;
             }
 
             function submitFormProyecto(id) {

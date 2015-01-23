@@ -15,11 +15,14 @@
     <body>
 
         <g:set var="editable" value="${proyecto.aprobado != 'a'}"/>
+        <g:if test="${params.list != 'list'}">
+            <g:set var="editable" value="${false}"/>
+        </g:if>
 
         <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link controller="proyecto" action="list" params="${params}" class="btn btn-sm btn-default">
+                <g:link controller="proyecto" action="${params.remove('list')}" params="${params}" class="btn btn-sm btn-default">
                     <i class="fa fa-list"></i> Lista de proyectos
                 </g:link>
             </div>

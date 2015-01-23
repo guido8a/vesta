@@ -40,6 +40,7 @@ class ProyectoController extends Shield {
      * @return lista de los elementos encontrados
      */
     def getList(params, all) {
+        println "GET LIST: " + params + "   " + all
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
         params.offset = params.offset ?: 0
@@ -48,6 +49,7 @@ class ProyectoController extends Shield {
             params.remove("offset")
         }
         def list
+        println "PARAMS: " + params
         if (params.search_programa || params.search_nombre || params.search_desde || params.search_hasta) {
             def c = Proyecto.createCriteria()
             list = c.list(params) {
@@ -259,5 +261,43 @@ class ProyectoController extends Shield {
         render select.toString()
     }
 
+    /**
+     * Acción que muestra la lista de proyectos por aprobar
+     */
+    def listaAprobarProyecto = {
+        println "lista " + params
+        //        def proyectos = []
+//        if (params.parametro && params.parametro.trim().size() > 0) {
+//            proyectos += Proyecto.findAllByNombreIlike("%${params.parametro}%")
+//            proyectos += Proyecto.findAllByCodigoProyectoIlike("%${params.parametro}%")
+//        } else {
+//            proyectos = Proyecto.list(params)
+//        }
+        def proyectoInstanceList = getList(params, false)
+        def proyectoInstanceCount = getList(params, true).size()
+//        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount]
+        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount, params: params]
+    }
+
+    /**
+     * Acción llamada con ajax que marca un proyecto como aprobado
+     */
+    def aprobarProyecto_ajax() {
+        if (request.method == 'POST') {
+            if (session.usuario.autorizacion == params.auth.encodeAsMD5()) {
+                def proy = Proyecto.get(params.proy.toLong())
+                proy.aprobado = "a"
+                if (proy.save(flush: true)) {
+                    render "SUCCESS*Proyecto aprobado exitosamente"
+                } else {
+                    render "ERROR*" + renderErrors(bean: proy)
+                }
+            } else {
+                render "ERROR*Su clave de autorización es incorrecta"
+            }
+        } else {
+            response.sendError(403)
+        }
+    }
 
 }
