@@ -4,18 +4,15 @@
   Date: 22/12/14
   Time: 04:36 PM
 --%>
-
-<style type="text/css">
-</style>
-
-<input type="button" class="botonNuevo nuevo" id="${catalogo}" value="Crear Item"/>
+<a href="#" class="botonNuevo nuevo btn btn-success btn-sm" id="${catalogo}">
+    Crear Item
+</a>
 
 <g:form action="grabar" method="post" style="margin-top: 10px;">
     <input type="hidden" id="mdlo__id" value="${mdlo__id}">
     <input type="hidden" id="tpac__id" value="${mdlo__id}">
-    <g:if test="${datos?.size() > 0}">
-        <div class="ui-corner-all" style="width: 940px; height: 520px; overflow:auto; margin-bottom: 5px; margin-left: -10px; background-color: #efeff8;
-        border-style: solid; border-color: #AAA; border-width: 1px; ">
+    <g:if test="${items.size() > 0}">
+        <div>
             <table class="table table-condensed table-bordered table-striped table-hover">
                 <thead style="color: #101010; background-color: #69b0e3">
                     <tr>
@@ -27,15 +24,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                <!-- <hr>Hola ${lista}</hr> -->
-                    <g:each in="${datos}" status="i" var="d">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" iden="${d[0]}" style="height: 27px;">
+                    <g:each in="${items}" status="i" var="d">
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" iden="${d.id}" style="height: 27px;">
                             %{--<tr class="${(i % 2) == 0 ? 'odd' : 'even'}" style="background: ${(d[0]) ? '#a0c9e2' : ''}">--}%
-                            <td>${d[1]?.encodeAsHTML()}</td>
-                            <td>${d[2]?.encodeAsHTML()}</td>
-                            <td>${d[3]?.encodeAsHTML()}</td>
-                            <td>${d[4]?.encodeAsHTML()}</td>
-                            <td>${d[5]?.encodeAsHTML()}</td>
+                            <td>${d.codigo}</td>
+                            <td>${d.descripcion}</td>
+                            <td>${d.estado}</td>
+                            <td>${d.orden}</td>
+                            <td>${d.original}</td>
                         </tr>
                     </g:each>
                 </tbody>
@@ -45,32 +41,21 @@
 </g:form>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(function () {
         $("#aceptar").click(function () {
 //            alert("ohhhhh")
         });
-    });
 
-    $(".nuevo").click(function () {
-        var catalogo = ${catalogo}
-                bootbox.confirm("Crear un nuevo Item del Catálogo: ${vesta.parametros.Catalogo.get(catalogo).nombre} ?", function (result) {
-                    if (result == true) {
-                        createEditRow();
-                    }
-                });
+        $(".nuevo").click(function () {
+            createEditRow();
+            %{--var catalogo = ${catalogo}--}%
+            %{--bootbox.confirm("Crear un nuevo Item del Catálogo: ${vesta.parametros.Catalogo.get(catalogo).nombre} ?", function (result) {--}%
+            %{--if (result == true) {--}%
+            %{--createEditRow();--}%
+            %{--}--}%
+            %{--});--}%
+        });
     });
-
-    function armarAccn() {
-        var datos = new Array()
-        $('[type=checkbox]:checked').each(
-                /*$(':checkbox[checked="true"]').each(*/
-                function () {
-                    datos.push($(this).val());
-                }
-        )
-        datos += "&menu=" + $('#mdlo__id').val() + "&grabar=S"
-        return datos
-    }
 
     var id = null;
     function submitForm() {
@@ -213,8 +198,4 @@
             }
         });
     });
-
-
-
-
 </script>

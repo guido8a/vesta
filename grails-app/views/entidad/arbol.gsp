@@ -73,9 +73,20 @@
                     </a>
                 </div>
             </div>
+
+            <div class="col-md-1">
+                <div class="btn-group">
+                    <a href="#" class="btn btn-xs btn-default" id="btnCollapseAll" title="Cerrar todos los nodos">
+                        <i class="fa fa-minus-square-o"></i>&nbsp;
+                    </a>
+                    <a href="#" class="btn btn-xs btn-default" id="btnExpandAll" title="Abrir todos los nodos">
+                        <i class="fa fa-plus-square"></i>&nbsp;
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <div id="tree" class="well hide">
+        <div id="tree" class="well hidden">
 
         </div>
 
@@ -698,18 +709,28 @@
                 return items;
             }
 
-            function scrollToSearchRes() {
-                var $scrollTo = $(searchRes[posSearchShow]).parents("li").first();
+            function scrollToNode($scrollTo) {
                 $treeContainer.jstree("deselect_all").jstree("select_node", $scrollTo).animate({
                     scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
                 });
+            }
+
+            function scrollToRoot() {
+                var $scrollTo = $("#root");
+                scrollToNode($scrollTo);
+            }
+
+            function scrollToSearchRes() {
+                var $scrollTo = $(searchRes[posSearchShow]).parents("li").first();
+                $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + searchRes.length);
+                scrollToNode($scrollTo);
             }
 
             $(function () {
 
                 $treeContainer.on("loaded.jstree", function () {
                     $("#loading").hide();
-                    $("#tree").removeClass("hide");
+                    $("#tree").removeClass("hidden");
                 }).on("select_node.jstree", function (node, selected, event) {
 //                    $('#tree').jstree('toggle_node', selected.selected[0]);
                 }).jstree({
@@ -756,7 +777,7 @@
                                     var cantRes = searchRes.length;
                                     posSearchShow = 0;
                                     $("#divSearchRes").removeClass("hidden");
-                                    $("#spanSearchRes").text(cantRes + " resultados");
+                                    $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
                                     scrollToSearchRes();
                                 }, 300);
 
@@ -789,6 +810,18 @@
                             icon : "fa fa-user text-muted"
                         }
                     }
+                });
+
+                $("#btnExpandAll").click(function () {
+                    $treeContainer.jstree("open_all");
+                    scrollToRoot();
+                    return false;
+                });
+
+                $("#btnCollapseAll").click(function () {
+                    $treeContainer.jstree("close_all");
+                    scrollToRoot();
+                    return false;
                 });
 
                 $('#btnSearchArbol').click(function () {
@@ -827,6 +860,7 @@
                     $("#searchArbol").val("");
                     posSearchShow = 0;
                     searchRes = [];
+                    scrollToRoot();
                     $("#divSearchRes").addClass("hidden");
                     $("#spanSearchRes").text("");
                 });

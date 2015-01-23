@@ -4,7 +4,6 @@ import org.springframework.dao.DataIntegrityViolationException
 import vesta.seguridad.Shield
 
 
-
 /**
  * Controlador que muestra las pantallas de manejo de Catalogo
  */
@@ -104,14 +103,14 @@ class CatalogoController extends Shield {
         return [catalogoInstance: catalogoInstance]
     } //form para cargar con ajax en un dialog
 
-    def form_item() {
+    def form_item_ajax() {
         println("params " + params)
         def catalogo = Catalogo.get(params.cata)
         def itemCatalogoInstance
 
-        if(params.id && params.id != 'undefined'){
-            itemCatalogoInstance = ItemCatalogo.findByCatalogoAndId(catalogo,params.id)
-        }else{
+        if (params.id && params.id != 'undefined') {
+            itemCatalogoInstance = ItemCatalogo.findByCatalogoAndId(catalogo, params.id)
+        } else {
             itemCatalogoInstance = new ItemCatalogo()
         }
 //        itemCatalogoInstance.properties = params
@@ -120,7 +119,6 @@ class CatalogoController extends Shield {
 
         return [itemCatalogoInstance: itemCatalogoInstance, catalogo: catalogo]
     } //form para cargar con ajax en un dialog
-
 
     /**
      * Acción llamada con ajax que guarda la información de un elemento
@@ -212,27 +210,7 @@ class CatalogoController extends Shield {
     }
 
 
-
-
-    def items () {
-    }
-
-    /**
-     * Acción que muestra un formulario para la creación de un nuevo catálogo
-     */
-    def creaCtlg = {
-        def catalogoInstance = new Catalogo()
-        render(view: 'form_ajax', model: ['catalogoInstance': catalogoInstance])
-    }
-
-    /**
-     * Acción que muestra los datos de un catálogo en un formulario para su edición
-     * @param id es el identificador del catálogo
-     */
-    def editCtlg = {
-//      println "------editCatalogo: " + params
-        def catalogoInstance = Catalogo.get(params.id.toInteger())
-        render(view: 'crear', model: ['catalogoInstance': catalogoInstance])
+    def items() {
     }
 
 
@@ -258,21 +236,24 @@ class CatalogoController extends Shield {
             //println "a grabar... ${Catalogo}, ${ids}"
         }
 
-        def cn = dbConnectionService.getConnection()
-        def tx = ""
-        // selecciona las acciones que no se han consedido permisos
-        tx = "select itct__id, itctcdgo, itctdscr, itctetdo, itctordn, itctorgn " +
-                "from itct " +
-                "where ctlg__id = " + ctlg + " order by itctnmbr"
+        def items = ItemCatalogo.findAllByCatalogo(Catalogo.get(params.ctlg.toLong()))
+        return [items: items, mdlo__id: ids, catalogo: params.ctlg]
 
-        println "ajaxPermisos SQL: ${tx}"
-        cn.eachRow(tx) { d ->
-            resultado[i] = [d.itct__id] + [d.itctcdgo] + [d.itctdscr] + [d.itctetdo] + [d.itctordn] + [d.itctorgn]
-            i++
-        }
-        cn.close()
-        //println "-------------------------" + resultado
-        render(view: 'lsta', model: [datos: resultado, mdlo__id: ids, catalogo: params.ctlg])
+//        def cn = dbConnectionService.getConnection()
+//        def tx = ""
+//        // selecciona las acciones que no se han consedido permisos
+//        tx = "select itct__id, itctcdgo, itctdscr, itctetdo, itctordn, itctorgn " +
+//                "from itct " +
+//                "where ctlg__id = " + ctlg + " order by itctnmbr"
+//
+//        println "ajaxPermisos SQL: ${tx}"
+//        cn.eachRow(tx) { d ->
+//            resultado[i] = [d.itct__id] + [d.itctcdgo] + [d.itctdscr] + [d.itctetdo] + [d.itctordn] + [d.itctorgn]
+//            i++
+//        }
+//        cn.close()
+//        //println "-------------------------" + resultado
+//        render(view: 'lsta', model: [datos: resultado, mdlo__id: ids, catalogo: params.ctlg])
     }
 
 

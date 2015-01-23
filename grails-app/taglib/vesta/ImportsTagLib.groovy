@@ -62,7 +62,7 @@ class ImportsTagLib {
         text += "    <link href=\"${resource(dir: 'js/jquery-ui-1.11.2', file: 'jquery-ui.structure.min.css')}\" rel=\"stylesheet\">\n"
         text += "    <link href=\"${resource(dir: 'js/jquery-ui-1.11.2', file: 'jquery-ui.theme.min.css')}\" rel=\"stylesheet\">\n"
         // FontAwesome
-        text += "    <link href=\"${resource(dir: 'fonts/font-awesome-4.2.0/css', file: 'font-awesome.min.css')}\" rel=\"stylesheet\">"
+        text += "    <link href=\"${resource(dir: 'fonts/font-awesome-4.3.0/css', file: 'font-awesome.min.css')}\" rel=\"stylesheet\">"
         // MFizz
         text += "    <link href=\"${resource(dir: 'fonts/font-mfizz-1.2', file: 'font-mfizz.css')}\" rel=\"stylesheet\">"
 

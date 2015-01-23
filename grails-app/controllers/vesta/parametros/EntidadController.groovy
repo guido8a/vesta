@@ -200,7 +200,7 @@ class EntidadController extends Shield {
                     }
                 }
             }
-            println find
+//            println find
             def departamentos = []
             find.each { pers ->
                 if (pers.unidad && !departamentos.contains(pers.unidad)) {
@@ -263,7 +263,7 @@ class EntidadController extends Shield {
                 clase = "hasChildren jstree-closed"
             }
 
-            tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' level='0' >" +
+            tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
                     "<a href='#' class='label_arbol'>Estructura institucional</a>" +
                     "</li>"
             if (clase == "") {

@@ -114,6 +114,7 @@ class ItemCatalogoController extends Shield {
                 return
             }
         }
+        params.codigo = params.codigo.toString().trim().toUpperCase()
         itemCatalogoInstance.properties = params
         if (!itemCatalogoInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar ItemCatalogo: " + renderErrors(bean: itemCatalogoInstance)
@@ -174,22 +175,22 @@ class ItemCatalogoController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
      */
 
-    def borrarItem () {
-        if(params.id){
+    def borrarItem() {
+        if (params.id) {
             def itemInstance = ItemCatalogo.get(params.id)
-            if(!itemInstance){
+            if (!itemInstance) {
                 render "ERROR*No se encontró el Item."
                 return
             }
-            try{
-               itemInstance.delete(flush: true)
-               render "SUCCESS*Eliminación de Item exitosa."
+            try {
+                itemInstance.delete(flush: true)
+                render "SUCCESS*Eliminación de Item exitosa."
                 return
-            } catch (DataIntegrityViolationException e){
+            } catch (DataIntegrityViolationException e) {
                 render "ERROR*Ha ocurrido un error al eliminar el Item"
                 return
             }
-        }else{
+        } else {
             render "ERROR*No se encontró el Item."
             return
         }
