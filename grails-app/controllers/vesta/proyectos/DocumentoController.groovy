@@ -20,6 +20,90 @@ class DocumentoController extends Shield {
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
     /**
+     * Función que saca la lista de elementos según los parámetros recibidos
+     * @param params objeto que contiene los parámetros para la búsqueda:: max: el máximo de respuestas, offset: índice del primer elemento (para la paginación), search: para efectuar búsquedas
+     * @param all boolean que indica si saca todos los resultados, ignorando el parámetro max (true) o no (false)
+     * @return lista de los elementos encontrados
+     */
+    def getList(params, all) {
+        params = params.clone()
+        params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
+        params.offset = params.offset ?: 0
+        if (all) {
+            params.remove("max")
+            params.remove("offset")
+        }
+        def lista
+        if (params.search) {
+//            def c = Documento.createCriteria()
+//            lista = c.lista(params) {
+//                or {
+////                    proyecto {
+////                        or {
+////                            ilike("nombre", "%" + params.search + "%")
+////                            ilike("codigoProyecto", "%" + params.search + "%")
+////                        }
+////                    }
+////                    grupoProcesos {
+////                        ilike("descripcion", "%" + params.search + "%")
+////                    }
+//                    or {
+//                        ilike("descripcion", "%" + params.search + "%")
+//                        ilike("clave", "%" + params.search + "%")
+//                        ilike("resumen", "%" + params.search + "%")
+//                    }
+//                }
+//            }
+            def res = []
+            def c = Documento.createCriteria()
+            lista = c.list(params) {
+                proyecto {
+                    or {
+                        ilike("nombre", "%" + params.search + "%")
+                        ilike("codigoProyecto", "%" + params.search + "%")
+                    }
+                }
+            }
+            res += lista
+            c = Documento.createCriteria()
+            lista = c.list(params) {
+                grupoProcesos {
+                    ilike("descripcion", "%" + params.search + "%")
+                }
+            }
+            res += lista
+
+            c = Documento.createCriteria()
+            lista = c.list(params) {
+                or {
+                    ilike("descripcion", "%" + params.search + "%")
+                    ilike("clave", "%" + params.search + "%")
+                    ilike("resumen", "%" + params.search + "%")
+                }
+            }
+            res += lista
+
+            lista = res
+        } else {
+            lista = Documento.list(params)
+        }
+        if (!all && params.offset.toInteger() > 0 && lista.size() == 0) {
+            params.offset = params.offset.toInteger() - 1
+            lista = getList(params, all)
+        }
+        return lista
+    }
+
+    /**
+     * Acción que muestra una lista de todos los documentos de todos los proyectos
+     */
+    def list() {
+        def documentoInstanceList = getList(params, false)
+        def documentoInstanceCount = getList(params, true).size()
+        return [documentoInstanceList: documentoInstanceList, documentoInstanceCount: documentoInstanceCount]
+    }
+
+    /**
      * Acción llamada con ajax que muestra y permite modificar los documentos de una unidad ejecutora
      */
     def listUnidad_ajax() {

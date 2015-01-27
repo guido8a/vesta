@@ -524,4 +524,11 @@ class PersonaController extends Shield {
         render g.select(from: ls, optionKey: 'key', optionValue: 'value', name: "responsable",
                 "class": "form-control input-sm required")
     }
+
+    /**
+     * Acción que le permite al usuario cambiar su configuración personal (contraseña, autorización...)
+     */
+    def personal() {
+
+    }
 }
