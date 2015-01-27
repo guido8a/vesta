@@ -26,7 +26,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * @param proyecto el id del proyecto. Si no existe el proyecto muestra la lista de todos los procesos
      */
     def procesos = {
-        println "procesos " + params
+//        println "procesos " + params
         def proyecto = null
         if (params.proyecto)
             proyecto = Proyecto.get(params.proyecto)
@@ -77,6 +77,19 @@ class AvalesController extends vesta.seguridad.Shield {
     }
 
     /**
+     * Acción que muestra la pantalla que permite crear modificar una asignacion
+     */
+
+    def editarAsignacion () {
+        def band = params.band
+        def asg = ProcesoAsignacion.get(params.id)
+        [band: band, asg: asg, max: params.max]
+
+    }
+
+
+
+    /**
      * Acción llamada con ajax que muestra las asignaciones de un proceso
      * @param id el id del proceso
      */
@@ -101,8 +114,8 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def saveProceso = {
         println "save proceso " + params
-        params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio)
-        params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
+        params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio_input)
+        params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin_input)
         def proceso
         if (params.id)
             proceso = ProcesoAval.get(params.id)
@@ -110,12 +123,18 @@ class AvalesController extends vesta.seguridad.Shield {
             proceso = new ProcesoAval()
         proceso.properties = params
         if (!proceso.save(flush: true)) {
-            println "error save " + proceso.errors
-            flash.message = "Error al guardar el proceso"
+            render "ERROR*Ha ocurrido un error al guardar el proceso: " + renderErrors(bean: proceso)
+            return
         } else {
-            flash.message = "Datos guardados"
+            def texto
+            if(params.id){
+                texto = "Actualización de proceso exitosa"
+            }else{
+              texto = "Creación de proceso exitosa"
+            }
+            render "SUCCESS*" + texto
+            return
         }
-        redirect(action: "crearProceso", id: proceso.id)
     }
 
     /**
@@ -206,7 +225,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * @Renders el monto priorizado meno el monto utilizado
      */
     def getMaximoAsg = {
-//        println "get Maximo asg " +params
+        println "get Maximo asg " +params
         def asg = Asignacion.get(params.id)
         def monto = asg.priorizado
         def usado = 0;
@@ -260,7 +279,7 @@ class AvalesController extends vesta.seguridad.Shield {
     def solicitarAval = {
         //println "solicictar aval"
         def unidad = UnidadEjecutora.get(session.unidad.id)
-        def personasFirma = Usro.findAllByUnidad(unidad)
+        def personasFirma = Persona.findAllByUnidad(unidad)
         def aux = Auxiliar.list()
         def referencial = 7000
         if(aux.size()>0){

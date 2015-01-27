@@ -573,59 +573,6 @@ label.remove();
             return false;
         });
 
-        %{--$("#dlgDetalleMonto").dialog({--}%
-            %{--modal     : true,--}%
-            %{--resizable : false,--}%
-            %{--autoOpen  : false,--}%
-            %{--width     : 350,--}%
-            %{--buttons   : {--}%
-                %{--"Guardar" : function () {--}%
-                    %{--var $dlg = $(this);--}%
-                    %{--var total = 0;--}%
-                    %{--var maximo = parseFloat($("#spanMax").attr("max"));--}%
-                    %{--var data = "";--}%
-                    %{--$("#tb").children().each(function () {--}%
-                        %{--var val = parseFloat($(this).attr("val"));--}%
-                        %{--var anio = parseFloat($(this).attr("class"));--}%
-                        %{--data += anio + "_" + val + ";";--}%
-                        %{--total += val;--}%
-                    %{--});--}%
-                    %{--if (total != maximo) {--}%
-                        %{--$("#spanError").text("Por favor ingrese valores cuya sumatoria sea igual a $" + number_format(maximo, 2, ",", "."));--}%
-                        %{--$("#divError").removeClass("ui-state-highlight").addClass("ui-state-error").show();--}%
-                    %{--} else {--}%
-                        %{--$("#divError").hide();--}%
-                        %{--$.ajax({--}%
-                            %{--type    : "POST",--}%
-                            %{--url     : "${createLink(action:'updateDetalleMonto_ajax')}",--}%
-                            %{--data    : {--}%
-                                %{--id      : "${solicitud.id}",--}%
-                                %{--valores : data--}%
-                            %{--},--}%
-                            %{--success : function (msg) {--}%
-                                %{--var parts = msg.split("_");--}%
-                                %{--if (parts[0] == "OK") {--}%
-                                    %{--$(this).dialog("close");--}%
-                                    %{--var solicitado = parts[1];--}%
-                                    %{--var asignado = parts[2];--}%
-
-                                    %{--$("#spanAsg").text(asignado);--}%
-                                    %{--$("#montoSolicitado").val(solicitado).setMask("decimal");--}%
-                                    %{--$dlg.dialog("close");--}%
-                                %{--} else {--}%
-                                    %{--$("#spanError").html(parts[1]);--}%
-                                    %{--$("#divError").removeClass("ui-state-highlight").addClass("ui-state-error").show();--}%
-                                %{--}--}%
-                            %{--}--}%
-                        %{--});--}%
-                    %{--}--}%
-                %{--},--}%
-                %{--"Cerrar"  : function () {--}%
-                    %{--$(this).dialog("close");--}%
-                %{--}--}%
-            %{--}--}%
-        %{--});--}%
-
 
 
         $("#selProyecto").change(function () {
@@ -633,10 +580,6 @@ label.remove();
         })
         loadComponentes();
 
-//        $("#nuevaCategoria").selectmenu({width : 150});
-//        $("#selContrato").selectmenu({width : 150});
-//        $("#selBien").selectmenu({width : 150});
-//        $("#selFormaPago").selectmenu({width : 150});
 
     });
 </script>

@@ -6,66 +6,12 @@
 --%>
 
 <%@ page import="vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
-%{--<html>--}%
-%{--<head>--}%
-%{--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>--}%
-%{--<meta name="layout" content="main"/>--}%
-%{--<title>Crear proceso</title>--}%
-%{--</head>--}%
 
-%{--<body>--}%
-<g:if test="${flash.message}">
-    <div class="message ui-state-highlight ui-corner-all">
-        ${flash.message}
-    </div>
-</g:if>
+<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
 
-%{--<div class="btn-toolbar toolbar">--}%
-%{--<div class="btn-group">--}%
-%{--<g:link controller="avales" action="listaProcesos" class="btn btn-default"><i class="fa fa-bars"></i> Lista de procesos</g:link>--}%
-%{--<g:link controller="avales" action="crearProceso" class="btn btn-default"><i class="fa fa-file-o"></i> Crear nuevo</g:link>--}%
-%{--<g:if test="${proceso?.id}">--}%
-%{--<g:link controller="avales" action="solicitarAval" class="btn" id="${proceso?.id}">Solicitar Aval</g:link>--}%
-%{--</g:if>--}%
-%{--</div>--}%
-%{--</div>--}%
-
-%{--<fieldset style="width: 95%;height: 170px;" class="ui-corner-all">--}%
-    <g:form action="saveProceso" class="frmProceso">
+    <g:form action="saveProceso" class="form-horizontal" name="frmProceso"  role="form" method="POST" id="${proceso?.id}">
         <input type="hidden" name="id" value="${proceso?.id}">
-
-    %{--<div class="fila">--}%
-    %{--<div class="labelSvt">Proyecto:</div>--}%
-    %{--<div class="fieldSvt-xxxl">--}%
-    %{--<g:select from="${proyectos}" optionKey="id" optionValue="nombre" name="proyecto.id" id="proyecto" style="width:100%" class="ui-corner-all ui-widget-content" value="${proceso?.proyecto?.id}" />--}%
-    %{--</div>--}%
-    %{--</div>--}%
-
-    %{--<div class="fila">--}%
-
-    %{--<div class="labelSvt">Fecha inicio:</div>--}%
-
-    %{--<div class="fieldSvt-small">--}%
-    %{--<g:textField class="datepicker field ui-widget-content ui-corner-all fechaFin"--}%
-    %{--name="fechaInicio"--}%
-    %{--style="width: 100%"--}%
-    %{--title="Fecha de inicio"--}%
-    %{--value="${proceso?.fechaInicio?.format('dd-MM-yyyy')}"--}%
-    %{--id="fechaInicio" autocomplete="off"/>--}%
-    %{--</div>--}%
-
-    %{--<div class="labelSvt" style="margin-left: 25px">Fecha fin:</div>--}%
-
-    %{--<div class="fieldSvt-small">--}%
-    %{--<g:textField class="datepicker field ui-widget-content ui-corner-all fechaFin"--}%
-    %{--name="fechaFin"--}%
-    %{--style="width: 100%"--}%
-    %{--title="Fecha de finalización"--}%
-    %{--value="${proceso?.fechaFin?.format('dd-MM-yyyy')}"--}%
-    %{--id="fechaFin" autocomplete="off"/>--}%
-    %{--</div>--}%
-
 
         <div class="form-group keeptogether">
             <span class="grupo">
@@ -128,26 +74,6 @@
                 </div>
             </span>
         </div>
-
-    %{--<div class="labelSvt" style="margin-left: 25px">Informar cada:</div>--}%
-    %{--<div class="fieldSvt-medium">--}%
-    %{--<input type="text" name="informar" id="informar" value="${proceso?.informar}" class="ui-corner-all ui-widget-content" style="width: 80px;text-align: right"> Días--}%
-    %{--</div>--}%
-    %{--</div>--}%
-
-        %{--<div class="fila">--}%
-            %{--<div class="labelSvt">Nombre:</div>--}%
-
-            %{--<div class="fieldSvt-xxxl">--}%
-                %{--<input type="text" class="ui-corner-all" name="nombre" id="nombre" style="width: 100%" value="${proceso?.nombre}">--}%
-            %{--</div>--}%
-
-            %{--<div class="fieldSvt-small" style="margin-left: 30px;">--}%
-            %{--<g:if test="${band}">--}%
-            %{--<a href="#" id="guardar">Guardar</a>--}%
-            %{--</g:if>--}%
-            %{--</div>--}%
-        %{--</div>--}%
     </g:form>
 %{--</fieldset>--}%
 <g:if test="${proceso && band}">
@@ -228,46 +154,72 @@
     <div id="detalle" style="width: 95%"></div>
 </fieldset>
 
-<div id="dlgEditar">
-    <g:if test="${band}">
-        <input type="hidden" id="dlgId">
-
-        <div class="fila">
-            <div class="labelSvt">Monto:</div>
-            <input class="decimal" type="text" style="width: 100px;text-align: right;display: inline-block" id="dlgMonto">
-        </div>
-
-        <div class="fila">
-            <div class="labelSvt">Máximo:</div> <span id="dlgMax" style="display: inline-block"></span> $
-        </div>
-    </g:if>
-    <g:else>
-        <div class="fila">
-            No puede editar este proceso porque ya tiene un aval o una solicitud pendiente
-        </div>
-    </g:else>
-</div>
-
 <script>
-    function getMaximo(asg) {
+
+    function editarAsg (id,max) {
         $.ajax({
             type    : "POST",
+            url     : "${createLink(action:'editarAsignacion')}",
+            data    : {
+                band: ${band},
+                id: id,
+                max: max
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : "Editar asignación",
+
+                    class   : "modal-lg",
+
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            }
+        });
+    }
+
+    function getMaximo(asg, monto) {
+        var maximof;
+        $.ajax({
+            type    : "POST",
+            async    : false,
             url     : "${createLink(action:'getMaximoAsg')}",
             data    : {
                 id : asg
             },
             success : function (msg) {
                 if ($("#asignacion").val() != "-1")
-                    $("#max").html(number_format(msg, 2, ",", "."));
+                maximof = msg;
                 else {
                     var valor = parseFloat(msg);
-                    var monto = $("#dlgMonto").val();
-                    monto = monto.replace(new RegExp(",", 'g'), ".");
                     monto = parseFloat(monto);
-                    $("#dlgMax").html(number_format(valor + monto, 2, ",", "."));
+                    maximof = valor +  monto
                 }
+            },
+            error : function () {
+                maximof = monto
             }
         });
+        return maximof
     }
     function getDetalle() {
         $.ajax({
@@ -287,6 +239,7 @@
         $("#max").html("");
         $("#asignacion").val("-1");
     }
+
     <g:if test="${proceso}">
     getDetalle();
     </g:if>
@@ -298,52 +251,6 @@
         $("#monto").val("");
         $("#max").html("");
     });
-
-
-    $("#guardar").button().click(function () {
-        var dias = $("#informar").val()
-        var nombre =$("#nombre").val()
-        var inicio = $("#fechaInicio").val()
-        var fin = $("#fechaFin").val()
-        var msg =""
-        if(dias==""){
-            msg+="<br>Ingrese un número entero positivo en el campo informar"
-        }else{
-            if(isNaN(dias)){
-                msg+="<br>Ingrese un número entero positivo en el campo informar"
-            }else{
-                if(dias*1<0)
-                    msg+="<br>Ingrese un número entero positivo en el campo informar"
-            }
-        }
-
-        if(inicio==""){
-            msg+="<br>Ingrese la fecha de inicio"
-        }
-        if(fin==""){
-            msg+="<br>Ingrese la fecha de fin"
-        }
-        if(nombre==""){
-            msg+="<br>Ingrese el nombre del proceso"
-        }
-        if(msg=="")
-            $(".frmProceso").submit()
-        else{
-            $.box({
-                title  : "Error",
-                text   : msg,
-                dialog : {
-                    resizable : false,
-                    buttons   : {
-                        "Cerrar" : function () {
-
-                        }
-                    }
-                }
-            });
-        }
-    });
-
 
     $("#agregar").click(function () {
         var id = $("#idAgregar").val();
@@ -400,67 +307,6 @@
         }
     });
 
-
-    $("#dlgEditar").dialog({
-        width     : 300,
-        height    : 300,
-        position  : [450, 300],
-        title     : "Editar",
-        modal     : true,
-        autoOpen  : false,
-        resizable : false,
-        buttons   : {
-            "Aceptar" : function () {
-                var monto = $("#dlgMonto").val();
-                monto = monto.replace(new RegExp(",", 'g'), ".");
-                var id = $("#dlgId").val();
-                var max = $("#dlgMax").html();
-                var msg = "";
-                if (isNaN(monto) || monto == "") {
-                    msg += "<br>El monto tiene que ser un número positivo.";
-                } else {
-                    if (monto * 1 < 0)
-                        msg += "<br>El monto tiene que ser un número positivo.";
-                    if (monto * 1 > max * 1)
-                        msg += "<br>El monto no puede ser mayor al máximo.";
-                }
-                if (msg == "") {
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'editarDetalle')}",
-                        data    : {
-                            id    : id,
-                            monto : monto
-                        },
-                        success : function (msg) {
-                            getDetalle();
-                            vaciar();
-//                            $("#dlgEditar").dialog("close");
-
-                        }
-                    });
-                } else {
-                    bootbox.dialog({
-                        title  : "Error",
-                        message   : msg,
-                        buttons : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-
-                    });
-
-                }
-
-            },
-            "Cerrar"  : function () {
-                $("#dlgEditar").dialog("close")
-            }
-        }
-    });
-
     $("#comp").change(function () {
         $.ajax({
             type    : "POST",
@@ -473,6 +319,26 @@
                 $("#divAct").html(msg)
             }
         });
+    });
+
+   $( function () {
+
+        var validator = $("#frmProceso").validate({
+            errorClass     : "help-block",
+            errorPlacement : function (error, element) {
+                if (element.parent().hasClass("input-group")) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+                element.parents(".grupo").addClass('has-error');
+            },
+            success        : function (label) {
+                label.parents(".grupo").removeClass('has-error');
+                label.remove();
+            }
+        });
+
     });
 
 </script>

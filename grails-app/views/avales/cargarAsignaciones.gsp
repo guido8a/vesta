@@ -14,11 +14,7 @@
 }}' noSelection="['-1': 'Seleccione..']" class="form-control input-sm"/>
 <script>
     $("#asignacion").change(function () {
-        getMaximo($("#asignacion").val())
-    })
-//            .selectpicker({
-//        width      : "200px",
-//        limitWidth : true,
-//        style      : "btn-sm"
-//    });
+        var max = getMaximo($("#asignacion").val(),0);
+        $("#max").text(number_format(max, 2, '.', ','))
+    });
 </script>

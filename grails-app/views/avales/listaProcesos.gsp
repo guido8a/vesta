@@ -91,7 +91,7 @@
                 icon   : "fa fa-share-alt",
                 action : function ($element) {
                     var id = $element.data("id");
-                    createEditRow(id);
+                    location.href = "${createLink(controller: "avales", action: "avalesProceso")}?id=" + idPro;
                 }
             };
 
@@ -101,6 +101,7 @@
                 icon   : "fa fa-calendar-o",
                 action : function ($element) {
                     var id = $element.data("id");
+                    location.href = "${createLink(controller: "avanceFisico", action: "list")}?id=" + idPro;
 
                 }
             };
@@ -139,12 +140,12 @@
 
 
     function submitForm() {
-        var $form = $("#frmSolicitud");
+        var $form = $("#frmProceso");
         var $btn = $("#dlgCreateEdit").find("#btnSave");
 
         if ($form.valid()) {
             $btn.replaceWith(spinner);
-            openLoader("Guardando Solicitud");
+            openLoader("Guardando Proceso");
             var formData = new FormData($form[0]);
             $.ajax({
                 type    : "POST",
@@ -180,7 +181,6 @@
     function createEditRow(id) {
         var title = id ? "Editar" : "Crear";
         var data = id ? { id: id } : {};
-        console.log("idf " + data)
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'crearProceso_ajax')}",

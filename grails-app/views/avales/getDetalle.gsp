@@ -35,7 +35,10 @@
             </td>
             <td style="text-align: center">
                 <g:if test="${band}">
-                    <a href="#" class="edit btn btn-info btn-sm" iden="${asg.id}" asg="${asg.asignacion.id}" title="Editar"><i class="fa fa-pencil"></i></a>
+                    <a href="#" class="edit btn btn-info btn-sm" iden="${asg.id}" data-asg="${asg.asignacion.id}" title="Editar"
+                       data-monto="${g.formatNumber(number: asg.monto, maxFractionDigits: 2,minFractionDigits: 2)}">
+                        <i class="fa fa-pencil"></i>
+                    </a>
                 </g:if>
             </td>
             <td style="text-align: center">
@@ -56,17 +59,16 @@
     </tbody>
 </table>
 <script>
-    $(".edit").button({icons : { primary : "ui-icon-pencil"}, text : false}).click(function () {
+    $(".edit").click(function () {
         vaciar();
-        $("#dlgMonto").val(number_format($.trim($("#monto_" + $(this).attr("iden")).attr("valor")), 2, ",", "."));
-        $("#dlgId").val($(this).attr("iden"));
-        getMaximo($(this).attr("asg"));
-        $("#dlgEditar").dialog("open");
+        var max = getMaximo($(this).data("asg"), $(this).data("monto"));
+        editarAsg($(this).attr("iden"), max);
+//        $("#dlgMax").text(number_format(max, 2, '.', ','));
     });
-    $(".borrar").button({icons : { primary : "ui-icon-trash"}, text : false}).click(function () {
 
-        var idTr = $(this).attr("iden")
 
+    $(".borrar").click(function () {
+        var idTr = $(this).attr("iden");
         var b = bootbox.dialog({
                 title : "Borrar asignación",
                 message :"Esta seguro de borrar la asignación?",
@@ -112,4 +114,7 @@
                 }
         });
     });
+
+
+
 </script>

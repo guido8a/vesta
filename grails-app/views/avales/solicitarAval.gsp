@@ -95,7 +95,7 @@
     $("#enviar").click(function () {
         var monto = $("#monto").val();
 
-        monto = monto.replace(new RegExp("\\.", 'g'), "");
+//        monto = monto.replace(new RegExp("\\.", 'g'), "");
         monto = monto.replace(new RegExp(",", 'g'), ".");
 
         var memorando = $("#memorando").val();
