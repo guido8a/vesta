@@ -10,7 +10,7 @@
 <link href="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/css', file: 'bootstrap-select.min.css')}" rel="stylesheet">
 
 <g:select name="asg" from="${asgs}" optionKey="id" id="asignacion" optionValue='${{
-    "<b>Responsable:</b> " + it.unidad + " <b>Partida:</b> " + it.presupuesto.numero + " <b>Monto:</b> " + g.formatNumber(number: it.priorizado, type: "currency")
+    "Responsable: " + it.unidad + ", Partida: " + it.presupuesto.numero + ", Monto: " + g.formatNumber(number: it.priorizado, type: "currency")
 }}' noSelection="['-1': 'Seleccione..']" class="form-control input-sm"/>
 <script>
     $("#asignacion").change(function () {

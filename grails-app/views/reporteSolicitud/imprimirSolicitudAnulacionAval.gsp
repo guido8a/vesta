@@ -101,7 +101,7 @@
 
     <body>
         <div class="hoja">
-            <slc:headerReporte title="Solicitud de Aval de POA"/>
+            <slc:headerReporte title="Solicitud de Anulación de Aval de POA"/>
 
             <div style="width: 100%; height: 1.5cm;">
                 <div class="numeracion">
@@ -229,7 +229,7 @@
             <div class="texto">
                 Elaborado por: ${solicitud?.usuario?.sigla}
             </div>
-            <g:if test="${solicitud.firma.estado == 'F'}">
+            <g:if test="${solicitud.firma && solicitud.firma.estado == 'F'}">
                 <table width="100%" style="margin-top: 1.5cm;">
                     <tr>
                         <td width="33%" style=" text-align: center;">

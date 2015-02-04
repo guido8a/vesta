@@ -14,108 +14,203 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="layout" content="main"/>
-    <title>Solicitud de anulación del aval ${aval.fechaAprobacion.format("yyyy")}-GP No.${aval.numero}</title>
-</head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="layout" content="main"/>
+        <title>Solicitud de anulación del aval ${aval.fechaAprobacion.format("yyyy")}-GP No.${aval.numero}</title>
 
-<body>
-<div class="breadCrumbHolder module">
-    <div id="breadCrumb" class="breadCrumb module">
-        <ul>
-            <li>
-                <g:link class="bc" controller="avales" action="avalesProceso" id="${aval.proceso.id}">
-                    Avales
+        <script type="text/javascript" src="${resource(dir: 'js/plugins/jquery-validation-1.13.1/dist', file: 'additional-methods.min.js')}"></script>
+
+    </head>
+
+    <body>
+
+        <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
+
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group" role="group">
+                <g:link class="btn btn-default" controller="avales" action="avalesProceso" id="${aval.procesoId}">
+                    <i class="fa fa-list"></i> Avales
                 </g:link>
-            </li>
-            <li>
-                Solicitud
-            </li>
-        </ul>
-    </div>
-</div>
-<g:if test="${flash.message}">
-    <div class="message ui-state-highlight ui-corner-all">
-        <g:message code="${flash.message}" args="${flash.args}" default="${flash.defaultMessage}" />
-    </div>
-</g:if>
-<g:uploadForm action="guardarSolicitud" controller="avales">
-    <input type="hidden" name="aval" value="${aval.id}">
-    <input type="hidden" name="tipo" value="A">
-    <input type="hidden" name="monto" value="${aval.monto}">
-    <input type="hidden" name="proceso" value="${aval.proceso.id}">
-    <div style="width: 100%;margin-top: 10px;">
-        <div class="label">Monto:</div>
-        <input type="text" name="montoText" id="monto" style="width: 140px;margin-right: 30px;text-align: right" class="ui-corner-all ui-widget-content" value="${aval.monto}" disabled>
-
-    </div>
-
-    <div style="width: 100%;margin-top: 10px;height: 40px">
-        <div class="label">Memorando No:</div>
-        <div style="width: 150px;height: 30px;margin-top: 10px;display: inline-block;;margin-right: 30px;">
-            <input type="text" name="memorando" id="memorando" style="width: 140px;margin-right: 10px;" class="ui-corner-all ui-widget-content">
+            </div>
         </div>
-        <b> Documento de respaldo:</b>
-        <input type="file" name="file" id="file" >
-    </div>
 
-    <div style="width: 100%;margin-top: 10px;">
-        <div class="label">Concepto:</div>
-        <textarea id="concepto" name="concepto" style="resize: none;width: 600px;height: 80px" class="ui-corner-all ui-widget-content" title="Máximo 1024 caracteres"></textarea>
+        <g:uploadForm class="form-horizontal frmUpload" action="guardarSolicitud" controller="avales">
+            <input type="hidden" name="aval" value="${aval.id}">
+            <input type="hidden" name="tipo" value="A">
+            <input type="hidden" name="monto" value="${aval.monto}">
+            <input type="hidden" name="proceso" value="${aval.proceso.id}">
+            <input type="hidden" name="numero" value="${numero}">
 
-    </div>
-    <div style="margin-left: 20px;margin-top: 20px;">
-        <a href="#" id="enviar" class="btn_arbol" style="margin-top: 10px">Guardar y Enviar</a>
-        <a href="${g.createLink(action: 'listaProcesos')}" id="cancelar" class="btn_arbol" style="margin-top: 10px">Cancelar</a>
-    </div>
-</g:uploadForm>
-<script>
-    $(".btn_arbol").button()
-    $("#enviar").click(function(){
+            <div class="form-group keeptogether required">
+                <span class="grupo">
+                    <label class="col-md-2 control-label">
+                        Número
+                    </label>
 
-        var memorando  = $("#memorando").val()
-        var concepto = $("#concepto").val()
-        var file = $("#file").val()
-        var msg=""
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            ${numero}
+                        </p>
+                    </div>
+                </span>
+            </div>
 
+            <div class="form-group keeptogether required">
+                <span class="grupo">
+                    <label class="col-md-2 control-label">
+                        Monto
+                    </label>
 
-        if(concepto.length>1024){
-            msg+="<br>El concepto debe tener máximo 1024 caracteres. Tamaño actual "+concepto.length+"."
-        }
-        if(concepto.trim().length<1){
-            msg+="<br>Por favor ingrese un concepto."
-        }
-        if(memorando.trim().length<1){
-            msg+="<br>Por favor ingrese un número de memorando."
-        }
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            <g:formatNumber number="${aval.monto}" type="currency"/>
+                        </p>
+                    </div>
+                </span>
+            </div>
 
-        if(file.length<1){
-            msg+="<br>Por favor seleccione un archivo."
-        }else{
-            var ext = file.split('.').pop();
-            if(ext!="pdf"){
-                msg+="<br>Por favor seleccione un archivo de formato pdf. El formato "+ext+" no es aceptado por el sistema"
-            }
-        }
+            <div class="form-group keeptogether required">
+                <span class="grupo">
+                    <label for="montoText" class="col-md-2 control-label">
+                        Doc. de soporte
+                    </label>
 
-        if(msg=="") {
-            $("form").submit()
-        }else{
-            $.box({
-                title:"Error",
-                text:msg,
-                dialog: {
-                    resizable: false,
-                    buttons  : {
-                        "Cerrar":function(){
+                    <div class="col-md-2">
+                        <g:textField name="montoText" class="form-control input-sm required" required=""/>
+                    </div>
+                </span>
+                <span class="grupo">
+                    <label for="file" class="col-md-2 control-label">
+                        Doc. de respaldo
+                    </label>
 
+                    <div class="col-md-3">
+                        <input type="file" name="file" id="file" class="form-control input-sm required" required=""/>
+                    </div>
+                </span>
+            </div>
+
+            <div class="form-group keeptogether required">
+                <span class="grupo">
+                    <label for="concepto" class="col-md-2 control-label">
+                        Concepto
+                    </label>
+
+                    <div class="col-md-7">
+                        <g:textArea name="concepto" maxlength="1024" style="height: 80px;" class="form-control required"
+                                    required=""/>
+                    </div>
+                </span>
+            </div>
+
+            <div class="form-group keeptogether required">
+                <span class="grupo">
+                    <label for="firma1" class="col-md-2 control-label">
+                        Aut. electrónica
+                    </label>
+
+                    <div class="col-md-2">
+                        <g:select from="${personas}" optionKey="id" class="form-control input-sm required" optionValue="${{
+                            it.nombre + ' ' + it.apellido
+                        }}" name="firma1"/>
+                    </div>
+                </span>
+            </div>
+
+            <div class="form-group">
+                <span class="grupo">
+                    <div class="col-md-8 text-right">
+                        <g:link action="listaProcesos" class="btn btn-default">
+                            Cancelar
+                        </g:link>
+                        <a href="#" class="btn btn-success" id="enviar">
+                            <i class="fa fa-save"></i> Guardar y enviar
+                        </a>
+                    </div>
+                </span>
+            </div>
+        </g:uploadForm>
+
+        <script type="text/javascript">
+            $(function () {
+                var validator = $(".frmUpload").validate({
+                    rules          : {
+                        file : {
+                            required  : true,
+                            accept    : "application/pdf",
+                            extension : "pdf"
                         }
+                    },
+                    messages       : {
+                        file : {
+                            accept    : "Por favor seleccione un PDF",
+                            extension : "Por favor seleccione un PDF"
+                        }
+                    },
+                    errorClass     : "help-block",
+                    errorPlacement : function (error, element) {
+                        if (element.parent().hasClass("input-group")) {
+                            error.insertAfter(element.parent());
+                        } else {
+                            error.insertAfter(element);
+                        }
+                        element.parents(".grupo").addClass('has-error');
+                    },
+                    success        : function (label) {
+                        label.parents(".grupo").removeClass('has-error');
+                        label.remove();
                     }
-                }
+                });
+                $("#enviar").click(function () {
+                    $(".frmUpload").submit();
+                });
             });
-        }
-    });
-</script>
-</body>
+        </script>
+
+        %{--<script>--}%
+        %{--$("#enviar").click(function () {--}%
+        %{--var memorando = $("#memorando").val();--}%
+        %{--var concepto = $("#concepto").val();--}%
+        %{--var file = $("#file").val();--}%
+        %{--var msg = "";--}%
+
+        %{--if (concepto.length > 1024) {--}%
+        %{--msg += "<br>El concepto debe tener máximo 1024 caracteres. Tamaño actual " + concepto.length + "."--}%
+        %{--}--}%
+        %{--if (concepto.trim().length < 1) {--}%
+        %{--msg += "<br>Por favor ingrese un concepto."--}%
+        %{--}--}%
+        %{--if (memorando.trim().length < 1) {--}%
+        %{--msg += "<br>Por favor ingrese un número de memorando."--}%
+        %{--}--}%
+
+        %{--if (file.length < 1) {--}%
+        %{--msg += "<br>Por favor seleccione un archivo."--}%
+        %{--} else {--}%
+        %{--var ext = file.split('.').pop();--}%
+        %{--if (ext != "pdf") {--}%
+        %{--msg += "<br>Por favor seleccione un archivo de formato pdf. El formato " + ext + " no es aceptado por el sistema"--}%
+        %{--}--}%
+        %{--}--}%
+
+        %{--if (msg == "") {--}%
+        %{--$("form").submit()--}%
+        %{--} else {--}%
+        %{--$.box({--}%
+        %{--title  : "Error",--}%
+        %{--text   : msg,--}%
+        %{--dialog : {--}%
+        %{--resizable : false,--}%
+        %{--buttons   : {--}%
+        %{--"Cerrar" : function () {--}%
+
+        %{--}--}%
+        %{--}--}%
+        %{--}--}%
+        %{--});--}%
+        %{--}--}%
+        %{--});--}%
+        %{--</script>--}%
+    </body>
 </html>

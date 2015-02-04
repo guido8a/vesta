@@ -517,6 +517,16 @@ class ReporteSolicitudController {
         return [solicitud: solicitud]
     }
 
+    /**
+     * Acción que genera un archivo PDF de la negacion de la solicitud de aval
+     */
+    def imprimirSolicitudAnulacionAval = {
+        println "impr sol " + params
+        def solicitud = SolicitudAval.get(params.id)
+        println "solcitud " + solicitud
+        return [solicitud: solicitud]
+    }
+
     def imprimirActaReunionAprobacion = {
         def reunion = Aprobacion.get(params.id.toLong())
         def solicitudes = Solicitud.findAllByAprobacion(reunion)

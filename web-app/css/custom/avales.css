@@ -1,0 +1,49 @@
+/*Estados avales*/
+td {
+    vertical-align : middle !important;
+}
+
+.E01 {
+    background  : #51aec6;
+    font-weight : bold;
+}
+
+.E02 {
+    background  : #c3d5a6;
+    font-weight : bold;
+}
+
+.E03 {
+    background  : #d5a09d;
+    font-weight : bold;
+}
+
+.E04 {
+    background  : #d59e8c;
+    font-weight : bold;
+}
+
+.E05 {
+    background  : #a3d5ce;
+    font-weight : bold;
+}
+
+.E06 {
+    background  : #d5c96f;
+    font-weight : bold;
+}
+
+.aprobado {
+    background  : #c3d5a6;
+    font-weight : bold;
+}
+
+.solicitado {
+    background  : #51aec6;
+    font-weight : bold;
+}
+
+.negado {
+    background  : #d5a09d;
+    font-weight : bold;
+}
