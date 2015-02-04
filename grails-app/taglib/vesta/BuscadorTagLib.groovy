@@ -52,15 +52,15 @@ class BuscadorTagLib {
         def controlador = atr.controlador
         def accion = atr.accion
         def tipo = atr.tipo
-        out<<buscadorReload(atr.name,value,campos,controlador,accion,tipo,atr.id,atr.titulo,atr.clase)
+        out<<buscadorReload(atr.name,value,campos,controlador,accion,tipo,atr.id,atr.titulo,atr.clase,atr.style)
         //println "accion " + accion + "    controlador " + controlador
 
     }
 
-    def buscadorReload(name,value,fields,controller,action,type,id,title,clase){
+    def buscadorReload(name,value,fields,controller,action,type,id,title,clase,style){
         def salida = ""
         salida+='<span class="grupo">'
-        salida+='<div class="input-group input-group-sm" style="width:294px;">'
+        salida+='<div class="input-group input-group-sm" style="'+(style?style:'width:294px;') +'">'
         salida+='<input type="text" class="form-control bsc_desc '+clase+'" id="bsc-desc-'+id+'"  dialog="modal-'+id+'"  >'
         salida+='<span class="input-group-btn">'
         salida+='<a href="#" id="btn-abrir-'+id+'" class="btn btn-info" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>'

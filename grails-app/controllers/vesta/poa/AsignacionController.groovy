@@ -706,7 +706,7 @@ class AsignacionController extends Shield {
         println "crear asgn inv " + params
         def proy = Proyecto.get(params.id)
         def unidad = proy.unidadEjecutora
-
+        def campos = ["numero": ["Número", "string"],"descripcion": ["Descripción", "string"]]
         def comp = MarcoLogico.findAllByProyectoAndTipoElemento(proy, TipoElemento.get(2), [sort: "id"])
         def cmp
         def acts = []
@@ -741,13 +741,8 @@ class AsignacionController extends Shield {
                 }
 
             }
-
-
         }
 
-//        Asignacion.findAll("from Asignacion where anio=${actual.id} and unidad=${unidad.id} and marcoLogico is not null").each{
-//            totalUnidad+= it.getValorReal()
-//        }
         def un = UnidadEjecutora.findByPadreIsNull()
         def maxUnidad = PresupuestoUnidad.findByAnioAndUnidad(actual, un)
         if (maxUnidad)
@@ -760,7 +755,7 @@ class AsignacionController extends Shield {
         def totalAnio = financiamientos.sum { it.monto }
 
         [proy       : proy, comp: comp, fuentes: fuentes, unidad: unidad, actual: actual, cmp: cmp, acts: acts, asgn: asgn,
-         totalUnidad: totalUnidad, maxUnidad: maxUnidad, totalPriorizado: totalPriorizado, totalAnio: totalAnio]
+         totalUnidad: totalUnidad, maxUnidad: maxUnidad, totalPriorizado: totalPriorizado, totalAnio: totalAnio,campos:campos]
 
     }
 
