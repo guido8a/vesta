@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page import="yachay.proyectos.Proyecto" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.proyectos.Proyecto" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main"/>

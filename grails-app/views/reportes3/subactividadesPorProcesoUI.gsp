@@ -5,7 +5,7 @@
   Time: 12:01 PM
 --%>
 
-<%@ page import="yachay.avales.ProcesoAval" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.avales.ProcesoAval; vesta.avales.ProcesoAval; vesta.avales.ProcesoAval; vesta.avales.ProcesoAval; vesta.avales.ProcesoAval; vesta.avales.ProcesoAval" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -34,7 +34,7 @@
         </div>
 
         <div class="fila">
-            Proceso: <g:select from="${yachay.avales.ProcesoAval.list([sort: 'nombre'])}" class="ui-widget-content ui-corner-all"
+            Proceso: <g:select from="${vesta.avales.ProcesoAval.list([sort: 'nombre'])}" class="ui-widget-content ui-corner-all"
                                optionKey="id" optionValue="nombre" name="proc"/>
         </div>
 

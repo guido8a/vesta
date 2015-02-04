@@ -5,7 +5,7 @@
   Time: 04:23 PM
 --%>
 
-<%@ page import="yachay.contratacion.Aprobacion" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.contratacion.DetalleMontoSolicitud; vesta.poa.Asignacion; vesta.contratacion.Aprobacion" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <title>Imprimir solicitudes</title>
@@ -125,7 +125,7 @@
                             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                                 <td>${solicitudInstance.actividad.proyecto}</td>
                                 <td>${solicitudInstance.actividad.marcoLogico}</td>
-                                <td>${yachay.poa.Asignacion.findByMarcoLogico(solicitudInstance.actividad)?.presupuesto?.numero}</td>
+                                <td>${Asignacion.findByMarcoLogico(solicitudInstance.actividad)?.presupuesto?.numero}</td>
                                 <td>${solicitudInstance.nombreProceso}</td>
                                 <td>${solicitudInstance.objetoContrato}</td>
                                 <td>X</td>
@@ -133,7 +133,7 @@
                                     ${solicitudInstance.unidadEjecutora?.codigo}
                                 </td>
                                 <g:each in="${anios}" var="a">
-                                    <g:set var="valor" value="${yachay.contratacion.DetalleMontoSolicitud.findByAnioAndSolicitud(a, solicitudInstance)}"/>
+                                    <g:set var="valor" value="${DetalleMontoSolicitud.findByAnioAndSolicitud(a, solicitudInstance)}"/>
                                     <g:if test="${valor}">
                                         <td><g:formatNumber number="${valor.monto}" type="currency"/></td>
                                     </g:if>

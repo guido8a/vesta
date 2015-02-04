@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.parametros.proyectos.TipoMeta" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -38,7 +38,7 @@
                     <legend>Parametros</legend>
 
                     <b>Indicador:</b>
-                    <g:select class="ui-corner-all" from="${yachay.parametros.proyectos.TipoMeta.list()}" optionKey="id" optionValue="descripcion" name="tipo" id="indicador" style="width: 110px;" noSelection="['-1': 'Todos']"/> &nbsp;&nbsp;
+                    <g:select class="ui-corner-all" from="${TipoMeta.list()}" optionKey="id" optionValue="descripcion" name="tipo" id="indicador" style="width: 110px;" noSelection="['-1': 'Todos']"/> &nbsp;&nbsp;
 
                     <span id="spanLbl" style="font-weight:bold;">Parroquia:</span>
 

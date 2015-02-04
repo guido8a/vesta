@@ -5,7 +5,7 @@
   Time: 11:01 AM
 --%>
 
-<%@ page import="yachay.contratacion.DetalleMontoSolicitud" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.contratacion.DetalleMontoSolicitud" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <title>Reunión de aprobación</title>

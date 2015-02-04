@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.proyectos.ModificacionV2" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Modificaciones al P.A.C unidad: ${unidad}, año:${actual}</title>
@@ -81,7 +81,7 @@
     <g:if test="${res}">
         <g:each in="${res}" var="pac">
             <g:set var="totalObra" value="${0}"></g:set>
-            <g:set var="mod" value="${yachay.proyectos.ModificacionV2.findAllByDominioAndId_remoto('Obra',pac.id.toInteger())}"></g:set>
+            <g:set var="mod" value="${ModificacionV2.findAllByDominioAndId_remoto('Obra',pac.id.toInteger())}"></g:set>
             <g:if test="${mod}">
                 <table style="margin-top: 40px;" width="600px">
                     <thead>

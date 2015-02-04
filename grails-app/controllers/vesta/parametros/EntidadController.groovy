@@ -3,6 +3,7 @@ package vesta.parametros
 import org.springframework.dao.DataIntegrityViolationException
 import vesta.parametros.poaPac.Anio
 import vesta.proyectos.ModificacionTechos
+import vesta.proyectos.Proyecto
 import vesta.seguridad.Persona
 import vesta.seguridad.Shield
 
@@ -240,6 +241,13 @@ class EntidadController extends Shield {
     }
 
     /**
+     * Acción llamada con ajax que carga el árbol de proyectos
+     */
+    def loadTreeProyPart_ajax() {
+        render(makeTreeProyNode(params))
+    }
+
+    /**
      * Función que genera el string del nodo requerido para el árbol de la estructura institucional
      * @param params
      * @return String
@@ -339,6 +347,122 @@ class EntidadController extends Shield {
                         rel += "Inactivo"
                     }
                 }
+
+                tree += "<li id='li${tp}_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${rel}\"}' >"
+                tree += "<a href='#' class='label_arbol'>" + lbl + "</a>"
+                tree += "</li>"
+            }
+
+            tree += "</ul>"
+        }
+        return tree
+    }
+
+    /**
+     * Función que genera el string del nodo requerido para el árbol de proyectos
+     * @param params
+     * @return String
+     */
+    def makeTreeProyNode(params) {
+        def id = params.id
+
+        String tree = "", clase = "", rel = ""
+        def padre
+        def hijos = []
+
+        if (id == "#") {
+            //root
+            def hh = UnidadEjecutora.countByPadreIsNull([sort: "nombre"])
+            if (hh > 0) {
+                clase = "hasChildren jstree-closed"
+            }
+
+            tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
+                    "<a href='#' class='label_arbol'>Estructura institucional</a>" +
+                    "</li>"
+            if (clase == "") {
+                tree = ""
+            }
+        } else if (id == "root") {
+            hijos = UnidadEjecutora.findAllByPadreIsNull([sort: 'orden'])
+        } else {
+            def parts = id.split("_")
+            def node_id = parts[1].toLong()
+            padre = UnidadEjecutora.get(node_id)
+            if (padre) {
+                hijos = []
+//                hijos += Persona.findAllByUnidad(padre, [sort: params.sort, order: params.order])
+//                hijos += UnidadEjecutora.findAllByPadre(padre, [sort: "nombre"])
+                hijos = Proyecto.findAllByUnidadEjecutora(padre)
+            }
+        }
+
+        if (tree == "" && (padre || hijos.size() > 0)) {
+            tree += "<ul>"
+            def lbl = ""
+
+            hijos.each { hijo ->
+                def tp = ""
+                def data = ""
+                if (hijo instanceof Proyecto) {
+                    lbl = hijo.nombre
+                    if (hijo.codigo) {
+                        lbl += " (${hijo.codigo})"
+                    }
+                    tp = "proy"
+                    rel = "proy"
+                    clase = ""
+                }
+                /*if (hijo instanceof UnidadEjecutora) {
+                    lbl = hijo.nombre
+                    if (hijo.codigo) {
+                        lbl += " (${hijo.codigo})"
+                    }
+                    tp = "dep"
+                    def hijosH = UnidadEjecutora.findAllByPadre(hijo, [sort: "nombre"])
+                    if (hijo.padre) {
+                        rel = (hijosH.size() > 0) ? "unidadPadre" : "unidadHijo"
+                    } else {
+                        rel = "yachay"
+                    }
+
+                    if (hijo.padre) {
+                        if (!hijo.fechaFin || hijo.fechaFin > new Date()) {
+                            rel += "Activo"
+                        } else {
+                            rel += "Inactivo"
+                        }
+                    }
+
+//                    hijosH += Persona.findAllByUnidad(hijo, [sort: "apellido"])
+                    clase = (hijosH.size() > 0) ? "jstree-closed hasChildren" : ""
+                    if (hijosH.size() > 0) {
+                        clase += " ocupado "
+                    }
+                }*//* else if (hijo instanceof Persona) {
+                    switch (params.sort) {
+                        case 'apellido':
+                            lbl = "${hijo.apellido} ${hijo.nombre} ${hijo.login ? '(' + hijo.login + ')' : ''}"
+                            break;
+                        case 'nombre':
+                            lbl = "${hijo.nombre} ${hijo.apellido} ${hijo.login ? '(' + hijo.login + ')' : ''}"
+                            break;
+                        default:
+                            lbl = "${hijo.apellido} ${hijo.nombre} ${hijo.login ? '(' + hijo.login + ')' : ''}"
+                    }
+
+                    tp = "usu"
+                    rel = "usuario"
+                    clase = "usuario"
+
+                    data += "data-usuario='${hijo.login}'"
+
+                    if (hijo.estaActivo == 1) {
+                        rel += "Activo"
+                    } else {
+                        rel += "Inactivo"
+                    }
+                }*/
 
                 tree += "<li id='li${tp}_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${rel}\"}' >"
                 tree += "<a href='#' class='label_arbol'>" + lbl + "</a>"
@@ -452,5 +576,9 @@ class EntidadController extends Shield {
             render "ERROR*El valor del máximo de inversión del presupuesto de la unidad debe ser diferente de " +
                     g.formatNumber(number: params.inversiones.toDouble(), maxFractionDigits: 2, minFractionDigits: 2)
         }
+    }
+
+    def arbol_asg() {
+
     }
 }

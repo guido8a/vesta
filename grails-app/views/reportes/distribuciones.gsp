@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.proyectos.ModificacionAsignacion; vesta.poa.Asignacion; vesta.avales.DistribucionAsignacion" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
 
@@ -69,7 +69,7 @@
 
     <g:each in="${asgs}" var="asg" status="i">
 
-        <g:set var="dist" value="${yachay.avales.DistribucionAsignacion.findAllByAsignacion(asg)}"></g:set>
+        <g:set var="dist" value="${DistribucionAsignacion.findAllByAsignacion(asg)}"></g:set>
         <g:if test="${dist}">
             <fieldset style="margin-top: 5px;font-size: 12px;">
                 <legend>Asignación #${i+1}</legend>
@@ -111,8 +111,8 @@
                                                 minFractionDigits="2" maxFractionDigits="2"/>
                             </td>
                         </tr>
-                        <g:each in="${yachay.poa.Asignacion.findAllByPadreAndUnidadNotEqual(asg,unidad)}" var="hija">
-                            <g:set var="mods" value="${yachay.proyectos.ModificacionAsignacion.findAllByDesdeOrRecibe(hija,hija)}"></g:set>
+                        <g:each in="${Asignacion.findAllByPadreAndUnidadNotEqual(asg,unidad)}" var="hija">
+                            <g:set var="mods" value="${ModificacionAsignacion.findAllByDesdeOrRecibe(hija,hija)}"></g:set>
                             <tr style="${(mods)?'background: #eabcb6':'background: #F5F5F5'}">
                                 <td>${hija.id}</td>
                                 <td>${hija.unidad}</td>
@@ -127,8 +127,8 @@
                                     <g:set var="totDist" value="${totDist.toDouble()+hija.getValorReal()}"></g:set>
                                 </td>
                             </tr>
-                            <g:each in="${yachay.poa.Asignacion.findAllByPadreAndUnidadNotEqual(hija,unidad)}" var="hija2">
-                                <g:set var="mods2" value="${yachay.proyectos.ModificacionAsignacion.findAllByDesdeOrRecibe(hija2,hija2)}"></g:set>
+                            <g:each in="${Asignacion.findAllByPadreAndUnidadNotEqual(hija,unidad)}" var="hija2">
+                                <g:set var="mods2" value="${ModificacionAsignacion.findAllByDesdeOrRecibe(hija2,hija2)}"></g:set>
                                 <tr style="${(mods)?'background: #eabcb6':'background: #F5F5F5'}">
                                     <td>${hija2.id}</td>
                                     <td>${hija2.unidad}</td>
@@ -143,8 +143,8 @@
                                         <g:set var="totDist" value="${totDist.toDouble()+hija2.getValorReal()}"></g:set>
                                     </td>
                                 </tr>
-                                <g:each in="${yachay.poa.Asignacion.findAllByPadreAndUnidadNotEqual(hija2,unidad)}" var="hija3">
-                                    <g:set var="mods3" value="${yachay.proyectos.ModificacionAsignacion.findAllByDesdeOrRecibe(hija3,hija3)}"></g:set>
+                                <g:each in="${Asignacion.findAllByPadreAndUnidadNotEqual(hija2,unidad)}" var="hija3">
+                                    <g:set var="mods3" value="${ModificacionAsignacion.findAllByDesdeOrRecibe(hija3,hija3)}"></g:set>
                                     <tr style="${(mods)?'background: #eabcb6':'background: #F5F5F5'}">
                                         <td>${hija3.id}</td>
                                         <td>${hija3.unidad}</td>

@@ -5,7 +5,7 @@
   Time: 12:20 PM
 --%>
 
-<%@ page import="yachay.parametros.UnidadEjecutora" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.parametros.UnidadEjecutora" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Reporte de Asignaciones del Proyecto</title>

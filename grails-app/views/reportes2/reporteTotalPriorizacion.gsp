@@ -6,7 +6,7 @@
 --%>
 
 
-<%@ page import="yachay.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Reporte de Total de Priorización</title>
@@ -164,7 +164,7 @@
                 ${pro?.unidadAdministradora}
             </td>
             <td style="text-align: right">
-                <g:each in="${yachay.proyectos.MarcoLogico.findAllByProyectoAndTipoElemento(pro,TipoElemento.get(3))}" var="parcial">
+                <g:each in="${MarcoLogico.findAllByProyectoAndTipoElemento(pro,vesta.parametros.TipoElemento.get(3))}" var="parcial">
                     <g:set var="marcos" value="${parcial?.monto}"/>
                     <g:set var="total2" value="${total = (marcos +total)}"/>
                 </g:each>
@@ -172,7 +172,7 @@
                                 maxFractionDigits="2"/>
             </td>
             <td>
-                <g:each in="${yachay.proyectos.MarcoLogico.findAllByProyectoAndTipoElemento(pro,TipoElemento.get(3))}" var="mlo">
+                <g:each in="${MarcoLogico.findAllByProyectoAndTipoElemento(pro,vesta.parametros.TipoElemento.get(3))}" var="mlo">
                     <g:set var="subTotal" value="${mlo?.getTotalPriorizado()}"/>
                     <g:set var="total3" value="${total4 = (subTotal +total4)}"/>
 
