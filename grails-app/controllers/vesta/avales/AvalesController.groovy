@@ -80,14 +80,12 @@ class AvalesController extends vesta.seguridad.Shield {
      * Acción que muestra la pantalla que permite crear modificar una asignacion
      */
 
-    def editarAsignacion () {
+    def editarAsignacion() {
         def band = params.band
         def asg = ProcesoAsignacion.get(params.id)
         [band: band, asg: asg, max: params.max]
 
     }
-
-
 
     /**
      * Acción llamada con ajax que muestra las asignaciones de un proceso
@@ -127,10 +125,10 @@ class AvalesController extends vesta.seguridad.Shield {
             return
         } else {
             def texto
-            if(params.id){
+            if (params.id) {
                 texto = "Actualización de proceso exitosa"
-            }else{
-              texto = "Creación de proceso exitosa"
+            } else {
+                texto = "Creación de proceso exitosa"
             }
             render "SUCCESS*" + texto
             return
@@ -225,7 +223,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * @Renders el monto priorizado meno el monto utilizado
      */
     def getMaximoAsg = {
-        println "get Maximo asg " +params
+        println "get Maximo asg " + params
         def asg = Asignacion.get(params.id)
         def monto = asg.priorizado
         def usado = 0;
@@ -247,8 +245,8 @@ class AvalesController extends vesta.seguridad.Shield {
      * Acción que muestra una pantalla con la lista de procesos por unidad
      */
     def listaProcesosUnidad = {
-        def user = Usro.get(session.usuario.id)
-        def proyectos=[]
+        def user = Persona.get(session.usuario.id)
+        def proyectos = []
         def unidad = user.unidad
         Asignacion.findAllByUnidad(unidad).each {
             def p = it.marcoLogico.proyecto
@@ -257,7 +255,7 @@ class AvalesController extends vesta.seguridad.Shield {
             }
         }
         proyectos.sort { it.nombre }
-        def procesos = ProcesoAval.findAllByProyectoInList(proyectos,[sort: "id"])
+        def procesos = ProcesoAval.findAllByProyectoInList(proyectos, [sort: "id"])
         [procesos: procesos]
     }
 
@@ -282,11 +280,11 @@ class AvalesController extends vesta.seguridad.Shield {
         def personasFirma = Persona.findAllByUnidad(unidad)
         def aux = Auxiliar.list()
         def referencial = 7000
-        if(aux.size()>0){
-            aux=aux.pop()
-            referencial=aux.presupuesto*(2*Math.pow(10,-7))
-            referencial=referencial.round(2)
-            println "referencial "+referencial
+        if (aux.size() > 0) {
+            aux = aux.pop()
+            referencial = aux.presupuesto * (2 * Math.pow(10, -7))
+            referencial = referencial.round(2)
+            println "referencial " + referencial
         }
         def numero = null
         def band = true
@@ -308,7 +306,7 @@ class AvalesController extends vesta.seguridad.Shield {
         }
 
         def avales = Aval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E02"), EstadoAval.findByCodigo("E05"), EstadoAval.findByCodigo("EF1")])
-        def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"),EstadoAval.findByCodigo("EF4")])
+        def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
         def disponible = proceso.getMonto()
 //        println "aval " + avales
 //        println "sols " + solicitudes
@@ -326,7 +324,7 @@ class AvalesController extends vesta.seguridad.Shield {
             redirect(controller: "avales", action: "avalesProceso", id: proceso?.id)
             return
         } else {
-            [proceso: proceso, disponible: disponible, personas: personasFirma, numero: numero,refencial:referencial]
+            [proceso: proceso, disponible: disponible, personas: personasFirma, numero: numero, refencial: referencial]
         }
     }
 
@@ -335,7 +333,20 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def solicitarAnulacion = {
         def aval = Aval.get(params.id)
-        [aval: aval]
+        def numero = null
+        def band = true
+        numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
+        if (numero.size() > 0) {
+            numero = numero?.pop()?.numero
+        }
+        if (!numero) {
+            numero = 1
+        } else {
+            numero = numero + 1
+        }
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def personasFirma = Persona.findAllByUnidad(unidad)
+        return [aval: aval, numero: numero, personas: personasFirma]
     }
 
     /**
@@ -344,17 +355,17 @@ class AvalesController extends vesta.seguridad.Shield {
      * @param params los parámetros enviados por el submit del formulario
      */
     def guardarSolicitud = {
-        //println "solicitud aval " + params
+        println "solicitud aval " + params
         /*TODO enviar alertas*/
 
-        if (params.monto) {
-            params.monto = params.monto.replaceAll("\\.", "")
-            params.monto = params.monto.replaceAll(",", ".")
-        }
+//        if (params.monto) {
+//            params.monto = params.monto.replaceAll("\\.", "")
+//            params.monto = params.monto.replaceAll(",", ".")
+//        }
         def referencial = params.referencial?.toDouble()
         def montoProceso = params.monto?.toDouble()
 //        println "ref "+referencial+" monto "+montoProceso
-        if(montoProceso>referencial){
+        if (montoProceso > referencial) {
             def path = servletContext.getRealPath("/") + "pdf/solicitudAval/"
             new File(path).mkdirs()
             def f = request.getFile('file')
@@ -394,9 +405,12 @@ class AvalesController extends vesta.seguridad.Shield {
                     i++
                 }
                 try {
+
+                    println ">>>> " + params
+
                     f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
                     def proceso = ProcesoAval.get(params.proceso)
-                    def usuFirma = Usro.get(params.firma1)
+                    def usuFirma = Persona.get(params.firma1)
 
                     def monto = params.monto
                     monto = monto.toDouble()
@@ -413,14 +427,26 @@ class AvalesController extends vesta.seguridad.Shield {
                     sol.memo = momorando
                     sol.path = nombre
                     def firma = new Firma()
-                    firma.usuario=usuFirma
-                    firma.accionVer="imprimirSolicitudAval"
-                    firma.controladorVer="reporteSolicitud"
-                    firma.accion="firmarSolicitud"
-                    firma.controlador="avales"
-                    firma.documento="SolicitudDeAval_"+ sol.numero
-                    firma.concepto="Solicitud de aval del proceso: "+proceso.nombre
-                    firma.save(flush: true)
+                    firma.usuario = usuFirma
+                    firma.accion = "firmarSolicitud"
+                    firma.controlador = "avales"
+
+                    if (params.tipo == "A") {
+                        firma.accionVer = "imprimirSolicitudAnulacionAval"
+                        firma.controladorVer = "reporteSolicitud"
+
+                        firma.documento = "SolicitudDeAnulacionDeAval_" + sol.numero
+                        firma.concepto = "Solicitud de Anulación de aval del proceso: " + proceso.nombre
+                    } else {
+                        firma.accionVer = "imprimirSolicitudAval"
+                        firma.controladorVer = "reporteSolicitud"
+
+                        firma.documento = "SolicitudDeAval_" + sol.numero
+                        firma.concepto = "Solicitud de aval del proceso: " + proceso.nombre
+                    }
+                    if (!firma.save(flush: true)) {
+                        println "Error en firma: " + firma.errors
+                    }
                     sol.firma = firma
                     sol.unidad = session.usuario.unidad
                     if (params.tipo)
@@ -429,17 +455,17 @@ class AvalesController extends vesta.seguridad.Shield {
                     sol.estado = EstadoAval.findByCodigo("EF4")
                     if (!sol.save(flush: true)) {
                         println "eror save " + sol.errors
-                    }else{
-                        firma.idAccion=sol.id
-                        firma.idAccionVer=sol.id
+                    } else {
+                        firma.idAccion = sol.id
+                        firma.idAccionVer = sol.id
                         firma.save(flush: true)
                     }
-                    def usuarios = Usro.findAllByUnidad(UnidadEjecutora.findByCodigo("DPI"))
+                    def usuarios = Persona.findAllByUnidad(UnidadEjecutora.findByCodigo("DPI"))
                     usuarios.each { usu ->
                         def alerta = new Alerta()
                         alerta.from = session.usuario
-                        alerta.usro = usu
-                        alerta.fec_envio = new Date()
+                        alerta.persona = usu
+                        alerta.fechaEnvio = new Date()
                         alerta.mensaje = "Nueva solicitud de aval"
                         alerta.controlador = "revisionAval"
                         alerta.accion = "pendientes"
@@ -448,27 +474,28 @@ class AvalesController extends vesta.seguridad.Shield {
                             println "error alerta: " + alerta.errors
                         }
                     }
-                    try{
-                        def mail = sol.firma.usuario.persona.mail
-                        if(mail) {
+                    try {
+                        def mail = sol.firma.usuario.mail
+                        if (mail) {
 
                             mailService.sendMail {
                                 to mail
-                                subject "Nueve solicitud de aval"
+                                subject "Nueva solicitud de aval"
                                 body "Tiene una solicitud de aval pendiente que requiere su firma para aprobación "
                             }
 
                         } else {
-                            println "El usuario ${sol.firma.usuario.usroLogin} no tiene email"
+                            println "El usuario ${sol.firma.usuario.login} no tiene email"
                         }
-                    }catch (e){
-                        println "eror email "+e.printStackTrace()
+                    } catch (e) {
+                        println "eror email " + e.printStackTrace()
                     }
                     flash.message = "Solicitud enviada"
                     redirect(action: 'avalesProceso', params: [id: params.proceso])
                     //println pathFile
                 } catch (e) {
                     println "????????\n" + e + "\n???????????"
+                    e.printStackTrace()
                 }
 
 
@@ -477,9 +504,9 @@ class AvalesController extends vesta.seguridad.Shield {
                 redirect(action: 'solicitarAval', params: [asg: params.asgn])
             }
             /* fin del upload */
-        }else{
+        } else {
             def proceso = ProcesoAval.get(params.proceso)
-            def usuFirma = Usro.get(params.firma1)
+            def usuFirma = Persona.get(params.firma1)
             def monto = params.monto
             monto = monto.toDouble()
             def concepto = params.concepto
@@ -494,13 +521,13 @@ class AvalesController extends vesta.seguridad.Shield {
             sol.concepto = concepto
             sol.memo = momorando
             def firma = new Firma()
-            firma.usuario=usuFirma
-            firma.accionVer="imprimirSolicitudAval"
-            firma.controladorVer="reporteSolicitud"
-            firma.accion="firmarSolicitud"
-            firma.controlador="avales"
-            firma.documento="SolicitudDeAval_"+ sol.numero
-            firma.concepto="Solicitud de aval del proceso: "+proceso.nombre
+            firma.usuario = usuFirma
+            firma.accionVer = "imprimirSolicitudAval"
+            firma.controladorVer = "reporteSolicitud"
+            firma.accion = "firmarSolicitud"
+            firma.controlador = "avales"
+            firma.documento = "SolicitudDeAval_" + sol.numero
+            firma.concepto = "Solicitud de aval del proceso: " + proceso.nombre
             firma.save(flush: true)
             sol.firma = firma
             sol.unidad = session.usuario.unidad
@@ -510,17 +537,17 @@ class AvalesController extends vesta.seguridad.Shield {
             sol.estado = EstadoAval.findByCodigo("EF4")
             if (!sol.save(flush: true)) {
                 println "eror save " + sol.errors
-            }else{
-                firma.idAccion=sol.id
-                firma.idAccionVer=sol.id
+            } else {
+                firma.idAccion = sol.id
+                firma.idAccionVer = sol.id
                 firma.save(flush: true)
             }
-            def usuarios = Usro.findAllByUnidad(UnidadEjecutora.findByCodigo("DPI"))
+            def usuarios = Persona.findAllByUnidad(UnidadEjecutora.findByCodigo("DPI"))
             usuarios.each { usu ->
                 def alerta = new Alerta()
                 alerta.from = session.usuario
-                alerta.usro = usu
-                alerta.fec_envio = new Date()
+                alerta.persona = usu
+                alerta.fechaEnvio = new Date()
                 alerta.mensaje = "Nueva solicitud de aval"
                 alerta.controlador = "revisionAval"
                 alerta.accion = "pendientes"
@@ -529,9 +556,9 @@ class AvalesController extends vesta.seguridad.Shield {
                     println "error alerta: " + alerta.errors
                 }
             }
-            try{
-                def mail = sol.firma.usuario.persona.mail
-                if(mail) {
+            try {
+                def mail = sol.firma.usuario.mail
+                if (mail) {
 
                     mailService.sendMail {
                         to mail
@@ -540,19 +567,15 @@ class AvalesController extends vesta.seguridad.Shield {
                     }
 
                 } else {
-                    println "El usuario ${sol.firma.usuario.usroLogin} no tiene email"
+                    println "El usuario ${sol.firma.usuario.login} no tiene email"
                 }
-            }catch (e){
-                println "eror email "+e.printStackTrace()
+            } catch (e) {
+                println "eror email " + e.printStackTrace()
             }
 
             flash.message = "Solicitud enviada"
             redirect(action: 'avalesProceso', params: [id: params.proceso])
         }
-
-
-
-
     }
 
     /**
@@ -561,11 +584,11 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def firmarSolicitud = {
         def firma = Firma.findByKey(params.key)
-        if(!firma)
+        if (!firma)
             response.sendError(403)
-        else{
+        else {
             def sol = SolicitudAval.findByFirma(firma)
-            sol.estado=EstadoAval.findByCodigo("E01")
+            sol.estado = EstadoAval.findByCodigo("E01")
             sol.save(flush: true)
             try {
                 def perfilDireccionPlanificacion = Prfl.findByCodigo("DP")
@@ -579,17 +602,17 @@ class AvalesController extends vesta.seguridad.Shield {
 //                    println "Se enviaran ${sesiones.size()} mails"
                     sesiones.each { sesn ->
                         Persona usro = sesn.usuario
-                        def mail = usro.persona.mail
-                        if(mail) {
+                        def mail = usro.mail
+                        if (mail) {
 
                             mailService.sendMail {
                                 to mail
                                 subject "Nueve solicitud de aval"
-                                body "Ha recibido una nueva solicitud de aval de la unidad "+sol.unidad
+                                body "Ha recibido una nueva solicitud de aval de la unidad " + sol.unidad
                             }
 
                         } else {
-                            println "El usuario ${usro.usroLogin} no tiene email"
+                            println "El usuario ${usro.login} no tiene email"
                         }
                     }
                 } else {
@@ -599,8 +622,24 @@ class AvalesController extends vesta.seguridad.Shield {
                 println "Error al enviar mail: ${e.printStackTrace()}"
             }
 //            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
-            def url =g.createLink(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
+            def url = g.createLink(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
             render "${url}"
+        }
+    }
+
+    /**
+     * Acción llamada con ajax que valida la existencia del archivo de solicitud solicitado para descarga
+     */
+    def validarSolicitud_ajax() {
+        def sol = SolicitudAval.get(params.id)
+//        println "path solicitud "+cer.pathSolicitud
+        def path = servletContext.getRealPath("/") + "pdf/solicitudAval/" + sol.path
+
+        def src = new File(path)
+        if (src.exists()) {
+            render "SUCCESS"
+        } else {
+            render "ERROR*No se encontró el archivo solicitado"
         }
     }
 

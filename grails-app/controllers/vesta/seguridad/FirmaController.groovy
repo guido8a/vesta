@@ -2,21 +2,23 @@ package vesta.seguridad
 
 import vesta.parametros.poaPac.Anio
 
-class FirmaController {
+class FirmaController extends Shield {
+
+    def QRCodeService
+
     def firmasService
     /**
      * Acción que muestra una lista de las solicitudes de firma pendientes
      * @param anio es el anio para mostrar el historial de firmas
      */
     def firmasPendientes = {
-
-        def firmas = Firma.findAllByUsuarioAndEstado(session.usuario,"S",[sort:"id"])
+        def firmas = Firma.findAllByUsuarioAndEstado(session.usuario, "S", [sort: "id"])
         def actual
         if (params.anio)
             actual = Anio.get(params.anio)
         else
             actual = Anio.findByAnio(new Date().format("yyyy"))
-        [firmas:firmas, actual:actual]
+        [firmas: firmas, actual: actual]
 
     }
 /**
@@ -46,11 +48,11 @@ class FirmaController {
  */
     def ver = {
         def firma = Firma.get(params.id)
-        if(firma){
-            if(firma.esPdf=="S"){
-                redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
+        if (firma) {
+            if (firma.esPdf == "S") {
+                redirect(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
             }
-        }else{
+        } else {
             render "No se encontro ninguna firma"
         }
     }
@@ -61,10 +63,10 @@ class FirmaController {
     def negar = {
 //        println "negar "+params
         def firma = Firma.get(params.id)
-        firma.fecha=new Date()
-        firma.estado="N"
-        if(!firma.save(flush: true)){
-            println "error save firma "+firma.errors
+        firma.fecha = new Date()
+        firma.estado = "N"
+        if (!firma.save(flush: true)) {
+            println "error save firma " + firma.errors
         }
         render "ok"
     }
@@ -74,17 +76,21 @@ class FirmaController {
      * @params pass es la constraseña de autorización
      */
     def firmar = {
-        println "firmar "+params
-        def firma = Firma.get(params.id)
-        def baseUri = request.scheme + "://" + "10.0.0.3" + ":" + request.serverPort
-//        def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
-        firma = firmasService.firmarDocumento(session.usuario.id,params.pass,firma,baseUri)
-        if(firma){
-            redirect(controller: firma.controlador,action:firma.accion,params:[id:firma.idAccion,key:firma.key])
-        }else{
-            render "no"
-        }
+        println "firmar " + params
 
+        if (params.pass.toString().encodeAsMD5() == session.usuario.autorizacion) {
+            def firma = Firma.get(params.id)
+            def baseUri = request.scheme + "://" + "10.0.0.3" + ":" + request.serverPort
+//        def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
+            firma = firmasService.firmarDocumento(session.usuario.id, params.pass, firma, baseUri)
+            if (firma.class == Firma) {
+                redirect(controller: firma.controlador, action: firma.accion, params: [id: firma.idAccion, key: firma.key])
+            } else {
+                render firma
+            }
+        } else {
+            render "ERROR*La clave de autorización es incorrecta"
+        }
 
     }
 /**
@@ -95,14 +101,14 @@ class FirmaController {
 //        println "ver doc "+params
         def firma = Firma.findByKey(params.ky)
 
-        if(firma){
+        if (firma) {
             //println "firma "+firma+" "+firma.esPdf+" "+firma.controladorVer+"/"+firma.accionVer+"/"+firma.idAccion
-            if(firma.esPdf=="S"){
-                redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
-            }else{
-                redirect(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)
+            if (firma.esPdf == "S") {
+                redirect(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
+            } else {
+                redirect(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)
             }
-        }else{
+        } else {
             render "No se encontro ninguna firma"
         }
     }

@@ -680,7 +680,7 @@ class SolicitudTagLib {
         html += "<td style='width:206px;' rowspan='${rowspan}'><img src='${logoPath}' style='width:${w}px;'/></td>"
         html += "</tr>"
         html += "<tr>"
-        html += "<td class='ttl'>vesta EP</td>"
+        html += "<td class='ttl'>YACHAY EP</td>"
         html += "<td> </td>"
         html += "</tr>"
 //        html += "<tr>"
