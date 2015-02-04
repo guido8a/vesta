@@ -10,11 +10,13 @@ a.text-info:hover {
     color : #dedede;
 }
 
-
-
 .titulo-horizontal {
     padding-bottom : 10px;
     border-bottom  : 1px solid #000000;
     text-align     : center;
     width          : 105%;
+}
+
+.no-margin-top {
+    margin-top : 0;
 }
