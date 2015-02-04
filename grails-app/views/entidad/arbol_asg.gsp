@@ -404,307 +404,24 @@
 
                 var esRoot = nodeType == "root";
                 var esYachay = nodeType == "yachay";
-                var esUnidad = nodeType.contains("unidad");
-                var esUsuario = nodeType.contains("usuario");
+                var esProyecto = nodeType.contains("proy");
 
                 var items = {};
 
-                var agregarEntidad = {
+                var inversiones = {
                     label  : "Agregar entidad",
                     icon   : "fa fa-home text-success",
                     action : function () {
                         createEditUnidad(null, nodeId);
                     }
                 };
-                var docsEntidad = {
-                    label           : "Documentos entidad",
-                    icon            : "fa fa-files-o",
-                    separator_after : true,
-                    action          : function () {
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(controller: 'documento', action:'listUnidad_ajax')}",
-                            data    : {
-                                id : nodeId
-                            },
-                            success : function (msg) {
-                                bootbox.dialog({
-                                    title   : "Documentos",
-                                    class   : "modal-lg",
-                                    message : msg,
-                                    buttons : {
-                                        ok : {
-                                            label     : "Aceptar",
-                                            className : "btn-primary",
-                                            callback  : function () {
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                };
-                var agregarUsu = {
-                    label           : "Agregar usuario",
-                    icon            : "fa fa-user text-success",
-                    separator_after : true,
-                    action          : function () {
-                        createEditPersona(null, nodeId);
-                    }
-                };
-                var responsablesUnidad = {
-                    label  : "Responsables",
-                    icon   : "fa fa-users text-info",
-                    action : function () {
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(controller: "persona", action:'responsablesUnidad_ajax')}",
-                            data    : {
-                                id : nodeId
-                            },
-                            success : function (msg) {
-                                bootbox.dialog({
-                                    title   : "Responsables de " + nodeText,
-                                    message : msg,
-                                    class   : "modal-lg",
-                                    buttons : {
-                                        ok : {
-                                            label     : "Aceptar",
-                                            className : "btn-primary",
-                                            callback  : function () {
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                };
-                var verEntidad = {
-                    label            : "Ver datos de la entidad",
-                    icon             : "fa fa-laptop text-info",
-                    separator_before : true,
-                    action           : function () {
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(controller: "unidadEjecutora", action:'show_ajax')}",
-                            data    : {
-                                id : nodeId
-                            },
-                            success : function (msg) {
-                                bootbox.dialog({
-                                    title   : "Ver Entidad",
-                                    message : msg,
-                                    buttons : {
-                                        ok : {
-                                            label     : "Aceptar",
-                                            className : "btn-primary",
-                                            callback  : function () {
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                };
-                var editarEntidad = {
-                    label  : "Editar datos de la entidad",
-                    icon   : "fa fa-pencil text-info",
-                    action : function () {
-                        createEditUnidad(nodeId, null);
-                    }
-                };
-                var presupuestoEntidad = {
-                    label            : "Presupuesto entidad",
-                    icon             : "fa fa-money",
-                    separator_before : true,
-                    action           : function () {
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(action:'presupuestoEntidad_ajax')}",
-                            data    : {
-                                id : nodeId
-                            },
-                            success : function (msg) {
-                                bootbox.dialog({
-                                    title   : "Presupuesto entidad",
-                                    message : msg,
-                                    buttons : {
-                                        cancelar : {
-                                            label     : "Cancelar",
-                                            className : "btn-primary",
-                                            callback  : function () {
-                                            }
-                                        },
-                                        guardar  : {
-                                            label     : "Guardar",
-                                            icon      : "fa fa-save",
-                                            className : "btn-success",
-                                            callback  : function () {
-                                                var $frm = $("#frmPresupuestoEntidad");
-                                                if ($frm.valid()) {
-                                                    openLoader();
-                                                    var data = $frm.serialize();
-                                                    data += "&unidad=" + nodeId;
-                                                    $.ajax({
-                                                        type    : "POST",
-                                                        url     : "${createLink(action:'savePresupuestoEntidad_ajax')}",
-                                                        data    : data,
-                                                        success : function (msg) {
-                                                            var parts = msg.split("*");
-                                                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                                                            closeLoader();
-                                                        }
-                                                    });
-
-                                                    return true;
-                                                }
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                };
-                var modificarPresupuesto = {
-                    label  : "Modificar presupuesto",
-                    icon   : "fa fa-calculator",
-                    action : function () {
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(action:'modificarPresupuesto_ajax')}",
-                            data    : {
-                                id : nodeId
-                            },
-                            success : function (msg) {
-                                bootbox.dialog({
-                                    title   : "Modificar presupuesto",
-                                    message : msg,
-                                    buttons : {
-                                        cancelar : {
-                                            label     : "Cancelar",
-                                            className : "btn-primary",
-                                            callback  : function () {
-                                            }
-                                        },
-                                        guardar  : {
-                                            label     : "Guardar",
-                                            icon      : "fa fa-save",
-                                            className : "btn-success",
-                                            callback  : function () {
-                                                var $frm = $("#frmModificarPresupuesto");
-                                                if ($frm.valid()) {
-                                                    openLoader();
-                                                    var data = $frm.serialize();
-                                                    data += "&unidad=" + nodeId;
-                                                    $.ajax({
-                                                        type    : "POST",
-                                                        url     : "${createLink(action:'saveModificarPresupuesto_ajax')}",
-                                                        data    : data,
-                                                        success : function (msg) {
-                                                            var parts = msg.split("*");
-                                                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                                                            closeLoader();
-                                                        },
-                                                        error   : function (jqXHR, textStatus, errorThrown) {
-                                                            log(errorThrown, "error"); // log(msg, type, title, hide)
-                                                            closeLoader();
-                                                        }
-                                                    });
-
-                                                    return true;
-                                                }
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                };
-
-                var verUsuario = {
-                    label            : "Ver datos del usuario",
-                    icon             : "fa fa-laptop text-info",
-                    separator_before : true,
-                    action           : function () {
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(controller: "persona", action:'show_ajax')}",
-                            data    : {
-                                id : nodeId
-                            },
-                            success : function (msg) {
-                                bootbox.dialog({
-                                    title   : "Ver Usuario",
-                                    message : msg,
-                                    class   : "modal-lg",
-                                    buttons : {
-                                        ok : {
-                                            label     : "Aceptar",
-                                            className : "btn-primary",
-                                            callback  : function () {
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                };
-                var editarUsuario = {
-                    label            : "Editar datos del usuario",
-                    icon             : "fa fa-pencil text-info",
-                    separator_before : true,
-                    action           : function () {
-                        createEditPersona(nodeId, null);
-                    }
-                };
-                var editarPass = {
-                    label            : "Modificar contraseña",
-                    icon             : "fa fa-unlock text-info",
-                    separator_before : true,
-                    action           : function () {
-                        cambiarPassPersona(nodeId, "pass");
-                    }
-                };
-                var editarAuth = {
-                    label  : "Modificar autorización",
-                    icon   : "fa fa-unlock-alt text-info",
-                    action : function () {
-                        cambiarPassPersona(nodeId, "auth");
-                    }
-                };
 
                 if (esRoot) {
 //                    items.agregarEntidad = agregarEntidad;
                 } else if (esYachay) {
-                    items.agregarEntidad = agregarEntidad;
-                    items.presupuestoEntidad = presupuestoEntidad;
-                    items.modificarPresupuesto = modificarPresupuesto;
-                    items.documentos = docsEntidad;
-                    items.agregarUsuario = agregarUsu;
-                    items.ver = verEntidad;
-                    items.editar = editarEntidad;
-                } else if (esUnidad) {
-                    items.agregarEntidad = agregarEntidad;
-                    items.documentos = docsEntidad;
-                    items.agregarUsuario = agregarUsu;
-                    items.responsables = responsablesUnidad;
-                    items.ver = verEntidad;
-                    items.editar = editarEntidad;
-                } else if (esUsuario) {
-                    items.ver = verUsuario;
-                    items.editar = editarUsuario;
-                    items.editarPass = editarPass;
-                    if (nodeId == "${session.usuario.id}") {
-                        items.editarAuth = editarAuth;
-                    }
+
+                } else if (esProyecto) {
+
                 }
                 return items;
             }
@@ -766,7 +483,7 @@
                         fuzzy             : false,
                         show_only_matches : false,
                         ajax              : {
-                            url     : "${createLink(action:'arbolSearch_ajax')}",
+                            url     : "${createLink(action:'arbolSearchProy_ajax')}",
                             success : function (msg) {
                                 var json = $.parseJSON(msg);
                                 $.each(json, function (i, obj) {
@@ -785,29 +502,14 @@
                         }
                     },
                     types       : {
-                        root                : {
+                        root   : {
                             icon : "fa fa-folder text-warning"
                         },
-                        yachay              : {
+                        yachay : {
                             icon : "fa fa-building text-info"
                         },
-                        unidadPadreActivo   : {
-                            icon : "fa fa-building-o text-info"
-                        },
-                        unidadPadreInactivo : {
-                            icon : "fa fa-building-o text-muted"
-                        },
-                        unidadHijoActivo    : {
-                            icon : "fa fa-home text-success"
-                        },
-                        unidadHijoInactivo  : {
-                            icon : "fa fa-home text-muted"
-                        },
-                        usuarioActivo       : {
-                            icon : "fa fa-user text-info"
-                        },
-                        usuarioInactivo     : {
-                            icon : "fa fa-user text-muted"
+                        proy   : {
+                            icon : "fa fa-clipboard text-success"
                         }
                     }
                 });

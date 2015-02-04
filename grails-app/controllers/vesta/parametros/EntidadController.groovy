@@ -234,6 +234,56 @@ class EntidadController extends Shield {
     }
 
     /**
+     * Acción llamada con ajax que permite realizar búsquedas en el árbol de proyectos
+     */
+    def arbolSearchProy_ajax() {
+        def search = params.str.trim()
+        if (search != "") {
+            def c = Proyecto.createCriteria()
+            def find = c.list(params) {
+                or {
+                    ilike("nombre", "%" + search + "%")
+                    ilike("codigo", "%" + search + "%")
+                    unidadEjecutora {
+                        or {
+                            ilike("nombre", "%" + search + "%")
+                        }
+                    }
+                }
+            }
+//            println find
+            def departamentos = []
+            find.each { Proyecto proy ->
+                if (proy.unidadEjecutora && !departamentos.contains(proy.unidadEjecutora)) {
+                    departamentos.add(proy.unidadEjecutora)
+                    def dep = proy.unidadEjecutora
+                    def padre = dep.padre
+                    while (padre) {
+                        dep = padre
+                        padre = dep.padre
+                        if (!departamentos.contains(dep)) {
+                            departamentos.add(dep)
+                        }
+                    }
+                }
+            }
+            departamentos = departamentos.reverse()
+            def ids = "["
+            if (find.size() > 0) {
+                ids += "\"#root\","
+                departamentos.each { dp ->
+                    ids += "\"#lidep_" + dp.id + "\","
+                }
+                ids = ids[0..-2]
+            }
+            ids += "]"
+            render ids
+        } else {
+            render ""
+        }
+    }
+
+    /**
      * Acción llamada con ajax que carga el árbol de la estructura institucional
      */
     def loadTreePart_ajax() {
@@ -370,6 +420,8 @@ class EntidadController extends Shield {
         def padre
         def hijos = []
 
+        println "tree proy " + params
+
         if (id == "#") {
             //root
             def hh = UnidadEjecutora.countByPadreIsNull([sort: "nombre"])
@@ -378,22 +430,23 @@ class EntidadController extends Shield {
             }
 
             tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
-                    "<a href='#' class='label_arbol'>Estructura institucional</a>" +
+                    "<a href='#' class='label_arbol'>Entidades</a>" +
                     "</li>"
             if (clase == "") {
                 tree = ""
             }
         } else if (id == "root") {
             hijos = UnidadEjecutora.findAllByPadreIsNull([sort: 'orden'])
+//            hijos = Proyecto.findAllByUnidadEjecutora(padre)
         } else {
             def parts = id.split("_")
             def node_id = parts[1].toLong()
             padre = UnidadEjecutora.get(node_id)
             if (padre) {
-                hijos = []
+//                hijos = []
 //                hijos += Persona.findAllByUnidad(padre, [sort: params.sort, order: params.order])
 //                hijos += UnidadEjecutora.findAllByPadre(padre, [sort: "nombre"])
-                hijos = Proyecto.findAllByUnidadEjecutora(padre)
+                hijos = Proyecto.findAllByUnidadEjecutora(padre, [sort: "nombre"])
             }
         }
 
@@ -404,16 +457,7 @@ class EntidadController extends Shield {
             hijos.each { hijo ->
                 def tp = ""
                 def data = ""
-                if (hijo instanceof Proyecto) {
-                    lbl = hijo.nombre
-                    if (hijo.codigo) {
-                        lbl += " (${hijo.codigo})"
-                    }
-                    tp = "proy"
-                    rel = "proy"
-                    clase = ""
-                }
-                /*if (hijo instanceof UnidadEjecutora) {
+                if (hijo instanceof UnidadEjecutora) {
                     lbl = hijo.nombre
                     if (hijo.codigo) {
                         lbl += " (${hijo.codigo})"
@@ -434,35 +478,20 @@ class EntidadController extends Shield {
                         }
                     }
 
-//                    hijosH += Persona.findAllByUnidad(hijo, [sort: "apellido"])
+                    hijosH += Persona.findAllByUnidad(hijo, [sort: "apellido"])
                     clase = (hijosH.size() > 0) ? "jstree-closed hasChildren" : ""
                     if (hijosH.size() > 0) {
                         clase += " ocupado "
                     }
-                }*//* else if (hijo instanceof Persona) {
-                    switch (params.sort) {
-                        case 'apellido':
-                            lbl = "${hijo.apellido} ${hijo.nombre} ${hijo.login ? '(' + hijo.login + ')' : ''}"
-                            break;
-                        case 'nombre':
-                            lbl = "${hijo.nombre} ${hijo.apellido} ${hijo.login ? '(' + hijo.login + ')' : ''}"
-                            break;
-                        default:
-                            lbl = "${hijo.apellido} ${hijo.nombre} ${hijo.login ? '(' + hijo.login + ')' : ''}"
+                } else if (hijo instanceof Proyecto) {
+                    lbl = hijo.nombre
+                    if (hijo.codigo) {
+                        lbl += " (${hijo.codigo})"
                     }
-
-                    tp = "usu"
-                    rel = "usuario"
-                    clase = "usuario"
-
-                    data += "data-usuario='${hijo.login}'"
-
-                    if (hijo.estaActivo == 1) {
-                        rel += "Activo"
-                    } else {
-                        rel += "Inactivo"
-                    }
-                }*/
+                    tp = "proy"
+                    rel = "proy"
+                    clase = ""
+                }
 
                 tree += "<li id='li${tp}_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${rel}\"}' >"
                 tree += "<a href='#' class='label_arbol'>" + lbl + "</a>"
