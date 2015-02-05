@@ -24,7 +24,7 @@ environments {
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://10.0.0.3:5432/happy"
+            url = "jdbc:postgresql://10.0.0.3:5432/vesta"
             username = "postgres"
             password = "postgres"
         }
@@ -32,9 +32,9 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://127.0.0.1:5432/happy"
+            url = "jdbc:postgresql://127.0.0.1:5432/vesta"
             username = "postgres"
-            password = "janus"
+            password = "steinsgate"
         }
     }
 }
