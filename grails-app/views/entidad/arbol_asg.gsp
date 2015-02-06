@@ -409,10 +409,48 @@
                 var items = {};
 
                 var inversiones = {
-                    label  : "Agregar entidad",
-                    icon   : "fa fa-home text-success",
+                    label            : "Asignación de inversiones",
+                    icon             : "fa fa-money text-success",
+                    separator_before : true,
+                    action           : function () {
+                        location.href = "${createLink(controller: 'asignacion', action: 'asignacionProyectov2')}/" + nodeId;
+                    }
+                };
+
+                var pac = {
+                    label            : "Plan Anual de Compras",
+                    icon             : "fa fa-shopping-cart text-info",
+                    separator_before : true,
+                    action           : function () {
+
+                    }
+                };
+                var verProyecto = {
+                    label  : "Ver",
+                    icon   : "fa fa-search",
                     action : function () {
-                        createEditUnidad(null, nodeId);
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(controller: 'proyecto', action:'show_ajax')}",
+                            data    : {
+                                id : nodeId
+                            },
+                            success : function (msg) {
+                                bootbox.dialog({
+                                    title   : "Ver Proyecto",
+                                    class   : "modal-lg",
+                                    message : msg,
+                                    buttons : {
+                                        ok : {
+                                            label     : "Aceptar",
+                                            className : "btn-primary",
+                                            callback  : function () {
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
                     }
                 };
 
@@ -421,7 +459,9 @@
                 } else if (esYachay) {
 
                 } else if (esProyecto) {
-
+                    items.ver = verProyecto;
+                    items.inversiones = inversiones;
+                    items.pac = pac;
                 }
                 return items;
             }
