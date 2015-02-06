@@ -373,7 +373,7 @@ class SolicitudController extends Shield {
      * Acción que muestra una pantalla que permite ver los datos de la solicitud
      */
     def show_ajax (){
-//        println("params " + params)
+        println("params " + params)
         def solicitud = Solicitud.get(params.id)
         if (!solicitud) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'solicitud.label', default: 'Solicitud'), params.id])}"

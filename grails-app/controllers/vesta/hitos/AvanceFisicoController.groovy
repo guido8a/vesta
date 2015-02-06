@@ -107,10 +107,11 @@ class AvanceFisicoController extends Shield {
      * Acción llamada con ajax que agrega un avance físico a un proceso
      */
     def addAvanceFisicoProceso_ajax = {
+//        println("params add " + params)
         def proceso = ProcesoAval.get(params.id)
         def avance = new AvanceFisico()
-        params.inicio = new Date().parse("dd/MM/yyyy", params.inicio)
-        params.fin = new Date().parse("dd/MM/yyyy", params.fin)
+        params.inicio = new Date().parse("dd-MM-yyyy", params.inicio)
+        params.fin = new Date().parse("dd-MM-yyyy", params.fin)
         params.avance = params.avance.toString().toDouble()
         avance.properties = params
         avance.proceso = proceso
@@ -119,9 +120,9 @@ class AvanceFisicoController extends Shield {
             def totalAvance = AvanceFisico.findAllByProceso(proceso).sum { it.avance }
             max = 100 - totalAvance
             def minDate = (avance.fecha + 1).format("dd-MM-yyyy")
-            render "OK_" + avance.avance + "_" + max + "_" + minDate
+            render "SUCCESS*Nueva subactividad agregada exitosamente"
         } else {
-            render "NO"
+            render "ERROR*No se pudo agregar la nueva subactividad."
         }
     }
 
@@ -141,6 +142,13 @@ class AvanceFisicoController extends Shield {
         def av = AvanceFisico.get(params.id)
         def busqueda =  AvanceAvance.findAllByAvanceFisico(av, [sort: "id"])
         [av: av, avances: busqueda]
+    }
+
+    def agregarSubact = {
+        println("params " + params)
+        def proceso = ProcesoAval.get(params.id)
+        def fechaHoy = new Date().format("dd-MM-yyyy")
+        [proceso: proceso, fechaHoy: fechaHoy]
     }
 
 

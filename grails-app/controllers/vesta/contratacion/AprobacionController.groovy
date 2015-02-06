@@ -61,9 +61,85 @@ class AprobacionController extends Shield {
      * @return aprobacionInstanceList: la lista de elementos filtrados, aprobacionInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
-        def aprobacionInstanceList = getList(params, false)
+        println(params)
+//        def aprobacionInstanceList = getList(params, false)
         def aprobacionInstanceCount = getList(params, true).size()
-        return [aprobacionInstanceList: aprobacionInstanceList, aprobacionInstanceCount: aprobacionInstanceCount]
+
+        def title = g.message(code: "aprobacion.list", default: "Aprobacion List")
+        params.sort = "fecha"
+        params.order = "desc"
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+
+        def c = Aprobacion.createCriteria()
+        def lista = c.list(params) {
+            if (params.search) {
+                solicitudes {
+                    ilike("nombreProceso", "%" + params.search.trim() + "%")
+                    unidadEjecutora{
+                        ilike("nombre", "%" + params.search.trim() + "%")
+                    }
+                }
+            }
+        }
+       def c2 = Aprobacion.createCriteria()
+        def total = c2.list() {
+            if (params.search) {
+                solicitudes {
+                    ilike("nombreProceso", "%" + params.search.trim() + "%")
+                    unidadEjecutora{
+                        ilike("nombre", "%" + params.search.trim() + "%")
+                    }
+                }
+            }
+        }.size()
+        [aprobacionInstanceList: lista, aprobacionInstanceTotal: total,title: title, params: params, aprobacionInstanceCount: aprobacionInstanceCount ]
+
+    }
+
+    def reunion () {
+
+            def ahora = new Date()
+            def hoy1 = new Date().parse("dd-MM-yyyy HH:mm", ahora.format("dd-MM-yyyy") + " 00:00")
+            def hoy2 = new Date().parse("dd-MM-yyyy HH:mm", ahora.format("dd-MM-yyyy") + " 23:59")
+
+            def perfil = Prfl.get(session.perfil.id)
+            def reuniones, reunion = null
+            if (params.id) {
+                reunion = Aprobacion.get(params.id.toLong())
+            }
+            if (!reunion) {
+                reuniones = Aprobacion.findAllByFechaBetween(hoy1, hoy2)
+            } else {
+                reuniones = [reunion]
+            }
+            if (reuniones.size() == 1) {
+
+                reunion = reuniones.first()
+                if (reunion.aprobada == 'A') {
+                    params.show = 1
+                }
+
+                def unidadGerenciaPlan = UnidadEjecutora.findByCodigo("DRPL") // GERENCIA DE PLANIFICACIÓN
+                def unidadDireccionPlan = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+                def unidadGerenciaTec = UnidadEjecutora.findByCodigo("GT") // GERENCIA TÉCNICA
+
+                def firmaGerenciaPlanif = Usro.findAllByUnidad(unidadGerenciaPlan)
+                def firmaDireccionPlanif = Usro.findAllByUnidad(unidadDireccionPlan)
+                def firmaGerenciaTec = Usro.findAllByUnidad(unidadGerenciaTec)
+
+                return [reunion: reunion, params: params, perfil: perfil, firmaGerenciaPlanif: firmaGerenciaPlanif,
+                        firmaDireccionPlanif: firmaDireccionPlanif, firmaGerenciaTec: firmaGerenciaTec/*, firmaRequirente: firmaRequirente*/]
+            } else if (reuniones.size() == 0) {
+                flash.message = "<div class='ui-state-error ui-corner-all' style='padding:5px;'>" +
+                        "<span style=\"float: left; margin-right: .3em;\" class=\"ui-icon ui-icon-alert\"></span>" +
+                        "No hay reuniones programadas para el día de hoy. Seleccione una o cree una nueva." +
+                        "</div>"
+            } else {
+                flash.message = "Hay ${reuniones.size()} reuniones programadas para el día de hoy. Seleccione una."
+            }
+            redirect(action: "list")
+
+
     }
 
     /**

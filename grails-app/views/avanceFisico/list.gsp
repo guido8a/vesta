@@ -103,9 +103,9 @@
 
         <div class="form-group keeptogether" style="margin-left: 14px">
             <span class="grupo">
-            <div class="semaforo ${dataProceso[2]}" title="Avance esperado al ${new Date().format('dd/MM/yyyy')}: ${dataProceso[0].toDouble().round(2)}%, avance registrado: ${dataProceso[1].toDouble().round(2)}%">
-            </div>
-            <b>Gestión:</b> <g:formatNumber number="${dataProceso[1]/dataProceso[0]*100}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>% (a/b)
+                <div class="semaforo ${dataProceso[2]}" title="Avance esperado al ${new Date().format('dd/MM/yyyy')}: ${dataProceso[0].toDouble().round(2)}%, avance registrado: ${dataProceso[1].toDouble().round(2)}%">
+                </div>
+                <b>Gestión:</b> <g:formatNumber number="${dataProceso[1]/dataProceso[0]*100}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>% (a/b)
             </span>
         </div>
 
@@ -126,49 +126,135 @@
     <legend>Subactividades</legend>
 
     <div class="fila" style="margin-bottom: 10px;">
-        <a href="#" class="btn btn-success btn-sm" id="btnOpenDlg"><i class="fa fa-plus"></i> Agregar</a>
+        <a href="#" class="btn btn-success btn-sm btnAgregar" id="btnOpenDlg"><i class="fa fa-plus"></i> Agregar</a>
     </div>
 
     <div id="detalle" style="width: 100%; overflow: auto;"></div>
 </fieldset>
 
-<g:if test="${proceso}">
-    <div id="dlgNuevo">
-        <div class="fila">
-            <div class="labelSvt">Aporte:</div>
+%{--<g:if test="${proceso}">--}%
+%{--<div id="dlgNuevo">--}%
+%{--<div class="fila">--}%
+%{--<div class="labelSvt">Aporte:</div>--}%
 
-            <div class="fieldSvt-small">
-                <g:textField name="avance" class="ui-widget-content ui-corner-all" style="width: 50px;"/> %
-            </div>
+%{--<div class="fieldSvt-small">--}%
+%{--<g:textField name="avance" class="ui-widget-content ui-corner-all" style="width: 50px;"/> %--}%
+%{--</div>--}%
 
-            <div class="labelSvt" style="width: 75px;">Inicio:</div>
+%{--<div class="labelSvt" style="width: 75px;">Inicio:</div>--}%
 
-            <div class="fieldSvt-small">
-                <g:textField name="inicio" class="datepickerR ui-widget-content ui-corner-all" id="inicio" style="width: 100%;padding-right: 0px;"/>
-            </div>
+%{--<div class="fieldSvt-small">--}%
+%{--<g:textField name="inicio" class="datepickerR ui-widget-content ui-corner-all" id="inicio" style="width: 100%;padding-right: 0px;"/>--}%
+%{--</div>--}%
 
-            <div class="labelSvt" style="width: 75px;">Fin:</div>
+%{--<div class="labelSvt" style="width: 75px;">Fin:</div>--}%
 
-            <div class="fieldSvt-small">
-                <g:textField name="fin" class="datepickerR ui-widget-content ui-corner-all" id="fin" style="width: 100%;padding-right: 0px"/>
-            </div>
-        </div>
+%{--<div class="fieldSvt-small">--}%
+%{--<g:textField name="fin" class="datepickerR ui-widget-content ui-corner-all" id="fin" style="width: 100%;padding-right: 0px"/>--}%
+%{--</div>--}%
+%{--</div>--}%
 
-        <div class="fila" style="height: 95px;">
-            <div class="labelSvt">Descripción:</div>
+%{--<div class="fila" style="height: 95px;">--}%
+%{--<div class="labelSvt">Descripción:</div>--}%
 
-            <div class="fieldSvt-xxl">
-                <g:if test="${proceso}">
-                    <g:textArea name="observaciones" rows="5" cols="68" class="ui-widget-content ui-corner-all"/>
-                </g:if>
-            </div>
-        </div>
-    </div>
-</g:if>
+%{--<div class="fieldSvt-xxl">--}%
+%{--<g:if test="${proceso}">--}%
+%{--<g:textArea name="observaciones" rows="5" cols="68" class="ui-widget-content ui-corner-all"/>--}%
+%{--</g:if>--}%
+%{--</div>--}%
+%{--</div>--}%
+%{--</div>--}%
+%{--</g:if>--}%
 
 <script type="text/javascript">
     var max = parseFloat("${maxAvance}");
     var min = parseFloat("${minAvance}");
+
+    $(".btnAgregar").click(function () {
+        agregarSub ();
+    });
+
+    function agregarSub() {
+
+        $.ajax({
+            type : "POST",
+            url : "${createLink(action: 'agregarSubact', id: proceso?.id)}",
+            %{--id : ${proceso?.id},--}%
+            success : function (msg) {
+                var b = bootbox.dialog ({
+                    id: "dlgAgregarSub",
+                    title: "Agregar Subactividad",
+                    class : "modal-lg",
+                    message: msg,
+                    buttons : {
+                        guardar : {
+                            id: "btnGuardar",
+                            label : "<i class='fa fa-save'></i> Guardar",
+                            classname: "btn-success",
+                            callback: function () {
+                                var aporte = $.trim($("#aporte").val());
+                                var inicio = $.trim($("#inicioSub_input").val());
+                                var fin = $.trim($("#finSub_input").val());
+                                var obs = $.trim($("#observaciones").val());
+                                var id = "${proceso.id}";
+                                if (aporte == "" || inicio == "" || fin == "" || obs.length < 1) {
+                                    log("Por favor ingrese el porcentaje de aportación, las fechas y la descripción de la sub actividad","error")
+                                    return false
+                                }else{
+                                    if (isNaN(aporte)) {
+                                        log("Por favor ingrese un número válido en el porcentaje de avance","error")
+                                        return false
+                                    }else{
+                                        aporte = parseFloat(aporte);
+                                        if(aporte > max){
+                                            log("El aporte ingresado debe ser un número menor a " + max, "error")
+                                            return false
+                                        }else{
+                                            $.ajax({
+                                                type    : "POST",
+                                                url     : "${createLink(action:'addAvanceFisicoProceso_ajax')}",
+                                                data    : {
+                                                    id            : id,
+                                                    avance        : aporte,
+                                                    inicio        : inicio,
+                                                    fin           : fin,
+                                                    observaciones : obs
+                                                },
+                                                success : function (msg) {
+                                                    updateAll(msg);
+                                                    var $d = $('#detalle');
+                                                    $d.animate({scrollTop: $d[0].scrollHeight}, 1000);
+                                                    var parts = msg.split("*");
+                                                    log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                                    if (parts[0] == "SUCCESS") {
+                                                        setTimeout(function () {
+                                                            location.reload(true);
+                                                        }, 1000);
+                                                    } else {
+                                                        closeLoader();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+
+                        },
+                        cancelar : {
+                            label : "Cancelar",
+                            classname: "btn-primary",
+                            callback: function () {
+
+                            }
+
+                        }
+                    }
+                })
+            }
+        });
+
+    };
 
     function loadTabla() {
         $.ajax({
@@ -300,14 +386,17 @@
                 }
             }
         });
-        $("#btnOpenDlg").button({
-            icons : {
-                primary : "ui-icon-plusthick"
-            }
-        }).click(function () {
-            $("#dlgNuevo").dialog("open");
-            return false;
-        });
+
+//        $("#btnOpenDlg").button({
+//            icons : {
+//                primary : "ui-icon-plusthick"
+//            }
+//        }).click(function () {
+//            $("#dlgNuevo").dialog("open");
+//            return false;
+//        });
+
+
         $(".btn").button();
         $(".datepicker").datepicker();
         $(".datepickerR").datepicker({
@@ -316,6 +405,10 @@
         loadTabla();
         setMinDate("${minDate}")
     });
+
+
+
+
 </script>
 
 </body>
