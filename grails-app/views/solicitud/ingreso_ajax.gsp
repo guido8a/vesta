@@ -109,7 +109,8 @@
                     Fecha
                 </label>
                 <div class="col-md-3">
-                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm" value="${new Date()}"/>
+                    <elm:datepicker name="fecha"  class="datepicker form-control input-sm"
+                                    value="${new Date()}"/>
                 </div>
             </span>
         </div>

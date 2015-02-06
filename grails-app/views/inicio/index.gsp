@@ -115,7 +115,7 @@
 
         <div class="row">
             <div class="col-md-2 col-md-offset-10 text-right">
-                Versión 1.0
+                Versión ${message(code: 'version', default: '1.1.0x')}
             </div>
         </div>
 
