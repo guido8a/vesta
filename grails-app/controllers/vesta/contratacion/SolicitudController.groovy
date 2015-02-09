@@ -470,6 +470,7 @@ class SolicitudController extends Shield {
      * Acción que permite incluir o excluir una solicitud de la reunión de aprobación
      */
     def incluirReunion = {
+        println("params " + params)
         def solicitud = Solicitud.get(params.id)
         if (solicitud.incluirReunion != "S") {
             solicitud.incluirReunion = "S"

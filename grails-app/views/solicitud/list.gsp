@@ -250,6 +250,8 @@
         }); //ajax
     } //createEdit
 
+
+
     function createContextMenu (node) {
         var $tr = $(node);
 
@@ -291,8 +293,6 @@
                 action : function ($element) {
                     var id = $element.data("id");
 
-
-
                 }
             };
         }else{
@@ -302,6 +302,29 @@
                     icon   : "fa fa-calendar-o",
                     action : function ($element) {
                         var id = $element.data("id");
+                        bootbox.dialog({
+                            id      : "dlgIncluir",
+                            title   : "Incluir en la próxima reunión",
+
+                            class   : "modal-lg",
+
+                            message : "Está seguro de querer incluir esta solicitud en la próxima reunión de aprobación?",
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                aceptar : {
+                                    label     : "Aceptar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        location.href = "${createLink(action:'incluirReunion')}?id=" + id
+                                    }
+                                }
+                            } //buttons
+                        });
 
                     }
                 };

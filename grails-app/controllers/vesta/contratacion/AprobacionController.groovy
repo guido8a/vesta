@@ -1,6 +1,9 @@
 package vesta.contratacion
 
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.parametros.UnidadEjecutora
+import vesta.seguridad.Persona
+import vesta.seguridad.Prfl
 import vesta.seguridad.Shield
 
 
@@ -123,9 +126,9 @@ class AprobacionController extends Shield {
                 def unidadDireccionPlan = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
                 def unidadGerenciaTec = UnidadEjecutora.findByCodigo("GT") // GERENCIA TÉCNICA
 
-                def firmaGerenciaPlanif = Usro.findAllByUnidad(unidadGerenciaPlan)
-                def firmaDireccionPlanif = Usro.findAllByUnidad(unidadDireccionPlan)
-                def firmaGerenciaTec = Usro.findAllByUnidad(unidadGerenciaTec)
+                def firmaGerenciaPlanif = Persona.findAllByUnidad(unidadGerenciaPlan)
+                def firmaDireccionPlanif = Persona.findAllByUnidad(unidadDireccionPlan)
+                def firmaGerenciaTec = Persona.findAllByUnidad(unidadGerenciaTec)
 
                 return [reunion: reunion, params: params, perfil: perfil, firmaGerenciaPlanif: firmaGerenciaPlanif,
                         firmaDireccionPlanif: firmaDireccionPlanif, firmaGerenciaTec: firmaGerenciaTec/*, firmaRequirente: firmaRequirente*/]

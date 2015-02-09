@@ -246,37 +246,6 @@
     });
 
 
-    function showSolicitud(id) {
-//        var data = id ? { id: id } : {};
-        var id = $(this).data("id")
-        console.log("--- "  + id)
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'solicitud', action:'show_ajax')}",
-            data    : id,
-            success : function (msg) {
-                var b = bootbox.dialog({
-                    id      : "dlgVer",
-                    title   : "Detalles de la Solicitud",
-
-                    class   : "modal-lg",
-
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-                setTimeout(function () {
-                    b.find(".form-control").first().focus()
-                }, 500);
-            } //success
-        }); //ajax
-    } //createEdit
 
 
     function createContextMenu (node) {
@@ -296,7 +265,7 @@
                 icon   : "fa fa-search",
                 action : function ($element) {
                     var id = $element.data("id");
-                    showSolicitud(id)
+                    location.href="${createLink(action: "reunion")}/?id=" + id
                 }
             }
         };

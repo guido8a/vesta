@@ -172,11 +172,11 @@
             <td>
                 <g:if test="${editable}">
                     <g:select from="${firmaGerenciaPlanif}" optionKey="id" optionValue="${{
-                        it.persona.nombre + ' ' + it.persona.apellido
+                        it.nombre + ' ' + it.apellido
                     }}" name="firmaGP"/>
                 </g:if>
                 <g:else>
-                    ${reunion.firmaGerenciaPlanificacion?.persona?.nombre} ${reunion.firmaGerenciaPlanificacion?.persona?.apellido}
+                    ${reunion.firmaGerenciaPlanificacion?.nombre} ${reunion.firmaGerenciaPlanificacion?.apellido}
                 </g:else>
             </td>
         </tr>
@@ -185,11 +185,11 @@
             <td>
                 <g:if test="${editable}">
                     <g:select from="${firmaDireccionPlanif}" optionKey="id" optionValue="${{
-                        it.persona.nombre + ' ' + it.persona.apellido
+                        it.nombre + ' ' + it.apellido
                     }}" name="firmaDP"/>
                 </g:if>
                 <g:else>
-                    ${reunion.firmaDireccionPlanificacion?.persona?.nombre} ${reunion.firmaDireccionPlanificacion?.persona?.apellido}
+                    ${reunion.firmaDireccionPlanificacion?.nombre} ${reunion.firmaDireccionPlanificacion?.apellido}
                 </g:else>
             </td>
         </tr>
@@ -198,11 +198,11 @@
             <td>
                 <g:if test="${editable}">
                     <g:select from="${firmaGerenciaTec}" optionKey="id" optionValue="${{
-                        it.persona.nombre + ' ' + it.persona.apellido
+                        it.nombre + ' ' + it.apellido
                     }}" name="firmaGT"/>
                 </g:if>
                 <g:else>
-                    ${reunion.firmaGerenciaTecnica?.persona?.nombre} ${reunion.firmaGerenciaTecnica?.persona?.apellido}
+                    ${reunion.firmaGerenciaTecnica?.nombre} ${reunion.firmaGerenciaTecnica?.apellido}
                 </g:else>
             </td>
         </tr>
