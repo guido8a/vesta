@@ -145,6 +145,44 @@ class AprobacionController extends Shield {
 
     }
 
+
+    def prepararReunionAprobacion () {
+        def title = g.message(code: "default.list.label", args: ["Solicitud"], default: "Solicitud List")
+
+        params.max = Math.min(params.max ? params.int('max') : 25, 100)
+
+        def list = Solicitud.findAllByIncluirReunion("S", params)
+        def count = Solicitud.countByIncluirReunion("S")
+        def reunion = null
+        if (params.id) {
+            reunion = Aprobacion.get(params.id.toLong())
+            flash.message = "<div class='ui-state-highlight ui-corner-all' style='padding:5px;'>" +
+                    "<span style=\"float: left; margin-right: .3em;\" class=\"ui-icon ui-icon-info\"></span> Preparar reunión "
+            if (reunion.fecha) {
+                flash.message += "del " + reunion.fecha.format("dd-MM-yyyy HH:mm")
+            } else {
+                flash.message += " sin fecha establecida"
+            }
+            flash.message += "</div>"
+        }
+
+        [solicitudInstanceList: list, solicitudInstanceTotal: count, title: title, params: params, reunion: reunion]
+    }
+
+    def detalles_ajax () {
+        def aprobacionInstance = Aprobacion.get(params.id)
+        if (!aprobacionInstance) {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'aprobacion.label', default: 'Aprobacion'), params.id])}"
+            redirect(action: "list")
+        } else {
+
+            def title = g.message(code: "aprobacion.show", default: "Show Aprobacion")
+
+            [aprobacionInstance: aprobacionInstance, title: title]
+        }
+    }
+
+
     /**
      * Acción llamada con ajax que muestra la información de un elemento particular
      * @return aprobacionInstance el objeto a mostrar cuando se encontró el elemento

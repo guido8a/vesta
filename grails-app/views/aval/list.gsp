@@ -119,6 +119,7 @@
             } //else
             }
             function deleteRow(itemId) {
+
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +

@@ -4,24 +4,7 @@
 <head>
     %{--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>--}%
     <meta name="layout" content="main"/>
-    %{--<g:set var="entityName"--}%
-    %{--value="${message(code: 'aprobacion.label', default: 'Aprobacion')}"/>--}%
     <title>Reuniones de aprobación</title>
-
-    %{--<style type="text/css">--}%
-    %{--.btnSmall {--}%
-    %{--font-size : 10px !important;--}%
-    %{--}--}%
-
-    %{--.btnSmall + .btnSmall {--}%
-    %{--margin-top : 5px;--}%
-    %{--}--}%
-
-    %{--.ulSolicitudes {--}%
-    %{--margin       : 0;--}%
-    %{--padding-left : 20px;--}%
-    %{--}--}%
-    %{--</style>--}%
 </head>
 
 <body>
@@ -73,12 +56,14 @@
                     <g:sortableColumn property="observaciones" title="Observaciones" />
                     <g:sortableColumn property="asistentes" title="Asistentes" />
                     <th>Estado</th>
-                    <th>Acciones</th>
+                    %{--<th>Acciones</th>--}%
                 </tr>
                 </thead>
                 <tbody>
                 <g:each in="${aprobacionInstanceList}" status="i" var="aprobacionInstance">
-                    <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" data-id="${aprobacionInstance.id}">
+                    <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" data-id="${aprobacionInstance.id}"
+                        data-numero="${aprobacionInstance.numero}" data-objeto="${aprobacionInstance}"
+                        data-sol="${aprobacionInstance.solicitudes.size()}" data-aprobada="${aprobacionInstance.aprobada}">
                         <td>${aprobacionInstance.numero}</td>
                         <td>
                             <g:set var="solicitudes" value="${vesta.contratacion.Solicitud.findAllByAprobacion(aprobacionInstance, [sort: 'nombreProceso'])}"/>
@@ -97,54 +82,54 @@
                                 - Sin solicitudes -
                             </g:else>
                         </td>
-                        <td>
+                        <td style="text-align: center">
                             <g:if test="${aprobacionInstance.fecha}">
                                 ${aprobacionInstance.fecha.format("dd-MM-yyyy HH:mm")}
                             </g:if>
                             <g:else>
-                                <a href="#" class="button btnSmall btnSetFecha" id="${aprobacionInstance.id}">
-                                    Establecer
+                                <a href="#" class="button btnSmall btnSetFecha btn btn-default" id="${aprobacionInstance.id}">
+                                <i class="fa fa-clock-o"></i> Establecer
                                 </a>
                             </g:else>
                         </td>
                         <td><${fieldValue(bean: aprobacionInstance, field: "observaciones")}</td>
                         <td>${fieldValue(bean: aprobacionInstance, field: "asistentes")}</td>
-                        <td>${aprobacionInstance.aprobada == 'A' ? 'Aprobada' : 'Pendiente'}</td>
-                        <td style="text-align: center;">
-                            <g:if test="${aprobacionInstance.aprobada != 'A'}">
-                                <g:if test="${aprobacionInstance.solicitudes.size() > 0}">
-                                    <g:if test="${editables.contains(session.perfil.codigo)}">
-                                        <g:link class="button btnSmall" action="reunion" id="${aprobacionInstance.id}">
-                                            <g:if test="${!aprobacionInstance.numero}">
-                                                Empezar
-                                            </g:if>
-                                            <g:else>
-                                                Continuar
-                                            </g:else>
-                                        </g:link>
-                                    </g:if>
-                                    <g:if test="${!aprobacionInstance.numero}">
-                                        <g:if test="${editables.contains(session.perfil.codigo)}">
-                                            <g:link class="button btnSmall" action="prepararReunionAprobacion" id="${aprobacionInstance.id}">
-                                                Preparar
-                                            </g:link>
-                                        </g:if>
-                                    </g:if>
-                                </g:if>
-                                <g:else>
-                                    <g:if test="${editables.contains(session.perfil.codigo)}">
-                                        <g:if test="${!aprobacionInstance.numero}">
-                                            <g:link class="button btnSmall" action="prepararReunionAprobacion" id="${aprobacionInstance.id}">
-                                                Preparar
-                                            </g:link>
-                                        </g:if>
-                                    </g:if>
-                                </g:else>
-                            </g:if>
-                            <g:link class="button btnSmall" action="reunion" id="${aprobacionInstance.id}" params="[show: 1]">
-                                Ver
-                            </g:link>
-                        </td>
+                        <td style="text-align: center"><b>${aprobacionInstance.aprobada == 'A' ? 'Aprobada' : 'Pendiente'}</b></td>
+                        %{--<td style="text-align: center;">--}%
+                            %{--<g:if test="${aprobacionInstance.aprobada != 'A'}">--}%
+                                %{--<g:if test="${aprobacionInstance.solicitudes.size() > 0}">--}%
+                                    %{--<g:if test="${editables.contains(session.perfil.codigo)}">--}%
+                                        %{--<g:link class="button btnSmall" action="reunion" id="${aprobacionInstance.id}">--}%
+                                            %{--<g:if test="${!aprobacionInstance.numero}">--}%
+                                                %{--Empezar--}%
+                                            %{--</g:if>--}%
+                                            %{--<g:else>--}%
+                                                %{--Continuar--}%
+                                            %{--</g:else>--}%
+                                        %{--</g:link>--}%
+                                    %{--</g:if>--}%
+                                    %{--<g:if test="${!aprobacionInstance.numero}">--}%
+                                        %{--<g:if test="${editables.contains(session.perfil.codigo)}">--}%
+                                            %{--<g:link class="button btnSmall" action="prepararReunionAprobacion" id="${aprobacionInstance.id}">--}%
+                                                %{--Preparar--}%
+                                            %{--</g:link>--}%
+                                        %{--</g:if>--}%
+                                    %{--</g:if>--}%
+                                %{--</g:if>--}%
+                                %{--<g:else>--}%
+                                    %{--<g:if test="${editables.contains(session.perfil.codigo)}">--}%
+                                        %{--<g:if test="${!aprobacionInstance.numero}">--}%
+                                            %{--<g:link class="button btnSmall" action="prepararReunionAprobacion" id="${aprobacionInstance.id}">--}%
+                                                %{--Preparar--}%
+                                            %{--</g:link>--}%
+                                        %{--</g:if>--}%
+                                    %{--</g:if>--}%
+                                %{--</g:else>--}%
+                            %{--</g:if>--}%
+                            %{--<g:link class="button btnSmall" action="reunion" id="${aprobacionInstance.id}" params="[show: 1]">--}%
+                                %{--Ver--}%
+                            %{--</g:link>--}%
+                        %{--</td>--}%
                     </tr>
                 </g:each>
                 </tbody>
@@ -254,6 +239,11 @@
         var estado = $tr.data("estado");
         var incluir = $tr.data("incluir");
         var detalles = parseInt($tr.data("detalles"));
+        var numero = $tr.data("numero");
+        var obj = $tr.data("objeto");
+        var tamano = $tr.data("sol");
+        var apro = $tr.data("aprobada");
+        var etiqueta = '';
 
         var items = {
             header   : {
@@ -269,41 +259,52 @@
                 }
             }
         };
-        <g:if test="${session.perfil.codigo == 'RQ' || session.perfil.codigo == 'DRRQ'}">
-        if(estado == 'P'){
-            items.editar = {
-                label  : "Editar Solicitud",
-                icon   : "fa fa-pencil",
-                action : function ($element) {
-                    var id = $element.data("id");
-                    createEditRow(id);
+        if(apro != 'A'){
+//            if(obj.solicitudes.size() > 0) {
+            if(tamano > 0) {
+                <g:if test="${editables.contains(session.perfil.codigo)}">
+                if(!numero){
+                    etiqueta = "Empezar"
+                }else{
+                    etiqueta = "Continuar"
                 }
-            };
-        }
-        </g:if>
-        <g:if test="${session.perfil.codigo == 'DRRQ'}">
-        if(incluir == 'S'){
-            items.quitar ={
-                label  : "No incluir en la reunión",
-                icon   : "fa fa-calendar-o",
-                action : function ($element) {
-                    var id = $element.data("id");
 
-                }
-            };
-        }else{
-            if(detalles > 0){
-                items.incluir ={
-                    label  : "Incluir en la reunión",
-                    icon   : "fa fa-calendar-o",
+                items.empezar = {
+                    label  : etiqueta,
+                    icon   : "fa fa-pencil",
                     action : function ($element) {
                         var id = $element.data("id");
-
+                        location.href = "${createLink(action:'reunion')}?id=" + id
                     }
                 };
+                </g:if>
+                if(!numero){
+                <g:if test="${editables.contains(session.perfil.codigo)}">
+                    items.preparar1 = {
+                        label  : "Preparar",
+                        icon   : "fa fa-pencil",
+                        action : function ($element) {
+                            var id = $element.data("id");
+                            location.href = "${createLink(action:'prepararReunionAprobacion')}?id=" + id
+                        }
+                    };
+                </g:if>
+                }
+            }else{
+                <g:if test="${editables.contains(session.perfil.codigo)}">
+                if(!numero){
+                    items.preparar2 = {
+                        label  : "Preparar",
+                        icon   : "fa fa-pencil",
+                        action : function ($element) {
+                            var id = $element.data("id");
+                            location.href = "${createLink(action:'prepararReunionAprobacion')}?id=" + id
+                        }
+                    };
+                }
+                </g:if>
             }
         }
-        </g:if>
 
         return items
     }

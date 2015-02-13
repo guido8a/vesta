@@ -17,7 +17,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main"/>
-
     <title>Reunión de aprobación</title>
 
     <style type="text/css">
@@ -70,30 +69,32 @@
     <g:set var="puedeEditar" value="${false}"/>
 </g:if>
 <g:set var="solicitudes" value="${Solicitud.findAllByAprobacion(reunion, [sort: 'fecha'])}"/>
-<div id="" class="toolbar ui-widget-header ui-corner-all" style="margin-bottom: 15px;">
-    <g:link class="button create" action="list">
-        Lista de reuniones de aprobación
-    </g:link>
-    <g:link class="button list" controller="solicitud" action="list">
-        Lista de solicitudes
-    </g:link>
-    <g:if test="${puedeEditar}">
-        <a href="#" id="btnSave" class="button" style="float: right;">Guardar</a>
-        <a href="#" id="btnAprobar" class="button" style="float: right;">Aprobar</a>
-    </g:if>
-    <g:if test="${params.show.toString() == '1'}">
-        <g:if test="${reunion.aprobada == 'A'}">
-            <a href="#" class="button upload" id="uploadActa" style="float: right;">
-                Archivar acta
-            </a>
-            <a href="#" id="btnPrint" class="button" style="float: right;">Imprimir</a>
+<div class="btn-toolbar toolbar">
+    <div class="btn-group">
+        <g:link class="button create btn btn-default" action="list"><i class="fa fa-bars"></i>
+            Lista de reuniones de aprobación
+        </g:link>
+        <g:link class="button list btn btn-default" controller="solicitud" action="list"><i class="fa fa-bars"></i>
+            Lista de solicitudes
+        </g:link>
+        <g:if test="${puedeEditar}">
+            <a href="#" id="btnSave" class="button btn btn-success" style="float: right;">Guardar</a>
+            <a href="#" id="btnAprobar" class="button btn-info" style="float: right;">Aprobar</a>
         </g:if>
-        <g:else>
-            <g:link class="button" action="reunion" id="${reunion.id}" style="float: right;">
-                Editar
-            </g:link>
-        </g:else>
-    </g:if>
+        <g:if test="${params.show.toString() == '1'}">
+            <g:if test="${reunion.aprobada == 'A'}">
+                <a href="#" class="button upload btn btn-default" id="uploadActa" style="float: right;"><i class="fa fa-folder-open"></i>
+                    Archivar acta
+                </a>
+                <a href="#" id="btnPrint" class="button btn btn-default" style="float: right;"><i class="fa fa-print"></i> Imprimir</a>
+            </g:if>
+            <g:else>
+                <g:link class="button btn btn-default" action="reunion" id="${reunion.id}" style="float: right;"><i class="fa fa-pencil"></i>
+                    Editar
+                </g:link>
+            </g:else>
+        </g:if>
+    </div>
 </div> <!-- toolbar -->
 
 <div class="info ui-corner-all">
@@ -106,29 +107,27 @@
 <g:form action="saveAprobacion" name="frmAprobacion" id="${reunion.id}">
     <g:hiddenField name="aprobada" value=""/>
     <g:each in="${solicitudes}" var="solicitud" status="i">
-        <div class="solicitud ui-corner-all">
-            <div class="ui-widget ui-widget-header ui-corner-all solicitudHeader" title="Clic para ocultar/mostrar">
-                Solicitud ${i + 1} de ${solicitudes.size()}: ${solicitud.objetoContrato}
-            </div>
-
-            <div class="solicitudBody">
-                <slc:showSolicitud solicitud="${solicitud}" perfil="${perfil}" aprobacion="${puedeEditar}" multiple="true"/>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"  >
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne${i}" aria-expanded="false" aria-controls="collapseOne${i}">
+                            <i class="fa fa-archive"></i>  Solicitud ${i + 1} de ${solicitudes.size()}: ${solicitud.objetoContrato}
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne${i}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <slc:showSolicitud solicitud="${solicitud}" perfil="${perfil}" aprobacion="${puedeEditar}" multiple="true"/>
+                    </div>
+                </div>
             </div>
         </div>
     </g:each>
 
-    <table>
-        %{--<tr>--}%
-        %{--<td class="label">Asistentes</td>--}%
-        %{--<td colspan="4">--}%
-        %{--<g:if test="${puedeEditar}">--}%
-        %{--<g:textArea class="ui-widget-content ui-corner-all required" name="asistentes" rows="5" cols="5" value="${reunion.asistentes}"/>--}%
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-        %{--${reunion.asistentes ?: '-Sin asistentes-'}--}%
-        %{--</g:else>--}%
-        %{--</td>--}%
-        %{--</tr>--}%
+    <table class="table table-condensed table-bordered table-striped table-hover">
+        <thead></thead>
+        <tbody>
         <tr>
             <td class="label">Observaciones</td>
             <td colspan="4">
@@ -150,6 +149,7 @@
                 </td>
             </tr>
         </g:if>
+        </tbody>
     </table>
 </g:form>
 
