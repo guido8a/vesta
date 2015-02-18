@@ -87,28 +87,20 @@
                     <div class="col-md-2 show-label">
                        Solicitudes
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <ul>
                             <g:each in="${aprobacionInstance.solicitudes}" var="s">
                                 <li>
-                                    <g:link controller="solicitud"
-                                            action="show"
-                                            id="${s.id}">
-                                        ${s?.objetoContrato}
-                                    </g:link>
+                                    ${s?.objetoContrato}
+
                                 </li>
                             </g:each>
                         </ul>
-
+                        <g:link class="button btn btn-default btnVerSolicitud" controller="aprobacion" action="reunion" id="${aprobacionInstance?.id}">
+                            <i class="fa fa-archive"></i> Ver Solicitudes
+                        </g:link>
                     </div> <!-- campo -->
                 </div> <!-- prop -->
-
-
-                <div class="buttons">
-                    <g:link class="button delete" action="delete" id="${aprobacionInstance?.id}">
-                        <g:message code="default.button.delete.label" default="Delete"/>
-                    </g:link>
-                </div>
         </div>
     </div> <!-- body -->
 </div> <!-- dialog -->
@@ -128,6 +120,7 @@
             return false;
         });
     });
+
 </script>
 
 %{--</body>--}%

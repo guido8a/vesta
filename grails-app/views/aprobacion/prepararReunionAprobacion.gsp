@@ -109,6 +109,32 @@
         }
         return ids;
     }
+
+
+    function borrar (id) {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'delete_ajax')}",
+            data    : {
+                id  : id
+            },
+            success : function (msg) {
+                var parts = msg.split("*");
+                log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                setTimeout(function() {
+                    if (parts[0] == "SUCCESS") {
+                        location.reload(true);
+                    } else {
+//                        spinner.replaceWith($btn);
+                        return false;
+                    }
+                }, 1000);
+            }
+        });
+
+    }
+
+
     $(function () {
 
         $(".check").click(function () {
@@ -154,30 +180,25 @@
                         ids : ids
                     },
                     success : function (msg) {
-                        $.box({
-                            id         : 'dlgAgendar',
-                            imageClass : false,
-                            title      : "Agendar reunión - Revisión",
-                            text       : msg,
-                            dialog     : {
-                                position : "top",
-                                width    : 700,
-                                buttons  : {
-                                    "Aceptar"  : function (r) {
-                                        $("#dlgReunion").dialog("close");
-                                        $.box({
-                                            imageClass    : "box_info",
-                                            title         : "Espere",
-                                            text          : "Por favor espere",
-                                            iconClose     : false,
-                                            closeOnEscape : false,
-                                            dialog        : {
-                                                resizable     : false,
-                                                draggable     : false,
-                                                closeOnEscape : false,
-                                                buttons       : null
-                                            }
-                                        });
+
+                        var b = bootbox.dialog({
+                            id      : "dlgAgendar",
+                            title   : "Agendar Reunión - Revisión",
+                            class   : "modal-lg",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                aceptar  : {
+                                    id        : "btnAceptar",
+                                    label     : "<i class='fa fa-check-o'></i> Aceptar",
+                                    className : "btn-success",
+                                    callback  : function () {
+
                                         var data = {
                                             fecha   : $.trim($("#fechaReunion").val()),
                                             horas   : $("#horaReunion").val(),
@@ -187,22 +208,77 @@
                                         $(".txtRevision").each(function () {
                                             data[$(this).attr("name")] = $(this).val();
                                         });
-//                                                console.log(data);
                                         $.ajax({
                                             type    : "POST",
                                             url     : "${createLink(action: 'agendarReunion')}",
                                             data    : data,
                                             success : function (msg) {
-                                                //                                    console.log(msg);
-                                                location.href = "${createLink(action: 'list')}";
+                                                var parts = msg.split("*");
+                                                log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                                setTimeout(function() {
+                                                    if (parts[0] == "SUCCESS") {
+                                                        location.reload(true);
+                                                    } else {
+                                                        return false;
+                                                    }
+                                                }, 1000);
                                             }
                                         });
-                                    },
-                                    "Cancelar" : function () {
-                                    }
-                                }
-                            }
+
+                                    } //callback
+                                } //guardar
+                            } //buttons
                         });
+
+                        %{--$.box({--}%
+                            %{--id         : 'dlgAgendar',--}%
+                            %{--imageClass : false,--}%
+                            %{--title      : "Agendar reunión - Revisión",--}%
+                            %{--text       : msg,--}%
+                            %{--dialog     : {--}%
+                                %{--position : "top",--}%
+                                %{--width    : 700,--}%
+                                %{--buttons  : {--}%
+                                    %{--"Aceptar"  : function (r) {--}%
+                                        %{--$("#dlgReunion").dialog("close");--}%
+                                        %{--$.box({--}%
+                                            %{--imageClass    : "box_info",--}%
+                                            %{--title         : "Espere",--}%
+                                            %{--text          : "Por favor espere",--}%
+                                            %{--iconClose     : false,--}%
+                                            %{--closeOnEscape : false,--}%
+                                            %{--dialog        : {--}%
+                                                %{--resizable     : false,--}%
+                                                %{--draggable     : false,--}%
+                                                %{--closeOnEscape : false,--}%
+                                                %{--buttons       : null--}%
+                                            %{--}--}%
+                                        %{--});--}%
+                                        %{--var data = {--}%
+                                            %{--fecha   : $.trim($("#fechaReunion").val()),--}%
+                                            %{--horas   : $("#horaReunion").val(),--}%
+                                            %{--minutos : $("#minutoReunion").val()--}%
+                                        %{--};--}%
+                                        %{--data["id"] = id;--}%
+                                        %{--$(".txtRevision").each(function () {--}%
+                                            %{--data[$(this).attr("name")] = $(this).val();--}%
+                                        %{--});--}%
+%{--//                                                console.log(data);--}%
+                                        %{--$.ajax({--}%
+                                            %{--type    : "POST",--}%
+                                            %{--url     : "${createLink(action: 'agendarReunion')}",--}%
+                                            %{--data    : data,--}%
+                                            %{--success : function (msg) {--}%
+                                                %{--//                                    console.log(msg);--}%
+                                                %{--location.href = "${createLink(action: 'list')}";--}%
+                                            %{--}--}%
+                                        %{--});--}%
+                                    %{--},--}%
+                                    %{--"Cancelar" : function () {--}%
+                                    %{--}--}%
+                                %{--}--}%
+                            %{--}--}%
+                        %{--});--}%
                     }
                 });
             }
@@ -229,12 +305,35 @@
                             }
                         },
                         borrar  : {
-                            id        : "btnSave",
+                            id        : "btnBorrar",
                             label     : "<i class='fa fa-trash'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                return submitForm();
+
+                                var b = bootbox.dialog({
+                                    id      : "dlgBorrar",
+                                    title   : "Confirmación",
+                                    class   : "modal-lg",
+                                    message : "Está seguro que desea eliminar esta reunión de aprobación?",
+                                    buttons : {
+                                        cancelar : {
+                                            label     : "Cancelar",
+                                            className : "btn-primary",
+                                            callback  : function () {
+                                            }
+                                        },
+                                        borrar  : {
+                                            id        : "btnBorrar",
+                                            label     : "<i class='fa fa-trash'></i> Aceptar",
+                                            className : "btn-danger",
+                                            callback  : function () {
+                                           borrar(id)
+                                            } //callback
+                                        } //guardar
+                                    } //buttons
+                                }); //dialog
                             } //callback
+
                         } //guardar
                     } //buttons
                 }); //dialog
@@ -246,6 +345,40 @@
     }
 
 
+    function showSolicitud(id) {
+        var data = id ? { id: id } : {};
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: "solicitud", action:'show_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgVer",
+                    title   : "Detalles de la Solicitud",
+
+                    class   : "modal-lg",
+
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+
+
+
+
     function createContextMenu (node) {
         var $tr = $(node);
         var id = $tr.data("id");
@@ -253,15 +386,18 @@
             header   : {
                 label  : "Acciones",
                 header : true
-            },
-            ver      : {
+            }
+        };
+
+        if(id){
+            items.ver = {
                 label  : "Detalles",
                 icon   : "fa fa-search",
                 action : function ($element) {
                     showDetalles(id)
                 }
-            }
-        };
+            };
+        }
 
         return items
     }

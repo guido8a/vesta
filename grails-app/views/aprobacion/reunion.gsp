@@ -64,6 +64,9 @@
 </head>
 
 <body>
+
+<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
+
 <g:set var="puedeEditar" value="${perfil.codigo == 'GP'}"/>
 <g:if test="${params.show.toString() == '1'}">
     <g:set var="puedeEditar" value="${false}"/>
@@ -78,9 +81,10 @@
             Lista de solicitudes
         </g:link>
         <g:if test="${puedeEditar}">
-            <a href="#" id="btnSave" class="button btn btn-success" style="float: right;">Guardar</a>
-            <a href="#" id="btnAprobar" class="button btn-info" style="float: right;">Aprobar</a>
+           <a href="#" id="btnSave" class="button btn btn-success"><i class="fa fa-floppy-o"></i> Guardar</a>
+           <a href="#" id="btnAprobar" class="button btn btn-info"><i class="fa fa-check-square"></i> Aprobar</a>
         </g:if>
+
         <g:if test="${params.show.toString() == '1'}">
             <g:if test="${reunion.aprobada == 'A'}">
                 <a href="#" class="button upload btn btn-default" id="uploadActa" style="float: right;"><i class="fa fa-folder-open"></i>
@@ -132,7 +136,7 @@
             <td class="label">Observaciones</td>
             <td colspan="4">
                 <g:if test="${puedeEditar}">
-                    <g:textArea class="ui-widget-content ui-corner-all " name="observaciones" rows="5" cols="5" value="${reunion.observaciones}"/>
+                    <g:textArea class="ui-widget-content ui-corner-all " name="observaciones" rows="5" cols="5" value="${reunion.observaciones}" style="resize: none"/>
                 </g:if>
                 <g:else>
                     ${reunion.observaciones ?: '-Sin observaciones-'}
@@ -206,14 +210,7 @@
                 </g:else>
             </td>
         </tr>
-        %{--<tr>--}%
-        %{--<th>Requirente</th>--}%
-        %{--<td>--}%
-        %{--<g:select from="${firmaRequirente}" optionKey="id" optionValue="${{--}%
-        %{--it.persona.nombre + ' ' + it.persona.apellido--}%
-        %{--}}" name="firmaRQ"/>--}%
-        %{--</td>--}%
-        %{--</tr>--}%
+
     </table>
 </div>
 
@@ -258,16 +255,7 @@
     $(function () {
 
         $("#frmAprobacion").validate({
-//                    rules    : {
-//                        pdf : {
-//                            accept : "pdf"
-//                        }
-//                    },
-//                    messages : {
-//                        pdf : {
-//                            accept : "Por favor seleccione un archivo PDF"
-//                        }
-//                    }
+
         });
 
         $("#dialogUpload").dialog({
@@ -349,16 +337,7 @@
         });
 
         $("#frmPdf").validate({
-//                    rules    : {
-//                        pdf : {
-//                            accept : "pdf"
-//                        }
-//                    },
-//                    messages : {
-//                        pdf : {
-//                            accept : "Por favor seleccione un archivo PDF"
-//                        }
-//                    }
+
         });
 
         $("#uploadActa").click(function () {
@@ -370,34 +349,38 @@
 
         $(".button").button();
 
-        $("#btnSave").button("option", "icons", {primary : 'ui-icon-disk'}).click(function () {
+        $("#btnSave").click(function () {
             if (validacion()) {
                 doSave("");
             }
         });
-        $("#btnAprobar").button("option", "icons", {primary : 'ui-icon-check'}).click(function () {
+        $("#btnAprobar").click(function () {
             if (validacion()) {
-                $.box({
-                    imageClass : "box_info",
-                    title      : "Alerta",
-                    text       : "Una vez aprobada la reunión de planificación de contrataciones " +
+                bootbox.dialog({
+                    id: "dlgAprobar",
+                    title: "Alerta",
+                    class: "modal-lg",
+                    message: "Una vez aprobada la reunión de planificación de contrataciones " +
                     "<span class='important'>se le asignará un número</span> y " +
                     "<span class='important'>ya no podrá modificar sus datos</span>.<br/><br/>" +
                     "<span class='important'>¿Desea continuar?</span>",
-                    iconClose  : false,
-                    dialog     : {
-                        width         : 400,
-                        resizable     : false,
-                        draggable     : false,
-                        closeOnEscape : false,
-                        buttons       : {
-                            "Aprobar"  : function () {
-                                doSave("A");
-                            },
-                            "Cancelar" : function () {
+                    buttons: {
+                        cancelar : {
+                            label : "Cancelar",
+                            className: "btn-primary",
+                            callback : function () {
+                            }
+                        },
+                        aprobar : {
+                            id : "btnAprobar",
+                            label : "<i class='fa fa-check-o'></i> Aceptar",
+                            className : "btn-success",
+                            callback : function () {
+                                doSave("A")
                             }
                         }
                     }
+
                 });
             }
         });

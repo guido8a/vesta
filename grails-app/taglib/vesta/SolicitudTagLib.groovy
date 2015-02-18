@@ -557,7 +557,7 @@ class SolicitudTagLib {
                 if (attrs.multiple) {
                     name = solicitud.id + "_" + name
                 }
-                html += g.select(from: TipoAprobacion.list(), name: name, id: "tipoAprobacion", "class": "tipoAprobacion",
+                html += g.select(from: TipoAprobacion.list(), name: name, id: "tipoAprobacion", class: "tipoAprobacion form-control input-sm",
                         optionKey: "id", optionValue: "descripcion", value: solicitud.tipoAprobacionId)
             } else {
                 html += (solicitud.tipoAprobacion ? solicitud.tipoAprobacion.descripcion : "-Sin tipo de aprobación -")
@@ -613,7 +613,7 @@ class SolicitudTagLib {
                 if (attrs.multiple) {
                     name = solicitud.id + "_" + name
                 }
-                html += g.textArea(name: name, rows: "5", cols: "5", value: solicitud.observacionesAprobacion)
+                html += g.textArea(name: name, rows: "5", cols: "5", value: solicitud.observacionesAprobacion, style: "resize: none")
             } else {
                 html += (solicitud.observacionesAprobacion ?: '-Sin observaciones-')
             }
@@ -627,7 +627,7 @@ class SolicitudTagLib {
                 if (attrs.multiple) {
                     name = solicitud.id + "_" + name
                 }
-                html += g.textArea(name: name, rows: "5", cols: "5", value: solicitud.asistentesAprobacion, class: "required")
+                html += g.textArea(name: name, rows: "5", cols: "5", value: solicitud.asistentesAprobacion, class: "required", style: "resize: none")
             } else {
                 html += (solicitud.asistentesAprobacion ?: '-Sin asistentes-')
             }
