@@ -32,8 +32,10 @@ class ModificacionesPoaController {
             actual = Anio.get(params.anio)
         else
             actual = Anio.findByAnio(new Date().format("yyyy"))
+
+        def campos = ["numero": ["Número", "string"],"descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
-        [proyectos:proyectos,actual:actual]
+        [proyectos:proyectos,actual:actual,campos:campos]
     }
 
 
