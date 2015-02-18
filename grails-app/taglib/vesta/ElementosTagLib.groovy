@@ -59,7 +59,7 @@ class ElementosTagLib {
         }
 
         def html =""
-        html+='<div class="'+clase+'" style="'+attrs.style+'">'
+        html+='<div class="'+clase+'" style="'+attrs.style+';padding-bottom: 10px">'
         html+=titulo
         out<<html<<body()+"</div>"
     }
@@ -298,7 +298,7 @@ class ElementosTagLib {
         }
 
         def format = attrs.format ?: defaultFormat
-        def formatJS = attrs.formatJS ?: format.replaceAll("d", "D")
+        def formatJS = attrs.formatJS ?: format.replaceAll("d", "D").replaceAll("yyyy","YYYY")
 
         def startDate = attrs.minDate ?: false
         def endDate = attrs.maxDate ?: false
