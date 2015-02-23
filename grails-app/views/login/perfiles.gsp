@@ -15,7 +15,7 @@
 
     <body>
         <div class="row">
-            <div class="col-md-3 col-md-offset-9" style="background: none">
+            <div class="col-md-3 col-md-offset-9 col-sm-4 col-sm-offset-8 col-xs-6" style="background: none">
                 <div class="tdn-tab tdn-tab-left tdn-tab-primary" style="background: none">
                     <div class="tdn-tab-heading">
                         <a href="#" class="selected">Perfiles</a>
