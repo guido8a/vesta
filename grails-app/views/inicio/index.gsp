@@ -11,8 +11,20 @@
         <meta name="layout" content="main"/>
         <title>Pantalla de inicio</title>
         <style type="text/css">
-        .img-responsive {
-            height : 150px;
+        /*.img-responsive {*/
+        /*height : 150px;*/
+        /*}*/
+
+        body {
+            background : #e5e4e7;
+        }
+
+        .color1 {
+            background : #e7f5f1;
+        }
+
+        .color2 {
+            background : #FFF;
         }
 
         </style>
@@ -20,44 +32,44 @@
 
     <body>
 
-        <div class="well inicio2">
+        <div class="inicio2">
             <g:link controller="proyecto" action="list">
-                <div class="row">
-                    <div class="col-md-8">
+                <div class="row color1">
+                    <div class="col-xs-9">
                         <h3>Gestión de Proyectos</h3>
                         Marco lógico, metas, indicadores,
                         cronograma de inversión, fuentes de financiamiento, programación de inversiones plurianual.
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-xs-3">
                         <img class="img-responsive" src="${resource(dir: 'images/inicio', file: 'gestion_proyectos.png')}"/>
                     </div>
                 </div>
             </g:link>
 
             <g:link controller="entidad" action="arbol_asg">
-                <div class="row no-margin-top">
-                    <div class="col-md-8">
+                <div class="row color2 no-margin-top">
+                    <div class="col-xs-9">
                         <h3>Gestión de Planificación</h3>
                         Marco lógico, metas, indicadores,
                         cronograma de inversión, fuentes de financiamiento, programación de inversiones plurianual.
                     </div>
 
-                    <div class="col-md-4">
-                        <img class="img-responsive" src="${resource(dir: 'images/inicio', file: 'gestion_planificacion.png')}"/>
+                    <div class="col-xs-3">
+                        <img class="img-responsive pull-right" src="${resource(dir: 'images/inicio', file: 'gestion_planificacion.png')}"/>
                     </div>
                 </div>
             </g:link>
 
             <g:link controller="avales" action="listaProcesos">
-                <div class="row no-margin-top">
-                    <div class="col-md-8">
+                <div class="row color1 no-margin-top">
+                    <div class="col-xs-9">
                         <h3>Gestión de Seguimiento y Evaluación</h3>
                         Marco lógico, metas, indicadores,
                         cronograma de inversión, fuentes de financiamiento, programación de inversiones plurianual.
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-xs-3">
                         <img class="img-responsive" src="${resource(dir: 'images/inicio', file: 'gestion_seguimiento.png')}"/>
                     </div>
                 </div>

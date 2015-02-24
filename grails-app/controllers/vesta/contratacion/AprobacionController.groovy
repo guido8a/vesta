@@ -1,6 +1,7 @@
 package vesta.contratacion
 
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.parametros.TipoAprobacion
 import vesta.parametros.UnidadEjecutora
 import vesta.seguridad.Persona
 import vesta.seguridad.Prfl
@@ -99,6 +100,27 @@ class AprobacionController extends Shield {
 
     }
 
+
+    /**
+     * Acción llamada con ajax que guarda la fecha de una reunión de aprobación
+     */
+    def setFechaReunion_ajax () {
+//        println "set fecha " + params
+        def aprobacion = Aprobacion.get(params.id)
+        def f = params.fecha
+        def h = params.horas.toString().toInteger()
+        def m = params.minutos.toString().toInteger() * 5
+        def fecha = new Date().parse("dd-MM-yyyy HH:mm", f + " " + h + ":" + m)
+
+        aprobacion.fecha = fecha
+        if (!aprobacion.save(flush: true)) {
+            println "Error al guardar fecha reunion: " + aprobacion.errors
+            render "NO"
+        } else {
+            render "OK"
+        }
+    }
+
     def reunion () {
 
             def ahora = new Date()
@@ -181,6 +203,117 @@ class AprobacionController extends Shield {
             [aprobacionInstance: aprobacionInstance, title: title]
         }
     }
+
+    /**
+     * Acción que permite eliminar un sector y redirecciona a la acción List
+     * @param id id del elemento a ser eliminado
+     */
+//    def delete () {
+//        def aprobacionInstance = Aprobacion.get(params.id)
+//        if (aprobacionInstance) {
+//            try {
+//                aprobacionInstance.delete(flush: true)
+//                flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'aprobacion.label', default: 'Aprobacion'), params.id])}"
+//                redirect(action: "list")
+//            }
+//            catch (org.springframework.dao.DataIntegrityViolationException e) {
+//                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'aprobacion.label', default: 'Aprobacion'), params.id])}"
+////                redirect(action: "show", id: params.id)
+//                render "ERROR*Ocurrio un error."
+//                return
+//            }
+//        } else {
+//            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'aprobacion.label', default: 'Aprobacion'), params.id])}"
+//            render "ERROR*Ocurrio un error."
+//            return
+//        }
+//    }
+
+    /**
+     * Acción llamada con ajax que muestra el diálogo para agendar reunión de contratación: fecha, hora, comentarios para cada solicitud
+     */
+    def agendarReunion_ajax = {
+//        println "AQUI " + params
+        def reunion = new Aprobacion()
+        if (params.id) {
+            reunion = Aprobacion.get(params.id.toLong())
+            if (!reunion) {
+                reunion = new Aprobacion()
+            }
+        }
+
+        def ids = params.ids.split("_")
+        if (ids instanceof String) {
+            ids = [ids]
+        }
+        ids = ids*.toLong()
+
+        def solicitudes = Solicitud.findAllByIdInList(ids)
+        if (reunion.id) {
+            solicitudes = Solicitud.findAllByIdInListOrAprobacion(ids, reunion)
+        }
+
+        return [reunion: reunion, solicitudes: solicitudes]
+    }
+
+    /**
+     * Acción llamada con ajax que crea una reunión de aprobación asignando una lista de solicitudes a tratar
+     */
+    def agendarReunion = {
+//        println params
+//        def f = params.fecha
+//        def h = params.horas.toString().toInteger()
+//        def m = params.minutos.toString().toInteger() * 5
+//        def fecha = new Date().parse("dd-MM-yyyy HH:mm", f + " " + h + ":" + m)
+
+        def ok = true
+        def aprobacion = null
+        if (params.id) {
+            aprobacion = Aprobacion.get(params.id)
+            if (!aprobacion) {
+                aprobacion = new Aprobacion()
+                if (!aprobacion.save(flush: true)) {
+                    ok = false
+                    println "Error al crear reunion de aprobacion: " + aprobacion.errors
+                    render "ERROR*Error al crear la reunión de aprobación"
+                    return
+                }
+            }
+        } else {
+            aprobacion = new Aprobacion()
+            if (!aprobacion.save(flush: true)) {
+                ok = false
+                println "Error al crear reunion de aprobacion: " + aprobacion.errors
+                render "ERROR*Error al crear la reunión de aprobación"
+                return
+            }
+        }
+
+        if (ok) {
+            params.each { k, v ->
+                if (k.toString().startsWith("revision")) {
+                    def parts = k.split("_");
+                    if (parts.size() == 2) {
+                        def id = parts[1].toLong()
+                        def solicitud = Solicitud.get(id)
+                        solicitud.aprobacion = aprobacion
+                        solicitud.revisionDireccionPlanificacionInversion = v
+                        if (!solicitud.save(flush: true)) {
+                            ok = false
+                            println "Error asignando aprobacion a la solicitud: " + solicitud.errors
+                            render "ERROR*Error asignando aprobación a la solicitud"
+                            return
+                        }
+                    }
+                }
+            }
+        }
+//        render(ok ? "OK" : "NO")
+        render (ok ? "SUCCESS*Se creo la reunión de aprobación" : "ERROR*Error asignando aprobación a la solicitud")
+        return
+    }
+
+
 
 
     /**
@@ -265,5 +398,82 @@ class AprobacionController extends Shield {
             return
         }
     } //delete para eliminar via ajax
+
+
+    /**
+     * Acción que guarda los datos de la reunión de aprobación
+     */
+    def saveAprobacion () {
+//        println "SAVE APROBACION>>>>> " + params
+
+        def reunion = Aprobacion.get(params.id.toLong())
+        reunion.observaciones = params.observaciones.trim()
+        reunion.fechaRealizacion = new Date()
+        if (!reunion.fecha) {
+            reunion.fecha = new Date()
+        }
+        reunion.creadoPor = Persona.get(session.usuario.id)
+        reunion.aprobada = params.aprobada
+
+        if (!reunion.numero) {
+            def numero = 1
+            def maxNum = Aprobacion.list().numero*.toInteger().max()
+            if (maxNum) {
+                numero = maxNum.toInteger() + 1
+            }
+            reunion.numero = numero.toString()
+            if (!reunion.save(flush: true)) {
+                println "error al asignar numero a la reunión::: " + reunion.errors
+//                render "ERROR*Error al asignar numero a la reunión."
+                flash.message = "Error al asignar número a la reunión"
+
+            }
+        }
+
+        if (!reunion.save(flush: true)) {
+            println "Error al guardar la reunión: " + reunion.errors
+//            render "ERROR*Error al guardar la reunión."
+            flash.message = "Error al guardar la reunión"
+
+        } else {
+            def solicitudes = [:]
+            params.each { k, v ->
+                def parts = k.split("_")
+                if (parts.size() == 2) {
+                    def id = parts[0].toLong()
+                    def campo = parts[1]
+                    if (!solicitudes[id]) {
+                        solicitudes[id] = Solicitud.get(id)
+                    }
+                    if (campo == "observaciones") {
+                        solicitudes[id].observacionesAprobacion = solicitudes[id].observacionesAprobacion ?
+                                solicitudes[id].observacionesAprobacion + "; " + v.trim() : v.trim()
+                    } else if (campo == "asistentes") {
+                        solicitudes[id].asistentesAprobacion = v.trim()
+                    } else if (campo == "tipoAprobacion.id") {
+                        solicitudes[id].tipoAprobacion = TipoAprobacion.get(v.toLong())
+                    }
+                }
+            }
+            solicitudes.each { id, solicitud ->
+                solicitud.estado = "A" // --> ya fue tratada en una reunión, ya no se puede modificar...
+                if (!solicitud.save(flush: true)) {
+                    println "error al guardar la solicitud: " + solicitud.errors
+                    flash.message = "Error al guardar la solicitud"
+
+//                    render "ERROR*Error al guardar la solicitud."
+//                    return
+                }
+            }
+        }
+        flash.message = "Datos guardados correctamente"
+//        render "SUCCESS*Guardado correctamente."
+//        return
+        if (params.aprobada == 'A') {
+            redirect(action: "reunion", id: reunion.id, params: [show: 1])
+        } else {
+            redirect(action: "reunion", id: reunion.id)
+        }
+    }
     
 }

@@ -192,32 +192,69 @@
                 $selM.append($opt);
             }
             $html.append($input).append($selH).append(":").append($selM);
-            $.box({
-                imageClass : "box_alert",
-                input      : $html,
-                type       : "prompt",
-                title      : "Fecha",
-                text       : "Ingrese la fecha deseada para la reunión seleccionada",
-                dialog     : {
-                    buttons : {
-                        "Aceptar" : function () {
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action:'setFechaReunion_ajax')}",
-                                data    : {
-                                    id      : id,
-                                    fecha   : $input.val(),
-                                    horas   : $selH.val(),
-                                    minutos : $selM.val()
-                                },
-                                success : function (msg) {
-                                    location.reload(true);
-                                }
-                            });
-                        }
-                    }
-                }
+
+            bootbox.dialog({
+               id: "dlgSetFecha",
+               title: "Fecha",
+               class: "modal-lg",
+               message: "Ingrese la fecha deseada para la reunión seleccionada",
+               buttons : {
+                   cancelar : {
+                       label: "Cancelar",
+                       className: "btn-primary",
+                       callback : function () {
+                       }
+                   },
+                   aceptar : {
+                       id : "btnAprobar",
+                       label : "<i class='fa fa-floppy-o'></i> Aceptar",
+                       className : "btn-success",
+                       callback : function () {
+                           $.ajax({
+                               type    : "POST",
+                               url     : "${createLink(action:'setFechaReunion_ajax')}",
+                               data    : {
+                                   id      : id,
+                                   fecha   : $input.val(),
+                                   horas   : $selH.val(),
+                                   minutos : $selM.val()
+                               },
+                               success : function (msg) {
+                                   location.reload(true);
+                               }
+                           });
+                       }
+                   }
+               }
+
             });
+
+            %{--$.box({--}%
+                %{--imageClass : "box_alert",--}%
+                %{--input      : $html,--}%
+                %{--type       : "prompt",--}%
+                %{--title      : "Fecha",--}%
+                %{--text       : "Ingrese la fecha deseada para la reunión seleccionada",--}%
+                %{--dialog     : {--}%
+                    %{--buttons : {--}%
+                        %{--"Aceptar" : function () {--}%
+                            %{--$.ajax({--}%
+                                %{--type    : "POST",--}%
+                                %{--url     : "${createLink(action:'setFechaReunion_ajax')}",--}%
+                                %{--data    : {--}%
+                                    %{--id      : id,--}%
+                                    %{--fecha   : $input.val(),--}%
+                                    %{--horas   : $selH.val(),--}%
+                                    %{--minutos : $selM.val()--}%
+                                %{--},--}%
+                                %{--success : function (msg) {--}%
+                                    %{--location.reload(true);--}%
+                                %{--}--}%
+                            %{--});--}%
+                        %{--}--}%
+                    %{--}--}%
+                %{--}--}%
+            %{--});--}%
             return false;
         });
 

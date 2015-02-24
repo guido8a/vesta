@@ -22,7 +22,7 @@ class PdfController extends Shield {
                 println "sin plugin --> params url " + params.url
                 def url = baseUri + params.url
                 println "URL --> " + url
-                b = pdfService.buildPdf(url, "")
+                b = pdfService.buildPdf(url, baseUri)
             }
             response.setContentType("application/pdf")
             response.setHeader("Content-disposition", "attachment; filename=" + (params.filename ?: "document.pdf"))
@@ -31,6 +31,7 @@ class PdfController extends Shield {
         }
         catch (Throwable e) {
             println "there was a problem with PDF generation 2 ${e}"
+            e.printStackTrace()
             if (params.pdfController) {
                 redirect(controller: params.pdfController, action: params.pdfAction, params: params)
             } else {

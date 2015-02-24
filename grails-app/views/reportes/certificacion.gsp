@@ -46,7 +46,7 @@
 
     <body>
         <div class="hoja">
-            <slc:headerReporte title="AVAL DE POA"/>
+            <rep:headerReporte  title="AVAL DE POA"/>
             %{--<div class="titulo" style="">--}%
             %{--<p><b>AVAL DE POA</b></p>--}%
 

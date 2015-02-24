@@ -15,7 +15,7 @@
 
     <body>
         <div class="row">
-            <div class="col-md-3 col-md-offset-9">
+            <div class="col-md-3 col-md-offset-9 col-sm-4 col-sm-offset-8 col-xs-6">
                 <div class="tdn-tab tdn-tab-left tdn-tab-primary " style="background: none">
                     <div class="tdn-tab-heading" style="background: none">
                         <a href="#" class="selected">Entrada</a>

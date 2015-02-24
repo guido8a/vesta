@@ -104,7 +104,7 @@
 
     <body>
         <div class="hoja">
-            <slc:headerReporte title="Acta de la Reunión de Planificación de Contrataciones" codigo="FR-PLA-AVAL-02"/>
+            <rep:headerReporte  title="Acta de la Reunión de Planificación de Contrataciones" codigo="FR-PLA-AVAL-02"/>
 
             <table class="tbl" border="1">
                 <thead>

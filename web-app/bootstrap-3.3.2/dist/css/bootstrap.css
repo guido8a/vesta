@@ -6547,6 +6547,7 @@ button.close {
 }
 .navbar {
   font-family: "PT Sans Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
 }
 .navbar-nav,
 .navbar-form {

@@ -52,6 +52,9 @@ class ProyectoController extends Shield {
         }
         def list
         println "PARAMS: " + params
+        if (!params.sort) params.sort = 'nombre'
+        if (!params.order) params.order = 'asc'
+
         if (params.search_programa || params.search_nombre || params.search_desde || params.search_hasta) {
             def c = Proyecto.createCriteria()
             list = c.list(params) {

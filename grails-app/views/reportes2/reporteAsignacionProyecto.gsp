@@ -149,7 +149,7 @@
 
 <body>
 
-<slc:headerReporte title="Reporte de Asignaciones del Proyecto: ${proyecto.nombre}" codigo="FR-PLA-AVAL-02"/>
+<rep:headerReporte  title="Reporte de Asignaciones del Proyecto: ${proyecto.nombre}" codigo="FR-PLA-AVAL-02"/>
 <div class="titulo2">Año: ${actual?.anio}</div>
 
 <table>

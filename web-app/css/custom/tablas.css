@@ -1,6 +1,6 @@
-table {
-    font-size : 13px;
-}
+/*table {*/
+/*font-size : 13px;*/
+/*}*/
 
 /*th {*/
 /*background-color : #1260B3;*/
@@ -50,7 +50,7 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table > thead > tr.amarillo > th,
 .table > tbody > tr.amarillo > th,
 .table > tfoot > tr.amarillo > th {
-    background-color : #f5f45c;
+    background-color : #DAC189;
 }
 
 .table-hover > tbody > tr > td.amarillo:hover,
@@ -58,7 +58,7 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table-hover > tbody > tr.amarillo:hover > td,
 .table-hover > tbody > tr:hover > .amarillo,
 .table-hover > tbody > tr.amarillo:hover > th {
-    background-color : #dfde57;
+    background-color : #c2a972;
 }
 
 .table > thead > tr > td.rojo,
@@ -73,7 +73,7 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table > thead > tr.rojo > th,
 .table > tbody > tr.rojo > th,
 .table > tfoot > tr.rojo > th {
-    background-color : #f59196;
+    background-color : #B15B42;
 }
 
 .table-hover > tbody > tr > td.rojo:hover,
@@ -81,7 +81,7 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table-hover > tbody > tr.rojo:hover > td,
 .table-hover > tbody > tr:hover > .rojo,
 .table-hover > tbody > tr.rojo:hover > th {
-    background-color : #d1787d;
+    background-color : #934a40;
 }
 
 .table > thead > tr > td.verde,
@@ -96,7 +96,7 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table > thead > tr.verde > th,
 .table > tbody > tr.verde > th,
 .table > tfoot > tr.verde > th {
-    background-color : #94f571;
+    background-color : #6DA08F;
 }
 
 .table-hover > tbody > tr > td.verde:hover,
@@ -104,7 +104,7 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table-hover > tbody > tr.verde:hover > td,
 .table-hover > tbody > tr:hover > .verde,
 .table-hover > tbody > tr.verde:hover > th {
-    background-color : #7bd468;
+    background-color : #4b7b6a;
 }
 
 .table > thead > tr > td.azul,
@@ -119,7 +119,7 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table > thead > tr.azul > th,
 .table > tbody > tr.azul > th,
 .table > tfoot > tr.azul > th {
-    background-color : #a2e9ff;
+    background-color : #6682B1;
 }
 
 .table-hover > tbody > tr > td.azul:hover,
@@ -127,7 +127,7 @@ tr.trHighlight, tr.trHighlight td, td.trHighlight, .trHighlight {
 .table-hover > tbody > tr.azul:hover > td,
 .table-hover > tbody > tr:hover > .azul,
 .table-hover > tbody > tr.azul:hover > th {
-    background-color : #80bdd2;
+    background-color : #4e6998;
 }
 
 .table > thead > tr > td.disabled,
