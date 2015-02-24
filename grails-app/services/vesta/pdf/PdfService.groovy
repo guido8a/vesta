@@ -1,6 +1,14 @@
 package vesta.pdf
 
+import com.lowagie.text.FontFactory
+import com.lowagie.text.pdf.BaseFont
+import org.xhtmlrenderer.pdf.ITextFontResolver
 import org.xhtmlrenderer.pdf.ITextRenderer
+import org.xhtmlrenderer.extend.FontResolver
+
+//import com.lowagie.text.pdf.BaseFont
+//import org.xhtmlrenderer.pdf.ITextFontResolver
+//import org.xhtmlrenderer.pdf.ITextRenderer
 
 /**
  * Servicio para hacer PDFs
@@ -8,6 +16,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer
 class PdfService {
 
     boolean transactional = false
+    def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib()
 
 /*  A Simple fetcher to turn a specific URL into a PDF.  */
     /**
@@ -19,6 +28,29 @@ class PdfService {
     byte[] buildPdf(url, String pathFonts) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ITextRenderer renderer = new ITextRenderer();
+
+        FontFactory.registerDirectories();
+
+        def pf = pathFonts + "${g.resource(dir: 'fonts/PT/PT_Sans')}/"
+        def font = pf + "PT_Sans-Web-Regular.ttf"
+
+        def pf2 = pathFonts + "${g.resource(dir: 'fonts/PT/PT_Sans_Narrow')}/"
+        def font2 = pf2 + "PT_Sans-Narrow-Web-Regular.ttf"
+
+//        FontResolver resolver = renderer.getFontResolver();
+        renderer.getFontResolver().addFontDirectory(pf, true);
+        renderer.getFontResolver().addFont(font, true);
+        renderer.getFontResolver().addFontDirectory(pf2, true);
+        renderer.getFontResolver().addFont(font2, true);
+
+//
+        ITextFontResolver fontResolver = renderer.getFontResolver();
+        fontResolver.addFontDirectory(pf, true);
+        fontResolver.addFont(font, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+        fontResolver.addFontDirectory(pf2, true);
+        fontResolver.addFont(font2, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//
+//        println "FONT: " + font
 
 /*
         ITextFontResolver fontResolver = renderer.getFontResolver();

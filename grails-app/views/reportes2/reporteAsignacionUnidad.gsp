@@ -149,7 +149,7 @@
 
 <body>
 
-<slc:headerReporte title="Reporte de Asignaciones del Proyecto por Unidad" codigo="FR-PLA-AVAL-02"/>
+<rep:headerReporte  title="Reporte de Asignaciones del Proyecto por Unidad" codigo="FR-PLA-AVAL-02"/>
 
 <div class="titulo2">Unidad: ${UnidadEjecutora.get(unidad)?.nombre}</div>
 <div class="titulo2">Año: ${actual?.anio}</div>

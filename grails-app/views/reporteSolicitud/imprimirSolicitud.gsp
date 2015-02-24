@@ -102,7 +102,7 @@
 
     <body>
         <div class="hoja">
-            <slc:headerReporte title="Solicitud de contratación"/>
+            <rep:headerReporte  title="Solicitud de contratación"/>
             <slc:infoReporte solicitud="${solicitud}"/>
             <div class="fecha">
                 Quito, ${solicitud.fecha?.format("dd-MM-yyyy")}

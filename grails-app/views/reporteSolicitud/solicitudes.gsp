@@ -94,7 +94,7 @@
 
     <body>
         <div class="hoja">
-            <slc:headerReporte title="Lista de Solicitudes de contratación"/>
+            <rep:headerReporte  title="Lista de Solicitudes de contratación"/>
 
             <div class="divTabla">
                 <table style="width: 100%;font-size: 10px" border="1" class="tabla">

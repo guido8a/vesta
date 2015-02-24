@@ -55,7 +55,7 @@
 
 <body>
 <div class="hoja">
-    <slc:headerReporte title=""/>
+    <rep:headerReporte  title=""/>
     <div>
         %{--<div style="text-align: right" class="label">Memorando Nro. ${numero}</div>--}%
         <div style="text-align: right" class="label">Quito, D.M., ${fecha}</div>

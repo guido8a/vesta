@@ -92,7 +92,7 @@
 
     <body>
         <div class="hoja">
-            <slc:headerReporte title="Acta de aprobación"/>
+            <rep:headerReporte  title="Acta de aprobación"/>
             <slc:infoReporte solicitud="${solicitud}"/>
             <div class="fecha">
               Quito, ${aprobacion.fecha?.format("dd-MM-yyyy")}

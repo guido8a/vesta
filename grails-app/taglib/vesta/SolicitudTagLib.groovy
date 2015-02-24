@@ -659,53 +659,6 @@ class SolicitudTagLib {
     }
 
     /**
-     * Muestra el header para los reportes
-     * @param title el título del reporte
-     */
-    def headerReporte = { attrs ->
-        def title = attrs.title ?: ""
-
-        def logoPath = resource(dir: 'images', file: 'logo.jpg')
-        def rowspan = 2
-//        def w = 65
-        def w = 200
-        if (title != "") {
-            rowspan += 1
-//            w = 85
-        }
-
-        def html = ""
-        html += "<table width='100%' border='0' style='margin-bottom:10px;'>"
-        html += "<tr>"
-        html += "<td style='width:206px;' rowspan='${rowspan}'><img src='${logoPath}' style='width:${w}px;'/></td>"
-        html += "</tr>"
-        html += "<tr>"
-        html += "<td class='ttl'>YACHAY EP</td>"
-        html += "<td> </td>"
-        html += "</tr>"
-//        html += "<tr>"
-//        html += "<td class='ttl'>GERENCIA DE PLANIFICACIÓN</td>"
-//        html += "</tr>"
-//        html += "<tr>"
-//        html += "<td class='ttl'>DIRECCIÓN DE PLANIFICACIÓN</td>"
-//        html += "</tr>"
-        if (title != "") {
-            html += "<tr>"
-            html += "<td class='ttl'>${title}</td>"
-            html += "<td style='width:150px; font-size: 9pt; text-align: center;'>"
-            if (attrs.codigo) {
-                html += "CÓDIGO DE FORMATO:<br/>"
-                html += attrs.codigo
-            }
-            html += "</td>"
-            html += "</tr>"
-        }
-        html += "</table>"
-
-        out << html
-    }
-
-    /**
      * Muestra la información de la solicitud para el reporte
      * @param solicitud el objeto Solicitud
      */
