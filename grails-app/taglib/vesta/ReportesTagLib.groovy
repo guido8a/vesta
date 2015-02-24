@@ -19,6 +19,9 @@ class ReportesTagLib {
         if (attrs.pags == 1 || attrs.pags == "1" || attrs.pags == "true" || attrs.pags == true || attrs.pags == "si") {
             pags = true
         }
+        if (!pags && attrs.pagTitle) {
+            pags = true
+        }
 
         if (!attrs.orientacion) {
             attrs.orientacion = "p"
@@ -65,8 +68,10 @@ class ReportesTagLib {
         if (pags) {
             css += "@page {\n" +
                     "    @bottom-left { \n" +
-                    "        content    : counter(page);\n" +
-                    "        font-style : italic\n" +
+                    "        content     : '${attrs.pagTitle ?: ''} pág.' counter(page) ' de ' counter(pages);\n" +
+                    "        font-family : 'PT Sans Narrow';\n" +
+                    "        font-size   : 8pt;" +
+                    "        font-style  : italic\n" +
                     "    }\n" +
                     "}"
         }
@@ -96,6 +101,23 @@ class ReportesTagLib {
                 "    color          : #17365D;\n" +
                 "    border-bottom  : solid 2px #4F81BD;\n" +
                 "}"
+        css += ".numeracion {\n" +
+                "    margin-top     : 1cm;\n" +
+                "    margin-bottom  : 1cm;\n" +
+                "    font-size      : 12.5pt;\n" +
+                "    font-family    : 'PT Sans';\n" +
+                "    color          : white;\n" +
+                "    text-align     : center;\n" +
+                "}"
+        css += ".numeracion table {\n" +
+                "    border-collapse : collapse;\n" +
+                "    border          : solid 1px #C0C0C0;" +
+                "    margin-left     : auto;\n" +
+                "    margin-right    : auto;\n" +
+                "}"
+        css += ".numeracion table td {\n" +
+                "    padding : 5px;\n" +
+                "}"
         css += "</style>"
 
         out << raw(css)
@@ -121,6 +143,17 @@ class ReportesTagLib {
             html += title
             html += '</div>'
         }
+
+        html += "<div class='numeracion'>"
+        html += "<table border='1'>"
+        html += "<tr>"
+        html += "<td style='background: #0F243E;'>Form. GPE-DPI-01</td>"
+        html += "<td style='background: #008080;'>Numeración:</td>"
+        html += "<td style='background: #008080;'>2015-${attrs.unidad ?: ''}</td>"
+        html += "<td style='background: #008080;'>No. ${attrs.numero ?: ''}</td>"
+        html += "</tr>"
+        html += "</table>"
+        html += "</div>"
 
         out << raw(html)
     }

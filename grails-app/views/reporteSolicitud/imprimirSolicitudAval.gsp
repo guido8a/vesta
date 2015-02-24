@@ -9,14 +9,8 @@
 <html>
     <head>
         <title>Imprimir acta</title>
-        <rep:estilos orientacion="p" pags="false"/>
+        <rep:estilos orientacion="p" pagTitle="Solicitud de Aval de POA"/>
         <style type="text/css">
-
-        .numeracion {
-            float   : right;
-            /*background : #bbb;*/
-            padding : 7px;
-        }
 
         .tbl {
             border-collapse : collapse;
@@ -41,19 +35,19 @@
     </head>
 
     <body>
-        <rep:headerFooter title="Solicitud de Aval de POA"/>
+        <rep:headerFooter title="Solicitud de Aval de POA" unidad="${solicitud.unidad?.codigo}" numero="${solicitud.numero}"/>
 
-        <div style="width: 100%; height: 1.5cm;">
-            <div class="numeracion">
-                Numeración: ${solicitud.unidad?.codigo}-${solicitud.numero}
-            </div>
-        </div>
+        %{--<div style="width: 100%; height: 1.5cm;">--}%
+        %{--<div class="numeracion">--}%
+        %{--Numeración: ${solicitud.unidad?.codigo}-${solicitud.numero}--}%
+        %{--</div>--}%
+        %{--</div>--}%
 
-        <div class="texto">
+        <p>
             Con el propósito de ejecutar las actividades programadas en la planificación operativa institucional
             ${solicitud.proceso.fechaInicio?.format("yyyy")}, la Gerencia de "${solicitud.usuario.unidad}"
             solicita emitir el Aval de POA correspondiente al proceso que se detalla a continuación:
-        </div>
+        </p>
 
         <div class="tabla" style="margin-top: 10px">
             <table width="100%" border="1" class="tbl">
