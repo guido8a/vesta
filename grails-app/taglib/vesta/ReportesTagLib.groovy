@@ -95,7 +95,7 @@ class ReportesTagLib {
         css += ".tituloReporte{\n" +
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +
-                "    font-family    : 'PT Sans';\n" +
+//                "    font-family    : 'PT Sans';\n" +
                 "    font-size      : 25pt;\n" +
                 "    font-weight    : bold;\n" +
                 "    color          : #17365D;\n" +
@@ -149,7 +149,7 @@ class ReportesTagLib {
         html += "<tr>"
         html += "<td style='background: #0F243E;'>Form. GPE-DPI-01</td>"
         html += "<td style='background: #008080;'>Numeración:</td>"
-        html += "<td style='background: #008080;'>2015-${attrs.unidad ?: ''}</td>"
+        html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>"
         html += "<td style='background: #008080;'>No. ${attrs.numero ?: ''}</td>"
         html += "</tr>"
         html += "</table>"

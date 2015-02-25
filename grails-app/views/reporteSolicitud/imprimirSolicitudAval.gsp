@@ -35,7 +35,8 @@
     </head>
 
     <body>
-        <rep:headerFooter title="Solicitud de Aval de POA" unidad="${solicitud.unidad?.codigo}" numero="${solicitud.numero}"/>
+        <rep:headerFooter title="Solicitud de Aval de POA" unidad="${solicitud.fecha.format('yyyy')}-${solicitud.unidad?.codigo}"
+                          numero="${elm.imprimeNumero(solicitud: solicitud.id)}"/>
 
         %{--<div style="width: 100%; height: 1.5cm;">--}%
         %{--<div class="numeracion">--}%
