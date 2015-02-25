@@ -26,13 +26,13 @@
 <elm:container tipo="horizontal" titulo="Cargar proyectos desde un arcvhio Excel">
     <g:form name="frmUpload" enctype="multipart/form-data" method="post" action="subirExcel">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-1" style="width: 120px">
                 <label>
                     Archivo Excel:
                 </label>
             </div>
-            <div class="col-md-4">
-                <input type="file" class="form-control input-sm" name="file" id="file" size="70"/>
+            <div class="col-md-4" style="height: 30px">
+                <input type="file"  name="file" id="file" size="70" style="height: 25px;"/>
             </div>
             <div class="col-md-1">
                 <a href="#" id="btnUpload" class="btn btn-info btn-sm">
@@ -40,10 +40,8 @@
                     Procesar
                 </a>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-5" style="color:red">
-                * El archivo a cargar solo puede ser de tipo XLS (formato WORD 97 - 2003)
+            <div class="col-md-4" style="color:red; width: 510px">
+                * El archivo a cargar sólo puede ser del tipo "XLS" (formato WORD 97 - 2003)
             </div>
         </div>
     </g:form>
