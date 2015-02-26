@@ -16,7 +16,7 @@ import vesta.poa.Asignacion
 import vesta.poa.ProgramacionAsignacion
 import vesta.seguridad.Persona
 import vesta.seguridad.Shield
-
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import java.text.SimpleDateFormat
 
 
@@ -378,7 +378,8 @@ class ProyectoController extends Shield {
                 def proyectos = []
                 def componentes = []
                 def acts =[]
-                println "unidad "+unidad
+//                println "unidad "+unidad//
+                println "locale "+RCU.getLocale(request)
                 // println("path " + pathFile )
 
                 if (ext == 'xls') {
@@ -410,7 +411,7 @@ class ProyectoController extends Shield {
                             DateCell dCell = null;
                             DateCell dCellF = null;
                             println "row for ${r}------------------------------------------------------------------------------------------- " + sheet.getRow(r)[posiciones["codigoProyecto"]].contents
-                            if (sheet.getRow(r)[posiciones["codigoProyecto"]].contents && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != "" && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != " ") {
+                            if (sheet.getRow(r)[posiciones["codigoProyecto"]].contents && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != "" && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != " " ) {
                                 def total = sheet.getRow(r)[posiciones["total"]].contents
                                 if (total && total != "" && total != "-") {
                                     total = total.replaceAll(",", "")
@@ -425,9 +426,9 @@ class ProyectoController extends Shield {
                                     }
 
                                 }
-                                println "total " + total
+                                println "total " + total+" ---  "+sheet.getRow(r)[posiciones["total"]].contents+" --  "+sheet.getRow(r)[posiciones["stotal"]].contents
                                 def proyecto = Proyecto.findByCodigoEsigef(sheet.getRow(r)[posiciones["codigoEsigef"]].contents)
-                                println "proyecto " + proyecto + "   " + sheet.getRow(r)[posiciones["codigoEsigef"]].contents
+                               // println "proyecto " + proyecto + "   " + sheet.getRow(r)[posiciones["codigoEsigef"]].contents
                                 if (!proyecto) {
                                     proyecto = new Proyecto()
                                     proyecto.nombre = sheet.getRow(r)[posiciones["nombreProyecto"]].contents
@@ -543,7 +544,7 @@ class ProyectoController extends Shield {
                                 if (!acts.contains(actividad.id))
                                     acts.add(actividad.id)
 
-                                println "-->monto fin!!!!!!! para ${proyecto.id} " + proyecto.monto
+                               // println "-->monto fin!!!!!!! para ${proyecto.id} " + proyecto.monto
                             }
                         }
 

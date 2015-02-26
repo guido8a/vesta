@@ -64,7 +64,6 @@
             if($("#file").val()!=""){
                 $("#frmUpload").submit();
             }
-
         });
     });
 </script>
