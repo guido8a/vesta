@@ -44,5 +44,28 @@
 
         <mn:stickyFooter2/>
         <mn:stickyFooter/>
+
+        <script type="application/javascript">
+            function buscarMenu() {
+                var search = $.trim($("#txtSearchMenu").val());
+                if (search != "") {
+                    openLoader("Buscando...");
+                    location.href = "${createLink(controller:'inicio', action: 'busquedaMenu')}?search=" + search;
+                }
+            }
+            $(function () {
+                $("#btnSearchMenu").click(function () {
+                    buscarMenu();
+                    return false;
+                });
+                $("#txtSearchMenu").keyup(function (ev) {
+                    if (ev.keyCode == 13) {
+                        buscarMenu();
+                    }
+                });
+
+            });
+        </script>
+
     </body>
 </html>

@@ -11,23 +11,9 @@
     <head>
         <title>Aval</title>
 
+        <rep:estilos orientacion="p" pagTitle="Aval de POA"/>
+
         <style type="text/css">
-        @page {
-            size   : 21cm 29.7cm;  /*width height */
-            margin : 2cm;
-        }
-
-        .hoja {
-            width     : 15cm;
-            font-size : 12pt;
-        }
-
-        .hoja {
-            /*background  : #fedcba;*/
-            height      : 24.7cm; /*29.7-(1.5*2)*/
-            font-family : arial, sans-serif;
-            font-size   : 10pt;
-        }
 
         .tbl th {
             /*background  : #bbb;*/
@@ -46,15 +32,8 @@
 
     <body>
         <div class="hoja">
-            <rep:headerReporte  title="AVAL DE POA"/>
-            %{--<div class="titulo" style="">--}%
-            %{--<p><b>AVAL DE POA</b></p>--}%
-
-            %{--</div>--}%
-
-            <div style="float: right;font-size: 10pt;">
-                <p>Numeración: ${anio}-GP No. <elm:imprimeNumero solicitud="${sol.id}"/></p>
-            </div>
+            <rep:headerFooter title="Aval de POA" unidad="${anio}-GP"
+                              numero="${elm.imprimeNumero(solicitud: sol.id)}"/>
 
             <div style="text-align: justify;float: left;font-size: 10pt;">
                 <p>
@@ -122,7 +101,7 @@
                     </table>
                 </g:each>
 
-                <p style="border: 1px solid black;padding: 5px;font-size: 8px;text-align: left">
+                <p style="border: 1px solid black;padding: 5px;font-size: 8px;text-align: left;page-break-inside : avoid;">
                     <b style="text-decoration: underline">OBSERVACIONES:</b><br/>
                     ${sol.observaciones}
                 </p>
