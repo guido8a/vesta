@@ -133,7 +133,9 @@
         <thead></thead>
         <tbody>
         <tr>
-            <td class="label">Observaciones</td>
+            <td>
+                <label>Observaciones</label>
+            </td>
             <td colspan="4">
                 <g:if test="${puedeEditar}">
                     <g:textArea class="ui-widget-content ui-corner-all " name="observaciones" rows="5" cols="5" value="${reunion.observaciones}" style="resize: none"/>

@@ -1,6 +1,7 @@
 package vesta.contratacion
 
 import org.springframework.dao.DataIntegrityViolationException
+import sun.util.calendar.BaseCalendar
 import vesta.parametros.TipoAprobacion
 import vesta.parametros.UnidadEjecutora
 import vesta.seguridad.Persona
@@ -102,23 +103,29 @@ class AprobacionController extends Shield {
 
 
     /**
-     * Acción llamada con ajax que guarda la fecha de una reunión de aprobación
+     * Acción llamada con ajax para cargar un datepicker para la reunión de aprobación
      */
     def setFechaReunion_ajax () {
-//        println "set fecha " + params
-        def aprobacion = Aprobacion.get(params.id)
-        def f = params.fecha
-        def h = params.horas.toString().toInteger()
-        def m = params.minutos.toString().toInteger() * 5
-        def fecha = new Date().parse("dd-MM-yyyy HH:mm", f + " " + h + ":" + m)
 
+    }
+
+    /**
+     * Acción llamada con ajax que guarda la fecha de una reunión de aprobación
+     */
+    def saveFechaReunion_ajax () {
+
+        def aprobacion = Aprobacion.get(params.id)
+        def fecha = new Date().parse("dd-MM-yyyy HH:mm", params.fecha)
         aprobacion.fecha = fecha
         if (!aprobacion.save(flush: true)) {
-            println "Error al guardar fecha reunion: " + aprobacion.errors
-            render "NO"
+            println "Error al guardar la fecha: " + aprobacion.errors
+            render "ERROR*Error al guardar la fecha de la reunión de aprobación"
+            return
         } else {
-            render "OK"
+            render "SUCCESS*Se ha guardado la fecha de la reunión de aprobación"
+            return
         }
+
     }
 
     def reunion () {
@@ -178,7 +185,7 @@ class AprobacionController extends Shield {
         def reunion = null
         if (params.id) {
             reunion = Aprobacion.get(params.id.toLong())
-            flash.message = "<div class='ui-state-highlight ui-corner-all' style='padding:5px;'>" +
+            flash.message = "<div class='' style='padding:5px;'>" +
                     "<span style=\"float: left; margin-right: .3em;\" class=\"ui-icon ui-icon-info\"></span> Preparar reunión "
             if (reunion.fecha) {
                 flash.message += "del " + reunion.fecha.format("dd-MM-yyyy HH:mm")
