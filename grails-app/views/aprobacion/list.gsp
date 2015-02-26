@@ -168,94 +168,60 @@
 
         $(".btnSetFecha").click(function () {
             var id = $(this).attr("id");
-            var $html = $("<div>");
-            var $input = $("<input type='text' readonly='readonly' style='width: 80px;' value='${new Date().format('dd-MM-yyyy')}' " +
-            "class='datepicker ui-widget-content ui-corner-all' name='fecha' id='fecha' />");
-            $input.datepicker({
-                dateFormat : 'dd-mm-yy',
-                minDate    : "+0"
+
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(action:'setFechaReunion_ajax')}",
+                data    : {
+                    id      : id
+                },
+                success : function (msg) {
+                    var b = bootbox.dialog({
+                        id    : "dlgFechaReunion",
+                        title : "Fecha reunión",
+
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    $.ajax({
+                                        type    : "POST",
+                                        url     : "${createLink(action: 'saveFechaReunion_ajax')}",
+                                        data    : {
+                                            id: id,
+                                            fecha : $("#fechaReunionId").val()
+                                        },
+                                        success : function (msg) {
+                                            var parts = msg.split("*");
+                                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                            setTimeout(function() {
+                                                if (parts[0] == "SUCCESS") {
+                                                    location.reload(true);
+                                                } else {
+                                                    return false;
+                                                }
+                                            }, 1000);
+                                        }
+                                    });
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                    setTimeout(function () {
+                        b.find(".form-control").first().focus()
+                    }, 500)
+
+                }
             });
-            var $selH = $("<select name='horas' class='ui-widget-content ui-corner-all' style='margin-left: 10px;'>");
-            for (var i = 7; i < 19; i++) {
-                var str = "" + i;
-                var pad = "00";
-                str = pad.substring(0, pad.length - str.length) + str;
-                var $opt = $("<option value='" + i + "'>" + str + "</option>");
-                $selH.append($opt);
-            }
-            var $selM = $("<select name='minutos' class='ui-widget-content ui-corner-all'>");
-            for (i = 0; i < 60; i += 5) {
-                str = "" + i;
-                pad = "00";
-                str = pad.substring(0, pad.length - str.length) + str;
-                $opt = $("<option value='" + i + "'>" + str + "</option>");
-                $selM.append($opt);
-            }
-            $html.append($input).append($selH).append(":").append($selM);
-
-            bootbox.dialog({
-               id: "dlgSetFecha",
-               title: "Fecha",
-               class: "modal-lg",
-               message: "Ingrese la fecha deseada para la reunión seleccionada",
-               buttons : {
-                   cancelar : {
-                       label: "Cancelar",
-                       className: "btn-primary",
-                       callback : function () {
-                       }
-                   },
-                   aceptar : {
-                       id : "btnAprobar",
-                       label : "<i class='fa fa-floppy-o'></i> Aceptar",
-                       className : "btn-success",
-                       callback : function () {
-                           $.ajax({
-                               type    : "POST",
-                               url     : "${createLink(action:'setFechaReunion_ajax')}",
-                               data    : {
-                                   id      : id,
-                                   fecha   : $input.val(),
-                                   horas   : $selH.val(),
-                                   minutos : $selM.val()
-                               },
-                               success : function (msg) {
-                                   location.reload(true);
-                               }
-                           });
-                       }
-                   }
-               }
-
-            });
-
-            %{--$.box({--}%
-                %{--imageClass : "box_alert",--}%
-                %{--input      : $html,--}%
-                %{--type       : "prompt",--}%
-                %{--title      : "Fecha",--}%
-                %{--text       : "Ingrese la fecha deseada para la reunión seleccionada",--}%
-                %{--dialog     : {--}%
-                    %{--buttons : {--}%
-                        %{--"Aceptar" : function () {--}%
-                            %{--$.ajax({--}%
-                                %{--type    : "POST",--}%
-                                %{--url     : "${createLink(action:'setFechaReunion_ajax')}",--}%
-                                %{--data    : {--}%
-                                    %{--id      : id,--}%
-                                    %{--fecha   : $input.val(),--}%
-                                    %{--horas   : $selH.val(),--}%
-                                    %{--minutos : $selM.val()--}%
-                                %{--},--}%
-                                %{--success : function (msg) {--}%
-                                    %{--location.reload(true);--}%
-                                %{--}--}%
-                            %{--});--}%
-                        %{--}--}%
-                    %{--}--}%
-                %{--}--}%
-            %{--});--}%
-            return false;
         });
 
         $(".edit").button("option", "icons", {primary : 'ui-icon-pencil'});
@@ -288,7 +254,7 @@
                 header : true
             },
             ver      : {
-                label  : "Ver",
+                label  : "Detalles",
                 icon   : "fa fa-search",
                 action : function ($element) {
                     var id = $element.data("id");
@@ -299,16 +265,19 @@
         if(apro != 'A'){
 //            if(obj.solicitudes.size() > 0) {
             if(tamano > 0) {
+                var icono
                 <g:if test="${editables.contains(session.perfil.codigo)}">
                 if(!numero){
-                    etiqueta = "Empezar"
+                    etiqueta = "Empezar";
+                    icono = "fa fa-star"
                 }else{
-                    etiqueta = "Continuar"
+                    etiqueta = "Continuar";
+                    icono = "fa fa-share"
                 }
 
                 items.empezar = {
                     label  : etiqueta,
-                    icon   : "fa fa-pencil",
+                    icon   : icono,
                     action : function ($element) {
                         var id = $element.data("id");
                         location.href = "${createLink(action:'reunion')}?id=" + id
@@ -319,7 +288,7 @@
                 <g:if test="${editables.contains(session.perfil.codigo)}">
                     items.preparar1 = {
                         label  : "Preparar",
-                        icon   : "fa fa-pencil",
+                        icon   : "fa fa-paper-plane",
                         action : function ($element) {
                             var id = $element.data("id");
                             location.href = "${createLink(action:'prepararReunionAprobacion')}?id=" + id
@@ -332,7 +301,7 @@
                 if(!numero){
                     items.preparar2 = {
                         label  : "Preparar",
-                        icon   : "fa fa-pencil",
+                        icon   : "fa fa-paper-plane",
                         action : function ($element) {
                             var id = $element.data("id");
                             location.href = "${createLink(action:'prepararReunionAprobacion')}?id=" + id
@@ -366,287 +335,3 @@
 
 
 
-
-
-
-
-%{--<%@ page import="vesta.contratacion.Aprobacion" %>--}%
-%{--<!DOCTYPE html>--}%
-%{--<html>--}%
-%{--<head>--}%
-%{--<meta name="layout" content="main">--}%
-%{--<title>Lista de Aprobacion</title>--}%
-%{--</head>--}%
-%{--<body>--}%
-
-%{--<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>--}%
-
-%{--<!-- botones -->--}%
-%{--<div class="btn-toolbar toolbar">--}%
-%{--<div class="btn-group">--}%
-%{--<a href="#" class="btn btn-default btnCrear">--}%
-%{--<i class="fa fa-file-o"></i> Crear--}%
-%{--</a>--}%
-%{--</div>--}%
-%{--<div class="btn-group pull-right col-md-3">--}%
-%{--<div class="input-group input-group-sm">--}%
-%{--<input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">--}%
-%{--<span class="input-group-btn">--}%
-%{--<g:link controller="aprobacion" action="list" class="btn btn-default btn-search">--}%
-%{--<i class="fa fa-search"></i>&nbsp;--}%
-%{--</g:link>--}%
-%{--</span>--}%
-%{--</div><!-- /input-group -->--}%
-%{--</div>--}%
-%{--</div>--}%
-
-%{--<table class="table table-condensed table-bordered table-striped table-hover">--}%
-%{--<thead>--}%
-%{--<tr>--}%
-%{----}%
-%{--<g:sortableColumn property="fecha" title="Fecha" />--}%
-%{----}%
-%{--<g:sortableColumn property="fechaRealizacion" title="Fecha Realizacion" />--}%
-%{----}%
-%{--<g:sortableColumn property="observaciones" title="Observaciones" />--}%
-%{----}%
-%{--<g:sortableColumn property="asistentes" title="Asistentes" />--}%
-%{----}%
-%{--<g:sortableColumn property="pathPdf" title="Path Pdf" />--}%
-%{----}%
-%{--<g:sortableColumn property="numero" title="Numero" />--}%
-%{----}%
-%{--<g:sortableColumn property="aprobada" title="Aprobada" />--}%
-%{----}%
-%{--<th>Creado Por</th>--}%
-%{----}%
-%{--<th>Firma Direccion Planificacion</th>--}%
-%{----}%
-%{--<th>Firma Gerencia Tecnica</th>--}%
-%{----}%
-%{--</tr>--}%
-%{--</thead>--}%
-%{--<tbody>--}%
-%{--<g:if test="${aprobacionInstanceCount > 0}">--}%
-%{--<g:each in="${aprobacionInstanceList}" status="i" var="aprobacionInstance">--}%
-%{--<tr data-id="${aprobacionInstance.id}">--}%
-%{----}%
-%{--<td>${aprobacionInstance.fecha}</td>--}%
-%{----}%
-%{--<td><g:formatDate date="${aprobacionInstance.fechaRealizacion}" format="dd-MM-yyyy" /></td>--}%
-%{----}%
-%{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${aprobacionInstance}" field="observaciones"/></elm:textoBusqueda></td>--}%
-%{----}%
-%{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${aprobacionInstance}" field="asistentes"/></elm:textoBusqueda></td>--}%
-%{----}%
-%{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${aprobacionInstance}" field="pathPdf"/></elm:textoBusqueda></td>--}%
-%{----}%
-%{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${aprobacionInstance}" field="numero"/></elm:textoBusqueda></td>--}%
-%{----}%
-%{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${aprobacionInstance}" field="aprobada"/></elm:textoBusqueda></td>--}%
-%{----}%
-%{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${aprobacionInstance}" field="creadoPor"/></elm:textoBusqueda></td>--}%
-%{----}%
-%{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${aprobacionInstance}" field="firmaDireccionPlanificacion"/></elm:textoBusqueda></td>--}%
-%{----}%
-%{--<td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${aprobacionInstance}" field="firmaGerenciaTecnica"/></elm:textoBusqueda></td>--}%
-%{----}%
-%{--</tr>--}%
-%{--</g:each>--}%
-%{--</g:if>--}%
-%{--<g:else>--}%
-%{--<tr class="danger">--}%
-%{--<td class="text-center" colspan="11">--}%
-%{--<g:if test="${params.search && params.search!= ''}">--}%
-%{--No se encontraron resultados para su búsqueda--}%
-%{--</g:if>--}%
-%{--<g:else>--}%
-%{--No se encontraron registros que mostrar--}%
-%{--</g:else>--}%
-%{--</td>--}%
-%{--</tr>--}%
-%{--</g:else>--}%
-%{--</tbody>--}%
-%{--</table>--}%
-
-%{--<elm:pagination total="${aprobacionInstanceCount}" params="${params}"/>--}%
-
-%{--<script type="text/javascript">--}%
-%{--var id = null;--}%
-%{--function submitForm() {--}%
-%{--var $form = $("#frmAprobacion");--}%
-%{--var $btn = $("#dlgCreateEdit").find("#btnSave");--}%
-%{--if ($form.valid()) {--}%
-%{--$btn.replaceWith(spinner);--}%
-%{--openLoader("Guardando Aprobacion");--}%
-%{--$.ajax({--}%
-%{--type    : "POST",--}%
-%{--url     : $form.attr("action"),--}%
-%{--data    : $form.serialize(),--}%
-%{--success : function (msg) {--}%
-%{--var parts = msg.split("*");--}%
-%{--log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)--}%
-%{--setTimeout(function() {--}%
-%{--if (parts[0] == "SUCCESS") {--}%
-%{--location.reload(true);--}%
-%{--} else {--}%
-%{--spinner.replaceWith($btn);--}%
-%{--return false;--}%
-%{--}--}%
-%{--}, 1000);--}%
-%{--}--}%
-%{--});--}%
-%{--} else {--}%
-%{--return false;--}%
-%{--} //else--}%
-%{--}--}%
-%{--function deleteRow(itemId) {--}%
-%{--bootbox.dialog({--}%
-%{--title   : "Alerta",--}%
-%{--message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +--}%
-%{--"¿Está seguro que desea eliminar el Aprobacion seleccionado? Esta acción no se puede deshacer.</p>",--}%
-%{--buttons : {--}%
-%{--cancelar : {--}%
-%{--label     : "Cancelar",--}%
-%{--className : "btn-primary",--}%
-%{--callback  : function () {--}%
-%{--}--}%
-%{--},--}%
-%{--eliminar : {--}%
-%{--label     : "<i class='fa fa-trash-o'></i> Eliminar",--}%
-%{--className : "btn-danger",--}%
-%{--callback  : function () {--}%
-%{--openLoader("Eliminando Aprobacion");--}%
-%{--$.ajax({--}%
-%{--type    : "POST",--}%
-%{--url     : '${createLink(action:'delete_ajax')}',--}%
-%{--data    : {--}%
-%{--id : itemId--}%
-%{--},--}%
-%{--success : function (msg) {--}%
-%{--var parts = msg.split("*");--}%
-%{--log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)--}%
-%{--if (parts[0] == "SUCCESS") {--}%
-%{--setTimeout(function() {--}%
-%{--location.reload(true);--}%
-%{--}, 1000);--}%
-%{--} else {--}%
-%{--closeLoader();--}%
-%{--}--}%
-%{--}--}%
-%{--});--}%
-%{--}--}%
-%{--}--}%
-%{--}--}%
-%{--});--}%
-%{--}--}%
-%{--function createEditRow(id) {--}%
-%{--var title = id ? "Editar" : "Crear";--}%
-%{--var data = id ? { id: id } : {};--}%
-%{--$.ajax({--}%
-%{--type    : "POST",--}%
-%{--url     : "${createLink(action:'form_ajax')}",--}%
-%{--data    : data,--}%
-%{--success : function (msg) {--}%
-%{--var b = bootbox.dialog({--}%
-%{--id      : "dlgCreateEdit",--}%
-%{--title   : title + " Aprobacion",--}%
-%{----}%
-%{--class   : "modal-lg",--}%
-%{----}%
-%{--message : msg,--}%
-%{--buttons : {--}%
-%{--cancelar : {--}%
-%{--label     : "Cancelar",--}%
-%{--className : "btn-primary",--}%
-%{--callback  : function () {--}%
-%{--}--}%
-%{--},--}%
-%{--guardar  : {--}%
-%{--id        : "btnSave",--}%
-%{--label     : "<i class='fa fa-save'></i> Guardar",--}%
-%{--className : "btn-success",--}%
-%{--callback  : function () {--}%
-%{--return submitForm();--}%
-%{--} //callback--}%
-%{--} //guardar--}%
-%{--} //buttons--}%
-%{--}); //dialog--}%
-%{--setTimeout(function () {--}%
-%{--b.find(".form-control").first().focus()--}%
-%{--}, 500);--}%
-%{--} //success--}%
-%{--}); //ajax--}%
-%{--} //createEdit--}%
-
-%{--$(function () {--}%
-
-%{--$(".btnCrear").click(function() {--}%
-%{--createEditRow();--}%
-%{--return false;--}%
-%{--});--}%
-
-%{--$("tbody>tr").contextMenu({--}%
-%{--items  : {--}%
-%{--header   : {--}%
-%{--label  : "Acciones",--}%
-%{--header : true--}%
-%{--},--}%
-%{--ver      : {--}%
-%{--label  : "Ver",--}%
-%{--icon   : "fa fa-search",--}%
-%{--action : function ($element) {--}%
-%{--var id = $element.data("id");--}%
-%{--$.ajax({--}%
-%{--type    : "POST",--}%
-%{--url     : "${createLink(action:'show_ajax')}",--}%
-%{--data    : {--}%
-%{--id : id--}%
-%{--},--}%
-%{--success : function (msg) {--}%
-%{--bootbox.dialog({--}%
-%{--title   : "Ver Aprobacion",--}%
-%{--message : msg,--}%
-%{--buttons : {--}%
-%{--ok : {--}%
-%{--label     : "Aceptar",--}%
-%{--className : "btn-primary",--}%
-%{--callback  : function () {--}%
-%{--}--}%
-%{--}--}%
-%{--}--}%
-%{--});--}%
-%{--}--}%
-%{--});--}%
-%{--}--}%
-%{--},--}%
-%{--editar   : {--}%
-%{--label  : "Editar",--}%
-%{--icon   : "fa fa-pencil",--}%
-%{--action : function ($element) {--}%
-%{--var id = $element.data("id");--}%
-%{--createEditRow(id);--}%
-%{--}--}%
-%{--},--}%
-%{--eliminar : {--}%
-%{--label            : "Eliminar",--}%
-%{--icon             : "fa fa-trash-o",--}%
-%{--separator_before : true,--}%
-%{--action           : function ($element) {--}%
-%{--var id = $element.data("id");--}%
-%{--deleteRow(id);--}%
-%{--}--}%
-%{--}--}%
-%{--},--}%
-%{--onShow : function ($element) {--}%
-%{--$element.addClass("success");--}%
-%{--},--}%
-%{--onHide : function ($element) {--}%
-%{--$(".success").removeClass("success");--}%
-%{--}--}%
-%{--});--}%
-%{--});--}%
-%{--</script>--}%
-
-%{--</body>--}%
-%{--</html>--}%

@@ -29,8 +29,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def index = { }
-
+    def index = {}
 
     /**
      * Acción
@@ -48,8 +47,8 @@ class ReportesController {
 
         def res = []
 
-        Asignacion.findAllWhere(unidad: unidad, anio: actual).each {asg ->
-            ModificacionAsignacion.findAllByDesdeOrRecibe(asg, asg, [sort: "id"]).each {mod ->
+        Asignacion.findAllWhere(unidad: unidad, anio: actual).each { asg ->
+            ModificacionAsignacion.findAllByDesdeOrRecibe(asg, asg, [sort: "id"]).each { mod ->
                 res.add(mod)
             }
         }
@@ -74,7 +73,6 @@ class ReportesController {
 
     }
 
-
     /**
      * Acción
      */
@@ -97,7 +95,6 @@ class ReportesController {
 
         [res: res, unidad: unidad, actual: actual]
     }
-
 
     /**
      * Acción
@@ -149,36 +146,30 @@ class ReportesController {
         [mapa: mapa, actual: actual]
     }
 
-
-
     /**
      * Acción
      */
     def certificacion = {
-
         println "certiificacion aaaa " + params
         def solicitud = SolicitudAval.get(params.id)
         def aval = solicitud.aval
-        println "aval "+aval
+        println "aval " + aval
         def anio = Anio.findByAnio(new Date().format("yyyy"))
         def mes = Mes.findByNumero(solicitud.fecha.format("MM").toInteger())
         def anterior = null
 //        anterior=Certificacion.findByAsignacionAndFechaLessThan(cer.asignacion,new Date().parse("dd-MM-yyyy HH:mm","01-01-${anio} 00:00"))
         mes = mes?.descripcion
-
-
-        [sol: solicitud, anio: anio, mes: mes,anterior:anterior,aval:aval]
-
+        return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval]
     }
 
     /**
      * Acción
      */
     def reasignacion = {
-            /*todo*/
+        /*todo*/
         def anio = Anio.findByAnio(new Date().format("yyyy"))
         def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort {it.codigo.toInteger()}
+        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort { it.codigo.toInteger() }
         //resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def asignado99 = 0
         def original99 = 0
@@ -196,7 +187,7 @@ class ReportesController {
                 original99 += temp.originalInversion
             }
             temp = Asignacion.findAllByUnidadAndAnio(it, anio)
-            temp.each {t ->
+            temp.each { t ->
                 poa99 += t.planificado
             }
 
@@ -221,7 +212,7 @@ class ReportesController {
                 org += temp.originalInversion
             }
             temp = Asignacion.findAllByUnidadAndAnio(it, anio)
-            temp.each {t ->
+            temp.each { t ->
                 poa += t.planificado
             }
             ar.add(asig)
@@ -242,7 +233,7 @@ class ReportesController {
     def reasignacionDetallado = {
         def anio = Anio.findByAnio(new Date().format("yyyy"))
         def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort {it.codigo.toInteger()}
+        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort { it.codigo.toInteger() }
         //resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def asignado99 = 0
         def original99 = 0
@@ -267,7 +258,7 @@ class ReportesController {
                 org += temp.originalInversion
             }
             temp = Asignacion.findAllByUnidadAndAnio(it, anio)
-            temp.each {t ->
+            temp.each { t ->
                 poa += t.planificado
             }
             ar.add(asig)
@@ -294,7 +285,7 @@ class ReportesController {
                 org += temp.originalInversion
             }
             temp = Asignacion.findAllByUnidadAndAnio(it, anio)
-            temp.each {t ->
+            temp.each { t ->
                 poa += t.planificado
             }
             ar.add(asig)
@@ -307,7 +298,6 @@ class ReportesController {
         }
         [anio: anio, resto: resto, datos: datos, totalAsg: totalAsg, totalOrg: totalOrg, totalPoa: totalPoa]
     }
-
 
     /**
      * Acción
@@ -331,7 +321,7 @@ class ReportesController {
 
         def anio = Anio.findByAnio(new Date().format("yyyy"))
         def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort {it.codigo.toInteger()}
+        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort { it.codigo.toInteger() }
         //resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def asignado99 = 0
         def original99 = 0
@@ -371,7 +361,7 @@ class ReportesController {
                 original99 += temp.originalInversion
             }
             temp = Asignacion.findAllByUnidadAndAnio(it, anio)
-            temp.each {t ->
+            temp.each { t ->
                 poa99 += t.planificado
             }
 
@@ -410,7 +400,7 @@ class ReportesController {
                 org += temp.originalInversion
             }
             temp = Asignacion.findAllByUnidadAndAnio(it, anio)
-            temp.each {t ->
+            temp.each { t ->
                 poa += t.planificado
             }
             ar.add(asig)
@@ -480,7 +470,7 @@ class ReportesController {
 
         def anio = Anio.findByAnio(new Date().format("yyyy"))
         def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort {it.codigo.toInteger()}
+        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort { it.codigo.toInteger() }
         //resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def asignado99 = 0
         def original99 = 0
@@ -527,7 +517,7 @@ class ReportesController {
                 org += temp.originalInversion
             }
             temp = Asignacion.findAllByUnidadAndAnio(it, anio)
-            temp.each {t ->
+            temp.each { t ->
                 poa += t.planificado
             }
             ar.add(asig)
@@ -567,7 +557,7 @@ class ReportesController {
                 org += temp.originalInversion
             }
             temp = Asignacion.findAllByUnidadAndAnio(it, anio)
-            temp.each {t ->
+            temp.each { t ->
                 poa += t.planificado
             }
             ar.add(asig)
@@ -680,7 +670,6 @@ class ReportesController {
         cn.close()
         [anio: anio, resultados: resultados, total: total]
     }
-
 
     /**
      * Acción
@@ -1188,8 +1177,8 @@ class ReportesController {
     }
 
     def treeLabel(String label, String tipo, attrs) {
-        if(!attrs)
-            attrs=""
+        if (!attrs)
+            attrs = ""
         def str = ""
         switch (tipo) {
             case "link":
@@ -1985,7 +1974,8 @@ class ReportesController {
                         if (cmp.estado == 0) {
                             arbol += "<li rel='componente' class='liComponente'>" //<li> componente
                             arbol += treeLabel("<span style='font-weight:bold;'>Componente # " + (i + 1) + "</span>: " + cmp.objeto, tipo)
-                            arbol += "<ul class='ulIndicadoresSupuestosActividades'>" //<ul> Indicadores Supuestos Actividades
+                            arbol += "<ul class='ulIndicadoresSupuestosActividades'>"
+                            //<ul> Indicadores Supuestos Actividades
                             arbol += "<li rel='indicadores' class='liIndicadores'>" //<li> indicadores
                             arbol += treeLabel("Indicadores", tipo, "style='font-weight:bold;'")
                             indicadores = Indicador.findAllByMarcoLogicoAndEstado(cmp, 0)
@@ -2114,8 +2104,8 @@ class ReportesController {
             def sigs = Asignacion.findAll("from Asignacion  where marcoLogico is not null and unidad=${unidad.id}  and planificado > 0")
 
             def asgInvDiv = []
-            sigs.each {asig->
-                if (asig.marcoLogico.proyecto.unidadEjecutora.id.toInteger()!=unidad.id.toInteger())
+            sigs.each { asig ->
+                if (asig.marcoLogico.proyecto.unidadEjecutora.id.toInteger() != unidad.id.toInteger())
                     asgInvDiv.add(asig)
             }
             def proyectos = Proyecto.findAllByUnidadEjecutora(unidad)
@@ -2144,7 +2134,7 @@ class ReportesController {
                 ml.each { act ->
                     def marcoMap = [:]
                     marcoMap.actividad = act
-                    marcoMap.asignaciones =   Asignacion.findAll("from Asignacion where marcoLogico=${act.id} and anio=${anio.id} and unidad = ${unidad.id}")
+                    marcoMap.asignaciones = Asignacion.findAll("from Asignacion where marcoLogico=${act.id} and anio=${anio.id} and unidad = ${unidad.id}")
 //                        Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
                     actividades.add(marcoMap)
                 }
@@ -2852,8 +2842,6 @@ class ReportesController {
         return ret
     }
 
-
-
     /**
      * Acción
      */
@@ -2886,7 +2874,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def intervencionGUI = { }
+    def intervencionGUI = {}
 
     /**
      * Acción
@@ -2905,7 +2893,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def fichaProyectoGUI = { }
+    def fichaProyectoGUI = {}
 
     /**
      * Acción
@@ -2939,16 +2927,16 @@ class ReportesController {
             def provs = Provincia.findAll("from Provincia where nombre like '%${params.parametro.toUpperCase()}%' order by nombre")
             def cntns = Canton.findAll("from Canton where nombre like '%${params.parametro.toUpperCase()}%' order by nombre")
             provs.each {
-                Canton.findAllByProvincia(it).each {c ->
-                    Parroquia.findAllByCanton(c).each {pr ->
+                Canton.findAllByProvincia(it).each { c ->
+                    Parroquia.findAllByCanton(c).each { pr ->
                         if (!parroquias.contains(pr)) {
                             parroquias.add(pr)
                         }
                     }
                 }
             }
-            cntns.each {c ->
-                Parroquia.findAllByCanton(c).each {pr ->
+            cntns.each { c ->
+                Parroquia.findAllByCanton(c).each { pr ->
                     if (!parroquias.contains(pr)) {
                         parroquias.add(pr)
                     }
@@ -3080,7 +3068,6 @@ class ReportesController {
         return metas
     }
 
-
     /**
      * Acción
      */
@@ -3210,7 +3197,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def marcoLogicoGUI = { }
+    def marcoLogicoGUI = {}
 
     /**
      * Acción
@@ -3239,7 +3226,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def fichaMarcoLogicoGUI = { }
+    def fichaMarcoLogicoGUI = {}
 
     /**
      * Acción
@@ -3267,7 +3254,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def poaOriginalGUI = { }
+    def poaOriginalGUI = {}
 
     /**
      * Acción
@@ -3283,7 +3270,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def poaGUI = { }
+    def poaGUI = {}
 
     /**
      * Acción
@@ -3314,7 +3301,7 @@ class ReportesController {
         Number number
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
-        params.mes="true"
+        params.mes = "true"
 
         def file = File.createTempFile('myExcelDocument', '.xls')
         file.deleteOnExit()
@@ -3406,7 +3393,7 @@ class ReportesController {
             }
 
 
-            it.inversionDividido.each {inv ->
+            it.inversionDividido.each { inv ->
 
                 def total = 0
                 def agr = []
@@ -3437,7 +3424,7 @@ class ReportesController {
 
                 //println "inv dividido "+inv.id+" plan  "+inv.planificado+" suma "+total
 
-                if(total.toFloat().round(2)!=inv.planificado.toFloat().round(2)){
+                if (total.toFloat().round(2) != inv.planificado.toFloat().round(2)) {
                     label = new Label(0, columna, "APP");
                     sheet.addCell(label);
                     label = new Label(1, columna, it.unidad.nombre);
@@ -3474,7 +3461,7 @@ class ReportesController {
                     number = new Number(16, columna, inv.planificado);
                     sheet.addCell(number);
 
-                    agr.each {celda->
+                    agr.each { celda ->
                         sheet.addCell(celda);
                     }
 
@@ -3489,9 +3476,6 @@ class ReportesController {
                     totalTotal += total
                     columna++
                 }
-
-
-
 
 
             }
@@ -3529,7 +3513,7 @@ class ReportesController {
                                         }
                                     }
 
-                                  //  println "inv proy "+asignacion.id+" plan  "+asignacion.planificado+" suma "+total
+                                    //  println "inv proy "+asignacion.id+" plan  "+asignacion.planificado+" suma "+total
                                     if (total.toFloat().round(2) != asignacion.planificado.toFloat().round(2)) {
                                         label = new Label(0, columna, "APP");
                                         sheet.addCell(label);
@@ -3567,7 +3551,7 @@ class ReportesController {
                                         number = new Number(16, columna, asignacion.planificado);
                                         sheet.addCell(number);
 
-                                        agr.each {celda->
+                                        agr.each { celda ->
                                             sheet.addCell(celda);
                                         }
 
@@ -3615,58 +3599,58 @@ class ReportesController {
                     }
                 }
 
-               // println "inv corr "+asignacion.id+" plan  "+asignacion.planificado+" suma "+tot
+                // println "inv corr "+asignacion.id+" plan  "+asignacion.planificado+" suma "+tot
 
-               if (tot.toFloat().round(2)!=asignacion.planificado.toFloat().round(2)){
-                   label = new Label(0, columna, "APP");
-                   sheet.addCell(label);
-                   label = new Label(1, columna, it.unidad.nombre);
-                   sheet.addCell(label);
-                   label = new Label(2, columna, pu?.objetivoEstrategico?.descripcion);
-                   sheet.addCell(label);
-                   label = new Label(3, columna, pu?.ejeProgramatico?.descripcion);
-                   sheet.addCell(label);
-                   label = new Label(4, columna, pu?.politica?.descripcion);
-                   sheet.addCell(label);
-                   label = new Label(5, columna, "N/A");
-                   sheet.addCell(label);
-                   label = new Label(6, columna, asignacion.programa.descripcion);
-                   sheet.addCell(label);
-                   label = new Label(7, columna, "");
-                   sheet.addCell(label);
-                   label = new Label(8, columna, "");
-                   sheet.addCell(label);
-                   label = new Label(9, columna, asignacion.actividad);
-                   sheet.addCell(label);
-                   label = new Label(10, columna, asignacion.id.toString());
-                   sheet.addCell(label);
-                   label = new Label(11, columna, asignacion.indicador);
-                   sheet.addCell(label);
-                   label = new Label(12, columna, "Corriente");
-                   sheet.addCell(label);
-                   label = new Label(13, columna, asignacion.fuente.descripcion);
-                   sheet.addCell(label);
-                   label = new Label(14, columna, asignacion.presupuesto?.presupuesto?.descripcion);
-                   sheet.addCell(label);
-                   label = new Label(15, columna, asignacion.presupuesto?.numero);
-                   sheet.addCell(label);
-                   number = new Number(16, columna, asignacion.planificado);
-                   sheet.addCell(number);
+                if (tot.toFloat().round(2) != asignacion.planificado.toFloat().round(2)) {
+                    label = new Label(0, columna, "APP");
+                    sheet.addCell(label);
+                    label = new Label(1, columna, it.unidad.nombre);
+                    sheet.addCell(label);
+                    label = new Label(2, columna, pu?.objetivoEstrategico?.descripcion);
+                    sheet.addCell(label);
+                    label = new Label(3, columna, pu?.ejeProgramatico?.descripcion);
+                    sheet.addCell(label);
+                    label = new Label(4, columna, pu?.politica?.descripcion);
+                    sheet.addCell(label);
+                    label = new Label(5, columna, "N/A");
+                    sheet.addCell(label);
+                    label = new Label(6, columna, asignacion.programa.descripcion);
+                    sheet.addCell(label);
+                    label = new Label(7, columna, "");
+                    sheet.addCell(label);
+                    label = new Label(8, columna, "");
+                    sheet.addCell(label);
+                    label = new Label(9, columna, asignacion.actividad);
+                    sheet.addCell(label);
+                    label = new Label(10, columna, asignacion.id.toString());
+                    sheet.addCell(label);
+                    label = new Label(11, columna, asignacion.indicador);
+                    sheet.addCell(label);
+                    label = new Label(12, columna, "Corriente");
+                    sheet.addCell(label);
+                    label = new Label(13, columna, asignacion.fuente.descripcion);
+                    sheet.addCell(label);
+                    label = new Label(14, columna, asignacion.presupuesto?.presupuesto?.descripcion);
+                    sheet.addCell(label);
+                    label = new Label(15, columna, asignacion.presupuesto?.numero);
+                    sheet.addCell(label);
+                    number = new Number(16, columna, asignacion.planificado);
+                    sheet.addCell(number);
 
-                   totalAsignado += asignacion.planificado
-                   agr.each {celda->
-                       sheet.addCell(celda);
-                   }
+                    totalAsignado += asignacion.planificado
+                    agr.each { celda ->
+                        sheet.addCell(celda);
+                    }
 
 
-                   if (params.mes == "true")
-                       number = new Number(29, columna, tot);
-                   else
-                       number = new Number(17, columna, tot);
-                   sheet.addCell(number);
-                   totalTotal += tot
-                   columna++
-               }
+                    if (params.mes == "true")
+                        number = new Number(29, columna, tot);
+                    else
+                        number = new Number(17, columna, tot);
+                    sheet.addCell(number);
+                    totalTotal += tot
+                    columna++
+                }
 
 
             }
@@ -3733,8 +3717,8 @@ class ReportesController {
     }
 
     def format(val, tipo) {
-        if(!texto || text=="")
-            text=""
+        if (!texto || text == "")
+            text = ""
         def ret
         if (tipo == "text") {
             ret = val ? val.toString().replaceAll("\\n", "") : ""
@@ -3853,86 +3837,86 @@ class ReportesController {
                 totalMeses[t] = 0
             }
 
-            it.inversionDividido.each {inv ->
+            it.inversionDividido.each { inv ->
 
-                    label = new Label(0, columna, inv.id.toString());
-                    sheet.addCell(label);
-                    label = new Label(1, columna, "APP");
-                    sheet.addCell(label);
-                    label = new Label(2, columna, it.unidad.nombre);
-                    sheet.addCell(label);
+                label = new Label(0, columna, inv.id.toString());
+                sheet.addCell(label);
+                label = new Label(1, columna, "APP");
+                sheet.addCell(label);
+                label = new Label(2, columna, it.unidad.nombre);
+                sheet.addCell(label);
 
-                    label = new Label(3, columna, inv.marcoLogico.proyecto.objetivoEstrategico.descripcion);
-                    sheet.addCell(label);
-                    label = new Label(4, columna, inv.marcoLogico.proyecto.ejeProgramatico.descripcion);
-                    sheet.addCell(label);
-                    def politicas = PoliticasProyecto.findByProyecto(inv.marcoLogico.proyecto)
-                    label = new Label(5, columna, politicas.politica.descripcion);
-                    sheet.addCell(label);
-                    label = new Label(6, columna, inv.marcoLogico.proyecto.codigoProyecto);
-                    sheet.addCell(label);
-                    label = new Label(7, columna, inv.marcoLogico.proyecto.programa.descripcion);
-                    sheet.addCell(label);
-                    label = new Label(8, columna, inv.marcoLogico.proyecto.nombre);
-                    sheet.addCell(label);
-                    label = new Label(9, columna, inv.marcoLogico.marcoLogico.objeto);
-                    sheet.addCell(label);
-                    label = new Label(10, columna, inv.marcoLogico.objeto);
-                    sheet.addCell(label);
-                    label = new Label(11, columna, inv.meta);
-                    sheet.addCell(label);
-                    label = new Label(12, columna, inv.indicador);
-                    sheet.addCell(label);
-                    label = new Label(13, columna, "Inversión");
-                    sheet.addCell(label);
-                    label = new Label(14, columna, inv.fuente.descripcion);
-                    sheet.addCell(label);
-                    label = new Label(15, columna, inv.presupuesto?.presupuesto?.descripcion);
-                    sheet.addCell(label);
-                    label = new Label(16, columna, inv.presupuesto?.numero);
-                    sheet.addCell(label);
-                    Number number = new Number(17, columna, inv.planificado);
-                    sheet.addCell(number);
+                label = new Label(3, columna, inv.marcoLogico.proyecto.objetivoEstrategico.descripcion);
+                sheet.addCell(label);
+                label = new Label(4, columna, inv.marcoLogico.proyecto.ejeProgramatico.descripcion);
+                sheet.addCell(label);
+                def politicas = PoliticasProyecto.findByProyecto(inv.marcoLogico.proyecto)
+                label = new Label(5, columna, politicas.politica.descripcion);
+                sheet.addCell(label);
+                label = new Label(6, columna, inv.marcoLogico.proyecto.codigoProyecto);
+                sheet.addCell(label);
+                label = new Label(7, columna, inv.marcoLogico.proyecto.programa.descripcion);
+                sheet.addCell(label);
+                label = new Label(8, columna, inv.marcoLogico.proyecto.nombre);
+                sheet.addCell(label);
+                label = new Label(9, columna, inv.marcoLogico.marcoLogico.objeto);
+                sheet.addCell(label);
+                label = new Label(10, columna, inv.marcoLogico.objeto);
+                sheet.addCell(label);
+                label = new Label(11, columna, inv.meta);
+                sheet.addCell(label);
+                label = new Label(12, columna, inv.indicador);
+                sheet.addCell(label);
+                label = new Label(13, columna, "Inversión");
+                sheet.addCell(label);
+                label = new Label(14, columna, inv.fuente.descripcion);
+                sheet.addCell(label);
+                label = new Label(15, columna, inv.presupuesto?.presupuesto?.descripcion);
+                sheet.addCell(label);
+                label = new Label(16, columna, inv.presupuesto?.numero);
+                sheet.addCell(label);
+                Number number = new Number(17, columna, inv.planificado);
+                sheet.addCell(number);
 
-                    totalAsignado += inv.planificado
+                totalAsignado += inv.planificado
 
-                    def total = 0
+                def total = 0
 
-                    12.times { mes ->
-                        def mm = mes + 1
-                        def pr = ProgramacionAsignacion.findAll("from ProgramacionAsignacion where asignacion = ${inv.id} and mes = ${mm}")
-                        if (pr.size() == 1) {
-                            pr = pr[0]
-                            def desde = ModificacionAsignacion.findAllByDesde(pr.asignacion)
-                            def hasta = ModificacionAsignacion.findAllByRecibe(pr.asignacion)
-                            if (params.mes == "true") {
-                                inversion += format(pr.valor, "number") + sep
-                                number = new Number(18 + mes, columna, pr.valor);
-                                sheet.addCell(number);
-                            }
-                            total += pr.valor
-                            totalMeses[mes] += pr.valor
-                        } else if (pr.size() > 1) {
-                            if (params.mes == "true") {
-                                inversion += "?" + sep
-                            }
-                        } else {
-                            if (params.mes == "true") {
-                                inversion += "0" + sep
-                                number = new Number(18 + mes, columna, 0);
-                                sheet.addCell(number);
-                            }
+                12.times { mes ->
+                    def mm = mes + 1
+                    def pr = ProgramacionAsignacion.findAll("from ProgramacionAsignacion where asignacion = ${inv.id} and mes = ${mm}")
+                    if (pr.size() == 1) {
+                        pr = pr[0]
+                        def desde = ModificacionAsignacion.findAllByDesde(pr.asignacion)
+                        def hasta = ModificacionAsignacion.findAllByRecibe(pr.asignacion)
+                        if (params.mes == "true") {
+                            inversion += format(pr.valor, "number") + sep
+                            number = new Number(18 + mes, columna, pr.valor);
+                            sheet.addCell(number);
+                        }
+                        total += pr.valor
+                        totalMeses[mes] += pr.valor
+                    } else if (pr.size() > 1) {
+                        if (params.mes == "true") {
+                            inversion += "?" + sep
+                        }
+                    } else {
+                        if (params.mes == "true") {
+                            inversion += "0" + sep
+                            number = new Number(18 + mes, columna, 0);
+                            sheet.addCell(number);
                         }
                     }
-                    inversion += format(total, "number") + sep
-                    if (params.mes == "true")
-                        number = new Number(30, columna, total);
-                    else
-                        number = new Number(18, columna, total);
-                    sheet.addCell(number);
-                    totalTotal += total
-                    inversion += "\n"
-                    columna++
+                }
+                inversion += format(total, "number") + sep
+                if (params.mes == "true")
+                    number = new Number(30, columna, total);
+                else
+                    number = new Number(18, columna, total);
+                sheet.addCell(number);
+                totalTotal += total
+                inversion += "\n"
+                columna++
 
             }
 
@@ -3942,83 +3926,83 @@ class ReportesController {
                         proyectoMap.actividades.each { actividadMap ->
                             actividadMap.asignaciones.each { asignacion ->
 //                                if (asignacion.reubicada != 'S') {
-                                    label = new Label(0, columna, asignacion.id.toString());
-                                    sheet.addCell(label);
-                                    label = new Label(1, columna, "APP");
-                                    sheet.addCell(label);
-                                    label = new Label(2, columna, it.unidad.nombre);
-                                    sheet.addCell(label);
-                                    label = new Label(3, columna, proyectoMap.proyecto?.objetivoEstrategico?.descripcion);
-                                    sheet.addCell(label);
-                                    label = new Label(4, columna, proyectoMap.proyecto?.ejeProgramatico?.descripcion);
-                                    sheet.addCell(label);
-                                    def politicas = PoliticasProyecto.findByProyecto(proyectoMap.proyecto)
-                                    label = new Label(5, columna, politicas.politica.descripcion);
-                                    sheet.addCell(label);
-                                    label = new Label(6, columna, proyectoMap.proyecto.codigoProyecto);
-                                    sheet.addCell(label);
-                                    label = new Label(7, columna, programaMap.programa?.descripcion);
-                                    sheet.addCell(label);
-                                    label = new Label(8, columna, proyectoMap.proyecto.nombre);
-                                    sheet.addCell(label);
-                                    label = new Label(9, columna, actividadMap.actividad.marcoLogico.objeto);
-                                    sheet.addCell(label);
-                                    label = new Label(10, columna, actividadMap.actividad.objeto);
-                                    sheet.addCell(label);
-                                    label = new Label(11, columna, asignacion.meta);
-                                    sheet.addCell(label);
-                                    label = new Label(12, columna, asignacion.indicador);
-                                    sheet.addCell(label);
-                                    label = new Label(13, columna, "Inversión");
-                                    sheet.addCell(label);
-                                    label = new Label(14, columna, asignacion.fuente.descripcion);
-                                    sheet.addCell(label);
-                                    label = new Label(15, columna, asignacion.presupuesto?.presupuesto?.descripcion);
-                                    sheet.addCell(label);
-                                    label = new Label(16, columna, asignacion.presupuesto?.numero);
-                                    sheet.addCell(label);
-                                    Number number = new Number(17, columna, asignacion.getValorReal());
-                                    sheet.addCell(number);
+                                label = new Label(0, columna, asignacion.id.toString());
+                                sheet.addCell(label);
+                                label = new Label(1, columna, "APP");
+                                sheet.addCell(label);
+                                label = new Label(2, columna, it.unidad.nombre);
+                                sheet.addCell(label);
+                                label = new Label(3, columna, proyectoMap.proyecto?.objetivoEstrategico?.descripcion);
+                                sheet.addCell(label);
+                                label = new Label(4, columna, proyectoMap.proyecto?.ejeProgramatico?.descripcion);
+                                sheet.addCell(label);
+                                def politicas = PoliticasProyecto.findByProyecto(proyectoMap.proyecto)
+                                label = new Label(5, columna, politicas.politica.descripcion);
+                                sheet.addCell(label);
+                                label = new Label(6, columna, proyectoMap.proyecto.codigoProyecto);
+                                sheet.addCell(label);
+                                label = new Label(7, columna, programaMap.programa?.descripcion);
+                                sheet.addCell(label);
+                                label = new Label(8, columna, proyectoMap.proyecto.nombre);
+                                sheet.addCell(label);
+                                label = new Label(9, columna, actividadMap.actividad.marcoLogico.objeto);
+                                sheet.addCell(label);
+                                label = new Label(10, columna, actividadMap.actividad.objeto);
+                                sheet.addCell(label);
+                                label = new Label(11, columna, asignacion.meta);
+                                sheet.addCell(label);
+                                label = new Label(12, columna, asignacion.indicador);
+                                sheet.addCell(label);
+                                label = new Label(13, columna, "Inversión");
+                                sheet.addCell(label);
+                                label = new Label(14, columna, asignacion.fuente.descripcion);
+                                sheet.addCell(label);
+                                label = new Label(15, columna, asignacion.presupuesto?.presupuesto?.descripcion);
+                                sheet.addCell(label);
+                                label = new Label(16, columna, asignacion.presupuesto?.numero);
+                                sheet.addCell(label);
+                                Number number = new Number(17, columna, asignacion.getValorReal());
+                                sheet.addCell(number);
 
-                                    totalAsignado += asignacion.getValorReal()
+                                totalAsignado += asignacion.getValorReal()
 
-                                    def total = 0
+                                def total = 0
 
-                                    12.times { mes ->
-                                        def mm = mes + 1
-                                        def pr = ProgramacionAsignacion.findAll("from ProgramacionAsignacion where asignacion = ${asignacion.id} and mes = ${mm}")
-                                        if (pr.size() == 1) {
-                                            pr = pr[0]
-                                            def desde = ModificacionAsignacion.findAllByDesde(pr.asignacion)
-                                            def hasta = ModificacionAsignacion.findAllByRecibe(pr.asignacion)
-                                            if (params.mes == "true") {
-                                                inversion += format(pr.valor, "number") + sep
-                                                number = new Number(18 + mes, columna, pr.valor);
-                                                sheet.addCell(number);
-                                            }
-                                            total += pr.valor
-                                            totalMeses[mes] += pr.valor
-                                        } else if (pr.size() > 1) {
-                                            if (params.mes == "true") {
-                                                inversion += "?" + sep
-                                            }
-                                        } else {
-                                            if (params.mes == "true") {
-                                                inversion += "0" + sep
-                                                number = new Number(18 + mes, columna, 0);
-                                                sheet.addCell(number);
-                                            }
+                                12.times { mes ->
+                                    def mm = mes + 1
+                                    def pr = ProgramacionAsignacion.findAll("from ProgramacionAsignacion where asignacion = ${asignacion.id} and mes = ${mm}")
+                                    if (pr.size() == 1) {
+                                        pr = pr[0]
+                                        def desde = ModificacionAsignacion.findAllByDesde(pr.asignacion)
+                                        def hasta = ModificacionAsignacion.findAllByRecibe(pr.asignacion)
+                                        if (params.mes == "true") {
+                                            inversion += format(pr.valor, "number") + sep
+                                            number = new Number(18 + mes, columna, pr.valor);
+                                            sheet.addCell(number);
+                                        }
+                                        total += pr.valor
+                                        totalMeses[mes] += pr.valor
+                                    } else if (pr.size() > 1) {
+                                        if (params.mes == "true") {
+                                            inversion += "?" + sep
+                                        }
+                                    } else {
+                                        if (params.mes == "true") {
+                                            inversion += "0" + sep
+                                            number = new Number(18 + mes, columna, 0);
+                                            sheet.addCell(number);
                                         }
                                     }
-                                    inversion += format(total, "number") + sep
-                                    if (params.mes == "true")
-                                        number = new Number(30, columna, total);
-                                    else
-                                        number = new Number(18, columna, total);
-                                    sheet.addCell(number);
-                                    totalTotal += total
-                                    inversion += "\n"
-                                    columna++
+                                }
+                                inversion += format(total, "number") + sep
+                                if (params.mes == "true")
+                                    number = new Number(30, columna, total);
+                                else
+                                    number = new Number(18, columna, total);
+                                sheet.addCell(number);
+                                totalTotal += total
+                                inversion += "\n"
+                                columna++
 //                            }
                             } //actividadMap.asignaciones.each -> asignacion
                         } //proyectoMap.actividades.each -> actividadMap
@@ -4026,7 +4010,7 @@ class ReportesController {
                 } //if programaMap.proyectos.size >0
             } //unidad.programas.each -> programaMap
             it.corrientes.each { asignacion ->
-                label = new Label(0, columna,asignacion.id.toString());
+                label = new Label(0, columna, asignacion.id.toString());
                 sheet.addCell(label);
                 label = new Label(1, columna, "APP");
                 sheet.addCell(label);
@@ -4228,7 +4212,6 @@ class ReportesController {
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());
     }
-
 
     /**
      * Acción
@@ -4653,7 +4636,7 @@ class ReportesController {
         headCorriente += "\n"
 
         unidades.each {
-            it.programas.each {programaMap ->
+            it.programas.each { programaMap ->
                 if (programaMap.proyectos.size() > 0 && programaMap.proyectos.actividades.size() > 0 && programaMap.proyectos.actividades.asignaciones.size() > 0) {
                     programaMap.proyectos.each { proyectoMap ->
                         proyectoMap.actividades.each { actividadMap ->
@@ -4728,7 +4711,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def modificacionesProyectoGUI = { }
+    def modificacionesProyectoGUI = {}
 
     /**
      * Acción
@@ -4761,7 +4744,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def poaInversionesGUI = { }
+    def poaInversionesGUI = {}
 
     /**
      * Acción
@@ -4797,7 +4780,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def poaCorrientesGUI = { }
+    def poaCorrientesGUI = {}
 
     /**
      * Acción
@@ -4839,7 +4822,7 @@ class ReportesController {
     /**
      * Acción
      */
-    def consulta = {ids ->
+    def consulta = { ids ->
         def cn = dbConnectionService.getConnection()
         def resultados = []
         def detalle = []
@@ -4858,7 +4841,6 @@ class ReportesController {
         println resultados
         return resultados
     }
-
 
     /**
      * Acción
@@ -5098,8 +5080,6 @@ class ReportesController {
         output.write(file.getBytes());
     }
 
-
-
     /**
      * Acción
      */
@@ -5110,12 +5090,10 @@ class ReportesController {
 
         def asgs = Asignacion.findAll("from Asignacion where marcoLogico is not null and unidad =${unidad.id} and reubicada='S' and anio=${actual.id} order by id")
 
-        [asgs:asgs,unidad:unidad,actual: actual]
+        [asgs: asgs, unidad: unidad, actual: actual]
 
 
     }
-
-
 
     /**
      * Acción
@@ -5140,10 +5118,8 @@ class ReportesController {
     /**
      * Acción
      */
-    def ejecucionUEGUI =  {
+    def ejecucionUEGUI = {
     }
-
-
 
 
 }

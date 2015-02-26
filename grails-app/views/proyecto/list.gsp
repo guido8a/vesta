@@ -378,6 +378,7 @@
 
                 $(".btnSearch").click(function () {
                     buscar();
+                    return false;
                 });
                 $(".buscar").keyup(function (ev) {
                     if (ev.keyCode == 13) {

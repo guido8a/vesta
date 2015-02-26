@@ -219,11 +219,13 @@ class AccionesController extends Shield {
         def accionesSelected = []
         def accionesInsertar = []
         (params.accion.split(",")).each { accionId ->
-            def accion = Accn.get(accionId.toLong())
-            if (!permisosOld.accion.id.contains(accion.id)) {
-                accionesInsertar += accion
-            } else {
-                accionesSelected += accion
+            if (accionId) {
+                def accion = Accn.get(accionId.toLong())
+                if (!permisosOld.accion.id.contains(accion.id)) {
+                    accionesInsertar += accion
+                } else {
+                    accionesSelected += accion
+                }
             }
         }
 
