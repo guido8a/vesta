@@ -352,7 +352,7 @@
                                 action : function ($element) {
                                     var id = $element.data("id");
                                     var show = $element.data("show");
-                                    createEditRow(id);
+
                                 }
                             },
                             eliminar   : {
