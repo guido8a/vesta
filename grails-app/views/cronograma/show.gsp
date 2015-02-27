@@ -68,7 +68,7 @@
 
         <g:if test="${proyecto.aprobado == 'a'}">
             <div class="alert alert-info">
-                El proyecto está aprobado, no puede modificar ni agregar componentes ni actividades
+                El proyecto está aprobado, no puede modificar el cronograma
             </div>
         </g:if>
 
