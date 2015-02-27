@@ -28,6 +28,9 @@ class CronogramaController extends Shield {
     def show() {
         println "show cronograma " + params
         def proyecto = Proyecto.get(params.id)
+        def act = null
+        if (params.act && params.act != "")
+            act = MarcoLogico.get(params.act)
         def componentes = MarcoLogico.withCriteria {
             eq("proyecto", proyecto)
             eq("tipoElemento", TipoElemento.get(2))
@@ -44,7 +47,7 @@ class CronogramaController extends Shield {
             anio = Anio.list([sort: 'anio']).pop()
         println "anio " + anio
 
-        return [proyecto: proyecto, componentes: componentes, anio: anio, fuentes: fuentes]
+        return [proyecto: proyecto, componentes: componentes, anio: anio, actSel: act, fuentes: fuentes, params: params]
     }
 
     /**
@@ -52,7 +55,7 @@ class CronogramaController extends Shield {
      */
     def form() {
         println "form cronograma " + params
-        def proyecto = Proyecto.get(params.id)
+        def proyecto = Proyecto.get(params.id.toLong())
         def act = null
         if (params.act && params.act != "")
             act = MarcoLogico.get(params.act)
@@ -69,15 +72,22 @@ class CronogramaController extends Shield {
             anio = Anio.get(params.anio)
         if (!anio)
             anio = Anio.findAll("from Anio order by anio").pop()
-        def finan = Financiamiento.findAllByProyectoAndAnio(proyecto, anio)
-        def fuentes = []
-        def totAnios = [:]
-        finan.each {
-            fuentes.add(it)
-            totAnios.put(it.fuente.id, it.monto)
+
+        def editable = anio.estado == 0 && proyecto.aprobado != 'a'
+
+        if (editable) {
+            def finan = Financiamiento.findAllByProyectoAndAnio(proyecto, anio)
+            def fuentes = []
+            def totAnios = [:]
+            finan.each {
+                fuentes.add(it)
+                totAnios.put(it.fuente.id, it.monto)
+            }
+            def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+            return [proyecto: proyecto, componentes: componentes, anio: anio, fuentes: fuentes, totAnios: totAnios, actSel: act, campos: campos]
+        } else {
+            redirect(action: 'show', params: params)
         }
-        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
-        return [proyecto: proyecto, componentes: componentes, anio: anio, fuentes: fuentes, totAnios: totAnios, actSel: act, campos: campos]
     }
 
     /**

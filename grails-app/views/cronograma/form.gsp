@@ -100,9 +100,6 @@
                         <g:each in="${componentes}" var="comp" status="j">
                             <g:set var="totComp" value="${0}"/>
                             <g:set var="totCompAsig" value="${0}"/>
-
-                            <g:set var="totProyAsig" value="${totProyAsig.toDouble() + totCompAsig.toDouble()}"/>
-                            <g:set var="totProy" value="${totProy.toDouble() + totComp.toDouble()}"/>
                             <tr id="comp${comp.id}" class="success">
                                 <th colspan="17">
                                     <strong>Componente ${comp.numeroComp}</strong>:
@@ -118,6 +115,10 @@
                                     <g:set var="tot" value="${act.getTotalCronograma()}"/>
                                     <g:set var="totCompAsig" value="${totCompAsig.toDouble() + tot}"/>
                                     <g:set var="totalMetas" value="${totalMetas.toDouble() + monto}"/>
+                                    <g:set var="totalMetasCronograma" value="${totalMetasCronograma.toDouble() + totalMetas}"/>
+                                    <g:set var="totalMetas" value="${0}"/>
+                                    <g:set var="totProyAsig" value="${totProyAsig.toDouble() + totCompAsig.toDouble()}"/>
+                                    <g:set var="totProy" value="${totProy.toDouble() + totComp.toDouble()}"/>
 
                                     <tr data-id="${act.id}">
                                         <th class="success actividad" title="${act.responsable} - ${act.objeto}" style="width:300px;">
@@ -136,7 +137,9 @@
                                                 </g:each>
 
                                                 <g:if test="${crg}">
+                                                    <g:set var="valor" value="${crg.valor + crg.valor2}"/>
                                                     <g:set var="val" value="${crg.valor + crg.valor2}"/>
+                                                    <g:set var="crg" value="${null}"/>
                                                     <g:set var="clase" value="clickable"/>
                                                 </g:if>
                                             </g:if>
@@ -145,20 +148,19 @@
                                             </g:if>
 
                                             <td class="text-right ${clase} ${crg && crg.fuente ? 'fnte_' + crg.fuente.id : ''} ${crg && crg.fuente2 ? 'fnte_' + crg.fuente2.id : ''}"
-                                                data-id="${crg?.id}" data-val="${val}"
+                                                data-id="${crg?.id}" data-val="${valor}"
                                                 data-presupuesto1="${crg?.valor}" data-bsc-desc-partida1="${crg?.presupuesto?.toString()}"
                                                 data-partida1="${crg?.presupuesto?.id}" data-fuente1="${crg?.fuente?.id}"
                                                 data-presupuesto2="${crg?.valor2}" data-bsc-desc-2="${crg?.presupuesto2?.toString()}"
                                                 data-partida2="${crg?.presupuesto2?.id}" data-fuente2="${crg?.fuente2?.id}">
-                                                <g:formatNumber number="${val}" type="currency"/>
+                                                <g:formatNumber number="${valor}" type="currency"/>
                                             </td>
-                                            <g:set var="crg" value="${null}"/>
                                         </g:each>
                                         <th class="disabled text-right asignado" data-val="${tot}">
                                             <g:formatNumber number="${tot}" type="currency"/>
                                         </th>
                                         <th class="disabled text-right sinAsignar" data-val="${act.monto - tot}">
-                                            <g:formatNumber number="${act.monto - tot}" type="currency"/>
+                                            <g:formatNumber number="${act.monto - tot.toDouble()}" type="currency"/>
                                         </th>
                                         <th class="disabled text-right total" data-val="${monto}">
                                             <g:formatNumber number="${monto}" type="currency"/>
@@ -178,9 +180,6 @@
                                 </th>
                                 <th class="text-right">
                                     <g:formatNumber number="${totalMetas}" type="currency"/>
-
-                                    <g:set var="totalMetasCronograma" value="${totalMetasCronograma.toDouble() + totalMetas}"/>
-                                    <g:set var="totalMetas" value="${0}"/>
                                 </th>
                             </tr>
                         </g:each>

@@ -40,7 +40,6 @@
     </head>
 
     <body>
-
         <g:set var="editable" value="${anio.estado == 0 && proyecto.aprobado != 'a'}"/>
         <g:if test="${params.list != 'list'}">
             <g:set var="editable" value="${false}"/>
@@ -113,49 +112,53 @@
                                 </th>
                             </tr>
                             <g:each in="${MarcoLogico.findAllByMarcoLogicoAndEstado(comp, 0, [sort: 'id'])}" var="act" status="i">
-                                <g:set var="monto" value="${act.monto}"/>
-                                <g:set var="totComp" value="${totComp.toDouble() + monto}"/>
-                                <g:set var="tot" value="${0}"/>
-                                <g:set var="totAct" value="${monto}"/>
-                                <g:set var="tot" value="${act.getTotalCronograma()}"/>
-                                <g:set var="totCompAsig" value="${totCompAsig + act.getTotalCronograma()}"/>
-                                <g:set var="totalMetas" value="${totalMetas.toDouble() + monto}"/>
-                                <g:set var="totalMetasCronograma" value="${totalMetasCronograma.toDouble() + totalMetas}"/>
-                                <g:set var="totalMetas" value="${0}"/>
-                                <g:set var="totProyAsig" value="${totProyAsig.toDouble() + totCompAsig.toDouble()}"/>
-                                <g:set var="totProy" value="${totProy.toDouble() + totComp.toDouble()}"/>
-                                <tr>
-                                    <th class="success" title="${act.responsable} - ${act.objeto}" style="width:300px;">
-                                        ${(act.objeto.length() > 100) ? act.objeto.substring(0, 100) + "..." : act.objeto}
-                                    </th>
-                                    <g:each in="${Mes.list()}" var="mes" status="k">
-                                        <g:set var="crga" value='${Cronograma.findAllByMarcoLogicoAndMes(act, mes)}'/>
-                                        <g:set var="valor" value="${0}"/>
-                                        <g:if test="${crga.size() > 0}">
-                                            <g:each in="${crga}" var="c">
-                                                <g:if test="${c?.anio == anio}">
-                                                    <g:set var="crg" value='${c}'/>
+                                <g:if test="${!actSel || (actSel && actSel.id == act.id)}">
+                                    <g:set var="monto" value="${act.monto}"/>
+                                    <g:set var="totComp" value="${totComp.toDouble() + monto}"/>
+                                    <g:set var="tot" value="${0}"/>
+                                    <g:set var="totAct" value="${monto}"/>
+                                    <g:set var="tot" value="${act.getTotalCronograma()}"/>
+                                    <g:set var="totCompAsig" value="${totCompAsig + act.getTotalCronograma()}"/>
+                                    <g:set var="totalMetas" value="${totalMetas.toDouble() + monto}"/>
+                                    <g:set var="totalMetasCronograma" value="${totalMetasCronograma.toDouble() + totalMetas}"/>
+                                    <g:set var="totalMetas" value="${0}"/>
+                                    <g:set var="totProyAsig" value="${totProyAsig.toDouble() + totCompAsig.toDouble()}"/>
+                                    <g:set var="totProy" value="${totProy.toDouble() + totComp.toDouble()}"/>
+
+                                    <tr>
+                                        <th class="success" title="${act.responsable} - ${act.objeto}" style="width:300px;">
+                                            ${(act.objeto.length() > 100) ? act.objeto.substring(0, 100) + "..." : act.objeto}
+                                        </th>
+                                        <g:each in="${Mes.list()}" var="mes" status="k">
+                                            <g:set var="crga" value='${Cronograma.findAllByMarcoLogicoAndMes(act, mes)}'/>
+                                            <g:set var="valor" value="${0}"/>
+
+                                            <g:if test="${crga.size() > 0}">
+                                                <g:each in="${crga}" var="c">
+                                                    <g:if test="${c?.anio == anio}">
+                                                        <g:set var="crg" value='${c}'/>
+                                                    </g:if>
+                                                </g:each>
+                                                <g:if test="${crg}">
+                                                    <g:set var="valor" value="${crg.valor + crg.valor2}"/>
+                                                    <g:set var="crg" value="${null}"/>
                                                 </g:if>
-                                            </g:each>
-                                            <g:if test="${crg}">
-                                                <g:set var="valor" value="${crg.valor + crg.valor2}"/>
-                                                <g:set var="crg" value="${null}"/>
                                             </g:if>
-                                        </g:if>
-                                        <td style="width:100px;" class="text-right">
-                                            <g:formatNumber number="${valor}" type="currency"/>
-                                        </td>
-                                    </g:each>
-                                    <th class="text-right">
-                                        <g:formatNumber number="${tot}" type="currency"/>
-                                    </th>
-                                    <th class="text-right">
-                                        <g:formatNumber number="${act.monto - tot.toDouble()}" type="currency"/>
-                                    </th>
-                                    <th class="text-right">
-                                        <g:formatNumber number="${monto}" type="currency"/>
-                                    </th>
-                                </tr>
+                                            <td style="width:100px;" class="text-right">
+                                                <g:formatNumber number="${valor}" type="currency"/>
+                                            </td>
+                                        </g:each>
+                                        <th class="text-right">
+                                            <g:formatNumber number="${tot}" type="currency"/>
+                                        </th>
+                                        <th class="text-right">
+                                            <g:formatNumber number="${act.monto - tot.toDouble()}" type="currency"/>
+                                        </th>
+                                        <th class="text-right">
+                                            <g:formatNumber number="${monto}" type="currency"/>
+                                        </th>
+                                    </tr>
+                                </g:if>
                             </g:each>
                             <tr class="warning">
                                 <th colspan="13">TOTAL</th>
@@ -227,7 +230,8 @@
                 });
                 $("#anio").change(function () {
                     openLoader();
-                    location.href = "${createLink(controller: 'cronograma', action: 'form', id: proyecto.id)}?anio=" + $("#anio").val() + armaParams();
+                    location.href = "${createLink(controller: 'cronograma', action: 'show', id: proyecto.id)}?anio=" +
+                                    $("#anio").val() + armaParams() + "&act=${actSel?.id}&list=${params.list}";
                 });
 
                 $(".scrollComp").click(function () {

@@ -352,7 +352,7 @@
                                 action : function ($element) {
                                     var id = $element.data("id");
                                     var show = $element.data("show");
-
+                                    location.href = "${createLink(controller: 'cronograma', action:'show', id:proyecto.id)}?act=" + id + "&list=${reqParams.list}";
                                 }
                             },
                             eliminar   : {
@@ -402,5 +402,34 @@
                 });
             </script>
         </g:if>
+        <g:else>
+            <script type="text/javascript">
+                $(function () {
+                    $("tbody>tr").contextMenu({
+                        items  : {
+                            header     : {
+                                label  : "Acciones",
+                                header : true
+                            },
+                            cronograma : {
+                                label  : "Cronograma",
+                                icon   : "fa fa-calendar",
+                                action : function ($element) {
+                                    var id = $element.data("id");
+                                    var show = $element.data("show");
+                                    location.href = "${createLink(controller: 'cronograma', action:'show', id:proyecto.id)}?act=" + id + "&list=${reqParams.list}";
+                                }
+                            }
+                        },
+                        onShow : function ($element) {
+                            $element.addClass("success");
+                        },
+                        onHide : function ($element) {
+                            $(".success").removeClass("success");
+                        }
+                    });
+                });
+            </script>
+        </g:else>
     </body>
 </html>
