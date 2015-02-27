@@ -65,6 +65,13 @@
                 </g:link>
             </div>
         </div>
+
+        <g:if test="${proyecto.aprobado == 'a'}">
+            <div class="alert alert-info">
+                El proyecto está aprobado, no puede modificar ni agregar componentes ni actividades
+            </div>
+        </g:if>
+
         <elm:container tipo="horizontal" titulo="Cronograma del proyecto ${proyecto?.toStringMedio()}, para el año ${anio}" color="black">
             <div class="divIndice ">
                 <g:each in="${componentes}" var="comp">
