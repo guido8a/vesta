@@ -177,6 +177,7 @@
                 if (params != "") {
                     returnParams += "&" + params;
                 }
+                console.log(returnParams);
                 return returnParams;
             }
 

@@ -72,7 +72,8 @@
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
                             <g:textField name="monto" value="${fieldValue(bean: marcoLogicoInstance, field: 'monto')}"
-                                         class="number money form-control input-sm  required" required="" tdnMax="${totFin - (totComp + totOtros)}"/>
+                                         class="number money form-control input-sm  required" required=""
+                                         tdnMax="${(totFin - (totComp + totOtros)) + marcoLogicoInstance.monto}"/>
                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                         </div>
                     </div>
@@ -117,7 +118,7 @@
             },
             success        : function (label) {
                 label.parents(".grupo").removeClass('has-error');
-label.remove();
+                label.remove();
             }
 
         });

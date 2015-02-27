@@ -179,8 +179,10 @@ class MarcoLogicoController extends Shield {
         if (!params.show) {
             params.show = 0
         }
+        def reqParams = params.clone()
+        reqParams.remove('show')
 
-        return [fin: fin, proposito: proposito, proyecto: proyecto, componentes: componentes, params: params]
+        return [fin: fin, proposito: proposito, proyecto: proyecto, componentes: componentes, reqParams: reqParams]
     }
 
     /**

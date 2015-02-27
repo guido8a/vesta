@@ -36,104 +36,112 @@
             </g:if>
         </div>
 
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-            <g:set var="tc" value="0"/>
-            <g:each in="${componentes}" var="comp" status="k">
-                <g:set var="compInfo" value="Componente ${comp.numeroComp ?: 's/n'}:
+        <g:if test="${proyecto.aprobado == 'a'}">
+            <div class="alert alert-info">
+                El proyecto está aprobado, no puede modificar ni agregar componentes ni actividades
+            </div>
+        </g:if>
+
+        <g:if test="${componentes.size() > 0}">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <g:set var="tc" value="0"/>
+                <g:each in="${componentes}" var="comp" status="k">
+                    <g:set var="compInfo" value="Componente ${comp.numeroComp ?: 's/n'}:
                                 ${(comp?.objeto?.length() > 40) ? comp?.objeto?.substring(0, 40) + "..." : comp.objeto}"/>
-                <div class="panel panel-success">
-                    <div class="panel-heading" role="tab" id="headingComp${k}">
-                        <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#componente${k}"
-                            aria-expanded="${k == params.show.toInteger() ? 'true' : 'false'}" aria-controls="componente${k}">
-                            <a href="#">
-                                ${compInfo}
-                            </a>
+                    <div class="panel panel-success">
+                        <div class="panel-heading" role="tab" id="headingComp${k}">
+                            <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#componente${k}"
+                                aria-expanded="${k == params.show.toInteger() ? 'true' : 'false'}" aria-controls="componente${k}">
+                                <a href="#">
+                                    ${compInfo}
+                                </a>
 
-                            <g:if test="${editable}">
-                                <span class="btn-group pull-right">
-                                    <a href="#" class="btn btn-xs btn-success btnAddAct" title="Agregar actividad"
-                                       data-id="${comp.id}" data-show="${k}">
-                                        <i class="fa fa-plus"></i> actividad
-                                    </a>
-                                    <a href="#" class="btn btn-xs btn-info btnEditComp" title="Editar componente"
-                                       data-id="${comp.id}" data-show="${k}">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-xs btn-danger btnDeleteComp" title="Eliminar componente"
-                                       data-id="${comp.id}" data-info="${compInfo}">
-                                        <i class="fa fa-trash-o"></i>
-                                    </a>
-                                </span>
-                            </g:if>
-                        </h4>
-                    </div>
+                                <g:if test="${editable}">
+                                    <span class="btn-group pull-right">
+                                        <a href="#" class="btn btn-xs btn-success btnAddAct" title="Agregar actividad"
+                                           data-id="${comp.id}" data-show="${k}">
+                                            <i class="fa fa-plus"></i> actividad
+                                        </a>
+                                        <a href="#" class="btn btn-xs btn-info btnEditComp" title="Editar componente"
+                                           data-id="${comp.id}" data-show="${k}">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-xs btn-danger btnDeleteComp" title="Eliminar componente"
+                                           data-id="${comp.id}" data-info="${compInfo}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    </span>
+                                </g:if>
+                            </h4>
+                        </div>
 
-                    <div id="componente${k}" class="panel-collapse collapse ${k == params.show.toInteger() ? 'in' : ''}"
-                         role="tabpanel" aria-labelledby="headingComp${k}">
-                        <table class="table table-bordered table-condensed table-hover">
-                            <thead>
-                                <tr>
-                                    <th width="45">#</th>
-                                    <th>Actividad</th>
-                                    <th width="125">Monto</th>
-                                    <th width="110">Inicio</th>
-                                    <th width="110">Fin</th>
-                                    <th width="120">Responsable</th>
-                                    <th width="110">Categoría</th>
-                                    %{--<g:if test="${editable}">--}%
-                                    %{--<th width="100">Acciones</th>--}%
-                                    %{--</g:if>--}%
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <g:set var="total" value="${0}"/>
-                                <g:each in="${MarcoLogico.findAllByMarcoLogicoAndEstado(comp, 0, [sort: 'numero'])}" var="act" status="l">
-                                    <g:set var="total" value="${total.toDouble() + act.monto}"/>
-                                    <tr data-id="${act.id}" data-show="${k}" data-info="${act.objeto}">
-                                        <td class="text-center">${act.numero}</td>
-                                        <td>${act?.objeto}</td>
-                                        <td class="text-right"><g:formatNumber number="${act.monto}" type="currency"/></td>
-                                        <td class="text-center">${act.fechaInicio?.format('dd-MM-yyyy')}</td>
-                                        <td class="text-center">${act.fechaFin?.format('dd-MM-yyyy')}</td>
-                                        <td>${act.responsable?.nombre}</td>
-                                        <td>${act.categoria?.descripcion}</td>
+                        <div id="componente${k}" class="panel-collapse collapse ${k == params.show.toInteger() ? 'in' : ''}"
+                             role="tabpanel" aria-labelledby="headingComp${k}">
+                            <table class="table table-bordered table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="45">#</th>
+                                        <th>Actividad</th>
+                                        <th width="125">Monto</th>
+                                        <th width="110">Inicio</th>
+                                        <th width="110">Fin</th>
+                                        <th width="120">Responsable</th>
+                                        <th width="110">Categoría</th>
                                         %{--<g:if test="${editable}">--}%
-                                        %{--<td>--}%
-                                        %{--<div class="btn-group ">--}%
-                                        %{--<a href="#" class="btn btn-xs btn-info btnEditAct" title="Editar actividad"--}%
-                                        %{--data-id="${act.id}" data-show="${k}">--}%
-                                        %{--<i class="fa fa-pencil"></i>--}%
-                                        %{--</a>--}%
-                                        %{--<a href="#" class="btn btn-xs btn-danger btnDeleteAct" title="Eliminar actividad"--}%
-                                        %{--data-id="${act.id}" data-show="${k}" data-info="${act.objeto}">--}%
-                                        %{--<i class="fa fa-trash-o"></i>--}%
-                                        %{--</a>--}%
-                                        %{--<a href="#" class="btn btn-xs btn-warning btnCronoAct" title="Cronograma"--}%
-                                        %{--data-id="${act.id}" data-show="${k}">--}%
-                                        %{--<i class="fa fa-calendar"></i>--}%
-                                        %{--</a>--}%
-                                        %{--</div>--}%
-                                        %{--</td>--}%
+                                        %{--<th width="100">Acciones</th>--}%
                                         %{--</g:if>--}%
                                     </tr>
-                                </g:each>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="2">Subtotal</th>
-                                    <th class="text-right"><g:formatNumber number="${total}" type="currency"/></th>
-                                </tr>
-                            </tfoot>
-                            <g:set var="tc" value="${tc.toDouble() + total}"/>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <g:set var="total" value="${0}"/>
+                                    <g:each in="${MarcoLogico.findAllByMarcoLogicoAndEstado(comp, 0, [sort: 'numero'])}" var="act" status="l">
+                                        <g:set var="total" value="${total.toDouble() + act.monto}"/>
+                                        <tr data-id="${act.id}" data-show="${k}" data-info="${act.objeto}">
+                                            <td class="text-center">${act.numero}</td>
+                                            <td>${act?.objeto}</td>
+                                            <td class="text-right"><g:formatNumber number="${act.monto}" type="currency"/></td>
+                                            <td class="text-center">${act.fechaInicio?.format('dd-MM-yyyy')}</td>
+                                            <td class="text-center">${act.fechaFin?.format('dd-MM-yyyy')}</td>
+                                            <td>${act.responsable?.nombre}</td>
+                                            <td>${act.categoria?.descripcion}</td>
+                                            %{--<g:if test="${editable}">--}%
+                                            %{--<td>--}%
+                                            %{--<div class="btn-group ">--}%
+                                            %{--<a href="#" class="btn btn-xs btn-info btnEditAct" title="Editar actividad"--}%
+                                            %{--data-id="${act.id}" data-show="${k}">--}%
+                                            %{--<i class="fa fa-pencil"></i>--}%
+                                            %{--</a>--}%
+                                            %{--<a href="#" class="btn btn-xs btn-danger btnDeleteAct" title="Eliminar actividad"--}%
+                                            %{--data-id="${act.id}" data-show="${k}" data-info="${act.objeto}">--}%
+                                            %{--<i class="fa fa-trash-o"></i>--}%
+                                            %{--</a>--}%
+                                            %{--<a href="#" class="btn btn-xs btn-warning btnCronoAct" title="Cronograma"--}%
+                                            %{--data-id="${act.id}" data-show="${k}">--}%
+                                            %{--<i class="fa fa-calendar"></i>--}%
+                                            %{--</a>--}%
+                                            %{--</div>--}%
+                                            %{--</td>--}%
+                                            %{--</g:if>--}%
+                                        </tr>
+                                    </g:each>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2">Subtotal</th>
+                                        <th class="text-right"><g:formatNumber number="${total}" type="currency"/></th>
+                                    </tr>
+                                </tfoot>
+                                <g:set var="tc" value="${tc.toDouble() + total}"/>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </g:each>
-        </div>
+                </g:each>
+            </div>
 
-        <div class="alert alert-info">
-            <h4>TOTAL: <g:formatNumber number="${tc}" type="currency"/></h4>
-        </div>
+            <div class="alert alert-info">
+                <h4>TOTAL: <g:formatNumber number="${tc}" type="currency"/></h4>
+            </div>
+        </g:if>
         <g:if test="${editable}">
             <script type="text/javascript">
                 function submitFormComponente(show) {
@@ -217,7 +225,7 @@
                                 log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                 setTimeout(function () {
                                     if (parts[0] == "SUCCESS") {
-                                        location.href = "${createLink(controller: 'marcoLogico', action: 'marcoLogicoProyecto', id:proyecto.id)}?show=" + show;
+                                        location.href = "${createLink(controller: 'marcoLogico', action: 'marcoLogicoProyecto', id:proyecto.id, params:reqParams)}&show=" + show;
                                     } else {
                                         spinner.replaceWith($btn);
                                         return false;
