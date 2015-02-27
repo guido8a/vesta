@@ -159,7 +159,7 @@
                                 log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                 setTimeout(function () {
                                     if (parts[0] == "SUCCESS") {
-                                        location.href = "${createLink(controller: 'marcoLogico', action: 'marcoLogicoProyecto', id:proyecto.id)}?show=" + show;
+                                        location.href = "${createLink(controller: 'marcoLogico', action: 'marcoLogicoProyecto', id:proyecto.id, params:reqParams)}&show=" + show;
                                     } else {
                                         spinner.replaceWith($btn);
                                         return false;
