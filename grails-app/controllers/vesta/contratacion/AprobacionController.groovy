@@ -101,6 +101,33 @@ class AprobacionController extends Shield {
 
     }
 
+    /**
+     * Acción que muestra una lista de las actas subidas
+     */
+    def listaActas () {
+        /*
+        Gerencia de Planificación, Dirección Planificación y  Dirección de Seguimiento,
+                GP                      DP                          DS
+        Dirección de Contratación Pública y la Dirección Administrativa, Gerencia Técnica
+                DCP                                  DA                      GT
+            TODAS
+         */
+
+        def perfil = session.perfil
+        def usuario = Persona.get(session.usuario.id)
+        def unidad = usuario.unidad
+        def todos = ["GP", "DP", "DS", "DCP", "DA", "GT"]
+        def aprobaciones = []
+        def a = Aprobacion.withCriteria {
+            isNotNull("fechaRealizacion")
+            isNotNull("pathPdf")
+        }
+        if (todos.contains(perfil.codigo)) {
+            aprobaciones = a
+        }
+
+        return [aprobaciones: aprobaciones]
+    }
 
     /**
      * Acción llamada con ajax para cargar un datepicker para la reunión de aprobación
@@ -126,6 +153,14 @@ class AprobacionController extends Shield {
             return
         }
 
+    }
+
+    /**
+     * Acción llamada con ajax para cargar un dialog de subir archivos
+     */
+    def subirActa_ajax () {
+        def reunion = Aprobacion.get(params.id)
+        return [reunion: reunion]
     }
 
     def reunion () {

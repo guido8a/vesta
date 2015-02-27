@@ -133,10 +133,10 @@
         <thead></thead>
         <tbody>
         <tr>
-            <td>
-                <label>Observaciones</label>
+            <td colspan="2">
+                <label><i class="fa fa-eye"></i> Observaciones</label>
             </td>
-            <td colspan="4">
+            <td colspan="6">
                 <g:if test="${puedeEditar}">
                     <g:textArea class="ui-widget-content ui-corner-all " name="observaciones" rows="5" cols="5" value="${reunion.observaciones}" style="resize: none"/>
                 </g:if>
@@ -147,7 +147,9 @@
         </tr>
         <g:if test="${reunion.pathPdf}">
             <tr>
-                <td class="label">Archivo</td>
+                <td colspan="2">
+                <label><i class="fa fa-folder-open-o"></i> Archivo</label>
+                </td>
                 <td>
                     <g:link controller="solicitud" action="downloadActa" id="${reunion.id}">
                         ${reunion.pathPdf}
@@ -216,16 +218,16 @@
     </table>
 </div>
 
-<div id="dialogUpload" title="Seleccione un archivo" class="ui-helper-hidden">
-    <p>
-        <g:uploadForm id="${reunion.id}" name="frmPdf" controller="solicitud" action="uploadActa">
-            <input type="file" name="pdf" class="required"/>
-            <g:if test="${reunion.pathPdf}">
-                <br/>Archivo cargado: ${reunion.pathPdf}
-            </g:if>
-        </g:uploadForm>
-    </p>
-</div>
+%{--<div id="dialogUpload" title="Seleccione un archivo" class="ui-helper-hidden">--}%
+    %{--<p>--}%
+        %{--<g:uploadForm id="${reunion.id}" name="frmPdf" controller="solicitud" action="uploadActa">--}%
+            %{--<input type="file" name="pdf" class="required"/>--}%
+            %{--<g:if test="${reunion.pathPdf}">--}%
+                %{--<br/>Archivo cargado: ${reunion.pathPdf}--}%
+            %{--</g:if>--}%
+        %{--</g:uploadForm>--}%
+    %{--</p>--}%
+%{--</div>--}%
 
 <script type="text/javascript">
 
@@ -332,7 +334,8 @@
                 $tbody.show();
                 $tbody.removeClass("escondido");
             } else {
-                $tbody.hide();
+                $tbody.hide();    $("#dialogUpload").dialog("open");
+            return false;
                 $tbody.addClass("escondido");
             }
 
@@ -343,11 +346,67 @@
         });
 
         $("#uploadActa").click(function () {
-            $("#dialogUpload").dialog("open");
+//            $("#dialogUpload").dialog("open");
+            $.ajax ({
+              type : "POST",
+              url  : "${createLink(action: 'subirActa_ajax', id: reunion.id)}",
+              success : function (msg){
+                  bootbox.dialog({
+                      id: "dlgSubirActa",
+                      title: "Subir Acta",
+//                      class: "modal-lg",
+                      message: msg,
+                      buttons : {
+                          cancelar : {
+                              label: "Cancelar",
+                              className: "btn-primary",
+                              callback: function () {
+                              }
+                          },
+                          aprobar : {
+                              id : "btnAprobar",
+                              label : "<i class='fa fa-arrow-up'></i> Subir",
+                              className : "btn-success",
+                              callback : function () {
+                                submitForm()
+
+                              }
+                          }
+                      }
+                  });
+              }
+            });
             return false;
         });
 
-        $(".tipoAprobacion").selectmenu({width : 210});
+
+        function submitForm() {
+            var $form = $("#frmPdf");
+                openLoader("Guardando Acta");
+                var formData = new FormData($form[0]);
+                $.ajax({
+                    type        : "POST",
+                    url         : $form.attr("action"),
+                    data        : formData,
+                    async       : false,
+                    cache       : false,
+                    contentType : false,
+                    processData : false,
+                    success     : function (msg) {
+                        var parts = msg.split("*");
+                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                        setTimeout(function () {
+                            if (parts[0] == "SUCCESS") {
+                                location.reload(true);
+                            } else {
+                                return false;
+                            }
+                        }, 1000);
+                    }
+                });
+        }
+
+//        $(".tipoAprobacion").selectmenu({width : 210});
 
         $(".button").button();
 

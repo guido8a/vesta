@@ -939,7 +939,13 @@ class SolicitudController extends Shield {
     def uploadActa = {
         def aprobacion = Aprobacion.get(params.id.toLong())
         uploadFile("acta", request.getFile('pdf'), aprobacion)
-        redirect(controller: 'aprobacion', action: "listaActas")
+
+
+
+        render "SUCCESS*Se ha cargado el archivo con éxito"
+        return
+
+//        redirect(controller: 'aprobacion', action: "listaActas")
     }
 
     /**
