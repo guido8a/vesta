@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Marco lógico del proyecto</title>
+        <title>Plan de Proyecto</title>
     </head>
 
     <body>
