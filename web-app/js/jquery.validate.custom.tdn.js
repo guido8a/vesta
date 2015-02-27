@@ -34,6 +34,7 @@ jQuery.validator.addMethod("tdnMaxSuma", function (value, element, params) {
             value2 = 0;
         }
         var max = parseFloat($(params.params[1]).data(params.params[2]));
+        max = Math.round(max * 100) / 100;
         var total = value + value2;
         if (total <= max) {
             valid = true;
@@ -41,6 +42,6 @@ jQuery.validator.addMethod("tdnMaxSuma", function (value, element, params) {
     } catch (e) {
         //console.log(e);
     }
-    //console.log("value ", value, "value2 ", value2, "max ", max, "total ", total, "valid?? ", valid);
+    console.log("value ", value, "value2 ", value2, "max ", max, "total ", total, "valid?? ", valid);
     return this.optional(element) || valid;
 }, jQuery.validator.format("Please enter the correct value for {0} + {1}"));
