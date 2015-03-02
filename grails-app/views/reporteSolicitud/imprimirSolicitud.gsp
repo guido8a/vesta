@@ -9,48 +9,11 @@
 <html>
     <head>
         <title>Imprimir solicitud</title>
+
+        <rep:estilos orientacion="p" pagTitle="Aval de POA"/>
+
         <style type="text/css">
-        @font-face {
-            font-family : 'Arial';
-            src         : url('${resource(dir:"fontPdf", file: "arial.ttf")}');
-        }
-
-        @page {
-            size   : 21cm 29.7cm;  /*width height */
-            margin : 2cm;
-        }
-
-        body {
-            font-family : Arial, arial, arial-black, sans-serif;
-            font-size   : 10pt;
-        }
-
-        .hoja {
-            width     : 15cm;
-            font-size : 12pt;
-        }
-
-        .titulo {
-            width : 15.5cm;
-        }
-
-        .hoja {
-            /*background  : #fedcba;*/
-            height      : 24.7cm; /*29.7-(1.5*2)*/
-            font-family : arial;
-            font-size   : 12pt;
-        }
-
-        .titulo {
-            height        : 130px;
-            font-size     : 12pt;
-            /*font-weight   : bold;*/
-            text-align    : center;
-            margin-bottom : 5px;
-            width         : 95%;
-        }
-
-        .totales {
+              .totales {
             font-weight : bold;
         }
 
@@ -101,13 +64,13 @@
     </head>
 
     <body>
-        <div class="hoja">
-            <rep:headerReporte  title="Solicitud de contratación"/>
+
+            <rep:headerFooter title="Solicitud de contratación"/>
             <slc:infoReporte solicitud="${solicitud}"/>
             <div class="fecha">
                 Quito, ${solicitud.fecha?.format("dd-MM-yyyy")}
             </div>
             <slc:firmasReporte firmas="${firmas}"/>
-        </div>
+
     </body>
 </html>

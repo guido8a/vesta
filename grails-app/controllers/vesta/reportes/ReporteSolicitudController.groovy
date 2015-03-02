@@ -593,7 +593,7 @@ class ReporteSolicitudController {
         def para = 'Srta Econ. Rocio Elizabeth Gavilanes Reyes'
         def cargo = 'GERENTE DE PLANIFICACIÓN'
         def asunto = 'Solicitud de reforma del POA'
-        def nombreFirma = sol.usuario.persona
+        def nombreFirma = sol.usuario
         def cargofirma = ''
         def gerente = Sesn.findByPerfil(Prfl.findByCodigo("GP"))
         if (gerente) {

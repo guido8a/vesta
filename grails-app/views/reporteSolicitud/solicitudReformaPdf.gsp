@@ -9,33 +9,9 @@
 <html>
 <head>
     <title>Solicitud De Reforma POA</title>
+
+        <rep:estilos orientacion="p" pagTitle="Solicitud Reforma"/>
     <style type="text/css">
-    @font-face {
-        font-family : 'Arial';
-        src         : url('${resource(dir:"fontPdf", file: "arial.ttf")}');
-    }
-
-    @page {
-        size   : 21cm 29.7cm;  /*width height */
-        margin : 2cm;
-    }
-
-    body {
-        font-family : Arial, arial, arial-black, sans-serif;
-        font-size   : 10pt;
-    }
-
-    .hoja {
-        width     : 15cm;
-        font-size : 12pt;
-    }
-
-    .hoja {
-        /*background  : #fedcba;*/
-        height      : 24.7cm; /*29.7-(1.5*2)*/
-        font-family : arial;
-        font-size   : 12pt;
-    }
 
     th {
         text-align: left;
@@ -54,8 +30,8 @@
 
 
 <body>
-<div class="hoja">
-    <rep:headerReporte  title=""/>
+
+    <rep:headerFooter  title="Solicitud Reforma"/>
     <div>
         %{--<div style="text-align: right" class="label">Memorando Nro. ${numero}</div>--}%
         <div style="text-align: right" class="label">Quito, D.M., ${fecha}</div>
@@ -69,7 +45,7 @@
                     <th>
                         PARA:
                     </th>
-                    <th>${gerente?.persona}</th>
+                    <th>${gerente?.nombre + " " + gerente?.apellido }</th>
                 </tr>
                 <tr>
                     <th></th>
@@ -104,9 +80,9 @@
         <div style="margin-top: 10px">
             Atentamente,
         </div>
-        <g:if test="${solicitud.firmaSol.estado=='F'}">
+        <g:if test="${solicitud?.firmaSol?.estado=='F'}">
             <img src="${resource(dir: 'firmas',file: solicitud.firmaSol.path)}"/><br/>
-            ${solicitud.firmaSol.usuario.persona.nombre} ${solicitud.firmaSol.usuario.persona.apellido}<br/>
+            ${solicitud.firmaSol.usuario.nombre} ${solicitud.firmaSol.usuario.apellido}<br/>
             ${solicitud.firmaSol.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
             ${solicitud.firmaSol.fecha.format("dd-MM-yyyy hh:mm")}
         </g:if>
@@ -118,8 +94,6 @@
     %{--</div>--}%
 
     </div>
-
-</div>
 
 </body>
 </html>

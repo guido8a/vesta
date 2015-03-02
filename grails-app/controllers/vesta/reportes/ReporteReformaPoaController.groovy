@@ -1,6 +1,7 @@
 package vesta.reportes
 
 import vesta.modificaciones.SolicitudModPoa
+import vesta.parametros.poaPac.Anio
 import vesta.seguridad.Prfl
 import vesta.seguridad.Sesn
 
@@ -19,7 +20,8 @@ class ReporteReformaPoaController {
     def solicitudReformaPoa = {
 //        http://localhost:8090/yachay/pdf/pdfLink?url=/yachay/reporteReformaPoa/solicitudReformaPoa/?id=1&filename=Solicitud.pdf
         def sol = SolicitudModPoa.get(params.id)
-        [sol:sol]
+        def anio = Anio.findByAnio(new Date().format("yyyy"))
+        [sol:sol, anio: anio]
     }
 
 

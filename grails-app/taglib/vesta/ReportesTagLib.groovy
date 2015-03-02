@@ -144,16 +144,19 @@ class ReportesTagLib {
             html += '</div>'
         }
 
-        html += "<div class='numeracion'>"
-        html += "<table border='1'>"
-        html += "<tr>"
-        html += "<td style='background: #0F243E;'>Form. GPE-DPI-01</td>"
-        html += "<td style='background: #008080;'>Numeración:</td>"
-        html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>"
-        html += "<td style='background: #008080;'>No. ${attrs.numero ?: ''}</td>"
-        html += "</tr>"
-        html += "</table>"
-        html += "</div>"
+        if(attrs.unidad || attrs.numero){
+            html += "<div class='numeracion'>"
+            html += "<table border='1'>"
+            html += "<tr>"
+            html += "<td style='background: #0F243E;'>Form. GPE-DPI-01</td>"
+            html += "<td style='background: #008080;'>Numeración:</td>"
+            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>"
+            html += "<td style='background: #008080;'>No. ${attrs.numero ?: ''}</td>"
+            html += "</tr>"
+            html += "</table>"
+            html += "</div>"
+        }
+
 
         out << raw(html)
     }
