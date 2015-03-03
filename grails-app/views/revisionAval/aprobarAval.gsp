@@ -43,7 +43,7 @@
                         <td>${solicitud.proceso.nombre}</td>
                         <td>${solicitud.concepto}</td>
                         <td class="text-right">
-                            <g:formatNumber number="${solicitud.monto}" type="currency"/>
+                            <g:formatNumber number="${solicitud.monto}" type="currency" currencySymbol=" "/>
                         </td>
                         <td>${solicitud.estado?.descripcion}</td>
                         <td style="text-align: center">

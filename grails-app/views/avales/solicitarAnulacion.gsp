@@ -64,7 +64,7 @@
 
                     <div class="col-md-2">
                         <p class="form-control-static">
-                            <g:formatNumber number="${aval.monto}" type="currency"/>
+                            <g:formatNumber number="${aval.monto}" type="currency" currencySymbol=" "/>
                         </p>
                     </div>
                 </span>

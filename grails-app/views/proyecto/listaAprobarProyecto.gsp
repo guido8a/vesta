@@ -56,7 +56,7 @@
                                 ${proyectoInstance.codigoProyecto}
                             </td>
                             <td class="text-right">
-                                <g:formatNumber number="${proyectoInstance.monto.toDouble()}" type="currency"/>
+                                <g:formatNumber number="${proyectoInstance.monto.toDouble()}" type="currency" currencySymbol=" "/>
                             </td>
                             <td>
                                 ${proyectoInstance.estadoProyecto}

@@ -152,17 +152,17 @@
                                                 </g:if>
                                             </g:if>
                                             <td style="width:100px;" class="text-right">
-                                                <g:formatNumber number="${valor}" type="currency"/>
+                                                <g:formatNumber number="${valor}" type="currency" currencySymbol=" "/>
                                             </td>
                                         </g:each>
                                         <th class="text-right">
-                                            <g:formatNumber number="${tot}" type="currency"/>
+                                            <g:formatNumber number="${tot}" type="currency" currencySymbol=" "/>
                                         </th>
                                         <th class="text-right">
-                                            <g:formatNumber number="${act.monto - tot.toDouble()}" type="currency"/>
+                                            <g:formatNumber number="${act.monto - tot.toDouble()}" type="currency" currencySymbol=" "/>
                                         </th>
                                         <th class="text-right">
-                                            <g:formatNumber number="${monto}" type="currency"/>
+                                            <g:formatNumber number="${monto}" type="currency" currencySymbol=" "/>
                                         </th>
                                     </tr>
                                 </g:if>
@@ -170,13 +170,13 @@
                             <tr class="warning">
                                 <th colspan="13">TOTAL</th>
                                 <th class="text-right">
-                                    <g:formatNumber number="${totCompAsig}" type="currency"/>
+                                    <g:formatNumber number="${totCompAsig}" type="currency" currencySymbol=" "/>
                                 </th>
                                 <th class="text-right">
-                                    <g:formatNumber number="${(totComp.toDouble() - totCompAsig.toDouble())}" type="currency"/>
+                                    <g:formatNumber number="${(totComp.toDouble() - totCompAsig.toDouble())}" type="currency" currencySymbol=" "/>
                                 </th>
                                 <th class="text-right">
-                                    <g:formatNumber number="${totalMetas}" type="currency"/>
+                                    <g:formatNumber number="${totalMetas}" type="currency" currencySymbol=" "/>
                                 </th>
                             </tr>
                         </g:each>
@@ -185,13 +185,13 @@
                         <tr class="danger">
                             <th colspan="13">TOTAL DEL PROYECTO</th>
                             <th class="text-right">
-                                <g:formatNumber number="${totProyAsig}" type="currency"/>
+                                <g:formatNumber number="${totProyAsig}" type="currency" currencySymbol=" "/>
                             </th>
                             <th class="text-right">
-                                <g:formatNumber number="${(totProy.toDouble() - totProyAsig.toDouble())}" type="currency"/>
+                                <g:formatNumber number="${(totProy.toDouble() - totProyAsig.toDouble())}" type="currency" currencySymbol=" "/>
                             </th>
                             <th class="text-right">
-                                <g:formatNumber number="${(totalMetasCronograma)}" type="currency"/>
+                                <g:formatNumber number="${(totalMetasCronograma)}" type="currency" currencySymbol=" "/>
                             </th>
                         </tr>
                     </tfoot>

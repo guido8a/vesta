@@ -199,10 +199,10 @@
                 ${asg.presupuesto.numero}
             </td>
             <td class="valor" style="text-align: right">
-                <g:formatNumber number="${asg.getValorReal()}"  type="currency"/>
+                <g:formatNumber number="${asg.getValorReal()}"  type="currency" currencySymbol=" "/>
             </td>
             <td class="agr" style="text-align: right">
-                <g:formatNumber number="${asg.priorizado}"  type="currency"/>
+                <g:formatNumber number="${asg.priorizado}"  type="currency" currencySymbol=" "/>
             </td>
         </tr>
     </g:each>
@@ -215,10 +215,10 @@
         <td></td>
         <td><b>TOTAL</b></td>
         <td class="valor" style="text-align: right; font-weight: bold; border-top : solid 1px #000000;">
-            <g:formatNumber number="${total.toDouble()}" type="currency"/>
+            <g:formatNumber number="${total.toDouble()}" type="currency" currencySymbol=" "/>
         </td>
         <td class="valor" style="text-align: right; font-weight: bold; border-top : solid 1px #000000;">
-            <g:formatNumber number="${totalP.toDouble()}" type="currency"/>
+            <g:formatNumber number="${totalP.toDouble()}" type="currency" currencySymbol=" "/>
         </td>
     </tr>
     </tbody>

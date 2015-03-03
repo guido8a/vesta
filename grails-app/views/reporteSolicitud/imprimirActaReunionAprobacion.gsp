@@ -144,14 +144,14 @@
                             <g:each in="${anios}" var="a">
                                 <g:set var="valor" value="${DetalleMontoSolicitud.findByAnioAndSolicitud(a, solicitud)}"/>
                                 <g:if test="${valor}">
-                                    <td><g:formatNumber number="${valor.monto}" type="currency"/></td>
+                                    <td><g:formatNumber number="${valor.monto}" type="currency" currencySymbol=" "/></td>
                                     <g:set var="total" value="${total + valor.monto}"/>
                                 </g:if>
                                 <g:else>
                                     <td></td>
                                 </g:else>
                             </g:each>
-                            <td><g:formatNumber number="${total}" type="currency"/></td>
+                            <td><g:formatNumber number="${total}" type="currency" currencySymbol=" "/></td>
                             <td>${solicitud.revisionDireccionPlanificacionInversion}</td>
                             <td>${solicitud.tipoAprobacion.descripcion}</td>
                             <td>${solicitud.observacionesAprobacion}</td>

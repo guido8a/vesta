@@ -75,7 +75,7 @@
                         <tr>
                             <td>${act.proyecto?.descripcion}</td>
                             <td>${act.objeto}</td>
-                            <td class="right"><g:formatNumber number="${act.monto}" type="currency"/></td>
+                            <td class="right"><g:formatNumber number="${act.monto}" type="currency" currencySymbol=" "/></td>
                             <td>${act.responsable?.nombre}</td>
                             <td>${act.fechaInicio?.format("dd-MM-yyyy")}</td>
                         </tr>

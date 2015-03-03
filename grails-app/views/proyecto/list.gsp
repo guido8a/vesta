@@ -112,7 +112,7 @@
                             </td>
 
                             <td class="text-right">
-                                <g:formatNumber number="${proyectoInstance.monto}" type="currency"/>
+                                <g:formatNumber number="${proyectoInstance.monto}" type="currency" currencySymbol=" " currencySymbol=" "/>
                             </td>
 
                             <td>

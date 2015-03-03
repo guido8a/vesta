@@ -77,7 +77,7 @@ class ModificacionesPoaController {
             println "error save sol mod poa "+solicitud.errors
         }else{
             def firma = new Firma()
-            firma.usuario=Usro.get(params.firma)
+            firma.usuario=Persona.get(params.firma)
             firma.accionVer="solicitudReformaPdf"
             firma.controladorVer="reporteSolicitud"
             firma.accion="firmarSolicitud"
@@ -134,7 +134,7 @@ class ModificacionesPoaController {
             println "error save sol mod poa "+solicitud.errors
         }else{
             def firma = new Firma()
-            firma.usuario=Usro.get(params.firma)
+            firma.usuario=Persona.get(params.firma)
             firma.accionVer="solicitudReformaPdf"
             firma.controladorVer="reporteSolicitud"
             firma.accion="firmarSolicitud"
@@ -167,7 +167,7 @@ class ModificacionesPoaController {
             println "error save sol mod poa "+solicitud.errors
         }else{
             def firma = new Firma()
-            firma.usuario=Usro.get(params.firma)
+            firma.usuario=Persona.get(params.firma)
             firma.accionVer="solicitudReformaPdf"
             firma.controladorVer="reporteSolicitud"
             firma.accion="firmarSolicitud"
@@ -198,7 +198,7 @@ class ModificacionesPoaController {
             println "error save sol mod poa "+solicitud.errors
         }else{
             def firma = new Firma()
-            firma.usuario=Usro.get(params.firma)
+            firma.usuario=Persona.get(params.firma)
             firma.accionVer="solicitudReformaPdf"
             firma.controladorVer="reporteSolicitud"
             firma.accion="firmarSolicitud"
@@ -246,9 +246,9 @@ class ModificacionesPoaController {
     def verSolicitud = {
         def sol = SolicitudModPoa.get(params.id)
         def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Usro.findAllByUnidad(unidad)
+        def personasFirmas = Persona.findAllByUnidad(unidad)
         unidad = UnidadEjecutora.findByCodigo("DRPL")
-        def perGerencia = Usro.findAllByUnidad(unidad)
+        def perGerencia = Persona.findAllByUnidad(unidad)
         [sol:sol,personas:personasFirmas,perGerencia:perGerencia]
     }
 
@@ -272,7 +272,7 @@ class ModificacionesPoaController {
         sol.revisor=session.usuario
 
         def firma1 = new Firma()
-        firma1.usuario=Usro.get(params.firma1)
+        firma1.usuario=Persona.get(params.firma1)
         firma1.accionVer="reformaPoa"
         firma1.controladorVer="reporteReformaPoa"
         firma1.idAccionVer=sol.id
@@ -284,7 +284,7 @@ class ModificacionesPoaController {
         if(!firma1.save(flush: true))
             println "error firma1 "+firma1.errors
         def firma2 = new Firma()
-        firma2.usuario=Usro.get(params.firma2)
+        firma2.usuario=Persona.get(params.firma2)
         firma2.accionVer="reformaPoa"
         firma2.controladorVer="reporteReformaPoa"
         firma2.idAccionVer=sol.id

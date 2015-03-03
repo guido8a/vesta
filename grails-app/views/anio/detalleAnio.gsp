@@ -33,14 +33,14 @@
             <td >${dato.key}</td>
             %{--<td style="background: #FFAB48;text-align: right;border: 1px solid #000000">${dato.value.get(1)}</td>--}%
             <td style="text-align: right" >${dato.value.get(1)}</td>
-            <td style="text-align: right"> <g:formatNumber number="${dato.value.get(0)}" type="currency"/></td>
+            <td style="text-align: right"> <g:formatNumber number="${dato.value.get(0)}" type="currency" currencySymbol=" " currencySymbol=" "/></td>
 
         </tr>
     </g:each>
     <tr>
         <td ><b>Total</b></td>
         <td style="text-align: right;font-weight: bold" >${totCantProy}</td>
-        <td style="text-align: right;font-weight: bold"><g:formatNumber number="${totProy.toDouble()}" type="currency"/></td></td>
+        <td style="text-align: right;font-weight: bold"><g:formatNumber number="${totProy.toDouble()}" type="currency" currencySymbol=" " currencySymbol=" "/></td></td>
 
 
     </tr>

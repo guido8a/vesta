@@ -75,7 +75,7 @@
                                 <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="unidadEjecutora.nombre"/></elm:textoBusqueda></td>
                                 <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="actividad.objeto"/></elm:textoBusqueda></td>
                                 <td><g:formatDate date="${solicitudInstance.fecha}" format="dd-MM-yyyy"/></td>
-                                <td style="text-align: right"><g:formatNumber number="${solicitudInstance.montoSolicitado}" type="currency"/></td>
+                                <td style="text-align: right"><g:formatNumber number="${solicitudInstance.montoSolicitado}" type="currency" currencySymbol=" "/></td>
                                 <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="tipoContrato.descripcion"/></elm:textoBusqueda></td>
                                 <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${solicitudInstance}" field="nombreProceso"/></elm:textoBusqueda></td>
                                 <td><g:formatNumber number="${solicitudInstance.plazoEjecucion}" maxFractionDigits="0"/> días</td>

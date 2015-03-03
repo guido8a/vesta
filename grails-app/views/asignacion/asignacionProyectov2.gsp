@@ -92,7 +92,7 @@
                     ${asg.presupuesto.numero}
                 </td>
                 <td class="valor" style="text-align: right">
-                    <g:formatNumber number="${asg.getValorReal().toDouble()}" type="currency"/>
+                    <g:formatNumber number="${asg.getValorReal().toDouble()}" type="currency" currencySymbol=" "/>
                 </td>
                 <g:if test="${actual.estado==1}">
                     <g:if test="${proyecto.aprobadoPoa!='S'}">
@@ -106,7 +106,7 @@
                     </g:if><g:else>
                     <td class="valor" style="text-align: right">
                         <div style="">
-                            <g:formatNumber number="${asg.priorizado.toDouble()}" type="currency"/>
+                            <g:formatNumber number="${asg.priorizado.toDouble()}" type="currency" currencySymbol=" "/>
                         </div>
                     </td>
                 </g:else>
@@ -146,11 +146,11 @@
             <td></td>
             <td></td>
             <td class="valor" style="text-align: right; font-weight: bold;">
-                <g:formatNumber number="${total.toDouble()}" type="currency"/>
+                <g:formatNumber number="${total.toDouble()}" type="currency" currencySymbol=" "/>
             </td>
             <g:if test="${actual?.estado!=0}">
                 <td style="text-align: right; font-weight: bold;" id="totalPrio">
-                    <g:formatNumber number="${totalP.toDouble()}" type="currency"/>
+                    <g:formatNumber number="${totalP.toDouble()}" type="currency" currencySymbol=" "/>
                 </td>
             </g:if>
         </tr>
@@ -171,20 +171,20 @@
 <div style="position: absolute;top:5px;right:10px;font-size: 11px;">
     <b>Total invertido proyecto actual:</b>
     <g:if test="${actual?.estado==0}">
-        <g:formatNumber number="${total?.toFloat()}" type="currency"/>
+        <g:formatNumber number="${total?.toFloat()}" type="currency" currencySymbol=" "/>
     </g:if>
     <g:else>
-        <g:formatNumber number="${totalP?.toFloat()}" type="currency"/>
+        <g:formatNumber number="${totalP?.toFloat()}" type="currency" currencySymbol=" "/>
     </g:else>
 </div>
 <div style="position: absolute;top:25px;right:10px;font-size: 11px;">
     <b>M&aacute;ximo Inversiones:</b>
-    <g:formatNumber number="${maxInv}" type="currency"/>
+    <g:formatNumber number="${maxInv}" type="currency" currencySymbol=" "/>
 </div>
 
 <div style="position: absolute;top:45px;right:10px;font-size: 11px;">
     <b>Restante:</b>
-    <g:formatNumber number="${maxInv - total}" type="currency"/>
+    <g:formatNumber number="${maxInv - total}" type="currency" currencySymbol=" "/>
 </div>
 <elm:modal titulo="Dividir asignación" id="modal-dividir">
     <div class="modal-body" id="body-dividir"></div>

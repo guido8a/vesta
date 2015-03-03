@@ -124,11 +124,11 @@
 
                 <td class="valor" style="text-align: right">
                     <g:if test="${actual.estado==1}">
-                        <g:formatNumber number="${asg.priorizado}" type="currency"/>
+                        <g:formatNumber number="${asg.priorizado}" type="currency" currencySymbol=" "/>
                         <g:set var="total" value="${total.toDouble().round(2) + asg.priorizado}"></g:set>
                     </g:if>
                     <g:else>
-                        <g:formatNumber number="${asg.planificado}" type="currency"/>
+                        <g:formatNumber number="${asg.planificado}" type="currency" currencySymbol=" "/>
                         <g:set var="total" value="${total.toDouble().round(2) + asg.planificado}"></g:set>
                     </g:else>
 
@@ -156,7 +156,7 @@
                 TOTAL
             </td>
             <td style="text-align: right;font-weight: bold">
-                <g:formatNumber number="${total.toDouble()}" type="currency"/>
+                <g:formatNumber number="${total.toDouble()}" type="currency" currencySymbol=" "/>
             </td>
         </tr>
         </tbody>

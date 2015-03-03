@@ -12,7 +12,6 @@
 <g:select from="${acts}" optionKey="id"  id="actividad" name="actividad" optionValue='${{""+it.numero+" - "+it.objeto}}' noSelection="['-1':'Seleccione']" class="form-control input-sm"/>
 <script>
     $("#actividad").change(function(){
-        console.log("-->" + $("#anio").val());
         $.ajax({
             type: "POST",
             url: "${createLink(action:'cargarAsignaciones',controller: 'avales')}",

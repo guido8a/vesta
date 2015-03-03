@@ -23,7 +23,7 @@
                     ${fin.fuente.descripcion}
                 </td>
                 <td class="text-right">
-                    <g:formatNumber number="${fin.monto}" type="currency"/>
+                    <g:formatNumber number="${fin.monto}" type="currency" currencySymbol=" "/>
                 </td>
                 <td class="text-right">
                     <g:formatNumber number="${finPorcentaje / 100}" type="percent"
@@ -47,7 +47,7 @@
                 TOTAL
             </th>
             <th class="text-right" id="tfSuma">
-                <g:formatNumber number="${suma}" type="currency"/>
+                <g:formatNumber number="${suma}" type="currency" currencySymbol=" "/>
             </th>
             <th class="text-right" id="tfPorc">
                 <g:formatNumber number="${prct / 100}" type="percent" minFractionDigits="2"

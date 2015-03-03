@@ -120,7 +120,7 @@
                     </g:else>
                 </g:each>
                 <td class="total" id="total_cor_${asg.id}" style="width: 80px;text-align: right;${(totalFila.toDouble().round(2)!=asg.priorizado.toDouble().round(2))?'color:red;':''}">
-                    <g:formatNumber number="${totalFila}" type="currency"/>
+                    <g:formatNumber number="${totalFila}" type="currency" currencySymbol=" "/>
                 </td>
                 <g:if test="${actual.estado==0}">
                     <td>

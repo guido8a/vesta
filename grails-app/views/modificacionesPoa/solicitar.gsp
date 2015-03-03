@@ -335,8 +335,8 @@
         var asgDest = $("#asignacion_dest").val()
         var asgOrigen = $("#asignacion").val()
         var monto = $("#monto").val();
-        monto = monto.replace(new RegExp("\\.", 'g'), "");
-        monto = monto.replace(new RegExp(",", 'g'), ".");
+//        monto = monto.replace(new RegExp("\\.", 'g'), "");
+        monto = monto.replace(new RegExp(",", 'g'), "");
         var max = $("#max").attr("valor")
         var msg =""
         var concepto = $("#concepto_reasignacion").val()
@@ -350,6 +350,7 @@
         if(monto==""){
             msg+="<br>Por favor, ingrese un monto válido"
         }
+        //console.log(monto,max)
         if(isNaN(monto)){
             msg+="<br>Por favor, ingrese un monto válido"
         }else{

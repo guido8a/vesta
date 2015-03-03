@@ -9,10 +9,10 @@
     <div class="modal-contenido">
 
         <div class="alert alert-info">
-            <strong>Total componente:</strong> <g:formatNumber number="${totComp}" type="currency"/>
-            <strong>T. otros componentes:</strong> <g:formatNumber number="${totOtros}" type="currency"/><br/>
-            <strong>T. financiamiento:</strong> <g:formatNumber number="${totFin}" type="currency"/>
-            <strong>Sin asignar:</strong> <g:formatNumber number="${totFin - (totComp + totOtros)}" type="currency"/>
+            <strong>Total componente:</strong> <g:formatNumber number="${totComp}" type="currency" currencySymbol=" "/>
+            <strong>T. otros componentes:</strong> <g:formatNumber number="${totOtros}" type="currency" currencySymbol=" "/><br/>
+            <strong>T. financiamiento:</strong> <g:formatNumber number="${totFin}" type="currency" currencySymbol=" "/>
+            <strong>Sin asignar:</strong> <g:formatNumber number="${totFin - (totComp + totOtros)}" type="currency" currencySymbol=" "/>
         </div>
 
         <g:form class="form-horizontal" name="frmActividad" role="form" action="save_actividad_ajax" method="POST">

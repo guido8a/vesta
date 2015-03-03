@@ -25,7 +25,7 @@
                 <td>${sol.usuario}</td>
                 <td>${sol.concepto}</td>
                 <td style="text-align: right">
-                    <g:formatNumber number="${sol.monto}" type="currency"/>
+                    <g:formatNumber number="${sol.monto}" type="currency" currencySymbol=" "/>
                 </td>
                 <td style="text-align: center" class="${sol.estado?.codigo}">${sol.estado?.descripcion}</td>
                 <td style="text-align: center">
