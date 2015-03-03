@@ -42,6 +42,21 @@
                             </li>
 
                             <li>
+                                <i class="fa-li fa fa-hand-o-right text-info"></i>
+                                <g:link data-info="categoria" class="over" controller="categoria" action="list">
+                                    Categorías de Actividades
+                                </g:link> para difenciar entre Estudios, construcción, fiscalización
+
+                                <div class="descripcion hidden">
+                                    <h4>Categorías</h4>
+
+                                    <p>Valores de las categorías de las actividades dentro de los componenetes de un proyecto.</p>
+
+                                    <p>Las categorías poseen valores de "ninguna" o específicos como Estudios, construcción, fiscalización, etc..</p>
+                                </div>
+                            </li>
+
+                            <li>
                                 <i class="fa-li fa fa-money text-success"></i>
                                 <g:link class="over" controller="presupuesto" action="arbol">
                                     Plan de cuentas Presupuestario

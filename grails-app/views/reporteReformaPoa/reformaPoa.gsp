@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: fabricio
-  Date: 02/03/15
-  Time: 03:24 PM
+  Date: 03/03/15
+  Time: 11:36 AM
 --%>
 
 <%--
@@ -15,15 +15,22 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Solicitud de reforma al POA</title>
-
-    <rep:estilos orientacion="l" pagTitle="Solicitud de reforma al POA"/>
-
+    <title>Reforma de POA</title>
+    <rep:estilos orientacion="l" pagTitle="Reforma al POA"/>
     <style type="text/css">
     table {
         font-size : 9pt;
     }
 
+    .titulo {
+        min-height    : 20px;
+        font-size     : 16pt;
+        /*font-weight   : bold;*/
+        text-align    : center;
+        margin-bottom : 5px;
+        width         : 100%;
+        border-bottom : solid 1px #000000;
+    }
 
     .totales {
         font-weight : bold;
@@ -43,9 +50,9 @@
         color      : #FFFFFF !important;
     }
 
-    /*th {*/
-        /*background : #cccccc;*/
-    /*}*/
+    th {
+        background : #cccccc;
+    }
 
     .odd {
         background : none repeat scroll 0 0 #E1F1F7;
@@ -72,7 +79,7 @@
     }
 
     .table {
-        border-collapse : collapse;
+        /*border-collapse : collapse;*/
     }
 
     .center {
@@ -90,91 +97,75 @@
     }
 
     .firma {
+        margin-left : 4cm;
+        float       : left;
+    }
+
+    .negro {
+        background : #000000;
+        color      : #f5f5f5;
+    }
+
+    .numeracion {
+        height : 35px;
+    }
+
+    .fright {
+        float : right;
+    }
+
+    .firmas {
         margin-top  : 2cm;
-        margin-left : 10cm;
+        width      : 100%;
+        height     : 3cm;
     }
     .valor{
         text-align: right;
     }
-    .ttl {
-        text-align  : center;
-        font-weight : bold;
-    }
-
     </style>
-
 </head>
 
 <body>
-    <rep:headerFooter title="SOLICITUD DE REFORMA AL POA" unidad="${anio}-GP"
-                      numero="${elm.imprimeNumero(solicitud: sol.id)}" estilo="right"/>
+<rep:headerFooter title="REFORMA AL POA" unidad="${anio}-GP"
+                     numero="${elm.imprimeNumero(solicitud: sol.id)}" estilo="right"/>
 <div style="margin-left: 10px;">
+        %{--<div class="titulo">REFORMA DE POA</div>--}%
+        %{--<div class="numeracion">--}%
+            %{--<table class="table fright" border="0" cellpadding="5" cellspacing="5">--}%
+                %{--<tr>--}%
+                    %{--<th>Numeración:</th>--}%
+                    %{--<th>Ref. ${sol.fecha.format("yyyy")}-GP</th>--}%
+                    %{--<th>No. 00${sol.id}</th>--}%
+                %{--</tr>--}%
+            %{--</table>--}%
+        %{--</div>--}%
+
         <div>
             <ol>
                 <li>
-                    <strong>Unidad responsable (Gerencia - Dirección):</strong>${sol.usuario.unidad}
+                    <strong>Unidad responsable (Gerencia-Dirección):</strong> ${sol.usuario.unidad}
                 </li>
                 <li>
-                    <strong>Tipo de reforma:</strong>
-                    <table class="table " border="1" style="margin-left: 280px">
-                        <thead>
-                        <tr>
-                            <th style="text-align: center">Detalle</th>
-                            <th>(Marcar X)</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Reforma entre actividades por reasignación de recursos o saldos</td>
-                            <td class="center">
-                                ${sol.tipo=='R'?'X':''}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Reforma por creación de una nueva actividad</td>
-                            <td class="center">
-                                ${sol.tipo=='N'?'X':''}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Reforma por creación de una actividad derivada</td>
-                            <td class="center">
-                                ${sol.tipo=='D'?'X':''}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Reforma por Incremento</td>
-                            <td class="center">
-                                ${sol.tipo=='A'?'X':''}
-                            </td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </li>
-                <li style="margin-left: 20px">
                     <strong>Matriz de la reforma:</strong>
                     <g:set var="ti" value="${0}"/>
                     <g:set var="tvi" value="${0}"/>
                     <g:set var="tvf" value="${0}"/>
                     <g:set var="tf" value="${0}"/>
-
-                    <table style="width:100%;" class="table " border="1">
-                         <thead>
+                    <table style="width:100%;margin-top: 15px" class="table " border="1">
+                        <thead>
                         <tr>
-                            <th style="background: #9dbfdb; text-align: center">Proyecto:</th>
-                            <th style="background: #9dbfdb; text-align: center">Componente:</th>
-                            <th style="background: #9dbfdb; text-align: center">Número <br/> de la <br/> actividad <br/> del POA</th>
-                            <th style="background: #9dbfdb; text-align: center">Nueva <br/> actividad <br/> (Marcar x)</th>
-                            <th style="background: #9dbfdb; text-align: center">Nombre de la Actividad</th>
-                            <th style="background: #9dbfdb; text-align: center">
+                            <th>Proyecto:</th>
+                            <th>Componente:</th>
+                            <th>No</th>
+                            <th>Nombre de la actividad:</th>
+                            <th>
                                 Partida <br/>
                                 presupuestaria
                             </th>
-                            <th style="background: #9dbfdb; text-align: center">Valor <br/> inicial USD</th>
-                            <th style="background: #9dbfdb; text-align: center">Disminución <br/> USD</th>
-                            <th style="background: #9dbfdb; text-align: center">Aumento <br/> USD</th>
-                            <th style="background: #9dbfdb; text-align: center">Valor <br/> final <br/> USD</th>
+                            <th>Valor inicial</th>
+                            <th>Disminución</th>
+                            <th>Aumento</th>
+                            <th>Valor final</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -182,10 +173,8 @@
                             <td>${sol.origen.marcoLogico.proyecto}</td>
                             <td>${sol.origen.marcoLogico.marcoLogico}</td>
                             <td>${sol.fecha.format("yyyy")+'-'+sol.origen.marcoLogico.marcoLogico.numero}</td>
-                            <td></td>
                             <td>${sol.origen.marcoLogico}</td>
                             <td>${sol.origen.presupuesto.numero}</td>
-
                             <g:if test="${sol.tipo!='A'}">
                                 <td class="valor">
                                     <g:formatNumber number="${sol.valorOrigenSolicitado}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" />
@@ -214,20 +203,20 @@
                             </g:if>
                             <g:else>
                                 <td class="valor">
-                                    <g:formatNumber number="${sol.valorOrigenSolicitado}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" />
-                                    <g:set var="ti" value="${ti+sol.valorOrigenSolicitado}"/>
+                                    <g:formatNumber number="${sol.valorOrigenSolicitado}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>
+                                    <g:set var="ti" value="${ti+sol.valorOrigenSolicitado}"></g:set>
                                 </td>
                                 <td class="valor">
-                                    <g:formatNumber number="${0}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" />
+                                    <g:formatNumber number="${0}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>
                                 </td>
                                 <td class="valor">
-                                    <g:formatNumber number="${sol.valor}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" />
-                                    <g:set var="tvf" value="${tvf+sol.valor}"/>
+                                    <g:formatNumber number="${sol.valor}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>
+                                    <g:set var="tvf" value="${tvf+sol.valor}"></g:set>
                                 </td>
 
                                 <td class="valor">
-                                    <g:formatNumber number="${sol.valorOrigenSolicitado+sol.valor}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" />
-                                    <g:set var="tf" value="${tf+sol.valorOrigenSolicitado}"/>
+                                    <g:formatNumber number="${sol.valorOrigenSolicitado+sol.valor}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>
+                                    <g:set var="tf" value="${tf+sol.valorOrigenSolicitado}"></g:set>
                                 </td>
                             </g:else>
                         </tr>
@@ -237,24 +226,22 @@
                                     <td>${sol.destino.marcoLogico.proyecto}</td>
                                     <td>${sol.destino.marcoLogico.marcoLogico}</td>
                                     <td>${sol.fecha.format("yyyy")+'-'+sol.destino.marcoLogico.marcoLogico.numero}</td>
-                                    <td></td>
                                     <td>${sol.destino.marcoLogico}</td>
                                     <td>${sol.destino.presupuesto.numero}</td>
-
                                     <td class="valor">
-                                        <g:formatNumber number="${sol.valorDestinoSolicitado}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" />
-                                        <g:set var="ti" value="${ti+sol.valorDestinoSolicitado}"/>
+                                        <g:formatNumber number="${sol.valorDestinoSolicitado}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>
+                                        <g:set var="ti" value="${ti+sol.valorDestinoSolicitado}"></g:set>
                                     </td>
                                     <td class="valor">
-                                        <g:formatNumber number="${0}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" />
+                                        <g:formatNumber number="${0}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>
                                     </td>
                                     <td class="valor">
-                                        <g:formatNumber number="${sol.valor}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
-                                        <g:set var="tvf" value="${tvf+sol.valor}"/>
+                                        <g:formatNumber number="${sol.valor}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>
+                                        <g:set var="tvf" value="${tvf+sol.valor}"></g:set>
                                     </td>
                                     <td class="valor">
-                                        <g:formatNumber number="${sol.valorDestinoSolicitado+sol.valor}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" />
-                                        <g:set var="tf" value="${tf+(sol.valorDestinoSolicitado+sol.valor)}"/>
+                                        <g:formatNumber number="${sol.valorDestinoSolicitado+sol.valor}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>
+                                        <g:set var="tf" value="${tf+(sol.valorDestinoSolicitado+sol.valor)}"></g:set>
                                     </td>
                                 </g:if>
                                 <g:else>
@@ -262,10 +249,8 @@
                                         <td>${sol.origen.marcoLogico.proyecto}</td>
                                         <td>${sol.origen.marcoLogico.marcoLogico}</td>
                                         <td>${sol.fecha.format("yyyy")+'-'+sol.origen.marcoLogico.marcoLogico.numero}</td>
-                                        <td></td>
                                         <td>${sol.actividad}</td>
                                         <td>${sol.presupuesto.numero}</td>
-
                                         <td class="valor">
                                             <g:formatNumber number="${0}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>
                                         </td>
@@ -329,39 +314,61 @@
                             </tr>
                         </g:else>
                         <tr>
-                            <td colspan="5"></td>
-                            <td style="font-weight: bold; background: #008080">TOTAL</td>
-                            <td style="font-weight: bold; background: #008080" class="valor"> <g:formatNumber number="${ti}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
-                            <td  style="font-weight: bold; background: #008080" class="valor"> <g:formatNumber number="${tvi}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
-                            <td style="font-weight: bold; background: #008080" class="valor"> <g:formatNumber number="${tvf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
-                            <td style="font-weight: bold; background: #008080" class="valor"> <g:formatNumber number="${tf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
+                            <td colspan="4"></td>
+                            <td style="font-weight: bold;background: #008080">TOTAL</td>
+                            <td style="font-weight: bold;background: #008080" class="valor"> <g:formatNumber number="${ti}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
+                            <td  style="font-weight: bold" class="valor"> <g:formatNumber number="${tvi}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
+                            <td style="font-weight: bold" class="valor"> <g:formatNumber number="${tvf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
+                            <td style="font-weight: bold" class="valor"> <g:formatNumber number="${tf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
                         </tr>
                         </tbody>
                     </table>
                 </li>
-                <li style="margin-left: 20px">
-                    <strong>Justificación de la reforma al POA solicitada:</strong>
-
-                    <div class="justificacion" style="margin-left: 20px">
-                        ${sol.concepto}
-                    </div>
-                </li>
-
             </ol>
-            <div style="margin-left: 20px">
-                Es importante señalar que la reforma no implica un incremento en el techo del presupuesto programado y que el impacto
-                causado por la modificación de POA no afecta a los objetivos institucionales
+            <g:if test="${sol.observaciones}">
+                <strong>Observación:</strong>
+                <ul>
+                    ${sol.observaciones}
+                </ul>
+            </g:if>
+            <div>
+                <strong>Elaborado por:</strong> ${sol.revisor?.sigla}
             </div>
-            <div class="firma ">
-                <div>
-                    <span class="spanFirma">
-                        <g:if test="${sol?.firmaSol?.estado=='F'}">
-                            <img src="${resource(dir: 'firmas',file: sol.firmaSol.path)}"/><br/>
-                            f) <div style="border-bottom: solid; width: 150px"> </div>
-                            ${sol.firmaSol.usuario.nombre} ${sol.firmaSol.usuario.apellido}<br/>
-                            <b>GERENTE DE ${sol.firmaSol.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/></b>
+
+            <div class="fright">
+                <strong>FECHA:</strong> ${sol.fechaRevision?.format("dd-MM-yyyy")}
+            </div>
+
+            <div class="firmas">
+                <div class="firma center">
+                    <div style="text-align: left; ">
+                        <strong>Revisado por:</strong>
+                    </div>
+
+                    <div>
+                        <span class="spanFirma">
+                            <g:if test="${sol?.firma1?.estado=='F'}">
+                                <img src="${resource(dir: 'firmas',file: sol.firma1.path)}"/><br/>
+                                ${sol.firma1.usuario.nombre} ${sol.firma1.usuario.apellido}<br/>
+                                ${sol.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                ${sol.firma1.fecha.format("dd-MM-yyyy hh:mm")}
+                            </g:if>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="firma center">
+                    <div style="text-align: left;">
+                        <strong>Aprobado por:</strong>
+                    </div>
+                    <div>
+                        <g:if test="${sol?.firma2?.estado=='F'}">
+                            <img src="${resource(dir: 'firmas',file: sol.firma2.path)}"/><br/>
+                            ${sol.firma2.usuario.nombre} ${sol.firma2.usuario.apellido}<br/>
+                            ${sol.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                            ${sol.firma2.fecha.format("dd-MM-yyyy hh:mm")}
                         </g:if>
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>

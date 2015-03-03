@@ -35,6 +35,7 @@ class ReporteReformaPoaController {
     def reformaPoa = {
 //        println "llego "+params
         def sol = SolicitudModPoa.get(params.id)
+        def anio = Anio.findByAnio(new Date().format("yyyy"))
         if(sol.estado!=3 && sol.estado!=5)
             response.sendError(403)
         def director = Sesn.findByPerfil(Prfl.findByCodigo("DP"))
@@ -45,7 +46,7 @@ class ReporteReformaPoaController {
         if(gerente){
             gerente=gerente.usuario
         }
-        [sol:sol,gerente:gerente,director:director]
+        [sol:sol,gerente:gerente,director:director, anio: anio]
 
     }
 }

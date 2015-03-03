@@ -63,11 +63,11 @@
                                 </g:if>
                             </td>
                             <td style="text-align: center">
-                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: "solicitudReformaPdf", controller: "reporteSolicitud", id: p.id)}" target="_blank" class="btn btn-info btn-sm" style="margin: 5px"><i class="fa fa-search"></i> Ver
+                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: "solicitudReformaPdf", controller: "reporteSolicitud", id: p.id)}" class="btn btn-info btn-sm" style="margin: 5px"><i class="fa fa-search"></i> Ver
                                 </a>
                             </td>
                             <td style="text-align: center">
-                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: "solicitudReformaPoa", controller: "reporteReformaPoa", id: p.id)}" target="_blank" class="btn btn-info btn-sm" style="margin: 5px"><i class="fa fa-search"></i> Ver
+                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: "solicitudReformaPoa", controller: "reporteReformaPoa", id: p.id)}" class="btn btn-info btn-sm" style="margin: 5px"><i class="fa fa-search"></i> Ver
                                 </a>
                             </td>
                             <td style="text-align: center">
@@ -127,7 +127,8 @@
                         </td>
                         <td style="text-align: center">
                             <g:if test="${p.estado==3 || p.estado==5}">
-                                <a href="#" class="btn btn-info btn-sm reforma" iden="${p.id}"><i class="fa fa-search"></i> Ver</a>
+                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: "reformaPoa", controller: "reporteReformaPoa", id: p.id)}" target="_blank" class="btn btn-info btn-sm" style="margin: 5px"><i class="fa fa-search"></i> Ver
+                                </a>
                             </g:if>
                         </td>
                         <td style="text-align: center">

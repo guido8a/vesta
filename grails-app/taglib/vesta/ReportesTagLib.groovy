@@ -92,6 +92,9 @@ class ReportesTagLib {
         css += "table {\n" +
                 "    page-break-inside : avoid;\n" +
                 "}"
+        css += ".no-break {\n" +
+                "    page-break-inside : avoid;\n" +
+                "}"
         css += ".tituloReporte{\n" +
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +
@@ -130,6 +133,8 @@ class ReportesTagLib {
     def headerReporte = { attrs ->
         def title = attrs.title ?: ""
 
+        def estilo = attrs.estilo ?: "center"
+
         def h = 55
 
         def logoPath = resource(dir: 'images', file: 'logo-pdf-header.png')
@@ -146,7 +151,7 @@ class ReportesTagLib {
 
         if(attrs.unidad || attrs.numero){
             html += "<div class='numeracion'>"
-            html += "<table border='1'>"
+            html += "<table border='1' ${estilo == 'right' ? 'style=\'float: right\'' : ''}>"
             html += "<tr>"
             html += "<td style='background: #0F243E;'>Form. GPE-DPI-01</td>"
             html += "<td style='background: #008080;'>Numeración:</td>"
