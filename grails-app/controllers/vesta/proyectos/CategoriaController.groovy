@@ -15,7 +15,7 @@ class CategoriaController extends Shield {
      * Acción que redirecciona a la lista (acción "list")
      */
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action:"list", params: params)
     }
 
     /**
@@ -28,19 +28,19 @@ class CategoriaController extends Shield {
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
         params.offset = params.offset ?: 0
-        if (all) {
+        if(all) {
             params.remove("max")
             params.remove("offset")
         }
         def list
-        if (params.search) {
+        if(params.search) {
             def c = Categoria.createCriteria()
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-
-                    ilike("codigo", "%" + params.search + "%")
-                    ilike("descripcion", "%" + params.search + "%")
+                    
+                    ilike("codigo", "%" + params.search + "%")  
+                    ilike("descripcion", "%" + params.search + "%")  
                 }
             }
         } else {
@@ -69,9 +69,9 @@ class CategoriaController extends Shield {
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def show_ajax() {
-        if (params.id) {
+        if(params.id) {
             def categoriaInstance = Categoria.get(params.id)
-            if (!categoriaInstance) {
+            if(!categoriaInstance) {
                 render "ERROR*No se encontró Categoria."
                 return
             }
@@ -82,15 +82,15 @@ class CategoriaController extends Shield {
     } //show para cargar con ajax en un dialog
 
     /**
-     * Acción llamada con ajax que muestra un formulario para crear o modificar un elemento
+     * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
      * @return categoriaInstance el objeto a modificar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def form_ajax() {
         def categoriaInstance = new Categoria()
-        if (params.id) {
+        if(params.id) {
             categoriaInstance = Categoria.get(params.id)
-            if (!categoriaInstance) {
+            if(!categoriaInstance) {
                 render "ERROR*No se encontró Categoria."
                 return
             }
@@ -105,15 +105,15 @@ class CategoriaController extends Shield {
      */
     def save_ajax() {
         def categoriaInstance = new Categoria()
-        if (params.id) {
+        if(params.id) {
             categoriaInstance = Categoria.get(params.id)
-            if (!categoriaInstance) {
+            if(!categoriaInstance) {
                 render "ERROR*No se encontró Categoria."
                 return
             }
         }
         categoriaInstance.properties = params
-        if (!categoriaInstance.save(flush: true)) {
+        if(!categoriaInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar Categoria: " + renderErrors(bean: categoriaInstance)
             return
         }
@@ -126,7 +126,7 @@ class CategoriaController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
      */
     def delete_ajax() {
-        if (params.id) {
+        if(params.id) {
             def categoriaInstance = Categoria.get(params.id)
             if (!categoriaInstance) {
                 render "ERROR*No se encontró Categoria."
@@ -145,7 +145,7 @@ class CategoriaController extends Shield {
             return
         }
     } //delete para eliminar via ajax
-
+    
     /**
      * Acción llamada con ajax que valida que no se duplique la propiedad codigo
      * @render boolean que indica si se puede o no utilizar el valor recibido
@@ -166,5 +166,5 @@ class CategoriaController extends Shield {
             return
         }
     }
-
+        
 }
