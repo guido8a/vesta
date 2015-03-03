@@ -88,7 +88,7 @@
                     <g:sortableColumn property="codigoProyecto" title="CUP"/>
                     <g:sortableColumn property="nombre" title="Nombre"/>
                     <th>Unidad <br>Administradora</th>
-                    <g:sortableColumn property="monto" title="Monto"/>
+                    <g:sortableColumn property="monto" title="Monto Total (USD)"/>
                     <g:sortableColumn property="descripcion" title="Descripción"/>
                     <th>Programa</th>
                 </tr>
