@@ -92,6 +92,9 @@ class ReportesTagLib {
         css += "table {\n" +
                 "    page-break-inside : avoid;\n" +
                 "}"
+        css += ".no-break {\n" +
+                "    page-break-inside : avoid;\n" +
+                "}"
         css += ".tituloReporte{\n" +
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +

@@ -161,23 +161,25 @@
             </p>
         </div>
 
-        <div class="texto">
-            Elaborado por: ${solicitud?.usuario?.sigla}
+        <div class="no-break">
+            <div class="texto">
+                Elaborado por: ${solicitud?.usuario?.sigla}
+            </div>
+            <g:if test="${solicitud.firma?.estado == 'F'}">
+                <table width="100%" style="margin-top: 1.5cm;">
+                    <tr>
+                        <td width="33%" style=" text-align: center;">
+                            <img src="${resource(dir: 'firmas', file: solicitud.firma.path)}" style="width: 150px;"/><br/>
+                            ${solicitud.firma.usuario.nombre} ${solicitud.firma.usuario.apellido}<br/>
+                            ${solicitud.firma.usuario.cargoPersonal}<br/>
+                            ${solicitud.firma.fecha.format("dd-MM-yyyy hh:mm")}
+                        </td>
+                        <td width="33%" style=" text-align: center;"></td>
+                        <td width="33%" style=" text-align: center;"></td>
+                    </tr>
+                </table>
+            </g:if>
         </div>
-        <g:if test="${solicitud.firma?.estado == 'F'}">
-            <table width="100%" style="margin-top: 1.5cm;">
-                <tr>
-                    <td width="33%" style=" text-align: center;">
-                        <img src="${resource(dir: 'firmas', file: solicitud.firma.path)}"/><br/>
-                        ${solicitud.firma.usuario.nombre} ${solicitud.firma.usuario.apellido}<br/>
-                        ${solicitud.firma.usuario.cargoPersonal}<br/>
-                        ${solicitud.firma.fecha.format("dd-MM-yyyy hh:mm")}
-                    </td>
-                    <td width="33%" style=" text-align: center;"></td>
-                    <td width="33%" style=" text-align: center;"></td>
-                </tr>
-            </table>
-        </g:if>
 
     </body>
 </html>
