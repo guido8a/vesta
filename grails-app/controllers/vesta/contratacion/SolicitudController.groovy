@@ -680,13 +680,13 @@ class SolicitudController extends Shield {
 
         if (nuevoVal > solicitud.actividad.monto) {
             nuevoVal = solicitud.actividad.monto
-            msg += "_No puede asignar más de " + formatNumber(number: solicitud.actividad.monto, type: "currency")
+            msg += "_No puede asignar más de " + formatNumber(number: solicitud.actividad.monto, type: "currency" , currencySymbol:" ")
         }
 
         solicitud.montoSolicitado = nuevoVal
         if (solicitud.save(flush: true)) {
             if (msg == "") {
-                msg += "_Valor máximo actualizado a " + formatNumber(number: nuevoVal, type: "currency")
+                msg += "_Valor máximo actualizado a " + formatNumber(number: nuevoVal, type: "currency" , currencySymbol:" ")
             } else {
                 msg += ", se ha actualizado al máximo permitido"
             }
@@ -745,7 +745,7 @@ class SolicitudController extends Shield {
         }
         if (errores == "") {
             render "OK_" + formatNumber(number: solicitud.montoSolicitado, maxFractionDigits: 2, minFractionDigits: 2) + "_" +
-                    formatNumber(number: total, type: "currency")
+                    formatNumber(number: total, type: "currency" , currencySymbol:" ")
         } else {
             render "<ul>" + errores + "</ul>"
         }
@@ -856,7 +856,7 @@ class SolicitudController extends Shield {
             }
 
             return [unidadRequirente: unidadEjecutora, solicitud: solicitud, title: title, proyectos: proys,
-                    asignado        : formatNumber(number: asignado, type: "currency"), perfil: session.perfil]
+                    asignado        : formatNumber(number: asignado, type: "currency" , currencySymbol:" "), perfil: session.perfil]
         } else {
             if (params.id) {
                 redirect(action: "show_ajax", id: params.id)

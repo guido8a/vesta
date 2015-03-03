@@ -32,7 +32,7 @@
   <form class="form-group">
   <label>Monto máximo a detallar: </label>
   <span id="spanMax" max="${solicitud.montoSolicitado}">
-    ${formatNumber(number: solicitud.montoSolicitado, type: "currency")}
+    ${formatNumber(number: solicitud.montoSolicitado, type: "currency" , currencySymbol:" ")}
   </span>
   </form>
 </div>

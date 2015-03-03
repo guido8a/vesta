@@ -94,7 +94,7 @@ class SolicitudTagLib {
             html += "<tr>"
             html += '<td class="show-label">Monto solicitado</td>'
             html += '<td>'
-            html += g.formatNumber(number: solicitud.montoSolicitado, type: "currency")
+            html += g.formatNumber(number: solicitud.montoSolicitado, type: "currency" , currencySymbol:" ")
             def asignado = 0
             DetalleMontoSolicitud.findAllBySolicitud(solicitud).each { d ->
                 asignado += d.monto
@@ -243,7 +243,7 @@ class SolicitudTagLib {
 //
 //            html += '<td class="label">Monto solicitado</td>'
 //            html += '<td>'
-//            html += g.formatNumber(number: solicitud.montoSolicitado, type: "currency")
+//            html += g.formatNumber(number: solicitud.montoSolicitado, type: "currency" , currencySymbol:" ")
 //            def asignado = 0
 //            DetalleMontoSolicitud.findAllBySolicitud(solicitud).each { d ->
 //                asignado += d.monto
@@ -725,7 +725,7 @@ class SolicitudTagLib {
             html += '<tr>'
             html += '<td class="show-label">Monto solicitado</td>'
             html += '<td>'
-            html += g.formatNumber(number: solicitud.montoSolicitado, type: "currency")
+            html += g.formatNumber(number: solicitud.montoSolicitado, type: "currency" , currencySymbol:" ")
             html += '</td>'
             html += '</tr>'
 
