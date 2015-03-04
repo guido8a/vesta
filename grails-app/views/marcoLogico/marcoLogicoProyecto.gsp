@@ -49,9 +49,9 @@
                     <g:set var="compInfo" value="Componente ${comp.numeroComp ?: 's/n'}:
                                 ${(comp?.objeto?.length() > 40) ? comp?.objeto?.substring(0, 40) + "..." : comp.objeto}"/>
                     <div class="panel panel-success">
-                        <div class="panel-heading" role="tab" id="headingComp${k}">
-                            <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#componente${k}"
-                                aria-expanded="${k == params.show.toInteger() ? 'true' : 'false'}" aria-controls="componente${k}">
+                        <div class="panel-heading" role="tab" id="headingComp${k + 1}">
+                            <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#componente${k + 1}"
+                                aria-expanded="${k + 1 == params.show.toInteger() ? 'true' : 'false'}" aria-controls="componente${k + 1}">
                                 <a href="#">
                                     ${compInfo}
                                 </a>
@@ -59,11 +59,11 @@
                                 <g:if test="${editable}">
                                     <span class="btn-group pull-right">
                                         <a href="#" class="btn btn-xs btn-success btnAddAct" title="Agregar actividad"
-                                           data-id="${comp.id}" data-show="${k}">
+                                           data-id="${comp.id}" data-show="${k + 1}">
                                             <i class="fa fa-plus"></i> actividad
                                         </a>
                                         <a href="#" class="btn btn-xs btn-info btnEditComp" title="Editar componente"
-                                           data-id="${comp.id}" data-show="${k}">
+                                           data-id="${comp.id}" data-show="${k + 1}">
                                             <i class="fa fa-pencil"></i>
                                         </a>
                                         <a href="#" class="btn btn-xs btn-danger btnDeleteComp" title="Eliminar componente"
@@ -75,8 +75,8 @@
                             </h4>
                         </div>
 
-                        <div id="componente${k}" class="panel-collapse collapse ${k == params.show.toInteger() ? 'in' : ''}"
-                             role="tabpanel" aria-labelledby="headingComp${k}">
+                        <div id="componente${k + 1}" class="panel-collapse collapse ${k + 1 == params.show.toInteger() ? 'in' : ''}"
+                             role="tabpanel" aria-labelledby="headingComp${k + 1}">
                             <table class="table table-bordered table-condensed table-hover">
                                 <thead>
                                     <tr>
@@ -96,7 +96,7 @@
                                     <g:set var="total" value="${0}"/>
                                     <g:each in="${MarcoLogico.findAllByMarcoLogicoAndEstado(comp, 0, [sort: 'numero'])}" var="act" status="l">
                                         <g:set var="total" value="${total.toDouble() + act.monto}"/>
-                                        <tr data-id="${act.id}" data-show="${k}" data-info="${act.objeto}">
+                                        <tr data-id="${act.id}" data-show="${k + 1}" data-info="${act.objeto}">
                                             <td class="text-center">${act.numero}</td>
                                             <td>${act?.objeto}</td>
                                             <td class="text-right"><g:formatNumber number="${act.monto}" type="currency" currencySymbol=" "/></td>
