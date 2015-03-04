@@ -89,7 +89,7 @@ class PresupuestoController extends Shield {
 
         def presupuesto = Presupuesto.get(padre)
 
-        def l = Presupuesto.findAllByPresupuesto(presupuesto);
+        def l = Presupuesto.findAllByPresupuesto(presupuesto, [sort: 'numero']);
 
         l.each {
             band = false;
