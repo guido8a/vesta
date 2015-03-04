@@ -48,7 +48,7 @@
         <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link controller="proyecto" action="${params.remove('list')}" params="${params}" class="btn btn-sm btn-default">
+                <g:link controller="proyecto" action="${params.list}" params="${params}" class="btn btn-sm btn-default">
                     <i class="fa fa-list"></i> Lista de proyectos
                 </g:link>
             </div>
@@ -64,6 +64,13 @@
                     <i class="fa fa-money"></i> Asignaciones
                 </g:link>
             </div>
+            <g:if test="${params.act}">
+                <div class="btn-group">
+                    <g:link controller="marcoLogico" action="marcoLogicoProyecto" id="${proyecto.id}" class="btn btn-sm btn-default">
+                        <i class="fa fa-calendar-o"></i> Plan de proyecto
+                    </g:link>
+                </div>
+            </g:if>
         </div>
 
         <g:if test="${proyecto.aprobado == 'a'}">
@@ -88,7 +95,7 @@
                         <tr>
                             <th></th>
                             <th colspan="15">
-                                <g:select from="${Anio.list()}" optionKey="id" optionValue="anio" class="form-control input-sm"
+                                <g:select from="${Anio.list([sort: 'anio'])}" optionKey="id" optionValue="anio" class="form-control input-sm"
                                           style="width: 100px; display: inline" name="anio" id="anio" value="${anio.id}"/>
                             </th>
                         </tr>
@@ -235,7 +242,7 @@
                 $(".btn-edit").click(function () {
                     openLoader();
                 });
-                $("#anio").change(function () {
+                $("#anio").val(${anio.id}).change(function () {
                     openLoader();
                     location.href = "${createLink(controller: 'cronograma', action: 'show', id: proyecto.id)}?anio=" +
                                     $("#anio").val() + armaParams() + "&act=${actSel?.id}&list=${params.list}";

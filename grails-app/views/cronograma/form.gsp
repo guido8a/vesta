@@ -1,9 +1,10 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 14/01/15
-  Time: 04:03 PM
+  Date: 13/01/15
+  Time: 04:40 PM
 --%>
+
 <%@ page import="vesta.proyectos.MarcoLogico; vesta.proyectos.Cronograma; vesta.parametros.poaPac.Mes; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -11,6 +12,12 @@
         <title>Cronograma del proyecto</title>
 
         <script type="text/javascript" src="${resource(dir: 'js/plugins/jquery-get-input-type', file: 'jquery.get-input-type.min.js')}"></script>
+
+        %{--<link rel="stylesheet" type="text/css" href="${resource(dir: 'js/plugins/DataTables-1.10.4/media/css', file: 'jquery.dataTables.min.css')}">--}%
+        %{--<script type="text/javascript" charset="utf8" src="${resource(dir: 'js/plugins/DataTables-1.10.4/media/js', file: 'jquery.dataTables.min.js')}"></script>--}%
+
+        %{--<script src="${resource(dir: 'js/plugins/fixed-header-table-1.3', file: 'jquery.fixedheadertable.js')}"></script>--}%
+        %{--<link rel="stylesheet" type="text/css" href="${resource(dir: 'js/plugins/fixed-header-table-1.3/css', file: 'defaultTheme.css')}"/>--}%
 
         <style type="text/css">
         table {
@@ -35,10 +42,10 @@
             font-size : larger;
         }
         </style>
+
     </head>
 
     <body>
-
         <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
@@ -55,7 +62,20 @@
                     <i class="fa fa-money"></i> Asignaciones
                 </g:link>
             </div>
+            <g:if test="${params.act}">
+                <div class="btn-group">
+                    <g:link controller="marcoLogico" action="marcoLogicoProyecto" id="${proyecto.id}" class="btn btn-sm btn-default">
+                        <i class="fa fa-calendar-o"></i> Plan de proyecto
+                    </g:link>
+                </div>
+            </g:if>
         </div>
+
+        <g:if test="${proyecto.aprobado == 'a'}">
+            <div class="alert alert-info">
+                El proyecto está aprobado, no puede modificar el cronograma
+            </div>
+        </g:if>
 
         <elm:container tipo="horizontal" titulo="Modificar cronograma del proyecto ${proyecto?.toStringMedio()}, para el año ${anio}" color="black">
             <div class="divIndice ">
@@ -72,21 +92,20 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th colspan="16">
-                                <g:select from="${Anio.list()}" optionKey="id" optionValue="anio" class="form-control input-sm"
+                            <th colspan="15">
+                                <g:select from="${Anio.list([sort: 'anio'])}" optionKey="id" optionValue="anio" class="form-control input-sm"
                                           style="width: 100px; display: inline" name="anio" id="anio" value="${anio.id}"/>
                             </th>
                         </tr>
 
                         <tr id="trMeses">
-                            <th style="width: 300px;">Componentes/Rubros</th>
+                            <th style="width:300px;">Componentes/Rubros</th>
                             <g:each in="${Mes.list()}" var="mes">
-                                <th style="width:100px;" title="${mes.descripcion} ${anio.anio}"
-                                    data-id="${mes.id}">
+                                <th style="width:100px;" data-id="${mes.id}">
                                     ${mes.descripcion[0..2]}.
                                 </th>
                             </g:each>
-                            <th>Asignado</th>
+                            <th>Tot. Asignado</th>
                             <th>Sin asignar</th>
                             <th>Total</th>
                         </tr>
@@ -100,8 +119,8 @@
                         <g:each in="${componentes}" var="comp" status="j">
                             <g:set var="totComp" value="${0}"/>
                             <g:set var="totCompAsig" value="${0}"/>
-                            <tr id="comp${comp.id}" class="success">
-                                <th colspan="17">
+                            <tr id="comp${comp.id}">
+                                <th colspan="16" class="success">
                                     <strong>Componente ${comp.numeroComp}</strong>:
                                 ${(comp.objeto.length() > 80) ? comp.objeto.substring(0, 80) + "..." : comp.objeto}
                                 </th>
@@ -113,7 +132,7 @@
                                     <g:set var="tot" value="${0}"/>
                                     <g:set var="totAct" value="${monto}"/>
                                     <g:set var="tot" value="${act.getTotalCronograma()}"/>
-                                    <g:set var="totCompAsig" value="${totCompAsig.toDouble() + tot}"/>
+                                    <g:set var="totCompAsig" value="${totCompAsig + act.getTotalCronograma()}"/>
                                     <g:set var="totalMetas" value="${totalMetas.toDouble() + monto}"/>
                                     <g:set var="totalMetasCronograma" value="${totalMetasCronograma.toDouble() + totalMetas}"/>
                                     <g:set var="totalMetas" value="${0}"/>
@@ -126,28 +145,24 @@
                                         </th>
                                         <g:each in="${Mes.list()}" var="mes" status="k">
                                             <g:set var="crga" value='${Cronograma.findAllByMarcoLogicoAndMes(act, mes)}'/>
-                                            <g:set var="val" value="${0}"/>
+                                            <g:set var="valor" value="${0}"/>
                                             <g:set var="clase" value="disabled"/>
 
                                             <g:if test="${crga.size() > 0}">
                                                 <g:each in="${crga}" var="c">
-                                                    <g:if test="${c?.anio == anio && c?.cronograma == null}">
+                                                    <g:if test="${c?.anio == anio}">
                                                         <g:set var="crg" value='${c}'/>
                                                     </g:if>
                                                 </g:each>
-
                                                 <g:if test="${crg}">
                                                     <g:set var="valor" value="${crg.valor + crg.valor2}"/>
-                                                    <g:set var="val" value="${crg.valor + crg.valor2}"/>
-                                                    <g:set var="crg" value="${null}"/>
                                                     <g:set var="clase" value="clickable"/>
                                                 </g:if>
                                             </g:if>
                                             <g:if test="${monto.toDouble() > 0}">
                                                 <g:set var="clase" value="clickable"/>
                                             </g:if>
-
-                                            <td class="text-right ${clase} ${crg && crg.fuente ? 'fnte_' + crg.fuente.id : ''} ${crg && crg.fuente2 ? 'fnte_' + crg.fuente2.id : ''}"
+                                            <td style="width:100px;" class="text-right ${clase} ${crg && crg.fuente ? 'fnte_' + crg.fuente.id : ''} ${crg && crg.fuente2 ? 'fnte_' + crg.fuente2.id : ''}"
                                                 data-id="${crg?.id}" data-val="${valor}"
                                                 data-presupuesto1="${crg?.valor}" data-bsc-desc-partida1="${crg?.presupuesto?.toString()}"
                                                 data-partida1="${crg?.presupuesto?.id}" data-fuente1="${crg?.fuente?.id}"
@@ -155,6 +170,9 @@
                                                 data-partida2="${crg?.presupuesto2?.id}" data-fuente2="${crg?.fuente2?.id}">
                                                 <g:formatNumber number="${valor}" type="currency" currencySymbol=" "/>
                                             </td>
+                                            <g:if test="${crg}">
+                                                <g:set var="crg" value="${null}"/>
+                                            </g:if>
                                         </g:each>
                                         <th class="disabled text-right asignado" data-val="${tot}">
                                             <g:formatNumber number="${tot}" type="currency" currencySymbol=" "/>
@@ -165,13 +183,11 @@
                                         <th class="disabled text-right total" data-val="${monto}">
                                             <g:formatNumber number="${monto}" type="currency" currencySymbol=" "/>
                                         </th>
-
                                     </tr>
                                 </g:if>
                             </g:each>
-                        %{--<<----------------<<<<<<<< <br>--}%
                             <tr class="warning">
-                                <th class="colGrande " colspan="13">TOTAL</th>
+                                <th colspan="13">TOTAL</th>
                                 <th class="text-right">
                                     <g:formatNumber number="${totCompAsig}" type="currency" currencySymbol=" "/>
                                 </th>
@@ -191,7 +207,7 @@
                                 <g:formatNumber number="${totProyAsig}" type="currency" currencySymbol=" "/>
                             </th>
                             <th class="text-right">
-                                <g:formatNumber number="${(totProy.toDouble() - (totProyAsig.toDouble()))}" type="currency" currencySymbol=" "/>
+                                <g:formatNumber number="${(totProy.toDouble() - totProyAsig.toDouble())}" type="currency" currencySymbol=" "/>
                             </th>
                             <th class="text-right">
                                 <g:formatNumber number="${(totalMetasCronograma)}" type="currency" currencySymbol=" "/>
@@ -201,7 +217,6 @@
                 </table>
             </div>
         </elm:container>
-
         <div class="modal fade" id="modalCrono">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -350,6 +365,7 @@
             }
 
             function setForm($td) {
+                console.log($td);
                 $.each($td.data(), function (key, val) {
                     var id = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
                     var $field = $("#" + id);
