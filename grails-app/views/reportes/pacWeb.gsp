@@ -85,7 +85,7 @@
                         <th>Actividad</th>
                         %{--<th>Obra</th>--}%
                         %{--<th>Geogr&aacute;fico</th>--}%
-                        <th>Rengl&oacute;n</th>
+                        <th>Renglón</th>
                         <th>Presupuesto</th>
                         %{--<th>Rengl&oacute;n auxiliar</th>--}%
                         <th>Fuente</th>

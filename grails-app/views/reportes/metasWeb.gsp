@@ -9,7 +9,7 @@
 
         <th class="ui-state-default">Indicador</th>
 
-        <th class="ui-state-default">Cant&oacute;n</th>
+        <th class="ui-state-default">Cantón</th>
         <th class="ui-state-default">Parroquia</th>
         <th class="ui-state-default">Meta</th>
         <th class="ui-state-default">Inversión</th>

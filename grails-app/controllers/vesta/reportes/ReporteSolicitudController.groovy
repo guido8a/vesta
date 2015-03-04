@@ -26,7 +26,7 @@ class ReporteSolicitudController {
     def solicitudesXls = {
 
         def perfil = session.perfil
-        def usuario = Usro.get(session.usuario.id)
+        def usuario = Persona.get(session.usuario.id)
         def unidad = usuario.unidad
 
         def iniRow = 1
@@ -206,6 +206,43 @@ class ReporteSolicitudController {
     def solicitudes = {
         println "solicitudes"
         def list2 = Solicitud.findAll("from Solicitud order by unidadEjecutora.id,fecha")
+
+
+
+
+        def nombreProceso
+
+        list2.each {
+
+            nombreProceso = it.nombreProceso
+
+            if (nombreProceso) {
+                nombreProceso = nombreProceso.replaceAll("&nbsp", " ")
+                nombreProceso = nombreProceso.replaceAll("&Oacute;", "Ó")
+                nombreProceso = nombreProceso.replaceAll("&oacute;", "ó")
+                nombreProceso = nombreProceso.replaceAll("&Aacute;", "Á")
+                nombreProceso = nombreProceso.replaceAll("&aacute;", "á")
+                nombreProceso = nombreProceso.replaceAll("&Eacute;", "É")
+                nombreProceso = nombreProceso.replaceAll("&eacute;", "é")
+                nombreProceso = nombreProceso.replaceAll("&Iacute;", "Í")
+                nombreProceso = nombreProceso.replaceAll("&iacute;", "í")
+                nombreProceso = nombreProceso.replaceAll("&Uacute;", "Ú")
+                nombreProceso = nombreProceso.replaceAll("&uacute;", "ú")
+                nombreProceso = nombreProceso.replaceAll("&ntilde;", "ñ")
+                nombreProceso= nombreProceso.replaceAll("&Ntilde;", "Ñ")
+                nombreProceso = nombreProceso.replaceAll("&ldquo;", '"')
+                nombreProceso = nombreProceso.replaceAll("&rdquo;", '"')
+                nombreProceso = nombreProceso.replaceAll("&lquo;", "'")
+                nombreProceso = nombreProceso.replaceAll("&rquo;", "'")
+
+            }else{
+
+                nombreProceso = ""
+            }
+
+            it.nombreProceso = nombreProceso
+        }
+
         def list01 = []
         def list02 = []
         def anios = []
@@ -219,14 +256,6 @@ class ReporteSolicitudController {
             }
         }
         def list = list01 + list02
-
-//        list = list.sort { it.aprobacion?.descripcion + it.unidadEjecutora?.nombre + it.fecha.format("dd-MM-yyyy") }
-//        list = list.sort { a, b ->
-//            ((a.aprobacion?.descripcion <=> b.aprobacion?.descripcion) ?:
-//                    (a.unidadEjecutora?.nombre <=> b.unidadEjecutora?.nombre)) ?:
-//                    (a.fecha?.format("dd-MM-yyyy") <=> b.fecha?.format("dd-MM-yyyy"))
-//    }
-
 
         list.each { sol ->
             DetalleMontoSolicitud.findAllBySolicitud(sol, [sort: "anio"]).each { d ->
@@ -254,13 +283,6 @@ class ReporteSolicitudController {
         }
 
         def anios = []
-
-//        list = list.sort { it.aprobacion?.descripcion + it.unidadEjecutora?.nombre + it.fecha.format("dd-MM-yyyy") }
-//        list = list.sort { a, b ->
-//            ((a.aprobacion?.descripcion <=> b.aprobacion?.descripcion) ?:
-//                    (a.unidadEjecutora?.nombre <=> b.unidadEjecutora?.nombre)) ?:
-//                    (a.fecha?.format("dd-MM-yyyy") <=> b.fecha?.format("dd-MM-yyyy"))
-//    }
 
 
         list.each { sol ->

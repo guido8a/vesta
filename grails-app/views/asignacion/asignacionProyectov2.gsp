@@ -178,7 +178,7 @@
     </g:else>
 </div>
 <div style="position: absolute;top:25px;right:10px;font-size: 11px;">
-    <b>M&aacute;ximo Inversiones:</b>
+    <b>Máximo Inversiones:</b>
     <g:formatNumber number="${maxInv}" type="currency" currencySymbol=" "/>
 </div>
 

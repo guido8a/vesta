@@ -155,6 +155,25 @@ class AprobacionController extends Shield {
 
     }
 
+
+    /**
+     * Acción llamada con ajax que muestra la lista de las solicitudes agendadas para una reunión de aprobación
+     */
+    def solicitudes_ajax () {
+        def reunion = Aprobacion.get(params.id)
+        def solicitudes = Solicitud.findAllByAprobacion(reunion)
+        def anios = []
+        solicitudes.each { sol ->
+            DetalleMontoSolicitud.findAllBySolicitud(sol, [sort: "anio"]).each { d ->
+                if (!anios.contains(d.anio)) {
+                    anios.add(d.anio)
+                }
+            }
+        }
+        return [aprobacion: reunion, solicitudes: solicitudes, anios: anios]
+    }
+
+
     /**
      * Acción llamada con ajax para cargar un dialog de subir archivos
      */

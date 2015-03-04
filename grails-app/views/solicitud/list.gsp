@@ -350,6 +350,14 @@
                     }
                 });
             });
+
+
+            $(".print").click(function () {
+                var url = "${createLink(controller: 'reporteSolicitud', action: 'solicitudes')}";
+                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitudes.pdf";
+                return false;
+            });
+
         </script>
 
     </body>

@@ -22,51 +22,21 @@
 
 <body>
 
-<div class="dialog" title="Lista de aprobaciones">
-    %{--<div id="" class="toolbar ui-widget-header ui-corner-all">--}%
-    %{--<g:link class="button create" action="prepararReunionAprobacion">--}%
-    %{--Nueva reunión--}%
-    %{--</g:link>--}%
-    %{--</div> <!-- toolbar -->--}%
-
+<div class="dialog">
     <div class="body">
-        <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-        </g:if>
+
+        <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
+
         <div class="list">
-            <div class="fg-toolbar ui-toolbar ui-widget-header ui-corner-top ui-helper-clearfix">
-                %{--<div id="example_length" class="dataTables_length">--}%
-                %{--<g:message code="show" default="Show" />&nbsp;--}%
-                %{--<g:select from="${[10,20,30,40,50,60,70,80,90,100]}" name="max" value="${params.max}" />&nbsp;--}%
-                %{--<g:message code="entries" default="entries" />--}%
-
-
-                %{--<g:select--}%
-                %{--from="['asc':message(code:'asc', default:'Ascendente'), 'desc':message(code:'desc', default:'Descendente')]"--}%
-                %{--name="order"--}%
-                %{--optionKey="key"--}%
-                %{--optionValue="value"--}%
-                %{--value="${params.order}"--}%
-                %{--class="ui-widget-content ui-corner-all"/>--}%
-                %{--</div>--}%
-            </div>
-            <table border="1">
+            <table class="table table-condensed table-bordered table-striped table-hover">
                 <thead>
                 <tr>
-                    <tdn:sortableColumn property="fecha" class="ui-state-default"
-                                        title="${message(code: 'aprobacion.fecha.label', default: 'Fecha')}"/>
-                    <th class="ui-state-default">Solicitudes a tratar</th>
-                    <tdn:sortableColumn property="fechaRealizacion" class="ui-state-default"
-                                        title="${message(code: 'aprobacion.fechaRealizacion.label', default: 'Fecha Realizacion')}"/>
-
-                    <tdn:sortableColumn property="observaciones" class="ui-state-default"
-                                        title="${message(code: 'aprobacion.observaciones.label', default: 'Observaciones')}"/>
-
-                    <tdn:sortableColumn property="asistentes" class="ui-state-default"
-                                        title="${message(code: 'aprobacion.asistentes.label', default: 'Asistentes')}"/>
-
-                    <tdn:sortableColumn property="pathPdf" class="ui-state-default"
-                                        title="${message(code: 'aprobacion.pathPdf.label', default: 'Archivo')}"/>
+                    <g:sortableColumn property="fecha" title="Fecha"/>
+                    <th>Solicitudes a tratar</th>
+                    <g:sortableColumn property="fechaRealizacion" title="Fecha Realizacion"/>
+                    <g:sortableColumn property="observaciones" title="Observaciones"/>
+                    <g:sortableColumn property="asistentes" title="Asistentes"/>
+                    <th>Archivo</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -76,8 +46,9 @@
                         <td>
                             ${aprobacionInstance.fecha.format("dd-MM-yyyy HH:mm")}
                         </td>
-                        <td>
+                        <td style="text-align: center; font-weight: bold">
                             <g:set var="solicitudes" value="${aprobacionInstance.solicitudes.size()}"/>
+
                             <g:if test="${solicitudes > 0}">
                                 <a href="#" class="button btnVerSolicitudes" id="${aprobacionInstance.id}" title="Ver solicitudes a tratar">
                                     ${solicitudes} solicitud${solicitudes == 1 ? '' : 'es'}
@@ -110,25 +81,27 @@
 
 <script type="text/javascript">
     $(function () {
-        $(".button").button();
-
         $(".btnVerSolicitudes").click(function () {
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(action:'solicitudes_ajax')}/" + $(this).attr("id"),
                 success : function (msg) {
-                    $.box({
-                        imageClass : false,
-                        title      : "Solicitudes",
-                        text       : msg,
-                        dialog     : {
-                            width   : 600,
-                            buttons : {
-                                "Aceptar" : function (r) {
+                    var b = bootbox.dialog({
+                        id    : "dlgVer",
+                        title : "Detalles de la Solicitud",
+
+                        class : "modal-lg",
+
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
                                 }
                             }
-                        }
-                    });
+                        } //buttons
+                    }); //dialog
                 }
             });
         });

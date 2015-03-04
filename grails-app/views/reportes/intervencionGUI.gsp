@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Intervenci&oacute;n e inversi&oacute;n</title>
+        <title>Intervención e inversión</title>
 
         <style type="text/css">
         .toolbar {

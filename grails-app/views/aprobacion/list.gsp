@@ -95,41 +95,6 @@
                         <td><${fieldValue(bean: aprobacionInstance, field: "observaciones")}</td>
                         <td>${fieldValue(bean: aprobacionInstance, field: "asistentes")}</td>
                         <td style="text-align: center"><b>${aprobacionInstance.aprobada == 'A' ? 'Aprobada' : 'Pendiente'}</b></td>
-                        %{--<td style="text-align: center;">--}%
-                            %{--<g:if test="${aprobacionInstance.aprobada != 'A'}">--}%
-                                %{--<g:if test="${aprobacionInstance.solicitudes.size() > 0}">--}%
-                                    %{--<g:if test="${editables.contains(session.perfil.codigo)}">--}%
-                                        %{--<g:link class="button btnSmall" action="reunion" id="${aprobacionInstance.id}">--}%
-                                            %{--<g:if test="${!aprobacionInstance.numero}">--}%
-                                                %{--Empezar--}%
-                                            %{--</g:if>--}%
-                                            %{--<g:else>--}%
-                                                %{--Continuar--}%
-                                            %{--</g:else>--}%
-                                        %{--</g:link>--}%
-                                    %{--</g:if>--}%
-                                    %{--<g:if test="${!aprobacionInstance.numero}">--}%
-                                        %{--<g:if test="${editables.contains(session.perfil.codigo)}">--}%
-                                            %{--<g:link class="button btnSmall" action="prepararReunionAprobacion" id="${aprobacionInstance.id}">--}%
-                                                %{--Preparar--}%
-                                            %{--</g:link>--}%
-                                        %{--</g:if>--}%
-                                    %{--</g:if>--}%
-                                %{--</g:if>--}%
-                                %{--<g:else>--}%
-                                    %{--<g:if test="${editables.contains(session.perfil.codigo)}">--}%
-                                        %{--<g:if test="${!aprobacionInstance.numero}">--}%
-                                            %{--<g:link class="button btnSmall" action="prepararReunionAprobacion" id="${aprobacionInstance.id}">--}%
-                                                %{--Preparar--}%
-                                            %{--</g:link>--}%
-                                        %{--</g:if>--}%
-                                    %{--</g:if>--}%
-                                %{--</g:else>--}%
-                            %{--</g:if>--}%
-                            %{--<g:link class="button btnSmall" action="reunion" id="${aprobacionInstance.id}" params="[show: 1]">--}%
-                                %{--Ver--}%
-                            %{--</g:link>--}%
-                        %{--</td>--}%
                     </tr>
                 </g:each>
                 </tbody>
@@ -160,7 +125,7 @@
             }
         });
 
-        $(".print").button("option", "icons", {primary : 'ui-icon-print'}).click(function () {
+        $(".print").click(function () {
             var url = "${createLink(controller: 'reporteSolicitud', action: 'aprobadas')}";
             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitudes.pdf";
             return false;

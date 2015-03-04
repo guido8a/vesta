@@ -197,7 +197,7 @@
                     <table border="1" cellpadding="2" style="border-collapse: collapse; border-color: #aaa;" width="100%">
                         <g:each in="${presupuestos}" var="pr" status="i">
                             <tr>
-                                <th>Max. Inversi&oacute;n ${pr.anio}</th>
+                                <th>Max. Inversión ${pr.anio}</th>
 
                                 <td>
                                     <g:formatNumber number="${pr.maxInversion}" format="###,##0"

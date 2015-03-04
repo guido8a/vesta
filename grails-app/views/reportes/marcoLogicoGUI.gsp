@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Marco l&oacute;gico del proyecto</title>
+        <title>Marco lógico del proyecto</title>
 
         <script type="text/javascript"
                 src="${resource(dir: 'js/jquery/plugins', file: 'jquery.highlight-3.js')}"></script>

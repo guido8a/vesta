@@ -5,37 +5,13 @@
   Time: 04:23 PM
 --%>
 
-<%@ page import="vesta.contratacion.DetalleMontoSolicitud; vesta.poa.Asignacion; vesta.contratacion.Aprobacion" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.poa.Asignacion; vesta.contratacion.DetalleMontoSolicitud; vesta.contratacion.Aprobacion" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <title>Imprimir solicitudes</title>
+        <rep:estilos orientacion="l" pagTitle="Lista de Solicitudes"/>
+
         <style type="text/css">
-        @page {
-            size   : 29.7cm 21cm ;  /*width height */
-            margin : 2cm;
-        }
-
-        .hoja {
-            /*background  : #fedcba;*/
-            height      : 16.5cm;
-            width       : 24.7cm; /*29.7-(1.5*2)*/
-            font-family : arial;
-            font-size   : 12pt;
-            font-size   : 12pt;
-        }
-
-        .titulo {
-            width : 15.5cm;
-        }
-
-        .titulo {
-            height        : 130px;
-            font-size     : 12pt;
-            /*font-weight   : bold;*/
-            text-align    : center;
-            margin-bottom : 5px;
-            width         : 95%;
-        }
 
         .totales {
             font-weight : bold;
@@ -87,17 +63,24 @@
 
         td, th {
             padding : 5px;
+
+        }
+
+        th {
+
+            background: #9dbfdb;
+            text-align: center;
         }
 
         </style>
     </head>
 
     <body>
-        <div class="hoja">
-            <rep:headerReporte  title="Lista de Solicitudes de contratación"/>
+
+            <rep:headerFooter title="Lista de Solicitudes de contratación"/>
 
             <div class="divTabla">
-                <table style="width: 100%;font-size: 10px" border="1" class="tabla">
+                <table style="width: 100%;font-size: 10px; margin-top: 20px" border="1" class="tabla">
                     <thead>
                         <tr>
                             <th>Proyecto</th>
@@ -112,7 +95,6 @@
                             </g:each>
                             <th>Monto</th>
                             <th>Aprobacion</th>
-                            %{--<th>Acta</th>--}%
                             <th>
                                 Fecha<br/>
                                 Solicitud
@@ -125,7 +107,7 @@
                             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                                 <td>${solicitudInstance.actividad.proyecto}</td>
                                 <td>${solicitudInstance.actividad.marcoLogico}</td>
-                                <td>${Asignacion.findByMarcoLogico(solicitudInstance.actividad)?.presupuesto?.numero}</td>
+                                <td>${vesta.poa.Asignacion.findByMarcoLogico(solicitudInstance.actividad)?.presupuesto?.numero}</td>
                                 <td>${solicitudInstance.nombreProceso}</td>
                                 <td>${solicitudInstance.objetoContrato}</td>
                                 <td>X</td>
@@ -145,7 +127,7 @@
                                 <td><g:formatNumber number="${solicitudInstance.montoSolicitado}" type="currency" currencySymbol=" "/></td>
                                 <g:set var="estado" value="${solicitudInstance.aprobacion}"/>
                                 <g:if test="${estado}">
-                                    <td>${solicitudInstance.tipoAprobacion?.descripcion}<br/>${estado.fecha.format("dd-MM-yyyy")}
+                                    <td>${solicitudInstance.tipoAprobacion?.descripcion}<br/>${estado.fecha}
                                     </td>
                                 %{--<td>Acta</td>--}%
                                 </g:if>
@@ -153,13 +135,11 @@
                                     <td>Pendiente</td>
                                 %{--<td></td>--}%
                                 </g:else>
-                                <td>${solicitudInstance.fecha?.format('dd-MM-yyyy')}</td>
-
+                                <td>${solicitudInstance.fecha}</td>
                             </tr>
                         </g:each>
                     </tbody>
                 </table>
             </div>
-        </div>
     </body>
 </html>

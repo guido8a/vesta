@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Ejecuci&oacute;n presupuestaria de proyectos</title>
+        <title>Ejecución presupuestaria de proyectos</title>
 
         <style type="text/css">
         .toolbar {

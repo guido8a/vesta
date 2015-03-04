@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Marco l&oacute;gico de proyecto</title>
+        <title>Marco lógico de proyecto</title>
         <style type="text/css">
         @page {
             size   : 29.7cm 21cm;  /*width height */

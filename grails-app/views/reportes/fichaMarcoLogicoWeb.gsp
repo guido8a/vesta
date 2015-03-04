@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Ficha de marco l&oacute;gico de proyecto</title>
+        <title>Ficha de marco lógico de proyecto</title>
 
         <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins', file: 'jquery.hotkeys.js')}"></script>
         <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins', file: 'jquery.cookie.js')}"></script>
@@ -77,7 +77,7 @@
     <body>
         <div class="hoja">
             <div class="titulo">
-                Marco L&oacute;gico de Proyecto
+                Marco Lógico de Proyecto
             </div>
 
             ${bosque}
