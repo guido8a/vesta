@@ -580,6 +580,7 @@ class ProyectoController extends Shield {
             flash.message = 'Error al cargar el archivo Excel, revise que el formato sea el correcto y que las columnas coincidan con el ejemplo descrito en la parte inferior'
             flash.estado = "error"
             flash.icon = "alert"
+            e.printStackTrace()
             redirect(action: 'cargarExcel')
             return
         }
