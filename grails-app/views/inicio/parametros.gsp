@@ -1,9 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vanessa
-  Date: 18/12/14
-  Time: 03:21 PM
---%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
@@ -33,9 +27,9 @@
                                 <div class="descripcion hidden">
                                     <h4>Catálogo del Sistema</h4>
 
-                                    <p>Valores de las tablas tipo del sistema y parámetros en general.</p>
+                                    <p>Valores de las tablas tipo del sistema y parámetros en general.<br/>
 
-                                    <p>Entre los parámetros más importantes tenemos a: grupo de procesos, tipos de elemento,
+                                    Entre los parámetros más importantes tenemos a: grupo de procesos, tipos de elemento,
                                     fuentes de recursos, tipo de compra, año presupuestario, unidades de medida, programas,
                                     portafolios, etc..</p>
                                 </div>
@@ -50,9 +44,9 @@
                                 <div class="descripcion hidden">
                                     <h4>Categorías</h4>
 
-                                    <p>Valores de las categorías de las actividades dentro de los componenetes de un proyecto.</p>
+                                    <p>Valores de las categorías de las actividades dentro de los componenetes de un proyecto.<br/>
 
-                                    <p>Las categorías poseen valores de "ninguna" o específicos como Estudios, construcción, fiscalización, etc..</p>
+                                    Las categorías poseen valores de "ninguna" o específicos como Estudios, construcción, fiscalización, etc..</p>
                                 </div>
                             </li>
 
@@ -78,9 +72,9 @@
                                 <div class="descripcion hidden">
                                     <h4>Cargos del Personal</h4>
 
-                                    <p>Cargos del personal de la Unidad Ejecutora y de la planta central del app.</p>
+                                    <p>Cargos del personal de la Unidad Ejecutora y de la planta central del app.<br/>
 
-                                    <p>Estos cargo se aplican a quienes van a ser los responsables del ingreso o seguimiento
+                                    Estos cargo se aplican a quienes van a ser los responsables del ingreso o seguimiento
                                     y de la ejecución del proyecto</p>
                                 </div>
                             </li>
@@ -94,9 +88,9 @@
                                 <div class="descripcion hidden">
                                     <h4>Area de Gestión</h4>
 
-                                    <p>Se aplica a las distintas entidades, instituciones y dependencias para diferenciarlas como:</p>
+                                    <p>Se aplica a las distintas entidades, instituciones y dependencias para diferenciarlas como:<br/>
 
-                                    <p>Gerencias, Direcciones, Unidades Operativas, etc.</p>
+                                    Gerencias, Direcciones, Unidades Operativas, etc.</p>
                                 </div>
                             </li>
 
@@ -122,9 +116,9 @@
                                 <div class="descripcion hidden">
                                     <h4>Año Fiscal</h4>
 
-                                    <p>Año al cual corresponde el PAPP, cada año debe iniciarse una nueva gestión de proyectos.</p>
+                                    <p>Año al cual corresponde el PAPP, cada año debe iniciarse una nueva gestión de proyectos.<br/>
 
-                                    <p>Es similar al período contable o año fiscal.</p>
+                                    Es similar al período contable o año fiscal.</p>
                                 </div>
                             </li>
                         </ul>
