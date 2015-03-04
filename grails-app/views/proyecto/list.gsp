@@ -24,7 +24,7 @@
                     Cargar Excel
                 </g:link>
 
-                <a class="btn btn-sm btn-success" id="reporte">
+                <a class="btn btn-sm btn-success" id="reporte" style="margin-left: 5px;">
                     <i class="fa fa-print"></i>
                     Reporte de Total de Priorización
                 </a>
