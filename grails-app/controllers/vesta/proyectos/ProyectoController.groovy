@@ -44,7 +44,7 @@ class ProyectoController extends Shield {
     def getList(params, all) {
         println "GET LIST: " + params + "   " + all
         params = params.clone()
-        params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
+        params.max = params.max ? Math.min(params.max.toInteger(), 100) : 8
         params.offset = params.offset ?: 0
         if (all) {
             params.remove("max")

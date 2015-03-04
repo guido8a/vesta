@@ -116,12 +116,13 @@
                             </td>
 
                             <td>
-                                <g:fieldValue bean="${proyectoInstance}" field="descripcion"/>
+                                ${proyectoInstance?.descripcion?.size() > 70 ? proyectoInstance?.descripcion?.toString()[0..70] + "..." : proyectoInstance?.descripcion}
                             </td>
 
                             <td>
                                 <elm:textoBusqueda busca="${params.search_programa}">
-                                    <g:fieldValue bean="${proyectoInstance}" field="programa"/>
+                                    ${proyectoInstance?.programa?.descripcion?.size() > 50 ? proyectoInstance?.programa?.descripcion?.toString()[0..50] + "..." : proyectoInstance?.programa?.descripcion}
+                                    %{--<g:fieldValue bean="${proyectoInstance}" field="programa"/>--}%
                                 </elm:textoBusqueda>
                             </td>
 
