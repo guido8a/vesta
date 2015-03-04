@@ -11,7 +11,7 @@ th.sortable {
     background-position : right;
     background-repeat   : no-repeat;
     background-image    : url(../../images/skin/upDown.png);
-    padding-right       : 1.1em;
+    padding-right       : 1.5em !important;
 }
 
 th.asc {

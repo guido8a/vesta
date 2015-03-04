@@ -547,7 +547,7 @@ class ReporteSolicitudController {
             }
         } else {
             if (params.fgp != "null") {
-                def gerentePlanificacion = Usro.get(params.fgp)
+                def gerentePlanificacion = Persona.get(params.fgp)
                 reunion.firmaGerenciaPlanificacion = gerentePlanificacion
                 if (gerentePlanificacion) {
                     firmas += [cargo: gerentePlanificacion?.cargoPersonal?.descripcion ?: "GERENTE DE PLANIFICACIÓN", usuario: gerentePlanificacion]
@@ -555,7 +555,7 @@ class ReporteSolicitudController {
                 }
             }
             if (params.fdp != "null") {
-                def directorPlanificacion = Usro.get(params.fdp)
+                def directorPlanificacion = Persona.get(params.fdp)
                 reunion.firmaDireccionPlanificacion = directorPlanificacion
                 if (directorPlanificacion) {
 //                firmas += [cargo: "DIRECTOR DE PLANIFICACIÓN", usuario: directorPlanificacion]
@@ -563,7 +563,7 @@ class ReporteSolicitudController {
                 }
             }
             if (params.fgt != "null") {
-                def gerenteTec = Usro.get(params.fgt)
+                def gerenteTec = Persona.get(params.fgt)
                 reunion.firmaGerenciaTecnica = gerenteTec
                 if (gerenteTec) {
 //                firmas += [cargo: "GERENTE TÉCNICO", usuario: gerenteTec]

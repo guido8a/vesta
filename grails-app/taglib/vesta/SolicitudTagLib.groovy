@@ -897,14 +897,14 @@ class SolicitudTagLib {
             if (s == 1) {
                 html += "<td width='20%' > </td>"
                 html += "<td width='50%' style='border-top: solid 1px black; text-align:center;'>"
-                html += firmas.first().usuario.persona.nombre + " " + firmas.first().usuario.persona.apellido
+                html += firmas.first().usuario.nombre + " " + firmas.first().usuario.apellido
                 html += "<br/>" + firmas.first().cargo
                 html += "</td>"
                 html += "<td width='20%' > </td>"
             } else {
                 firmas.each { firma ->
                     html += "<td width='${w}%' style='border-top: solid 1px black; text-align:center;'>"
-                    html += firma.usuario.persona.nombre + " " + firma.usuario.persona.apellido
+                    html += firma.usuario.nombre + " " + firma.usuario.apellido
                     html += "<br/>" + firma.cargo
                     html += "</td>"
                 }

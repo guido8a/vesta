@@ -9,87 +9,18 @@
 <html>
     <head>
         <title>Reunión de aprobación</title>
+
+        <rep:estilosAlt orientacion="l" pagTitle="Reunión de aprobación"/>
+
         <style type="text/css">
-        @page {
-            size   : 29.7cm 21cm ;  /*width height */
-            margin : 2cm;
-        }
-
-        .hoja {
-            width     : 24.7cm;
-            font-size : 12pt;
-        }
-
-        .titulo {
-            width : 15.5cm;
-        }
-
-        .hoja {
-            /*background  : #fedcba;*/
-            /*height      : 24.7cm; *//*29.7-(1.5*2)*/
-            font-family : arial;
-            font-size   : 10pt;
-        }
-
-        .titulo {
-            height        : 130px;
-            font-size     : 12pt;
-            /*font-weight   : bold;*/
-            text-align    : center;
-            margin-bottom : 5px;
-            width         : 95%;
-        }
-
-        .totales {
-            font-weight : bold;
-        }
-
-        .num {
-            text-align : right;
-        }
-
-        .header {
-            background : #333333 !important;
-            color      : #AAAAAA;
-        }
-
-        .total {
-            background : #000000 !important;
-            color      : #FFFFFF !important;
-        }
-
-        th {
-            background : #cccccc;
-        }
-
-        tbody tr:nth-child(2n+1) {
-            background : none repeat scroll 0 0 #E1F1F7;
-        }
-
-        tbody tr:nth-child(2n) {
-            background : none repeat scroll 0 0 #F5F5F5;
-        }
-
-        .label {
-            font-weight : bold;
-        }
-
-        .ui-widget-header {
-            font-weight : bold;
-        }
-
-        .ttl {
-            text-align  : center;
-            font-weight : bold;
-        }
-
-        .fecha {
-            text-align : right;
-            margin-top : 1cm;
-        }
 
         .tbl {
+            width           : 100%;
             border-collapse : collapse;
+        }
+
+        .tbl, .tbl tr, .tbl th, .tbl td {
+            border : solid 1px #555;
         }
 
         .tbl th {
@@ -99,12 +30,25 @@
         .small {
             font-size : 9pt;
         }
+
+        .txt {
+            border        : solid 1px #333;
+            padding       : 3px;
+            margin-bottom : 10px;
+        }
         </style>
     </head>
 
     <body>
         <div class="hoja">
-            <rep:headerReporte  title="Acta de la Reunión de Planificación de Contrataciones" codigo="FR-PLA-AVAL-02"/>
+            <rep:headerFooterAlt title="Acta de la Reunión de Planificación de Contrataciones" codigo="FR-PLA-AVAL-02"/>
+
+            <div class="txt">
+                Con el objetivo de ejecutar las actividades programadas en la Planificación Operativa Anual 2015, se pone a
+                consideración de la Comisión de Planificación de Contrataciones la ejecución de las
+                actividades detalladas a continuación:
+            </div>
+
 
             <table class="tbl" border="1">
                 <thead>
