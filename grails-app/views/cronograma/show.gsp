@@ -66,7 +66,8 @@
             </div>
             <g:if test="${params.act}">
                 <div class="btn-group">
-                    <g:link controller="marcoLogico" action="marcoLogicoProyecto" id="${proyecto.id}" class="btn btn-sm btn-default">
+                    <g:link controller="marcoLogico" action="marcoLogicoProyecto" id="${proyecto.id}" class="btn btn-sm btn-default"
+                            params="[list: params.list]">
                         <i class="fa fa-calendar-o"></i> Plan de proyecto
                     </g:link>
                 </div>
