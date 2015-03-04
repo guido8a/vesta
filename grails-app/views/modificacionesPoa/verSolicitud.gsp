@@ -3,19 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main"/>
-    <title>Porcesar Solicitud de Reforma</title>
-    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/jBreadCrumb/Styles', file: 'Base.css')}"
-          type="text/css"/>
-    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/jBreadCrumb/Styles', file: 'BreadCrumb.css')}"
-          type="text/css"/>
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'svt.css')}"
-          type="text/css"/>
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.easing.1.3.js')}" type="text/javascript"
-            language="JavaScript"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jBreadCrumb/js', file: 'jquery.jBreadCrumb.1.1.js')}"
-            type="text/javascript" language="JavaScript"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/select', file: 'jquery.ui.selectmenu.js')}"></script>
-    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/select', file: 'jquery.ui.selectmenu.css')}"/>
+    <title>Procesar Solicitud de Reforma</title>
+
     <style type="text/css">
 
     th{
@@ -30,84 +19,113 @@
         text-align: center;
     }
 
+    .table {
+        border-collapse : collapse;
+    }
+
     </style>
 
 </head>
 
 <body>
-<div class="fila">
-    <g:link controller="modificacionesPoa" action="listaPendientes" class="btn">Regresar</g:link>
-</div>
-<div style="width: 45%;;display: inline-table">
-    <div class="fila">
-        <div class="labelSvt">Requirente</div>
-        <div class="fieldSvt-medium" >
-            ${sol.usuario.persona}
-        </div>
-    </div>
-    <div class="fila">
-        <div class="labelSvt">Unidad</div>
-        <div class="fieldSvt-medium" >
-            ${sol.usuario.unidad}
-        </div>
-    </div>
-    <div class="fila">
-        <div class="labelSvt">Concepto</div>
-        <div class="fieldSvt-medium" >
-            ${sol.concepto}
-        </div>
-    </div>
-    <div class="fila">
-        <div class="labelSvt">Fecha</div>
-        <div class="fieldSvt-medium" >
-            ${sol.fecha.format("dd-MM-yyyy")}
-        </div>
-    </div>
-</div>
-<div style="width: 45%;display: inline-table">
 
-    <table class="table " border="1">
-        <thead>
-        <tr>
-            <th>Tipo de reforma</th>
-            <th>(X)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Reforma entre actividades por reasignación de recursos o saldos</td>
-            <td class="center">
-                ${sol.tipo=='R'?'X':''}
-            </td>
-        </tr>
-        <tr>
-            <td>Reforma por creación de una nueva actividad</td>
-            <td class="center">
-                ${sol.tipo=='N'?'X':''}
-            </td>
-        </tr>
-        <tr>
-            <td>Reforma por creación de una actividad derivada</td>
-            <td class="center">
-                ${sol.tipo=='D'?'X':''}
-            </td>
-        </tr>
-        <tr>
-            <td>Reforma por Incremento</td>
-            <td class="center">
-                ${sol.tipo=='A'?'X':''}
-            </td>
-        </tr>
-
-        </tbody>
-    </table>
+<div class="btn-group">
+    <g:link controller="modificacionesPoa" action="listaPendientes" class="btn btn-default"><i class="fa fa-bars"></i> Lista pendientes</g:link>
+        <g:if test="${sol.estado==0}">
+        <a href="#" class="btn btn-success btn-sm" id="aprobar" iden="${sol.id}"><i class="fa fa-check"></i> Aprobar</a>
+        <a href="#" class="btn btn-danger btn-sm" id="negar" iden="${sol.id}"><i class="fa fa-remove"></i> Negar</a>
+        </g:if>
 </div>
-<g:set var="ti" value="${0}"></g:set>
-<g:set var="tvi" value="${0}"></g:set>
-<g:set var="tvf" value="${0}"></g:set>
-<g:set var="tf" value="${0}"></g:set>
 
-<table style="margin-top: 20px;width: 972px">
+<div style="margin-top: 50px">
+    <div style="width: 45%; float: left">
+        <div class="form-group keeptogether">
+            <span class="grupo">
+                <label class="col-md-2 control-label">
+                    Requirente
+                </label>
+                <div class="col-md-7">
+                    ${sol.usuario.nombre + " " + sol.usuario.apellido}
+                </div>
+            </span>
+        </div>
+        <div class="form-group keeptogether">
+            <span class="grupo">
+                <label class="col-md-2 control-label">
+                    Unidad
+                </label>
+                <div class="col-md-7">
+                    ${sol.usuario.unidad}
+                </div>
+            </span>
+        </div>
+        <div class="form-group keeptogether">
+            <span class="grupo">
+                <label class="col-md-2 control-label">
+                    Concepto
+                </label>
+                <div class="col-md-7">
+                    ${sol.concepto}
+                </div>
+            </span>
+        </div>
+        <div class="form-group keeptogether">
+            <span class="grupo">
+                <label class="col-md-2 control-label">
+                    Fecha
+                </label>
+                <div class="col-md-7">
+                    ${sol.fecha.format("dd-MM-yyyy")}
+                </div>
+            </span>
+        </div>
+    </div>
+
+    <div style="width: 45%; float: right">
+        <table class="table table-condensed table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Tipo de reforma</th>
+                <th>(X)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Reforma entre actividades por reasignación de recursos o saldos</td>
+                <td class="center">
+                    ${sol.tipo=='R'?'X':''}
+                </td>
+            </tr>
+            <tr>
+                <td>Reforma por creación de una nueva actividad</td>
+                <td class="center">
+                    ${sol.tipo=='N'?'X':''}
+                </td>
+            </tr>
+            <tr>
+                <td>Reforma por creación de una actividad derivada</td>
+                <td class="center">
+                    ${sol.tipo=='D'?'X':''}
+                </td>
+            </tr>
+            <tr>
+                <td>Reforma por Incremento</td>
+                <td class="center">
+                    ${sol.tipo=='A'?'X':''}
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<g:set var="ti" value="${0}"/>
+<g:set var="tvi" value="${0}"/>
+<g:set var="tvf" value="${0}"/>
+<g:set var="tf" value="${0}"/>
+
+<table class="table table-condensed table-bordered table-striped table-hover">
     <thead>
     <tr>
         <th>Proyecto</th>
@@ -115,8 +133,8 @@
         <th>No</th>
         <th>Actividad</th>
         <th>
-            Grupo de <br>
-            gasto
+            Partida <br>
+            presupuestaria
         </th>
         <th>Valor inicial</th>
         <th>Disminución</th>
@@ -269,12 +287,6 @@
             </td>
         </tr>
     </g:else>
-    %{--<g:else>--}%
-    %{--<g:set var="ti" value="${0}"></g:set>--}%
-    %{--<g:set var="tvi" value="${0}"></g:set>--}%
-    %{--<g:set var="tvf" value="${0}"></g:set>--}%
-    %{--<g:set var="tf" value="${0}"></g:set>--}%
-    %{--</g:else>--}%
     <tr>
         <td colspan="4"></td>
         <td style="font-weight: bold">TOTAL</td>
@@ -289,84 +301,111 @@
 <fieldset style="width: 95%;height: 150px;" class="ui-corner-all">
     <legend>Observaciones</legend>
     <div class="fila">
-        <textarea id="obs" style="width: 95%;height: 80px" class="ui-corner-all ui-widget-content" ${(sol.estado!=0)?'disabled':''}>${sol.observaciones}</textarea>
+        <textarea id="obs" style="width: 95%;height: 80px; resize: none" class="ui-corner-all ui-widget-content" ${(sol.estado!=0)?'disabled':''}>${sol.observaciones}</textarea>
     </div>
 </fieldset>
 
 <g:if test="${sol.estado < 2}">
 <fieldset style="width: 95%;height: 100px;" class="ui-corner-all">
     <legend>Firmas para la aprobación</legend>
-    <div class="fila">
-        <div class="labelSvt">Revisado por:</div>
-        <div class="fieldSvt-medium">
-            <g:select from="${personas}"  optionKey="id"  optionValue="persona"  id="firma1" name="firma" ></g:select>
-        </div>
-        <div class="labelSvt">Aprobado por:</div>
-        <div class="fieldSvt-medium">
-            <g:select from="${perGerencia}"  optionKey="id"  optionValue="persona"  id="firma2" name="firma" ></g:select>
-        </div>
+    <div class="form-group keeptogether">
+        <span class="grupo">
+            <label class="col-md-2 control-label">
+                Revisado por:
+            </label>
+            <div class="col-md-3">
+                <g:select from="${personas}"  optionKey="id"  optionValue="nombre"  id="firma1" name="firma" />
+            </div>
+        </span>
+        <span class="grupo">
+            <label class="col-md-2 control-label">
+                Aprobado por:
+            </label>
+            <div class="col-md-3">
+                <g:select from="${perGerencia}"  optionKey="id"  optionValue="nombre"  id="firma2" name="firma" />
+
+            </div>
+        </span>
     </div>
 </fieldset>
 </g:if>
-%{--<g:if test="${sol.estado==0}">--}%
-    %{--<div class="message ui-corner-all" style="background: rgba(255, 0, 0, 0.37);width: 95%">--}%
-        %{--Después de aprobar la solicitud, use las opciones del menú para realizar la modificación del P.O.A.--}%
-    %{--</div>--}%
-%{--</g:if>--}%
-<div class="fila" style="margin-top: 40px;">
-    <g:if test="${sol.estado==0}">
-        <a href="#" class="btn" id="aprobar" iden="${sol.id}">Aprobar</a>
-        <a href="#" style="margin-left: 20px" class="btn" id="negar" iden="${sol.id}">Negar</a>
-    </g:if>
-</div>
-
-%{--<g:if test="${sol.tipo=='N'}">--}%
-
-%{--</g:if>--}%
-%{--<g:if test="${sol.tipo=='D'}">--}%
-
-%{--</g:if>--}%
-%{--<g:if test="${sol.tipo=='E'}">--}%
-
-%{--</g:if>--}%
 
 <script>
-    $(".btn").button()
-    $("#aprobar").click(function(){
-        if(confirm("Está seguro?")){
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'aprobar',controller: 'modificacionesPoa')}",
-                data    : {
-                    id     : $("#aprobar").attr("iden"),
-                    obs    : $("#obs").val(),
-                    firma1: $("#firma1").val(),
-                    firma2: $("#firma2").val()
-                },
-                success : function (msg) {
-                    location.href="${g.createLink(controller: 'modificacionesPoa',action: 'listaPendientes')}"
-                }
-            });
-        }
 
-    })
-    $("#negar").click(function(){
-        if(confirm("Está seguro?")){
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'negar',controller: 'modificacionesPoa')}",
-                data    : {
-                    id     : $("#negar").attr("iden"),
-                    obs    : $("#obs").val()
+    $("#aprobar").click(function(){
+        bootbox.dialog({
+            title: "Alerta",
+            message: "<i class='fa fa-check fa-3x pull-left text-success text-shadow'></i><p>" + "Está seguro de aprobar la solicitud de reforma?",
+            buttons : {
+                cancelar: {
+                    label : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
                 },
-                success : function (msg) {
-                    location.href="${g.createLink(controller: 'modificacionesPoa',action: 'listaPendientes')}"
+                aprobar : {
+                    label     : "<i class='fa fa-check'></i> Aprobar",
+                    className : "btn-success",
+                    callback  : function () {
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(action:'aprobar',controller: 'modificacionesPoa')}",
+                            data    : {
+                                id     : $("#aprobar").attr("iden"),
+                                obs    : $("#obs").val(),
+                                firma1: $("#firma1").val(),
+                                firma2: $("#firma2").val()
+                            },
+                            success : function (msg) {
+                                location.href="${g.createLink(controller: 'modificacionesPoa',action: 'listaPendientes')}"
+                            }
+                        });
+                    }
                 }
-            });
-        }
+            }
+        })
+
     });
-    $("#firma1").selectmenu({width : 200});
-    $("#firma2").selectmenu({width : 200});
+    $("#negar").click(function(){
+
+        bootbox.dialog({
+            title: "Alerta",
+            message: "<i class='fa fa-remove fa-3x pull-left text-danger text-shadow'></i><p>" + "Está seguro de negar la solicitud de reforma?",
+            buttons : {
+                cancelar: {
+                    label : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                negar : {
+                    label     : "<i class='fa fa-remove'></i> Negar",
+                    className : "btn-danger",
+                    callback  : function () {
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(action:'negar',controller: 'modificacionesPoa')}",
+                            data    : {
+                                id     : $("#negar").attr("iden"),
+                                obs    : $("#obs").val()
+                            },
+                            success : function (msg) {
+                                location.href="${g.createLink(controller: 'modificacionesPoa',action: 'listaPendientes')}"
+                            }
+                        });
+                    }
+                }
+            }
+        })
+
+
+
+
+
+
+
+    });
+
 </script>
 
 </body>

@@ -132,7 +132,7 @@
                             </g:if>
                         </td>
                         <td style="text-align: center">
-                            <a href="${g.createLink(controller: 'modificacionesPoa',action: 'verSolicitud',id:p.id)}" class="btn btn-info btn-sm" iden="${p.id}"><i class="fa fa-search"></i> Ver</a>
+                            <a href="${g.createLink(controller: 'modificacionesPoa',action: 'verSolicitud',id:p.id)}" class="btn btn-success btn-sm" iden="${p.id}"><i class="fa fa-search"></i> Ver</a>
 
                         </td>
 
@@ -154,20 +154,9 @@
     function cargarHistorial(anio,numero,proceso){
     }
 
-    $(".reforma").click(function(){
-        var url = "${g.createLink(controller: 'reporteReformaPoa',action: 'reformaPoa')}/?id="+$(this).attr("id")
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url+"&filename=matriz.pdf"
-    })
-    %{--$(".matriz").click(function(){--}%
-        %{--var url = "${g.createLink(controller: 'reporteReformaPoa',action: 'solicitudReformaPoa')}/?id="+$(this).attr("id")--}%
-        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url+"&filename=matriz.pdf"--}%
-    %{--})--}%
-    %{--$(".imprimiSolicitud").click(function(){--}%
-        %{--var url = "${g.createLink(controller: 'reporteSolicitud',action: 'solicitudReformaPdf')}/?id="+$(this).attr("id")--}%
-        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url+"&filename=Solicitud.pdf"--}%
-    %{--})--}%
     $("#tabs").tabs()
     $(".aprobar").button({icons:{ primary:"ui-icon-check"},text:false});
+
     $(".aprobarAnulacion").button({icons:{ primary:"ui-icon-check"},text:false});
     $(".negar").button({icons:{ primary:"ui-icon-close"},text:false}).click(function(){
         $("#avalId").val($(this).attr("iden"))

@@ -265,6 +265,7 @@ class ModificacionesPoaController {
         render "ok"
     }
     def aprobar = {
+        println("params " + params)
         def sol = SolicitudModPoa.get(params.id)
         sol.estado=5
         sol.fechaRevision=new Date()
@@ -297,6 +298,8 @@ class ModificacionesPoaController {
             println "error firma2 "+firma2.errors
         sol.firma1=firma1
         sol.firma2=firma2
+
+//        println("firmas " + sol.firma1.id + sol.firma2.id)
 
         sol.save(flush: true)
 //        ejecutarSolicitud(sol)
