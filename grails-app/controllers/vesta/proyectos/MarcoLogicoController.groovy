@@ -325,6 +325,11 @@ class MarcoLogicoController extends Shield {
             }
         }
 
+
+        totComp = Math.round(totComp * 100) / 100
+        totFin = Math.round(totFin * 100) / 100
+        totOtros = Math.round(totOtros * 100) / 100
+
         return [marcoLogicoInstance: marcoLogicoInstance, show: params.show, totComp: totComp, totFin: totFin, totOtros: totOtros]
     }
 

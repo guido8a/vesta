@@ -16,6 +16,8 @@
 
 <body>
 
+<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
+
 <div class="fila">
     <a href="#" class="btn btn-default btnCrear">
         <i class="fa fa-file-o"></i>  Crear nuevo Proceso de contratación
@@ -111,6 +113,7 @@
                 icon   : "fa fa-line-chart",
                 action : function ($element) {
                     var id = $element.data("id");
+                    location.href = "${createLink(controller: "hito", action: "avancesFinancieros")}?id=" + idPro;
 
                 }
             };

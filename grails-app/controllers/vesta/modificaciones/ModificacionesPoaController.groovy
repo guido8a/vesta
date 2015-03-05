@@ -335,7 +335,7 @@ class ModificacionesPoaController {
         def sols = []
         def unidad = session.usuario.unidad
        SolicitudModPoa.list().each {
-           if(it.usuario.unidad.id==unidad.id){
+           if(it.usuario.unidad?.id==unidad.id){
                sols.add(it)
            }
        }

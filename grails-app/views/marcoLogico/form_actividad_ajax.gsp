@@ -13,6 +13,7 @@
             <strong>T. otros componentes:</strong> <g:formatNumber number="${totOtros}" type="currency" currencySymbol=""/><br/>
             <strong>T. financiamiento:</strong> <g:formatNumber number="${totFin}" type="currency" currencySymbol=""/>
             <strong>Sin asignar:</strong> <g:formatNumber number="${totFin - (totComp + totOtros)}" type="currency" currencySymbol=""/>
+            <strong>Monto</strong> <g:formatNumber number="${marcoLogicoInstance.monto}" type="currency" currencySymbol=""/>
         </div>
 
         <g:form class="form-horizontal" name="frmActividad" role="form" action="save_actividad_ajax" method="POST">
@@ -69,11 +70,14 @@
                         Monto
                     </label>
 
+                    <g:set var="finan" value="${totFin}"/>
+                    <g:set var="otros" value="${totComp + totOtros}"/>
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
                             <g:textField name="monto" value="${fieldValue(bean: marcoLogicoInstance, field: 'monto')}"
                                          class="number money form-control input-sm  required" required=""
-                                         tdnMax="${(totFin - (totComp + totOtros)) + marcoLogicoInstance.monto}"/>
+                                         tdnMax="${((finan - otros) + marcoLogicoInstance.monto)}"/>
+                                         %{--tdnMax="${(totFin - (totComp + totOtros)) + marcoLogicoInstance.monto}"/>--}%
                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                         </div>
                     </div>

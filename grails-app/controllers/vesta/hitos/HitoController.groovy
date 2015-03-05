@@ -1,6 +1,8 @@
 package vesta.hitos
 
 import org.springframework.dao.DataIntegrityViolationException
+import vesta.avales.Aval
+import vesta.avales.ProcesoAval
 import vesta.seguridad.Shield
 
 
@@ -10,6 +12,27 @@ import vesta.seguridad.Shield
 class HitoController extends Shield {
 
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
+
+
+
+    def avancesFinancieros = {
+        println "params "+params
+        def proceso = ProcesoAval.get(params.id)
+        def aval = Aval.findByProceso(proceso)
+        def avances=[]
+        if(aval)
+            avances  = AvanceFinanciero.findAllByAval(aval)
+        [avances:avances,proceso:proceso,aval:aval]
+    }
+
+    /*Función para cargar un archivo excel de hitos financiero*/
+
+    def cargarExcelHitos ={
+        if(params.msg)
+            return [msg: params.msg]
+    }
+
+
 
     /**
      * Acción que redirecciona a la lista (acción "list")
