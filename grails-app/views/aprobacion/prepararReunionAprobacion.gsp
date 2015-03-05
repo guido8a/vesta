@@ -51,7 +51,7 @@
                         <td>${solicitudInstance.unidadEjecutora?.nombre}</td>
                         <td>${solicitudInstance.actividad?.objeto}</td>
                         <td>${solicitudInstance.fecha?.format('dd-MM-yyyy')}</td>
-                        <td><g:formatNumber number="${solicitudInstance.montoSolicitado}" type="currency" currencySymbol=" "/></td>
+                        <td><g:formatNumber number="${solicitudInstance.montoSolicitado}" type="currency" currencySymbol=""/></td>
                         <td>${solicitudInstance.tipoContrato?.descripcion}</td>
                         <td>${solicitudInstance.nombreProceso}</td>
                         <td><g:formatNumber number="${solicitudInstance.plazoEjecucion}" maxFractionDigits="0"/> días</td>

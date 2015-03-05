@@ -27,11 +27,11 @@
             <td>${asg.asignacion.marcoLogico.numero} - ${asg.asignacion.marcoLogico}</td>
             <td>${asg.asignacion.presupuesto.numero}</td>
             <td style="text-align: right">
-                <g:formatNumber number="${asg.asignacion.priorizado}" type="currency" currencySymbol=" "/>
+                <g:formatNumber number="${asg.asignacion.priorizado}" type="currency" currencySymbol=""/>
             </td>
             <td style="text-align: right" id="monto_${asg.id}"
                 valor="${asg.monto}">
-                <g:formatNumber number="${asg.monto}" type="currency" currencySymbol=" "/>
+                <g:formatNumber number="${asg.monto}" type="currency" currencySymbol=""/>
             </td>
             <td style="text-align: center">
                 <g:if test="${band}">
@@ -51,7 +51,7 @@
     <tr>
         <td colspan="4" style="font-weight: bold">TOTAL PROCESO</td>
         <td style="font-weight: bold;text-align: right">
-            <g:formatNumber number="${total}" type="currency" currencySymbol=" "/>
+            <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
         </td>
         <td></td>
         <td></td>

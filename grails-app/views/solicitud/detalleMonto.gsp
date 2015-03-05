@@ -51,7 +51,7 @@
     <tr class="${dt.anio.anio}" val="${dt.monto}">
       <td>${dt.anio.anio}</td>
       <td class="num">
-        <g:formatNumber number="${dt.monto}" type="currency" currencySymbol=" "/>
+        <g:formatNumber number="${dt.monto}" type="currency" currencySymbol=""/>
         <g:set var="total" value="${total + dt.monto}"/>
       </td>
       <td style="text-align: center;">
@@ -66,7 +66,7 @@
       TOTAL
     </th>
     <th class="num" id="thTotal">
-      <g:formatNumber number="${total}" type="currency" currencySymbol=" "/>
+      <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
     </th>
   </tr>
   <tr>
@@ -74,7 +74,7 @@
       Restante
     </th>
     <th class="num" id="thResto">
-      <g:formatNumber number="${solicitud.montoSolicitado - total}" type="currency" currencySymbol=" "/>
+      <g:formatNumber number="${solicitud.montoSolicitado - total}" type="currency" currencySymbol=""/>
     </th>
   </tr>
   </tfoot>

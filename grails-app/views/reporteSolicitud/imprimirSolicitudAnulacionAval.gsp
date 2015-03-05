@@ -147,7 +147,7 @@
                             Valor total del proceso:
                         </th>
                         <td colspan="2">
-                            <g:formatNumber number="${solicitud.monto}" type="currency" currencySymbol=" "/>
+                            <g:formatNumber number="${solicitud.monto}" type="currency" currencySymbol=""/>
                         </td>
                     </tr>
                 </table>
@@ -190,7 +190,7 @@
                                 ${solicitud.proceso.fechaInicio?.format("yyyy")}
                             </td>
                             <td>
-                                <g:formatNumber number="${pa.monto}" type="currency" currencySymbol=" "/>
+                                <g:formatNumber number="${pa.monto}" type="currency" currencySymbol=""/>
                             </td>
                         </tr>
                         <tr>

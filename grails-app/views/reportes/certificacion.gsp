@@ -38,7 +38,7 @@
             <div style="text-align: justify;float: left;font-size: 10pt;">
                 <p>
                     Con solicitud de aval de POA Nro. ${sol.memo}, con fecha ${sol.fecha.format("dd-MM-yyyy")}, la Gerencia de Planificación solicita un aval para realizar la actividad "${sol.proceso.nombre}",
-                    por un monto total de <g:formatNumber number="${sol.monto}" type="currency" currencySymbol=" "/>$, con base en cual informo lo siguiente:
+                    por un monto total de <g:formatNumber number="${sol.monto}" type="currency" currencySymbol=""/>$, con base en cual informo lo siguiente:
                 </p>
 
                 <p>
@@ -61,7 +61,7 @@
                         <tr>
                             <td style="font-weight: bold">Monto Total</td>
                             <td>
-                                <g:formatNumber number="${sol.monto + ((anterior) ? anterior?.monto : 0)}" type="currency" currencySymbol=" "/>
+                                <g:formatNumber number="${sol.monto + ((anterior) ? anterior?.monto : 0)}" type="currency" currencySymbol=""/>
                             </td>
                         </tr>
                     </tbody>
@@ -96,7 +96,7 @@
 
                         <tr>
                             <td style="font-weight: bold">Monto solicitado</td>
-                            <td><g:formatNumber number="${pa.monto}" type="currency" currencySymbol=" "/></td>
+                            <td><g:formatNumber number="${pa.monto}" type="currency" currencySymbol=""/></td>
                         </tr>
                     </table>
                 </g:each>

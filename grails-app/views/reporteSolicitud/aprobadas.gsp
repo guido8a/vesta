@@ -136,11 +136,11 @@
                                     <td>
                                         <g:set var="valor" value="${DetalleMontoSolicitud.findByAnioAndSolicitud(a, solicitudInstance)}"/>
                                         <g:if test="${valor}">
-                                            <g:formatNumber number="${valor.monto}" type="currency" currencySymbol=" "/>
+                                            <g:formatNumber number="${valor.monto}" type="currency" currencySymbol=""/>
                                         </g:if>
                                     </td>
                                 </g:each>
-                                <td><g:formatNumber number="${solicitudInstance.montoSolicitado}" type="currency" currencySymbol=" "/></td>
+                                <td><g:formatNumber number="${solicitudInstance.montoSolicitado}" type="currency" currencySymbol=""/></td>
                                 <g:set var="estado" value="${solicitudInstance.aprobacion}"/>
                                 <g:if test="${estado}">
                                     <td>${solicitudInstance?.tipoAprobacion?.descripcion}<br/>${estado.fecha.format("dd-MM-yyyy")}

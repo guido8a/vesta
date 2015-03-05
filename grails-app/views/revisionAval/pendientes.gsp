@@ -79,7 +79,7 @@
                                             ${p.concepto}
                                         </td>
                                         <td class="text-right">
-                                            <g:formatNumber number="${p.monto}" type="currency" currencySymbol=" "/>
+                                            <g:formatNumber number="${p.monto}" type="currency" currencySymbol=""/>
                                         </td>
                                         <td class="text-center ${p.estado?.codigo}">
                                             ${p.estado?.descripcion}

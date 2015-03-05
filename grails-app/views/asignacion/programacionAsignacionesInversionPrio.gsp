@@ -120,9 +120,9 @@
                     </g:else>
                 </g:each>
                 <td class="total" id="total_cor_${asg.id}" style="width: 80px;text-align: right;${(totalFila.toDouble().round(2)!=asg.priorizado.toDouble().round(2))?'color:red;':''}">
-                    <g:formatNumber number="${totalFila}" type="currency" currencySymbol=" "/>
+                    <g:formatNumber number="${totalFila}" type="currency" currencySymbol=""/>
                    %{--${totalFila}-----${asg.priorizado}--}%
-                    %{--<g:formatNumber number="${asg.priorizado}" type="currency" currencySymbol=" "/>--}%
+                    %{--<g:formatNumber number="${asg.priorizado}" type="currency" currencySymbol=""/>--}%
                 </td>
                 <td >
                     <a href="#" class="btn guardar ajax btn-primary btn-sm" asg="${asg.id}"   icono="ico_cor_${i}" max="${asg.priorizado}" clase="asg_cor_${asg.id}" total="total_cor_${asg.id}" title="guardar">
@@ -136,19 +136,19 @@
             <td colspan="15"><b>TOTALES</b></td>
         </tr>
         <tr>
-            <td style="text-align: center"><g:formatNumber number="${ene}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${feb}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${mar}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${abr}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${may}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${jun}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${jul}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${ago}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${sep}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${oct}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${nov}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${dic}" type="currency" currencySymbol=" "/></td>
-            <td style="text-align: center"><g:formatNumber number="${ene.toDouble()+feb.toDouble()+mar.toDouble()+abr.toDouble()+may.toDouble()+jun.toDouble()+jul.toDouble()+ago.toDouble()+sep.toDouble()+oct.toDouble()+nov.toDouble()+dic.toDouble()}" type="currency" currencySymbol=" "/></td>
+            <td style="text-align: center"><g:formatNumber number="${ene}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${feb}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${mar}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${abr}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${may}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${jun}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${jul}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${ago}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${sep}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${oct}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${nov}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${dic}" type="currency" currencySymbol=""/></td>
+            <td style="text-align: center"><g:formatNumber number="${ene.toDouble()+feb.toDouble()+mar.toDouble()+abr.toDouble()+may.toDouble()+jun.toDouble()+jul.toDouble()+ago.toDouble()+sep.toDouble()+oct.toDouble()+nov.toDouble()+dic.toDouble()}" type="currency" currencySymbol=""/></td>
         </tr>
         </tbody>
     </table>

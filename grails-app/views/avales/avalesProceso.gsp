@@ -103,7 +103,7 @@
                                         <td class="${(p.tipo == 'A') ? 'E03' : 'E02'}">${(p.tipo == "A") ? 'Anulación' : 'Aprobación'}</td>
                                         <td>${p.concepto}</td>
                                         <td style="text-align: right">
-                                            <g:formatNumber number="${p.monto}" type="currency" currencySymbol=" "/>
+                                            <g:formatNumber number="${p.monto}" type="currency" currencySymbol=""/>
                                         </td>
                                         <g:set var="avalEstado" value="${p?.estado?.codigo}"/>
                                         <td style="text-align: center" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : avalEstado == 'E02' ? 'verde' : 'rojo'}">

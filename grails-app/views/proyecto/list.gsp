@@ -96,7 +96,7 @@
             <tbody>
                 <g:if test="${proyectoInstanceCount > 0}">
                     <g:each in="${proyectoInstanceList}" status="i" var="proyectoInstance">
-                        <tr data-id="${proyectoInstance.id}">
+                        <tr data-id="${proyectoInstance.id}" data-nombre="${proyectoInstance.nombre}">
 
                             <td>
                                 <g:fieldValue bean="${proyectoInstance}" field="codigoProyecto"/>
@@ -112,7 +112,7 @@
                             </td>
 
                             <td class="text-right">
-                                <g:formatNumber number="${proyectoInstance.monto}" type="currency" currencySymbol=" "/>
+                                <g:formatNumber number="${proyectoInstance.monto}" type="currency" currencySymbol=""/>
                             </td>
 
                             <td>
@@ -122,7 +122,7 @@
                             <td>
                                 <elm:textoBusqueda busca="${params.search_programa}">
                                     ${proyectoInstance?.programa?.descripcion?.size() > 50 ? proyectoInstance?.programa?.descripcion?.toString()[0..50] + "..." : proyectoInstance?.programa?.descripcion}
-                                    %{--<g:fieldValue bean="${proyectoInstance}" field="programa"/>--}%
+                                %{--<g:fieldValue bean="${proyectoInstance}" field="programa"/>--}%
                                 </elm:textoBusqueda>
                             </td>
 
@@ -253,10 +253,13 @@
                     }
                 });
             }
-            function createEditProyecto(id) {
+            function createEditProyecto(id, nombre) {
                 openLoader();
-                var title = id ? "Editar" : "Crear";
+                var title = id ? "Editar Proyecto" : "Crear Proyecto";
                 var data = id ? {id : id} : {};
+                if (id && nombre) {
+                    title += ": " + nombre;
+                }
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(action:'form_ajax')}",
@@ -265,7 +268,7 @@
                         closeLoader();
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Proyecto",
+                            title   : title,
                             class   : "modal-lg",
                             message : msg,
                             buttons : {
@@ -428,7 +431,7 @@
                             icon   : "fa fa-pencil",
                             action : function ($element) {
                                 var id = $element.data("id");
-                                createEditProyecto(id);
+                                createEditProyecto(id, $element.data("nombre"));
                             }
                         },
                         metas       : {

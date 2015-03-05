@@ -52,7 +52,7 @@
                         <div class="col-md-2">
                             <div class="input-group">
                                 <p class="form-control-static">
-                                    <g:formatNumber number="${disponible}" type="currency" currencySymbol=" "/>
+                                    <g:formatNumber number="${disponible}" type="currency" currencySymbol=""/>
                                 </p>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
 
                         <div class="col-md-2">
                             <p class="form-control-static">
-                                <g:formatNumber number="${disponible}" type="currency" currencySymbol=" "/>
+                                <g:formatNumber number="${disponible}" type="currency" currencySymbol=""/>
                             </p>
                         </div>
                     </span>

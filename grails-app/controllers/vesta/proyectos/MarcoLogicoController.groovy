@@ -173,7 +173,7 @@ class MarcoLogicoController extends Shield {
             eq("proyecto", proyecto)
             eq("tipoElemento", tipoElementoComponente)
             eq("estado", 0)
-            order("id", "asc")
+            order("numero", "asc")
         }
 
         if (!params.show) {

@@ -99,7 +99,7 @@
                                         <tr data-id="${act.id}" data-show="${k + 1}" data-info="${act.objeto}">
                                             <td class="text-center">${act.numero}</td>
                                             <td>${act?.objeto}</td>
-                                            <td class="text-right"><g:formatNumber number="${act.monto}" type="currency" currencySymbol=" "/></td>
+                                            <td class="text-right"><g:formatNumber number="${act.monto}" type="currency" currencySymbol=""/></td>
                                             <td class="text-center">${act.fechaInicio?.format('dd-MM-yyyy')}</td>
                                             <td class="text-center">${act.fechaFin?.format('dd-MM-yyyy')}</td>
                                             <td>${act.responsable?.nombre}</td>
@@ -128,7 +128,7 @@
                                 <tfoot>
                                     <tr>
                                         <th colspan="2">Subtotal</th>
-                                        <th class="text-right"><g:formatNumber number="${total}" type="currency" currencySymbol=" "/></th>
+                                        <th class="text-right"><g:formatNumber number="${total}" type="currency" currencySymbol=""/></th>
                                     </tr>
                                 </tfoot>
                                 <g:set var="tc" value="${tc.toDouble() + total}"/>
@@ -139,7 +139,7 @@
             </div>
 
             <div class="alert alert-info">
-                <h4>TOTAL: <g:formatNumber number="${tc}" type="currency" currencySymbol=" "/></h4>
+                <h4>TOTAL: <g:formatNumber number="${tc}" type="currency" currencySymbol=""/></h4>
             </div>
         </g:if>
         <g:if test="${editable}">

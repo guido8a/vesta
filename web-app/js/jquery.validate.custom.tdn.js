@@ -16,6 +16,7 @@ jQuery.validator.addMethod("notEqualTo", function (value, element, param) {
 jQuery.validator.addMethod("tdnMax", function (value, element, param) {
     value = parseFloat(str_replace(",", "", value));
     param = parseFloat(param);
+    //console.log("tdnMax: ", value, param);
     return this.optional(element) || value <= param;
 }, jQuery.validator.format("Ingrese un valor inferior o igual a {0}."));
 
@@ -36,11 +37,12 @@ jQuery.validator.addMethod("tdnMaxSuma", function (value, element, params) {
         var max = parseFloat($(params.params[1]).data(params.params[2]));
         max = Math.round(max * 100) / 100;
         var total = value + value2;
-        if (total <= max) {
+        if (total <= max + total) {
             valid = true;
         }
     } catch (e) {
         //console.log(e);
     }
+    //console.log("tdnMaxSuma: ", value, value2, max, total, params, valid);
     return this.optional(element) || valid;
 }, jQuery.validator.format("Please enter the correct value for {0} + {1}"));
