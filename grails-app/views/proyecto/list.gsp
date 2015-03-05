@@ -85,7 +85,7 @@
         <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <g:sortableColumn property="codigoProyecto" title="CUP"/>
+                    <g:sortableColumn property="codigo" title="Código"/>
                     <g:sortableColumn property="nombre" title="Nombre"/>
                     <th>Unidad <br>Administradora</th>
                     <g:sortableColumn property="monto" title="Monto Total (USD)"/>
@@ -99,7 +99,7 @@
                         <tr data-id="${proyectoInstance.id}" data-nombre="${proyectoInstance.nombre}">
 
                             <td>
-                                <g:fieldValue bean="${proyectoInstance}" field="codigoProyecto"/>
+                                <g:fieldValue bean="${proyectoInstance}" field="codigo"/>
                             </td>
 
                             <td>
