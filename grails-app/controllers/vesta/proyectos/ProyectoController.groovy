@@ -42,7 +42,7 @@ class ProyectoController extends Shield {
      * @return lista de los elementos encontrados
      */
     def getList(params, all) {
-        println "GET LIST: " + params + "   " + all
+//        println "GET LIST: " + params + "   " + all
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
         params.offset = params.offset ?: 0
@@ -51,7 +51,7 @@ class ProyectoController extends Shield {
             params.remove("offset")
         }
         def list
-        println "PARAMS: " + params
+//        println "PARAMS: " + params
         if (!params.sort) params.sort = 'nombre'
         if (!params.order) params.order = 'asc'
 
