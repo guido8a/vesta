@@ -22,7 +22,8 @@
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
         <g:link controller="avales" action="listaProcesos" class="btn btn-sm btn-default"><i class="fa fa-bars"></i> Lista de procesos</g:link>
-        <g:link controller="hito" action="cargarExcelHitos" class="btn btn-sm btn-default"><i class="fa fa-check"></i> Registrar avances financieros</g:link>
+        %{--<g:link controller="hito" action="cargarExcelHitos" class="btn btn-sm btn-default"><i class="fa fa-check"></i> Registrar avances financieros</g:link>--}%
+        <a href="#" class="btn btn-sm btn-default btnSubir"><i class="fa fa-check"></i> Registrar avances financieros</a>
     </div>
 </div>
 
@@ -200,13 +201,6 @@
 <script type="text/javascript">
     $(function () {
 
-        %{--$(".btn").button();--}%
-        %{--$(".datepicker").datepicker();--}%
-        %{--$(".datepickerR").datepicker({--}%
-            %{--minDate:new Date(${proceso.fechaInicio.format("yyyy")}, ${proceso.fechaInicio.format("MM")}-1, ${proceso.fechaInicio.format("dd")})--}%
-        %{--});--}%
-        %{--loadTabla();--}%
-
         var mh = 0;
 
         $(".sh").each(function () {
@@ -221,25 +215,32 @@
     });
 
 
-    function showSolicitud(id) {
-        var data = id ? { id: id } : {};
+    $(".btnSubir").click(function () {
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller: "solicitud", action:'show_ajax')}",
-            data    : data,
+            url     : "${createLink(controller: "hito", action:'cargarExcelHitos')}",
+            data      : {
+                id: "${proceso?.id}"
+            },
             success : function (msg) {
                 var b = bootbox.dialog({
-                    id      : "dlgVer",
-                    title   : "Detalles de la Solicitud",
-
-                    class   : "modal-lg",
-
+                    id      : "dlgCargarExcel",
+                    title   : "Cargar avances financieros",
+//                    class   : "modal-lg",
                     message : msg,
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
                             className : "btn-primary",
                             callback  : function () {
+                            }
+                        },
+                        subir: {
+                            label     : "Subir",
+                            className : "btn-success",
+                            callback  : function () {
+                                openLoader();
+                                $("#frmUpload").submit();
                             }
                         }
                     } //buttons
@@ -249,7 +250,11 @@
                 }, 500);
             } //success
         }); //ajax
-    } //createEdit
+    });
+
+
+
+
 </script>
 
 </body>

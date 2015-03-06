@@ -73,6 +73,8 @@ class AvalesController extends vesta.seguridad.Shield {
             }
         }
 
+
+        println("pro " + proyectos)
         [proyectos: proyectos, proceso: proceso, actual: actual, band: band, unidad: unidad]
     }
 

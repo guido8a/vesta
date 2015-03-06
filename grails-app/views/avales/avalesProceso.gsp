@@ -21,7 +21,7 @@
             <!-- Nav tabs -->
             <ul class="nav nav-pills" role="tablist">
                 <li role="presentation" class="active">
-                    <a href="#home" aria-controls="avales" role="tab" data-toggle="pill">Avales</a>
+                    <a href="#avales" aria-controls="avales" role="tab" data-toggle="pill">Avales</a>
                 </li>
                 <li role="presentation">
                     <a href="#solicitudes" aria-controls="profile" role="tab" data-toggle="pill">Solicitudes</a>

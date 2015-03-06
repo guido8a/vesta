@@ -9,29 +9,6 @@
 <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
 <div class="dialog">
-
-        %{--<div class="btn-toolbar toolbar">--}%
-           %{--<div class="btn-group">--}%
-
-        %{--<g:link class="btn btn-default button list" action="list">--}%
-            %{--<i class="fa fa-list"></i> Lista de solicitudes--}%
-        %{--</g:link>--}%
-%{--<g:if test="${session.perfil.codigo == 'RQ'}">--}%
-        %{--<g:link class="btn btn-default button btnCrear" action="ingreso_ajax">--}%
-            %{--<i class="fa fa-file-o"></i> Nueva solicitud--}%
-        %{--</g:link>--}%
-%{--</g:if>--}%
-        %{--<a href="#" id="btnPrint" class="btn btn-default button" style="float: right;">--}%
-            %{--<i class="fa fa-print"></i> Imprimir</a>--}%
-        %{--</div>--}%
-                %{--<g:if test="${solicitud.estado == 'P'}">--}%
-                    %{--<g:if test="${session.perfil.codigo == 'RQ' || session.perfil.codigo == 'DRRQ'}">--}%
-                        %{--<g:link class="button btn btn-info edit btnCrearSol" action="ingreso_ajax" id="${solicitud?.id}">--}%
-                            %{--<i class="fa fa-pencil"></i> Editar--}%
-                        %{--</g:link>--}%
-                    %{--</g:if>--}%
-                %{--</g:if>--}%
-        %{--</div>--}%
     <div class="body">
         <g:if test="${flash.message}">
             <div class="message ui-state-highlight ui-corner-all">${flash.message}</div>

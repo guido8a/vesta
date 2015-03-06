@@ -1,5 +1,8 @@
 package vesta.hitos
 
+import jxl.Sheet
+import jxl.Workbook
+import jxl.WorkbookSettings
 import org.springframework.dao.DataIntegrityViolationException
 import vesta.avales.Aval
 import vesta.avales.ProcesoAval
@@ -28,10 +31,102 @@ class HitoController extends Shield {
     /*Función para cargar un archivo excel de hitos financiero*/
 
     def cargarExcelHitos ={
-        if(params.msg)
-            return [msg: params.msg]
+        println(params)
+            return [ idAval: params.id]
     }
 
+    /*Función para cargar un archivo excel de hitos financiero*/
+    /**
+     * Acción
+     */
+
+    def subirExcelHitos () {
+
+//        println("entro excel hitos" + params)
+        def f = request.getFile('file')
+        WorkbookSettings ws = new WorkbookSettings();
+        ws.setEncoding("ISO-8859-1");
+
+        def n = []
+        def m = []
+        byte b
+        def ext
+        def msg = ""
+
+        if(f && !f.empty){
+            def nombre = f.getOriginalFilename()
+            def parts = nombre.split("\\.")
+            nombre = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    nombre += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if(ext == 'xls'){
+
+                Workbook workbook = Workbook.getWorkbook(f.inputStream, ws)
+                Sheet sheet = workbook.getSheet(0)
+
+                println("entro!")
+                for(int r =1; r < sheet.rows; r++){
+
+                    def aval = sheet.getCell(0,r).contents
+                    def contrato = sheet.getCell(1,r).contents
+                    def  monto = sheet.getCell(2,r).contents
+                    def anticipo = sheet.getCell(3,r).contents
+                    def devengado = sheet.getCell(3,r).contents
+                    println "------------------------------ "
+                    println " aval "+aval
+                    println " conrato "+contrato
+                    println " monto "+monto
+                    println " anticipo "+anticipo
+                    println " devengado "+devengado
+                    def av = Aval.findByNumero(aval)
+                    if(av){
+                        println "aval "+av.id+"  "+av.numero+"  "+av.estado.descripcion+"  "+av.estado.id+"  "+av.estado.codigo+"  "+av.fechaAnulacion
+                        if(av.estado.codigo!="E04"){
+                            def avance = new AvanceFinanciero()
+                            avance.aval=av
+                            avance.monto=monto.toDouble()
+                            avance.contrato=contrato
+                            avance.fecha = new Date()
+                            avance.valor = devengado.toDouble()
+                            if(!avance.save(flush: true)){
+                                println "error save avance "+avance.errors
+                            }else{
+                                msg +="<br>Se registro un avance para el aval número ${aval}"
+                            }
+                        }else{
+                            msg +="<br>El aval número ${aval} está anulado, no se registro su avance"
+                        }
+                    }else{
+                        msg +="<br>No se econtro el aval número ${aval}"
+                    }
+                }
+                flash.message = 'Archivo cargado existosamente.'
+                flash.estado = "error"
+                flash.icon = "alert"
+                redirect(action: 'avancesFinancieros', id: params.id)
+                return
+
+            }else{
+                flash.message = 'El archivo a cargar debe ser del tipo EXCEL con extensión XLS.'
+                flash.estado = "error"
+                flash.icon = "alert"
+                redirect(action: 'avancesFinancieros', id: params.id)
+                return
+            }
+        }else{
+            flash.message = 'No se ha seleccionado ningun archivo para cargar'
+            flash.estado = "error"
+            flash.icon = "alert"
+            redirect(action: 'avancesFinancieros', id: params.id)
+            return
+        }
+    }
 
 
     /**
