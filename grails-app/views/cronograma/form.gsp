@@ -393,6 +393,25 @@
                         }
                     }
                 });
+                var $ntd = $td;
+                var partida1 = $ntd.data("partida1");
+                var descPartida1 = $ntd.data("bsc-desc-partida1");
+//                var partida2 = $ntd.data("partida2");
+//                var descPartida2 = $ntd.data("bsc-desc-partida2");
+
+                if (!partida1 /*&& !partida2*/) {
+                    while (!partida1) {
+                        $ntd = $ntd.prev();
+                        partida1 = $ntd.data("partida1");
+                        descPartida1 = $ntd.data("bsc-desc-partida1");
+//                        partida2 = $ntd.data("partida2");
+//                        descPartida2 = $ntd.data("bsc-desc-partida2");
+                    }
+                    $("#partida1").val(partida1);
+//                    $("#partida2").val(partida2);
+                    $("#bsc-desc-partida1").val(descPartida1);
+//                    $("#bsc-desc-partida2").val(descPartida2);
+                }
             }
 
             $(function () {
