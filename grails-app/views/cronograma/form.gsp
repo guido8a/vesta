@@ -606,9 +606,9 @@
                                     log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                     setTimeout(function () {
                                         if (parts[0] == "SUCCESS") {
-                                            if (id) {
+//                                            if (id) {
                                                 location.href = "${createLink(controller: 'asignacion', action: 'asignacionProyectov2', params:[id:proyecto.id, anio:anio.id])}";
-                                            }
+//                                            }
                                         }
                                         closeLoader();
                                     }, 1000);
