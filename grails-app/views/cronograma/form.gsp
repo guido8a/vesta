@@ -167,7 +167,7 @@
                                                 data-id="${crg?.id}" data-val="${valor}"
                                                 data-presupuesto1="${crg?.valor}" data-bsc-desc-partida1="${crg?.presupuesto?.toString()}"
                                                 data-partida1="${crg?.presupuesto?.id}" data-fuente1="${crg?.fuente?.id}"
-                                                data-presupuesto2="${crg?.valor2}" data-bsc-desc-2="${crg?.presupuesto2?.toString()}"
+                                                data-presupuesto2="${crg?.valor2}" data-bsc-desc-partida2="${crg?.presupuesto2?.toString()}"
                                                 data-partida2="${crg?.presupuesto2?.id}" data-fuente2="${crg?.fuente2?.id}">
                                                 <g:formatNumber number="${valor}" type="currency" currencySymbol=""/>
                                             </td>
@@ -278,7 +278,7 @@
                                 %{--campos="${campos}" clase=""/>--}%
                                     <span class="grupo">
                                         <div class="input-group input-group-sm" style="width:294px;">
-                                            <input type="text" class="form-control bsc_desc-2 buscador-2 " id="bsc-desc-2" name="bsc-desc-2">
+                                            <input type="text" class="form-control bsc_desc-2 buscador-2 " id="bsc-desc-partida2" name="bsc-desc-partida2">
                                             <span class="input-group-btn">
                                                 <a href="#" id="btn-abrir-2" class="btn btn-info buscador-2" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                                 </a>
@@ -377,7 +377,6 @@
             }
 
             function setForm($td) {
-                console.log($td);
                 $.each($td.data(), function (key, val) {
                     var id = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
                     var $field = $("#" + id);

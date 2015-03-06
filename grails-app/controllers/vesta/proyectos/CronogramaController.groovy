@@ -113,7 +113,11 @@ class CronogramaController extends Shield {
         if (params.presupuesto1) {
             params.presupuesto1 = params.presupuesto1.replaceAll(",", "").toDouble()
         }
-        if (actividad.monto >= valor + params.presupuesto1 + params.presupuesto2) {
+
+        def sum = (valor + params.presupuesto1 + params.presupuesto2)
+        sum = Math.round(sum * 100) / 100
+
+        if (actividad.monto >= sum) {
             def crono = new Cronograma()
             if (params.id) {
                 crono = Cronograma.get(params.id)
