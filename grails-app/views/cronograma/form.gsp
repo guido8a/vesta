@@ -112,14 +112,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <g:set var="totProy" value="${0}"/>
-                        <g:set var="totProyAsig" value="${0}"/>
-                        <g:set var="totalMetas" value="${0}"/>
-                        <g:set var="totalMetasCronograma" value="${0}"/>
+                        <g:set var="asignadoAct" value="${0}"/> %{-- / --}%
+                        <g:set var="sinAsignarAct" value="${0}"/> %{-- * --}%
+                        <g:set var="totalAct" value="${0}"/> %{-- - --}%
+
+                        <g:set var="asignadoComp" value="${0}"/> %{-- // --}%
+                        <g:set var="sinAsignarComp" value="${0}"/> %{-- ** --}%
+                        <g:set var="totalComp" value="${0}"/> %{-- -- --}%
+
+                        <g:set var="asignadoTotal" value="${0}"/> %{-- /// --}%
+                        <g:set var="sinAsignarTotal" value="${0}"/> %{-- *** --}%
+                        <g:set var="totalTotal" value="${0}"/> %{-- --- --}%
 
                         <g:each in="${componentes}" var="comp" status="j">
-                            <g:set var="totComp" value="${0}"/>
-                            <g:set var="totCompAsig" value="${0}"/>
+                            <g:set var="asignadoComp" value="${0}"/> %{-- // --}%
+                            <g:set var="sinAsignarComp" value="${0}"/> %{-- ** --}%
+                            <g:set var="totalComp" value="${0}"/> %{-- -- --}%
                             <tr id="comp${comp.id}">
                                 <th colspan="16" class="success">
                                     <strong>Componente ${comp.numeroComp}</strong>:
@@ -128,18 +136,17 @@
                             </tr>
                             <g:each in="${MarcoLogico.findAllByMarcoLogicoAndEstado(comp, 0, [sort: 'id'])}" var="act" status="i">
                                 <g:if test="${!actSel || (actSel && actSel.id == act.id)}">
-                                    <g:set var="monto" value="${act.monto}"/>
-                                    <g:set var="totComp" value="${totComp.toDouble() + monto}"/>
-                                    <g:set var="tot" value="${0}"/>
-                                    <g:set var="totAct" value="${monto}"/>
-                                    <g:set var="tot" value="${act.getTotalCronograma()}"/>
-                                    <g:set var="totCompAsig" value="${totCompAsig + act.getTotalCronograma()}"/>
-                                    <g:set var="totalMetas" value="${totalMetas.toDouble() + monto}"/>
-                                    <g:set var="totalMetasCronograma" value="${totalMetasCronograma.toDouble() + totalMetas}"/>
-                                    <g:set var="totalMetas" value="${0}"/>
-                                    <g:set var="totProyAsig" value="${totProyAsig.toDouble() + totCompAsig.toDouble()}"/>
-                                    <g:set var="totProy" value="${totProy.toDouble() + totComp.toDouble()}"/>
+                                    <g:set var="asignadoAct" value="${act.getTotalCronograma()}"/> %{-- / --}%
+                                    <g:set var="totalAct" value="${act.monto}"/> %{-- - --}%
+                                    <g:set var="sinAsignarAct" value="${totalAct - asignadoAct}"/> %{-- * --}%
 
+                                    <g:set var="asignadoComp" value="${asignadoComp + asignadoAct}"/> %{-- // --}%
+                                    <g:set var="totalComp" value="${totalComp + totalAct}"/> %{-- -- --}%
+                                    <g:set var="sinAsignarComp" value="${sinAsignarComp + sinAsignarAct}"/> %{-- ** --}%
+
+                                    <g:set var="asignadoTotal" value="${asignadoTotal + asignadoAct}"/> %{-- /// --}%
+                                    <g:set var="totalTotal" value="${totalTotal + totalAct}"/> %{-- --- --}%
+                                    <g:set var="sinAsignarTotal" value="${sinAsignarTotal + sinAsignarAct}"/> %{-- *** --}%
                                     <tr data-id="${act.id}">
                                         <th class="success actividad" title="${act.responsable} - ${act.objeto}" style="width:300px;">
                                             ${(act.objeto.length() > 100) ? act.objeto.substring(0, 100) + "..." : act.objeto}
@@ -160,7 +167,7 @@
                                                     <g:set var="clase" value="clickable"/>
                                                 </g:if>
                                             </g:if>
-                                            <g:if test="${monto.toDouble() > 0}">
+                                            <g:if test="${totalAct > 0}">
                                                 <g:set var="clase" value="clickable"/>
                                             </g:if>
                                             <td style="width:100px;" class="text-right ${clase} ${crg && crg.fuente ? 'fnte_' + crg.fuente.id : ''} ${crg && crg.fuente2 ? 'fnte_' + crg.fuente2.id : ''}"
@@ -175,14 +182,17 @@
                                                 <g:set var="crg" value="${null}"/>
                                             </g:if>
                                         </g:each>
-                                        <th class="disabled text-right asignado" data-val="${tot}">
-                                            <g:formatNumber number="${tot}" type="currency" currencySymbol=""/>
+                                        <th class="disabled text-right asignado" data-val="${asignadoAct}">
+                                            %{-- / --}%
+                                            <g:formatNumber number="${asignadoAct}" type="currency" currencySymbol=""/>
                                         </th>
-                                        <th class="disabled text-right sinAsignar" data-val="${act.monto - tot}">
-                                            <g:formatNumber number="${act.monto - tot.toDouble()}" type="currency" currencySymbol=""/>
+                                        <th class="disabled text-right sinAsignar" data-val="${sinAsignarAct}">
+                                            %{-- * --}%
+                                            <g:formatNumber number="${sinAsignarAct}" type="currency" currencySymbol=""/>
                                         </th>
-                                        <th class="disabled text-right total" data-val="${monto}">
-                                            <g:formatNumber number="${monto}" type="currency" currencySymbol=""/>
+                                        <th class="disabled text-right total" data-val="${totalAct}">
+                                            %{-- - --}%
+                                            <g:formatNumber number="${totalAct}" type="currency" currencySymbol=""/>
                                         </th>
                                     </tr>
                                 </g:if>
@@ -190,13 +200,16 @@
                             <tr class="warning">
                                 <th colspan="13">TOTAL</th>
                                 <th class="text-right">
-                                    <g:formatNumber number="${totCompAsig}" type="currency" currencySymbol=""/>
+                                    %{-- // --}%
+                                    <g:formatNumber number="${asignadoComp}" type="currency" currencySymbol=""/>
                                 </th>
                                 <th class="text-right">
-                                    <g:formatNumber number="${(totComp.toDouble() - totCompAsig.toDouble())}" type="currency" currencySymbol=""/>
+                                    %{-- ** --}%
+                                    <g:formatNumber number="${sinAsignarComp}" type="currency" currencySymbol=""/>
                                 </th>
                                 <th class="text-right">
-                                    <g:formatNumber number="${totalMetas}" type="currency" currencySymbol=""/>
+                                    %{-- -- --}%
+                                    <g:formatNumber number="${totalComp}" type="currency" currencySymbol=""/>
                                 </th>
                             </tr>
                         </g:each>
@@ -205,13 +218,16 @@
                         <tr class="danger">
                             <th colspan="13">TOTAL DEL PROYECTO</th>
                             <th class="text-right">
-                                <g:formatNumber number="${totProyAsig}" type="currency" currencySymbol=""/>
+                                %{-- /// --}%
+                                <g:formatNumber number="${asignadoTotal}" type="currency" currencySymbol=""/><g:formatNumber number="${totProyAsig}" type="currency" currencySymbol=""/>
                             </th>
                             <th class="text-right">
-                                <g:formatNumber number="${(totProy.toDouble() - totProyAsig.toDouble())}" type="currency" currencySymbol=""/>
+                                %{-- *** --}%
+                                <g:formatNumber number="${sinAsignarTotal}" type="currency" currencySymbol=""/>
                             </th>
                             <th class="text-right">
-                                <g:formatNumber number="${(totalMetasCronograma)}" type="currency" currencySymbol=""/>
+                                %{-- --- --}%
+                                <g:formatNumber number="${totalTotal}" type="currency" currencySymbol=""/>
                             </th>
                         </tr>
                     </tfoot>
@@ -523,50 +539,168 @@
                     return false;
                 });
 
-                $(".clickable").click(function () {
-                    var $this = $(this);
-                    var $tr = $this.parents("tr");
-                    var $mes = $("#trMeses").children().eq($this.index());
-                    var mes = $mes.attr("title");
-                    $('#modalCrono').modal("show");
-                    $("#modalTitle").text("Cronograma - " + mes);
+                $(".clickable").contextMenu({
+                    items  : {
+                        header   : {
+                            label  : "Acciones",
+                            header : true
+                        },
+//                        ver      : {
+//                            label  : "Ver",
+//                            icon   : "fa fa-search",
+//                            action : function ($element) {
+//                                var id = $element.data("id");
+//                            }
+//                        },
+                        editar   : {
+                            label  : "Editar",
+                            icon   : "fa fa-pencil text-info",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                var $tr = $element.parents("tr");
+                                var index = $element.index();
 
-                    if (!$("#divOk").hasClass("hidden")) {
-                        var $actividad = $tr.find(".actividad");
-                        var $asignado = $tr.find(".asignado");
-                        var $sinAsignar = $tr.find(".sinAsignar");
-                        var $total = $tr.find(".total");
+                                var $mes = $("#trMeses").children().eq(index);
+                                var mes = $mes.attr("title");
+                                $('#modalCrono').modal("show");
+                                $("#modalTitle").text("Cronograma - " + mes);
 
-                        var actividad = $actividad.attr("title");
-                        var asignado = $asignado.data("val");
-                        var sinAsignar = $sinAsignar.data("val");
-                        var total = $total.data("val");
+                                if (!$("#divOk").hasClass("hidden")) {
+                                    var $actividad = $tr.find(".actividad");
+                                    var $asignado = $tr.find(".asignado");
+                                    var $sinAsignar = $tr.find(".sinAsignar");
+                                    var $total = $tr.find(".total");
 
-                        $("#divActividad").text(actividad);
-                        $("#divInfo").html("<ul>" +
-                                           "<li><strong>Monto total:</strong> $" + number_format(total, 2, ".", ",") + "</li>" +
-                                           "<li><strong>Asignado:</strong> $" + number_format(asignado, 2, ".", ",") + "</li>" +
-                                           "<li><strong>Por asignar:</strong> $" + number_format(sinAsignar, 2, ".", ",") + "</li>" +
-                                           "</ul>").data({
-                            total      : total,
-                            asignado   : asignado,
-                            sinAsignar : sinAsignar,
-                            crono      : $this.data("id"),
-                            mes        : $mes.data("id"),
-                            actividad  : $tr.data("id")
-                        });
-//                        if (parseFloat(sinAsignar) <= 0) {
-//                            $(".frmCrono").addClass("hidden");
-//                            $("#btnModalSave").addClass("hidden");
-//                            $("#btnModalCancel").text("Cerrar");
-//                        } else {
-                        $(".frmCrono").removeClass("hidden");
-                        $("#btnModalSave").removeClass("hidden");
-                        $("#btnModalCancel").text("Cancelar");
-//                        }
-                        setForm($this);
+                                    var actividad = $actividad.attr("title");
+                                    var asignado = $asignado.data("val");
+                                    var sinAsignar = $sinAsignar.data("val");
+                                    var total = $total.data("val");
+
+                                    $("#divActividad").text(actividad);
+                                    $("#divInfo").html("<ul>" +
+                                                       "<li><strong>Monto total:</strong> $" + number_format(total, 2, ".", ",") + "</li>" +
+                                                       "<li><strong>Asignado:</strong> $" + number_format(asignado, 2, ".", ",") + "</li>" +
+                                                       "<li><strong>Por asignar:</strong> $" + number_format(sinAsignar, 2, ".", ",") + "</li>" +
+                                                       "</ul>").data({
+                                        total      : total,
+                                        asignado   : asignado,
+                                        sinAsignar : sinAsignar,
+                                        crono      : id,
+                                        mes        : $mes.data("id"),
+                                        actividad  : $tr.data("id")
+                                    });
+                                    $(".frmCrono").removeClass("hidden");
+                                    $("#btnModalSave").removeClass("hidden");
+                                    $("#btnModalCancel").text("Cancelar");
+                                    setForm($element);
+                                }
+                            }
+                        },
+                        eliminar : {
+                            label            : "Eliminar",
+                            icon             : "fa fa-trash-o text-danger",
+                            separator_before : true,
+                            action           : function ($element) {
+                                var id = $element.data("id");
+
+                                bootbox.dialog({
+                                    title   : "Alerta",
+                                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
+                                            "¿Está seguro que desea eliminar toda la información del registro del cronograma seleccionado?<br/>" +
+                                            "Esta acción no se puede deshacer.</p>",
+                                    buttons : {
+                                        cancelar : {
+                                            label     : "Cancelar",
+                                            className : "btn-primary",
+                                            callback  : function () {
+                                            }
+                                        },
+                                        eliminar : {
+                                            label     : "<i class='fa fa-trash-o'></i> Eliminar",
+                                            className : "btn-danger",
+                                            callback  : function () {
+                                                openLoader("Eliminando valores");
+                                                $.ajax({
+                                                    type    : "POST",
+                                                    url     : '${createLink(action:'deleteCrono_ajax')}',
+                                                    data    : {
+                                                        id : id
+                                                    },
+                                                    success : function (msg) {
+                                                        var parts = msg.split("*");
+                                                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                                        if (parts[0] == "SUCCESS") {
+                                                            setTimeout(function () {
+                                                                location.reload(true);
+                                                            }, 1000);
+                                                        } else {
+                                                            closeLoader();
+                                                        }
+                                                    },
+                                                    error   : function () {
+                                                        closeLoader();
+                                                        log("Ha ocurrido un error interno", "error");
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    onShow : function ($element) {
+                        $element.addClass("success");
+                    },
+                    onHide : function ($element) {
+                        $(".success").removeClass("success");
                     }
                 });
+
+//                $(".clickable").click(function () {
+//                    var $this = $(this);
+//                    var $tr = $this.parents("tr");
+//                    var $mes = $("#trMeses").children().eq($this.index());
+//                    var mes = $mes.attr("title");
+//                    $('#modalCrono').modal("show");
+//                    $("#modalTitle").text("Cronograma - " + mes);
+//
+//                    if (!$("#divOk").hasClass("hidden")) {
+//                        var $actividad = $tr.find(".actividad");
+//                        var $asignado = $tr.find(".asignado");
+//                        var $sinAsignar = $tr.find(".sinAsignar");
+//                        var $total = $tr.find(".total");
+//
+//                        var actividad = $actividad.attr("title");
+//                        var asignado = $asignado.data("val");
+//                        var sinAsignar = $sinAsignar.data("val");
+//                        var total = $total.data("val");
+//
+//                        $("#divActividad").text(actividad);
+//                        $("#divInfo").html("<ul>" +
+//                                           "<li><strong>Monto total:</strong> $" + number_format(total, 2, ".", ",") + "</li>" +
+//                                           "<li><strong>Asignado:</strong> $" + number_format(asignado, 2, ".", ",") + "</li>" +
+//                                           "<li><strong>Por asignar:</strong> $" + number_format(sinAsignar, 2, ".", ",") + "</li>" +
+//                                           "</ul>").data({
+//                            total      : total,
+//                            asignado   : asignado,
+//                            sinAsignar : sinAsignar,
+//                            crono      : $this.data("id"),
+//                            mes        : $mes.data("id"),
+//                            actividad  : $tr.data("id")
+//                        });
+////                        if (parseFloat(sinAsignar) <= 0) {
+////                            $(".frmCrono").addClass("hidden");
+////                            $("#btnModalSave").addClass("hidden");
+////                            $("#btnModalCancel").text("Cerrar");
+////                        } else {
+//                        $(".frmCrono").removeClass("hidden");
+//                        $("#btnModalSave").removeClass("hidden");
+//                        $("#btnModalCancel").text("Cancelar");
+////                        }
+//                        setForm($this);
+//                    }
+//                });
 
                 var $container = $(".divTabla");
                 $container.scrollTop(0 - $container.offset().top + $container.scrollTop());
@@ -607,7 +741,7 @@
                                     setTimeout(function () {
                                         if (parts[0] == "SUCCESS") {
 //                                            if (id) {
-                                                location.href = "${createLink(controller: 'asignacion', action: 'asignacionProyectov2', params:[id:proyecto.id, anio:anio.id])}";
+                                            location.href = "${createLink(controller: 'asignacion', action: 'asignacionProyectov2', params:[id:proyecto.id, anio:anio.id])}";
 //                                            }
                                         }
                                         closeLoader();

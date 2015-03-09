@@ -29,7 +29,7 @@
         .divTabla {
             max-height : 450px;
             overflow-y : auto;
-            overflow-x : hidden;
+            overflow-x : auto;
         }
 
         tfoot {
@@ -112,14 +112,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <g:set var="totProy" value="${0}"/>
-                        <g:set var="totProyAsig" value="${0}"/>
-                        <g:set var="totalMetas" value="${0}"/>
-                        <g:set var="totalMetasCronograma" value="${0}"/>
+                        <g:set var="asignadoAct" value="${0}"/> %{-- / --}%
+                        <g:set var="sinAsignarAct" value="${0}"/> %{-- * --}%
+                        <g:set var="totalAct" value="${0}"/> %{-- - --}%
+
+                        <g:set var="asignadoComp" value="${0}"/> %{-- // --}%
+                        <g:set var="sinAsignarComp" value="${0}"/> %{-- ** --}%
+                        <g:set var="totalComp" value="${0}"/> %{-- -- --}%
+
+                        <g:set var="asignadoTotal" value="${0}"/> %{-- /// --}%
+                        <g:set var="sinAsignarTotal" value="${0}"/> %{-- *** --}%
+                        <g:set var="totalTotal" value="${0}"/> %{-- --- --}%
 
                         <g:each in="${componentes}" var="comp" status="j">
-                            <g:set var="totComp" value="${0}"/>
-                            <g:set var="totCompAsig" value="${0}"/>
+                            <g:set var="asignadoComp" value="${0}"/> %{-- // --}%
+                            <g:set var="sinAsignarComp" value="${0}"/> %{-- ** --}%
+                            <g:set var="totalComp" value="${0}"/> %{-- -- --}%
                             <tr id="comp${comp.id}">
                                 <th colspan="16" class="success">
                                     <strong>Componente ${comp.numeroComp}</strong>:
@@ -128,18 +136,17 @@
                             </tr>
                             <g:each in="${MarcoLogico.findAllByMarcoLogicoAndEstado(comp, 0, [sort: 'id'])}" var="act" status="i">
                                 <g:if test="${!actSel || (actSel && actSel.id == act.id)}">
-                                    <g:set var="monto" value="${act.monto}"/>
-                                    <g:set var="totComp" value="${totComp.toDouble() + monto}"/>
-                                    <g:set var="tot" value="${0}"/>
-                                    <g:set var="totAct" value="${monto}"/>
-                                    <g:set var="tot" value="${act.getTotalCronograma()}"/>
-                                    <g:set var="totCompAsig" value="${totCompAsig + act.getTotalCronograma()}"/>
-                                    <g:set var="totalMetas" value="${totalMetas.toDouble() + monto}"/>
-                                    <g:set var="totalMetasCronograma" value="${totalMetasCronograma.toDouble() + totalMetas}"/>
-                                    <g:set var="totalMetas" value="${0}"/>
-                                    <g:set var="totProyAsig" value="${totProyAsig.toDouble() + totCompAsig.toDouble()}"/>
-                                    <g:set var="totProy" value="${totProy.toDouble() + totComp.toDouble()}"/>
+                                    <g:set var="asignadoAct" value="${act.getTotalCronograma()}"/> %{-- / --}%
+                                    <g:set var="totalAct" value="${act.monto}"/> %{-- - --}%
+                                    <g:set var="sinAsignarAct" value="${totalAct - asignadoAct}"/> %{-- * --}%
 
+                                    <g:set var="asignadoComp" value="${asignadoComp + asignadoAct}"/> %{-- // --}%
+                                    <g:set var="totalComp" value="${totalComp + totalAct}"/> %{-- -- --}%
+                                    <g:set var="sinAsignarComp" value="${sinAsignarComp + sinAsignarAct}"/> %{-- ** --}%
+
+                                    <g:set var="asignadoTotal" value="${asignadoTotal + asignadoAct}"/> %{-- /// --}%
+                                    <g:set var="totalTotal" value="${totalTotal + totalAct}"/> %{-- --- --}%
+                                    <g:set var="sinAsignarTotal" value="${sinAsignarTotal + sinAsignarAct}"/> %{-- *** --}%
                                     <tr>
                                         <th class="success" title="${act.responsable} - ${act.objeto}" style="width:300px;">
                                             ${(act.objeto.length() > 100) ? act.objeto.substring(0, 100) + "..." : act.objeto}
@@ -164,13 +171,16 @@
                                             </td>
                                         </g:each>
                                         <th class="text-right">
-                                            <g:formatNumber number="${tot}" type="currency" currencySymbol=""/>
+                                            %{-- / --}%
+                                            <g:formatNumber number="${asignadoAct}" type="currency" currencySymbol=""/>
                                         </th>
                                         <th class="text-right">
-                                            <g:formatNumber number="${act.monto - tot.toDouble()}" type="currency" currencySymbol=""/>
+                                            %{-- * --}%
+                                            <g:formatNumber number="${sinAsignarAct}" type="currency" currencySymbol=""/>
                                         </th>
                                         <th class="text-right">
-                                            <g:formatNumber number="${monto}" type="currency" currencySymbol=""/>
+                                            %{-- - --}%
+                                            <g:formatNumber number="${totalAct}" type="currency" currencySymbol=""/>
                                         </th>
                                     </tr>
                                 </g:if>
@@ -178,13 +188,16 @@
                             <tr class="warning">
                                 <th colspan="13">TOTAL</th>
                                 <th class="text-right">
-                                    <g:formatNumber number="${totCompAsig}" type="currency" currencySymbol=""/>
+                                    %{-- // --}%
+                                    <g:formatNumber number="${asignadoComp}" type="currency" currencySymbol=""/>
                                 </th>
                                 <th class="text-right">
-                                    <g:formatNumber number="${(totComp.toDouble() - totCompAsig.toDouble())}" type="currency" currencySymbol=""/>
+                                    %{-- ** --}%
+                                    <g:formatNumber number="${sinAsignarComp}" type="currency" currencySymbol=""/>
                                 </th>
                                 <th class="text-right">
-                                    <g:formatNumber number="${totalMetas}" type="currency" currencySymbol=""/>
+                                    %{-- -- --}%
+                                    <g:formatNumber number="${totalComp}" type="currency" currencySymbol=""/>
                                 </th>
                             </tr>
                         </g:each>
@@ -193,13 +206,16 @@
                         <tr class="danger">
                             <th colspan="13">TOTAL DEL PROYECTO</th>
                             <th class="text-right">
-                                <g:formatNumber number="${totProyAsig}" type="currency" currencySymbol=""/>
+                                %{-- /// --}%
+                                <g:formatNumber number="${asignadoTotal}" type="currency" currencySymbol=""/>
                             </th>
                             <th class="text-right">
-                                <g:formatNumber number="${(totProy.toDouble() - totProyAsig.toDouble())}" type="currency" currencySymbol=""/>
+                                %{-- *** --}%
+                                <g:formatNumber number="${sinAsignarTotal}" type="currency" currencySymbol=""/>
                             </th>
                             <th class="text-right">
-                                <g:formatNumber number="${(totalMetasCronograma)}" type="currency" currencySymbol=""/>
+                                %{-- --- --}%
+                                <g:formatNumber number="${totalTotal}" type="currency" currencySymbol=""/>
                             </th>
                         </tr>
                     </tfoot>

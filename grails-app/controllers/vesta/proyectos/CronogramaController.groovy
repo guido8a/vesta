@@ -152,6 +152,17 @@ class CronogramaController extends Shield {
         }
     }
 
+    def deleteCrono_ajax() {
+        try {
+            def crono = Cronograma.get(params.id)
+            crono.delete(flush: true)
+            render "SUCCESS*Se ha eliminado los valores correctamente"
+        } catch (e) {
+            println e.printStackTrace()
+            render "ERROR*Ha ocurrido un error, no se pudo eliminar"
+        }
+    }
+
     def calcularAsignaciones_ajax() {
         //println "calc asg "+params
         def proyecto = Proyecto.get(params.proyecto)
