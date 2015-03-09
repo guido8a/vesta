@@ -52,14 +52,10 @@ class ReportesController {
                 res.add(mod)
             }
         }
-
         res.sort {
             it.id
         }
-
-
         return [res: res, unidad: unidad, actual: actual]
-
     }
 
     /**

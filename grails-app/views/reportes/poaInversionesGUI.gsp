@@ -10,215 +10,125 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
+
+        <script type="text/javascript" src="${resource(dir: 'js/plugins/jquery-highlight', file: 'jquery-highlight1.js')}"></script>
+
         <title>PAPP</title>
 
-        <script type="text/javascript"
-                src="${resource(dir: 'js/jquery/plugins', file: 'jquery.highlight-3.js')}"></script>
-
         <style type="text/css">
+        .unidad {
+            margin    : 5px;
+            padding   : 3px;
+            font-size : 11pt;
+            border    : solid 1px #555;
+            float     : left;
+            cursor    : pointer;
+        }
+
         .highlight {
             background-color : yellow
-        }
-
-        .area {
-            width    : 520px;
-            height   : 600px;
-            float    : left;
-            position : absolute;
-        }
-
-        .area.sel {
-            margin-left : 25px;
-            left        : 540px;
-        }
-
-        .area.disp {
-            left : 13px;
-        }
-
-        .unidad {
-            border  : solid 2px;
-            margin  : 3px;
-            padding : 3px;
-            cursor  : pointer;
-        }
-
-        .unidad.disp {
-            background : #FFFAF7;
-        }
-
-        .unidad.sel {
-            /*background : #EEF7EA;*/
-            background : #7871BE;
-        }
-
-        .disp {
-            /*border-color : #EAD2C2;*/
-            border-color : #363636;
-        }
-
-        .sel {
-            /*border-color : #CDEAC2;*/
-            border-color : #7871BE;
-        }
-
-        .toolbar {
-            padding : 5px 4px;
-        }
-
-        .connectedSortable {
-            /*background : #eee;*/
-            height     : 570px;
-            overflow-y : auto;
-            overflow-x : hidden;
         }
         </style>
     </head>
 
     <body>
-        <div class="toolbar ui-widget-header ui-corner-all" style="margin-bottom: 10px;">
-            <a href="#" id="btnOk">Ver reporte</a>
-            <a href="#" id="btnPrint">Imprimir reporte</a>
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group" role="group">
+                <a href="#" class="btn btn-default" id="btnVer">
+                    <i class="fa fa-search"></i> Ver reporte
+                </a>
+                <a href="#" class="btn btn-default" id="btnPrint">
+                    <i class="fa fa-print"></i> Imprimir reporte
+                </a>
+            </div>
         </div>
 
-        <div style="margin-bottom: 10px;">
-            <label>A&ntilde;o:</label>
-            <g:select from="${Anio.list([sort:'anio'])}" name="anio" class="ui-widget-content ui-corner-all"
-                      optionKey="id" optionValue="anio" value="${Anio.findByAnio(new Date().format('yyyy')).id}"/>
-        </div>
-
-        <div class="ui-widget-content ui-corner-all area disp">
-            <div class="toolbar ui-widget-header ui-corner-all">
-                Unidades Ejecutoras disponibles
-                <div class="right">
-                    Buscar
-                    <input type="text" id="dispo" class="search ui-widget-content ui-corner-all"/>
-                </div>
+        <elm:container tipo="horizontal" titulo="Reporte">
+            <div class="alert alert-info">
+                Seleccione el año y al menos una unidad ejecutora (haciendo clic sobre su nombre) para generar el reporte
             </div>
 
-            <div name="disponibles" class="connectedSortable">
-                <g:each in="${UnidadEjecutora.list([sort:'nombre'])}" var="unidad">
-                    <div class="unidad disp dispo ui-corner-all" id="${unidad.id}">
-                        ${unidad.nombre}
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="anio">Año</label>
+                    <g:select from="${Anio.list([sort: 'anio'])}" name="anio" class="form-control input-sm"
+                              optionKey="id" optionValue="anio" value="${Anio.findByAnio(new Date().format('yyyy')).id}"/>
+                </div>
+
+                <div class="form-group" style="margin-left: 15px;">
+                    <label for="buscar">Buscar</label>
+                    <g:textField name="buscar" class="form-control input-sm"/>
+                    <span id="found"></span>
+                </div>
+            </form>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="unidades">
+                        <g:each in="${UnidadEjecutora.list([sort: 'nombre'])}" var="unidad">
+                            <div class="unidad corner-all" id="${unidad.id}">${unidad.nombre}</div>
+                        </g:each>
                     </div>
-                </g:each>
-            </div>
-        </div>
-
-        <div class="ui-widget-content ui-corner-all area sel">
-            <div class="toolbar ui-widget-header ui-corner-all">
-                Unidades Ejecutoras para el reporte
-                <div class="right">
-                    Buscar
-                    <input type="text" id="sele" class="search ui-widget-content ui-corner-all"/>
                 </div>
             </div>
 
-            <div name="seleccionados" class="connectedSortable">
-            </div>
-        </div>
-
-        <div id="dlgAlert" title="Alerta" class="ui-helper-hidden">
-            <div style="padding: 0 .7em;" class="ui-state-error ui-corner-all">
-                <p>
-                    <span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-alert"></span>
-                    <strong>Alerta:</strong>
-                    <span id="spnAlert"></span>
-                </p>
-            </div>
-        </div>
+        </elm:container>
 
         <script type="text/javascript">
+
+            var selectedClass = "bg-info";
+
             function reset() {
                 $(".search").val("");
                 $(".unidad").removeHighlight();
-                $(".unidad").show();
             }
 
             function reporte(print) {
-                var elems = "";
-                $(".sele").each(function() {
+                var elems = "", url = "";
+                $("." + selectedClass).each(function () {
                     elems += $(this).attr("id") + ",";
                 });
                 if (elems != "") {
                     if (!print) {
-                        var url = "${createLink(action: 'poaInversionesReporteWeb')}?anio=" + $("#anio").val() + "&id=" + elems;
+                        url = "${createLink(action: 'poaInversionesReporteWeb')}?anio=" + $("#anio").val() + "&id=" + elems;
                         window.open(url, "_blank");
                     } else {
-                        var url = "${createLink(action: 'poaInversionesReportePDF')}?anio=" + $("#anio").val() + "Wid=" + elems;
+                        url = "${createLink(action: 'poaInversionesReportePDF')}?anio=" + $("#anio").val() + "Wid=" + elems;
                         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url
                     }
                 } else {
-                    $("#spnAlert").html("Escoja al menos una unidad ejecutora para generar el reporte.");
-                    $("#dlgAlert").dialog("open");
+                    bootbox.alert("Escoja al menos una unidad ejecutora para generar el reporte.");
                     return false;
                 }
             }
 
-            $(function() {
-                $("#btnOk").button({
-                    icons: {
-                        primary: "ui-icon-zoomin"
-                    }
-                }).click(function() {
-                            reporte(false);
-                        });
-
-                $("#btnPrint").button({
-                    icons: {
-                        primary: "ui-icon-print"
-                    }
-                }).click(function() {
-                            reporte(true);
-                        });
-
-                $("#dlgAlert").dialog({
-                    autoOpen: false,
-                    modal: true,
-                    width: 410,
-                    resizable: false,
-                    draggable: false,
-                    buttons: {
-                        "Aceptar": function() {
-                            $(this).dialog("close");
-                        }
-                    }
+            $(function () {
+                $(".unidad").click(function () {
+                    $(this).toggleClass(selectedClass);
                 });
 
-                $("[name=disponibles],[name=seleccionados]").sortable({
-                    connectWith: ".connectedSortable",
-                    forcePlaceholderSize: true,
-                    placeholder: 'ui-state-highlight',
-                    scroll: false,
-                    start: function(event, ui) {
-                        reset();
-                    },
-                    stop: function(event, ui) {
-                        var elm = ui.item;
-                        var pName = elm.parent().attr("name");
-                        if (pName == "seleccionados") {
-                            elm.removeClass("disp").removeClass("dispo").addClass("sel").addClass("sele");
-                        } else {
-                            elm.removeClass("sel").removeClass("sele").addClass("disp").addClass("dispo");
-                        }
-                    }
-                }).disableSelection();
-
-                $(".search").keyup(function(evt) {
+                $("#buscar").keyup(function (evt) {
                     var elm = $(this);
                     var txt = elm.val();
-                    var tipo = elm.attr("id");
-                    if (trim(txt) != "") {
-                        $("." + tipo).hide();
-                        $("." + tipo).removeHighlight();
-                        $("." + tipo + ":icontains('" + txt + "')").show();
-                        $("." + tipo).highlight(txt);
+                    if ($.trim(txt) != "") {
+                        $(".unidad").removeHighlight().highlight(txt);
+                        var h = $(".highlight");
+                        var c = h.length;
+                        $("#found").text("Se encontr" + (c == 1 ? "ó " : "aron ") + c + " coincidencia" + (c == 1 ? "" : "s"));
                     } else {
                         reset();
                     }
                 });
 
+                $("#btnVer").click(function () {
+                    reporte(false);
+                });
+                $("#btnPrint").click(function () {
+                    reporte(true);
+                });
+
             });
         </script>
+
     </body>
 </html>
