@@ -101,10 +101,12 @@
                             </th>
                         </tr>
 
-                        <tr>
+                        <tr id="trMeses">
                             <th style="width:300px;">Componentes/Rubros</th>
                             <g:each in="${Mes.list()}" var="mes">
-                                <th style="width:100px;">${mes.descripcion[0..2]}.</th>
+                                <th style="width:100px;" data-id="${mes.id}" title="${mes.descripcion} ${anio.anio}">
+                                    ${mes.descripcion[0..2]}.
+                                </th>
                             </g:each>
                             <th>Tot. Asignado</th>
                             <th>Sin asignar</th>
@@ -148,7 +150,7 @@
                                     <g:set var="totalTotal" value="${totalTotal + totalAct}"/> %{-- --- --}%
                                     <g:set var="sinAsignarTotal" value="${sinAsignarTotal + sinAsignarAct}"/> %{-- *** --}%
                                     <tr>
-                                        <th class="success" title="${act.responsable} - ${act.objeto}" style="width:300px;">
+                                        <th class="success actividad" title="${act.responsable} - ${act.objeto}" style="width:300px;">
                                             ${(act.objeto.length() > 100) ? act.objeto.substring(0, 100) + "..." : act.objeto}
                                         </th>
                                         <g:each in="${Mes.list()}" var="mes" status="k">
@@ -163,22 +165,34 @@
                                                 </g:each>
                                                 <g:if test="${crg}">
                                                     <g:set var="valor" value="${crg.valor + crg.valor2}"/>
-                                                    <g:set var="crg" value="${null}"/>
                                                 </g:if>
                                             </g:if>
-                                            <td style="width:100px;" class="text-right">
+                                            <g:if test="${totalAct > 0}">
+                                                <g:set var="clase" value="clickable"/>
+                                            </g:if>
+                                            <td style="width:100px;" class="text-right ${clase} ${crg && crg.fuente ? 'fnte_' + crg.fuente.id : ''} ${crg && crg.fuente2 ? 'fnte_' + crg.fuente2.id : ''}"
+                                                data-id="${crg?.id}" data-val="${valor}"
+                                                data-presupuesto1="${crg?.valor}" data-bsc-desc-partida1="${crg?.presupuesto?.toString()}"
+                                                data-partida1="${crg?.presupuesto?.id}"
+                                                data-fuente1="${crg?.fuente?.id}" data-desc-fuente1="${crg?.fuente?.descripcion}"
+                                                data-presupuesto2="${crg?.valor2}" data-bsc-desc-partida2="${crg?.presupuesto2?.toString()}"
+                                                data-partida2="${crg?.presupuesto2?.id}"
+                                                data-fuente2="${crg?.fuente2?.id}" data-desc-fuente2="${crg?.fuente2?.descripcion}">
                                                 <g:formatNumber number="${valor}" type="currency" currencySymbol=""/>
                                             </td>
+                                            <g:if test="${crg}">
+                                                <g:set var="crg" value="${null}"/>
+                                            </g:if>
                                         </g:each>
-                                        <th class="text-right">
+                                        <th class="text-right asignado" data-val="${asignadoAct}">
                                             %{-- / --}%
                                             <g:formatNumber number="${asignadoAct}" type="currency" currencySymbol=""/>
                                         </th>
-                                        <th class="text-right">
+                                        <th class="text-right sinAsignar" data-val="${sinAsignarAct}">
                                             %{-- * --}%
                                             <g:formatNumber number="${sinAsignarAct}" type="currency" currencySymbol=""/>
                                         </th>
-                                        <th class="text-right">
+                                        <th class="text-right total" data-val="${totalAct}">
                                             %{-- - --}%
                                             <g:formatNumber number="${totalAct}" type="currency" currencySymbol=""/>
                                         </th>
@@ -223,6 +237,67 @@
             </div>
         </elm:container>
 
+        <div class="modal fade" id="modalCronoVer">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="modalTitleVer">Cronograma</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <div id="divActividadVer"></div>
+
+                            <div id="divInfoVer" class="text-warning"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Presupuesto (1)</div>
+
+                            <div class="col-md-9" id="div_presupuesto1"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Partida (1)</div>
+
+                            <div class="col-md-9" id="div_bsc-desc-partida1"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Fuente (1)</div>
+
+                            <div class="col-md-9" id="div_desc-fuente1"></div>
+                        </div>
+                        <hr/>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Presupuesto (2)</div>
+
+                            <div class="col-md-9" id="div_presupuesto2"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Partida (2)</div>
+
+                            <div class="col-md-9" id="div_bsc-desc-partida2"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Fuente (2)</div>
+
+                            <div class="col-md-9" id="div_desc-fuente2"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-default" id="btnModalCancelVer">Cerrar</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <script type="text/javascript">
             function armaParams() {
                 var params = "";
@@ -253,6 +328,20 @@
                 return params;
             }
 
+            function setDivs($td) {
+                $.each($td.data(), function (key, val) {
+                    var id = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+                    var $div = $("#div_" + id);
+                    if ($div.length > 0) {
+                        if (id == "presupuesto1" || id == "presupuesto2") {
+                            $div.text(number_format(val, 2, ".", ","));
+                        } else {
+                            $div.text(val);
+                        }
+                    }
+                });
+            }
+
             var $container = $(".divTabla");
             $container.scrollTop(0 - $container.offset().top + $container.scrollTop());
             $(function () {
@@ -271,6 +360,65 @@
                         scrollTop : $scrollTo.offset().top - $container.offset().top + $container.scrollTop()
                     });
                     return false;
+                });
+
+                $("#btnModalCancelVer").click(function () {
+                    $('#modalCronoVer').modal("hide");
+                    return false;
+                });
+
+                $(".clickable").contextMenu({
+                    items  : {
+                        header : {
+                            label  : "Acciones",
+                            header : true
+                        },
+                        ver    : {
+                            label  : "Ver",
+                            icon   : "fa fa-search",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                var $tr = $element.parents("tr");
+                                var index = $element.index();
+
+                                var $mes = $("#trMeses").children().eq(index);
+                                var mes = $mes.attr("title");
+                                $('#modalCronoVer').modal("show");
+                                $("#modalTitleVer").text("Cronograma - " + mes);
+
+                                var $actividad = $tr.find(".actividad");
+                                var $asignado = $tr.find(".asignado");
+                                var $sinAsignar = $tr.find(".sinAsignar");
+                                var $total = $tr.find(".total");
+
+                                var actividad = $actividad.attr("title");
+                                var asignado = $asignado.data("val");
+                                var sinAsignar = $sinAsignar.data("val");
+                                var total = $total.data("val");
+
+                                $("#divActividadVer").text(actividad);
+                                $("#divInfoVer").html("<ul>" +
+                                                      "<li><strong>Monto total:</strong> $" + number_format(total, 2, ".", ",") + "</li>" +
+                                                      "<li><strong>Asignado:</strong> $" + number_format(asignado, 2, ".", ",") + "</li>" +
+                                                      "<li><strong>Por asignar:</strong> $" + number_format(sinAsignar, 2, ".", ",") + "</li>" +
+                                                      "</ul>").data({
+                                    total      : total,
+                                    asignado   : asignado,
+                                    sinAsignar : sinAsignar,
+                                    crono      : id,
+                                    mes        : $mes.data("id"),
+                                    actividad  : $tr.data("id")
+                                });
+                                setDivs($element);
+                            }
+                        }
+                    },
+                    onShow : function ($element) {
+                        $element.addClass("success");
+                    },
+                    onHide : function ($element) {
+                        $(".success").removeClass("success");
+                    }
                 });
 
             });

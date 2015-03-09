@@ -173,9 +173,11 @@
                                             <td style="width:100px;" class="text-right ${clase} ${crg && crg.fuente ? 'fnte_' + crg.fuente.id : ''} ${crg && crg.fuente2 ? 'fnte_' + crg.fuente2.id : ''}"
                                                 data-id="${crg?.id}" data-val="${valor}"
                                                 data-presupuesto1="${crg?.valor}" data-bsc-desc-partida1="${crg?.presupuesto?.toString()}"
-                                                data-partida1="${crg?.presupuesto?.id}" data-fuente1="${crg?.fuente?.id}"
+                                                data-partida1="${crg?.presupuesto?.id}"
+                                                data-fuente1="${crg?.fuente?.id}" data-desc-fuente1="${crg?.fuente?.descripcion}"
                                                 data-presupuesto2="${crg?.valor2}" data-bsc-desc-partida2="${crg?.presupuesto2?.toString()}"
-                                                data-partida2="${crg?.presupuesto2?.id}" data-fuente2="${crg?.fuente2?.id}">
+                                                data-partida2="${crg?.presupuesto2?.id}"
+                                                data-fuente2="${crg?.fuente2?.id}" data-desc-fuente2="${crg?.fuente2?.descripcion}">
                                                 <g:formatNumber number="${valor}" type="currency" currencySymbol=""/>
                                             </td>
                                             <g:if test="${crg}">
@@ -328,6 +330,67 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <div class="modal fade" id="modalCronoVer">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="modalTitleVer">Cronograma</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <div id="divActividadVer"></div>
+
+                            <div id="divInfoVer" class="text-warning"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Presupuesto (1)</div>
+
+                            <div class="col-md-9" id="div_presupuesto1"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Partida (1)</div>
+
+                            <div class="col-md-9" id="div_bsc-desc-partida1"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Fuente (1)</div>
+
+                            <div class="col-md-9" id="div_desc-fuente1"></div>
+                        </div>
+                        <hr/>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Presupuesto (2)</div>
+
+                            <div class="col-md-9" id="div_presupuesto2"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Partida (2)</div>
+
+                            <div class="col-md-9" id="div_bsc-desc-partida2"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 show-label">Fuente (2)</div>
+
+                            <div class="col-md-9" id="div_desc-fuente2"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-default" id="btnModalCancelVer">Cerrar</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <script type="text/javascript">
             function armaParams() {
                 var params = "";
@@ -430,6 +493,20 @@
                 }
             }
 
+            function setDivs($td) {
+                $.each($td.data(), function (key, val) {
+                    var id = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+                    var $div = $("#div_" + id);
+                    if ($div.length > 0) {
+                        if (id == "presupuesto1" || id == "presupuesto2") {
+                            $div.text(number_format(val, 2, ".", ","));
+                        } else {
+                            $div.text(val);
+                        }
+                    }
+                });
+            }
+
             $(function () {
 
                 var validator = $(".frmCrono").validate({
@@ -509,6 +586,10 @@
                     $('#modalCrono').modal("hide");
                     return false;
                 });
+                $("#btnModalCancelVer").click(function () {
+                    $('#modalCronoVer').modal("hide");
+                    return false;
+                });
 
                 $("#btnModalSave").click(function () {
                     var $frm = $(".frmCrono");
@@ -545,13 +626,45 @@
                             label  : "Acciones",
                             header : true
                         },
-//                        ver      : {
-//                            label  : "Ver",
-//                            icon   : "fa fa-search",
-//                            action : function ($element) {
-//                                var id = $element.data("id");
-//                            }
-//                        },
+                        ver      : {
+                            label  : "Ver",
+                            icon   : "fa fa-search",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                var $tr = $element.parents("tr");
+                                var index = $element.index();
+
+                                var $mes = $("#trMeses").children().eq(index);
+                                var mes = $mes.attr("title");
+                                $('#modalCronoVer').modal("show");
+                                $("#modalTitleVer").text("Cronograma - " + mes);
+
+                                var $actividad = $tr.find(".actividad");
+                                var $asignado = $tr.find(".asignado");
+                                var $sinAsignar = $tr.find(".sinAsignar");
+                                var $total = $tr.find(".total");
+
+                                var actividad = $actividad.attr("title");
+                                var asignado = $asignado.data("val");
+                                var sinAsignar = $sinAsignar.data("val");
+                                var total = $total.data("val");
+
+                                $("#divActividadVer").text(actividad);
+                                $("#divInfoVer").html("<ul>" +
+                                                      "<li><strong>Monto total:</strong> $" + number_format(total, 2, ".", ",") + "</li>" +
+                                                      "<li><strong>Asignado:</strong> $" + number_format(asignado, 2, ".", ",") + "</li>" +
+                                                      "<li><strong>Por asignar:</strong> $" + number_format(sinAsignar, 2, ".", ",") + "</li>" +
+                                                      "</ul>").data({
+                                    total      : total,
+                                    asignado   : asignado,
+                                    sinAsignar : sinAsignar,
+                                    crono      : id,
+                                    mes        : $mes.data("id"),
+                                    actividad  : $tr.data("id")
+                                });
+                                setDivs($element);
+                            }
+                        },
                         editar   : {
                             label  : "Editar",
                             icon   : "fa fa-pencil text-info",
