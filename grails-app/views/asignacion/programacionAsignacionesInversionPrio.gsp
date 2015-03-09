@@ -7,12 +7,10 @@
 
 
     <style type="text/css">
-    .valor{
-        width: 100%;
-        text-align: center;
+
+    input{
+        font-size: 10px !important;
         margin: 0px;
-        color: #000000;
-        font-size: 10px;
     }
     </style>
 </head>
@@ -29,7 +27,7 @@
     </div>
 </div>
 <elm:container tipo="horizontal" titulo="Programación de las asignaciones del proyecto: ${proyecto?.toStringLargo()}, para el año ${actual}" color="black" >
-    <table  class="table table-condensed table-bordered table-striped">
+    <table  class="table table-condensed table-bordered table-striped" style="font-size: 10px;">
         <thead>
         <th style=";">Enero</th>
         <th style=";">Feb.</th>
@@ -44,7 +42,6 @@
         <th style=";">Nov.</th>
         <th style=";">Dic.</th>
         <th style="">Total</th>
-        <th></th>
         <th></th>
         </thead>
         <tbody>
@@ -66,13 +63,12 @@
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                 <td colspan="13"><b>Asignación#${i+1} </b>${asg}</td>
                 <td></td>
-                <td></td>
             </tr>
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                 <g:each in="${meses}" var="mes" status="j">
                     <g:if test="${ProgramacionAsignacion.findAll('from ProgramacionAsignacion where asignacion = '+asg.id+' and mes = '+mes.id+' and padre is null').size()>0}" >
                         <g:set var="progra" value="${ProgramacionAsignacion.findAll('from ProgramacionAsignacion where asignacion = '+asg.id+' and mes = '+mes.id+' and padre is null')?.pop()}"></g:set>
-                        <td class="${mes}" style=";">
+                        <td class="${mes}"  style="width: 70px;padding: 0px;height: 30px">
                             <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money"  mes="${mes.id}"   value="${g.formatNumber(number:progra?.valor, format:'###,##0', minFractionDigits:'2',maxFractionDigits:'2')}">
                             <g:set var="totalFila" value="${totalFila+=progra.valor}"></g:set>
                             <g:if test="${j==0}">
@@ -114,22 +110,22 @@
                         </td>
                     </g:if>
                     <g:else>
-                        <td class="${mes}" style=";">
+                        <td class="${mes}" style="width: 70px;padding: 0px;height: 30px">
                             <input type="text" class="${mes} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes.id}"   value="0.00">
                         </td>
                     </g:else>
                 </g:each>
-                <td class="total" id="total_cor_${asg.id}" style="width: 80px;text-align: right;${(totalFila.toDouble().round(2)!=asg.priorizado.toDouble().round(2))?'color:red;':''}">
+                <td class="total" id="total_cor_${asg.id}" style="width: 80px;text-align: right;${(totalFila.toDouble().round(2)!=asg.priorizado.toDouble().round(2))?'color:red;':''}padding-top:0px;padding-bottom: 0px;line-height: 30px">
                     <g:formatNumber number="${totalFila}" type="currency" currencySymbol=""/>
                    %{--${totalFila}-----${asg.priorizado}--}%
                     %{--<g:formatNumber number="${asg.priorizado}" type="currency" currencySymbol=""/>--}%
                 </td>
-                <td >
+                <td style="width: 50px;text-align: center;padding-top:0px;padding-bottom: 0px">
                     <a href="#" class="btn guardar ajax btn-primary btn-sm" asg="${asg.id}"   icono="ico_cor_${i}" max="${asg.priorizado}" clase="asg_cor_${asg.id}" total="total_cor_${asg.id}" title="guardar">
                         <i class="fa fa-floppy-o"></i></a>
                     </a>
                 </td>
-                <td class="ui-state-active"><span class="" id="ico_cor_${i}" title="Guardado" style="display: none"><span class="ui-icon ui-icon-check"></span></span></td>
+
             </tr>
         </g:each>
         <tr>

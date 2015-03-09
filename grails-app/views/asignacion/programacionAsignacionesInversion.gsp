@@ -7,12 +7,11 @@
 
 
 <style type="text/css">
-.valor{
-    width: 60px;
-    text-align: center;
-    margin: 0px;
-    color: #000000;
-}
+
+    input{
+        font-size: 10px !important;
+        margin: 0px;
+    }
 </style>
 </head>
 
@@ -29,7 +28,7 @@
 </div>
 <elm:container tipo="horizontal" titulo="Programación de las asignaciones del proyecto: ${proyecto?.toStringLargo()}, para el año ${actual}" color="black" >
 
-    <table  class="table table-condensed table-bordered table-striped">
+    <table  class="table table-condensed table-bordered table-striped" style="font-size: 10px;">
         <thead>
         <th style="width: 70px;">Enero</th>
         <th style="width: 70px;">Feb.</th>
@@ -43,8 +42,7 @@
         <th style="width: 70px;">Oct.</th>
         <th style="width: 70px;">Nov.</th>
         <th style="width: 70px;">Dic.</th>
-        <th style="width: 80px;">Total</th>
-        <th></th>
+        <th style="width: 70px;">Total</th>
         <th></th>
         </thead>
         <tbody>
@@ -66,14 +64,13 @@
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                 <td colspan="13"><b>Asignación#${i+1} </b>${asg}</td>
                 <td></td>
-                <td></td>
             </tr>
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                 <g:each in="${meses}" var="mes" status="j">
                     <g:if test="${ProgramacionAsignacion.findAll('from ProgramacionAsignacion where asignacion = '+asg.id+' and mes = '+mes.id+' and padre is null').size()>0}" >
                         <g:set var="progra" value="${ProgramacionAsignacion.findAll('from ProgramacionAsignacion where asignacion = '+asg.id+' and mes = '+mes.id+' and padre is null')?.pop()}"></g:set>
-                        <td class="${mes}" style="width: 70px;">
-                            <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money"  mes="${mes.id}"   value="${g.formatNumber(number:progra?.valor, format:'###,##0', minFractionDigits:'2',maxFractionDigits:'2')}">
+                        <td class="${mes}" style="width: 70px;padding: 0px;height: 30px">
+                            <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money"  mes="${mes.id}"   value="${g.formatNumber(number:progra?.valor, format:'###,##0', minFractionDigits:'2',maxFractionDigits:'2')}" style="width: 100%;margin: 0px">
                             <g:set var="totalFila" value="${totalFila+=progra.valor}"></g:set>
                             <g:if test="${j==0}">
                                 <g:set var="ene" value="${ene.toDouble()+progra?.valor}"></g:set>
@@ -114,22 +111,23 @@
                         </td>
                     </g:if>
                     <g:else>
-                        <td class="${mes}" style="width: 70px;">
-                            <input type="text" class="${mes} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes.id}"   value="0.00">
+                        <td class="${mes}"  style="width: 70px;padding: 0px;height: 30px">
+                            <input type="text" class="${mes} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes.id}"   value="0.00" style="width: 100%;margin: 0px">
                         </td>
                     </g:else>
                 </g:each>
-                <td class="total" id="total_cor_${asg.id}" style="width: 80px;text-align: right;${(totalFila.toDouble().round(2)!=asg.priorizado.toDouble().round(2))?'color:red;':''}">
+                <td class="total" id="total_cor_${asg.id}" style="width: 80px;text-align: right;${(totalFila.toDouble().round(2)!=asg.planificado.toDouble().round(2))?'color:red;':''}padding-top:0px;padding-bottom: 0px;line-height: 30px">
                     <g:formatNumber number="${totalFila}" type="currency" currencySymbol=""/>
+                    %{--${totalFila.toDouble().round(2)} -- ${asg.planificado.toDouble().round(2)}--}%
                 </td>
                 <g:if test="${actual.estado==0}">
-                    <td>
-                        <a href="#" class="btn guardar ajax btn-primary btn-sm" asg="${asg.id}"   icono="ico_cor_${i}" max="${asg.priorizado}" clase="asg_cor_${asg.id}" total="total_cor_${asg.id}" title="guardar">
+                    <td style="width: 50px;text-align: center;padding-top:0px;padding-bottom: 0px">
+                        <a href="#" class="btn guardar ajax btn-primary btn-sm" asg="${asg.id}"   icono="ico_cor_${i}" max="${asg.planificado}" clase="asg_cor_${asg.id}" total="total_cor_${asg.id}" title="guardar">
                             <i class="fa fa-floppy-o"></i>
                         </a>
                     </td>
                 </g:if>
-                <td class="ui-state-active"><span class="" id="ico_cor_${i}" title="Guardado" style="display: none"><span class="ui-icon ui-icon-check"></span></span></td>
+
             </tr>
 
         </g:each>
@@ -162,14 +160,14 @@
         });
 
         $(".guardar").click(function() {
+            var boton = $(this)
             var icono = $("#" + $(this).attr("icono"))
             var total = 0
             var max = $(this).attr("max")*1
             var datos =""
             $.each($("."+$(this).attr("clase")),function(){
                 var val = $(this).val()
-                val = str_replace(".","",val)
-                val = str_replace(",",".",val)
+                val = str_replace(",","",val)
                 val=val*1
                 total+= val
                 datos+=$(this).attr("mes")+":"+val+";"
@@ -188,7 +186,7 @@
                 $.ajax({
                     type: "POST",
                     url: "${createLink(action:'guardarProgramacion',controller:'asignacion')}",
-                    data: "asignacion="+$(this).attr("asg")+"&datos="+datos ,
+                    data: "asignacion="+boton.attr("asg")+"&datos="+datos ,
                     success: function(msg) {
                         if(msg=="ok"){
                             icono.show("pulsate")
