@@ -131,7 +131,7 @@ class UnidadEjecutoraController extends Shield {
             }
         }
         if (params.codigo) {
-            params.codigo = params.codigo.trim()
+            params.codigo = params.codigo.trim().toUpperCase()
         }
         unidadEjecutoraInstance.properties = params
         if (!unidadEjecutoraInstance.save(flush: true)) {
