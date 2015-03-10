@@ -1,23 +1,24 @@
-
 <%@ page import="vesta.avales.Aval" %>
 <!DOCTYPE html>
 
 <html>
     <head>
-                <meta name="layout" content="main">
+        <meta name="layout" content="main">
         <title>Lista de Aval</title>
     </head>
+
     <body>
 
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
-    <!-- botones -->
+        <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <a href="#" class="btn btn-default btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </a>
             </div>
+
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group input-group-sm">
                     <input type="text" class="form-control input-sm input-search" placeholder="Buscar" value="${params.search}">
@@ -33,49 +34,49 @@
         <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    
+
                     <th>Proceso</th>
-                    
-                    <g:sortableColumn property="fechaAprobacion" title="Fecha Aprobación" />
-                    
-                    <g:sortableColumn property="fechaLiberacion" title="Fecha Liberación" />
-                    
-                    <g:sortableColumn property="fechaAnulacion" title="Fecha Anulación" />
-                    
+
+                    <g:sortableColumn property="fechaAprobacion" title="Fecha Aprobación"/>
+
+                    <g:sortableColumn property="fechaLiberacion" title="Fecha Liberación"/>
+
+                    <g:sortableColumn property="fechaAnulacion" title="Fecha Anulación"/>
+
                     <th>Estado</th>
-                    
-                    <g:sortableColumn property="memo" title="Memo" />
-                    
-                    <g:sortableColumn property="contrato" title="Contrato" />
-                    
+
+                    <g:sortableColumn property="memo" title="Memo"/>
+
+                    <g:sortableColumn property="contrato" title="Contrato"/>
+
                 </tr>
             </thead>
             <tbody>
                 <g:if test="${avalInstanceCount > 0}">
                     <g:each in="${avalInstanceList}" status="i" var="avalInstance">
                         <tr data-id="${avalInstance.id}">
-                            
+
                             <td>${avalInstance.proceso?.nombre}</td>
-                            
-                            <td><g:formatDate date="${avalInstance.fechaAprobacion}" format="dd-MM-yyyy" /></td>
-                            
-                            <td><g:formatDate date="${avalInstance.fechaLiberacion}" format="dd-MM-yyyy" /></td>
-                            
-                            <td><g:formatDate date="${avalInstance.fechaAnulacion}" format="dd-MM-yyyy" /></td>
-                            
-                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${avalInstance}" field="estado.descripcion" /></elm:textoBusqueda></td>
-                            
+
+                            <td><g:formatDate date="${avalInstance.fechaAprobacion}" format="dd-MM-yyyy"/></td>
+
+                            <td><g:formatDate date="${avalInstance.fechaLiberacion}" format="dd-MM-yyyy"/></td>
+
+                            <td><g:formatDate date="${avalInstance.fechaAnulacion}" format="dd-MM-yyyy"/></td>
+
+                            <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${avalInstance}" field="estado.descripcion"/></elm:textoBusqueda></td>
+
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${avalInstance}" field="memo"/></elm:textoBusqueda></td>
-                            
+
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${avalInstance}" field="contrato"/></elm:textoBusqueda></td>
-                            
+
                         </tr>
                     </g:each>
                 </g:if>
                 <g:else>
                     <tr class="danger">
                         <td class="text-center" colspan="17">
-                            <g:if test="${params.search && params.search!= ''}">
+                            <g:if test="${params.search && params.search != ''}">
                                 No se encontraron resultados para su búsqueda
                             </g:if>
                             <g:else>
@@ -101,29 +102,29 @@
                         type    : "POST",
                         url     : $form.attr("action"),
                         data    : $form.serialize(),
-                            success : function (msg) {
-                        var parts = msg.split("*");
-                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                        setTimeout(function() {
-                            if (parts[0] == "SUCCESS") {
-                                location.reload(true);
-                            } else {
-                                spinner.replaceWith($btn);
-                                return false;
-                            }
-                        }, 1000);
-                    }
-                });
-            } else {
-                return false;
-            } //else
+                        success : function (msg) {
+                            var parts = msg.split("*");
+                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                            setTimeout(function () {
+                                if (parts[0] == "SUCCESS") {
+                                    location.reload(true);
+                                } else {
+                                    spinner.replaceWith($btn);
+                                    return false;
+                                }
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    return false;
+                } //else
             }
             function deleteRow(itemId) {
 
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                              "¿Está seguro que desea eliminar el Aval seleccionado? Esta acción no se puede deshacer.</p>",
+                            "¿Está seguro que desea eliminar el Aval seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -146,7 +147,7 @@
                                         var parts = msg.split("*");
                                         log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "SUCCESS") {
-                                            setTimeout(function() {
+                                            setTimeout(function () {
                                                 location.reload(true);
                                             }, 1000);
                                         } else {
@@ -161,18 +162,18 @@
             }
             function createEditRow(id) {
                 var title = id ? "Editar" : "Crear";
-                var data = id ? { id: id } : {};
+                var data = id ? {id : id} : {};
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(action:'form_ajax')}",
                     data    : data,
                     success : function (msg) {
                         var b = bootbox.dialog({
-                            id      : "dlgCreateEdit",
-                            title   : title + " Aval",
-                            
-                            class   : "modal-lg",
-                            
+                            id    : "dlgCreateEdit",
+                            title : title + " Aval",
+
+                            class : "modal-lg",
+
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -200,7 +201,7 @@
 
             $(function () {
 
-                $(".btnCrear").click(function() {
+                $(".btnCrear").click(function () {
                     createEditRow();
                     return false;
                 });

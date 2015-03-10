@@ -1,24 +1,22 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 10/10/11
-  Time: 3:29 PM
-  To change this template use File | Settings | File Templates.
+  Date: 10/03/15
+  Time: 11:09 AM
 --%>
 
-<%@ page import="vesta.parametros.poaPac.Anio; vesta.parametros.UnidadEjecutora" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.proyectos.Proyecto; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-        <meta name="layout" content="main"/>
+        <meta name="layout" content="main">
+        <title>POA Proyecto</title>
 
         <script type="text/javascript" src="${resource(dir: 'js/plugins/jquery-highlight', file: 'jquery-highlight1.js')}"></script>
 
-        <title>PAPP</title>
-
         <style type="text/css">
-        .unidad {
-            padding : 3px;
+        .proyecto {
             border  : solid 1px #555;
+            padding : 3px;
             cursor  : pointer;
         }
 
@@ -26,9 +24,11 @@
             background-color : yellow
         }
         </style>
+
     </head>
 
     <body>
+
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group" role="group">
                 <a href="#" class="btn btn-default" id="btnVer">
@@ -38,37 +38,51 @@
                     <i class="fa fa-print"></i> Imprimir reporte
                 </a>
             </div>
+
         </div>
 
-        <elm:container tipo="horizontal" titulo="Reporte">
+        <g:set var="anio" value="${Anio.findByAnio(new Date().format('yyyy'))}"/>
+
+        <elm:container tipo="horizontal" titulo="Configurar reporte">
             <div class="alert alert-info">
-                Seleccione el año y al menos una unidad ejecutora (haciendo clic sobre su nombre) para generar el reporte
+                Seleccione el año y al menos un proyecto (haciendo clic sobre su nombre) para generar el reporte
+                <div>
+                    Mostrar reporte de <span id="spProyectos" class="text-danger">0 proyectos</span>
+                    <span id="spPlanificacion" class="text-success">sin programación</span>
+                    del <span id="spAnio" class="text-warning">año ${anio.anio}</span>
+                </div>
             </div>
 
             <form class="form-inline">
                 <div class="form-group">
                     <label for="anio">Año</label>
                     <g:select from="${Anio.list([sort: 'anio'])}" name="anio" class="form-control input-sm"
-                              optionKey="id" optionValue="anio" value="${Anio.findByAnio(new Date().format('yyyy')).id}"/>
+                              optionKey="id" optionValue="anio" value="${anio.id}"/>
                 </div>
 
-                <div class="form-group" style="margin-left: 15px;">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="chkPlan"> Programación
+                    </label>
+                </div>
+
+                <div class="form-group pull-right" style="margin-left: 15px;">
                     <label for="buscar">Buscar</label>
                     <g:textField name="buscar" class="form-control input-sm"/>
                     <span id="found"></span>
                 </div>
             </form>
 
-            <g:each in="${UnidadEjecutora.list([sort: 'nombre'])}" var="unidad" status="i">
+            <g:each in="${Proyecto.list([sort: 'nombre'])}" var="proy" status="i">
                 <g:if test="${i % 3 == 0}">
                     <g:if test="${i > 0}">
                         </div>
                     </g:if>
                     <div class="row">
                 </g:if>
-                <div class="col-md-4" title="${unidad.nombre}">
-                    <div class="unidad corner-all" id="${unidad.id}">
-                        ${unidad.nombre.size() > 43 ? unidad.nombre[0..43] + '...' : unidad.nombre}
+                <div class="col-md-4" title="${proy.nombre}">
+                    <div class="proyecto corner-all" id="${proy.id}">
+                        ${proy.nombre.size() > 47 ? proy.nombre[0..47] + '...' : proy.nombre}
                     </div>
                 </div>
             </g:each>
@@ -77,11 +91,11 @@
 
         <script type="text/javascript">
 
-            var selectedClass = "bg-info";
+            var selectedClass = "bg-success";
 
             function reset() {
                 $(".search").val("");
-                $(".unidad").removeHighlight();
+                $(".proyecto").removeHighlight();
             }
 
             function reporte(print) {
@@ -91,28 +105,53 @@
                 });
                 if (elems != "") {
                     if (!print) {
-                        url = "${createLink(action: 'poaInversionesReporteWeb')}?anio=" + $("#anio").val() + "&id=" + elems;
+                        if ($("#chkPlan").is(":checked")) {
+                            url = "${createLink(action: 'poaProyectoWebProg')}";
+                        } else {
+                            url = "${createLink(action: 'poaProyectoWeb')}";
+                        }
+                        url += "?anio=" + $("#anio").val() + "&id=" + elems;
                         window.open(url, "_blank");
                     } else {
-                        url = "${createLink(action: 'poaInversionesReportePDF')}?anio=" + $("#anio").val() + "Wid=" + elems;
+                        if ($("#chkPlan").is(":checked")) {
+                            url = "${createLink(action: 'poaProyectoPdfProg')}";
+                        } else {
+                            url = "${createLink(action: 'poaProyectoPdf')}";
+                        }
+                        url += "?anio=" + $("#anio").val() + "Wid=" + elems;
                         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url
                     }
                 } else {
-                    bootbox.alert("Escoja al menos una unidad ejecutora para generar el reporte.");
+                    bootbox.alert("Escoja al menos un proyecto para generar el reporte.");
                     return false;
                 }
             }
 
             $(function () {
-                $(".unidad").click(function () {
+                $(".proyecto").click(function () {
                     $(this).toggleClass(selectedClass);
+                    var c = $("." + selectedClass).length;
+                    $("#spProyectos").text(c + " proyecto" + (c == 1 ? '' : 's'));
+                });
+
+                $("#chkPlan").change(function () {
+                    var tx = "sin programación";
+                    if ($(this).is(":checked")) {
+                        tx = "con programación";
+                    }
+                    $("#spPlanificacion").text(tx);
+                });
+
+                $("#anio").change(function () {
+                    var anio = $(this).find("option:selected").text();
+                    $("#spAnio").text("año " + anio);
                 });
 
                 $("#buscar").keyup(function (evt) {
                     var elm = $(this);
                     var txt = elm.val();
                     if ($.trim(txt) != "") {
-                        $(".unidad").removeHighlight().highlight(txt);
+                        $(".proyecto").removeHighlight().highlight(txt);
                         var h = $(".highlight");
                         var c = h.length;
                         $("#found").text("Se encontr" + (c == 1 ? "ó " : "aron ") + c + " coincidencia" + (c == 1 ? "" : "s"));
@@ -130,6 +169,5 @@
 
             });
         </script>
-
     </body>
 </html>

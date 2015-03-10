@@ -13,7 +13,7 @@
         <rep:estilos orientacion="p" pagTitle="Aval de POA"/>
 
         <style type="text/css">
-              .totales {
+        .totales {
             font-weight : bold;
         }
 
@@ -65,12 +65,12 @@
 
     <body>
 
-            <rep:headerFooter title="Solicitud de contratación"/>
-            <slc:infoReporte solicitud="${solicitud}"/>
-            <div class="fecha">
-                Quito, ${solicitud.fecha?.format("dd-MM-yyyy")}
-            </div>
-            <slc:firmasReporte firmas="${firmas}"/>
+        <rep:headerFooter title="Solicitud de contratación"/>
+        <slc:infoReporte solicitud="${solicitud}"/>
+        <div class="fecha">
+            Quito, ${solicitud.fecha?.format("dd-MM-yyyy")}
+        </div>
+        <slc:firmasReporte firmas="${firmas}"/>
 
     </body>
 </html>
