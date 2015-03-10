@@ -17,7 +17,7 @@
         <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" params="[id:proyecto.id,anio:actual.id]" ><i class="fa fa-calendar"></i> Programación</g:link>
         <g:link class="btn btn-default btn-sm" controller="asignacion" action="agregarAsignacionInv" id="${proyecto?.id}"><i class="fa fa-plus"></i> Agregar Asignaciones</g:link>
         <a class="btn btn-default btn-sm" id="reporte"><i class="fa fa-print"></i> Reporte Asignaciones</a>
-        %{--<g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>--}%
+    %{--<g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>--}%
         <g:if test="${actual?.estado==1}">
             <g:if test="${proyecto.aprobadoPoa=='S'}">
                 <g:link class="btn btn-default btn-sm" controller="modificacion" action="poaInversionesMod" id="${proyecto?.id}">Modificaciones</g:link>
@@ -96,11 +96,15 @@
                 </td>
                 <g:if test="${actual.estado==1}">
                     <g:if test="${proyecto.aprobadoPoa!='S'}">
-                        <td class="valor" style="text-align: right">
-                            <div>
-                                <input type="text" name="prio_${asg.id}"  class="form-control txt-prio input-sm number money" style="width: 100px;text-align: right;display: inline-block" id="prio_${asg.id}" value="${asg.priorizado}">
-                                <a href="#prio_${asg.id}"  class="savePrio btn btn-info btn-xs" style="display: inline-block" iden="${asg.id}" title="Guardar"><i class="fa fa-floppy-o"></i></a>
-                            </div>
+                        <td class="valor" >
+
+                            <div class="input-group input-group-sm" style="width: 160px">
+                                <input type="text" name="prio_${asg.id}"  class="form-control txt-prio  number money" style="text-align: right;" id="prio_${asg.id}" value="${asg.priorizado}">
+                                <span class="input-group-btn">
+                                    <a href="#prio_${asg.id}"  class="savePrio btn btn-info "  iden="${asg.id}" title="Guardar"><i class="fa fa-floppy-o"></i></a>
+                                </span>
+                            </div><!-- /input-group -->
+
                         </td>
                     </g:if><g:else>
                     <td class="valor" style="text-align: right">
@@ -162,10 +166,10 @@
 <div id="ajx_asgn_prio" style="width:520px;"></div>
 
 %{--<div id="reporteDialogo" style="width:250px;">--}%
-    %{--<div>Seleccione el año para generar el reporte.</div>--}%
-    %{--<div style="margin-left: 100px; margin-top: 30px">--}%
-        %{--<b>Año:</b><g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio-asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}"/>--}%
-    %{--</div>--}%
+%{--<div>Seleccione el año para generar el reporte.</div>--}%
+%{--<div style="margin-left: 100px; margin-top: 30px">--}%
+%{--<b>Año:</b><g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio-asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}"/>--}%
+%{--</div>--}%
 %{--</div>--}%
 <div style="position: absolute;top:5px;right:10px;font-size: 11px;">
     <b>Total invertido proyecto actual:</b>
@@ -493,28 +497,28 @@
 
 
     %{--$("#reporteDialogo").dialog({--}%
-        %{--autoOpen:false,--}%
-        %{--resizable:false,--}%
-        %{--title:'Reporte de Asignaciones del Proyecto',--}%
-        %{--modal:true,--}%
-        %{--draggable:true,--}%
-        %{--width:350,--}%
-        %{--height:200,--}%
-        %{--position:'center',--}%
-        %{--open:function (event, ui) {--}%
-            %{--$(".ui-dialog-titlebar-close").hide();--}%
-        %{--},--}%
-        %{--buttons:{--}%
-            %{--"Cancelar": function () {--}%
-                %{--$(this).dialog("close");--}%
-            %{--},--}%
-            %{--"Aceptar":function () {--}%
-                %{--var anio = $("#anio-asg").val();--}%
-                %{--var url = "${createLink(controller: 'reportes2', action: 'reporteAsignacionProyecto')}?id=" + ${proyecto?.id} + "Wanio=" + anio;--}%
-                %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;--}%
-                %{--$(this).dialog("close");--}%
-            %{--}--}%
-        %{--}--}%
+    %{--autoOpen:false,--}%
+    %{--resizable:false,--}%
+    %{--title:'Reporte de Asignaciones del Proyecto',--}%
+    %{--modal:true,--}%
+    %{--draggable:true,--}%
+    %{--width:350,--}%
+    %{--height:200,--}%
+    %{--position:'center',--}%
+    %{--open:function (event, ui) {--}%
+    %{--$(".ui-dialog-titlebar-close").hide();--}%
+    %{--},--}%
+    %{--buttons:{--}%
+    %{--"Cancelar": function () {--}%
+    %{--$(this).dialog("close");--}%
+    %{--},--}%
+    %{--"Aceptar":function () {--}%
+    %{--var anio = $("#anio-asg").val();--}%
+    %{--var url = "${createLink(controller: 'reportes2', action: 'reporteAsignacionProyecto')}?id=" + ${proyecto?.id} + "Wanio=" + anio;--}%
+    %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;--}%
+    %{--$(this).dialog("close");--}%
+    %{--}--}%
+    %{--}--}%
     %{--});--}%
 
     $("#reporte").click(function(){
