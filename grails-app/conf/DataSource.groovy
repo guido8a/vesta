@@ -37,4 +37,15 @@ environments {
             password = "steinsgate"
         }
     }
+
+    pruebas {
+        dataSource {
+            dbCreate = "update"
+            url = "jdbc:postgresql://127.0.0.1:5432/vesta_prba"
+            username = "postgres"
+            password = "steinsgate"
+        }
+
+    }
+
 }
