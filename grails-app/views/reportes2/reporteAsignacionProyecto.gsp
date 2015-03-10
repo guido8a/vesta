@@ -9,22 +9,23 @@
 <html>
 <head>
     <title>Reporte de Asignaciones del Proyecto</title>
+    <rep:estilos orientacion="l" pagTitle="Reporte de Asignaciones del Proyecto: ${proyecto.nombre}"/>
     <style type="text/css">
-    @page {
-        size   : 29.7cm 21cm;  /*width height */
-        margin : 2cm;
-    }
+    /*@page {*/
+        /*size   : 29.7cm 21cm;  *//*width height */
+        /*margin : 2cm;*/
+    /*}*/
 
-    .hoja {
-        width : 23.7cm;
-    }
+    /*.hoja {*/
+        /*width : 23.7cm;*/
+    /*}*/
 
-    .hoja {
+    /*.hoja {*/
         /*background  : #e6e6fa;*/
-        /*height      : 24.7cm; *//*29.7-(1.5*2)*/
-        font-family : arial;
-        font-size   : 9pt;
-    }
+        /*height      : 24.7cm; *//**//*29.7-(1.5*2)*/
+        /*font-family : arial;*/
+        /*font-size   : 9pt;*/
+    /*}*/
 
     table {
         font-size : 9pt;
@@ -149,8 +150,12 @@
 
 <body>
 
-<rep:headerReporte  title="Reporte de Asignaciones del Proyecto: ${proyecto.nombre}" codigo="FR-PLA-AVAL-02"/>
-<div class="titulo2">Año: ${actual?.anio}</div>
+%{--<rep:headerReporte  title="Reporte de Asignaciones del Proyecto: ${proyecto.nombre}" codigo="FR-PLA-AVAL-02"/>--}%
+
+<rep:headerFooter  title="Reporte de Asignaciones del Proyecto: ${proyecto.nombre}"/>
+
+
+<div class="titulo2" style="margin-top: 20px">Año: ${actual?.anio}</div>
 
 <table>
     <thead>

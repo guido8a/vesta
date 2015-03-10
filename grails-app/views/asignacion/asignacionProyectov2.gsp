@@ -14,9 +14,9 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" params="[id:proyecto.id,anio:actual.id]" >Programación</g:link>
-        <g:link class="btn btn-default btn-sm" controller="asignacion" action="agregarAsignacionInv" id="${proyecto?.id}">Agregar Asignaciones</g:link>
-        <a class="btn btn-default btn-sm" id="reporte">Reporte Asignaciones</a>
+        <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" params="[id:proyecto.id,anio:actual.id]" ><i class="fa fa-calendar"></i> Programación</g:link>
+        <g:link class="btn btn-default btn-sm" controller="asignacion" action="agregarAsignacionInv" id="${proyecto?.id}"><i class="fa fa-plus"></i> Agregar Asignaciones</g:link>
+        <a class="btn btn-default btn-sm" id="reporte"><i class="fa fa-print"></i> Reporte Asignaciones</a>
         %{--<g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>--}%
         <g:if test="${actual?.estado==1}">
             <g:if test="${proyecto.aprobadoPoa=='S'}">
@@ -25,7 +25,7 @@
         </g:if>
         <g:if test="${actual?.estado==1}">
             <g:if test="${proyecto.aprobadoPoa!='S'}">
-                <a href="#" id="aprobPrio" class="btn btn-default btn-sm">Aprobar Priorización</a>
+                <a href="#" id="aprobPrio" class="btn btn-default btn-sm"><i class="fa fa-check"></i> Aprobar Priorización</a>
             </g:if>
         </g:if>
         <a href="#" class="btn btn-default btn-sm" id="btn-filtros">Filtros</a>
@@ -97,10 +97,9 @@
                 <g:if test="${actual.estado==1}">
                     <g:if test="${proyecto.aprobadoPoa!='S'}">
                         <td class="valor" style="text-align: right">
-                            <div style="">
+                            <div>
                                 <input type="text" name="prio_${asg.id}"  class="form-control txt-prio input-sm number money" style="width: 100px;text-align: right;display: inline-block" id="prio_${asg.id}" value="${asg.priorizado}">
-                                <a href="#prio_${asg.id}"  class="savePrio btn btn-info btn-xs" iden="${asg.id}" title="Guardar">
-                                    <i class="fa fa-floppy-o"></i></a>
+                                <a href="#prio_${asg.id}"  class="savePrio btn btn-info btn-xs" style="display: inline-block" iden="${asg.id}" title="Guardar"><i class="fa fa-floppy-o"></i></a>
                             </div>
                         </td>
                     </g:if><g:else>
