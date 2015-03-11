@@ -32,12 +32,12 @@
 
             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
-                    <g:form class="form-inline" name="frmAuth">
+                    <g:form class="form-inline" name="frmAuth" action="updateAuth">
                         <div class="form-group">
-                            <label for="authAct">Autorización actual</label>
+                            <label for="input1">Autorización actual</label>
 
                             <div class="input-group">
-                                <g:passwordField name="authAct" class="form-control auth"/>
+                                <g:passwordField name="input1" class="form-control auth"/>
                                 <span class="input-group-addon"><i class="fa fa-unlock"></i></span>
                             </div>
                         </div>
@@ -59,9 +59,9 @@
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success">
+                        <a href="#" id="btnSaveAuth" class="btn btn-success">
                             <i class="fa fa-save"></i> Guardar
-                        </button>
+                        </a>
                     </g:form>
                 </div>
             </div>
@@ -69,7 +69,55 @@
 
         <script type="text/javascript">
             $(function () {
-                $("#frmAuth")
+                var $frmAuth = $("#frmAuth");
+                $frmAuth.validate({
+                    errorClass     : "help-block",
+                    errorPlacement : function (error, element) {
+                        if (element.parent().hasClass("input-group")) {
+                            error.insertAfter(element.parent());
+                        } else {
+                            error.insertAfter(element);
+                        }
+                        element.parents(".grupo").addClass('has-error');
+                    },
+                    success        : function (label) {
+                        label.parents(".grupo").removeClass('has-error');
+                        label.remove();
+                    },
+                    rules          : {
+                        input1 : {
+                            remote : {
+                                url  : "${createLink(action: 'validar_aut_previa_ajax')}",
+                                type : "post",
+                                data : {
+                                    id : "${persona?.id}"
+                                }
+                            }
+                        }
+                    },
+                    messages       : {
+                        input1 : {
+                            remote : "La autorización no concuerda"
+                        }
+                    }
+                });
+
+                $("#btnSaveAuth").click(function () {
+                    if ($frmAuth.valid()) {
+                        $.ajax({
+                            type    : "POST",
+                            url     : $frmAuth.attr("action"),
+                            data    : $frmAuth.serialize(),
+                            success : function (msg) {
+                                var parts = msg.split("*");
+                                log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                closeLoader();
+                                $frmAuth[0].reset();
+                            }
+                        });
+                    }
+                    return false;
+                });
             });
         </script>
 

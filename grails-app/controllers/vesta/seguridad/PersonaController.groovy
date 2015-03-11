@@ -529,6 +529,28 @@ class PersonaController extends Shield {
      * Acción que le permite al usuario cambiar su configuración personal (contraseña, autorización...)
      */
     def personal() {
+        def usu = Persona.get(session.usuario.id)
+        return [persona: usu]
+    }
 
+    /**
+     * Acción que actualiza la clave de autorización
+     */
+    def updateAuth() {
+        def usu = Persona.get(session.usuario.id)
+        if (params.input1.toString().trim().encodeAsMD5() == usu.autorizacion) {
+            if (params.authNueva.toString().trim() == params.authConfirm.toString().trim()) {
+                usu.autorizacion = params.authNueva.toString().trim().encodeAsMD5()
+                if (usu.save(flush: true)) {
+                    render "SUCCESS*Clave de autorización modificada exitosamente"
+                } else {
+                    render "ERROR*" + renderErrors(bean: usu)
+                }
+            } else {
+                render "ERROR*Las claves de autorización no concuerdan"
+            }
+        } else {
+            render "ERROR*La clave de autorización es incorrecta"
+        }
     }
 }
