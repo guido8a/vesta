@@ -35,7 +35,7 @@ class CronogramaController extends Shield {
             eq("proyecto", proyecto)
             eq("tipoElemento", TipoElemento.get(2))
             eq("estado", 0)
-            order("id", "asc")
+            order("numeroComp", "asc")
         }
         def fuentes = Financiamiento.findAllByProyecto(proyecto).fuente
         def anio
@@ -63,7 +63,7 @@ class CronogramaController extends Shield {
             eq("proyecto", proyecto)
             eq("tipoElemento", TipoElemento.get(2))
             eq("estado", 0)
-            order("id", "asc")
+            order("numeroComp", "asc")
         }
         def anio
         if (!params.anio)

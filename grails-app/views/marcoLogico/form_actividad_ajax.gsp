@@ -31,7 +31,7 @@
                     <div class="col-md-7">
                         <g:select id="responsable" name="responsable.id" from="${UnidadEjecutora.list([sort: 'nombre'])}"
                                   optionKey="id" value="${marcoLogicoInstance?.responsable?.id}"
-                                  class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                                  class="many-to-one form-control input-sm required" noSelection="['': '']"/>
                     </div>
                 </span>
             </div>
@@ -59,7 +59,8 @@
                     </label>
 
                     <div class="col-md-10">
-                        <g:textArea name="objeto" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${marcoLogicoInstance?.objeto}"/>
+                        <g:textArea name="objeto" cols="40" rows="5" maxlength="1023" class="form-control input-sm required"
+                                    value="${marcoLogicoInstance?.objeto}"/>
                     </div>
                 </span>
             </div>
@@ -91,7 +92,8 @@
                     </label>
 
                     <div class="col-md-5">
-                        <elm:datepicker name="fechaInicio" class="datepicker form-control input-sm" value="${marcoLogicoInstance?.fechaInicio}" default="none" noSelection="['': '']"/>
+                        <elm:datepicker name="fechaInicio" class="datepicker form-control input-sm required"
+                                        value="${marcoLogicoInstance?.fechaInicio ?: new Date()}" default="none" noSelection="['': '']"/>
                     </div>
                 </span>
             </div>
