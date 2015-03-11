@@ -10,22 +10,25 @@
 <html>
 <head>
     <title>Reporte de Total de Priorización</title>
+    <rep:estilos orientacion="p" pagTitle="Reporte de Total de Priorización"/>
     <style type="text/css">
-    @page {
-        size   : 29.7cm 21cm;  /*width height */
-        margin : 2cm;
-    }
 
-    .hoja {
-        width : 23.7cm;
-    }
 
-    .hoja {
+    /*@page {*/
+        /*size   : 29.7cm 21cm;  *//*width height */
+        /*margin : 2cm;*/
+    /*}*/
+
+    /*.hoja {*/
+        /*width : 23.7cm;*/
+    /*}*/
+
+    /*.hoja {*/
         /*background  : #e6e6fa;*/
-        /*height      : 24.7cm; *//*29.7-(1.5*2)*/
-        font-family : arial;
-        font-size   : 9pt;
-    }
+        /*height      : 24.7cm; *//**//*29.7-(1.5*2)*/
+        /*font-family : arial;*/
+        /*font-size   : 9pt;*/
+    /*}*/
 
     table {
         font-size : 9pt;
@@ -139,11 +142,11 @@
 </head>
 
 <body>
+<rep:headerFooter title="Reporte Total Priorización"/>
 
-<div class="titulo">Reporte de Total de Priorización</div>
 
-
-<table>
+%{--<table>--}%
+    <table class="table table-condensed table-bordered table-striped table-hover">
     <thead>
     <tr>
         <th>Proyecto</th>
