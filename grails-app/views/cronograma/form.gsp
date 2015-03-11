@@ -516,7 +516,7 @@
                             action : function ($element) {
                                 var id = $element.data("id");
                                 var $tr = $element.parents("tr");
-                                var index = $element.index();
+                                var index = $element.index() - 1;
 
                                 var $mes = $("#trMeses").children().eq(index);
                                 var mes = $mes.attr("title");
@@ -555,7 +555,7 @@
                             action : function ($element) {
                                 var id = $element.data("id");
                                 var $tr = $element.parents("tr");
-                                var index = $element.index();
+                                var index = $element.index() - 1;
 
                                 var $mes = $("#trMeses").children().eq(index);
                                 var mes = $mes.attr("title");
