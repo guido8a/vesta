@@ -19,7 +19,15 @@
                 <g:link class="btn btn-default" controller="avales" action="avalesProceso" id="${proceso.id}">
                     <i class="fa fa-list"></i> Avales
                 </g:link>
+
+                <a href="#" class="btn btn-success" id="enviar">
+                    <i class="fa fa-save"></i> Guardar y enviar
+                </a>
+                <g:link action="listaProcesos" class="btn btn-default">
+                Cancelar
+            </g:link>
             </div>
+
         </div>
 
         <div class="modal-contenido">
@@ -41,6 +49,7 @@
                             </p>
                         </div>
                     </span>
+
                 </div>
 
                 <div class="form-group keeptogether required">
@@ -98,7 +107,7 @@
                         </label>
 
                         <div class="col-md-7">
-                            <g:textArea name="concepto" maxlength="1024" required="" class="form-control input-sm required" style="height: 80px;"/>
+                            <g:textArea name="concepto" maxlength="1024" required="" class="form-control input-sm required" style="height: 80px;resize: none"/>
                         </div>
                     </span>
                 </div>
@@ -117,18 +126,18 @@
                     </span>
                 </div>
 
-                <div class="form-group">
-                    <span class="grupo">
-                        <div class="col-md-8 text-right">
-                            <g:link action="listaProcesos" class="btn btn-default">
-                                Cancelar
-                            </g:link>
-                            <a href="#" class="btn btn-success" id="enviar">
-                                <i class="fa fa-save"></i> Guardar y enviar
-                            </a>
-                        </div>
-                    </span>
-                </div>
+                %{--<div class="form-group">--}%
+                    %{--<span class="grupo">--}%
+                        %{--<div class="col-md-8 text-right">--}%
+                            %{--<g:link action="listaProcesos" class="btn btn-default">--}%
+                                %{--Cancelar--}%
+                            %{--</g:link>--}%
+                            %{--<a href="#" class="btn btn-success" id="enviar">--}%
+                                %{--<i class="fa fa-save"></i> Guardar y enviar--}%
+                            %{--</a>--}%
+                        %{--</div>--}%
+                    %{--</span>--}%
+                %{--</div>--}%
             </g:uploadForm>
         </div>
 

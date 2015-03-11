@@ -77,6 +77,9 @@
                             </tbody>
                         </table>
                     </g:if>
+                    <g:else>
+                        <div class="alert alert-info" style="width: 450px">No existen avales</div>
+                    </g:else>
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="solicitudes">
@@ -139,6 +142,9 @@
                             </tbody>
                         </table>
                     </g:if>
+                    <g:else>
+                            <div class="alert alert-info" style="width: 450px">No existen solicitudes</div>
+                    </g:else>
                 </div>
             </div>
 

@@ -79,6 +79,9 @@
                             </tbody>
                         </table>
                     </g:if>
+                    <g:else>
+                        <div class="alert alert-info" style="width: 450px">No existen firmas pendientes</div>
+                    </g:else>
                 </div>
 
                 <div role="tabpanel" class="tab-pane fade" id="historial">
