@@ -8,186 +8,203 @@
 
 <%@ page import="vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>
-<head>
-    <title>Reporte de Total de Priorización</title>
-    <rep:estilos orientacion="p" pagTitle="Reporte de Total de Priorización"/>
-    <style type="text/css">
+    <head>
+        <title>Reporte de Total de Priorización</title>
+        <rep:estilos orientacion="p" pagTitle="Reporte de Total de Priorización"/>
+        <style type="text/css">
 
 
-    /*@page {*/
+        /*@page {*/
         /*size   : 29.7cm 21cm;  *//*width height */
         /*margin : 2cm;*/
-    /*}*/
+        /*}*/
 
-    /*.hoja {*/
+        /*.hoja {*/
         /*width : 23.7cm;*/
-    /*}*/
+        /*}*/
 
-    /*.hoja {*/
+        /*.hoja {*/
         /*background  : #e6e6fa;*/
         /*height      : 24.7cm; *//**//*29.7-(1.5*2)*/
         /*font-family : arial;*/
         /*font-size   : 9pt;*/
-    /*}*/
+        /*}*/
 
-    table {
-        font-size : 9pt;
-    }
+        table {
+            font-size : 9pt;
+        }
 
-    .titulo {
-        min-height    : 20px;
-        font-size     : 16pt;
-        /*font-weight   : bold;*/
-        text-align    : left;
-        margin-bottom : 5px;
-        width         : 100%;
-        /*border-bottom : solid 1px #000000;*/
-    }
+        .titulo {
+            min-height    : 20px;
+            font-size     : 16pt;
+            /*font-weight   : bold;*/
+            text-align    : left;
+            margin-bottom : 5px;
+            width         : 100%;
+            /*border-bottom : solid 1px #000000;*/
+        }
 
-    .totales {
-        font-weight : bold;
-    }
+        .totales {
+            font-weight : bold;
+        }
 
-    .num {
-        text-align : right;
-    }
+        .num {
+            text-align : right;
+        }
 
-    .header {
-        background : #333333 !important;
-        color      : #AAAAAA;
-    }
+        .header {
+            background : #333333 !important;
+            color      : #AAAAAA;
+        }
 
-    .total {
-        background : #000000 !important;
-        color      : #FFFFFF !important;
-    }
+        .total {
+            background : #000000 !important;
+            color      : #FFFFFF !important;
+        }
 
-    th {
-        background : #cccccc;
-    }
+        th {
+            background : #cccccc;
+        }
 
-    /*.odd {*/
-    /*background : none repeat scroll 0 0 #E1F1F7;*/
-    /*}*/
+        /*.odd {*/
+        /*background : none repeat scroll 0 0 #E1F1F7;*/
+        /*}*/
 
-    /*.even {*/
-    /*background : none repeat scroll 0 0 #F5F5F5;*/
-    /*}*/
+        /*.even {*/
+        /*background : none repeat scroll 0 0 #F5F5F5;*/
+        /*}*/
 
-    ol {
-        counter-reset : item;
-        padding       : 0;
-    }
+        ol {
+            counter-reset : item;
+            padding       : 0;
+        }
 
-    ol li {
-        display       : block;
-        margin-bottom : 15px;
-    }
+        ol li {
+            display       : block;
+            margin-bottom : 15px;
+        }
 
-    ol li:before {
-        content           : counter(item) ". ";
-        counter-increment : item;
-        font-weight       : bold;
-    }
+        ol li:before {
+            content           : counter(item) ". ";
+            counter-increment : item;
+            font-weight       : bold;
+        }
 
-    .table {
-        /*border-collapse : collapse;*/
-    }
+        .table {
+            /*border-collapse : collapse;*/
+        }
 
-    .center {
-        text-align : center;
-    }
+        .center {
+            text-align : center;
+        }
 
-    .right {
-        text-align : right;
-    }
+        .right {
+            text-align : right;
+        }
 
-    .justificacion {
-        border     : solid 1px #000000;
-        margin-top : 5px;
-        padding    : 10px;
-    }
+        .justificacion {
+            border     : solid 1px #000000;
+            margin-top : 5px;
+            padding    : 10px;
+        }
 
-    .firma {
-        margin-left : 4cm;
-        float       : left;
-    }
+        .firma {
+            margin-left : 4cm;
+            float       : left;
+        }
 
-    .negro {
-        background : #000000;
-        color      : #f5f5f5;
-    }
+        .negro {
+            background : #000000;
+            color      : #f5f5f5;
+        }
 
-    .numeracion {
-        height : 35px;
-    }
+        .numeracion {
+            height : 35px;
+        }
 
-    .fright {
-        float : right;
-    }
+        .fright {
+            float : right;
+        }
 
-    .firmas {
-        margin-top  : 2cm;
-        width      : 100%;
-        height     : 3cm;
-    }
-    .valor{
-        text-align: right;
-    }
+        .firmas {
+            margin-top : 2cm;
+            width      : 100%;
+            height     : 3cm;
+        }
 
-    td {
-        text-align: center;
-    }
-    </style>
-</head>
+        .valor {
+            text-align : right;
+        }
 
-<body>
-<rep:headerFooter title="Reporte Total Priorización"/>
+        td {
+            text-align : center;
+        }
+
+        .table {
+            border-collapse : collapse;
+        }
+
+        .table, .table td, .table th {
+            border : solid 1px #555;
+        }
+        </style>
+    </head>
+
+    <body>
+        <rep:headerFooter title="Reporte Total Priorización"/>
 
 
-%{--<table>--}%
-    <table class="table table-condensed table-bordered table-striped table-hover">
-    <thead>
-    <tr>
-        <th>Proyecto</th>
-        <th>Unidad Administrativa</th>
-        <th>Monto Planificado</th>
-        <th>Priorizado</th>
-    </tr>
-    </thead>
-    <tbody>
-    <g:set var="total" value="${0}"/>
-    <g:set var="total4" value="${0}"/>
-    <g:each in="${proyectos}" var="pro" status="i">
-        <tr>
-            <td style="text-align: left">
-                ${pro?.nombre}
-            </td>
-            <td>
-                ${pro?.unidadAdministradora}
-            </td>
-            <td style="text-align: right">
-                <g:each in="${MarcoLogico.findAllByProyectoAndTipoElemento(pro,vesta.parametros.TipoElemento.get(3))}" var="parcial">
-                    <g:set var="marcos" value="${parcial?.monto}"/>
-                    <g:set var="total2" value="${total = (marcos +total)}"/>
+        %{--<table>--}%
+        <table class="table table-condensed table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Proyecto</th>
+                    <th>Unidad Administrativa</th>
+                    <th>Monto Planificado</th>
+                    <th>Priorizado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <g:set var="total" value="${0}"/>
+                <g:set var="total2" value="${0}"/>
+                <g:each in="${proyectos}" var="pro" status="i">
+                    <tr>
+                        <td style="text-align: left">
+                            ${pro?.nombre}
+                        </td>
+                        <td>
+                            ${pro?.unidadAdministradora}
+                        </td>
+                        <td style="text-align: right">
+                            <g:set var="marcos" value="${0}"/>
+                            <g:set var="subTotal" value="${0}"/>
+                            <g:each in="${MarcoLogico.findAllByProyectoAndTipoElemento(pro, TipoElemento.get(3))}" var="parcial">
+                                <g:set var="marcos" value="${marcos + parcial?.monto}"/>
+                            </g:each>
+                            <g:set var="total" value="${total + marcos}"/>
+                            <g:formatNumber number="${marcos}" type="currency" currencySymbol=""/>
+                        </td>
+                        <td style="text-align: right">
+                            <g:each in="${MarcoLogico.findAllByProyectoAndTipoElemento(pro, TipoElemento.get(3))}" var="mlo">
+                                <g:set var="subTotal" value="${subTotal + mlo?.getTotalPriorizado()}"/>
+                            </g:each>
+                            <g:set var="total2" value="${total2 + subTotal}"/>
+                            <g:formatNumber number="${subTotal}" type="currency" currencySymbol=""/>
+                        </td>
+                    </tr>
                 </g:each>
-                <g:formatNumber number="${total2}" format="###,##0" minFractionDigits="2"
-                                maxFractionDigits="2"/>
-            </td>
-            <td>
-                <g:each in="${MarcoLogico.findAllByProyectoAndTipoElemento(pro,vesta.parametros.TipoElemento.get(3))}" var="mlo">
-                    <g:set var="subTotal" value="${mlo?.getTotalPriorizado()}"/>
-                    <g:set var="total3" value="${total4 = (subTotal +total4)}"/>
-
-                </g:each>
-                %{--${subTotal}--}%
-                <g:formatNumber number="${total4}" format="###,##0" minFractionDigits="2"
-                                maxFractionDigits="2"/>
-            </td>
-        </tr>
-    </g:each>
-    </tbody>
-
-</table>
-</body>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="2">TOTAL</th>
+                    <th style="text-align: right;">
+                        <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
+                    </th>
+                    <th style="text-align: right;">
+                        <g:formatNumber number="${total2}" type="currency" currencySymbol=""/>
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
 </html>
