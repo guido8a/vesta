@@ -143,3 +143,7 @@ body {
 .noPadding {
     padding : 0;
 }
+
+.ui-pnotify-title {
+    height : 25px !important;
+}

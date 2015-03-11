@@ -116,7 +116,7 @@
                 </g:if>
             </g:each>
             <tr class="warning">
-                <th colspan="13">TOTAL</th>
+                <th colspan="14">TOTAL</th>
                 <th class="text-right nop">
                     %{-- // --}%
                     <g:formatNumber number="${asignadoComp}" type="currency" currencySymbol=""/>
@@ -134,7 +134,7 @@
     </tbody>
     <tfoot>
         <tr class="danger">
-            <th colspan="13">TOTAL DEL PROYECTO</th>
+            <th colspan="14">TOTAL DEL PROYECTO</th>
             <th class="text-right nop">
                 %{-- /// --}%
                 <g:formatNumber number="${asignadoTotal}" type="currency" currencySymbol=""/><g:formatNumber number="${totProyAsig}" type="currency" currencySymbol=""/>

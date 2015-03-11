@@ -227,10 +227,14 @@
                                     if (parts[0] == "SUCCESS") {
                                         location.href = "${createLink(controller: 'marcoLogico', action: 'marcoLogicoProyecto', id:proyecto.id, params:reqParams)}&show=" + show;
                                     } else {
+                                        closeLoader();
                                         spinner.replaceWith($btn);
                                         return false;
                                     }
                                 }, 1000);
+                            },
+                            error   : function () {
+                                log("Ha ocurrido un error interno", "error");
                             }
                         });
                     } else {

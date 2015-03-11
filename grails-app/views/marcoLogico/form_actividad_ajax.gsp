@@ -64,7 +64,7 @@
                 </span>
             </div>
 
-            <div class="form-group keeptogether ${hasErrors(bean: marcoLogicoInstance, field: 'monto', 'error')} required">
+            <div class="form-group keeptogether ${hasErrors(bean: marcoLogicoInstance, field: 'monto', 'error')}">
                 <span class="grupo">
                     <label for="monto" class="col-md-2 control-label">
                         Monto
@@ -75,9 +75,9 @@
                     <div class="col-md-4">
                         <div class="input-group input-group-sm">
                             <g:textField name="monto" value="${fieldValue(bean: marcoLogicoInstance, field: 'monto')}"
-                                         class="number money form-control input-sm  required" required=""
+                                         class="number money form-control input-sm "
                                          tdnMax="${((finan - otros) + marcoLogicoInstance.monto)}"/>
-                                         %{--tdnMax="${(totFin - (totComp + totOtros)) + marcoLogicoInstance.monto}"/>--}%
+                            %{--tdnMax="${(totFin - (totComp + totOtros)) + marcoLogicoInstance.monto}"/>--}%
                             <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                         </div>
                     </div>

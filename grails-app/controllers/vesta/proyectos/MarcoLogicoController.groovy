@@ -356,8 +356,15 @@ class MarcoLogicoController extends Shield {
             }
             marcoLogicoInstance.numero = maxNum
         }
+        println "1: " + params
+        if (!params.monto) {
+            params.monto = 0
+        }
+        params.monto = params.monto.toString().replaceAll(",", "")
+        println "2: " + params
         marcoLogicoInstance.properties = params
         if (!marcoLogicoInstance.save(flush: true)) {
+            println "Error save actividad: " + marcoLogicoInstance.errors
             render "ERROR*Ha ocurrido un error al guardar Actividad: " + renderErrors(bean: marcoLogicoInstance)
             return
         }

@@ -13,7 +13,7 @@
 
         <style type="text/css">
         .auth {
-            width : 110px !important;
+            width : 155px !important;
         }
         </style>
 
@@ -32,7 +32,7 @@
 
             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
-                    <form class="form-inline">
+                    <g:form class="form-inline" name="frmAuth">
                         <div class="form-group">
                             <label for="authAct">Autorización actual</label>
 
@@ -46,7 +46,7 @@
                             <label for="authNueva">Nueva autorización</label>
 
                             <div class="input-group">
-                                <g:passwordField name="authNueva" class="form-control auth"/>
+                                <g:passwordField name="authNueva" class="form-control required auth"/>
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                             </div>
                         </div>
@@ -55,15 +55,23 @@
                             <label for="authConfirm">Repita autorización</label>
 
                             <div class="input-group">
-                                <g:passwordField name="authConfirm" class="form-control auth"/>
+                                <g:passwordField name="authConfirm" class="form-control required auth"/>
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-default">Send invitation</button>
-                    </form>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-save"></i> Guardar
+                        </button>
+                    </g:form>
                 </div>
             </div>
         </div>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#frmAuth")
+            });
+        </script>
 
     </body>
 </html>
