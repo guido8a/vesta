@@ -21,7 +21,7 @@
 
             <div class="col-md-4">
                 %{--<g:select name="proyecto.id" from="${proyectos}" class="form-control input-sm required" value="${proceso?.proyecto?.id}" optionKey="id" optionValue="descripcion" id="proyecto"/>--}%
-                <g:select name="proyecto.id" from="${proyectos}" class="form-control input-sm required" optionKey="id" optionValue="descripcion" id="proyecto"/>
+                <g:select name="proyecto.id" from="${proyectos}" class="form-control input-sm required" optionKey="id" optionValue="nombre" id="proyecto" style="width: 600px;"/>
             </div>
         </span>
     </div>
@@ -58,7 +58,7 @@
                 Informar cada:
             </label>
 
-            <div class="col-md-3">
+            <div class="col-md-1">
                 <g:textField class="form-control input-sm required"
                              name="informar" title="Plazo de Ejecución" value="${proceso?.informar}" id="informar"/>
             </div>
@@ -75,9 +75,9 @@
                 Nombre:
             </label>
 
-            <div class="col-md-3">
-                <g:textField class="form-control input-sm required"
-                             name="nombre" value="${proceso?.nombre}" id="nombre"/>
+            <div class="col-md-6">
+                <g:textArea class="form-control input-sm required"
+                             name="nombre" value="${proceso?.nombre}" id="nombre" style="width: 600px;"/>
             </div>
         </span>
     </div>

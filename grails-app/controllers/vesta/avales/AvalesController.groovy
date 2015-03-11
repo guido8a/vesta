@@ -50,12 +50,14 @@ class AvalesController extends vesta.seguridad.Shield {
         def band = true
         def proyectos = []
         def unidad = session.usuario.unidad
+        println "unidad" + unidad
         Asignacion.findAllByUnidad(unidad).each {
             def p = it.marcoLogico.proyecto
             if (!proyectos.contains(p)) {
                 proyectos.add(p)
             }
         }
+        println "proyectos" + proyectos
         proyectos.sort { it.nombre }
         if (params.anio)
             actual = Anio.get(params.anio)
