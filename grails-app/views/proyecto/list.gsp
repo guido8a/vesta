@@ -86,10 +86,10 @@
             <thead>
                 <tr>
                     <g:sortableColumn property="codigo" title="Código"/>
-                    <g:sortableColumn property="nombre" title="Nombre"/>
-                    <th>Unidad <br>Administradora</th>
+                    <g:sortableColumn property="nombre" title="Proyecto"/>
+                    <g:sortableColumn property="unidadAdministradora" title="Unidad Administradora"/>
                     <g:sortableColumn property="monto" title="Monto Total (USD)"/>
-                    <g:sortableColumn property="descripcion" title="Descripción"/>
+                    <th>Descripción</th>
                     <th>Programa</th>
                 </tr>
             </thead>
@@ -461,7 +461,7 @@
                                             message : msg,
                                             buttons : {
                                                 ok : {
-                                                    label     : "Aceptar",
+                                                    label     : "Salir",
                                                     className : "btn-primary",
                                                     callback  : function () {
                                                     }

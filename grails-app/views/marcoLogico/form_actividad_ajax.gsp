@@ -55,7 +55,7 @@
             <div class="form-group keeptogether ${hasErrors(bean: marcoLogicoInstance, field: 'objeto', 'error')} ">
                 <span class="grupo">
                     <label for="objeto" class="col-md-2 control-label">
-                        Objeto
+                        Actividad
                     </label>
 
                     <div class="col-md-10">

@@ -25,7 +25,7 @@
                       class="form-control input-sm" value="${Anio.findByAnio(new Date().format('yyyy')).id}"/>
         </div>
 
-        <a href="#" class="btn btn-sm btn-success" id="btnAddFin"><i class="fa fa-plus"></i></a>
+        <a href="#" class="btn btn-sm btn-success" id="btnAddFin"><i class="fa fa-plus"></i> Guardar</a>
     </form>
 </div>
 
