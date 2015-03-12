@@ -372,4 +372,54 @@ class MarcoLogicoController extends Shield {
         return
 
     }
+
+    def crearRespaldo(){
+        println "crear resp "+params
+        def proyecto = Proyecto.get(params.id)
+        def respaldo = new Respaldo()
+        respaldo.proyecto=proyecto
+        respaldo.descripcion=params.desc
+        respaldo.save(flush: true)
+        def marcos = MarcoLogico.findAllByProyecto(proyecto)
+        marcos = marcos.sort{it.tipoElemento.id}
+        marcos.each {m->
+            println "marco "+m.objeto+" "+m.tipoElemento.descripcion
+            def rpml = new MarcoLogicoRespaldo()
+            rpml.respaldo=respaldo
+            rpml.proyecto=proyecto
+            rpml.categoria=m.categoria
+            rpml.fechaInicio=m.fechaInicio
+            rpml.fechaFin=m.fechaFin
+            rpml.estado=m.estado
+            rpml.tipoElemento=m.tipoElemento
+            rpml.marcoLogicoOriginal=m
+            rpml.objeto=m.objeto
+            rpml.monto=m.monto
+            rpml.numero=m.numero
+            rpml.responsable=m.responsable
+            rpml.numeroComp=m.numeroComp
+            def padre = MarcoLogicoRespaldo.findByProyectoAndMarcoLogicoOriginal(proyecto,m.marcoLogico)
+            if(padre)
+                rpml.marcoLogico=padre
+            if(!rpml.save(flush: true)){
+                println "erroe en el save "+rpml.errors
+            }
+
+        }
+        render "ok"
+    }
+
+    def listaRespaldos(){
+        def proy = Proyecto.get(params.id)
+        def resp = Respaldo.findAllByProyecto(proy)
+        [resp:resp,proy:proy]
+    }
+    
+    def verRespaldo(){
+        def resp = Respaldo.get(params.id)
+        def comps = MarcoLogicoRespaldo.findAllByRespaldoAndTipoElemento(resp,TipoElemento.get(2))
+        [componentes:comps,resp:resp]
+        
+    }
+    
 }

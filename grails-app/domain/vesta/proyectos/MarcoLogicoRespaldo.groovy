@@ -7,6 +7,7 @@ import vesta.parametros.UnidadEjecutora
  * Clase para conectar con la tabla 'mlrs' de la base de datos
  */
 class MarcoLogicoRespaldo   {
+    Respaldo respaldo
     /**
      * Marco lógico original (del que se hizo el respaldo)
      */
@@ -22,7 +23,7 @@ class MarcoLogicoRespaldo   {
     /**
      * Marco lógico padre del marco lógico actual
      */
-    MarcoLogico marcoLogico //padre
+    MarcoLogicoRespaldo marcoLogico //padre
     /**
      * Objeto del marco lógico de respaldo
      */
@@ -64,6 +65,10 @@ class MarcoLogicoRespaldo   {
      */
     int numero = 0;
 
+    String numeroComp
+
+
+
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
@@ -94,6 +99,8 @@ class MarcoLogicoRespaldo   {
             aporte column: 'mlrsaprt'
             tieneAsignacion column: 'mlrstnas'
             numero column: 'mlrsnmro'
+            respaldo column: 'rspr__id'
+            numeroComp column: 'mlrsnmcp'
         }
     }
 
@@ -112,6 +119,8 @@ class MarcoLogicoRespaldo   {
         fechaFin(nullable: true, blank: true)
         fechaInicio(nullable: true, blank: true)
         tieneAsignacion(nullable: true, blank: true)
+        respaldo(nullable: false, blank: false)
+        numeroComp(nullable: true, blank: true,size: 1..10)
     }
 
     /**
