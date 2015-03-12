@@ -180,6 +180,26 @@ class MarcoLogico {
         }
     }
 
+    def getTotalPlanificado() {
+        def total = 0
+        if (this.tipoElemento.id == 3) {
+            Asignacion.findAllByMarcoLogico(this).each {
+                total += it.planificado
+            }
+            return total
+        } else {
+            def marcos = MarcoLogico.findAllByMarcoLogico(this)
+            if (marcos.size() > 0) {
+                Asignacion.findAllByMarcoLogicoInList(marcos).each { a ->
+                    total += a.planificado
+                }
+                return total
+            } else {
+                return 0
+            }
+        }
+    }
+
     def getAvanceFisico() {
         if (this.tipoElemento.id == 3) {
             /*actividad*/

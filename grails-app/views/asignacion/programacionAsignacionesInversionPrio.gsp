@@ -19,7 +19,7 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectov2"  params="[id:proyecto.id,anio:actual.id]">Asignaciones</g:link>
+        <g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectov2"  params="[id:proyecto.id,anio:actual.id]"><i class="fa fa-money"></i> Asignaciones</g:link>
         <div style="margin-left: 15px;display: inline-block;">
             <b style="font-size: 11px">Año:</b>
             <g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual.id}" style="font-size: 11px;width: 150px;display: inline" class="form-control"/>

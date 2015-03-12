@@ -23,11 +23,13 @@
 </g:if>
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn btn-default btn-sm" controller="asignacion" action="programacionInversion" params="[proyecto: proy.id, anio: actual.id]">Programación</g:link>
+        %{--<g:link class="btn btn-default btn-sm" controller="asignacion" action="programacionAsignacionesInversionPrio" params="[proyecto: proy.id, anio: actual.id]">Programación</g:link>--}%
+        <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" params="[id:proy.id,anio:actual.id]" ><i class="fa fa-calendar"></i> Programación</g:link>
+
     </div>
 </div>
 <div class="row">
-    <input type="hidden" id="programa" name="programa" class="cronograma" value="${proy.programaPresupuestario.id}">
+    <input type="hidden" id="programa" name="programa" class="cronograma" value="${proy?.programaPresupuestario?.id}">
     <div class="col-md-1">
         <label>
             Año
@@ -68,7 +70,8 @@
                 <g:select from="${fuentes}" id="fuente" optionKey="id" optionValue="descripcion" name="fuente" class="fuente  form-control input-sm" />
             </td>
             <td class="valor">
-                <input type="text" style="width: 100px;color:black;text-align: right;padding-right: 5px" class="valor  form-control input-sm number money"  id="valor_txt" value="0">
+                %{--<input type="text" style="width: 100px;color:black;text-align: right;padding-right: 5px" class="valor  form-control input-sm number money"  id="valor_txt" value="0">--}%
+                <g:textField name="valorName" id="valor_txt" class="form-control input-sm number money" style="width: 100px;color:black;text-align: right;padding-right: 5px"/>
             </td>
             <td style="text-align: center">
                 <a href="#" id="guardar_btn" class="btn guardar ajax btn-primary btn-sm" iden="" icono="ico_001" clase="act_" tr="" anio="${actual.id}">Guardar</a>
@@ -129,7 +132,7 @@
                     </g:if>
                     <g:else>
                         <g:formatNumber number="${asg.planificado}" type="currency" currencySymbol=""/>
-                        <g:set var="total" value="${total.toDouble().round(2) + asg.planificado}"></g:set>
+                         <g:set var="total" value="${total.toDouble().round(2) + asg.planificado}"></g:set>
                     </g:else>
 
                 </td>
@@ -165,43 +168,6 @@
 </elm:container>
 
 
-<div id="buscar">
-    <input type="hidden" id="id_txt">
-
-    <div>
-        Buscar por:
-        <select id="tipo">
-            <option value="1">Número</option>
-            <option value="2">Descripción</option>
-        </select>
-
-        <input type="text" id="par" style="width: 160px;">
-
-        <a href="#" class="btn" id="btn_buscar">Buscar</a>
-    </div>
-
-    <div id="resultado" style="width: 450px;margin-top: 10px;" class="ui-corner-all"></div>
-</div>
-
-<div id="dlg_buscar_act">
-    <input type="hidden" id="id_txt_act">
-
-    <div>
-        Buscar por:
-        <select id="tipo_act">
-            <option value="1">Número</option>
-            <option value="2">Descripción</option>
-        </select>
-
-        <input type="text" id="par_act" style="width: 160px;">
-
-        <a href="#" class="btn" id="btn_buscar_act">Buscar</a>
-    </div>
-
-    <div id="resultado_act" style="width: 450px;margin-top: 10px;" class="ui-corner-all"></div>
-</div>
-
-
 <div style="position: absolute;top:25px;right:25px;font-size: 15px;">
     <b>Total Priorizado:</b>
     <g:formatNumber number="${totalPriorizado}"
@@ -216,22 +182,6 @@
                     minFractionDigits="2" maxFractionDigits="2"/>
 </div>
 
-%{--<div style="position: absolute;top:25px;right:25px;font-size: 15px;">--}%
-%{--<b>Total Unidad:</b>--}%
-%{--<g:formatNumber number="${totalUnidad}"--}%
-%{--format="###,##0"--}%
-%{--minFractionDigits="2" maxFractionDigits="2"/>--}%
-%{--</div>--}%
-
-%{--<div style="position: absolute;top:45px;right:25px;font-size: 15px;">--}%
-%{--<b>M&aacute;ximo Inversiones:</b>--}%
-%{--<g:formatNumber number="${maxUnidad}"--}%
-%{--format="###,##0"--}%
-%{--minFractionDigits="2" maxFractionDigits="2"/>--}%
-%{--</div>--}%
-
-
-
 <script type="text/javascript">
 
     var valorEditar = 0;
@@ -245,32 +195,42 @@
         var actField = $("#actv");
         var actividad = actField.val();
         var band = true;
-
         valorTxt.removeClass("error");
         prspField.removeClass("error");
+        var reemplazado = 0
 
-        valor = str_replace(".", "", valor);
-        valor = str_replace(",", ".", valor);
+//        console.log("valor original " + valor)
+
+//        valor = str_replace(".", "", valor);
+        valor = str_replace(",", "", valor);
+
+//        console.log("despues " + valor)
 
         var max = 111111111111;
         max = (max * 1 + valorEditar * 1);
 
         var mensaje, error;
         if (isNaN(valor)) {
-            mensaje = "Error: El valor de la asignación debe ser un número";
+//            mensaje = "Error: El valor de la asignación debe ser un número";
+            bootbox.alert("Error: El valor de la asignación debe ser un número")
             band = false;
             error = valorTxt;
         } else {
+
             valor = parseFloat(valor);
-            valorTxt.val(number_format(valor, 2, ",", "."));
+            valorTxt.val(valor)
+//            valorTxt.val(number_format(valor, 2, ",", ""));
+//            console.log(valorTxt)
+//            console.log(valor)
             if (valor > max) {
-                mensaje = "Error: El valor de la asignación debe ser un número menor a " + number_format(max, 2, ",", ".");
+//                mensaje = "Error: El valor de la asignación debe ser un número menor a " + number_format(max, 2, ",", ".");
+                bootbox.alert("Error: El valor de la asignación debe ser un número menor a " + number_format(max, 2, ",", ""))
                 band = false;
                 error = valorTxt;
             }
             if (tipo == 0) {
                 if (valor <= 0) {
-                    mensaje = "Error: El valor de la asignación debe ser un número mayor a cero";
+                    bootbox.alert("Error: El valor de la asignación debe ser un número mayor a cero")
                     band = false;
                     error = valorTxt;
                 }
@@ -278,7 +238,8 @@
                     prsp = 0
                 }
                 if (prsp * 1 == 0) {
-                    mensaje = "Error: Seleccione una partida presupuestaria";
+//                    mensaje = "Error: Seleccione una partida presupuestaria";
+                    bootbox.alert("Error: Seleccione una partida presupuestaria")
                     band = false;
                     error = prspField;
                 }
@@ -286,33 +247,18 @@
             }
         }
 
-        if (!band) {
-            alert(mensaje);
-            error.addClass("error").show("pulsate");
-        }
+//        if (!band) {
+//            alert(mensaje);
+//            error.addClass("error").show("pulsate");
+//        }
         return band;
     }
 
     $(function () {
 
-        $("#valor_txt").blur(function () {
-            validar(1);
-        });
-
-//
-//        $(".btn_editar").button({
-//            icons:{
-//                primary:"ui-icon-pencil"
-//            },
-//            text:false
-//        }).click(function () {
-//                    $("#hid_desc").val($(this).attr("desc"))
-//                    $("#hid_obs").val($(this).attr("obs"))
-//                    $("#dlg_desc").val($("#" + $(this).attr("desc")).val())
-//                    $("#dlg_obs").val($("#" + $(this).attr("obs")).val())
-//                    $("#dlg_error").hide().html("")
-//                    $("#dlg_desc_obs").dialog("open")
-//                });
+//        $("#valor_txt").blur(function () {
+//            validar(1);
+//        });
 
         $("#btnReporte").click(function () {
             var url = "${createLink(controller: 'reportes', action: 'poaReporteWeb', id: unidad.id)}?anio=" + $("#anio_asg").val();
@@ -349,36 +295,7 @@
             }
         });
 
-        %{--$("#componente").selectmenu({width : 600, height : 50}).change(function () {--}%
-        %{--location.href = "${g.createLink(action: 'agregarAsignacionInv')}?id=${proy.id}&anio=" + $("#anio_asg").val() + "&comp=" + $("#componente").val();--}%
-        %{--});--}%
-        %{--$("#actv").selectmenu({width : 315, height : 50});--}%
         $("#programa-button").css("height", "40px");
-
-//        $(".editar").button({
-//            icons:{
-//                primary:"ui-icon-pencil"
-//            },
-//            text:false
-//        }).click(function () {
-//
-//                    valorEditar = $(this).attr("valor");
-//                    if ($(this).attr("comp") * 1 > 0) {
-//                        $("#componente").selectmenu("value", $(this).attr("comp"));
-//                    } else {
-//                        $("#componente").selectmenu("value", "-1");
-//                    }
-//                    $("#programa").selectmenu("value", $(this).attr("prog"));
-//                    $("#fuente").val($(this).attr("fuente"));
-//                    $("#valor_txt").val(number_format($(this).attr("valor"), 2, ",", "."));
-//                    $("#prsp_id").val($(this).attr("prsp_id"));
-//                    $("#prsp_num").val($(this).attr("prsp_num"));
-//                    $("#desc").html($(this).attr("desc"));
-//                    $("#guardar_btn").attr("iden", $(this).attr("iden"));
-//                    $("#actv").val($(this).attr("actv"));
-//                    $("#meta").val($(this).attr("meta"));
-//                    $("#indi").val($(this).attr("indi"));
-//                });
 
         $(".eliminar").button({
             icons : {
@@ -410,7 +327,7 @@
             location.href = "${createLink(controller:'asignacion',action:'agregarAsignacionInv')}?id=${proy.id}&anio=" + $("#anio_asg").val() + "&programa=" + $("#programa").val();
         });
 
-        $(".guardar").click(function () {
+        $("#guardar_btn").click(function () {
             var prsp = $("#prsp_id").val();
             var valorTxt = $("#valor_txt");
             var prspField = $("#prsp_num");
@@ -418,18 +335,21 @@
             var actField = $("#actv");
             var actividad = actField.val();
             var band = true;
+            var proyec = ${proy?.id};
             var comp = $("#componente").val();
             var boton = $(this);
+            console.log("--->" + valor)
             if (validar(0)) {
                 var anio = boton.attr("anio");
-
+                console.log(validar(0))
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(controller:'asignacion', action:'validarCronograma_ajax')}",
                     data    : {
                         anio        : anio,
                         planificado : valor,
-                        marco       : actividad
+                        marco       : actividad,
+                        proyecto    : proyec
                     },
                     success : function (msg) {
                         if (msg == "true") {
@@ -445,11 +365,10 @@
                                     } else {
                                         alert("Error al guardar los datos")
                                     }
-
                                 }
                             });
                         } else {
-                            alert(msg);
+                            bootbox.alert(msg)
                         }
                     }
                 });
