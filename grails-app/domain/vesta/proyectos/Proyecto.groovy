@@ -380,15 +380,29 @@ class Proyecto {
         def total = 0
         def marcos = MarcoLogico.findAllByProyectoAndTipoElemento(this, TipoElemento.get(3))
         if (marcos.size() > 0) {
-            Asignacion.findAllByMarcoLogicoInList(marcos).each { a ->
-                total += a.priorizado
+            marcos.each { m ->
+                total += m.getTotalPriorizado()
+            }
+//            Asignacion.findAllByMarcoLogicoInList(marcos).each { a ->
+//                total += a.priorizado
+//            }
+            return total
+        } else {
+            return 0
+        }
+    }
+
+    def getValorPlanificado() {
+        def total = 0
+        def marcos = MarcoLogico.findAllByProyectoAndTipoElemento(this, TipoElemento.get(3))
+        if (marcos.size() > 0) {
+            marcos.each { m ->
+                total += m.getTotalPlanificado()
             }
             return total
         } else {
             return 0
         }
-
-
     }
 
 }

@@ -91,6 +91,8 @@
                     <g:sortableColumn property="monto" title="Monto Total (USD)"/>
                     <th>Descripción</th>
                     <th>Programa</th>
+                    <th>Total Planificado</th>
+                    <th>Total Priorizado</th>
                 </tr>
             </thead>
             <tbody>
@@ -126,6 +128,13 @@
                                 </elm:textoBusqueda>
                             </td>
 
+                            <td class="text-right">
+                                <g:formatNumber number="${proyectoInstance.valorPlanificado}" type="currency" currencySymbol=""/>
+                            </td>
+
+                            <td class="text-right">
+                                <g:formatNumber number="${proyectoInstance.valorPriorizado}" type="currency" currencySymbol=""/>
+                            </td>
                         </tr>
                     </g:each>
                 </g:if>
