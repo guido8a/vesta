@@ -9,6 +9,7 @@ import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Mes
 import vesta.parametros.poaPac.Presupuesto
+import vesta.proyectos.Cronograma
 import vesta.proyectos.Financiamiento
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.Proyecto
@@ -756,6 +757,77 @@ class AsignacionController extends Shield {
 
         [proy       : proy, comp: comp, fuentes: fuentes, unidad: unidad, actual: actual, cmp: cmp, acts: acts, asgn: asgn,
          totalUnidad: totalUnidad, maxUnidad: maxUnidad, totalPriorizado: totalPriorizado, totalAnio: totalAnio,campos:campos]
+
+    }
+
+    /**
+     * Acción
+     */
+    def programacionInversion = {
+        def actual
+        def proyecto = Proyecto.get(params.proyecto)
+        if (params.anio)
+            actual = Anio.get(params.anio)
+        else
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        if (!actual)
+            actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+        //def unidad =UnidadEjecutora.get(params.id)
+//        def unidad = UnidadEjecutora.get(params.id)
+        //def dist = DistribucionAsignacion.findAllByUnidadEjecutora(unidad)
+//        def asg = []
+//        dist.each {
+//            if(it.asignacion.anio==actual){
+//                asg.add(it.asignacion)
+//            }
+//        }
+        def asgInv = []
+        def acts = MarcoLogico.findAll("from MarcoLogico where proyecto=${proyecto.id} and tipoElemento = 3")
+        acts.each { act ->
+            def asg = Asignacion.findAllByMarcoLogico(act)
+            if (asg.size() > 0)
+                asgInv += asg
+        }
+//        def asgInv = Asignacion.findAll("from Asignacion  where marcoLogico is not null and unidad=${unidad.id} " )
+        asgInv.sort { it.unidad }
+        def meses = []
+        12.times { meses.add(it + 1) }
+        [inversiones: asgInv, actual: actual, meses: meses, proyecto: proyecto]
+    }
+
+    def validarCronograma_ajax = {
+//        println "validar crono " + params
+        def proyecto = Proyecto.get(params.proyecto)
+        def plani = params.planificado
+
+
+        if(plani){
+
+            def planificado = params.planificado
+            planificado = planificado.replaceAll(",", "")
+            planificado = planificado.toDouble()
+
+            def marco = MarcoLogico.get(params.marco)
+            def anio = Anio.get(params.anio)
+
+            def cronos = Cronograma.findAllByMarcoLogicoAndAnio(marco, anio)
+            def total = cronos.sum { it.valor }
+
+            if (cronos.size() == 0) {
+                render "La actividad no tiene valores programados para este año."
+            } else {
+                if (planificado > total) {
+                    render "No puede asignar un valor superior a " + g.formatNumber(number: total, format: "###,##0", maxFractionDigits: 2, minFractionDigits: 2)
+                } else {
+                    render "true"
+                }
+            }
+        }else{
+          render "Debe ingresar un valor en presupuesto!"
+        }
+
+
+
 
     }
 
