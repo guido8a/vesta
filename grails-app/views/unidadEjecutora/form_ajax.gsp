@@ -96,7 +96,7 @@
                         </label>
 
                         <div class="col-md-8">
-                            <g:textField name="codigo" maxlength="5" class="form-control input-sm unique noEspacios allCaps"  value="${unidadEjecutoraInstance?.codigo}"/>
+                            <g:textField name="codigo" maxlength="6" class="form-control input-sm unique noEspacios allCaps"  value="${unidadEjecutoraInstance?.codigo}"/>
                         </div>
                     </span>
                 </div>
