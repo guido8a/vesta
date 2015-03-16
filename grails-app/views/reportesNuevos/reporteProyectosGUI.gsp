@@ -11,7 +11,6 @@
         <meta name="layout" content="main">
         <title>Reporte de proyectos</title>
 
-
         <style type="text/css">
         .anio, .fuente {
             border  : solid 1px #555;
@@ -34,9 +33,9 @@
 
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group" role="group">
-                <a href="#" class="btn btn-default" id="btnVer">
-                    <i class="fa fa-search"></i> Ver reporte
-                </a>
+                %{--<a href="#" class="btn btn-default" id="btnVer">--}%
+                %{--<i class="fa fa-search"></i> Ver reporte--}%
+                %{--</a>--}%
                 <a href="#" class="btn btn-default" id="btnPrint">
                     <i class="fa fa-print"></i> Imprimir reporte
                 </a>
@@ -51,31 +50,31 @@
 
         <elm:container tipo="horizontal" titulo="Configurar reporte">
             <div class="alert alert-info">
-                Seleccione el año y al menos una fuente (haciendo clic sobre su nombre) para generar el reporte
+                Seleccione %{--el año y --}%al menos una fuente (haciendo clic sobre su nombre) para generar el reporte
                 <div>
                     Mostrar reporte de
-                    <span id="spAnios" class="text-success">0 años</span>,
-                de <span id="spFuentes" class="text-warning">0 fuentes</span>
+                    %{--<span id="spAnios" class="text-success">0 años</span>,--}%
+                    %{--de--}% <span id="spFuentes" class="text-warning">0 fuentes</span>
                 </div>
             </div>
 
-            <div class="alert alert-primary">
-            <h4>Año <a href="#" id="btnAllAnio" class="btn btn-default" data-status="off">Seleccionar todos los años</a></h4>
-            <g:each in="${Anio.list([sort: 'anio'])}" var="an" status="i">
-                <g:if test="${i % 12 == 0}">
-                    <g:if test="${i > 0}">
-                        </div>
-                    </g:if>
-                    <div class="row">
-                </g:if>
-                <div class="col-md-1">
-                    <div class="anio corner-all" id="${an.id}">
-                        ${an.anio}
-                    </div>
-                </div>
-            </g:each>
-            </div>
-            </div>
+        %{--<div class="alert alert-primary">--}%
+        %{--<h4>Año <a href="#" id="btnAllAnio" class="btn btn-default" data-status="off">Seleccionar todos los años</a></h4>--}%
+        %{--<g:each in="${Anio.list([sort: 'anio'])}" var="an" status="i">--}%
+        %{--<g:if test="${i % 12 == 0}">--}%
+        %{--<g:if test="${i > 0}">--}%
+        %{--</div>--}%
+        %{--</g:if>--}%
+        %{--<div class="row">--}%
+        %{--</g:if>--}%
+        %{--<div class="col-md-1">--}%
+        %{--<div class="anio corner-all" id="${an.id}">--}%
+        %{--${an.anio}--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--</g:each>--}%
+        %{--</div>--}%
+        %{--</div>--}%
 
             <div class="alert alert-primary">
                 <h4>Fuente <a href="#" id="btnAllFuente" class="btn btn-default" data-status="off">Seleccionar todas las fuentes</a></h4>
@@ -115,8 +114,8 @@
                     fuentes += $(this).attr("id") + ",";
                 });
 
-                if (anios == "" && fuentes == "") {
-                    bootbox.alert("Escoja al menos un año y una fuente para generar el reporte.");
+                if (/*anios == "" || */fuentes == "") {
+                    bootbox.alert("Escoja al menos una fuente para generar el reporte.");
                     return false;
                 } else {
                     if (!print) {
@@ -125,7 +124,7 @@
                         window.open(url, "_blank");
                     } else {
                         url = "${createLink(action: 'reporteProyectosPdf')}";
-                        url += "?anios=" + anios + "&fuentes=" + fuentes;
+                        url += "?anios=" + anios + "Wfuentes=" + fuentes;
                         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;
                     }
                 }

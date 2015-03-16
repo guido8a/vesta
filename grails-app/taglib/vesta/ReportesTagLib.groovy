@@ -121,6 +121,10 @@ class ReportesTagLib {
         css += ".numeracion table td {\n" +
                 "    padding : 5px;\n" +
                 "}"
+        css += ".fechaReporte{\n" +
+                "    color          : #000;\n" +
+                "    margin-bottom  : 5px;\n" +
+                "}"
         css += "</style>"
 
         out << raw(css)
@@ -174,6 +178,7 @@ class ReportesTagLib {
         def logoPath = resource(dir: 'images', file: 'logo-pdf-footer.png')
 
         html += '<div id="footer">'
+        html += "<div class='fechaReporte' style='font-size: 8.5pt; margin-bottom: 15px;'>Impreso el ${new Date().format('dd-MM-yyyy HH:mm')}</div>"
         html += "<img src='${logoPath}' style='height:${h}px; float:right; margin-left: 1cm; margin-bottom: 1cm;'/>"
         html += "<div style='float:right; font-size:8pt;'>"
         html += "Amazonas N26-146 y La Niña<br/>"

@@ -14,42 +14,26 @@
 
     <body>
 
-        <table class="table table-bordered table-condensed">
-            <thead>
-                <tr>
-                    <th>Proyecto</th>
-                    <th>Componente</th>
-                    <th>#</th>
-                    <th>Actividad</th>
-                    <th>Responsable</th>
-                    <g:each in="${anios}" var="anio">
-                        <th>${anio.anio}</th>
-                    </g:each>
-                </tr>
-            </thead>
-            <tbody>
-                <g:each in="${Proyecto.list([sort: 'nombre'])}" var="proyecto">
+        <g:each in="${fuentes}" var="fuente">
+            <h2>${fuente}</h2>
+
+            <table class="table table-bordered table-condensed">
+                <thead>
                     <tr>
-                        <td>${proyecto.nombre}</td>
-                        <td>${asg.marcoLogico.marcoLogico.objeto}</td>
-                        <td>${asg.marcoLogico.numero}</td>
-                        <td>${asg.marcoLogico.objeto}</td>
-                        <td>${asg.unidad.nombre}</td>
-                        <g:each in="${anios}" var="anio">
-                            <g:set var="asignaciones" value="${Asignacion.withCriteria {
-                                inList("marcoLogico", MarcoLogico.findAllByProyecto(proyecto))
-                                eq("anio", anio)
-                                inList("fuente", fuentes)
-                            }}"/>
-                            <td>
-                                <g:formatNumber number="${asignaciones.size() > 0 ? asignaciones.sum {
-                                    it.planificado
-                                } : 0}" type="currency" currencySymbol=""/>
-                            </td>
-                        </g:each>
+                        <th>Proyecto</th>
+                        <th>Unidad Administrativa</th>
+                        <th>Monto Planificado</th>
                     </tr>
-                </g:each>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <g:each in="${Proyecto.list([sort: 'nombre'])}" var="proyecto">
+                        <tr>
+
+                        </tr>
+                    </g:each>
+                </tbody>
+            </table>
+        </g:each>
+
     </body>
 </html>
