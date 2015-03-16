@@ -383,31 +383,31 @@
                     errorClass     : "help-block",
                     rules          : {
                         presupuesto1 : {
-                            tdnMax     : function () {
-                                var $fuente = $("#fuente1");
-                                var id = $fuente.val();
-                                var valor = parseFloat($fuente.find("option:selected").attr("class"));
-                                var usado = 0;
-                                $(".fnte_" + id).each(function () {
-                                    usado += parseFloat($(this).data("val"));
-                                });
-                                return valor - usado;
-                            },
+//                            tdnMax     : function () {
+//                                var $fuente = $("#fuente1");
+//                                var id = $fuente.val();
+//                                var valor = parseFloat($fuente.find("option:selected").attr("class"));
+//                                var usado = 0;
+//                                $(".fnte_" + id).each(function () {
+//                                    usado += parseFloat($(this).data("val"));
+//                                });
+//                                return valor - usado;
+//                            },
                             tdnMaxSuma : {
-                                params : ["#presupuesto2", "#divInfo", "sinAsignar"]
+                                params : ["#presupuesto2", "#divInfo", "sinAsignar", "asignado"]
                             }
                         },
                         presupuesto2 : {
-                            tdnMax     : function () {
-                                var $fuente = $("#fuente2");
-                                var id = $fuente.val();
-                                var valor = parseFloat($fuente.find("option:selected").attr("class"));
-                                var usado = 0;
-                                $(".fnte_" + id).each(function () {
-                                    usado += parseFloat($(this).data("val"));
-                                });
-                                return valor - usado;
-                            },
+//                            tdnMax     : function () {
+//                                var $fuente = $("#fuente2");
+//                                var id = $fuente.val();
+//                                var valor = parseFloat($fuente.find("option:selected").attr("class"));
+//                                var usado = 0;
+//                                $(".fnte_" + id).each(function () {
+//                                    usado += parseFloat($(this).data("val"));
+//                                });
+//                                return valor - usado;
+//                            },
                             required   : {
                                 depends : function (element) {
                                     var v1 = $.trim($("#bsc-desc-2").val());
@@ -415,10 +415,10 @@
                                 }
                             },
                             tdnMaxSuma : {
-                                params : ["#presupuesto1", "#divInfo", "sinAsignar"]
+                                params : ["#presupuesto1", "#divInfo", "sinAsignar", "asignado"]
                             }
                         },
-                        "bsc-desc-2" : {
+                        "bsc-desc-partida2" : {
                             required : {
                                 depends : function (element) {
                                     var v1 = $.trim($("#presupuesto2").val());

@@ -52,7 +52,7 @@ class ProyectoController extends Shield {
         }
         def list
 //        println "PARAMS: " + params
-        if (!params.sort) params.sort = 'nombre'
+        if (!params.sort) params.sort = 'codigo'
         if (!params.order) params.order = 'asc'
 
         if (params.search_programa || params.search_nombre || params.search_desde || params.search_hasta) {
@@ -88,6 +88,7 @@ class ProyectoController extends Shield {
      * @return proyectoInstanceList: la lista de elementos filtrados, proyectoInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
+
         def proyectoInstanceList = getList(params, false)
         def proyectoInstanceCount = getList(params, true).size()
         return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount]

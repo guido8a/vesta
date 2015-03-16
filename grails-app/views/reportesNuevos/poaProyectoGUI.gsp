@@ -71,6 +71,11 @@
                     <g:textField name="buscar" class="form-control input-sm"/>
                     <span id="found"></span>
                 </div>
+
+                <a href="#" class="btn btn-default pull-right" id="btnAll" data-status="off">
+                    Seleccionar todos
+                </a>
+
             </form>
 
             <g:each in="${Proyecto.list([sort: 'nombre'])}" var="proy" status="i">
@@ -128,6 +133,23 @@
             }
 
             $(function () {
+
+                $("#btnAll").click(function () {
+                    var $this = $(this);
+                    if ($this.data("status") == "on") {
+                        $(".proyecto").removeClass(selectedClass);
+                        $this.text("Seleccionar todos");
+                        $this.data("status", "off");
+                    } else {
+                        $(".proyecto").addClass(selectedClass);
+                        $this.text("Quitar selección");
+                        $this.data("status", "on");
+                    }
+                    var c = $("." + selectedClass).length;
+                    $("#spProyectos").text(c + " proyecto" + (c == 1 ? '' : 's'));
+                    return false;
+                });
+
                 $(".proyecto").click(function () {
                     $(this).toggleClass(selectedClass);
                     var c = $("." + selectedClass).length;

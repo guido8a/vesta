@@ -206,7 +206,6 @@
             var $container = $(".divTabla");
             $container.scrollTop(0 - $container.offset().top + $container.scrollTop());
             $(function () {
-
                 $(".comp").each(function () {
                     var id = $(this).attr("id");
                     var actividades = $(".act." + id);

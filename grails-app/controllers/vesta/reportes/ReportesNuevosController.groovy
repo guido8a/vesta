@@ -1,6 +1,7 @@
 package vesta.reportes
 
 import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Mes
 import vesta.proyectos.Proyecto
 
@@ -33,6 +34,19 @@ class ReportesNuevosController {
         def proys = Proyecto.findAllByIdInList(params.id.split(",")*.toLong())
         def meses = Mes.list([sort: 'numero'])
         return [proys: proys, meses: meses, anio: anio, params: params]
+    }
+
+    def reporteProyectosGUI() {
+    }
+
+    def reporteProyectosWeb() {
+        def fuentes = Fuente.findAllByIdInList(params.fuentes.split(",")*.toLong())
+        def anios = Anio.findAllByIdInList(params.anios.split(",")*.toLong(), [sort: "anio"])
+        return [fuentes: fuentes, anios: anios]
+    }
+
+    def reporteProyectosPdf() {
+
     }
 
 }

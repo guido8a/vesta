@@ -38,7 +38,7 @@
             <g:set var="asignadoComp" value="${0}"/> %{-- // --}%
             <g:set var="sinAsignarComp" value="${0}"/> %{-- ** --}%
             <g:set var="totalComp" value="${0}"/> %{-- -- --}%
-            <tr id="comp${comp.id}">
+            <tr id="comp${comp.id}" class="comp">
                 <th colspan="17" class="success">
                     <strong>Componente ${comp.numeroComp}</strong>:
                 ${(comp.objeto.length() > 80) ? comp.objeto.substring(0, 80) + "..." : comp.objeto}
@@ -57,7 +57,7 @@
                     <g:set var="asignadoTotal" value="${asignadoTotal + asignadoAct}"/> %{-- /// --}%
                     <g:set var="totalTotal" value="${totalTotal + totalAct}"/> %{-- --- --}%
                     <g:set var="sinAsignarTotal" value="${sinAsignarTotal + sinAsignarAct}"/> %{-- *** --}%
-                    <tr data-id="${act.id}" class="comp${comp.id}">
+                    <tr data-id="${act.id}" class="act comp${comp.id}">
                         <th class="success">
                             ${act.numero}
                         </th>
@@ -115,7 +115,7 @@
                     </tr>
                 </g:if>
             </g:each>
-            <tr class="warning">
+            <tr class="warning total comp${comp.id}">
                 <th colspan="14">TOTAL</th>
                 <th class="text-right nop">
                     %{-- // --}%

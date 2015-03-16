@@ -14,9 +14,9 @@ import vesta.seguridad.Persona
 
 class Reportes2Controller {
 
-    def format(val,tipo) {
-        if(tipo=="")
-            tipo="text"
+    def format(val, tipo) {
+        if (tipo == "")
+            tipo = "text"
         def ret
         if (tipo == "text") {
             ret = val ? val.toString().replaceAll("\\n", "") : ""
@@ -29,7 +29,7 @@ class Reportes2Controller {
     /**
      * Acción
      */
-    def index = { }
+    def index = {}
 
     /**
      * Acción
@@ -37,7 +37,6 @@ class Reportes2Controller {
     def usuariosGUI = {
 
     }
-
 
     /**
      * Acción
@@ -54,35 +53,34 @@ class Reportes2Controller {
 
         def unidades = UnidadEjecutora.list([sort: 'nombre'])
 //        def unidades = UnidadEjecutora.findAllById(103)
-        def mapa=[:]
-        unidades.each {unj->
+        def mapa = [:]
+        unidades.each { unj ->
 
-            def totC=0
-            def totI=0
-            Asignacion.findAllByUnidadAndAnio(unj,actual).each{asg->
+            def totC = 0
+            def totI = 0
+            Asignacion.findAllByUnidadAndAnio(unj, actual).each { asg ->
 
-                if (asg.marcoLogico){
-                    if (asg.planificado>0)
-                        totI+=asg.getValorReal()
+                if (asg.marcoLogico) {
+                    if (asg.planificado > 0)
+                        totI += asg.getValorReal()
 //                    else
-                        //println "asg 0 "+asg.id+"  valor real "+asg.getValorReal()+" plan "+asg.planificado+" reu "+asg.reubicada
+                    //println "asg 0 "+asg.id+"  valor real "+asg.getValorReal()+" plan "+asg.planificado+" reu "+asg.reubicada
 
-                }else{
-                    totC+=asg.planificado
+                } else {
+                    totC += asg.planificado
                 }
 
             }
 
             //println "put "+totI+"  "+totC
-            mapa.put(unj.nombre,[unj.codigo,totI,totC])
+            mapa.put(unj.nombre, [unj.codigo, totI, totC])
 
         }
 
-        [actual:actual,mapa:mapa]
+        [actual: actual, mapa: mapa]
 
 
     }
-
 
     /**
      * Acción
@@ -342,8 +340,22 @@ class Reportes2Controller {
                 def totalR = 0
                 def totalUnidadR = 0
                 def maxInvR = 0
-                MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0 and responsable=${unidadE.id}").each {
-                    def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}  order by id")
+
+                MarcoLogico.withCriteria {
+                    eq("proyecto", proyecto)
+                    eq("tipoElemento", TipoElemento.get(3))
+                    eq("estado", 0)
+                    eq("responsable", unidadE)
+                    marcoLogico {
+                        order("numeroComp", "asc")
+                    }
+                    order("numero", "asc")
+                }.each { ml ->
+                    def asig = Asignacion.withCriteria {
+                        eq("marcoLogico", ml)
+                        eq("anio", actual)
+                        order("id", "asc")
+                    }
                     if (asig) {
                         asignaciones += asig
                         asig.each { asg ->
@@ -352,6 +364,15 @@ class Reportes2Controller {
                     }
                 }
 
+//                MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0 and responsable=${unidadE.id}").each {
+//                    def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}  order by id")
+//                    if (asig) {
+//                        asignaciones += asig
+//                        asig.each { asg ->
+//                            totalR = totalR + asg.getValorReal()
+//                        }
+//                    }
+//                }
 
                 asignaciones.sort { it.unidad.nombre }
                 def unidad = UnidadEjecutora.findByPadreIsNull()
@@ -359,7 +380,7 @@ class Reportes2Controller {
                 if (!maxInvR)
                     maxInvR = 0
 
-                [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: totalR, totalUnidad: totalUnidadR, maxInv: maxInvR]
+                return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: totalR, totalUnidad: totalUnidadR, maxInv: maxInvR]
 
             } else {
                 compon = MarcoLogico.findByObjeto(params.comp)
@@ -442,17 +463,16 @@ class Reportes2Controller {
         def priorizados = []
 
         proyectos.each {
-           marcos = MarcoLogico.findAllByProyectoAndTipoElemento(it,elemento)
+            marcos = MarcoLogico.findAllByProyectoAndTipoElemento(it, elemento)
 //            marcos.each {m->
 //                montos += m.monto
 //                priorizados += m.getTotalPriorizado()
 //            }
         }
 
-
 //        println("-->" + marcos)
 
-       return [marcos: marcos, proyectos: proyectos]
+        return [marcos: marcos, proyectos: proyectos]
 
 
     }
