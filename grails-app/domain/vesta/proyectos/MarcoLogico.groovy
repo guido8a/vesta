@@ -2,6 +2,7 @@ package vesta.proyectos
 
 import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
+import vesta.parametros.poaPac.Anio
 import vesta.poa.Asignacion
 
 /*Marco lógico con cada uno de sus componentes */
@@ -191,6 +192,26 @@ class MarcoLogico {
             def marcos = MarcoLogico.findAllByMarcoLogico(this)
             if (marcos.size() > 0) {
                 Asignacion.findAllByMarcoLogicoInList(marcos).each { a ->
+                    total += a.planificado
+                }
+                return total
+            } else {
+                return 0
+            }
+        }
+    }
+
+    def getTotalPlanificadoAnio(Anio anio) {
+        def total = 0
+        if (this.tipoElemento.id == 3) {
+            Asignacion.findAllByMarcoLogicoAndAnio(this, anio).each {
+                total += it.planificado
+            }
+            return total
+        } else {
+            def marcos = MarcoLogico.findAllByMarcoLogico(this)
+            if (marcos.size() > 0) {
+                Asignacion.findAllByMarcoLogicoInListAndAnio(marcos, anio).each { a ->
                     total += a.planificado
                 }
                 return total

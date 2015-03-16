@@ -1,6 +1,7 @@
 package vesta.proyectos
 
 import vesta.parametros.*
+import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.ProgramaPresupuestario
 import vesta.parametros.proyectos.ObjetivoGobiernoResultado
 import vesta.parametros.proyectos.Programa
@@ -398,6 +399,19 @@ class Proyecto {
         if (marcos.size() > 0) {
             marcos.each { m ->
                 total += m.getTotalPlanificado()
+            }
+            return total
+        } else {
+            return 0
+        }
+    }
+
+    def getValorPlanificadoAnio(Anio anio) {
+        def total = 0
+        def marcos = MarcoLogico.findAllByProyectoAndTipoElemento(this, TipoElemento.get(3))
+        if (marcos.size() > 0) {
+            marcos.each { m ->
+                total += m.getTotalPlanificadoAnio(anio)
             }
             return total
         } else {

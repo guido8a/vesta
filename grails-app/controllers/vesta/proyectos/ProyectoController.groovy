@@ -88,10 +88,16 @@ class ProyectoController extends Shield {
      * @return proyectoInstanceList: la lista de elementos filtrados, proyectoInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
-
         def proyectoInstanceList = getList(params, false)
         def proyectoInstanceCount = getList(params, true).size()
-        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount]
+
+        def anios = Asignacion.withCriteria {
+            projections {
+                distinct "anio"
+            }
+        }
+
+        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount, anios: anios]
     }
 
     /**
@@ -323,7 +329,7 @@ class ProyectoController extends Shield {
         def path = servletContext.getRealPath("/") + "excel/"
         new File(path).mkdirs()
         def ext
-        try{
+        try {
             def f = request.getFile('file')
             WorkbookSettings ws = new WorkbookSettings();
             ws.setEncoding("ISO-8859-1");
@@ -378,9 +384,9 @@ class ProyectoController extends Shield {
                 def unidad = UnidadEjecutora.findByNombre("YACHAY EP")
                 def proyectos = []
                 def componentes = []
-                def acts =[]
+                def acts = []
 //                println "unidad "+unidad//
-                println "locale "+RCU.getLocale(request)
+                println "locale " + RCU.getLocale(request)
                 // println("path " + pathFile )
 
                 if (ext == 'xls') {
@@ -395,24 +401,24 @@ class ProyectoController extends Shield {
                         //   println "rows "+sheet.getRows()
                         // println "columns "+sheet.getColumns()
                         def posiciones = [:]
-                        posiciones["codigoProyecto"]=0
-                        posiciones["nombreProyecto"]=1
-                        posiciones["nombreComponente"]=2
-                        posiciones["codigoEsigef"]=4
-                        posiciones["numeroComponente"]=5
-                        posiciones["partida"]=6
-                        posiciones["numeroActividad"]=7
-                        posiciones["nombreActividad"]=8
-                        posiciones["responsable"]=9
-                        posiciones["inicio"]=10
-                        posiciones["fin"]=11
-                        posiciones["stotal"]=12
-                        posiciones["total"]=15
+                        posiciones["codigoProyecto"] = 0
+                        posiciones["nombreProyecto"] = 1
+                        posiciones["nombreComponente"] = 2
+                        posiciones["codigoEsigef"] = 4
+                        posiciones["numeroComponente"] = 5
+                        posiciones["partida"] = 6
+                        posiciones["numeroActividad"] = 7
+                        posiciones["nombreActividad"] = 8
+                        posiciones["responsable"] = 9
+                        posiciones["inicio"] = 10
+                        posiciones["fin"] = 11
+                        posiciones["stotal"] = 12
+                        posiciones["total"] = 15
                         for (int r = 2; r < sheet.rows; r++) {
                             DateCell dCell = null;
                             DateCell dCellF = null;
                             println "row for ${r}------------------------------------------------------------------------------------------- " + sheet.getRow(r)[posiciones["codigoProyecto"]].contents
-                            if (sheet.getRow(r)[posiciones["codigoProyecto"]].contents && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != "" && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != " " ) {
+                            if (sheet.getRow(r)[posiciones["codigoProyecto"]].contents && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != "" && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != " ") {
                                 def total = sheet.getRow(r)[posiciones["total"]].contents
                                 if (total && total != "" && total != "-") {
                                     total = total.replaceAll(",", "")
@@ -427,9 +433,9 @@ class ProyectoController extends Shield {
                                     }
 
                                 }
-                                println "total " + total+" ---  "+sheet.getRow(r)[posiciones["total"]].contents+" --  "+sheet.getRow(r)[posiciones["stotal"]].contents
+                                println "total " + total + " ---  " + sheet.getRow(r)[posiciones["total"]].contents + " --  " + sheet.getRow(r)[posiciones["stotal"]].contents
                                 def proyecto = Proyecto.findByCodigoEsigef(sheet.getRow(r)[posiciones["codigoEsigef"]].contents)
-                               // println "proyecto " + proyecto + "   " + sheet.getRow(r)[posiciones["codigoEsigef"]].contents
+                                // println "proyecto " + proyecto + "   " + sheet.getRow(r)[posiciones["codigoEsigef"]].contents
                                 if (!proyecto) {
                                     proyecto = new Proyecto()
                                     proyecto.nombre = sheet.getRow(r)[posiciones["nombreProyecto"]].contents
@@ -545,13 +551,12 @@ class ProyectoController extends Shield {
                                 if (!acts.contains(actividad.id))
                                     acts.add(actividad.id)
 
-                               // println "-->monto fin!!!!!!! para ${proyecto.id} " + proyecto.monto
+                                // println "-->monto fin!!!!!!! para ${proyecto.id} " + proyecto.monto
                             }
                         }
 
 //                    f.transferTo(new File(pathFile))
 //                    println("Guardado!!")
-
 
 
                         flash.message = 'Archivo cargado existosamente.'
@@ -577,7 +582,7 @@ class ProyectoController extends Shield {
                 redirect(action: 'cargarExcel')
                 return
             }
-        }catch (e){
+        } catch (e) {
             flash.message = 'Error al cargar el archivo Excel, revise que el formato sea el correcto y que las columnas coincidan con el ejemplo descrito en la parte inferior'
             flash.estado = "error"
             flash.icon = "alert"

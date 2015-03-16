@@ -1,4 +1,4 @@
-<%@ page import="vesta.proyectos.Proyecto" %>
+<%@ page import="vesta.parametros.poaPac.Anio; vesta.proyectos.Proyecto" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -82,77 +82,87 @@
             </div><!-- /input-group -->
         </div>
 
-        <table class="table table-condensed table-bordered table-striped table-hover">
-            <thead>
-                <tr>
-                    <g:sortableColumn property="codigo" title="Código"/>
-                    <g:sortableColumn property="nombre" title="Proyecto"/>
-                    <g:sortableColumn property="unidadAdministradora" title="Unidad Administradora"/>
-                    <g:sortableColumn property="monto" title="Monto Total (USD)"/>
-                    <th>Descripción</th>
-                    <th>Programa</th>
-                    <th>Total Planificado</th>
-                    <th>Total Priorizado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <g:if test="${proyectoInstanceCount > 0}">
-                    <g:each in="${proyectoInstanceList}" status="i" var="proyectoInstance">
-                        <tr data-id="${proyectoInstance.id}" data-nombre="${proyectoInstance.nombre}">
+        <div style="width: 1200px; overflow: auto">
+            <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
+                <thead>
+                    <tr>
+                        <g:sortableColumn property="codigo" title="Código"/>
+                        <g:sortableColumn property="nombre" title="Proyecto"/>
+                        <g:sortableColumn property="unidadAdministradora" title="Unidad Administradora"/>
+                        <g:sortableColumn property="monto" title="Monto Total (USD)"/>
+                        <th>Descripción</th>
+                        <th>Programa</th>
+                        <g:each in="${anios}" var="anio">
+                            <th>${anio.anio}</th>
+                        </g:each>
+                        <th>Total Planificado</th>
+                        <th>Total Priorizado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <g:if test="${proyectoInstanceCount > 0}">
+                        <g:each in="${proyectoInstanceList}" status="i" var="proyectoInstance">
+                            <tr data-id="${proyectoInstance.id}" data-nombre="${proyectoInstance.nombre}">
 
-                            <td>
-                                <g:fieldValue bean="${proyectoInstance}" field="codigo"/>
-                            </td>
+                                <td>
+                                    <g:fieldValue bean="${proyectoInstance}" field="codigo"/>
+                                </td>
 
-                            <td>
-                                <elm:textoBusqueda busca="${params.search_nombre}">
-                                    <g:fieldValue bean="${proyectoInstance}" field="nombre"/>
-                                </elm:textoBusqueda>
-                            </td>
-                            <td>
-                                ${proyectoInstance.unidadAdministradora}
-                            </td>
+                                <td>
+                                    <elm:textoBusqueda busca="${params.search_nombre}">
+                                        <g:fieldValue bean="${proyectoInstance}" field="nombre"/>
+                                    </elm:textoBusqueda>
+                                </td>
+                                <td>
+                                    ${proyectoInstance.unidadAdministradora}
+                                </td>
 
-                            <td class="text-right">
-                                <g:formatNumber number="${proyectoInstance.monto}" type="currency" currencySymbol=""/>
-                            </td>
+                                <td class="text-right">
+                                    <g:formatNumber number="${proyectoInstance.monto}" type="currency" currencySymbol=""/>
+                                </td>
 
-                            <td>
-                                ${proyectoInstance?.descripcion?.size() > 70 ? proyectoInstance?.descripcion?.toString()[0..70] + "..." : proyectoInstance?.descripcion}
-                            </td>
+                                <td>
+                                    ${proyectoInstance?.descripcion?.size() > 70 ? proyectoInstance?.descripcion?.toString()[0..70] + "..." : proyectoInstance?.descripcion}
+                                </td>
 
-                            <td>
-                                <elm:textoBusqueda busca="${params.search_programa}">
-                                    ${proyectoInstance?.programa?.descripcion?.size() > 50 ? proyectoInstance?.programa?.descripcion?.toString()[0..50] + "..." : proyectoInstance?.programa?.descripcion}
-                                %{--<g:fieldValue bean="${proyectoInstance}" field="programa"/>--}%
-                                </elm:textoBusqueda>
-                            </td>
+                                <td>
+                                    <elm:textoBusqueda busca="${params.search_programa}">
+                                        ${proyectoInstance?.programa?.descripcion?.size() > 50 ? proyectoInstance?.programa?.descripcion?.toString()[0..50] + "..." : proyectoInstance?.programa?.descripcion}
+                                    %{--<g:fieldValue bean="${proyectoInstance}" field="programa"/>--}%
+                                    </elm:textoBusqueda>
+                                </td>
 
-                            <td class="text-right">
-                                <g:formatNumber number="${proyectoInstance.valorPlanificado}" type="currency" currencySymbol=""/>
-                            </td>
+                                <g:each in="${anios}" var="anio">
+                                    <td>
+                                        <g:formatNumber number="${proyectoInstance.getValorPlanificadoAnio(anio)}" type="currency" currencySymbol=""/>
+                                    </td>
+                                </g:each>
 
-                            <td class="text-right">
-                                <g:formatNumber number="${proyectoInstance.valorPriorizado}" type="currency" currencySymbol=""/>
+                                <td class="text-right">
+                                    <g:formatNumber number="${proyectoInstance.valorPlanificado}" type="currency" currencySymbol=""/>
+                                </td>
+
+                                <td class="text-right">
+                                    <g:formatNumber number="${proyectoInstance.valorPriorizado}" type="currency" currencySymbol=""/>
+                                </td>
+                            </tr>
+                        </g:each>
+                    </g:if>
+                    <g:else>
+                        <tr class="danger">
+                            <td class="text-center" colspan="38">
+                                <g:if test="${params.search && params.search != ''}">
+                                    No se encontraron resultados para su búsqueda
+                                </g:if>
+                                <g:else>
+                                    No se encontraron registros que mostrar
+                                </g:else>
                             </td>
                         </tr>
-                    </g:each>
-                </g:if>
-                <g:else>
-                    <tr class="danger">
-                        <td class="text-center" colspan="38">
-                            <g:if test="${params.search && params.search != ''}">
-                                No se encontraron resultados para su búsqueda
-                            </g:if>
-                            <g:else>
-                                No se encontraron registros que mostrar
-                            </g:else>
-                        </td>
-                    </tr>
-                </g:else>
-            </tbody>
-        </table>
-
+                    </g:else>
+                </tbody>
+            </table>
+        </div>
         <elm:pagination total="${proyectoInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
