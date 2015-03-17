@@ -36,7 +36,8 @@ class FirmaController extends Shield {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy hh:mm:ss", "31-12-" + anio + " 23:59:59")
 //            println "inicio "+fechaInicio+"  fin  "+fechaFin
-            datos += Firma.findAllByFechaBetween(fechaInicio, fechaFin)
+            datos += Firma.findAllByFechaBetweenAndUsuario(fechaInicio, fechaFin,session.usuario)
+
 //            println "datos fecha "+datos
         }
 
@@ -80,16 +81,19 @@ class FirmaController extends Shield {
 
         if (params.pass.toString().encodeAsMD5() == session.usuario.autorizacion) {
             def firma = Firma.get(params.id)
-            def baseUri = request.scheme + "://" + "10.0.0.3" + ":" + request.serverPort
-//        def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
+          //  def baseUri = request.scheme + "://" + "10.0.0.3" + ":" + request.serverPort
+            def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
             firma = firmasService.firmarDocumento(session.usuario.id, params.pass, firma, baseUri)
+            println "firma "+firma+"  "+baseUri
             if (firma.class == Firma) {
+                println "redirect "+firma.controlador+"  "+firma.accion+"  "+firma.idAccion+"  "+firma.key
                 redirect(controller: firma.controlador, action: firma.accion, params: [id: firma.idAccion, key: firma.key])
             } else {
-                render firma
+                render "error"
             }
         } else {
-            render "ERROR*La clave de autorización es incorrecta"
+            println "error"
+            render "error"
         }
 
     }

@@ -169,6 +169,7 @@
                             "<div class='alert alert-danger'>¿Está seguro? Una vez solicitada la firma no podrá modificar el documento</div>",
                             function (res) {
                                 if (res) {
+                                    openLoader()
                                     var aval = $("#numero").val();
                                     var obs = $("#richText").val();
                                     $.ajax({
@@ -185,6 +186,7 @@
                                         success : function (msg) {
                                             $("#guardarDatosDoc").remove();
                                             var parts = msg.split("*");
+                                            closeLoader()
                                             log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                             if (parts[0] == "SUCCESS") {
                                                 setTimeout(function () {

@@ -45,7 +45,7 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="pendientes">
                     <g:if test="${solicitudes.size() > 0}">
-                        <table class="table table-condensed table-striped table-hover table-bordered">
+                        <table class="table table-condensed table-striped table-hover table-bordered" style="margin-top: 20px;">
                             <thead>
                                 <tr>
                                     <th style="width: 100px;"># Sol.</th>
@@ -72,7 +72,7 @@
                                         <td>
                                             ${p.proceso.nombre}
                                         </td>
-                                        <td class="${(p.tipo == 'A') ? 'E03' : 'E02'}">
+                                        <td class="${(p.tipo == 'A') ? 'E03' : 'E02'}" style="text-align: center">
                                             ${(p.tipo == "A") ? 'Anulación' : 'Aprobación'}
                                         </td>
                                         <td>
@@ -81,7 +81,7 @@
                                         <td class="text-right">
                                             <g:formatNumber number="${p.monto}" type="currency" currencySymbol=""/>
                                         </td>
-                                        <td class="text-center ${p.estado?.codigo}">
+                                        <td style="text-align: center" class="text-center ${p.estado?.codigo}">
                                             ${p.estado?.descripcion}
                                         </td>
                                         <td class="text-center">
@@ -122,12 +122,12 @@
                         </table>
                     </g:if>
                     <g:else>
-                        <div class="alert alert-info" style="width: 450px">No existen solicitudes pendientes</div>
+                        <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen solicitudes pendientes</div>
                     </g:else>
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="historial">
-                    <div class="well">
+                    <div class="well" style="margin-top: 20px">
                         <form class="form-inline">
                             <div class="form-group">
                                 <label for="anio">Año:</label>

@@ -32,7 +32,7 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="avales">
                     <g:if test="${avales.size() > 0}">
-                        <table class="table table-condensed table-bordered table-striped table-hover">
+                        <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
                                 <tr>
                                     <th>Proceso</th>
@@ -61,7 +61,7 @@
                                         </td>
 
                                         <td style="text-align: center">
-                                            <a href="#" class="imprimiAval btn btn-info btn-sm" title="Imprimir" iden="${p.id}">
+                                            <a href="#" class="imprimiAval btn btn-info btn-sm" title="Imprimir" iden="${vesta.avales.SolicitudAval.findByAval(p)?.id}">
                                                 <i class="fa fa-print "></i>
                                             </a>
                                         </td>
@@ -78,13 +78,13 @@
                         </table>
                     </g:if>
                     <g:else>
-                        <div class="alert alert-info" style="width: 450px">No existen avales</div>
+                        <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen avales</div>
                     </g:else>
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="solicitudes">
                     <g:if test="${solicitudes.size() > 0}">
-                        <table class="table table-condensed table-bordered table-striped table-hover">
+                        <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
                                 <tr>
                                     <th>Fecha</th>
@@ -109,7 +109,7 @@
                                             <g:formatNumber number="${p.monto}" type="currency" currencySymbol=""/>
                                         </td>
                                         <g:set var="avalEstado" value="${p?.estado?.codigo}"/>
-                                        <td style="text-align: center" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : avalEstado == 'E02' ? 'verde' : 'rojo'}">
+                                        <td style="text-align: center;font-weight: bold" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : avalEstado == 'E02' ? 'verde' : 'rojo'}" >
                                             ${p.estado?.descripcion}
                                         </td>
 
@@ -143,7 +143,7 @@
                         </table>
                     </g:if>
                     <g:else>
-                            <div class="alert alert-info" style="width: 450px">No existen solicitudes</div>
+                            <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen solicitudes</div>
                     </g:else>
                 </div>
             </div>
@@ -153,7 +153,8 @@
 
         <script type="text/javascript">
             $(".imprimiAval").click(function () {
-                location.href = "${createLink(controller:'avales',action:'descargaAval')}/" + $(this).attr("iden")
+                var url = "${g.createLink(controller: 'reportes',action: 'certificacion')}/?id=" + $(this).attr("iden")
+                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval_"+ $(this).attr("iden")+".pdf"
             });
             $(".imprimirSolicitud").click(function () {
                 var url = "${g.createLink(controller: 'reporteSolicitud',action: 'imprimirSolicitudAval')}/?id=" + $(this).attr("iden")

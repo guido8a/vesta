@@ -370,6 +370,7 @@ class AvalesController extends vesta.seguridad.Shield {
         def montoProceso = params.monto?.toDouble()
 //        println "ref "+referencial+" monto "+montoProceso
         if (montoProceso > referencial) {
+            println "if "
             def path = servletContext.getRealPath("/") + "pdf/solicitudAval/"
             new File(path).mkdirs()
             def f = request.getFile('file')
@@ -505,10 +506,11 @@ class AvalesController extends vesta.seguridad.Shield {
 
             } else {
                 flash.message = "Error: Seleccione un archivo valido"
-                redirect(action: 'solicitarAval', params: [asg: params.asgn])
+                redirect(action: 'solicitarAval', params: [id: params.proceso])
             }
             /* fin del upload */
         } else {
+            println "else"
             def proceso = ProcesoAval.get(params.proceso)
             def usuFirma = Persona.get(params.firma1)
             def monto = params.monto

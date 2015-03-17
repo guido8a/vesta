@@ -30,13 +30,13 @@
 
         </div>
 
-        <div class="modal-contenido">
+        <elm:container titulo="Solicitar aval para el proceso: ${proceso.nombre}" tipo="horizontal">
             <g:uploadForm class="form-horizontal frmAval" action="guardarSolicitud" controller="avales">
                 <g:hiddenField name="proceso" value="${proceso.id}"/>
                 <g:hiddenField name="disp" id="disponible" value="${disponible}"/>
                 <g:hiddenField name="monto" value="${disponible}"/>
                 <g:hiddenField name="numero" value="${numero}"/>
-
+                <input type="hidden" name="referencial" value="${refencial}">
                 <div class="form-group keeptogether required">
                     <span class="grupo">
                         <label for="nombre" class="col-md-2 control-label">
@@ -86,7 +86,7 @@
                         </label>
 
                         <div class="col-md-2">
-                            <g:textField name="memorando" required="" class="form-control input-sm required"/>
+                            <g:textField name="memorando" class="form-control input-sm "/>
                         </div>
                     </span>
                     <span class="grupo">
@@ -95,7 +95,7 @@
                         </label>
 
                         <div class="col-md-3">
-                            <input type="file" name="file" id="file" class="form-control input-sm required"/>
+                            <input type="file" name="file" id="file" class="form-control input-sm "/>
                         </div>
                     </span>
                 </div>
@@ -126,20 +126,8 @@
                     </span>
                 </div>
 
-                %{--<div class="form-group">--}%
-                    %{--<span class="grupo">--}%
-                        %{--<div class="col-md-8 text-right">--}%
-                            %{--<g:link action="listaProcesos" class="btn btn-default">--}%
-                                %{--Cancelar--}%
-                            %{--</g:link>--}%
-                            %{--<a href="#" class="btn btn-success" id="enviar">--}%
-                                %{--<i class="fa fa-save"></i> Guardar y enviar--}%
-                            %{--</a>--}%
-                        %{--</div>--}%
-                    %{--</span>--}%
-                %{--</div>--}%
             </g:uploadForm>
-        </div>
+        </elm:container>
 
         <script type="text/javascript">
             $(function () {

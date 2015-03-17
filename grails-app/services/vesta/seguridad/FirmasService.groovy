@@ -30,6 +30,7 @@ class FirmasService {
         if (firma.usuario != user)
             return "ERROR*El usuario no concuerda con la firma"
         if (user.autorizacion == password.encodeAsMD5()) {
+//            println "paso  "
             try {
                 def now = new Date()
                 def key = ""
