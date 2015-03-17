@@ -8,15 +8,12 @@
         </tr>
     </thead>
     <tbody>
-        <g:set var="total" value="${0}"/>
-        <g:each in="${proyectos}" var="proy">
-            <g:set var="totProy" value="${proy.getValorPlanificado()}"/>
-            <g:set var="total" value="${total + totProy}"/>
+        <g:each in="${arr}" var="a">
             <tr>
-                <td>${proy.codigo}</td>
-                <td>${proy.nombre}</td>
+                <td>${a.proyecto.codigo}</td>
+                <td>${a.proyecto.nombre}</td>
                 <td class="text-right">
-                    <g:formatNumber number="${totProy.toDouble()}" type="currency" currencySymbol=""/>
+                    <g:formatNumber number="${a.total}" type="currency" currencySymbol=""/>
                 </td>
             </tr>
         </g:each>
@@ -25,7 +22,7 @@
         <tr>
             <th colspan="2" class="text-center">Total</th>
             <th class="text-right">
-                <g:formatNumber number="${total.toDouble()}" type="currency" currencySymbol=""/>
+                <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
             </th>
         </tr>
     </tfoot>
