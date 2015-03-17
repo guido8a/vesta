@@ -26,7 +26,7 @@
                 if ($(this).val() != "0") {
                     $.ajax({
                         type    : "POST",
-                        url     : "${createLink(controller:'anio', action:'detalleAnio')}",
+                        url     : "${createLink(controller:'anio', action:'detalleAnioUnidad')}",
                         data    : "anio=" + $(this).val(),
                         success : function (msg) {
                             $("#detalle").html(msg);
