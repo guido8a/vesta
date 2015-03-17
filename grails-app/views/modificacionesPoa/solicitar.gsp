@@ -7,11 +7,9 @@
 </head>
 
 <body>
-<g:if test="${flash.message}">
-    <div class="message ui-state-highlight ui-corner-all">
-        ${flash.message}
-    </div>
-</g:if>
+
+<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
+
 <elm:container tipo="horizontal" titulo="Asignación de origen">
     <g:form action="save" class="frmProceso">
         <div class="row">
@@ -70,7 +68,7 @@
             <input type="hidden" id="valor">
             <div class="col-md-3">
                 <input type="text" id="monto" class="form-control input-sm number money" style="width: 100px;text-align: right;margin-right: 10px;display: inline-table">
-                Máximo: <span id="max" style="display: inline-block"></span> $
+                Máximo: <span id="max" style="display: inline-block" ></span> $
 
             </div>
             <span style="color: #008; ">En caso de incremento registre aquí el valor a incrementar la asignación</span>
@@ -270,15 +268,15 @@
             success : function (msg) {
                 getValor(asg)
                 if ($("#asignacion").val() != "-1") {
-                    $("#max").html(number_format(msg, 2, ",", "."));
+                    $("#max").html(number_format(msg, 2, ".", ","));
                     $("#max").attr("valor", msg)
                 }else {
                     var valor = parseFloat(msg);
                     var monto = $("#dlgMonto").val();
-                    monto = monto.replace(new RegExp("\\.", 'g'), "");
-                    monto = monto.replace(new RegExp(",", 'g'), ".");
+//                    monto = monto.replace(new RegExp("\\.", 'g'), "");
+                    monto = monto.replace(new RegExp(",", 'g'), "");
                     monto = parseFloat(monto);
-                    $("#dlgMax").html(number_format(valor + monto, 2, ",", "."));
+                    $("#dlgMax").html(number_format(valor + monto, 2, ".", ","));
                 }
             }
         });
@@ -396,8 +394,8 @@
     $("#guardar2").click(function(){
         var asgOrigen = $("#asignacion").val()
         var monto = $("#monto").val();
-        monto = monto.replace(new RegExp("\\.", 'g'), "");
-        monto = monto.replace(new RegExp(",", 'g'), ".");
+//        monto = monto.replace(new RegExp("\\.", 'g'), "");
+        monto = monto.replace(new RegExp(",", 'g'), "");
         var max = $("#max").attr("valor")
         var msg =""
         var concepto = $("#concepto_nueva").val()
@@ -477,8 +475,8 @@
 
         var asgOrigen = $("#asignacion").val()
         var monto = $("#monto").val();
-        monto = monto.replace(new RegExp("\\.", 'g'), "");
-        monto = monto.replace(new RegExp(",", 'g'), ".");
+//        monto = monto.replace(new RegExp("\\.", 'g'), "");
+        monto = monto.replace(new RegExp(",", 'g'), "");
         var max = $("#max").attr("valor")
         var msg =""
         var concepto = $("#concepto_derivada").val()
@@ -537,8 +535,8 @@
         var valor = $("#valor").val()
         var msg =""
         var monto = $("#monto").val();
-        monto = monto.replace(new RegExp("\\.", 'g'), "");
-        monto = monto.replace(new RegExp(",", 'g'), ".");
+//        monto = monto.replace(new RegExp("\\.", 'g'), "");
+        monto = monto.replace(new RegExp(",", 'g'), "");
         var concepto = $("#concepto_aumentar").val()
 //        console.log("dest ",asgDest,monto,max,"!"+concepto+"!")
         if(asgOrigen=="-1"){

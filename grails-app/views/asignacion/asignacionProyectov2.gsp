@@ -20,7 +20,7 @@
     %{--<g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>--}%
         <g:if test="${actual?.estado==1}">
             <g:if test="${proyecto.aprobadoPoa=='S'}">
-                <g:link class="btn btn-default btn-sm" controller="modificacion" action="poaInversionesMod" id="${proyecto?.id}">Modificaciones</g:link>
+                <g:link class="btn btn-default btn-sm" controller="modificacion" action="poaInversionesMod" id="${proyecto?.id}"><i class="fa fa-random"></i> Modificaciones</g:link>
             </g:if>
         </g:if>
         <g:if test="${actual?.estado==1}">
@@ -28,7 +28,7 @@
                 <a href="#" id="aprobPrio" class="btn btn-default btn-sm"><i class="fa fa-check"></i> Aprobar Priorización</a>
             </g:if>
         </g:if>
-        <a href="#" class="btn btn-default btn-sm" id="btn-filtros">Filtros</a>
+        <a href="#" class="btn btn-default btn-sm" id="btn-filtros"><i class="fa fa-toggle-on"></i> Filtros</a>
         <div style="margin-left: 15px;display: inline-block;">
             <b style="font-size: 11px">Año:</b>
             <g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}" style="font-size: 11px;width: 80px;display: inline" class="form-control"/>

@@ -4,46 +4,29 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main"/>
     <title>Solicitudes de la unidad ${unidad}</title>
-    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/jBreadCrumb/Styles', file: 'Base.css')}"
-          type="text/css"/>
-    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/jBreadCrumb/Styles', file: 'BreadCrumb.css')}"
-          type="text/css"/>
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'svt.css')}"
-          type="text/css"/>
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.easing.1.3.js')}" type="text/javascript"
-            language="JavaScript"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jBreadCrumb/js', file: 'jquery.jBreadCrumb.1.1.js')}"
-            type="text/javascript" language="JavaScript"></script>
 
-    <style type="text/css">
-
-    th{
-        background-color: #363636;
-
-    }
-
-
-    </style>
 
 </head>
 <body>
-<g:if test="${flash.message}">
-    <div class="message ui-state-highlight ui-corner-all">
-        ${flash.message}
-    </div>
-</g:if>
+
+
+<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
+
+
 <div class="fila">
-    <g:link controller="modificacionesPoa" action="solicitar" class="btn">Solicitar</g:link>
+
 </div>
-<div id="tabs" style="width: 1050px;margin-top: 10px;">
-    <ul>
-        %{--<li><a href="#solicitudes">Solicitudes pendientes</a></li>--}%
-        <li><a href="#historial">Historial de la unidad ${unidad}</a></li>
-        %{--<li><a href="#solicitudes">Historial</a></li>--}%
-    </ul>
+
+
+<div class="btn-toolbar toolbar">
+    <div class="btn-group">
+        <g:link controller="modificacionesPoa" action="solicitar" class="btn btn-default button"> <i class="fa fa-gavel"></i> Solicitar</g:link>
+    </div>
+</div>
+
 
     <div id="historial" style="width: 1030px;">
-        <table style="width: 1000px;margin-top: 10px;font-size: 10px;" >
+        <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
             <tr>
                 <th># Sol.</th>
@@ -88,23 +71,17 @@
                         <a href="#" class="btn matriz" iden="${p.id}">Ver</a>
                     </td>
                     <td style="text-align: center">
-                        <g:if test="${p.estado==3 || p.estado==5}">
+                        %{--<g:if test="${p.estado==3 || p.estado==5}">--}%
                             <a href="#" class="btn reforma" iden="${p.id}">Ver</a>
-                        </g:if>
+                        %{--</g:if>--}%
                     </td>
-                    %{--<td style="text-align: center">--}%
-                        %{--<a href="${g.createLink(controller: 'modificacionesPoa',action: 'verSolicitud',id:p.id)}" class="btn " iden="${p.id}">Ver</a>--}%
-
-                    %{--</td>--}%
-
-                </tr>
+                 </tr>
             </g:each>
 
             </tbody>
         </table>
     </div>
 
-</div>
 
 <script>
 
@@ -130,42 +107,57 @@
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url+"&filename=Solicitud.pdf"
     })
     $("#tabs").tabs()
-    %{--$(".aprobar").button({icons:{ primary:"ui-icon-check"},text:false});--}%
-    %{--$(".aprobarAnulacion").button({icons:{ primary:"ui-icon-check"},text:false});--}%
-    %{--$(".negar").button({icons:{ primary:"ui-icon-close"},text:false}).click(function(){--}%
-        %{--$("#avalId").val($(this).attr("iden"))--}%
-        %{--$("#negar").dialog("open")--}%
-    %{--});--}%
-    %{--$("#negar").dialog({--}%
-        %{--autoOpen:false,--}%
-        %{--resizable:false,--}%
-        %{--title:'Negar solicitud',--}%
-        %{--modal:true,--}%
-        %{--draggable:true,--}%
-        %{--width:400,--}%
-        %{--height:150,--}%
-        %{--position:'center',--}%
-        %{--open:function (event, ui) {--}%
-            %{--$(".ui-dialog-titlebar-close").hide();--}%
-        %{--},--}%
-        %{--buttons:{--}%
-            %{--"Cancelar":function () {--}%
-                %{--$("#negar").dialog("close")--}%
-            %{--},"Negar":function(){--}%
-                %{--$.ajax({--}%
-                    %{--type:"POST", url:"${createLink(action:'negar', controller: 'modificacionesPoa')}",--}%
-                    %{--data:"id=" + $("#avalId").val(),--}%
-                    %{--success:function (msg) {--}%
-                        %{--if(msg!="no")--}%
-                            %{--location.reload(true)--}%
-                        %{--else--}%
-                            %{--location.href = "${createLink(controller:'certificacion',action:'listaSolicitudes')}/?msn=Usted no tiene los permisos para negar esta solicitud"--}%
 
-                    %{--}--}%
-                %{--});--}%
-            %{--}--}%
-        %{--}--}%
-    %{--});--}%
+
+    function createContextMenu(node) {
+        var $tr = $(node);
+
+        var estado = $tr.data("estado");
+        var incluir = $tr.data("incluir");
+        var detalles = parseInt($tr.data("detalles"));
+
+        var items = {
+            header : {
+                label  : "Acciones",
+                header : true
+            },
+            ver    : {
+                label  : "Ver Solicitud",
+                icon   : "fa fa-search",
+                action : function ($element) {
+                    var id = $element.data("id");
+                    showSolicitud(id)
+                }
+            }
+        };
+
+        items.matriz = {
+            label  : "Editar Solicitud",
+            icon   : "fa fa-pencil",
+            action : function ($element) {
+                var id = $element.data("id");
+                createEditRow(id);
+            }
+        };
+
+        <g:if test="${session.perfil.codigo == 'RQ' || session.perfil.codigo == 'DRRQ'}">
+        if (estado == 'P') {
+            items.editar = {
+                label  : "Editar Solicitud",
+                icon   : "fa fa-pencil",
+                action : function ($element) {
+                    var id = $element.data("id");
+                    createEditRow(id);
+                }
+            };
+        }
+        </g:if>
+
+        return items
+    }
+
+
+
 </script>
 </body>
 </html>

@@ -16,11 +16,10 @@
 </head>
 
 <body>
-<g:if test="${flash.message}">
-    <div class="${flash.clase}">
-        ${flash.message}
-    </div>
-</g:if>
+
+<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
+
+
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
         %{--<g:link class="btn btn-default btn-sm" controller="asignacion" action="programacionAsignacionesInversionPrio" params="[proyecto: proy.id, anio: actual.id]">Programación</g:link>--}%
@@ -146,7 +145,7 @@
                 <td style="text-align: center">
 
                     <a href="#" class="btn btn-danger btn-sm eliminar ajax" iden="${asg.id}" icono="ico_001" clase="act_" band="0" tr="#det_${i}"
-                       prog="${asg.marcoLogico.proyecto.programaPresupuestario.id}" prsp_id="${asg.presupuesto.id}" prsp_num="${asg.presupuesto.numero}" desc="${asg.presupuesto.descripcion}"
+                       prog="${asg?.marcoLogico?.proyecto?.programaPresupuestario?.id}" prsp_id="${asg.presupuesto.id}" prsp_num="${asg.presupuesto.numero}" desc="${asg.presupuesto.descripcion}"
                        fuente="${asg.fuente.id}" valor="${asg.planificado}" actv="${asg.marcoLogico}" title="Eliminar">
                         <i class="fa fa-trash"></i>
                     </a>
@@ -261,7 +260,7 @@
 //        });
 
         $("#btnReporte").click(function () {
-            var url = "${createLink(controller: 'reportes', action: 'poaReporteWeb', id: unidad.id)}?anio=" + $("#anio_asg").val();
+            var url = "${createLink(controller: 'reportes', action: 'poaReporteWeb', id: unidad?.id)}?anio=" + $("#anio_asg").val();
             window.open(url);
         });
 
