@@ -374,7 +374,7 @@ class Reportes2Controller {
 //                    }
 //                }
 
-                asignaciones.sort { it.unidad.nombre }
+//                asignaciones.sort { it.unidad.nombre }
                 def unidad = UnidadEjecutora.findByPadreIsNull()
                 maxInvR = PresupuestoUnidad.findByAnioAndUnidad(actual, unidad)?.maxInversion
                 if (!maxInvR)
@@ -395,8 +395,20 @@ class Reportes2Controller {
                 def total = 0
                 def totalUnidad = 0
                 def maxInv = 0
-                MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
-                    def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}   order by id")
+                MarcoLogico.withCriteria {
+                    eq("proyecto", proyecto)
+                    eq("tipoElemento", TipoElemento.get(3))
+                    eq("estado", 0)
+                    marcoLogico {
+                        order("numeroComp", "asc")
+                    }
+                    order("numero", "asc")
+                }.each { ml ->
+                    def asig = Asignacion.withCriteria {
+                        eq("marcoLogico", ml)
+                        eq("anio", actual)
+                        order("id", "asc")
+                    }
                     if (asig) {
                         asignaciones += asig
                         asig.each { asg ->
@@ -404,15 +416,22 @@ class Reportes2Controller {
                         }
                     }
                 }
-                asignaciones.sort { it.unidad.nombre }
+//                MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+//                    def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}   order by id")
+//                    if (asig) {
+//                        asignaciones += asig
+//                        asig.each { asg ->
+//                            total = total + asg.getValorReal()
+//                        }
+//                    }
+//                }
+//            asignaciones.sort { it.unidad.nombre }
                 def unidad = UnidadEjecutora.findByPadreIsNull()
                 maxInv = PresupuestoUnidad.findByAnioAndUnidad(actual, unidad)?.maxInversion
                 if (!maxInv)
                     maxInv = 0
-                [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad, maxInv: maxInv]
+                return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad, maxInv: maxInv]
             }
-
-
         } else {
             if (params.anio) {
                 actual = Anio.get(params.anio)
@@ -423,32 +442,50 @@ class Reportes2Controller {
             if (!actual) {
                 actual = Anio.list([sort: 'anio', order: 'desc']).pop()
             }
-
-
             def total = 0
             def totalUnidad = 0
             def maxInv = 0
-            MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
-                def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}   order by id")
+//            MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+//                def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}   order by id")
+//                if (asig) {
+//                    asignaciones += asig
+////                    println "add " + asig.id + " " + asig.unidad
+//                    asig.each { asg ->
+//                        total = total + asg.getValorReal()
+//                    }
+//                }
+//            }
+
+            MarcoLogico.withCriteria {
+                eq("proyecto", proyecto)
+                eq("tipoElemento", TipoElemento.get(3))
+                eq("estado", 0)
+                marcoLogico {
+                    order("numeroComp", "asc")
+                }
+                order("numero", "asc")
+            }.each { ml ->
+                def asig = Asignacion.withCriteria {
+                    eq("marcoLogico", ml)
+                    eq("anio", actual)
+                    order("id", "asc")
+                }
                 if (asig) {
                     asignaciones += asig
-//                    println "add " + asig.id + " " + asig.unidad
                     asig.each { asg ->
                         total = total + asg.getValorReal()
                     }
                 }
             }
 
-            asignaciones.sort { it.unidad.nombre }
+//            asignaciones.sort { it.unidad.nombre }
             def unidad = UnidadEjecutora.findByPadreIsNull()
             maxInv = PresupuestoUnidad.findByAnioAndUnidad(actual, unidad)?.maxInversion
             if (!maxInv)
                 maxInv = 0
 
-            [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad, maxInv: maxInv]
-
+            return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad, maxInv: maxInv]
         }
-
     }
 
 
