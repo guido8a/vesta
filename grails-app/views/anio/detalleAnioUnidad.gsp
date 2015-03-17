@@ -57,14 +57,14 @@
 
 
     $("#aprobar").click(function () {
-        var boton = $(this)
+        var boton = $(this);
         bootbox.confirm({
                     message  : "Esta seguro?",
                     title    : "Advertencia",
                     class    : "modal-error",
                     callback : function (result) {
                         if (result) {
-                            openLoader()
+                            openLoader();
                             $.ajax({
                                 type    : "POST",
                                 url     : "${createLink(action:'aprobarAnio')}",
@@ -73,7 +73,7 @@
                                 },
                                 success : function (msg) {
                                     if (msg != "no") {
-                                        window.location.href = "${createLink(action:'vistaAprobarAño')}"
+                                        window.location.href = "${createLink(action:'vistaAprobarAnioUnidad')}"
                                     } else {
                                         log("Error interno")
                                     }

@@ -38,14 +38,14 @@
 
 
     $("#aprobar").click(function () {
-        var boton = $(this)
+        var boton = $(this);
         bootbox.confirm({
                     message  : "Esta seguro?",
                     title    : "Advertencia",
                     class    : "modal-error",
                     callback : function (result) {
                         if (result) {
-                            openLoader()
+                            openLoader();
                             $.ajax({
                                 type    : "POST",
                                 url     : "${createLink(action:'aprobarAnio')}",

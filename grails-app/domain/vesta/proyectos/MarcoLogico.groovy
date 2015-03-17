@@ -202,18 +202,25 @@ class MarcoLogico {
     }
 
     def getTotalPlanificadoAnio(Anio anio) {
+//        println "get total planificado anio " + anio.anio
         def total = 0
         if (this.tipoElemento.id == 3) {
+//            println "caso 1"
             Asignacion.findAllByMarcoLogicoAndAnio(this, anio).each {
+//                println "\t\tplanificado=" + it.planificado
                 total += it.planificado
             }
+//            println "total ml = " + total
             return total
         } else {
             def marcos = MarcoLogico.findAllByMarcoLogico(this)
             if (marcos.size() > 0) {
+//                println "caso 2"
                 Asignacion.findAllByMarcoLogicoInListAndAnio(marcos, anio).each { a ->
+//                    println "\t\tplanificado=" + a.planificado
                     total += a.planificado
                 }
+//                println "total ml = " + total
                 return total
             } else {
                 return 0

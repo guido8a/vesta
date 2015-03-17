@@ -2,6 +2,7 @@ package vesta.parametros.poaPac
 
 import org.springframework.dao.DataIntegrityViolationException
 import vesta.parametros.UnidadEjecutora
+import vesta.poa.Asignacion
 import vesta.proyectos.Proyecto
 import vesta.seguridad.Shield
 
@@ -171,6 +172,7 @@ class AnioController extends Shield {
             def anio = Anio.get(params.anio)
             anio.estado = 1
             anio.save(flush: true)
+            Asignacion.executeUpdate("UPDATE Asignacion SET priorizado=planificado WHERE anio=${anio.id}")
             flash.message = "Las asignaciones del año ${anio.anio} han sido aprobadas."
             render "ok"
 

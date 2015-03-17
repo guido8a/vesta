@@ -160,9 +160,18 @@ class AsignacionController extends Shield {
         }
     } //delete para eliminar via ajax
 
-
     /*Yachay  */
-    def asignacionProyectov2 () {
+
+    def getTotalPriorizadoProyectos(Anio anio) {
+        def total = 0
+        def asignaciones = Asignacion.findAllByAnio(anio)
+        if (asignaciones.size() > 0) {
+            total = asignaciones.sum { it.priorizado }
+        }
+        return total
+    }
+
+    def asignacionProyectov2() {
         println "params " + params
         def proyecto = Proyecto.get(params.id)
         def asignaciones = []
@@ -188,8 +197,31 @@ class AsignacionController extends Shield {
                 def totalR = 0
                 def totalUnidadR = 0
                 def maxInvR = 0
-                MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0 and responsable=${unidadE.id}").each {
-                    def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}  order by id")
+//                MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0 and responsable=${unidadE.id}").each {
+//                    def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}  order by id")
+//                    if (asig) {
+//                        asignaciones += asig
+//                        asig.each { asg ->
+//                            totalR = totalR + asg.getValorReal()
+//                        }
+//                    }
+//                }
+
+                MarcoLogico.withCriteria {
+                    eq("proyecto", proyecto)
+                    eq("tipoElemento", TipoElemento.get(3))
+                    eq("estado", 0)
+                    eq("responsable", unidadE)
+                    marcoLogico {
+                        order("numeroComp", "asc")
+                    }
+                    order("numero", "asc")
+                }.each { ml ->
+                    def asig = Asignacion.withCriteria {
+                        eq("marcoLogico", ml)
+                        eq("anio", actual)
+                        order("id", "asc")
+                    }
                     if (asig) {
                         asignaciones += asig
                         asig.each { asg ->
@@ -197,13 +229,14 @@ class AsignacionController extends Shield {
                         }
                     }
                 }
-                asignaciones.sort { it.unidad.nombre }
+
+//                asignaciones.sort { it.unidad.nombre }
                 def unidad = UnidadEjecutora.findByPadreIsNull()
                 maxInvR = PresupuestoUnidad.findByAnioAndUnidad(actual, unidad)?.maxInversion
                 if (!maxInvR)
                     maxInvR = 0
 
-                [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: totalR, totalUnidad: totalUnidadR, maxInv: maxInvR]
+                return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: totalR, totalUnidad: totalUnidadR, maxInv: maxInvR]
 
             } else {
                 compon = MarcoLogico.findByObjeto(params.comp)
@@ -217,24 +250,43 @@ class AsignacionController extends Shield {
                 def total = 0
                 def totalUnidad = 0
                 def maxInv = 0
-                MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
-                    def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}   order by id")
+//                MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+//                    def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}   order by id")
+//                    if (asig) {
+//                        asignaciones += asig
+//                        asig.each { asg ->
+//                            total = total + asg.getValorReal()
+//                        }
+//                    }
+//                }
+                MarcoLogico.withCriteria {
+                    eq("proyecto", proyecto)
+                    eq("tipoElemento", TipoElemento.get(3))
+                    eq("estado", 0)
+                    marcoLogico {
+                        order("numeroComp", "asc")
+                    }
+                    order("numero", "asc")
+                }.each { ml ->
+                    def asig = Asignacion.withCriteria {
+                        eq("marcoLogico", ml)
+                        eq("anio", actual)
+                        order("id", "asc")
+                    }
                     if (asig) {
                         asignaciones += asig
                         asig.each { asg ->
-                            total = total + asg.getValorReal()
+                            total = totalR + asg.getValorReal()
                         }
                     }
                 }
-                asignaciones.sort { it.unidad.nombre }
+//                asignaciones.sort { it.unidad.nombre }
                 def unidad = UnidadEjecutora.findByPadreIsNull()
                 maxInv = PresupuestoUnidad.findByAnioAndUnidad(actual, unidad)?.maxInversion
                 if (!maxInv)
                     maxInv = 0
-                [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad, maxInv: maxInv]
+                return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad, maxInv: maxInv]
             }
-
-
         } else {
             if (params.anio) {
                 actual = Anio.get(params.anio)
@@ -248,65 +300,82 @@ class AsignacionController extends Shield {
             def total = 0
             def totalUnidad = 0
             def maxInv = 0
-            MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
-                def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}  order by id")
+//            MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+//                def asig = Asignacion.findAll("from Asignacion where marcoLogico=${it.id} and anio=${actual.id}  order by id")
+//                if (asig) {
+//                    asignaciones += asig
+////                    println "add " + asig.id + " " + asig.unidad
+//                    asig.each { asg ->
+//                        total = total + asg.getValorReal()
+//                    }
+//                }
+//            }
+            MarcoLogico.withCriteria {
+                eq("proyecto", proyecto)
+                eq("tipoElemento", TipoElemento.get(3))
+                eq("estado", 0)
+                marcoLogico {
+                    order("numeroComp", "asc")
+                }
+                order("numero", "asc")
+            }.each { ml ->
+                def asig = Asignacion.withCriteria {
+                    eq("marcoLogico", ml)
+                    eq("anio", actual)
+                    order("id", "asc")
+                }
                 if (asig) {
                     asignaciones += asig
-//                    println "add " + asig.id + " " + asig.unidad
                     asig.each { asg ->
                         total = total + asg.getValorReal()
                     }
                 }
             }
-
-            asignaciones.sort { it.unidad.nombre }
+//            asignaciones.sort { it.unidad.nombre }
             def unidad = UnidadEjecutora.findByPadreIsNull()
             maxInv = PresupuestoUnidad.findByAnioAndUnidad(actual, unidad)?.maxInversion
             if (!maxInv)
                 maxInv = 0
-
-            [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad, maxInv: maxInv]
-
+            return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad,
+                    maxInv      : maxInv, priorizado: getTotalPriorizadoProyectos(actual)]
         }
-
 
     }
 
-
-    def agregaAsignacionPrio () {
-        def campos = ["numero": ["Número", "string"],"descripcion": ["Descripción", "string"]]
+    def agregaAsignacionPrio() {
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
         def listaFuentes = Financiamiento.findAllByProyectoAndAnio(Proyecto.get(params.proy), Anio.get(params.anio)).fuente
         def asgnInstance = Asignacion.get(params.id)
 
-        return ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes,campos:campos]
+        return ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes, campos: campos]
     }
 
 
-    def agregaAsignacion () {
-        def campos = ["numero": ["Número", "string"],"descripcion": ["Descripción", "string"]]
+    def agregaAsignacion() {
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
         def listaFuentes = Financiamiento.findAllByProyectoAndAnio(Proyecto.get(params.proy), Anio.get(params.anio)).fuente
         def asgnInstance = Asignacion.get(params.id)
         def dist = null
         if (params.dist && params.dist != "" && params.dist != "undefined")
             dist = DistribucionAsignacion.get(params.dist)
-        ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes, 'dist': dist,campos:campos]
+        ['asignacionInstance': asgnInstance, 'fuentes': listaFuentes, 'dist': dist, campos: campos]
     }
 
-    def buscarPresupuesto () {
+    def buscarPresupuesto() {
 
-        def listaTitulos = ["Número","Descripción"]
-        def listaCampos = ["numero","descripcion"]
+        def listaTitulos = ["Número", "Descripción"]
+        def listaCampos = ["numero", "descripcion"]
         def funciones = [null, null]
         def url = g.createLink(action: "buscarPresupuesto", controller: "asignacion")
         def funcionJs = null
         def numRegistros = 20
-        def extras =""
+        def extras = ""
 
         if (!params.reporte) {
             if (params.excel) {
                 session.dominio = Presupuesto
                 session.funciones = funciones
-                def anchos = [30,70]
+                def anchos = [30, 70]
                 /*anchos para el set column view en excel (no son porcentajes)*/
                 redirect(controller: "reportesBuscador", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Partidas presupuestarias", anchos: anchos, extras: extras, landscape: true])
             } else {
@@ -326,7 +395,6 @@ class AsignacionController extends Shield {
             redirect(controller: "reportesBuscador", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
         }
     }
-
 
     /**
      * Acción
@@ -431,11 +499,10 @@ class AsignacionController extends Shield {
 
     }
 
-
     /**
      * Acción
      */
-    def borrarAsignacion () {
+    def borrarAsignacion() {
 //        println "parametros borrarAsignacion:" + params
         def asgn = Asignacion.get(params.id)
         def pdre = Asignacion.get(asgn.padre.id)
@@ -447,8 +514,8 @@ class AsignacionController extends Shield {
         def del = true
         try {
             asgn.delete(flush: true)
-        }catch (e){
-            del=false
+        } catch (e) {
+            del = false
         }
         if (del) {
             pdre.planificado += asgn.planificado
@@ -467,7 +534,7 @@ class AsignacionController extends Shield {
     /**
      * Acción
      */
-    def borrarAsignacionPrio () {
+    def borrarAsignacionPrio() {
         def asgn = Asignacion.get(params.id)
         def pdre = Asignacion.get(asgn.padre.id)
         ProgramacionAsignacion.findAllByAsignacion(asgn).each {
@@ -476,14 +543,14 @@ class AsignacionController extends Shield {
         def del = true
         try {
             asgn.delete(flush: true)
-        }catch (e){
-            del=false
+        } catch (e) {
+            del = false
         }
         if (del) {
             pdre.priorizado += asgn.priorizado
             pdre.save(flush: true)
             ProgramacionAsignacion.findAllByAsignacion(pdre).each {
-               it.delete(flush: true)
+                it.delete(flush: true)
             }
             if (pdre.errors.getErrorCount() == 0) {
                 guardarPrasPrio(pdre)
@@ -493,7 +560,6 @@ class AsignacionController extends Shield {
             render("Error")
         }
     }
-
 
 
     def guardarPras(asg) {
@@ -622,7 +688,7 @@ class AsignacionController extends Shield {
     /**
      * Acción
      */
-    def programacionAsignacionesInversion () {
+    def programacionAsignacionesInversion() {
         def actual
         if (params.anio)
             actual = Anio.get(params.anio)
@@ -643,7 +709,7 @@ class AsignacionController extends Shield {
                 asgProy += asig
         }
 
-        def meses = Mes.list([sort:"id"])
+        def meses = Mes.list([sort: "id"])
         [inversiones: asgProy, actual: actual, meses: meses, proyecto: proyecto]
     }
 
@@ -669,15 +735,15 @@ class AsignacionController extends Shield {
             if (asig)
                 asgProy += asig
         }
-        def meses = Mes.list([sort:"id"])
+        def meses = Mes.list([sort: "id"])
         [inversiones: asgProy, actual: actual, meses: meses, proyecto: proyecto]
     }
 
     /**
      * Acción
      */
-    def guardarProgramacion () {
-        println "guardar prog "+params
+    def guardarProgramacion() {
+        println "guardar prog " + params
         def asig = Asignacion.get(params.asignacion)
         def datos = params.datos.split(";")
         datos.each {
@@ -690,9 +756,8 @@ class AsignacionController extends Shield {
                 prog.mes = Mes.get(partes[0])
             }
             prog.valor = partes[1].toDouble()
-            if(!prog.save(flush: true))
-                println "errors "+prog.errors
-
+            if (!prog.save(flush: true))
+                println "errors " + prog.errors
 
 
         }
@@ -702,12 +767,12 @@ class AsignacionController extends Shield {
     /**
      * Acción
      */
-    def agregarAsignacionInv () {
+    def agregarAsignacionInv() {
 
         println "crear asgn inv " + params
         def proy = Proyecto.get(params.id)
         def unidad = proy.unidadEjecutora
-        def campos = ["numero": ["Número", "string"],"descripcion": ["Descripción", "string"]]
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
         def comp = MarcoLogico.findAllByProyectoAndTipoElemento(proy, TipoElemento.get(2), [sort: "id"])
         def cmp
         def acts = []
@@ -756,7 +821,7 @@ class AsignacionController extends Shield {
         def totalAnio = financiamientos.sum { it.monto }
 
         [proy       : proy, comp: comp, fuentes: fuentes, unidad: unidad, actual: actual, cmp: cmp, acts: acts, asgn: asgn,
-         totalUnidad: totalUnidad, maxUnidad: maxUnidad, totalPriorizado: totalPriorizado, totalAnio: totalAnio,campos:campos]
+         totalUnidad: totalUnidad, maxUnidad: maxUnidad, totalPriorizado: totalPriorizado, totalAnio: totalAnio, campos: campos]
 
     }
 
@@ -801,7 +866,7 @@ class AsignacionController extends Shield {
         def plani = params.planificado
 
 
-        if(plani){
+        if (plani) {
 
             def planificado = params.planificado
             planificado = planificado.replaceAll(",", "")
@@ -822,16 +887,12 @@ class AsignacionController extends Shield {
                     render "true"
                 }
             }
-        }else{
-          render "Debe ingresar un valor en presupuesto!"
+        } else {
+            render "Debe ingresar un valor en presupuesto!"
         }
 
 
-
-
     }
-
-
 
 
 }
