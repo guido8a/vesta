@@ -52,7 +52,7 @@ class ProyectoController extends Shield {
         }
         def list
 //        println "PARAMS: " + params
-        if (!params.sort) params.sort = 'nombre'
+        if (!params.sort) params.sort = 'codigo'
         if (!params.order) params.order = 'asc'
 
         if (params.search_programa || params.search_nombre || params.search_desde || params.search_hasta) {
@@ -90,7 +90,14 @@ class ProyectoController extends Shield {
     def list() {
         def proyectoInstanceList = getList(params, false)
         def proyectoInstanceCount = getList(params, true).size()
-        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount]
+
+        def anios = Asignacion.withCriteria {
+            projections {
+                distinct "anio"
+            }
+        }
+
+        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount, anios: anios]
     }
 
     /**
@@ -322,100 +329,96 @@ class ProyectoController extends Shield {
         def path = servletContext.getRealPath("/") + "excel/"
         new File(path).mkdirs()
         def ext
-        //  try{
-        def f = request.getFile('file')
-        WorkbookSettings ws = new WorkbookSettings();
-        ws.setEncoding("ISO-8859-1");
-        Workbook workbook = Workbook.getWorkbook(f.inputStream, ws)
-        Sheet sheet = workbook.getSheet(0)
-        //println ""+workbook.sheetNames
-        //println "shhet "+sheet.getName()
-        if (f && !f.empty) {
-            def nombre = f.getOriginalFilename()
-            def parts = nombre.split("\\.")
-            nombre = ""
-            parts.eachWithIndex { obj, i ->
-                if (i < parts.size() - 1) {
-                    nombre += obj
-                } else {
-                    ext = obj
+        try {
+            def f = request.getFile('file')
+            WorkbookSettings ws = new WorkbookSettings();
+            ws.setEncoding("ISO-8859-1");
+            Workbook workbook = Workbook.getWorkbook(f.inputStream, ws)
+            Sheet sheet = workbook.getSheet(0)
+            if (f && !f.empty) {
+                def nombre = f.getOriginalFilename()
+                def parts = nombre.split("\\.")
+                nombre = ""
+                parts.eachWithIndex { obj, i ->
+                    if (i < parts.size() - 1) {
+                        nombre += obj
+                    } else {
+                        ext = obj
+                    }
                 }
-            }
 
-            def reps = [
-                    "a": "[àáâãäåæ]",
-                    "e": "[èéêë]",
-                    "i": "[ìíîï]",
-                    "o": "[òóôõöø]",
-                    "u": "[ùúûü]",
+                def reps = [
+                        "a": "[àáâãäåæ]",
+                        "e": "[èéêë]",
+                        "i": "[ìíîï]",
+                        "o": "[òóôõöø]",
+                        "u": "[ùúûü]",
 
-                    "A": "[ÀÁÂÃÄÅÆ]",
-                    "E": "[ÈÉÊË]",
-                    "I": "[ÌÍÎÏ]",
-                    "O": "[ÒÓÔÕÖØ]",
-                    "U": "[ÙÚÛÜ]",
+                        "A": "[ÀÁÂÃÄÅÆ]",
+                        "E": "[ÈÉÊË]",
+                        "I": "[ÌÍÎÏ]",
+                        "O": "[ÒÓÔÕÖØ]",
+                        "U": "[ÙÚÛÜ]",
 
-                    "n": "[ñ]",
-                    "c": "[ç]",
+                        "n": "[ñ]",
+                        "c": "[ç]",
 
-                    "N": "[Ñ]",
-                    "C": "[Ç]",
+                        "N": "[Ñ]",
+                        "C": "[Ç]",
 
-                    "" : "[\\!@#\\\$%\\^&*()-='\"\\/<>:;\\.,\\?]",
+                        "" : "[\\!@#\\\$%\\^&*()-='\"\\/<>:;\\.,\\?]",
 
-                    "_": "[\\s]"
-            ]
-            reps.each { k, v ->
-                nombre = (nombre.trim()).replaceAll(v, k)
-            }
+                        "_": "[\\s]"
+                ]
+                reps.each { k, v ->
+                    nombre = (nombre.trim()).replaceAll(v, k)
+                }
 
-            nombre = nombre + "." + ext
+                nombre = nombre + "." + ext
 
-            def pathFile = path + File.separatorChar + nombre
-            def src = new File(pathFile)
+                def pathFile = path + File.separatorChar + nombre
+                def src = new File(pathFile)
 
-            def tipoComponente = TipoElemento.findByDescripcion("Componente")
-            def tipoActivdad = TipoElemento.findByDescripcion("Actividad")
-            def unidad = UnidadEjecutora.findByNombre("YACHAY EP")
-            def proyectos = []
-            def componentes = []
-            def acts =[]
+                def tipoComponente = TipoElemento.findByDescripcion("Componente")
+                def tipoActivdad = TipoElemento.findByDescripcion("Actividad")
+                def unidad = UnidadEjecutora.findByNombre("YACHAY EP")
+                def proyectos = []
+                def componentes = []
+                def acts = []
 //                println "unidad "+unidad//
-            println "locale "+RCU.getLocale(request)
-            // println("path " + pathFile )
+                println "locale " + RCU.getLocale(request)
+                // println("path " + pathFile )
 
-            if (ext == 'xls') {
-                if (src.exists()) {
-                    flash.message = 'Ya existe un archivo con ese nombre. Por favor cambielo o elimine el otro archivo primero.'
-                    flash.estado = "error"
-                    flash.icon = "alert"
-                    redirect(action: 'cargarExcel')
-                    return
-                } else {
-                    println "inicio proceso "
-                    //   println "rows "+sheet.getRows()
-                    // println "columns "+sheet.getColumns()
-                    def posiciones = [:]
-                    posiciones["codigoProyecto"]=0
-                    posiciones["nombreProyecto"]=1
-                    posiciones["nombreComponente"]=2
-                    posiciones["codigoEsigef"]=4
-                    posiciones["numeroComponente"]=5
-                    posiciones["partida"]=6
-                    posiciones["numeroActividad"]=7
-                    posiciones["nombreActividad"]=8
-                    posiciones["responsable"]=9
-                    posiciones["inicio"]=10
-                    posiciones["fin"]=11
-                    posiciones["stotal"]=12
-                    posiciones["total"]=15
-                    for (int r = 1; r < sheet.rows; r++) {
-                        DateCell dCell = null;
-                        DateCell dCellF = null;
+                if (ext == 'xls') {
+                    if (src.exists()) {
+                        flash.message = 'Ya existe un archivo con ese nombre. Por favor cambielo o elimine el otro archivo primero.'
+                        flash.estado = "error"
+                        flash.icon = "alert"
+                        redirect(action: 'cargarExcel')
+                        return
+                    } else {
+                        println "inicio proceso "
+                        //   println "rows "+sheet.getRows()
+                        // println "columns "+sheet.getColumns()
+                        def posiciones = [:]
+                        posiciones["codigoProyecto"] = 0
+                        posiciones["nombreProyecto"] = 1
+                        posiciones["nombreComponente"] = 2
+                        posiciones["codigoEsigef"] = 4
+                        posiciones["numeroComponente"] = 5
+                        posiciones["partida"] = 6
+                        posiciones["numeroActividad"] = 7
+                        posiciones["nombreActividad"] = 8
+                        posiciones["responsable"] = 9
+                        posiciones["inicio"] = 10
+                        posiciones["fin"] = 11
+                        posiciones["stotal"] = 12
+                        posiciones["total"] = 15
+                        for (int r = 2; r < sheet.rows; r++) {
+                            DateCell dCell = null;
+                            DateCell dCellF = null;
                             println "row for ${r}------------------------------------------------------------------------------------------- " + sheet.getRow(r)[posiciones["codigoProyecto"]].contents
-                        //println "row ${r}--> " + sheet.getRow(r)[0].contents + " - " + sheet.getRow(r)[1].contents + " - " + sheet.getRow(r)[2].contents + " - " + sheet.getRow(r)[3].contents + " - " + sheet.getRow(r)[4].contents + " - " + sheet.getRow(r)[5].contents
-                        // println " --> "+sheet.getRow(r)[posiciones["codigoProyecto"]].contents+"  "+sheet.getRow(r)[posiciones["nombreProyecto"]].contents+"  "+sheet.getRow(r)[posiciones["numeroActividad"]].contents
-                            if (sheet.getRow(r)[posiciones["codigoProyecto"]].contents && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != "" && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != " " ) {
+                            if (sheet.getRow(r)[posiciones["codigoProyecto"]].contents && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != "" && sheet.getRow(r)[posiciones["codigoProyecto"]].contents != " ") {
                                 def total = sheet.getRow(r)[posiciones["total"]].contents
                                 if (total && total != "" && total != "-") {
                                     total = total.replaceAll(",", "")
@@ -430,9 +433,9 @@ class ProyectoController extends Shield {
                                     }
 
                                 }
-                                println "total " + total+" ---  "+sheet.getRow(r)[posiciones["total"]].contents+" --  "+sheet.getRow(r)[posiciones["stotal"]].contents
+                                println "total " + total + " ---  " + sheet.getRow(r)[posiciones["total"]].contents + " --  " + sheet.getRow(r)[posiciones["stotal"]].contents
                                 def proyecto = Proyecto.findByCodigoEsigef(sheet.getRow(r)[posiciones["codigoEsigef"]].contents)
-                               // println "proyecto " + proyecto + "   " + sheet.getRow(r)[posiciones["codigoEsigef"]].contents
+                                // println "proyecto " + proyecto + "   " + sheet.getRow(r)[posiciones["codigoEsigef"]].contents
                                 if (!proyecto) {
                                     proyecto = new Proyecto()
                                     proyecto.nombre = sheet.getRow(r)[posiciones["nombreProyecto"]].contents
@@ -490,7 +493,6 @@ class ProyectoController extends Shield {
                                     componente.save()
                                 }
                                 def numeroAct = sheet.getRow(r)[posiciones["numeroActividad"]].contents
-                                println "numero  act "+ sheet.getRow(r)[posiciones["numeroActividad"]].contents
                                 if (numeroAct) {
                                     numeroAct = numeroAct.split("-")
                                     numeroAct = numeroAct[1]
@@ -549,46 +551,45 @@ class ProyectoController extends Shield {
                                 if (!acts.contains(actividad.id))
                                     acts.add(actividad.id)
 
-                               // println "-->monto fin!!!!!!! para ${proyecto.id} " + proyecto.monto
+                                // println "-->monto fin!!!!!!! para ${proyecto.id} " + proyecto.monto
                             }
                         }
 
-                    f.transferTo(new File(pathFile))
-                    println("Guardado!!")
+//                    f.transferTo(new File(pathFile))
+//                    println("Guardado!!")
 
 
-
-                    flash.message = 'Archivo cargado existosamente.'
+                        flash.message = 'Archivo cargado existosamente.'
+                        flash.estado = "error"
+                        flash.icon = "alert"
+//                    redirect(action: 'cargarExcel')
+                        redirect(controller: 'proyecto', action: 'cargarExcel')
+                        return
+                    }
+                } else {
+                    flash.message = 'El archivo a cargar debe ser del tipo EXCEL con extensión XLS.'
                     flash.estado = "error"
                     flash.icon = "alert"
-//                    redirect(action: 'cargarExcel')
-                    redirect(controller: 'proyecto', action: 'cargarExcel')
+                    redirect(action: 'cargarExcel')
                     return
                 }
+
+
             } else {
-                flash.message = 'El archivo a cargar debe ser del tipo EXCEL con extensión XLS.'
+                flash.message = 'No se ha seleccionado ningun archivo para cargar'
                 flash.estado = "error"
                 flash.icon = "alert"
                 redirect(action: 'cargarExcel')
                 return
             }
-
-
-        } else {
-            flash.message = 'No se ha seleccionado ningun archivo para cargar'
+        } catch (e) {
+            flash.message = 'Error al cargar el archivo Excel, revise que el formato sea el correcto y que las columnas coincidan con el ejemplo descrito en la parte inferior'
             flash.estado = "error"
             flash.icon = "alert"
+            e.printStackTrace()
             redirect(action: 'cargarExcel')
             return
         }
-//        }catch (e){
-//            flash.message = 'Error al cargar el archivo Excel, revise que el formato sea el correcto y que las columnas coincidan con el ejemplo descrito en la parte inferior'
-//            flash.estado = "error"
-//            flash.icon = "alert"
-//            e.printStackTrace()
-//            redirect(action: 'cargarExcel')
-//            return
-//        }
 
     }
 

@@ -2,6 +2,7 @@ package vesta.parametros.poaPac
 
 import org.springframework.dao.DataIntegrityViolationException
 import vesta.parametros.UnidadEjecutora
+import vesta.proyectos.Proyecto
 import vesta.seguridad.Shield
 
 
@@ -16,7 +17,7 @@ class AnioController extends Shield {
      * Acción que redirecciona a la lista (acción "list")
      */
     def index() {
-        redirect(action:"list", params: params)
+        redirect(action: "list", params: params)
     }
 
     /**
@@ -29,18 +30,18 @@ class AnioController extends Shield {
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
         params.offset = params.offset ?: 0
-        if(all) {
+        if (all) {
             params.remove("max")
             params.remove("offset")
         }
         def list
-        if(params.search) {
+        if (params.search) {
             def c = Anio.createCriteria()
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-                    
-                    ilike("anio", "%" + params.search + "%")  
+
+                    ilike("anio", "%" + params.search + "%")
                 }
             }
         } else {
@@ -69,9 +70,9 @@ class AnioController extends Shield {
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def show_ajax() {
-        if(params.id) {
+        if (params.id) {
             def anioInstance = Anio.get(params.id)
-            if(!anioInstance) {
+            if (!anioInstance) {
                 render "ERROR*No se encontró Año."
                 return
             }
@@ -88,9 +89,9 @@ class AnioController extends Shield {
      */
     def form_ajax() {
         def anioInstance = new Anio()
-        if(params.id) {
+        if (params.id) {
             anioInstance = Anio.get(params.id)
-            if(!anioInstance) {
+            if (!anioInstance) {
                 render "ERROR*No se encontró Año."
                 return
             }
@@ -105,15 +106,15 @@ class AnioController extends Shield {
      */
     def save_ajax() {
         def anioInstance = new Anio()
-        if(params.id) {
+        if (params.id) {
             anioInstance = Anio.get(params.id)
-            if(!anioInstance) {
+            if (!anioInstance) {
                 render "ERROR*No se encontró Año."
                 return
             }
         }
         anioInstance.properties = params
-        if(!anioInstance.save(flush: true)) {
+        if (!anioInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar Año: " + renderErrors(bean: anioInstance)
             return
         }
@@ -126,7 +127,7 @@ class AnioController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
      */
     def delete_ajax() {
-        if(params.id) {
+        if (params.id) {
             def anioInstance = Anio.get(params.id)
             if (!anioInstance) {
                 render "ERROR*No se encontró Año."
@@ -146,24 +147,31 @@ class AnioController extends Shield {
         }
     } //delete para eliminar via ajax
 
-
     /*Yachay */
 
     /*Vista para la aprobación de una proforma dependiendo el año*/
-    def vistaAprobarAño () {
+
+    def vistaAprobarAño() {
         def anios = Anio.findAllByEstado(0)
-        [anios:anios]
+        [anios: anios]
+    }
+
+    /*Vista para la aprobación de una proforma dependiendo el año*/
+
+    def vistaAprobarAnioUnidad() {
+        def anios = Anio.findAllByEstado(0)
+        [anios: anios]
     }
     /**
      * Acción
      */
-    def aprobarAnio () {
+    def aprobarAnio() {
         if (request.method == 'POST') {
 
             def anio = Anio.get(params.anio)
-            anio.estado=1
+            anio.estado = 1
             anio.save(flush: true)
-            flash.message="Las asignaciones del año ${anio.anio} han sido aprobadas."
+            flash.message = "Las asignaciones del año ${anio.anio} han sido aprobadas."
             render "ok"
 
         } else {
@@ -174,63 +182,86 @@ class AnioController extends Shield {
     /**
      * Acción
      */
-    def detalleAnio () {
+    def detalleAnio() {
         def anio = Anio.get(params.anio)
-        def unidades = UnidadEjecutora.list([sort:"nombre"])
+        def proyectos = Proyecto.list([sort: "codigo"])
+
+        def arr = []
+        def total = 0
+        proyectos.each { proy ->
+            def tot = proy.getValorPlanificado()
+            def m = [:]
+            m.proyecto = proy
+            m.total = tot
+            arr += m
+            total += tot
+        }
+
+        arr = arr.sort { -it.total }
+
+        return [anio: anio, arr: arr, total: total]
+    }
+
+    /**
+     * Acción
+     */
+    def detalleAnioUnidad() {
+        def anio = Anio.get(params.anio)
+        def unidades = UnidadEjecutora.list([sort: "nombre"])
         def cn = dbConnectionService.getConnection()
         def datos = [:]
         unidades.each {
             def temp = []
-            cn.eachRow("select count(asgn__id) as cont,sum(asgnplan) as suma from asgn where unej__id=${it.id} and anio__id = ${anio.id} and mrlg__id is not null "){d->
-                if(d.suma==null)
+            cn.eachRow("select count(asgn__id) as cont,sum(asgnplan) as suma from asgn where unej__id=${it.id} and anio__id = ${anio.id} and mrlg__id is not null ") { d ->
+                if (d.suma == null)
                     temp.add(0)
                 else
                     temp.add(d.suma.toFloat().round(2))
-                if(d.cont==null)
+                if (d.cont == null)
                     temp.add(0)
                 else
                     temp.add(d.cont)
             }
-            cn.eachRow("select count(obra__id) as cont,sum(obracntd*obracsto) as suma from obra,asgn where asgn.asgn__id=obra.asgn__id and   asgn.unej__id=${it.id} and asgn.anio__id = ${anio.id} and asgn.mrlg__id is not null "){d->
-                if(d.suma==null)
+            cn.eachRow("select count(obra__id) as cont,sum(obracntd*obracsto) as suma from obra,asgn where asgn.asgn__id=obra.asgn__id and   asgn.unej__id=${it.id} and asgn.anio__id = ${anio.id} and asgn.mrlg__id is not null ") { d ->
+                if (d.suma == null)
                     temp.add(0)
                 else
                     temp.add(d.suma.toFloat().round(2))
-                if(d.cont==null)
+                if (d.cont == null)
                     temp.add(0)
                 else
                     temp.add(d.cont)
             }
 
-            cn.eachRow("select count(asgn__id) as cont,sum(asgnplan) as suma from asgn where unej__id=${it.id} and anio__id = ${anio.id} "){d->
-                if(d.suma==null)
+            cn.eachRow("select count(asgn__id) as cont,sum(asgnplan) as suma from asgn where unej__id=${it.id} and anio__id = ${anio.id} ") { d ->
+                if (d.suma == null)
                     temp.add(0)
                 else
                     temp.add(d.suma.toFloat().round(2))
-                if(d.cont==null)
+                if (d.cont == null)
                     temp.add(0)
                 else
                     temp.add(d.cont)
             }
-            cn.eachRow("select count(obra__id) as cont,sum(obracntd*obracsto) as suma from obra,asgn where asgn.asgn__id=obra.asgn__id and   asgn.unej__id=${it.id} and asgn.anio__id = ${anio.id}  "){d->
-                if(d.suma==null)
+            cn.eachRow("select count(obra__id) as cont,sum(obracntd*obracsto) as suma from obra,asgn where asgn.asgn__id=obra.asgn__id and   asgn.unej__id=${it.id} and asgn.anio__id = ${anio.id}  ") { d ->
+                if (d.suma == null)
                     temp.add(0)
                 else
                     temp.add(d.suma.toFloat().round(2))
-                if(d.cont==null)
+                if (d.cont == null)
                     temp.add(0)
                 else
                     temp.add(d.cont)
             }
             temp.add(it.id)
-            if((temp[0]+temp[2]+temp[4]+temp[6])>0)
-                datos.put(it.nombre,temp)
-            temp=[]
+            if ((temp[0] + temp[2] + temp[4] + temp[6]) > 0)
+                datos.put(it.nombre, temp)
+            temp = []
 
         }
 
         cn.close()
 
-        [datos:datos,anio:anio]
+        [datos: datos, anio: anio]
     }
 }

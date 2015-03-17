@@ -16,8 +16,9 @@ jQuery.validator.addMethod("notEqualTo", function (value, element, param) {
 jQuery.validator.addMethod("tdnMax", function (value, element, param) {
     value = parseFloat(str_replace(",", "", value));
     param = parseFloat(param);
+    param = Math.round(param * 100) / 100;
     //var sum = param + value;
-    //console.log("tdnMax", "elem ", element, "val ", value, 'param ', param, 'optional ', this.optional(element), 'sum ', sum, 'boolean ', value < sum);
+    //console.log("tdnMax", "elem ", element, "val ", value, 'param ', param, 'optional ', this.optional(element), 'boolean ', value < param);
     return this.optional(element) || value <= param;
 }, jQuery.validator.format("Ingrese un valor inferior o igual a {0}."));
 
@@ -31,19 +32,21 @@ jQuery.validator.addMethod("tdnMaxSuma", function (value, element, params) {
     var valid = false;
     value = parseFloat(str_replace(",", "", value));
     try {
-        var value2 = parseFloat($(params.params[0]).val());
+        var value2 = str_replace(",", "", $(params.params[0]).val());
+        value2 = parseFloat(value2);
         if (isNaN(value2)) {
             value2 = 0;
         }
         var max = parseFloat($(params.params[1]).data(params.params[2]));
+        max += parseFloat($(params.params[1]).data(params.params[3]));
         max = Math.round(max * 100) / 100;
         var total = value + value2;
-        if (total <= max + total) {
+        total = Math.round(total * 100) / 100;
+        if (total <= max) {
             valid = true;
         }
     } catch (e) {
         //console.log(e);
     }
-    //console.log("tdnMaxSuma: ", value, value2, max, total, params, valid);
     return this.optional(element) || valid;
 }, jQuery.validator.format("Please enter the correct value for {0} + {1}"));

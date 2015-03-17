@@ -19,9 +19,9 @@
                 Proyecto
             </label>
 
-            <div class="col-md-4">
+            <div class="col-md-9">
                 %{--<g:select name="proyecto.id" from="${proyectos}" class="form-control input-sm required" value="${proceso?.proyecto?.id}" optionKey="id" optionValue="descripcion" id="proyecto"/>--}%
-                <g:select name="proyecto.id" from="${proyectos}" class="form-control input-sm required" optionKey="id" optionValue="nombre" id="proyecto" style="width: 600px;"/>
+                <g:select name="proyecto.id" from="${proyectos}" class="form-control input-sm required" optionKey="id" optionValue="nombre" id="proyecto"/>
             </div>
         </span>
     </div>
@@ -37,10 +37,10 @@
                 <elm:datepicker name="fechaInicio" class="datepicker form-control input-sm" value="${proceso?.fechaInicio}"/>
             </div>
         </span>
-    </div>
+    %{--</div>--}%
 
 
-    <div class="form-group keeptogether">
+    %{--<div class="form-group keeptogether">--}%
         <span class="grupo">
             <label for="fechaFin" class="col-md-2 control-label">
                 Fecha Fin
@@ -75,9 +75,9 @@
                 Nombre:
             </label>
 
-            <div class="col-md-6">
+            <div class="col-md-9">
                 <g:textArea class="form-control input-sm required"
-                             name="nombre" value="${proceso?.nombre}" id="nombre" style="width: 600px;"/>
+                             name="nombre" value="${proceso?.nombre}" id="nombre"/>
             </div>
         </span>
     </div>
@@ -85,7 +85,7 @@
 %{--</fieldset>--}%
 <g:if test="${proceso && band}">
     <fieldset style="width: 95%;height: 260px;" class="ui-corner-all">
-        <legend>Agregar asignaciones</legend>
+        <legend>Asignaciones</legend>
         <input type="hidden" id="idAgregar">
 
         <div class="form-group keeptogether">
@@ -106,7 +106,7 @@
                     Componente
                 </label>
 
-                <div class="col-md-4" id="div_comp">
+                <div class="col-md-10" id="div_comp">
                     <g:select name="comp" from="${MarcoLogico.findAllByProyectoAndTipoElemento(proceso?.proyecto, TipoElemento.get(2))}" class="form-control input-sm" optionKey="id" optionValue="objeto" id="comp" noSelection="['-1': 'Seleccione...']"/>
                 </div>
             </span>
@@ -118,7 +118,7 @@
                     Actividad
                 </label>
 
-                <div class="col-md-4" id="divAct">
+                <div class="col-md-10" id="divAct">
                     <g:select name="actividad" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>
                 </div>
             </span>
@@ -130,7 +130,7 @@
                     Asignación
                 </label>
 
-                <div class="col-md-4" id="divAsg">
+                <div class="col-md-10" id="divAsg">
                     <g:select name="asignacion" from="${[]}" class="form-control input-sm" id="asignacion" noSelection="['-1': 'Seleccione...']"/>
                 </div>
             </span>
@@ -161,9 +161,8 @@
     </fieldset>
 </g:if>
 
-<fieldset style="width: 95%;height: 300px;overflow: auto; margin-top: 30px" class="ui-corner-all">
-    <legend>Asignaciones</legend>
-
+<fieldset style="width: 95%;height: 200px;overflow: auto; margin-top: 30px" class="ui-corner-all">
+    %{--<legend>Asignaciones</legend>--}%
     <div id="detalle" style="width: 95%"></div>
 </fieldset>
 
