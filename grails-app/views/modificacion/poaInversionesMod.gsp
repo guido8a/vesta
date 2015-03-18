@@ -6,7 +6,7 @@
     <meta name="layout" content="main"/>
     <script src="${resource(dir: 'js/plugins/fixed-header-table-1.3', file: 'jquery.fixedheadertable.js')}"></script>
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'js/plugins/fixed-header-table-1.3/css', file: 'defaultTheme.css')}"/>
-    <title>Modificaciones al PAPP del proyecto: ${proyecto}</title>
+    <title>Modificaciones al PAPP del proyecto: ${proyecto.toStringCompleto()}</title>
 </head>
 
 <body>

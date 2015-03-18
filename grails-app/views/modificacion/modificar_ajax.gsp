@@ -11,7 +11,9 @@
     <input type="hidden" name="tipoPag" value="inv">
     <input type="hidden" id="proyecto" name="proyecto" value="${proyecto.id}">
     <div style="height: 40px">
-        <div style="width: 170px;height: 35px;float: left"><b>Monto de la reasignación:</b></div> <input type="text" style="width: 100px;" id="monto" name="monto"> Máximo:<span id="max"></span>
+        <div style="width: 170px;height: 35px;float: left"><b>Monto de la reasignación:</b></div> <g:textField name="monto" id="monto" style="width: 100px"/>
+        %{--<input type="text" style="width: 100px;" id="monto" name="monto"> --}%
+        Máximo:<span id="max"></span>
     </div>
 
     <div style="margin-top: 10px;">
@@ -19,6 +21,6 @@
     </div>
 </g:form>
 
-<div class="alert alert-danger">
+<div class="alert alert-danger" style="margin-top: 20px">
     <b>Recuerde que despues de cada modificación las asignaciones de origen y destino deben REPROGRAMARSE</b>
 </div>

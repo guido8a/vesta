@@ -8,7 +8,10 @@
 <div style="margin-bottom: 10px">
     <b>Unidad:</b><g:select from="${vesta.parametros.UnidadEjecutora.list([sort:'nombre'])}" optionKey="id" optionValue="nombre" name="unidad" id="unidadAsg" noSelection="['-1':'Todas']"/><br><br>
     <b>Partida:</b>  <input type="hidden" class="prsp" value="${asignacionInstance?.presupuesto?.id}" id="prsp2" name="presupuesto.id">
-    <input type="text" id="prsp_desc2" desc="desc2" style="width: 100px;border: 1px solid black;text-align: center" class="buscar ui-corner-all">
+
+    <g:textField name="prsp" id="prsp_desc2" desc="desc2" style="width: 100px; text-align: center"/>
+    %{--<input type="text" id="prsp_desc2" desc="desc2" style="width: 100px;border: 1px solid black;text-align: center" class="buscar ui-corner-all">--}%
+
     <span style="font-size: smaller;">Haga clic para consultar</span><br>
 </div>
 %{--<a href="#" class="btn" id="btn_buscarAsg">Buscar</a>--}%
@@ -47,7 +50,7 @@ $("#prsp_desc2").click(function () {
 
                                     $.ajax({
                                         type:"POST",
-                                        url:"${createLink(action:'buscarPresupuesto',controller:'asignacion')}",
+                                        url:"${createLink(action:'buscarPresupuesto_ajax',controller:'asignacion')}",
                                         data:"parametro=" + $("#par").val() + "&tipo=" + $("#tipo").val(),
                                         success:function (msg) {
                                             $("#resultado").html(msg)

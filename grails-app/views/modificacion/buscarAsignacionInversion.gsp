@@ -37,7 +37,7 @@
                     ${asg.presupuesto.numero}
                 </td>
 
-                <td class="desc" style="width: 240">
+                <td class="desc" style="width: 240px">
                     ${asg.presupuesto.descripcion}
                 </td>
 
@@ -52,9 +52,7 @@
                 </td>
 
                 <td style="text-align: center">
-
-                    %{--<a href="#" class="btn origen ajax" iden="${asg.id}" icono="ico_001" clase="act_" band="0" tr="#det_${i}" prog="${asg.programa}" prsp_id="${asg.presupuesto.id}" prsp_num="${asg.presupuesto.numero}" desc="${asg.presupuesto.descripcion}" fuente="${asg.fuente}" valor="${(asg.redistribucion == 0) ? asg.planificado.toFloat().round(2) : asg.redistribucion.toFloat().round(2)}" actv="${asg.actividad}">Establecer como asignación de origen</a>--}%
-                    <a href="#" class="btn destino ajax" iden="${asg.id}" icono="ico_001" clase="act_" band="0" tr="#det_${i}"  prsp_id="${asg.presupuesto.id}" prsp_num="${asg.presupuesto.numero}" desc="${asg.presupuesto.descripcion}" fuente="${asg.fuente}" valor="${asg.priorizado}" actv="${asg.marcoLogico}" proy="${asg.marcoLogico.proyecto}">Establecer como asignación de destino</a>
+                   <a href="#" class="btn destino ajax" iden="${asg.id}" icono="ico_001" clase="act_" band="0" tr="#det_${i}"  prsp_id="${asg.presupuesto.id}" prsp_num="${asg.presupuesto.numero}" desc="${asg.presupuesto.descripcion}" fuente="${asg.fuente}" valor="${asg.priorizado}" actv="${asg.marcoLogico}" proy="${asg.marcoLogico.proyecto}">Establecer como asignación de destino</a>
                 </td>
             </tr>
 

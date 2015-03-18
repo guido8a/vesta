@@ -4,7 +4,11 @@
   Date: 17/03/15
   Time: 03:56 PM
 --%>
-<table class="ui-widget-content ui-corner-all" width="480px">
+
+<link href="/js/plugins/fixed-header-table-1.3/css/defaultTheme.css" rel="stylesheet" media="screen" />
+<link href="/js/plugins/fixed-header-table-1.3/css/myTheme.css" rel="stylesheet" media="screen" />
+
+<table class="table table-condensed table-bordered table-striped table-hover hidden" id="tblPresupuesto" style="width: 480px">
     <thead>
     <th>Número</th>
     <th>Descripcion</th>
@@ -17,12 +21,13 @@
             <td>${p.numero}</td>
             <td>${p.descripcion}</td>
             <td>${p.nivel}</td>
-            <td><a href="#" class="mas" prsp="${p.id}" nombre="${p.numero}" desc="${p.descripcion}">Añadir</a></td>
+            <td><a href="#" class="mas btn btn-sm btn-success" prsp="${p.id}" nombre="${p.numero}" desc="${p.descripcion}" title="Añadir"><i class="fa fa-plus"></i> </a></td>
         </tr>
     </g:each>
     </tbody>
 </table>
 <script type="text/javascript">
+
     $(".mas").button().click(function(){
         $("#presupuesto").val($(this).attr("prsp"))
         $("#txt_buscar").val($(this).attr("nombre"))
@@ -36,4 +41,21 @@
         $("#buscar").dialog("close")
         $("#buscarAgr").dialog("close")
     });
+
+//    $("#tblPresupuesto").fixedHeaderTable({
+//        height    : 420,
+//        autoResize: true,
+//        footer    : true
+//    });
+
+
+
+
+    setTimeout(function () {
+        $("#tblPresupuesto").fixedHeaderTable({
+            height : 420
+
+        }).removeClass("hidden");
+    }, 500);
+
 </script>

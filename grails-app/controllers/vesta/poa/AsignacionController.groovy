@@ -396,6 +396,35 @@ class AsignacionController extends Shield {
         }
     }
 
+    def buscarPresupuesto_ajax() {
+
+        println "buscar " + params
+        def prsp = []
+        if (!params.tipo) {
+            if (params.parametro && params.parametro.trim().size() > 0) {
+                prsp = Presupuesto.findAll("from Presupuesto where numero like '%${params.parametro}%' and movimiento=1 order by numero")
+            } else {
+                println "aqui "
+                prsp = Presupuesto.findAllByMovimiento(1, [sort: "numero", max: 20])
+            }
+        } else {
+            if (params.tipo == "1") {
+                if (params.parametro && params.parametro.trim().size() > 0) {
+                    prsp = Presupuesto.findAll("from Presupuesto where numero like '%${params.parametro}%' and movimiento=1 order by numero")
+                } else {
+                    prsp = Presupuesto.findAllByMovimiento(1, [sort: "numero", max: 20])
+                }
+            } else {
+                if (params.parametro && params.parametro.trim().size() > 0) {
+                    prsp = Presupuesto.findAll("from Presupuesto where lower(descripcion) like lower('%${params.parametro}%') and movimiento=1 order by numero")
+                } else {
+                    prsp = Presupuesto.findAllByMovimiento(1, [sort: "descripcion", max: 20])
+                }
+            }
+        }
+        [prsp: prsp]
+    }
+
     /**
      * Acción
      */
