@@ -184,7 +184,7 @@
                     <g:formatNumber number="${asg.priorizado}"
                                     format="###,##0"
                                     minFractionDigits="2" maxFractionDigits="2"/>
-                    <g:set var="total" value="${total.toDouble()+asg.priorizado}"></g:set>
+                    <g:set var="total" value="${total.toDouble()+asg.priorizado}"/>
                 </td>
 
                 <td style="text-align: center">
@@ -262,7 +262,7 @@
 %{--</div>--}%
 
 
-<div id="ajx_asgn" style="width:520px;"></div>
+%{--<div id="ajx_asgn" style="width:520px;"></div>--}%
 
 %{--<div id="buscarAsg_dlg">--}%
 
@@ -280,27 +280,28 @@
     %{--<div id="resultadoAsg" style="width: 450px;margin-top: 10px;" class="ui-corner-all"></div>--}%
 %{--</div>--}%
 
-<div id="buscar">
-    <input type="hidden" id="id_txt">
+%{--<div id="buscar">--}%
+    %{--<input type="hidden" id="id_txt">--}%
 
-    <div>
-        Buscar por:
-        <select id="tipo">
-            <option value="1">Número</option>
-            <option value="2">Descripción</option>
-        </select>
+    %{--<div>--}%
+        %{--Buscar por:--}%
+        %{--<select id="tipo">--}%
+            %{--<option value="1">Número</option>--}%
+            %{--<option value="2">Descripción</option>--}%
+        %{--</select>--}%
 
-        <input type="text" id="par" style="width: 160px;">
+        %{--<input type="text" id="par" style="width: 160px;">--}%
 
-        <a href="#" class="btn" id="btn_buscar">Buscar</a>
-    </div>
+        %{--<a href="#" class="btn" id="btn_buscar">Buscar</a>--}%
+    %{--</div>--}%
 
-    <div id="resultado" style="width: 450px;margin-top: 10px;" class="ui-corner-all"></div>
-</div>
-<div id="load">
-    <img src="${g.resource(dir:'images',file: 'loading.gif')}" alt="Procesando">
-    Procesando
-</div>
+    %{--<div id="resultado" style="width: 450px;margin-top: 10px;" class="ui-corner-all"></div>--}%
+%{--</div>--}%
+
+%{--<div id="load">--}%
+    %{--<img src="${g.resource(dir:'images',file: 'loading.gif')}" alt="Procesando">--}%
+    %{--Procesando--}%
+%{--</div>--}%
 
 
 <script type="text/javascript">
@@ -317,18 +318,18 @@
         $("#h_origen").val("")
         $("#h_destino").val("")
 
-        $("#load").dialog({
-            width:100,
-            height:100,
-            position:"center",
-            title:"Procesando",
-            modal:true,
-            autoOpen:false,
-            resizable:false,
-            open: function(event, ui) {
-                $(event.target).parent().find(".ui-dialog-titlebar-close").remove()
-            }
-        });
+//        $("#load").dialog({
+//            width:100,
+//            height:100,
+//            position:"center",
+//            title:"Procesando",
+//            modal:true,
+//            autoOpen:false,
+//            resizable:false,
+//            open: function(event, ui) {
+//                $(event.target).parent().find(".ui-dialog-titlebar-close").remove()
+//            }
+//        });
 
 
         $(".origen").button({icons:{ primary:"ui-icon-arrowrefresh-1-n"},text:false}).click(function(){
@@ -384,7 +385,6 @@
 
 
         $("#modificar").click(function(){
-
             $.ajax({
                 type: "POST",
                 url: "${createLink(controller:"modificacion", action: "modificar_ajax")}",
@@ -624,6 +624,14 @@
                                 label     : "Aceptar",
                                 className : "btn-success",
                                 callback  : function () {
+                                    $.ajax({
+                                        type:"POST",
+                                        url:"${createLink(action:'buscarAsignacionInversion',controller:'modificacion')}",
+                                        data:"unidad=" + $("#unidadAsg").val() + "&partida=" + $("#prsp2").val()+"&anio=${actual.id}",
+                                        success:function (msg) {
+                                            $("#resultadoAsg").html(msg)
+                                        }
+                                    });
 
                                 } //callback
                             } //guardar
@@ -637,16 +645,16 @@
 
 
 
-        $("#btn_buscarAsg").click(function () {
-            $.ajax({
-                type:"POST",
-                url:"${createLink(action:'buscarAsignacionInversion',controller:'modificacion')}",
-                data:"unidad=" + $("#unidadAsg").val() + "&partida=" + $("#prsp2").val()+"&anio=${actual.id}",
-                success:function (msg) {
-                    $("#resultadoAsg").html(msg)
-                }
-            });
-        });
+        %{--$("#btn_buscarAsg").click(function () {--}%
+            %{--$.ajax({--}%
+                %{--type:"POST",--}%
+                %{--url:"${createLink(action:'buscarAsignacionInversion',controller:'modificacion')}",--}%
+                %{--data:"unidad=" + $("#unidadAsg").val() + "&partida=" + $("#prsp2").val()+"&anio=${actual.id}",--}%
+                %{--success:function (msg) {--}%
+                    %{--$("#resultadoAsg").html(msg)--}%
+                %{--}--}%
+            %{--});--}%
+        %{--});--}%
 
 
 //        $("#buscarAsg_dlg").dialog({
@@ -666,16 +674,16 @@
         $("#buscar").dialog("open")
     });
 
-    $("#btn_buscar").click(function () {
-        $.ajax({
-            type:"POST",
-            url:"${createLink(action:'buscarPresupuesto',controller:'asignacion')}",
-            data:"parametro=" + $("#par").val() + "&tipo=" + $("#tipo").val(),
-            success:function (msg) {
-                $("#resultado").html(msg)
-            }
-        });
-    });
+    %{--$("#btn_buscar").click(function () {--}%
+        %{--$.ajax({--}%
+            %{--type:"POST",--}%
+            %{--url:"${createLink(action:'buscarPresupuesto',controller:'asignacion')}",--}%
+            %{--data:"parametro=" + $("#par").val() + "&tipo=" + $("#tipo").val(),--}%
+            %{--success:function (msg) {--}%
+                %{--$("#resultado").html(msg)--}%
+            %{--}--}%
+        %{--});--}%
+    %{--});--}%
 
 //    $("#buscar").dialog({
 //        title:"Cuentas presupuestarias",

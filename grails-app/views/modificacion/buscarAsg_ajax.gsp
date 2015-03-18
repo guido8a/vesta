@@ -13,3 +13,53 @@
 </div>
 %{--<a href="#" class="btn" id="btn_buscarAsg">Buscar</a>--}%
 <div id="resultadoAsg" style="width: 450px;margin-top: 10px;" class="ui-corner-all"></div>
+
+<script type="text/javascript">
+
+
+$("#prsp_desc2").click(function () {
+
+//            $("#buscarAsg_dlg").dialog("open")
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller:"modificacion", action: "buscarPartida_ajax")}",
+            data: {
+                id: ""
+            },
+            success: function (msg){
+                bootbox.dialog ({
+                    id: "dlgBuscarPartida",
+                    title: "Buscar Partidas",
+//                        class: "modal-lg",
+                    message: msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "Buscar",
+                            className : "btn-success",
+                            callback  : function () {
+
+                                    $.ajax({
+                                        type:"POST",
+                                        url:"${createLink(action:'buscarPresupuesto',controller:'asignacion')}",
+                                        data:"parametro=" + $("#par").val() + "&tipo=" + $("#tipo").val(),
+                                        success:function (msg) {
+                                            $("#resultado").html(msg)
+                                        }
+                                    });
+
+                            } //callback
+                        } //guardar
+                    }
+                })
+            }
+        });
+    });
+
+</script>

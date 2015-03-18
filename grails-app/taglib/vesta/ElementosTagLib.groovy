@@ -847,6 +847,7 @@ class ElementosTagLib {
      * @param solicitud (opcional) el id de la solicitud
      */
     def imprimeNumero = { attrs ->
+        println("-->" + attrs)
         def aval = null
         def sol = null
         if (attrs.aval)
@@ -860,12 +861,18 @@ class ElementosTagLib {
         }
         if (sol)
             num = sol.numero.toString()
+
+        println("num " + num)
+
         if (num) {
             (3 - num.length()).times {
                 output += "0"
             }
             output += num
         }
+
+        println("out " + output)
+
         out << output
     }
 

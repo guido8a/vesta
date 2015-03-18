@@ -813,17 +813,7 @@ class ModificacionController  {
             }
 
             c = Asignacion.createCriteria()
-//            def asgs = c.list {
-//                and {
-//                    eq("anio", actual)
-//                    eq("unidad", unidad)
-//                    isNull("marcoLogico")
-//                }
-//            }
-//            if (params.todo == "1") {
-//                asignaciones = asignaciones
-//                asignaciones = asignaciones.sort {it.id}
-//            }
+
             def total = 0
             asignaciones.each { asg ->
                 total += asg.priorizado
@@ -1053,7 +1043,7 @@ class ModificacionController  {
                     res += temp
             }
         }
-        println "res " + res
+//        println "res " + res
         [res: res]
 
     }
@@ -1319,6 +1309,13 @@ class ModificacionController  {
 
     def buscarAsg_ajax () {
 
+    }
+
+    /**
+     * Acción
+     */
+
+    def buscarPartida_ajax (){
 
     }
 
