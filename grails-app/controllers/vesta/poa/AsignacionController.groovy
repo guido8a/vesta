@@ -735,6 +735,7 @@ class AsignacionController extends Shield {
             if (asig)
                 asgProy += asig
         }
+
         def meses = Mes.list([sort: "id"])
         [inversiones: asgProy, actual: actual, meses: meses, proyecto: proyecto]
     }

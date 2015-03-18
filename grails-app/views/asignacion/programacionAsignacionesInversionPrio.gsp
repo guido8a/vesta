@@ -19,7 +19,11 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
+        <a href="#" class="btn btn-default btnRegresar">
+            <i class="fa fa-arrow-left"></i> Regresar
+        </a>
         <g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectov2"  params="[id:proyecto.id,anio:actual.id]"><i class="fa fa-money"></i> Asignaciones</g:link>
+
         <div style="margin-left: 15px;display: inline-block;">
             <b style="font-size: 11px">Año:</b>
             <g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual.id}" style="font-size: 11px;width: 150px;display: inline" class="form-control"/>
@@ -67,7 +71,7 @@
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                 <g:each in="${meses}" var="mes" status="j">
                     <g:if test="${ProgramacionAsignacion.findAll('from ProgramacionAsignacion where asignacion = '+asg.id+' and mes = '+mes.id+' and padre is null').size()>0}" >
-                        <g:set var="progra" value="${ProgramacionAsignacion.findAll('from ProgramacionAsignacion where asignacion = '+asg.id+' and mes = '+mes.id+' and padre is null')?.pop()}"></g:set>
+                        <g:set var="progra" value="${ProgramacionAsignacion.findAll('from ProgramacionAsignacion where asignacion = '+asg.id+' and mes = '+mes.id+' and padre is null')?.pop()}"/>
                         <td class="${mes}"  style="width: 70px;padding: 0px;height: 30px">
                             <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money"  mes="${mes.id}"   value="${g.formatNumber(number:progra?.valor, format:'###,##0', minFractionDigits:'2',maxFractionDigits:'2')}">
                             <g:set var="totalFila" value="${totalFila+=progra.valor}"></g:set>
@@ -190,6 +194,12 @@
                 }
             });
         }
+
+    });
+
+
+    $(".btnRegresar").click(function () {
+        window.history.back()
 
     });
 

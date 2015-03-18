@@ -11,11 +11,9 @@
 
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
-
         <div class="fila">
 
         </div>
-
 
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
