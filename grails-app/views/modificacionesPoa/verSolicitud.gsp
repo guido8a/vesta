@@ -155,10 +155,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>${sol.origen.marcoLogico.proyecto}</td>
-                    <td>${sol.origen.marcoLogico.marcoLogico}</td>
-                    <td>${sol.fecha.format("yyyy") + '-' + sol.origen.marcoLogico.marcoLogico.numero}</td>
-                    <td>${sol.origen.marcoLogico}</td>
+                    <td>${sol.origen.marcoLogico.proyecto.toStringCompleto()}</td>
+                    <td>${sol.origen.marcoLogico.marcoLogico.toStringCompleto()}</td>
+                    <td>${sol.fecha.format("yyyy") + '-' + sol.origen.marcoLogico.numero}</td>
+                    <td>${sol.origen.marcoLogico.toStringCompleto()}</td>
                     <td>${sol.origen.presupuesto.numero}</td>
                     <g:if test="${sol.tipo != 'A'}">
                         <td class="valor">
@@ -208,10 +208,10 @@
                 <g:if test="${sol.tipo != 'A'}">
                     <tr>
                         <g:if test="${sol.destino}">
-                            <td>${sol.destino.marcoLogico.proyecto}</td>
-                            <td>${sol.destino.marcoLogico.marcoLogico}</td>
-                            <td>${sol.fecha.format("yyyy") + '-' + sol.destino.marcoLogico.marcoLogico.numero}</td>
-                            <td>${sol.destino.marcoLogico}</td>
+                            <td>${sol.destino.marcoLogico.proyecto.toStringCompleto()}</td>
+                            <td>${sol.destino.marcoLogico.marcoLogico.toStringCompleto()}</td>
+                            <td>${sol.fecha.format("yyyy") + '-' + sol.destino.marcoLogico.numero}</td>
+                            <td>${sol.destino.marcoLogico.toStringCompleto()}</td>
                             <td>${sol.destino.presupuesto.numero}</td>
                             <td class="valor">
                                 <g:formatNumber number="${sol.valorDestinoSolicitado}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
@@ -231,9 +231,9 @@
                         </g:if>
                         <g:else>
                             <g:if test="${sol.tipo == 'N'}">
-                                <td>${sol.origen.marcoLogico.proyecto}</td>
-                                <td>${sol.origen.marcoLogico.marcoLogico}</td>
-                                <td>${sol.fecha.format("yyyy") + '-' + sol.origen.marcoLogico.marcoLogico.numero}</td>
+                                <td>${sol.origen.marcoLogico.proyecto.toStringCompleto()}</td>
+                                <td>${sol.origen.marcoLogico.marcoLogico.toStringCompleto()}</td>
+                                <td>${sol.fecha.format("yyyy") + '-' + sol.origen.marcoLogico.numero}</td>
                                 <td>${sol.actividad}</td>
                                 <td>${sol.presupuesto.numero}</td>
                                 <td class="valor">
@@ -252,10 +252,10 @@
                                 <g:set var="tf" value="${tf + sol.valor}"/>
                             </g:if>
                             <g:else>
-                                <td>${sol.origen.marcoLogico.proyecto}</td>
-                                <td>${sol.origen.marcoLogico.marcoLogico}</td>
-                                <td>${sol.fecha.format("yyyy") + '-' + sol.origen.marcoLogico.marcoLogico.numero}</td>
-                                <td>${sol.origen.marcoLogico}</td>
+                                <td>${sol.origen.marcoLogico.proyecto.toStringCompleto()}</td>
+                                <td>${sol.origen.marcoLogico.marcoLogico.toStringCompleto()}</td>
+                                <td>${sol.fecha.format("yyyy") + '-' + sol.origen.marcoLogico.numero}</td>
+                                <td>${sol.origen.marcoLogico.toStringCompleto()}</td>
                                 <td>${sol.origen.presupuesto.numero}</td>
                                 <td class="valor">
                                     <g:formatNumber number="${0}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
