@@ -13,23 +13,22 @@ class ElementosTagLib {
     /**
      * pone un field segun el standar rapido rapido
      */
-   def fieldRapido = {attrs, body->
-       def html = ""
-       def claseField = (attrs.claseField?attrs.claseField:'col-md-3')
-       def claseLabel = (attrs.claseLabel?attrs.claseLabel:'col-md-2')
-       html+='<div class="form-group keeptogether">'
-       html+='<span class="grupo">'
-       html+='<label class="'+claseLabel+' control-label">'
-       html+= attrs.label
-       html+='</label>'
-       html+='<div class="'+claseField+'">'
-       html+=body()
-       html+='</div>'
-       html+='</span>'
-       html+='</div>'
-       out<<html
-   }
-
+    def fieldRapido = { attrs, body ->
+        def html = ""
+        def claseField = (attrs.claseField ? attrs.claseField : 'col-md-3')
+        def claseLabel = (attrs.claseLabel ? attrs.claseLabel : 'col-md-2')
+        html += '<div class="form-group keeptogether">'
+        html += '<span class="grupo">'
+        html += '<label class="' + claseLabel + ' control-label">'
+        html += attrs.label
+        html += '</label>'
+        html += '<div class="' + claseField + '">'
+        html += body()
+        html += '</div>'
+        html += '</span>'
+        html += '</div>'
+        out << html
+    }
 
     /**
      * pone un contenedor vertical u horizontal
@@ -42,39 +41,39 @@ class ElementosTagLib {
      * @param titulo un String con el título del container
      */
 
-    def container = {attrs, body->
+    def container = { attrs, body ->
         def tipo = attrs.tipo
-        def clase =""
-        def titulo=""
+        def clase = ""
+        def titulo = ""
 
-        if(tipo=="vertical"){
-            clase="vertical-container ${attrs.border?'bordered ui-corner-all':''}"
-            titulo='<div class="css-vertical-text" style="color:'+attrs.color+'">'+attrs.titulo+'</div>'
-            if(!attrs.linea){
-                titulo+='<div class="linea"></div>'
+        if (tipo == "vertical") {
+            clase = "vertical-container ${attrs.border ? 'bordered ui-corner-all' : ''}"
+            titulo = '<div class="css-vertical-text" style="color:' + attrs.color + '">' + attrs.titulo + '</div>'
+            if (!attrs.linea) {
+                titulo += '<div class="linea"></div>'
             }
-        }else{
-            clase="horizontal-container ${attrs.border?'bordered ui-corner-all':''}"
-            titulo='<div class="titulo-azul"  style="color:'+attrs.color+'">'+attrs.titulo+'</div>'
+        } else {
+            clase = "horizontal-container ${attrs.border ? 'bordered ui-corner-all' : ''}"
+            titulo = '<div class="titulo-azul"  style="color:' + attrs.color + '">' + attrs.titulo + '</div>'
         }
 
-        def html =""
-        html+='<div class="'+clase+'" style="'+attrs.style+';padding-bottom: 10px">'
-        html+=titulo
-        out<<html<<body()+"</div>"
+        def html = ""
+        html += '<div class="' + clase + '" style="' + attrs.style + ';padding-bottom: 10px">'
+        html += titulo
+        out << html << body() + "</div>"
     }
 /**
  * crea un modal, al modal hay que agregarle el modal-body y el modal-footer
  */
-    def modal = {attrs, body->
+    def modal = { attrs, body ->
         def id = attrs.id
-        def html ='<div class="modal fade '+attrs.clase+' " id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel'+attrs.id+'" aria-hidden="true" style="'+attrs.style+'">'
-        html +='<div class="modal-dialog">\n' +
+        def html = '<div class="modal fade ' + attrs.clase + ' " id="' + id + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel' + attrs.id + '" aria-hidden="true" style="' + attrs.style + '">'
+        html += '<div class="modal-dialog">\n' +
                 '    <div class="modal-content">\n' +
                 '      <div class="modal-header">'
-        html+=' <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-        html+=' <h4 class="modal-title" id="myModalLabel-'+attrs.id+'">'+attrs.titulo+'</h4></div>'
-        out<<html<<body()<<'</div></div></div>'
+        html += ' <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+        html += ' <h4 class="modal-title" id="myModalLabel-' + attrs.id + '">' + attrs.titulo + '</h4></div>'
+        out << html << body() << '</div></div></div>'
     }
     /**
      * crea un div para el not found (con el fantasmita)
@@ -226,9 +225,8 @@ class ElementosTagLib {
      *      id              id (opcional, si no existe usa el mismo name)
      *      value           value (groovy Date o String)
      *      format          format para el Date (groovy)
-     *      minDate         fecha mínima para el datepicker. cualquier cosa anterior se deshabilita
-     *                          ej: +5d para 5 días después de la fecha actual
-     *      maxDate         fecha máxima para el datepicker. cualquier cosa posterior se deshabilita
+     *      minDate         groovy Date o String. fecha mínima para el datepicker. cualquier cosa anterior se deshabilita
+     *      maxDate         groovy Date o String. fecha máxima para el datepicker. cualquier cosa posterior se deshabilita
      *      orientation     String. Default: “auto”
      *                               A space-separated string consisting of one or two of “left” or “right”, “top” or “bottom”, and “auto” (may be omitted);
      *                                      for example, “top left”, “bottom” (horizontal orientation will default to “auto”), “right” (vertical orientation will default to “auto”),
@@ -242,28 +240,22 @@ class ElementosTagLib {
      *      todayHighlight  boolean. default: true marca la fecha actual
      *      beforeShowDay   funcion. funcion que se ejecuta antes de mostrar el día. se puede utilizar para deshabilitar una fecha en particular
      *                          ej:
-     *                               beforeShowDay: function (date){
-     *                                   if (date.getMonth() == (new Date()).getMonth())
-     *                                       switch (date.getDate()){
-     *                                           case 4:
-     *                                               return {
-     *                                                   tooltip: 'Example tooltip',
+     *                               beforeShowDay: function (date){*                                   if (date.getMonth() == (new Date()).getMonth())
+     *                                       switch (date.getDate()){*                                           case 4:
+     *                                               return {*                                                   tooltip: 'Example tooltip',
      *                                                   classes: 'active'
-     *                                               };
+     *};
      *                                           case 8:
      *                                               return false;
      *                                           case 12:
      *                                               return "green";
-     *                                       }
-     *                                   }
-     *                                }
+     *}*}*                                }
      *      onChangeDate    funcion. funcion q se ejecuta al cambiar una fecha. se manda solo el nombre, sin parentesis, como parametro recibe el datepicker y el objeto
      *                          ej: onChangeDate="miFuncion"
      *                          function miFuncion($elm, e) {*
      *                              console.log($elm); //el objeto jquery del datepicker, el textfield
      *                              console.log(e); //el objeto que pasa el plugin
-     *                          }
-     *      daysOfWeekDisabled  lista de números para deshabilitar ciertos días: 0:domingo, 1:lunes, 2:martes, 3:miercoles, 4:jueves, 5:viernes, 6:sabado
+     *}*      daysOfWeekDisabled  lista de números para deshabilitar ciertos días: 0:domingo, 1:lunes, 2:martes, 3:miercoles, 4:jueves, 5:viernes, 6:sabado
      *      img             imagen del calendario. clase de glyphicons o font awsome
      **/
     def datepicker = { attrs ->
@@ -280,7 +272,7 @@ class ElementosTagLib {
         if (attrs.id) {
             id = attrs.id
         }
-        def readonly = attrs.readonly ?: true
+        def readonly = attrs.readonly ?: false
         def value = attrs.value
 
         def clase = attrs["class"]
@@ -298,7 +290,7 @@ class ElementosTagLib {
         }
 
         def format = attrs.format ?: defaultFormat
-        def formatJS = attrs.formatJS ?: format.replaceAll("d", "D").replaceAll("yyyy","YYYY")
+        def formatJS = attrs.formatJS ?: format.replaceAll("d", "D").replaceAll("yyyy", "YYYY")
 
         def startDate = attrs.minDate ?: false
         def endDate = attrs.maxDate ?: false
@@ -380,11 +372,21 @@ class ElementosTagLib {
         div += "</div>" + br
 
         def js = "<script type=\"text/javascript\">" + br
-        js += '$("#' + id + '").datetimepicker({' + br
+        js += '$("#' + id + '").focus(function() {' +
+                '$(this).prop(\'readonly\', true);' +
+                '}).blur(function() {' +
+                '$(this).prop(\'readonly\', false);' +
+                '}).datetimepicker({' + br
         if (startDate) {
+            if (startDate instanceof Date) {
+                startDate = "moment(${startDate.format('dd/MM/yyyy')})"
+            }
             js += "minDate: '${startDate}'," + br
         }
         if (endDate) {
+            if (endDate instanceof Date) {
+                endDate = "moment(${endDate.format('dd/MM/yyyy')})"
+            }
             js += "maxDate: '${endDate}'," + br
         }
         js += 'pickDate: ' + showDate + ',' + br

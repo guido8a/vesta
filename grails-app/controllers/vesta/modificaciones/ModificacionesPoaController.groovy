@@ -12,8 +12,9 @@ import vesta.proyectos.MarcoLogico
 import vesta.proyectos.Proyecto
 import vesta.seguridad.Firma
 import vesta.seguridad.Persona
+import vesta.seguridad.Shield
 
-class ModificacionesPoaController {
+class ModificacionesPoaController extends Shield {
 
     def index = {}
 

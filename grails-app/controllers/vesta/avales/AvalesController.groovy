@@ -45,6 +45,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * @param anio el id del año. Si no existe el año tomará el actual
      */
     def crearProceso_ajax = {
+        println "PARAMS: " + params
         def proceso
         def actual
         def band = true
@@ -81,10 +82,10 @@ class AvalesController extends vesta.seguridad.Shield {
     }
 
     /**
-     * Acción que muestra la pantalla que permite crear modificar una asignacion
+     * Acción llamada con ajax que muestra la pantalla que permite crear modificar una asignacion
      */
 
-    def editarAsignacion() {
+    def editarAsignacion_ajax() {
         def band = params.band
         def asg = ProcesoAsignacion.get(params.id)
         [band: band, asg: asg, max: params.max]
@@ -95,7 +96,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * Acción llamada con ajax que muestra las asignaciones de un proceso
      * @param id el id del proceso
      */
-    def getDetalle = {
+    def getDetalle_ajax = {
         def proceso
         def detalle = []
         proceso = ProcesoAval.get(params.id)
@@ -112,12 +113,11 @@ class AvalesController extends vesta.seguridad.Shield {
     }
 
     /**
-     * Acción que guarda el proceso y redirecciona a la acción crearProceso una vez completado.
+     * Acción que guarda el proceso
      */
     def saveProceso = {
         println "save proceso " + params
-        params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio_input)
-        params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin_input)
+
         def proceso
         if (params.id)
             proceso = ProcesoAval.get(params.id)
@@ -203,17 +203,18 @@ class AvalesController extends vesta.seguridad.Shield {
      * @param id el componente padre de las actividades
      * @param unidad el id de la unidad
      */
-    def cargarActividades = {
+    def cargarActividades_ajax = {
         def comp = MarcoLogico.get(params.id)
         def unidad = UnidadEjecutora.get(params.unidad)
-        [acts: MarcoLogico.findAllByMarcoLogicoAndResponsable(comp, unidad, [sort: "numero"])]
+        return [acts: MarcoLogico.findAllByMarcoLogicoAndResponsable(comp, unidad, [sort: "numero"])]
     }
+
     /**
      * Acción llamada con ajax que carga las asignaciones de una cierta actividad (MarcoLogico) de un cierto año
      * @param id el id de la actividad
      * @param anio el id del año
      */
-    def cargarAsignaciones = {
+    def cargarAsignaciones_ajax = {
 //        println "cargar asg " + params
         def act = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
@@ -245,6 +246,164 @@ class AvalesController extends vesta.seguridad.Shield {
         def procesos = ProcesoAval.list([sort: "id"])
         [procesos: procesos]
     }
+
+    /**
+     * Acción que muestra la pantalla de creación de solicitud de aval
+     */
+    def nuevaSolicitud() {
+        def proceso
+        def actual
+        def band = true
+        def proyectos = []
+        def unidad = session.usuario.unidad
+        Asignacion.findAllByUnidad(unidad).each {
+            def p = it.marcoLogico.proyecto
+            if (!proyectos.contains(p)) {
+                proyectos.add(p)
+            }
+        }
+        proyectos.sort { it.nombre }
+        if (params.anio)
+            actual = Anio.get(params.anio)
+        else
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        if (params.id) {
+            proceso = ProcesoAval.get(params.id)
+            def aval = Aval.findAllByProceso(proceso)
+
+            aval.each {
+                //println "aval "+it.estado.descripcion+"  "+it.estado.codigo
+                if (it.estado?.codigo == "E01" || it.estado?.codigo == "E02" || it.estado.codigo == "E05" || it.estado.codigo == "E06" || it.estado.codigo == "EF1" || it.estado.codigo == "EF4") {
+                    band = false
+                }
+            }
+        }
+
+        return [proyectos: proyectos, proceso: proceso, actual: actual, band: band, unidad: unidad]
+    }
+
+    /**
+     * Acción que guarda el proceso y redirecciona a la acción solicitudAsignaciones una vez completado.
+     */
+    def saveProcesoWizard = {
+        println "save proceso " + params
+
+        def proceso
+        if (params.id)
+            proceso = ProcesoAval.get(params.id)
+        else
+            proceso = new ProcesoAval()
+        proceso.properties = params
+        if (!proceso.save(flush: true)) {
+            flash.message = "Ha ocurrido un error al guardar el proceso: " + renderErrors(bean: proceso)
+            flash.tipo = "error"
+            redirect(action: 'nuevaSolicitud')
+            return
+        } else {
+            def texto
+            if (params.id) {
+                texto = "Actualización"
+            } else {
+                texto = "Creación"
+            }
+            texto += "  de proceso exitosa. Por favor ingrese las asignaciones"
+            flash.message = texto
+            flash.tipo = "success"
+            redirect(action: 'solicitudAsignaciones', id: proceso.id)
+            return
+        }
+    }
+
+    /**
+     * Acción que muestra la pantalla de selección de asignaciones para el proceso de creación de solicitud de aval
+     */
+    def solicitudAsignaciones() {
+        if (params.id) {
+            def proceso = ProcesoAval.get(params.id)
+            def unidad = session.usuario.unidad
+
+            def band = true
+            def aval = Aval.findAllByProceso(proceso)
+
+            aval.each {
+                //println "aval "+it.estado.descripcion+"  "+it.estado.codigo
+                if (it.estado?.codigo == "E01" || it.estado?.codigo == "E02" || it.estado.codigo == "E05" || it.estado.codigo == "E06" || it.estado.codigo == "EF1" || it.estado.codigo == "EF4") {
+                    band = false
+                }
+            }
+
+            return [proceso: proceso, unidad: unidad, band: band]
+        } else {
+            redirect(action: "nuevaSolicitud")
+        }
+    }
+
+    /**
+     * Acción que mustra la pantalla de creación de la solicitud de aval
+     */
+    def solicitudProceso() {
+        def readOnly = false
+        if (params.id) {
+            def proceso = ProcesoAval.get(params.id)
+
+            //println "solicictar aval"
+            def unidad = UnidadEjecutora.get(session.unidad.id)
+            def personasFirma = Persona.findAllByUnidad(unidad)
+            def aux = Auxiliar.list()
+            def referencial = 7000
+            if (aux.size() > 0) {
+                aux = aux.pop()
+                referencial = aux.presupuesto * (2 * Math.pow(10, -7))
+                referencial = referencial.round(2)
+                println "referencial " + referencial
+            }
+            def numero = null
+            def band = true
+            numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
+            if (numero.size() > 0) {
+                numero = numero?.pop()?.numero
+            }
+            if (!numero) {
+                numero = 1
+            } else {
+                numero = numero + 1
+            }
+            def now = new Date()
+            if (proceso.fechaInicio < now) {
+                flash.message = "Error: El proceso ${proceso.nombre}  (${proceso.fechaInicio.format('dd-MM-yyyy')} - ${proceso.fechaFin.format('dd-MM-yyyy')}) esta en ejecución, si desea solicitar un aval modifique las fechas de inicio y fin"
+                readOnly = true
+//                redirect(action: "avalesProceso", id: proceso.id)
+//                return
+            }
+
+            def avales = Aval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E02"), EstadoAval.findByCodigo("E05"), EstadoAval.findByCodigo("EF1")])
+            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
+            def disponible = proceso.getMonto()
+//        println "aval " + avales
+//        println "sols " + solicitudes
+            avales.each {
+                band = false
+                disponible -= it.monto
+            }
+            solicitudes.each {
+                band = false
+                disponible -= it.monto
+            }
+//        println "band " + band
+            if (!band) {
+                flash.message = "Este proceso ya tiene un aval vigente o tiene una solicitud pendiente, no puede solicitar otro."
+                readOnly = true
+//                redirect(controller: "avales", action: "avalesProceso", id: proceso?.id)
+//                return
+            } /*else {*/
+            return [proceso: proceso, disponible: disponible, personas: personasFirma, numero: numero, refencial: referencial, readOnly: readOnly]
+//            }
+        } else {
+            redirect(action: "nuevaSolicitud")
+            return
+        }
+    }
+
     /**
      * Acción que muestra una pantalla con la lista de procesos por unidad
      */
@@ -273,6 +432,7 @@ class AvalesController extends vesta.seguridad.Shield {
         def solicitudes = SolicitudAval.findAllByProceso(proceso, [sort: "fecha"])
         [avales: avales, proceso: proceso, solicitudes: solicitudes]
     }
+
     /**
      * Acción que muestra una pantalla que permite crear una solicitud de aval<br/>
      * Si el proceso ya tiene un aval vigente o tiene una solicitud pendiente, no puede solicitar otro y redirecciona a la acción avalesProceso
@@ -502,8 +662,6 @@ class AvalesController extends vesta.seguridad.Shield {
                     println "????????\n" + e + "\n???????????"
                     e.printStackTrace()
                 }
-
-
             } else {
                 flash.message = "Error: Seleccione un archivo valido"
                 redirect(action: 'solicitarAval', params: [id: params.proceso])

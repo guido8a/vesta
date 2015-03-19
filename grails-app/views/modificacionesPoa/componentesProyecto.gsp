@@ -19,7 +19,7 @@
         <g:else>
         $.ajax({
             type    : "POST",
-            url     : "${createLink(action:'cargarActividades',controller: 'avales')}",
+            url     : "${createLink(action:'cargarActividades_ajax',controller: 'avales')}",
             data    : {
                 id     : $("#${idCombo?idCombo:'comp'}").val(),
                 unidad : "${session.usuario.unidad?.id}"

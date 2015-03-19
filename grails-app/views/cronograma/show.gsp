@@ -8,6 +8,9 @@
 <%@ page import="vesta.proyectos.MarcoLogico; vesta.proyectos.Cronograma; vesta.parametros.poaPac.Mes; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
+        %{--<script src="${resource(dir: 'js/plugins/fixed-header-table-1.3', file: 'jquery.fixedheadertable.js')}"></script>--}%
+        %{--<link rel="stylesheet" type="text/css" href="${resource(dir: 'js/plugins/fixed-header-table-1.3/css', file: 'defaultTheme.css')}"/>--}%
+
         <meta name="layout" content="main">
         <title>Cronograma del proyecto</title>
 
@@ -214,6 +217,98 @@
                         $(".total." + id).hide();
                     }
                 });
+
+                /* *************** PARA LA TABLA ********************/
+
+//                $("#tblCrono").fixedHeaderTable({
+//                    height     : 320,
+//                    autoResize : true,
+//                    footer     : true
+//                });
+
+//                var $tbl = $("#tblCrono");
+//                var $thead = $tbl.find("thead");
+//                var $tbody = $tbl.find("tbody");
+//                var $tfoot = $tbl.find("tfoot");
+//
+//                var width = $thead.width();
+//                var tableHeight = $tbl.height();
+//                var headHeight = $thead.height();
+//                var bodyHeight = tableHeight - headHeight;
+//
+//                var $divAll = $("<div>");
+//                var $divHead = $("<div>");
+//                var $divBody = $("<div>");
+//
+//                $divAll.css({
+////                    background : "green"
+//                });
+//                $divHead.css({
+////                    background : "red"
+//                });
+//                $divBody.css({
+////                    background : "blue",
+//                    maxHeight : 300,
+//                    overflow  : "auto"
+//                });
+//
+//                $divHead.width(width);
+//                $divHead.height(headHeight);
+//
+//                $divBody.width(width);
+//
+//                var $tblHead = $("<table class='table table-condensed table-bordered'>");
+//                $tblHead.append("<thead>");
+//                $thead.find("tr").each(function () {
+//                    var $tr = $(this);
+//                    var $ntr = $("<tr>");
+//                    $tr.find("th").each(function () {
+//                        var $th = $(this);
+//                        var $nth = $th.clone(true);
+//                        $nth.outerWidth($th.outerWidth());
+//                        $ntr.append($nth);
+//                    });
+//                    $tblHead.append($ntr);
+//                });
+//
+//                var $tblBody = $("<table class='table table-condensed table-bordered'>");
+//                $tblBody.append("<tbody>");
+//                $tbody.find("tr").each(function () {
+//                    var $tr = $(this);
+//                    var $ntr = $("<tr>");
+//                    $tr.find("th, td").each(function () {
+//                        var $th = $(this);
+//                        var $nth = $th.clone(true);
+//                        $nth.outerWidth($th.outerWidth() + 2);
+//                        $ntr.append($nth);
+//                    });
+//                    $tblBody.append($ntr);
+//                });
+//
+//                var $tblFoot = $("<tfoot>");
+//                $tfoot.find("tr").each(function () {
+//                    var $tr = $(this);
+//                    var $ntr = $("<tr>");
+//                    $tr.find("th, td").each(function () {
+//                        var $th = $(this);
+//                        var $nth = $th.clone(true);
+//                        $nth.outerWidth($th.outerWidth());
+//                        $ntr.append($nth);
+//                    });
+//                    $tblFoot.append($ntr);
+//                });
+//                $tblBody.append($tblFoot);
+//
+//                $divHead.append($tblHead);
+//                $divBody.append($tblBody);
+//
+//                $divAll.append($divHead).append($divBody);
+//
+//                $tbl.before($divAll);
+//
+//                $tbl.hide();
+
+                /* *************** PARA LA TABLA ********************/
 
                 $(".btn-edit").click(function () {
                     openLoader();

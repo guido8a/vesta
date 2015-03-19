@@ -13,7 +13,9 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link controller="avales" action="listaProcesos" class="btn btn-default"><i class="fa fa-bars"></i> Lista de Procesos</g:link>
-                <g:link controller="avales" action="solicitarAval" class="btn btn-default" id="${proceso.id}"><i class="fa fa-file-o"></i> Nueva solicitud</g:link>
+                <g:link controller="avales" action="solicitarAval" class="btn btn-default" id="${proceso.id}">
+                    <i class="fa fa-file-o"></i> Nueva solicitud
+                </g:link>
             </div>
         </div>
 
@@ -109,7 +111,7 @@
                                             <g:formatNumber number="${p.monto}" type="currency" currencySymbol=""/>
                                         </td>
                                         <g:set var="avalEstado" value="${p?.estado?.codigo}"/>
-                                        <td style="text-align: center;font-weight: bold" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : avalEstado == 'E02' ? 'verde' : 'rojo'}" >
+                                        <td style="text-align: center;font-weight: bold" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : avalEstado == 'E02' ? 'verde' : 'rojo'}">
                                             ${p.estado?.descripcion}
                                         </td>
 
@@ -143,7 +145,7 @@
                         </table>
                     </g:if>
                     <g:else>
-                            <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen solicitudes</div>
+                        <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen solicitudes</div>
                     </g:else>
                 </div>
             </div>
@@ -154,7 +156,7 @@
         <script type="text/javascript">
             $(".imprimiAval").click(function () {
                 var url = "${g.createLink(controller: 'reportes',action: 'certificacion')}/?id=" + $(this).attr("iden")
-                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval_"+ $(this).attr("iden")+".pdf"
+                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval_" + $(this).attr("iden") + ".pdf"
             });
             $(".imprimirSolicitud").click(function () {
                 var url = "${g.createLink(controller: 'reporteSolicitud',action: 'imprimirSolicitudAval')}/?id=" + $(this).attr("iden")

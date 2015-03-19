@@ -171,7 +171,7 @@
     function editarAsg(id, max) {
         $.ajax({
             type    : "POST",
-            url     : "${createLink(action:'editarAsignacion')}",
+            url     : "${createLink(action:'editarAsignacion_ajax')}",
             data    : {
                 band : ${band},
                 id   : id,
@@ -236,7 +236,7 @@
     function getDetalle() {
         $.ajax({
             type    : "POST",
-            url     : "${createLink(action:'getDetalle')}",
+            url     : "${createLink(action:'getDetalle_ajax')}",
             data    : {
                 id : "${proceso?.id}"
             },
@@ -323,7 +323,7 @@
     $("#comp").change(function () {
         $.ajax({
             type    : "POST",
-            url     : "${createLink(action:'cargarActividades')}",
+            url     : "${createLink(action:'cargarActividades_ajax')}",
             data    : {
                 id     : $("#comp").val(),
                 unidad : "${unidad?.id}"
