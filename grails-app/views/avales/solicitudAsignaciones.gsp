@@ -20,6 +20,14 @@
         <g:set var="monto" value="${proceso?.getMonto() ?: 0}"/>
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group" role="group">
+                <g:link controller="avales" action="listaProcesos" class="btn btn-default">
+                    <i class="fa fa-bars"></i> Lista de Procesos
+                </g:link>
+            </div>
+        </div>
+
         <input type="hidden" name="id" value="${proceso?.id}">
 
         <div class="wizard-container row">
@@ -48,92 +56,102 @@
         </div>
 
         <g:form action="" class="form-horizontal wizard-form corner-bottom" name="frmProceso" role="form" method="POST">
-            <div class="row">
-                <span class="grupo">
-                    <label class="col-md-2 control-label">
-                        Año
-                    </label>
+            <g:if test="${!readOnly}">
+                <div class="row">
+                    <span class="grupo">
+                        <label class="col-md-2 control-label">
+                            Año
+                        </label>
 
-                    <div class="col-md-2">
-                        <g:select name="anio" from="${Anio.list([sort: 'anio'])}" value="${actual?.id}" class="form-control input-sm" id="anio" optionKey="id" optionValue="anio"/>
-                    </div>
-                </span>
-
-                <div class="col-md-2"></div>
-
-                <span class="grupo">
-                    <label class="col-md-1 offset-md-1 control-label">
-                        Componente
-                    </label>
-
-                    <div class="col-md-4" id="div_comp">
-                        <g:select name="comp" from="${MarcoLogico.findAllByProyectoAndTipoElemento(proceso?.proyecto, TipoElemento.get(2))}" class="form-control input-sm" optionKey="id" optionValue="objeto" id="comp" noSelection="['-1': 'Seleccione...']"/>
-                    </div>
-                </span>
-            </div>
-
-            <div class="row">
-                <span class="grupo">
-                    <label class="col-md-2 control-label">
-                        Actividad
-                    </label>
-
-                    <div class="col-md-4" id="divAct">
-                        <g:select name="actividad" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>
-                    </div>
-                </span>
-
-                <span class="grupo">
-                    <label class="col-md-1 control-label">
-                        Asignación
-                    </label>
-
-                    <div class="col-md-4" id="divAsg">
-                        <g:select name="asignacion" from="${[]}" class="form-control input-sm" id="asignacion" noSelection="['-1': 'Seleccione...']"/>
-                    </div>
-                </span>
-            </div>
-
-            <div class="row">
-                <span class="grupo">
-                    <label for="monto" class="col-md-2 control-label">
-                        Monto
-                    </label>
-
-                    <div class="col-md-2">
-                        <div class="input-group">
-                            <g:textField class="form-control input-sm number money" name="montoName" style="text-align: right; margin-right: 10px" id="monto"/>
-                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                        <div class="col-md-2">
+                            <g:select name="anio" from="${Anio.list([sort: 'anio'])}" value="${actual?.id}" class="form-control input-sm" id="anio" optionKey="id" optionValue="anio"/>
                         </div>
-                    </div>
+                    </span>
 
-                    <div class="col-md-3">
-                        <p class="form-control-static">
-                            <label>Máximo <span id="max" style="display: inline-block"></span> $</label>
-                        </p>
-                    </div>
-                </span>
+                    <div class="col-md-2"></div>
 
-                <div class="col-md-4 text-right">
-                    <a href="#" class="btn btn-success" id="agregar">
-                        <i class="fa fa-plus"></i> Agregar asignación
-                    </a>
+                    <span class="grupo">
+                        <label class="col-md-1 offset-md-1 control-label">
+                            Componente
+                        </label>
+
+                        <div class="col-md-4" id="div_comp">
+                            <g:if test="${!readOnly}">
+                                <g:select name="comp" from="${MarcoLogico.findAllByProyectoAndTipoElemento(proceso?.proyecto, TipoElemento.get(2))}" class="form-control input-sm" optionKey="id" optionValue="objeto" id="comp" noSelection="['-1': 'Seleccione...']"/>
+                            </g:if>
+                            <g:else>
+                                <p class="form-control-static">
+                                    ${actual}
+                                </p>
+                            </g:else>
+                        </div>
+                    </span>
                 </div>
-            </div>
 
+                <div class="row">
+                    <span class="grupo">
+                        <label class="col-md-2 control-label">
+                            Actividad
+                        </label>
+
+                        <div class="col-md-4" id="divAct">
+                            <g:select name="actividad" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>
+                        </div>
+                    </span>
+
+                    <span class="grupo">
+                        <label class="col-md-1 control-label">
+                            Asignación
+                        </label>
+
+                        <div class="col-md-4" id="divAsg">
+                            <g:select name="asignacion" from="${[]}" class="form-control input-sm" id="asignacion" noSelection="['-1': 'Seleccione...']"/>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="row">
+                    <span class="grupo">
+                        <label for="monto" class="col-md-2 control-label">
+                            Monto
+                        </label>
+
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <g:textField class="form-control input-sm number money" name="montoName" style="text-align: right; margin-right: 10px" id="monto"/>
+                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <p class="form-control-static">
+                                <label>Máximo <span id="max" style="display: inline-block"></span> $</label>
+                            </p>
+                        </div>
+                    </span>
+
+                    <div class="col-md-4 text-right">
+                        <a href="#" class="btn btn-success" id="agregar">
+                            <i class="fa fa-plus"></i> Agregar asignación
+                        </a>
+                    </div>
+                </div>
+            </g:if>
             <div class="row">
                 <div class="col-md-10 col-md-offset-1" id="detalle">
 
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-11 text-right">
-                    <g:link action="solicitudProceso" id="${proceso.id}" class="btn btn-success">
-                        <i class="fa fa-save"></i> Guardar y Continuar <i class="fa fa-chevron-right"></i>
-                    </g:link>
+            <g:if test="${!readOnly}">
+                <div class="row">
+                    <div class="col-md-11 text-right">
+                        <g:link action="solicitudProceso" id="${proceso.id}" class="btn btn-success">
+                            <i class="fa fa-save"></i> Guardar y Continuar <i class="fa fa-chevron-right"></i>
+                        </g:link>
+                    </div>
                 </div>
-            </div>
+            </g:if>
         </g:form>
 
         <script type="text/javascript">
@@ -167,7 +185,8 @@
                     type    : "POST",
                     url     : "${createLink(action:'getDetalle_ajax')}",
                     data    : {
-                        id : "${proceso?.id}"
+                        id       : "${proceso?.id}",
+                        readOnly : "${readOnly}"
                     },
                     success : function (msg) {
                         $("#detalle").html(msg)

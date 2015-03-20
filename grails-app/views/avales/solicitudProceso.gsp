@@ -21,6 +21,14 @@
 
         <input type="hidden" name="id" value="${proceso?.id}">
 
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group" role="group">
+                <g:link controller="avales" action="listaProcesos" class="btn btn-default">
+                    <i class="fa fa-bars"></i> Lista de Procesos
+                </g:link>
+            </div>
+        </div>
+
         <div class="wizard-container row">
             <div class="col-md-4 wizard-step wizard-next-step corner-left wizard-completed">
                 <span class="badge wizard-badge">1</span>
@@ -82,62 +90,93 @@
                 </div>
             </div>
 
-            <g:if test="${!readOnly}">
-                <div class="row">
-                    <span class="grupo">
-                        <label for="memorando" class="col-md-2 control-label">
-                            Doc. de soporte
-                        </label>
+            <div class="row">
+                <span class="grupo">
+                    <label for="memorando" class="col-md-2 control-label">
+                        Doc. de soporte
+                    </label>
 
-                        <div class="col-md-2">
+                    <div class="col-md-2">
+                        <g:if test="${!readOnly}">
                             <g:textField name="memorando" class="form-control input-sm required"/>
-                        </div>
-                    </span>
-                    <span class="grupo">
-                        <label for="monto" class="col-md-2 control-label">
-                            Doc. de respaldo
-                        </label>
+                        </g:if>
+                        <g:else>
+                            <p class="form-control-static">
+                                ${solicitud?.memo}
+                            </p>
+                        </g:else>
+                    </div>
+                </span>
 
-                        <div class="col-md-3">
+                <span class="grupo">
+                    <label for="monto" class="col-md-2 control-label">
+                        Doc. de respaldo
+                    </label>
+
+                    <div class="col-md-3">
+                        <g:if test="${!readOnly}">
                             <input type="file" name="file" id="file" class="form-control input-sm required"/>
-                        </div>
-                    </span>
-                </div>
+                        </g:if>
+                        <g:else>
+                            <p class="form-control-static">
+                                <a href="${resource(dir: 'pdf/solicitudAval', file: solicitud?.path)}" target="_blank">
+                                    ${solicitud?.path}
+                                </a>
+                            </p>
+                        </g:else>
+                    </div>
+                </span>
+            </div>
 
-                <div class="row">
-                    <span class="grupo">
-                        <label for="memorando" class="col-md-2 control-label">
-                            Descripción
-                        </label>
+            <div class="row">
+                <span class="grupo">
+                    <label for="memorando" class="col-md-2 control-label">
+                        Descripción
+                    </label>
 
-                        <div class="col-md-7">
+                    <div class="col-md-7">
+                        <g:if test="${!readOnly}">
                             <g:textArea name="concepto" maxlength="1024" required="" class="form-control input-sm required" style="height: 80px;resize: none"/>
-                        </div>
-                    </span>
-                </div>
+                        </g:if>
+                        <g:else>
+                            <p class="form-control-static">
+                                ${solicitud?.concepto}
+                            </p>
+                        </g:else>
+                    </div>
+                </span>
+            </div>
 
-                <div class="row">
-                    <span class="grupo">
-                        <label for="firma1" class="col-md-2 control-label">
-                            Aut. electrónica
-                        </label>
+            <div class="row">
+                <span class="grupo">
+                    <label for="firma1" class="col-md-2 control-label">
+                        Aut. electrónica
+                    </label>
 
-                        <div class="col-md-2">
+                    <div class="col-md-2">
+                        <g:if test="${!readOnly}">
                             <g:select from="${personas}" optionKey="id" class="form-control input-sm required" optionValue="${{
                                 it.nombre + ' ' + it.apellido
                             }}" name="firma1"/>
-                        </div>
-                    </span>
-                </div>
+                        </g:if>
+                        <g:else>
+                            <p class="form-control-static">
+                                ${solicitud?.firma?.usuario}
+                            </p>
+                        </g:else>
+                    </div>
+                </span>
+            </div>
 
-                <div class="row">
-                    <div class="col-md-11 text-right">
+            <div class="row">
+                <div class="col-md-11 text-right">
+                    <g:if test="${!readOnly}">
                         <a href="#" id="btnEnviar" class="btn btn-success">
                             <i class="fa fa-save"></i> Guardar y Enviar <i class="fa fa-paper-plane-o"></i>
                         </a>
-                    </div>
+                    </g:if>
                 </div>
-            </g:if>
+            </div>
         </g:uploadForm>
 
         <script type="text/javascript">

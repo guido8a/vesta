@@ -236,7 +236,7 @@ class RevisionAvalController {
         band = true
         if (!band)
             response.sendError(403)
-        return [solicitud: solicitud, personas: personasFirmas, personasGerente: gerentes, numero: numero]
+        return [solicitud: solicitud, personas: gerentes + personasFirmas, personasGerente: gerentes, numero: numero]
     }
 
     /**

@@ -35,102 +35,105 @@
             </div>
         </div>
 
-        <g:uploadForm class="form-horizontal frmUpload" action="guardarSolicitud" controller="avales">
-            <input type="hidden" name="aval" value="${aval.id}">
-            <input type="hidden" name="tipo" value="A">
-            <input type="hidden" name="monto" value="${aval.monto}">
-            <input type="hidden" name="proceso" value="${aval.proceso.id}">
-            <input type="hidden" name="numero" value="${numero}">
 
-            <div class="form-group keeptogether required">
-                <span class="grupo">
-                    <label class="col-md-2 control-label">
-                        Número
-                    </label>
+        <elm:container tipo="horizontal" titulo="Solicitud de anulación de aval">
+            <g:uploadForm class="form-horizontal frmUpload" action="guardarSolicitud" controller="avales">
+                <input type="hidden" name="aval" value="${aval.id}">
+                <input type="hidden" name="tipo" value="A">
+                <input type="hidden" name="monto" value="${aval.monto}">
+                <input type="hidden" name="proceso" value="${aval.proceso.id}">
+                <input type="hidden" name="numero" value="${numero}">
 
-                    <div class="col-md-2">
-                        <p class="form-control-static">
-                            ${numero}
-                        </p>
-                    </div>
-                </span>
-            </div>
+                <div class="form-group keeptogether required">
+                    <span class="grupo">
+                        <label class="col-md-2 control-label">
+                            Número
+                        </label>
 
-            <div class="form-group keeptogether required">
-                <span class="grupo">
-                    <label class="col-md-2 control-label">
-                        Monto
-                    </label>
+                        <div class="col-md-2">
+                            <p class="form-control-static">
+                                ${numero}
+                            </p>
+                        </div>
+                    </span>
+                </div>
 
-                    <div class="col-md-2">
-                        <p class="form-control-static">
-                            <g:formatNumber number="${aval.monto}" type="currency" currencySymbol=""/>
-                        </p>
-                    </div>
-                </span>
-            </div>
+                <div class="form-group keeptogether required">
+                    <span class="grupo">
+                        <label class="col-md-2 control-label">
+                            Monto
+                        </label>
 
-            <div class="form-group keeptogether required">
-                <span class="grupo">
-                    <label for="montoText" class="col-md-2 control-label">
-                        Doc. de soporte
-                    </label>
+                        <div class="col-md-2">
+                            <p class="form-control-static">
+                                <g:formatNumber number="${aval.monto}" type="currency" currencySymbol=""/>
+                            </p>
+                        </div>
+                    </span>
+                </div>
 
-                    <div class="col-md-2">
-                        <g:textField name="montoText" class="form-control input-sm required" required=""/>
-                    </div>
-                </span>
-                <span class="grupo">
-                    <label for="file" class="col-md-2 control-label">
-                        Doc. de respaldo
-                    </label>
+                <div class="form-group keeptogether required">
+                    <span class="grupo">
+                        <label for="montoText" class="col-md-2 control-label">
+                            Doc. de soporte
+                        </label>
 
-                    <div class="col-md-3">
-                        <input type="file" name="file" id="file" class="form-control input-sm required" required=""/>
-                    </div>
-                </span>
-            </div>
+                        <div class="col-md-2">
+                            <g:textField name="montoText" class="form-control input-sm required" required=""/>
+                        </div>
+                    </span>
+                    <span class="grupo">
+                        <label for="file" class="col-md-2 control-label">
+                            Doc. de respaldo
+                        </label>
 
-            <div class="form-group keeptogether required">
-                <span class="grupo">
-                    <label for="concepto" class="col-md-2 control-label">
-                        Concepto
-                    </label>
+                        <div class="col-md-3">
+                            <input type="file" name="file" id="file" class="form-control input-sm required" required=""/>
+                        </div>
+                    </span>
+                </div>
 
-                    <div class="col-md-7">
-                        <g:textArea name="concepto" maxlength="1024" style="height: 80px;" class="form-control required"
-                                    required=""/>
-                    </div>
-                </span>
-            </div>
+                <div class="form-group keeptogether required">
+                    <span class="grupo">
+                        <label for="concepto" class="col-md-2 control-label">
+                            Concepto
+                        </label>
 
-            <div class="form-group keeptogether required">
-                <span class="grupo">
-                    <label for="firma1" class="col-md-2 control-label">
-                        Aut. electrónica
-                    </label>
+                        <div class="col-md-7">
+                            <g:textArea name="concepto" maxlength="1024" style="height: 80px;" class="form-control required"
+                                        required=""/>
+                        </div>
+                    </span>
+                </div>
 
-                    <div class="col-md-2">
-                        <g:select from="${personas}" optionKey="id" class="form-control input-sm required" optionValue="${{
-                            it.nombre + ' ' + it.apellido
-                        }}" name="firma1"/>
-                    </div>
-                </span>
-            </div>
+                <div class="form-group keeptogether required">
+                    <span class="grupo">
+                        <label for="firma1" class="col-md-2 control-label">
+                            Aut. electrónica
+                        </label>
 
-            <div class="form-group">
-                <span class="grupo">
-                    <div class="col-md-8 text-right">
-                        <g:link action="listaProcesos" class="btn btn-default">
-                            Cancelar
-                        </g:link>
-                        <a href="#" class="btn btn-success" id="enviar">
-                            <i class="fa fa-save"></i> Guardar y enviar
-                        </a>
-                    </div>
-                </span>
-            </div>
-        </g:uploadForm>
+                        <div class="col-md-2">
+                            <g:select from="${personas}" optionKey="id" class="form-control input-sm required" optionValue="${{
+                                it.nombre + ' ' + it.apellido
+                            }}" name="firma1"/>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <span class="grupo">
+                        <div class="col-md-8 text-right">
+                            <g:link action="listaProcesos" class="btn btn-default">
+                                Cancelar
+                            </g:link>
+                            <a href="#" class="btn btn-success" id="enviar">
+                                <i class="fa fa-save"></i> Guardar y enviar
+                            </a>
+                        </div>
+                    </span>
+                </div>
+            </g:uploadForm>
+        </elm:container>
 
         <script type="text/javascript">
             $(function () {

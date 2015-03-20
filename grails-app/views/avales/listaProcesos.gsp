@@ -19,16 +19,16 @@
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
         <div class="fila">
-            <a href="#" class="btn btn-default btnCrear">
-                <i class="fa fa-file-o"></i>  Crear nuevo Proceso de contratación
-            </a>
+        %{--<a href="#" class="btn btn-default btnCrear">--}%
+        %{--<i class="fa fa-file-o"></i>  Crear nuevo Proceso de contratación--}%
+        %{--</a>--}%
 
-        <g:link controller="avales" action="nuevaSolicitud" class="btn btn-default">
-            <i class="fa fa-file-o"></i> Nuevo proceso de solicitud de aval
-        </g:link>
-
+            <g:link controller="avales" action="nuevaSolicitud" class="btn btn-default">
+                <i class="fa fa-file-o"></i> Nuevo proceso de solicitud de aval
+            </g:link>
 
         </div>
+
         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 25px">
             <thead>
                 <tr>
@@ -89,7 +89,8 @@
                         icon   : "fa fa-pencil",
                         action : function ($element) {
                             var id = $element.data("id");
-                            createEditRow(idPro)
+                            location.href = "${createLink(controller: 'avales', action:  'nuevaSolicitud')}/" + id;
+//                            createEditRow(idPro)
                         }
                     }
                 };

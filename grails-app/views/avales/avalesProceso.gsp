@@ -13,7 +13,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link controller="avales" action="listaProcesos" class="btn btn-default"><i class="fa fa-bars"></i> Lista de Procesos</g:link>
-                <g:link controller="avales" action="solicitarAval" class="btn btn-default" id="${proceso.id}">
+                <g:link controller="avales" action="solicitudProceso" class="btn btn-default" id="${proceso.id}">
                     <i class="fa fa-file-o"></i> Nueva solicitud
                 </g:link>
             </div>

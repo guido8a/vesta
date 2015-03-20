@@ -109,7 +109,10 @@ class AvalesController extends vesta.seguridad.Shield {
                 band = false
             }
         }
-        [proceso: proceso, detalle: detalle, band: band]
+
+        def readOnly = params.readOnly == "true"
+
+        [proceso: proceso, detalle: detalle, band: band, readOnly: readOnly]
     }
 
     /**
@@ -255,6 +258,7 @@ class AvalesController extends vesta.seguridad.Shield {
         def actual
         def band = true
         def proyectos = []
+        def readOnly = false
         def unidad = session.usuario.unidad
         Asignacion.findAllByUnidad(unidad).each {
             def p = it.marcoLogico.proyecto
@@ -277,9 +281,15 @@ class AvalesController extends vesta.seguridad.Shield {
                     band = false
                 }
             }
+
+            def r = verificarProceso(proceso)
+            flash.message = r.message
+            if (flash.message != "") {
+                readOnly = true
+            }
         }
 
-        return [proyectos: proyectos, proceso: proceso, actual: actual, band: band, unidad: unidad]
+        return [proyectos: proyectos, proceso: proceso, actual: actual, band: band, unidad: unidad, readOnly: readOnly]
     }
 
     /**
@@ -332,7 +342,20 @@ class AvalesController extends vesta.seguridad.Shield {
                 }
             }
 
-            return [proceso: proceso, unidad: unidad, band: band]
+            def readOnly = false
+            def r = verificarProceso(proceso)
+            flash.message = r.message
+            if (flash.message != "") {
+                readOnly = true
+            }
+
+            def actual
+            if (params.anio)
+                actual = Anio.get(params.anio)
+            else
+                actual = Anio.findByAnio(new Date().format("yyyy"))
+
+            return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual]
         } else {
             redirect(action: "nuevaSolicitud")
         }
@@ -346,7 +369,6 @@ class AvalesController extends vesta.seguridad.Shield {
         if (params.id) {
             def proceso = ProcesoAval.get(params.id)
 
-            //println "solicictar aval"
             def unidad = UnidadEjecutora.get(session.unidad.id)
             def personasFirma = Persona.findAllByUnidad(unidad)
             def aux = Auxiliar.list()
@@ -357,8 +379,7 @@ class AvalesController extends vesta.seguridad.Shield {
                 referencial = referencial.round(2)
                 println "referencial " + referencial
             }
-            def numero = null
-            def band = true
+            def numero
             numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
             if (numero.size() > 0) {
                 numero = numero?.pop()?.numero
@@ -368,40 +389,49 @@ class AvalesController extends vesta.seguridad.Shield {
             } else {
                 numero = numero + 1
             }
-            def now = new Date()
-            if (proceso.fechaInicio < now) {
-                flash.message = "Error: El proceso ${proceso.nombre}  (${proceso.fechaInicio.format('dd-MM-yyyy')} - ${proceso.fechaFin.format('dd-MM-yyyy')}) esta en ejecución, si desea solicitar un aval modifique las fechas de inicio y fin"
+            def r = verificarProceso(proceso)
+            flash.message = r.message
+            if (flash.message != "") {
                 readOnly = true
-//                redirect(action: "avalesProceso", id: proceso.id)
-//                return
+            }
+            def disponible = r.disponible
+
+            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
+            def solicitud = null
+            if (solicitudes.size() == 1) {
+                solicitud = solicitudes.first()
             }
 
-            def avales = Aval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E02"), EstadoAval.findByCodigo("E05"), EstadoAval.findByCodigo("EF1")])
-            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
-            def disponible = proceso.getMonto()
-//        println "aval " + avales
-//        println "sols " + solicitudes
-            avales.each {
-                band = false
-                disponible -= it.monto
-            }
-            solicitudes.each {
-                band = false
-                disponible -= it.monto
-            }
-//        println "band " + band
-            if (!band) {
-                flash.message = "Este proceso ya tiene un aval vigente o tiene una solicitud pendiente, no puede solicitar otro."
-                readOnly = true
-//                redirect(controller: "avales", action: "avalesProceso", id: proceso?.id)
-//                return
-            } /*else {*/
-            return [proceso: proceso, disponible: disponible, personas: personasFirma, numero: numero, refencial: referencial, readOnly: readOnly]
-//            }
+            return [proceso  : proceso, disponible: disponible, personas: personasFirma, numero: numero,
+                    refencial: referencial, readOnly: readOnly, solicitud: solicitud]
         } else {
             redirect(action: "nuevaSolicitud")
             return
         }
+    }
+
+    def verificarProceso(ProcesoAval proceso) {
+        def band = true
+        def message = ""
+        def now = new Date()
+        if (proceso.fechaInicio < now) {
+            message = "El proceso ${proceso.nombre}  (${proceso.fechaInicio.format('dd-MM-yyyy')} - ${proceso.fechaFin.format('dd-MM-yyyy')}) esta en ejecución, si desea solicitar un aval modifique las fechas de inicio y fin"
+        }
+        def avales = Aval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E02"), EstadoAval.findByCodigo("E05"), EstadoAval.findByCodigo("EF1")])
+        def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
+        def disponible = proceso.getMonto()
+        avales.each {
+            band = false
+            disponible -= it.monto
+        }
+        solicitudes.each {
+            band = false
+            disponible -= it.monto
+        }
+        if (!band) {
+            message = "Este proceso ya tiene un aval vigente o tiene una solicitud pendiente, no puede solicitar otro."
+        }
+        return [message: message, disponible: disponible]
     }
 
     /**

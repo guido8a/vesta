@@ -17,7 +17,9 @@
             <th>Partida</th>
             <th>Priorizado</th>
             <th>Monto</th>
-            <th></th>
+            <g:if test="${!readOnly}">
+                <th></th>
+            </g:if>
         </tr>
     </thead>
     <tbody>
@@ -35,21 +37,23 @@
                     valor="${asg.monto}">
                     <g:formatNumber number="${asg.monto}" type="currency" currencySymbol=""/>
                 </td>
-                <td style="text-align: center">
-                    <div class="btn-group" role="group">
-                    %{--<g:if test="${band}">--}%
-                    %{--<a href="#" class="edit btn btn-info btn-xs" iden="${asg.id}" data-asg="${asg.asignacion.id}" title="Editar"--}%
-                    %{--data-monto="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}">--}%
-                    %{--<i class="fa fa-pencil"></i>--}%
-                    %{--</a>--}%
-                    %{--</g:if>--}%
-                        <g:if test="${band}">
-                            <a href="#" class="borrar btn btn-danger btn-xs" iden="${asg.id}" title="Borrar">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </g:if>
-                    </div>
-                </td>
+                <g:if test="${!readOnly}">
+                    <td style="text-align: center">
+                        <div class="btn-group" role="group">
+                        %{--<g:if test="${band}">--}%
+                        %{--<a href="#" class="edit btn btn-info btn-xs" iden="${asg.id}" data-asg="${asg.asignacion.id}" title="Editar"--}%
+                        %{--data-monto="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}">--}%
+                        %{--<i class="fa fa-pencil"></i>--}%
+                        %{--</a>--}%
+                        %{--</g:if>--}%
+                            <g:if test="${band}">
+                                <a href="#" class="borrar btn btn-danger btn-xs" iden="${asg.id}" title="Borrar">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </g:if>
+                        </div>
+                    </td>
+                </g:if>
             </tr>
         </g:each>
     </tbody>
@@ -59,7 +63,9 @@
             <td style="font-weight: bold;text-align: right">
                 <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
             </td>
-            <td></td>
+            <g:if test="${!readOnly}">
+                <td></td>
+            </g:if>
         </tr>
     </tfoot>
 </table>
