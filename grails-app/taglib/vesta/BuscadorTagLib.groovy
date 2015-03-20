@@ -4,7 +4,7 @@ class BuscadorTagLib {
 
     static namespace = 'bsc'
 
-    def operacion = {atr ->
+    def operacion = { atr ->
 
         //println "atr 2 "+atr
         def propiedad = atr.propiedad
@@ -12,7 +12,7 @@ class BuscadorTagLib {
         def operacion = atr.funcion.keySet().toArray().getAt(0)
         def parametros = atr.funcion[operacion].clone()
         //println " reg "+registro+" op "+operacion+" par "+parametros+" prop "+propiedad
-        parametros.eachWithIndex {it, i ->
+        parametros.eachWithIndex { it, i ->
             if (it == "?")
                 parametros[i] = registro[propiedad]
             if (it == "&")
@@ -44,7 +44,7 @@ class BuscadorTagLib {
         out << result
     }
 
-    def buscador = {atr ->
+    def buscador = { atr ->
         def name = atr.name ? atr.name : " "
         def value = atr.value
         def campos
@@ -52,29 +52,32 @@ class BuscadorTagLib {
         def controlador = atr.controlador
         def accion = atr.accion
         def tipo = atr.tipo
-        out<<buscadorReload(atr.name,value,campos,controlador,accion,tipo,atr.id,atr.titulo,atr.clase,atr.style)
+        out << buscadorReload(atr.name, value, campos, controlador, accion, tipo, atr.id, atr.titulo, atr.clase, atr.style, atr.valueDesc)
         //println "accion " + accion + "    controlador " + controlador
 
     }
 
-    def buscadorReload(name,value,fields,controller,action,type,id,title,clase,style){
+    def buscadorReload(name, value, fields, controller, action, type, id, title, clase, style, valueDesc) {
+        if (!valueDesc) {
+            valueDesc = ""
+        }
         def salida = ""
-        salida+='<span class="grupo">'
-        salida+='<div class="input-group input-group-sm" style="'+(style?style:'width:294px;') +'">'
-        salida+='<input type="text" class="form-control bsc_desc '+clase+'" id="bsc-desc-'+id+'"  dialog="modal-'+id+'"  >'
-        salida+='<span class="input-group-btn">'
-        salida+='<a href="#" id="btn-abrir-'+id+'" class="btn btn-info" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>'
-        salida+='</span>'
-        salida+='</div>'
-        salida+=' </span>'
-        salida+='<input type="hidden"  id="'+id+'" class="bsc_id " name="'+name+'" value="'+value+'" >'
-        salida+='<div class="modal fade modal-search " id="modal-'+id+'" tabindex="-1" role="dialog" aria-labelledby="buscador-'+id+'" aria-hidden="true" >'
-        salida +='<div class="modal-dialog long">\n' +
+        salida += '<span class="grupo">'
+        salida += '<div class="input-group input-group-sm" style="' + (style ? style : 'width:294px;') + '">'
+        salida += '<input type="text" class="form-control bsc_desc ' + clase + '" id="bsc-desc-' + id + '"  dialog="modal-' + id + '" value="' + valueDesc + '" >'
+        salida += '<span class="input-group-btn">'
+        salida += '<a href="#" id="btn-abrir-' + id + '" class="btn btn-info" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>'
+        salida += '</span>'
+        salida += '</div>'
+        salida += ' </span>'
+        salida += '<input type="hidden"  id="' + id + '" class="bsc_id " name="' + name + '" value="' + value + '" >'
+        salida += '<div class="modal fade modal-search " id="modal-' + id + '" tabindex="-1" role="dialog" aria-labelledby="buscador-' + id + '" aria-hidden="true" >'
+        salida += '<div class="modal-dialog long">\n' +
                 '<div class="modal-content">\n' +
                 '<div class="modal-header">'
-        salida+=' <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-        salida+=' <h4 class="modal-title" id="buscador-'+id+'">'+title+'</h4></div>'
-        salida+='<div class="modal-body" id="body-buscador">'
+        salida += ' <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+        salida += ' <h4 class="modal-title" id="buscador-' + id + '">' + title + '</h4></div>'
+        salida += '<div class="modal-body" id="body-buscador">'
 
         /*Body*/
 
@@ -118,12 +121,12 @@ class BuscadorTagLib {
         salida += '<a href="#" id="btn_excel"  class="btn btn-default btn-xs" style="margin-left:10px;"><i class="fa fa-file-excel-o"></i>Excel</a>'
         /*body*/
 
-        salida+='</div>'
-        salida+='    <div class="modal-footer">\n' +
-                '        <a href="#"  class="btn btn-default" data-dismiss="modal">Cancelar</a>\n'+
+        salida += '</div>'
+        salida += '    <div class="modal-footer">\n' +
+                '        <a href="#"  class="btn btn-default" data-dismiss="modal">Cancelar</a>\n' +
                 '    </div>'
 
-        salida+='</div></div></div>'
+        salida += '</div></div></div>'
 
         /*JS*/
         salida += "<script type='text/javascript' src='${createLinkTo(dir: 'js', file: 'buscador.js')}' ></script>"
@@ -141,7 +144,7 @@ class BuscadorTagLib {
         salida += '}'
         salida += 'data+="&ordenado="+$("#campoOrdn :selected").val()+"&orden="+$("#orden :selected").val();'
         if (controller) {
-            salida += '$.ajax({type: "POST",url: "' + g.createLink(controller: controller,action: action) + '",'
+            salida += '$.ajax({type: "POST",url: "' + g.createLink(controller: controller, action: action) + '",'
         } else {
             salida += '$.ajax({type: "POST",url: "' + g.createLink(action: action) + '",'
         }
@@ -161,8 +164,8 @@ class BuscadorTagLib {
         salida += ' $("#buscarDialog").click();'
         salida += ' }'
         salida += '});'
-        salida += '$("#mass-container").prepend($("#modal-'+id+'"));bringToTop($("#modal-'+id+'"));'
-        salida += '$("#btn-abrir-'+id+'").click(function(){$("#modal-'+id+'").modal("show")});'
+        salida += '$("#mass-container").prepend($("#modal-' + id + '"));bringToTop($("#modal-' + id + '"));'
+        salida += '$("#btn-abrir-' + id + '").click(function(){$("#modal-' + id + '").modal("show")});'
         salida += '</script>'
     }
 
@@ -201,13 +204,13 @@ class BuscadorTagLib {
         salida += '</select>'
         salida += '<select name="orden" id="orden" class="many-to-one form-control comboBuscador" style="width:70px" ><option value="asc" selected>Asc.</option><option value="desc">Desc.</option></select>'
 //        salida += '<a href="#" id="mas" style="margin-left:5px">Agregar condición</a>'
-        salida +='<a class="btn btn-small btn-primary" style="margin-left:5px" href="#" rel="tooltip" title="Agregar" id="mas">'
-        salida +=' <i class="fa fa-plus"></i>'
-        salida +='</a>'
+        salida += '<a class="btn btn-small btn-primary" style="margin-left:5px" href="#" rel="tooltip" title="Agregar" id="mas">'
+        salida += ' <i class="fa fa-plus"></i>'
+        salida += '</a>'
 //        salida += '<a href="#" id="reset" style="margin-left:5px">Resetear</a>'
-        salida +='<a class="btn btn-small btn-primary" style="margin-left:5px" href="#" rel="tooltip" title="Resetear" id="reset">'
-        salida +=' <i class="fa fa-refresh"></i>'
-        salida +='</a>'
+        salida += '<a class="btn btn-small btn-primary" style="margin-left:5px" href="#" rel="tooltip" title="Resetear" id="reset">'
+        salida += ' <i class="fa fa-refresh"></i>'
+        salida += '</a>'
         salida += '<a href="#" id="buscarDialog" style="width:80px;margin-left:10px" class="btn btn-small btn-azul " >Buscar'
         salida += '</div>'
         salida += '<div id="criterios" style="width:95%;height:35px;float:left"></div>'
@@ -232,7 +235,7 @@ class BuscadorTagLib {
         salida += '}'
         salida += 'data+="&ordenado="+$("#campoOrdn :selected").val()+"&orden="+$("#orden :selected").val();'
         if (controlador) {
-            salida += '$.ajax({type: "POST",url: "' + g.createLink(controller: controlador,action: accion) + '",'
+            salida += '$.ajax({type: "POST",url: "' + g.createLink(controller: controlador, action: accion) + '",'
         } else {
             salida += '$.ajax({type: "POST",url: "' + g.createLink(action: accion) + '",'
         }
@@ -262,7 +265,6 @@ class BuscadorTagLib {
 
         return salida
     }
-
 
 
 }

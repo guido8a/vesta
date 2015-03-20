@@ -1,4 +1,5 @@
-<g:select from="${comps}" optionValue="objeto" optionKey="id" name="comp" id="${idCombo?idCombo:'comp'}" noSelection="['-1': 'Seleccione...']" style="width: 100%" class="form-control input-sm"></g:select>
+<g:select from="${comps}" optionValue="objeto" optionKey="id" name="comp" id="${idCombo ? idCombo : 'comp'}" noSelection="['-1': 'Seleccione...']"
+          style="width: 100%" class="form-control input-sm"/>
 <script>
     $("#${idCombo?idCombo:'comp'}").change(function () {
         <g:if test="${div}">
@@ -6,7 +7,7 @@
             type    : "POST",
             url     : "${createLink(action:'cargarActividades',controller: 'modificacionesPoa')}",
             data    : {
-                id : $("#${idCombo?idCombo:'comp'}").val(),
+                id  : $("#${idCombo?idCombo:'comp'}").val(),
                 div : "divAsg_dest"
             },
             success : function (msg) {

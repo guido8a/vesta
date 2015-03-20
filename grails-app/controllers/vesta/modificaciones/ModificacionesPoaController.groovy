@@ -1,5 +1,6 @@
 package vesta.modificaciones
 
+import vesta.avales.ProcesoAsignacion
 import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
@@ -39,11 +40,77 @@ class ModificacionesPoaController extends Shield {
         [proyectos: proyectos, actual: actual, campos: campos]
     }
 
+    def modificar = {
+        def proyectos = []
+        def unidad = session.usuario.unidad
+        Asignacion.findAllByUnidad(unidad).each {
+//            println "p "+proyectos
+            def p = it.marcoLogico.proyecto
+            if (!proyectos?.id.contains(p.id)) {
+                proyectos.add(p)
+            }
+        }
+
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+//        println "pro "+proyectos
+
+        def solicitud = SolicitudModPoa.get(params.id)
+        if (!solicitud) {
+            redirect(action: "solicitar")
+            return
+        }
+
+        def asignacionOrigen = solicitud.origen
+        def actividadOrigen = asignacionOrigen.marcoLogico
+        def componenteOrigen = actividadOrigen.marcoLogico
+        def proyectoOrigen = componenteOrigen.proyecto
+        def anioOrigen = asignacionOrigen.anio
+
+        def componentesOrigen = MarcoLogico.findAllByProyectoAndTipoElemento(proyectoOrigen, TipoElemento.get(2))
+        def actividadesOrigen = MarcoLogico.findAllByMarcoLogicoAndResponsable(componenteOrigen, unidad, [sort: "numero"])
+        def asignacionesOrigen = Asignacion.findAllByMarcoLogicoAndAnio(actividadOrigen, anioOrigen)
+
+        def asignacionDestino = solicitud.destino
+        def actividadDestino = null
+        def componenteDestino = null
+        def proyectoDestino = null
+        def anioDestino = null
+        def componentesDestino = []
+        def actividadesDestino = []
+        def asignacionesDestino = []
+
+        if (asignacionDestino) {
+            actividadDestino = asignacionDestino.marcoLogico
+            componenteDestino = actividadDestino.marcoLogico
+            proyectoDestino = componenteDestino.proyecto
+            anioDestino = asignacionDestino.anio
+
+            componentesDestino = MarcoLogico.findAllByProyectoAndTipoElemento(proyectoDestino, TipoElemento.get(2))
+            actividadesDestino = MarcoLogico.findAllByMarcoLogicoAndResponsable(componenteDestino, unidad, [sort: "numero"])
+            asignacionesDestino = Asignacion.findAllByMarcoLogicoAndAnio(actividadDestino, anioDestino)
+        }
+
+        println "get Maximo asg " + params
+        def monto = asignacionOrigen.priorizado
+        def usado = 0;
+        ProcesoAsignacion.findAllByAsignacion(asignacionOrigen).each {
+            usado += it.monto
+        }
+
+        def max = (monto - usado)
+
+        return [proyectos         : proyectos, campos: campos, solicitud: solicitud, max: max,
+                anioOrigen        : anioOrigen, proyectoOrigen: proyectoOrigen, componenteOrigen: componenteOrigen, actividadOrigen: actividadOrigen, asignacionOrigen: asignacionOrigen,
+                anioDestino       : anioDestino, proyectoDestino: proyectoDestino, componenteDestino: componenteDestino, actividadDestino: actividadDestino, asignacionDestino: asignacionDestino,
+                componentesOrigen : componentesOrigen, actividadesOrigen: actividadesOrigen, asignacionesOrigen: asignacionesOrigen,
+                componentesDestino: componentesDestino, actividadesDestino: actividadesDestino, asignacionesDestino: asignacionesDestino]
+    }
+
 
     def componentesProyecto = {
 //        println "comp "+params
         def proyecto = Proyecto.get(params.id)
-        def comps = vesta.proyectos.MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
+        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
         [comps: comps, idCombo: params.idCombo, div: params.div]
     }
 
@@ -65,6 +132,12 @@ class ModificacionesPoaController extends Shield {
 //        println "params "+params
 
         def solicitud = new SolicitudModPoa()
+        if (params.id) {
+            solicitud = SolicitudModPoa.get(params.id)
+            if (!solicitud) {
+                solicitud = new SolicitudModPoa()
+            }
+        }
         solicitud.concepto = params.concepto
         solicitud.usuario = session.usuario
         solicitud.tipo = "R"
@@ -117,6 +190,13 @@ class ModificacionesPoaController extends Shield {
         def inicio = new Date().parse("dd-MM-yyyy", params.inicio)
         def fin = new Date().parse("dd-MM-yyyy", params.fin)
         def solicitud = new SolicitudModPoa()
+        if (params.id) {
+            solicitud = SolicitudModPoa.get(params.id)
+            if (!solicitud) {
+                solicitud = new SolicitudModPoa()
+            }
+        }
+        solicitud.anio = Anio.get(params.anio.toLong())
         solicitud.concepto = params.concepto
         solicitud.usuario = session.usuario
         solicitud.tipo = "N"
@@ -156,6 +236,12 @@ class ModificacionesPoaController extends Shield {
 //        println "params derivada "+params
 
         def solicitud = new SolicitudModPoa()
+        if (params.id) {
+            solicitud = SolicitudModPoa.get(params.id)
+            if (!solicitud) {
+                solicitud = new SolicitudModPoa()
+            }
+        }
         solicitud.concepto = params.concepto
         solicitud.usuario = session.usuario
         solicitud.tipo = "D"
@@ -187,6 +273,12 @@ class ModificacionesPoaController extends Shield {
 
     def guardarSolicitudAumentar = {
         def solicitud = new SolicitudModPoa()
+        if (params.id) {
+            solicitud = SolicitudModPoa.get(params.id)
+            if (!solicitud) {
+                solicitud = new SolicitudModPoa()
+            }
+        }
         solicitud.concepto = params.concepto
         solicitud.usuario = session.usuario
         solicitud.tipo = "A"

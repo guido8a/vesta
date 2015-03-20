@@ -37,7 +37,7 @@
                 </thead>
                 <tbody>
                     <g:each in="${sols}" var="p">
-                        <tr>
+                        <tr data-id="${p.id}">
                             <td>${p.id}</td>
                             <td>${p.usuario.unidad}</td>
                             <td>${p.origen.marcoLogico.proyecto}</td>
@@ -61,14 +61,17 @@
                                 </g:if>
                             </td>
                             <td style="text-align: center">
-                                <a href="#" class="btn imprimiSolicitud btn-sm btn-info" iden="${p.id}"><i class="fa fa-print"></i> Ver</a>
+                                <a href="#" class="btn imprimiSolicitud btn-sm btn-info" iden="${p.id}"><i class="fa fa-print"></i> Ver
+                                </a>
                             </td>
                             <td style="text-align: center">
-                                <a href="#" class="btn matriz btn-sm btn-info" iden="${p.id}"> <i class="fa fa-print"></i>Ver</a>
+                                <a href="#" class="btn matriz btn-sm btn-info" iden="${p.id}"><i class="fa fa-print"></i>Ver
+                                </a>
                             </td>
                             <td style="text-align: center">
-                                <g:if test="${p.estado==3 || p.estado==5}">
-                                <a href="#" class="btn reforma btn-info btn-sm" iden="${p.id}"><i class="fa fa-print"></i> Ver</a>
+                                <g:if test="${p.estado == 3 || p.estado == 5}">
+                                    <a href="#" class="btn reforma btn-info btn-sm" iden="${p.id}"><i class="fa fa-print"></i> Ver
+                                    </a>
                                 </g:if>
                             </td>
                         </tr>
@@ -80,9 +83,6 @@
 
 
         <script>
-
-
-            $(".btn").button()
             %{--$("#buscar").button().click(function(){--}%
             %{--cargarHistorial($("#anio").val(),$("#numero").val(),$("#descProceso").val())--}%
             %{--})--}%
@@ -90,67 +90,41 @@
             %{--location.href = "${createLink(controller:'avales',action:'descargaSolicitud')}/"+$(this).attr("iden")--}%
 
             %{--});--}%
-            $(".reforma").button({icons : {primary : "ui-icon-print"}, text : false}).click(function () {
+            $(".reforma").click(function () {
                 var url = "${g.createLink(controller: 'reporteReformaPoa',action: 'reformaPoa')}/?id=" + $(this).attr("iden")
                 location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=matriz.pdf"
-            })
-            $(".matriz").button({icons : {primary : "ui-icon-print"}, text : false}).click(function () {
+            });
+            $(".matriz").click(function () {
                 var url = "${g.createLink(controller: 'reporteReformaPoa',action: 'solicitudReformaPoa')}/?id=" + $(this).attr("iden")
                 location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=matriz.pdf"
-            })
-            $(".imprimiSolicitud").button({icons : {primary : "ui-icon-print"}, text : false}).click(function () {
+            });
+            $(".imprimiSolicitud").click(function () {
                 var url = "${g.createLink(controller: 'reporteSolicitud',action: 'solicitudReformaPdf')}/?id=" + $(this).attr("iden")
                 location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Solicitud.pdf"
-            })
-            $("#tabs").tabs()
+            });
 
-            function createContextMenu(node) {
-                var $tr = $(node);
-
-                var estado = $tr.data("estado");
-                var incluir = $tr.data("incluir");
-                var detalles = parseInt($tr.data("detalles"));
-
-                var items = {
+            $("tbody>tr").contextMenu({
+                items  : {
                     header : {
                         label  : "Acciones",
                         header : true
                     },
-                    ver    : {
-                        label  : "Ver Solicitud",
-                        icon   : "fa fa-search",
-                        action : function ($element) {
-                            var id = $element.data("id");
-                            showSolicitud(id)
-                        }
-                    }
-                };
-
-                items.matriz = {
-                    label  : "Editar Solicitud",
-                    icon   : "fa fa-pencil",
-                    action : function ($element) {
-                        var id = $element.data("id");
-                        createEditRow(id);
-                    }
-                };
-
-                <g:if test="${session.perfil.codigo == 'RQ' || session.perfil.codigo == 'DRRQ'}">
-                if (estado == 'P') {
-                    items.editar = {
-                        label  : "Editar Solicitud",
+                    editar : {
+                        label  : "Editar",
                         icon   : "fa fa-pencil",
                         action : function ($element) {
                             var id = $element.data("id");
-                            createEditRow(id);
+                            location.href = "${createLink(controller: 'modificacionesPoa', action:'modificar')}/" + id;
                         }
-                    };
+                    }
+                },
+                onShow : function ($element) {
+                    $element.addClass("success");
+                },
+                onHide : function ($element) {
+                    $(".success").removeClass("success");
                 }
-                </g:if>
-
-                return items
-            }
-
+            });
 
 
         </script>
