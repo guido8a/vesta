@@ -20,7 +20,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link controller="revisionAval" action="pendientes" class="btn btn-default">
-                    <i class="fa fa-file-o"></i> Regresar
+                    <i class="fa fa-chevron-left"></i> Regresar
                 </g:link>
             </div>
         </div>

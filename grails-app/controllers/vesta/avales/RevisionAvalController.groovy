@@ -246,7 +246,7 @@ class RevisionAvalController {
     def aprobarAnulacion = {
         def solicitud = SolicitudAval.get(params.id)
         def band = false
-        def usuario = Usro.get(session.usuario.id)
+        def usuario = Persona.get(session.usuario.id)
         /*todo validar quien puede*/
         band = true
         if (!band)
@@ -641,12 +641,10 @@ class RevisionAvalController {
             if (src.exists()) {
                 def sol = SolicitudAval.get(params.id)
                 flash.message = "Ya existe un archivo con ese nombre. Por favor cámbielo."
-                redirect(action: 'aprobarAval', params: [id: sol.id])
-
-
+                redirect(action: 'aprobarAnulacion', params: [id: sol.id])
             } else {
                 def band = false
-                def usuario = Usro.get(session.usuario.id)
+                def usuario = Persona.get(session.usuario.id)
                 def sol = SolicitudAval.get(params.id)
                 /*Todo aqui validar quien puede*/
                 band = true
@@ -662,7 +660,7 @@ class RevisionAvalController {
                     aval.save(flush: true)
                     sol.estado = EstadoAval.findByCodigo("E02")
                     sol.save(flush: true)
-                    flash.message = "Solciitud de anulación aprobada - Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + tdn.imprimeNumero(aval: "${aval.id}") + " anulado"
+                    flash.message = "Solciitud de anulación aprobada - Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + elm.imprimeNumero(aval: "${aval.id}") + " anulado"
                     redirect(action: 'pendientes', controller: 'revisionAval')
                 } else {
                     flash.message = "Usted no tiene permisos para aprobar esta solicitud"
