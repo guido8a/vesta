@@ -186,15 +186,13 @@ class AnioController extends Shield {
      */
     def detalleAnio() {
         def anio = Anio.get(params.anio)
-        println "año:" + anio
-
-        def proyectos = Proyecto.findlist([sort: "codigo"])
+        def proyectos = Proyecto.list([sort: "codigo"])
 
         def arr = []
         def total = 0
         proyectos.each { proy ->
-            def tot = proy.getValorPlanificado()
-//            def tot = proy.getValorPlanificadoAnio(anio)
+//            def tot = proy.getValorPlanificado()
+            def tot = proy.getValorPlanificadoAnio(anio)
             def m = [:]
             m.proyecto = proy
             m.total = tot
