@@ -51,7 +51,7 @@
                     <th>Fechas</th>
                     <th style="">Reponsable</th>
                     <th style="width: 60px;">Partida</th>
-                    <th>Presupuesto</th>
+                    <th>Planificado</th>
                     <g:if test="${actual?.estado == 1}">
                         <th>Priorizado</th>
                     </g:if>

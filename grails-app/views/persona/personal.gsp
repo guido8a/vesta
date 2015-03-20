@@ -33,8 +33,8 @@
             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
                     <g:form class="form-inline" name="frmAuth" action="updateAuth">
-                        <div class="form-group">
-                            <label for="input1">Autorización actual</label>
+                        <div class="form-group ">
+                            <label for="input1">Clave actual</label>
 
                             <div class="input-group">
                                 <g:passwordField name="input1" class="form-control auth"/>
@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="authNueva">Nueva autorización</label>
+                            <label for="authNueva">Nueva clave</label>
 
                             <div class="input-group">
                                 <g:passwordField name="authNueva" class="form-control required auth"/>
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="authConfirm">Repita autorización</label>
+                            <label for="authConfirm">Repita clave</label>
 
                             <div class="input-group">
                                 <g:passwordField name="authConfirm" class="form-control required auth"/>
@@ -113,6 +113,9 @@
                                 log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                 closeLoader();
                                 $frmAuth[0].reset();
+                                if(parts[0] == "SUCCESS") {
+                                    location.href="${createLink(controller: "inicio", action: "inicio" )}"
+                                }
                             }
                         });
                     }
