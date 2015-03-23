@@ -118,7 +118,7 @@ class SolicitudAval {
         estado(blank: false, nullable: false)
         path(blank: true, nullable: true, size: 1..350)
         contrato(blank: true, nullable: true, size: 1..30)
-        memo(blank: true, nullable: true, size: 1..30)
+        memo(blank: true, nullable: true, size: 1..63)
         observaciones(blank: true, nullable: true)
         numero(blank: true, nullable: true)
         tipo(blank: true, nullable: true, size: 1..1)

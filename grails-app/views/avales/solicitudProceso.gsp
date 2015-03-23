@@ -98,7 +98,7 @@
 
                     <div class="col-md-2">
                         <g:if test="${!readOnly}">
-                            <g:textField name="memorando" class="form-control input-sm required"/>
+                            <g:textField name="memorando" class="form-control input-sm required" maxlength="63"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">

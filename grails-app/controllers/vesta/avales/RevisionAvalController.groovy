@@ -172,7 +172,7 @@ class RevisionAvalController {
      * @param numero
      */
     def historial = {
-//        println "historial "+params
+        println "historial "+params
         def anio = Anio.get(params.anio).anio
         def numero = params.numero
         def proceso = params.proceso
