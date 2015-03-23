@@ -175,7 +175,7 @@
                                                 } else {
                                                     setTimeout(function () {
                                                         location.reload(true)
-                                                    }, 10000);
+                                                    }, 5000);
                                                     location.href = msg
 
                                                 }

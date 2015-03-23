@@ -159,7 +159,7 @@
                         <g:if test="${!readOnly}">
                             <div class="input-group">
                                 <g:textField class="form-control input-sm required"
-                                             name="informar" title="Plazo de Ejecución" value="${proceso?.informar}" id="informar"/>
+                                             name="informar" value="${proceso?.informar}" id="informar"/>
                                 <span class="input-group-addon" id="basic-addon2">Días</span>
                             </div>
                         </g:if>

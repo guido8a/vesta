@@ -52,7 +52,7 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold;width: 160px !important;">Proyecto</td>
-                            <td>${sol.proceso.proyecto}</td>
+                            <td>${sol.proceso.proyecto.toStringCompleto()}</td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold">Proceso</td>
@@ -87,7 +87,7 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold">Código</td>
-                            <td>${pa.proceso.proyecto.codigoEsigef} ${pa.asignacion.marcoLogico.marcoLogico.numero} ${pa.asignacion.presupuesto.numero}</td>
+                            <td>${pa.proceso.proyecto.codigoEsigef} ${pa.asignacion.marcoLogico.marcoLogico.numeroComp} ${pa.asignacion.presupuesto.numero}</td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold">Actividad</td>
@@ -101,7 +101,7 @@
                     </table>
                 </g:each>
 
-                <p style="border: 1px solid black;padding: 5px;font-size: 8px;text-align: left;page-break-inside : avoid;">
+                <p style="border: 1px solid black;padding: 5px;font-size: 8px;text-align: justify;page-break-inside : avoid;">
                     <b style="text-decoration: underline">OBSERVACIONES:</b><br/>
                     ${sol.observaciones}
                 </p>

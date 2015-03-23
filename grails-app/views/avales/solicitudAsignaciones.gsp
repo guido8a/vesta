@@ -71,7 +71,19 @@
                     <div class="col-md-2"></div>
 
                     <span class="grupo">
-                        <label class="col-md-1 offset-md-1 control-label">
+                        <label class="col-md-1 control-label">
+                            Asignación
+                        </label>
+
+                        <div class="col-md-4" id="divAsg">
+                            <g:select name="asignacion" from="${[]}" class="form-control input-sm" id="asignacion" noSelection="['-1': 'Seleccione...']"/>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="row">
+                    <span class="grupo">
+                        <label class="col-md-2 offset-md-1 control-label">
                             Componente
                         </label>
 
@@ -86,33 +98,9 @@
                             </g:else>
                         </div>
                     </span>
-                </div>
-
-                <div class="row">
-                    <span class="grupo">
-                        <label class="col-md-2 control-label">
-                            Actividad
-                        </label>
-
-                        <div class="col-md-4" id="divAct">
-                            <g:select name="actividad" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>
-                        </div>
-                    </span>
 
                     <span class="grupo">
-                        <label class="col-md-1 control-label">
-                            Asignación
-                        </label>
-
-                        <div class="col-md-4" id="divAsg">
-                            <g:select name="asignacion" from="${[]}" class="form-control input-sm" id="asignacion" noSelection="['-1': 'Seleccione...']"/>
-                        </div>
-                    </span>
-                </div>
-
-                <div class="row">
-                    <span class="grupo">
-                        <label for="monto" class="col-md-2 control-label">
+                        <label for="monto" class="col-md-1 control-label">
                             Monto
                         </label>
 
@@ -127,6 +115,18 @@
                             <p class="form-control-static">
                                 <label>Máximo <span id="max" style="display: inline-block"></span> $</label>
                             </p>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="row">
+                    <span class="grupo">
+                        <label class="col-md-2 control-label">
+                            Actividad
+                        </label>
+
+                        <div class="col-md-4" id="divAct">
+                            <g:select name="actividad" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>
                         </div>
                     </span>
 
