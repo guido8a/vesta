@@ -7,11 +7,12 @@ import vesta.seguridad.Persona
 import vesta.seguridad.Prfl
 import vesta.seguridad.Sesn
 import vesta.seguridad.Persona
+import vesta.seguridad.Shield
 
 /**
  * Controlador que muestra las pantallas de manejo de revisiones de avales
  */
-class RevisionAvalController {
+class RevisionAvalController extends Shield {
 
     def mailService
 
@@ -172,7 +173,7 @@ class RevisionAvalController {
      * @param numero
      */
     def historial = {
-        println "historial "+params
+        println "historial " + params
         def anio = Anio.get(params.anio).anio
         def numero = params.numero
         def proceso = params.proceso
@@ -312,6 +313,8 @@ class RevisionAvalController {
                     aval.numero = sol.numero
                     aval.estado = EstadoAval.findByCodigo("EF1")
                     aval.monto = sol.monto
+                    if (!aval.save(flush: true))
+                        println "error save aval 1"
                     def firma1 = new Firma()
                     firma1.usuario = Persona.get(params.firma2)
                     firma1.accionVer = "certificacion"
@@ -343,7 +346,7 @@ class RevisionAvalController {
                     aval.firma1 = firma1
                     aval.firma2 = firma2
                     if (!aval.save(flush: true))
-                        println "error save aval"
+                        println "error save aval 2"
                     firma1.idAccion = aval.id
                     firma2.idAccion = aval.id
                     firma1.save()
