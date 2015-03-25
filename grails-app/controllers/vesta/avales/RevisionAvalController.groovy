@@ -353,6 +353,7 @@ class RevisionAvalController extends Shield {
                     firma2.save()
                     sol.aval = aval;
                     sol.estado = aval.estado
+                    aval.save(flush: true)
                     sol.save(flush: true)
                     try {
                         def mail = aval.firma1.usuario.mail
