@@ -110,14 +110,14 @@
                 <div class="col-md-3">
                     <g:select from="${personas}" optionKey="id" optionValue="${{
                         it.nombre + ' ' + it.apellido
-                    }}" name="firma2" class="form-control input-sm"/>
+                    }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
                 </div>
 
                 <div class="col-md-3">
 
                     <g:select from="${personasGerente}" optionKey="id" optionValue="${{
                         it.nombre + ' ' + it.apellido
-                    }}" name="firma3" class="form-control input-sm"/>
+                    }}" noSelection="['': '- Seleccione -']" name="firma3" class="form-control required input-sm"/>
                 </div>
             </div>
         </fieldset>
@@ -139,7 +139,7 @@
                         {
                             customConfig : '${resource(dir: 'js/plugins/ckeditor-4.4.6', file: 'config_bullets_only.js')}'
                         });
-                $("#descargaForm").button().click(function () {
+                $("#descargaForm").click(function () {
                     var url = "${createLink(controller: 'reportes', action: 'certificacion')}/?id=${solicitud.id}Wusu=${session.usuario.id}";
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval_" + $("#numero").val() + ".pdf"
                     return false;
@@ -165,38 +165,47 @@
                     return false;
                 });
                 $("#solicitarFirma").click(function () {
-                    (bootbox.confirm(
-                            "<div class='alert alert-danger'>¿Está seguro? Una vez solicitada la firma no podrá modificar el documento</div>",
-                            function (res) {
-                                if (res) {
-                                    openLoader()
-                                    var aval = $("#numero").val();
-                                    var obs = $("#richText").val();
-                                    $.ajax({
-                                        type    : "POST",
-                                        url     : "${createLink(controller: 'revisionAval', action:'guarDatosDoc')}",
-                                        data    : {
-                                            id     : "${solicitud.id}",
-                                            aval   : aval,
-                                            obs    : obs,
-                                            firma2 : $("#firma2").val(),
-                                            firma3 : $("#firma3").val(),
-                                            enviar : "true"
-                                        },
-                                        success : function (msg) {
-                                            $("#guardarDatosDoc").remove();
-                                            var parts = msg.split("*");
-                                            closeLoader()
-                                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                                            if (parts[0] == "SUCCESS") {
-                                                setTimeout(function () {
-                                                    location.href = "${createLink(controller: 'revisionAval', action: 'pendientes')}"
-                                                }, 2000);
+
+                    var f1 = $("#firma2").val();
+                    var f2 = $("#firma3").val();
+
+                    if (f1 == "" || f2 == "") {
+                        bootbox.alert("Seleccione las personas para las autorizaciones electrónicas");
+                    } else {
+                        (bootbox.confirm(
+                                "<div class='alert alert-danger'>¿Está seguro? Una vez solicitada la firma no podrá modificar el documento</div>",
+                                function (res) {
+                                    if (res) {
+                                        openLoader()
+                                        var aval = $("#numero").val();
+                                        var obs = $("#richText").val();
+                                        $.ajax({
+                                            type    : "POST",
+                                            url     : "${createLink(controller: 'revisionAval', action:'guarDatosDoc')}",
+                                            data    : {
+                                                id     : "${solicitud.id}",
+                                                aval   : aval,
+                                                obs    : obs,
+                                                firma2 : $("#firma2").val(),
+                                                firma3 : $("#firma3").val(),
+                                                enviar : "true"
+                                            },
+                                            success : function (msg) {
+                                                $("#guardarDatosDoc").remove();
+                                                var parts = msg.split("*");
+                                                closeLoader()
+                                                log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                                                if (parts[0] == "SUCCESS") {
+                                                    setTimeout(function () {
+                                                        location.href = "${createLink(controller: 'revisionAval', action: 'pendientes')}"
+                                                    }, 2000);
+                                                }
                                             }
-                                        }
-                                    });
-                                }
-                            }));
+                                        });
+                                    }
+                                }));
+                    }
+
                     return false;
                 });
                 $(".imprimirSolicitud").click(function () {
