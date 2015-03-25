@@ -723,14 +723,22 @@ class ModificacionController  {
             def msn
 
             if (src.exists()) {
-                msn = "Ya existe un archivo con ese nombre. Por favor cámbielo."
-                if (params.tipoPag)
-                    redirect(action: 'poaInversionesMod', params: [msn: msn, id: params.unidad])
-                else
-                    redirect(action: 'poaCorrientesMod', params: [msn: msn, id: params.unidad])
+
+//                msn = "Ya existe un archivo con ese nombre. Por favor cámbielo."
+                if (params.tipoPag){
+                    flash.message = "Ya existe un archivo con ese nombre. Por favor cámbielo."
+                    redirect(controller: "modificacion", action: "poaInversionesMod", id: params.proyecto)
+                    return
+                }
+                else{
+                    flash.message = "Ya existe un archivo con ese nombre. Por favor cámbielo."
+                    redirect(controller: "modificacion", action: "poaInversionesMod", id: params.proyecto)
+                    return
+                }
 
 
             } else {
+
 
                 if (params.destino != "") {
                     println "si destino " + params.destino
@@ -746,17 +754,41 @@ class ModificacionController  {
                     origen.priorizado = origen.priorizado - params.monto.toDouble()
                     destino.priorizado = destino.priorizado + params.monto.toDouble()
 
-                    origen = kerberosService.saveObject(origen, Asignacion, session.perfil, session.usuario, "guardarReasignacion", "modificacion", session)
-                    destino = kerberosService.saveObject(destino, Asignacion, session.perfil, session.usuario, "guardarReasignacion", "modificacion", session)
-                    //guardarPras(origen)
-                    //guardarPras(destino)
-                    mod = kerberosService.saveObject(mod, Asignacion, session.perfil, session.usuario, "guardarReasignacion", "modificacion", session)
 
-                    msn = "Modificación procesada"
+                    if(origen.save(flush: true)){
 
-                    redirect(action: 'poaInversionesMod', params: [msn: msn, id: params.proyecto])
+                    }else{
+                        flash.message = "Ocurrio un error al procesar la asignación de origen de la modificación."
+                        redirect(controller: "modificacion", action: "poaInversionesMod", id: params.proyecto)
+                        return
+                    }
+
+                    if(destino.save(flush: true)){
+
+                    }else{
+                        flash.message = "Ocurrio un error al procesar la asignación destino de la modificación."
+                        redirect(controller: "modificacion", action: "poaInversionesMod", id: params.proyecto)
+                        return
+                    }
+
+                    if(mod.save(flush: true)){
+
+                    }else{
+                        flash.message = "Ocurrio un error al procesar la modificación."
+                        redirect(controller: "modificacion", action: "poaInversionesMod", id: params.proyecto)
+                        return
+                    }
 
 
+                    flash.message = "Modificación realizada exitosamente."
+                    flash.tipo = "success"
+                    redirect(controller: "modificacion", action: "poaInversionesMod", id: params.proyecto)
+                    return
+
+                }else{
+                    flash.message = "No se puede realizar la modificación, falta asignación de destino."
+                    redirect(controller: "modificacion", action: "poaInversionesMod", id: params.proyecto)
+                    return
 
                 }
 
@@ -804,6 +836,7 @@ class ModificacionController  {
 //        def asignaciones = Asignacion.findAll("from Asignacion where anio=${actual.id} and unidad=${unidad.id} and marcoLogico is null and actividad is not null order by id")
 
             def c = Asignacion.createCriteria()
+
             def asignaciones = c.list {
                 and {
                     eq("anio", actual)
@@ -811,6 +844,8 @@ class ModificacionController  {
                 }
                 order("id", "asc")
             }
+
+            println("asignaciones " + asignaciones)
 
             c = Asignacion.createCriteria()
 
@@ -840,7 +875,7 @@ class ModificacionController  {
 
         def band = false
         def unidad = UnidadEjecutora.get(params.id)
-        def usuario = Usro.get(session.usuario.id)
+        def usuario = Persona.get(session.usuario.id)
 
         if (usuario.id.toInteger() == 3 || usuario.unidad.id == 85) {
             band = true
@@ -1299,7 +1334,9 @@ class ModificacionController  {
 
     def modificar_ajax () {
         def proyecto = Proyecto.get(params.id)
-        return [proyecto: proyecto]
+        def asgOrigen = Asignacion.get(params.origen)
+        def asgDestino = Asignacion.get(params.destino)
+        return [proyecto: proyecto, asgOrigen: asgOrigen, asgDestino: asgDestino]
 
     }
 
@@ -1307,17 +1344,15 @@ class ModificacionController  {
      * Acción
      */
 
-    def buscarAsg_ajax () {
+    def buscarAsg_ajax (){
+
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+
+        return [campos: campos]
 
     }
 
-    /**
-     * Acción
-     */
 
-    def buscarPartida_ajax (){
-
-    }
 
 
 

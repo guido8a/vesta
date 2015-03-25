@@ -5,13 +5,17 @@
   Time: 11:45 AM
 --%>
 
+<script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
+
 <g:form action="guardarReasignacionYachay" class="frm_modpoa" enctype="multipart/form-data">
-    <input type="hidden" id="h_origen" name="origen">
-    <input type="hidden" id="h_destino" name="destino">
+
+    <input type="hidden" id="h_origen" name="origen" value="${asgOrigen.id}">
+    <input type="hidden" id="h_destino" name="destino" value="${asgDestino.id}">
     <input type="hidden" name="tipoPag" value="inv">
     <input type="hidden" id="proyecto" name="proyecto" value="${proyecto.id}">
+
     <div style="height: 40px">
-        <div style="width: 170px;height: 35px;float: left"><b>Monto de la reasignación:</b></div> <g:textField name="monto" id="monto" style="width: 100px"/>
+        <div style="width: 170px;height: 35px;float: left"><b>Monto de la reasignación:</b></div> <g:textField name="monto" id="monto" class="number" style="width: 100px"/>
         %{--<input type="text" style="width: 100px;" id="monto" name="monto"> --}%
         Máximo:<span id="max"></span>
     </div>

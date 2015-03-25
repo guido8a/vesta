@@ -5,6 +5,7 @@ import jxl.WorkbookSettings
 import jxl.write.Label
 import jxl.write.WritableSheet
 import jxl.write.WritableWorkbook
+import vesta.avales.ProcesoAsignacion
 import vesta.avales.SolicitudAval
 import vesta.contratacion.Aprobacion
 import vesta.contratacion.DetalleMontoSolicitud
@@ -536,7 +537,50 @@ class ReporteSolicitudController {
         println "impr sol " + params
         def solicitud = SolicitudAval.get(params.id)
         println "solcitud " + solicitud
-        return [solicitud: solicitud]
+
+
+        def anios = [:]
+        def arr = [:]
+        ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
+            if(arr[it.asignacion.marcoLogico]){
+                if(arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]){
+                    arr[it.asignacion.marcoLogico][it.asignacion.anio.anio].add(it)
+                }else{
+                    def tmp = [:]
+
+                    arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio,[it])
+                }
+
+            }else{
+                def tmp = [:]
+                tmp.put(it.asignacion.anio.anio,[it])
+                arr.put(it.asignacion.marcoLogico, tmp)
+            }
+
+        }
+        arr.each {a->
+            println "1er "+a.key.objeto
+            a.value.each{s->
+                println "2do "+s
+                s.value.each{r->
+                    println "3er "+r
+                }
+            }
+        }
+
+//        ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
+//            println(">>>> " + it.asignacion.anio.anio)
+//            if(anios["${it.asignacion.anio.anio}"]){
+//                anios["${it.asignacion.anio.anio}"].add(it)
+//            }else{
+//                anios.put(it.asignacion.anio.anio, [it])
+//            }
+//
+//        }
+
+        println("--><<<<>>" + arr)
+
+        return [solicitud: solicitud, anios: anios, arr: arr]
     }
 
     /**

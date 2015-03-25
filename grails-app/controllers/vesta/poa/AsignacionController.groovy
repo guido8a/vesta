@@ -12,6 +12,7 @@ import vesta.parametros.poaPac.Presupuesto
 import vesta.proyectos.Cronograma
 import vesta.proyectos.Financiamiento
 import vesta.proyectos.MarcoLogico
+import vesta.proyectos.ModificacionAsignacion
 import vesta.proyectos.Proyecto
 import vesta.seguridad.Shield
 
@@ -398,7 +399,7 @@ class AsignacionController extends Shield {
 
     def buscarPresupuesto_ajax() {
 
-        println "buscar " + params
+//        println "buscar " + params
         def prsp = []
         if (!params.tipo) {
             if (params.parametro && params.parametro.trim().size() > 0) {
@@ -422,6 +423,8 @@ class AsignacionController extends Shield {
                 }
             }
         }
+//        println("--> " + prsp)
+
         [prsp: prsp]
     }
 
@@ -922,6 +925,158 @@ class AsignacionController extends Shield {
         }
 
 
+    }
+
+
+    /**
+     * Acción
+     */
+    def agregaAsignacionMod = {
+        println "parametros agregaAsignacion mod:" + params
+        def fuentes = Fuente.list([sort: 'descripcion'])
+        def asgnInstance = Asignacion.get(params.id)
+        def unidad = UnidadEjecutora.get(params.unidad)
+        def actual
+
+
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+
+        return ['asignacionInstance': asgnInstance, 'fuentes': fuentes, unidad: unidad, actual: actual]
+    }
+
+    /**
+     * Acción
+     */
+    def creaHijoMod = {
+
+        println "reasignacion mod!! " + params
+        def path = servletContext.getRealPath("/") + "modificacionesPoa/"
+        new File(path).mkdirs()
+
+        def f = request.getFile('archivo')
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename()
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+            def reps = [
+                    "a": "[àáâãäåæ]",
+                    "e": "[èéêë]",
+                    "i": "[ìíîï]",
+                    "o": "[òóôõöø]",
+                    "u": "[ùúûü]",
+
+                    "A": "[ÀÁÂÃÄÅÆ]",
+                    "E": "[ÈÉÊË]",
+                    "I": "[ÌÍÎÏ]",
+                    "O": "[ÒÓÔÕÖØ]",
+                    "U": "[ÙÚÛÜ]",
+
+                    "n": "[ñ]",
+                    "c": "[ç]",
+
+                    "N": "[Ñ]",
+                    "C": "[Ç]",
+
+                    "" : "[\\!@\\\$%\\^&*()='\"\\/<>:;\\.,\\?]",
+
+                    "_": "[\\s]"
+            ]
+
+            reps.each { k, v ->
+                fileName = (fileName.trim()).replaceAll(v, k)
+            }
+
+            fileName = fileName + "." + "pdf"
+
+            def pathFile = path + File.separatorChar + fileName
+            def src = new File(pathFile)
+            def msn
+
+            if (src.exists()) {
+//                msn = "Ya existe un archivo con ese nombre. Por favor cámbielo."
+//                redirect(action: 'poaCorrientesMod', params: [msn: msn, id: params.unidad])
+
+                flash.message = 'Ya existe un archivo con ese nombre. Por favor cámbielo.'
+                flash.estado = "error"
+                flash.icon = "alert"
+                redirect(controller: 'modificacion', action: 'poaInversionesMod', id: params.unidad)
+                return
+
+
+            } else {
+                println "parametros creaHijo:" + params
+                def nueva = new Asignacion()
+                def valor = params.valor.toFloat()
+                def asgn = Asignacion.get(params.id)
+                def fnte = Fuente.get(params.fuente)
+                def prsp = Presupuesto.get(params.presupuesto.id)
+                def resultado = 0
+                // debe borrar el registro actual de pras y crear uno nuevo con los nuevos valores
+                ProgramacionAsignacion.findAllByAsignacion(Asignacion.get(params.id)).each {
+                    //println "proceso la asignación ${it}"
+                    def p = [id: it.id, controllerName: 'asignacion', actionName: 'creaHijoMod']
+                    //println "parametros de borrado: " + p
+//                    kerberosService.delete(p, ProgramacionAsignacion, session.perfil, session.usuario)
+
+                }
+                asgn.planificado -= valor
+//                asgn = kerberosService.saveObject(asgn, Asignacion, session.perfil, session.usuario, "agregaAsignacion", "asignacion", session)
+                asgn.save(flush: true)
+                if (asgn.errors.getErrorCount() == 0) {
+                    resultado += guardarPras(asgn)
+                } else {
+                    resultado = 0
+                }
+                if (resultado) {
+                    nueva.properties = asgn.properties
+                    nueva.padre = asgn
+                    nueva.fuente = fnte
+                    nueva.presupuesto = prsp
+                    nueva.planificado = valor
+                    //println "pone padre: ${nueva.padre}"
+//                    nueva = kerberosService.saveObject(nueva, Asignacion, session.perfil, session.usuario, "agregaAsignacion", "asignacion", session)
+                    nueva.save(flush: true)
+                    if (nueva.errors.getErrorCount() == 0) {
+                        f.transferTo(new File(pathFile))
+                        println "crea la progrmaación de " + nueva.id
+                        resultado += guardarPras(nueva)
+                        def mod = new ModificacionAsignacion()
+                        mod.desde = asgn
+                        mod.recibe = nueva
+                        mod.fecha = new Date()
+                        mod.valor = nueva.planificado
+                        mod.pdf = fileName
+                        mod.save(flush: true)
+                    } else {
+                        resultado = 0
+                    }
+                }
+//                msn = "Modificación procesada"
+//                redirect(controller: "modificacion", action: "poaCorrientesMod", params: [msn: msn, id: params.unidad])
+                flash.message = 'Modificación procesada'
+                flash.estado = "success"
+                flash.icon = "alert"
+                redirect(controller: 'modificacion', action: 'poaInversionesMod', id: params.unidad)
+                return
+            }
+        }
+        else{
+
+        }
     }
 
 

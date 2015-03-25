@@ -26,29 +26,14 @@
     </g:each>
     </tbody>
 </table>
+
 <script type="text/javascript">
 
-    $(".mas").button().click(function(){
-        $("#presupuesto").val($(this).attr("prsp"))
-        $("#txt_buscar").val($(this).attr("nombre"))
-        $("#"+$("#id_txt").val()).val($(this).attr("nombre"))
-        $("#"+$("#id_txt").val()).parent().find(".prsp").val($(this).attr("prsp"))
-        var desc = $("#id_desc").val()
-        if(desc!="undefined" && desc !="" && desc!=" " && desc!=undefined)
-            $("#"+desc).html($(this).attr("desc"))
-        else
-            $("#desc").html($(this).attr("desc"))
-        $("#buscar").dialog("close")
-        $("#buscarAgr").dialog("close")
+    $(".mas").click(function(){
+//        console.log("prsp " + $(this).attr("prsp"))
+        $("#prsp_desc2").val($(this).attr("prsp"))
+        $("#dlgBuscarPre").modal("hide")
     });
-
-//    $("#tblPresupuesto").fixedHeaderTable({
-//        height    : 420,
-//        autoResize: true,
-//        footer    : true
-//    });
-
-
 
 
     setTimeout(function () {
