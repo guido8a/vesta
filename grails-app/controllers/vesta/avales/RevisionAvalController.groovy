@@ -314,7 +314,7 @@ class RevisionAvalController extends Shield {
                     aval.estado = EstadoAval.findByCodigo("EF1")
                     aval.monto = sol.monto
                     if (!aval.save(flush: true))
-                        println "error save aval 1"
+                        println "error save aval 1 " + aval.errors
                     def firma1 = new Firma()
                     firma1.usuario = Persona.get(params.firma2)
                     firma1.accionVer = "certificacion"
@@ -353,7 +353,9 @@ class RevisionAvalController extends Shield {
                     firma2.save()
                     sol.aval = aval;
                     sol.estado = aval.estado
-                    aval.save(flush: true)
+                    if (!aval.save(flush: true)) {
+                        println "ERROR AVAL!!!!! " + aval.errors
+                    }
                     sol.save(flush: true)
                     try {
                         def mail = aval.firma1.usuario.mail

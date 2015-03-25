@@ -117,7 +117,7 @@ class Aval {
         fechaLiberacion(blank: true, nullable: true)
         fechaAnulacion(blank: true, nullable: true)
         estado(blank: false, nullable: false)
-        memo(blank: true, nullable: true, size: 1..30)
+        memo(blank: true, nullable: true, size: 1..63)
         path(blank: true, nullable: true, size: 1..350)
         pathLiberacion(blank: true, nullable: true, size: 1..350)
         pathAnulacion(blank: true, nullable: true, size: 1..350)
