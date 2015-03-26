@@ -4,6 +4,7 @@ import jxl.Workbook
 import jxl.WorkbookSettings
 import jxl.write.*
 import vesta.avales.Certificacion
+import vesta.avales.ProcesoAsignacion
 import vesta.avales.SolicitudAval
 import vesta.parametros.PresupuestoUnidad
 import vesta.parametros.TipoElemento
@@ -18,6 +19,8 @@ import vesta.parametros.proyectos.TipoMeta
 import vesta.poa.Asignacion
 import vesta.poa.ProgramacionAsignacion
 import vesta.proyectos.*
+
+import vesta.NumberToLetterConverter
 
 /**
  * Controlador
@@ -155,7 +158,47 @@ class ReportesController {
         def anterior = null
 //        anterior=Certificacion.findByAsignacionAndFechaLessThan(cer.asignacion,new Date().parse("dd-MM-yyyy HH:mm","01-01-${anio} 00:00"))
         mes = mes?.descripcion
-        return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval]
+
+
+        def anios = [:]
+        def arr = [:]
+        def total
+        ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
+            if(it.asignacion.anio.anio.toInteger() >= anio.anio.toInteger()){
+                if(arr[it.asignacion.marcoLogico]){
+                    arr[it.asignacion.marcoLogico]["total"]+=it.monto
+                    if(arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]){
+                        arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["asignaciones"].add(it)
+                        arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["total"]+=it.monto
+
+                    }else{
+                        def mp=[:]
+                        mp.put("asignaciones",[it])
+                        mp.put("total",it.monto)
+
+                        arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio,mp)
+                    }
+
+                }else{
+                    def tmp = [:]
+                    def mp=[:]
+                    mp.put("asignaciones",[it])
+                    mp.put("total",it.monto)
+                    tmp.put(it.asignacion.anio.anio,mp)
+                    tmp.put("total",it.monto)
+                    arr.put(it.asignacion.marcoLogico, tmp)
+                }
+            }
+        }
+
+        println("arr" + arr)
+
+        def devengado = 0
+        def transf = NumberToLetterConverter.convertNumberToLetter(solicitud?.monto)
+
+        println("-->" + transf)
+
+        return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval, arr: arr, transf: transf, devengado: devengado]
     }
 
     /**

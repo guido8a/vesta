@@ -11,6 +11,7 @@ import vesta.contratacion.Aprobacion
 import vesta.contratacion.DetalleMontoSolicitud
 import vesta.contratacion.Solicitud
 import vesta.modificaciones.SolicitudModPoa
+import vesta.parametros.poaPac.Anio
 import vesta.poa.Asignacion
 import vesta.seguridad.Prfl
 import vesta.seguridad.Sesn
@@ -538,35 +539,79 @@ class ReporteSolicitudController {
         def solicitud = SolicitudAval.get(params.id)
         println "solcitud " + solicitud
 
+        def anio = Anio.findByAnio(new Date().format("yyyy"))
+
+        def devengado = 0
+
+
+//        def anios = [:]
+//        def arr = [:]
+//        ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
+//            if(arr[it.asignacion.marcoLogico]){
+//                if(arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]){
+//                    arr[it.asignacion.marcoLogico][it.asignacion.anio.anio].add(it)
+//                }else{
+//                    def tmp = [:]
+//
+//                    arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio,[it])
+//                }
+//
+//            }else{
+//                def tmp = [:]
+//                tmp.put(it.asignacion.anio.anio,[it])
+//                arr.put(it.asignacion.marcoLogico, tmp)
+//            }
+//
+//        }
+//        arr.each {a->
+//            println "1er "+a.key.objeto
+//            a.value.each{s->
+//                println "2do "+s
+//                s.value.each{r->
+//                    println "3er "+r
+//                }
+//            }
+//        }
+
+
 
         def anios = [:]
         def arr = [:]
+        def total
+
+
+
         ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
-            if(arr[it.asignacion.marcoLogico]){
-                if(arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]){
-                    arr[it.asignacion.marcoLogico][it.asignacion.anio.anio].add(it)
+            if(it.asignacion.anio.anio.toInteger() >= anio.anio.toInteger()){
+                if(arr[it.asignacion.marcoLogico]){
+                    arr[it.asignacion.marcoLogico]["total"]+=it.monto
+                    if(arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]){
+                        arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["asignaciones"].add(it)
+                        arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["total"]+=it.monto
+
+                    }else{
+                        def mp=[:]
+                        mp.put("asignaciones",[it])
+                        mp.put("total",it.monto)
+
+                        arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio,mp)
+                    }
+
                 }else{
                     def tmp = [:]
-
-                    arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio,[it])
-                }
-
-            }else{
-                def tmp = [:]
-                tmp.put(it.asignacion.anio.anio,[it])
-                arr.put(it.asignacion.marcoLogico, tmp)
-            }
-
-        }
-        arr.each {a->
-            println "1er "+a.key.objeto
-            a.value.each{s->
-                println "2do "+s
-                s.value.each{r->
-                    println "3er "+r
+                    def mp=[:]
+                    mp.put("asignaciones",[it])
+                    mp.put("total",it.monto)
+                    tmp.put(it.asignacion.anio.anio,mp)
+                    tmp.put("total",it.monto)
+                    arr.put(it.asignacion.marcoLogico, tmp)
                 }
             }
         }
+
+//        println("arr " + arr)
+
+
 
 //        ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
 //            println(">>>> " + it.asignacion.anio.anio)
@@ -580,7 +625,7 @@ class ReporteSolicitudController {
 
         println("--><<<<>>" + arr)
 
-        return [solicitud: solicitud, anios: anios, arr: arr]
+        return [solicitud: solicitud, anios: anios, arr: arr, devengado:devengado]
     }
 
     /**

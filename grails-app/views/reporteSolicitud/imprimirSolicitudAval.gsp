@@ -100,29 +100,6 @@
         </tr>
     </table>
 
-%{--<g:each in="${ProcesoAsignacion.findAllByProceso(solicitud.proceso)}" var="pa">--}%
-%{--<table width="100%" border="1" class="tbl" style="margin-top: 15px">--}%
-%{--<tr>--}%
-%{--<td style="font-weight: bold">COMPONENTE</td>--}%
-%{--<td>${pa.asignacion.marcoLogico.marcoLogico.toStringCompleto()}</td>--}%
-%{--</tr>--}%
-%{--<tr>--}%
-%{--<td style="font-weight: bold">ACTIVIDAD</td>--}%
-%{--<td>${pa.asignacion.marcoLogico.numero} - ${pa.asignacion.marcoLogico?.toStringCompleto()}</td>--}%
-%{--</tr>--}%
-%{--<tr>--}%
-%{--<td style="font-weight: bold">CÓDIGO</td>--}%
-%{--<td>${pa.asignacion.marcoLogico.marcoLogico.proyecto.codigo} - ${pa.asignacion.marcoLogico.marcoLogico.numeroComp} - ${pa.asignacion.presupuesto.numero}</td>--}%
-%{--</tr>--}%
-
-
-%{--<tr>--}%
-
-%{--</tr>--}%
-
-%{--</table>--}%
-%{--</g:each>--}%
-
     <g:each in="${arr}" var="primero">
 
         <table width="100%" border="1" class="tbl" style="margin-top: 15px">
@@ -138,36 +115,44 @@
                 <td style="font-weight: bold">CÓDIGO</td>
                 <td>${primero?.key?.marcoLogico?.proyecto?.codigo} - ${primero?.key?.marcoLogico?.numeroComp} - ${primero?.key.numero}</td>
             </tr>
+            <tr>
+                <td style="font-weight: bold">SUBTOTAL ACTIVIDAD</td>
+                <td><g:formatNumber number="${primero.value.total + devengado}" type="currency" /></td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
+                <td><g:formatNumber number="${devengado}" type="currency" /></td>
+            </tr>
 
             <g:set var="total" value="${0}"/>
 
             <g:each in="${primero.value}" var="segundo">
-                <g:set var="total2" value="${0}"/>
-                <tr>
-                    <td style="font-weight: bold">
-                        ${segundo.key}
-                    </td>
-                    <td>
-                        <table class="tbl2">
-                            <g:each in="${segundo.value}" var="tercero">
+                <g:if test="${segundo.key != 'total'}">
+                    <g:set var="total2" value="${0}"/>
+                    <tr>
+                        <td style="font-weight: bold">
+                            ${segundo.key}
+                        </td>
+                        <td>
+                            <table class="tbl2">
+                                <g:each in="${segundo.value.asignaciones}" var="tercero">
+                                    <tr>
+                                        <td width="35%"><strong>Fuente ${tercero.asignacion?.fuente?.codigo}:</strong></td>
+                                        <td style="text-align: right;"><g:formatNumber number="${tercero.monto?:0}" type="currency" /></td>
+                                    </tr>
+                                </g:each>
                                 <tr>
-                                    <g:set var="total2" value="${total2+(tercero.monto?:0)}"/>
-                                    <g:set var="total" value="${total+(tercero.monto?:0)}"/>
-                                    <td width="35%"><strong>Fuente ${tercero.asignacion?.fuente?.codigo}:</strong></td>
-                                    <td style="text-align: right;"><g:formatNumber number="${tercero.monto?:0}" type="currency" /></td>
+                                    <td><strong>Total</strong></td>
+                                    <td style="text-align: right; font-weight: bold"><g:formatNumber number="${segundo.value.total}" type="currency" /></td>
                                 </tr>
-                            </g:each>
-                            <tr>
-                                <td><strong>Total</strong></td>
-                                <td style="text-align: right; font-weight: bold"><g:formatNumber number="${total2}" type="currency" /></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </g:if>
             </g:each>
             <tr>
                 <td style="font-weight: bold">MONTO TOTAL AVALADO</td>
-                <td><g:formatNumber number="${total}" type="currency" /></td>
+                <td><g:formatNumber number="${primero.value.total}" type="currency" /></td>
             </tr>
         </table>
 
@@ -180,26 +165,23 @@
         <strong>Nota Técnica:</strong> El monto solicitado incluye el Impuesto al Valor Agegado IVA 12%.
     </p>
 
-    <p>
-        <strong>FECHA: ${solicitud.fecha.format("dd-MM-yyyy")}</strong>
+    <p >
+        <strong style="float: right">FECHA:${solicitud.fecha.format("dd-MM-yyyy")}</strong>
     </p>
 </div>
 
 <div class="no-break">
     <div class="texto">
-        Elaborado por: ${solicitud?.usuario?.sigla}
+        <strong>Elaborado por:</strong>  ${solicitud?.usuario?.sigla}
     </div>
     <g:if test="${solicitud.firma?.estado == 'F'}">
         <table width="100%" style="margin-top: 1.5cm;">
             <tr>
-                <td width="33%" style=" text-align: center;">
+                <td width="50%" style=" text-align: center;">
                     <img src="${resource(dir: 'firmas', file: solicitud.firma.path)}" style="width: 150px;"/><br/>
-                    ${solicitud.firma.usuario.nombre} ${solicitud.firma.usuario.apellido}<br/>
-                    ${solicitud.firma.usuario.cargoPersonal}<br/>
-                    ${solicitud.firma.fecha.format("dd-MM-yyyy hh:mm")}
+                    <b>${solicitud.firma.usuario.nombre} ${solicitud.firma.usuario.apellido}<br/></b>
+                    <b> ${solicitud.firma.usuario.cargoPersonal}<br/></b>
                 </td>
-                <td width="33%" style=" text-align: center;"></td>
-                <td width="33%" style=" text-align: center;"></td>
             </tr>
         </table>
     </g:if>
