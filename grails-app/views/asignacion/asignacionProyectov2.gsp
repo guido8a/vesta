@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main"/>
-        <title>Asignaciones del proyecto: ${proyecto.toStringCompleto()}</title>
+        <title>Asignaciones del proyecto: ${proyecto}</title>
         %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'svt.css')}" type="text/css"/>--}%
         <style type="text/css">
 
