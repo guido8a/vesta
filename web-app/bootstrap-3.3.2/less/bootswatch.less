@@ -189,6 +189,30 @@ legend {
 // -------------------------
 .nav-pills {
   > li {
+    float: left;
+
+    // Links rendered as pills
+    > a {
+      border-radius: @nav-pills-border-radius;
+      border:solid 1px @brand-primary;
+    }
+    + li {
+      margin-left: 2px;
+    }
+
+    // Active state
+    &.active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: @nav-pills-active-link-hover-color;
+        background-color: @nav-pills-active-link-hover-bg;
+      }
+    }
+  }
+}
+.nav-pills {
+  > li {
     & > a:hover {
       background-color: @brand-info;
       color: @gray-lighter;

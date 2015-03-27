@@ -21,6 +21,7 @@
     <g:hiddenField name="id" value="${asignacionInstance?.id}"/>
     <g:hiddenField name="unidad" value="${unidad?.id}"/>
     <g:hiddenField name="maximo" value="${asignacionInstance?.getValorReal()?.toFloat()?.round(2)}"/>
+    <g:hiddenField name="proyecto" value="${proyecto}"/>
 
 
     <div class="form-group keeptogether">
@@ -64,9 +65,12 @@
                 </label>
 
                 <div class="col-md-6">
+                    %{--<g:textField class="field number required ui-widget-content ui-corner-all money" name="valor"--}%
+                                 %{--title="Planificado" id="vlor"--}%
+                                 %{--value='${formatNumber(number:asignacionInstance.getValorReal(),format:"###,##0",minFractionDigits:2,maxFractionDigits:2)}'/>--}%
                     <g:textField class="field number required ui-widget-content ui-corner-all money" name="valor"
                                  title="Planificado" id="vlor"
-                                 value='${formatNumber(number:asignacionInstance.getValorReal(),format:"###,##0",minFractionDigits:2,maxFractionDigits:2)}'/>
+                                 value='${formatNumber(number:asignacionInstance.getValorPriorizado(),format:"###,##0",minFractionDigits:2,maxFractionDigits:2)}'/>
                 </div>
             </span>
         </div>
@@ -99,7 +103,6 @@
             $.ajax({
                 type: "POST",
                 url: "${createLink(action:'buscarPresupuesto_ajax',controller:'asignacion')}",
-//                data: "parametro=" + $("#par2").val() + "&tipo=" + $("#tipo").val(),
                 data: "parametro=" + "" + "&tipo=" + "1",
                 success: function(msg) {
                     bootbox.dialog ({
@@ -119,28 +122,5 @@
                 }
             });
         });
-
-
-
-        %{--$("#btn_buscarAgr").click(function() {--}%
-            %{--$.ajax({--}%
-                %{--type: "POST",--}%
-                %{--url: "${createLink(action:'buscarPresupuesto',controller:'asignacion')}",--}%
-                %{--data: "parametro=" + $("#par2").val() + "&tipo=" + $("#tipo").val(),--}%
-                %{--success: function(msg) {--}%
-                    %{--$("#resultadoAgr").html(msg)--}%
-                %{--}--}%
-            %{--});--}%
-        %{--});--}%
-
-
-
-//        $("#buscarAgr").dialog({
-//            title:"Cuentas presupuestarias",
-//            width:520,
-//            height:480,
-//            autoOpen:false,
-//            modal:true
-//        })
     </script>
 </g:form>

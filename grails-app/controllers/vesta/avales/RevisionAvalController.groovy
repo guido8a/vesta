@@ -125,7 +125,7 @@ class RevisionAvalController extends Shield {
                     }
                 }
                 if (params.numero && params.numero != "") {
-                    eq("numero", params.numero.toInteger())
+                    eq("numero", "" + params.numero.toInteger())
                 }
                 if (params.sort && params.sort != "") {
                     if (!externos.contains(params.sort)) {
@@ -133,20 +133,29 @@ class RevisionAvalController extends Shield {
                     }
                 }
             }
-            datos += avales
+            datos = avales
         }
 
         if (proceso && proceso != "") {
             def datosTemp = []
             datos.each { av ->
-
-                if (av.proceso.nombre =~ proceso) {
-
+                if (av.proceso.nombre.toLowerCase() =~ proceso.toLowerCase()) {
                     datosTemp.add(av)
                 }
             }
             datos = datosTemp
 //            println "datos proceso "+datos
+        }
+        if (params.requirente) {
+            def req = UnidadEjecutora.get(params.requirente.toLong())
+            def datosTemp = []
+            datos.each { av ->
+                def solicitud = SolicitudAval.countByAvalAndUnidad(av, req)
+                if (solicitud > 0) {
+                    datosTemp.add(av)
+                }
+            }
+            datos = datosTemp
         }
         if (!band) {
             switch (params.sort) {
@@ -173,10 +182,14 @@ class RevisionAvalController extends Shield {
      * @param numero
      */
     def historial = {
-        println "historial " + params
+//        println "historial " + params
         def anio = Anio.get(params.anio).anio
-        def numero = params.numero
-        def proceso = params.proceso
+        def numero = params.numero ? params.numero.toInteger() : ""
+        def proc = params.proceso
+        def requirente
+        if (params.requirente) {
+            requirente = UnidadEjecutora.get(params.requirente.toLong())
+        }
         def datos = []
         def fechaInicio
         def fechaFin
@@ -184,34 +197,51 @@ class RevisionAvalController extends Shield {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy hh:mm:ss", "31-12-" + anio + " 23:59:59")
 //            println "inicio "+fechaInicio+"  fin  "+fechaFin
-            datos += SolicitudAval.findAllByFechaBetween(fechaInicio, fechaFin)
+            def estadoSinFirma = EstadoAval.findByCodigo("EF4")
+//            datos += SolicitudAval.findAllByEstadoNotEqualAndFechaBetween(estadoSinFirma, fechaInicio, fechaFin)
+            datos = SolicitudAval.withCriteria {
+                ne("estado", estadoSinFirma)
+                between("fecha", fechaInicio, fechaFin)
+                if (requirente) {
+                    eq("unidad", requirente)
+                }
+                if (numero && numero != "") {
+                    aval {
+                        ilike("numero", "%" + numero + "%")
+                    }
+                }
+                if (proc && proc != "") {
+                    proceso {
+                        ilike("nombre", "%" + proc + "%")
+                    }
+                }
+            }
 //            println "datos fecha "+datos
         }
-        if (numero && numero != "") {
-//            println "buscando por numero ==> "+numero
-            def datosTemp = []
-            datos.each { sol ->
-                println "tiene aval? " + sol.aval
-                if (sol.aval?.numero =~ numero) {
-                    println "encontro "
-                    datosTemp.add(sol)
-                }
-            }
-            datos = datosTemp
-//            println "datos numero "+datos
-        }
-        if (proceso && proceso != "") {
-            def datosTemp = []
-            datos.each { sol ->
-
-                if (sol.proceso.nombre =~ proceso) {
-                    println "encontro "
-                    datosTemp.add(sol)
-                }
-            }
-            datos = datosTemp
-//            println "datos proceso "+datos
-        }
+//        if (numero && numero != "") {
+////            println "buscando por numero ==> "+numero
+//            def datosTemp = []
+//            datos.each { sol ->
+//                println "tiene aval? " + sol.aval
+//                if (sol.aval?.numero =~ numero) {
+//                    println "encontro "
+//                    datosTemp.add(sol)
+//                }
+//            }
+//            datos = datosTemp
+////            println "datos numero "+datos
+//        }
+//        if (proceso && proceso != "") {
+//            def datosTemp = []
+//            datos.each { sol ->
+//                if (sol.proceso.nombre =~ proceso) {
+//                    println "encontro "
+//                    datosTemp.add(sol)
+//                }
+//            }
+//            datos = datosTemp
+////            println "datos proceso "+datos
+//        }
         datos = datos.sort { it.fecha }
         datos = datos.reverse()
         return [datos: datos]

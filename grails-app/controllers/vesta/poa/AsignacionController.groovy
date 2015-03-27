@@ -933,6 +933,7 @@ class AsignacionController extends Shield {
      */
     def agregaAsignacionMod = {
         println "parametros agregaAsignacion mod:" + params
+
         def fuentes = Fuente.list([sort: 'descripcion'])
         def asgnInstance = Asignacion.get(params.id)
         def unidad = UnidadEjecutora.get(params.unidad)
@@ -946,7 +947,7 @@ class AsignacionController extends Shield {
         }
 
 
-        return ['asignacionInstance': asgnInstance, 'fuentes': fuentes, unidad: unidad, actual: actual]
+        return ['asignacionInstance': asgnInstance, 'fuentes': fuentes, unidad: unidad, actual: actual, proyecto: params.proy]
     }
 
     /**
@@ -959,6 +960,7 @@ class AsignacionController extends Shield {
         new File(path).mkdirs()
 
         def f = request.getFile('archivo')
+
         if (f && !f.empty) {
             def fileName = f.getOriginalFilename()
             def ext
@@ -1013,7 +1015,7 @@ class AsignacionController extends Shield {
                 flash.message = 'Ya existe un archivo con ese nombre. Por favor cámbielo.'
                 flash.estado = "error"
                 flash.icon = "alert"
-                redirect(controller: 'modificacion', action: 'poaInversionesMod', id: params.unidad)
+                redirect(controller: 'modificacion', action: 'poaInversionesMod', id: params.proyecto)
                 return
 
 
@@ -1033,8 +1035,23 @@ class AsignacionController extends Shield {
 //                    kerberosService.delete(p, ProgramacionAsignacion, session.perfil, session.usuario)
 
                 }
-                asgn.planificado -= valor
-//                asgn = kerberosService.saveObject(asgn, Asignacion, session.perfil, session.usuario, "agregaAsignacion", "asignacion", session)
+//                asgn.planificado -= valor
+
+                println("asg " + asgn.priorizado)
+                println("valor " + valor)
+
+
+                if(valor >= asgn.priorizado){
+                    flash.message = 'El valor que se desea asignar es mayor al del presupuesto disponible'
+                    flash.estado = "error"
+                    flash.icon = "alert"
+                    redirect(controller: 'modificacion', action: 'poaInversionesMod', id: params.proyecto)
+                    return
+                }
+
+                asgn.priorizado -= valor
+
+
                 asgn.save(flush: true)
                 if (asgn.errors.getErrorCount() == 0) {
                     resultado += guardarPras(asgn)
@@ -1046,7 +1063,8 @@ class AsignacionController extends Shield {
                     nueva.padre = asgn
                     nueva.fuente = fnte
                     nueva.presupuesto = prsp
-                    nueva.planificado = valor
+//                    nueva.planificado = valor
+                    nueva.priorizado = valor
                     //println "pone padre: ${nueva.padre}"
 //                    nueva = kerberosService.saveObject(nueva, Asignacion, session.perfil, session.usuario, "agregaAsignacion", "asignacion", session)
                     nueva.save(flush: true)
@@ -1058,7 +1076,8 @@ class AsignacionController extends Shield {
                         mod.desde = asgn
                         mod.recibe = nueva
                         mod.fecha = new Date()
-                        mod.valor = nueva.planificado
+//                        mod.valor = nueva.planificado
+                        mod.valor = nueva.priorizado
                         mod.pdf = fileName
                         mod.save(flush: true)
                     } else {
@@ -1070,12 +1089,19 @@ class AsignacionController extends Shield {
                 flash.message = 'Modificación procesada'
                 flash.estado = "success"
                 flash.icon = "alert"
-                redirect(controller: 'modificacion', action: 'poaInversionesMod', id: params.unidad)
+//                redirect(controller: 'modificacion', action: 'poaInversionesMod', id: params.unidad)
+                redirect(controller: 'modificacion', action: 'poaInversionesMod', id: params.proyecto)
                 return
             }
         }
         else{
 
+
+            flash.message = 'No ingreso ningún archivo de autorización'
+            flash.estado = "error"
+            flash.icon = "alert"
+            redirect(controller: 'modificacion', action: 'poaInversionesMod', id: params.proyecto)
+            return
         }
     }
 

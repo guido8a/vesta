@@ -12,6 +12,7 @@
 <table class="table table-condensed table-bordered table-striped table-hover" id="tblDetalle">
     <thead>
         <tr>
+            <th>Año</th>
             <th>Componente</th>
             <th>Actividad</th>
             <th>Partida</th>
@@ -27,6 +28,7 @@
         <g:each in="${detalle}" var="asg">
             <g:set var="total" value="${total.toDouble() + asg.monto}"/>
             <tr iden="${asg?.id}">
+                <td>${asg.asignacion.anio.anio}</td>
                 <td>${asg.asignacion.marcoLogico.marcoLogico}</td>
                 <td>${asg.asignacion.marcoLogico.numero} - ${asg.asignacion.marcoLogico}</td>
                 <td>${asg.asignacion.presupuesto.numero}</td>
@@ -59,7 +61,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="4" style="font-weight: bold">TOTAL PROCESO</td>
+            <td colspan="5" style="font-weight: bold">TOTAL PROCESO</td>
             <td style="font-weight: bold;text-align: right">
                 <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
             </td>

@@ -158,7 +158,7 @@
                     <div class="col-md-2">
                         <g:if test="${!readOnly}">
                             <div class="input-group">
-                                <g:textField class="form-control input-sm required"
+                                <g:textField class="form-control input-sm required digits"
                                              name="informar" value="${proceso?.informar}" id="informar"/>
                                 <span class="input-group-addon" id="basic-addon2">Días</span>
                             </div>
@@ -194,6 +194,13 @@
             }
 
             $(function () {
+
+//                $("#fechaFin_input").focus(function () {
+//                    var d = $(this).val();
+//
+//                    console.log($(this).data("DateTimePicker").date(), $("#fechaInicio_input").val());
+//                });
+
                 var validator = $("#frmProceso").validate({
                     errorClass     : "help-block",
                     errorPlacement : function (error, element) {

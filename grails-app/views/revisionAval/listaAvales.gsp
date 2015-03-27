@@ -5,7 +5,7 @@
   Time: 12:15 PM
 --%>
 
-<%@ page import="vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.parametros.UnidadEjecutora; vesta.parametros.poaPac.Anio; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -18,56 +18,45 @@
 
 
         <div class="form-group keeptogether alert alert-success">
-            <div class="col-md-3">
-                <span class="grupo">
-                    <label class="col-md-2 control-label">Año:
-                    </label>
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="anio">Año:</label>
+                    <g:select from="${Anio.list([sort: 'anio'])}" id="anio" name="anio"
+                              optionKey="id" optionValue="anio" value="${actual.id}" class="form-control input-sm"/>
+                </div>
 
-                    <div class="col-md-5">
-                        <g:select name="anioName" from="${vesta.parametros.poaPac.Anio.list([sort: 'anio'])}" class="form-control input-sm" value="${actual.id}" optionKey="id" optionValue="anio" id="anio"/>
-                    </div>
-                </span>
-            </div>
+                <div class="form-group">
+                    <label for="numero">Número:</label>
+                    ${actual.anio}-GP No.<input type="text" id="numero" class="form-control input-sm"/>
+                </div>
 
-            <div class="col-md-4">
-                <span class="grupo">
-                    <label class="col-md-6 control-label">Número: ${actual.anio}-GP N°
-                    </label>
+                <div class="form-group">
+                    <label for="descProceso">Requirente:</label>
+                    <g:select name="requirente" from="${UnidadEjecutora.list([sort: 'nombre'])}" noSelection="['': '- Seleccione -']"
+                              class="form-control input-sm" style="width: 200px;" optionKey="id"/>
+                </div>
 
-                    <div class="col-md-6">
-                        <g:textField class="form-control input-sm number" name="numeroName" title="Número" id="numero"/>
-                    </div>
-                </span>
-            </div>
-
-            <div class="col-md-4">
-                <span class="grupo">
-                    <label class="col-md-4 control-label">Proceso:
-                    </label>
-
-                    <div class="col-md-6">
-                        <g:textField class="form-control input-sm" style="width: 250px" name="descProcesoName" title="Proceso" id="descProceso"/>
-                    </div>
-                </span>
-            </div>
-
-            <div class="btn-group">
-                <a href="#" class="btn btn-default btn-sm" id="buscar">
+                <div class="form-group">
+                    <label for="descProceso">Proceso:</label>
+                    <input type="text" id="descProceso" class="form-control input-sm" style="width: 200px;"/>
+                </div>
+                <a href="#" class="btn btn-info btn-sm" id="buscar">
                     <i class="fa fa-search-plus"></i> Buscar
                 </a>
-            </div>
+            </form>
         </div>
 
         <div id="detalle" style="width: 100%;height: 500px;overflow: auto"></div>
         <script>
-            function cargarHistorial(anio, numero, proceso) {
+            function cargarHistorial(anio, numero, proceso, requirente) {
 
                 $.ajax({
                     type    : "POST", url : "${createLink(action:'historialAvales', controller: 'revisionAval')}",
                     data    : {
-                        anio    : anio,
-                        numero  : numero,
-                        proceso : proceso
+                        anio       : anio,
+                        numero     : numero,
+                        proceso    : proceso,
+                        requirente : requirente
                     },
                     success : function (msg) {
                         $("#detalle").html(msg)
@@ -76,15 +65,16 @@
                 });
 
             }
-            function cargarHistorialSort(anio, numero, proceso, sort, order) {
+            function cargarHistorialSort(anio, numero, proceso, requirente, sort, order) {
                 $.ajax({
                     type    : "POST", url : "${createLink(action:'historialAvales', controller: 'revisionAval')}",
                     data    : {
-                        anio    : anio,
-                        numero  : numero,
-                        proceso : proceso,
-                        sort    : sort,
-                        order   : order
+                        anio       : anio,
+                        numero     : numero,
+                        proceso    : proceso,
+                        sort       : sort,
+                        order      : order,
+                        requirente : requirente
                     },
                     success : function (msg) {
                         $("#detalle").html(msg)
@@ -94,7 +84,7 @@
 
             }
             $("#buscar").button().click(function () {
-                cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val())
+                cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirente").val())
             })
         </script>
     </body>
