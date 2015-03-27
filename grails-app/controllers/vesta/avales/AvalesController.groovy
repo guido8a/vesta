@@ -381,14 +381,15 @@ class AvalesController extends vesta.seguridad.Shield {
             }
             def numero
             numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
-            if (numero.size() > 0) {
-                numero = numero?.pop()?.numero
-            }
-            if (!numero) {
-                numero = 1
-            } else {
-                numero = numero + 1
-            }
+//            if (numero.size() > 0) {
+//                numero = numero?.pop()?.numero
+//            }
+//            if (!numero) {
+//                numero = 1
+//            } else {
+//                numero = numero + 1
+//            }
+            numero = 0
             def r = verificarProceso(proceso)
             flash.message = r.message
             if (flash.message != "") {
@@ -783,6 +784,17 @@ class AvalesController extends vesta.seguridad.Shield {
         else {
             def sol = SolicitudAval.findByFirma(firma)
             sol.estado = EstadoAval.findByCodigo("E01")
+            def numero
+            numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
+            if (numero.size() > 0) {
+                numero = numero?.pop()?.numero
+            }
+            if (!numero) {
+                numero = 1
+            } else {
+                numero = numero + 1
+            }
+            sol.numero=numero
             sol.save(flush: true)
             try {
                 def perfilDireccionPlanificacion = Prfl.findByCodigo("DP")
