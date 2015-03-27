@@ -383,7 +383,7 @@ class MarcoLogicoController extends Shield {
         def marcos = MarcoLogico.findAllByProyecto(proyecto)
         marcos = marcos.sort{it.tipoElemento.id}
         marcos.each {m->
-            println "marco "+m.objeto+" "+m.tipoElemento.descripcion
+//            println "marco "+m.objeto+" "+m.tipoElemento.descripcion
             def rpml = new MarcoLogicoRespaldo()
             rpml.respaldo=respaldo
             rpml.proyecto=proyecto
@@ -398,7 +398,10 @@ class MarcoLogicoController extends Shield {
             rpml.numero=m.numero
             rpml.responsable=m.responsable
             rpml.numeroComp=m.numeroComp
-            def padre = MarcoLogicoRespaldo.findByProyectoAndMarcoLogicoOriginal(proyecto,m.marcoLogico)
+            def padre = MarcoLogicoRespaldo.findByRespaldoAndMarcoLogicoOriginal(respaldo,m.marcoLogico)
+//            println "buscando padre de "+m.tipoElemento.descripcion+"  "+m.objeto
+//            println "padre "+padre
+//            println "----------------------------------------"
             if(padre)
                 rpml.marcoLogico=padre
             if(!rpml.save(flush: true)){
@@ -417,7 +420,7 @@ class MarcoLogicoController extends Shield {
     
     def verRespaldo(){
         def resp = Respaldo.get(params.id)
-        def comps = MarcoLogicoRespaldo.findAllByRespaldoAndTipoElemento(resp,TipoElemento.get(2))
+        def comps = MarcoLogicoRespaldo.findAllByRespaldoAndTipoElemento(resp,TipoElemento.get(2),[sort:"numeroComp"])
         [componentes:comps,resp:resp]
         
     }
