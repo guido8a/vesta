@@ -6651,6 +6651,22 @@ legend {
 .nav .open > a:focus {
   border: 1px solid #ddd;
 }
+.nav-pills > li {
+  float: left;
+}
+.nav-pills > li > a {
+  border: solid 1px #1e2c58;
+  border-radius: 4px;
+}
+.nav-pills > li + li {
+  margin-left: 2px;
+}
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+  color: #fff;
+  background-color: #1e2c58;
+}
 .nav-pills > li > a:hover {
   color: #eee;
   background-color: #506c9d;

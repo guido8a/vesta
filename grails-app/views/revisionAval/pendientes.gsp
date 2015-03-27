@@ -5,7 +5,7 @@
   Time: 01:06 PM
 --%>
 
-<%@ page import="vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.parametros.UnidadEjecutora; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main"/>
@@ -141,8 +141,14 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="descProceso">Requirente:</label>
+                                <g:select name="requirente" from="${UnidadEjecutora.list([sort: 'nombre'])}" noSelection="['': '- Seleccione -']"
+                                          class="form-control input-sm" style="width: 200px;" optionKey="id"/>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="descProceso">Proceso:</label>
-                                <input type="text" id="descProceso" class="form-control input-sm" style="width: 300px;"/>
+                                <input type="text" id="descProceso" class="form-control input-sm" style="width: 200px;"/>
                             </div>
                             <a href="#" class="btn btn-info btn-sm" id="buscar">
                                 <i class="fa fa-search-plus"></i> Buscar
@@ -160,14 +166,15 @@
 
         <script type="text/javascript">
 
-            function cargarHistorial(anio, numero, proceso) {
+            function cargarHistorial(anio, numero, proceso, requirente) {
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(controller: 'revisionAval', action:'historial')}",
                     data    : {
-                        anio    : anio,
-                        numero  : numero,
-                        proceso : proceso
+                        anio       : anio,
+                        numero     : numero,
+                        proceso    : proceso,
+                        requirente : requirente
                     },
                     success : function (msg) {
                         $("#detalle").html(msg)
@@ -186,7 +193,7 @@
                 });
 
                 $("#buscar").click(function () {
-                    cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val())
+                    cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirente").val());
                 });
                 $(".negar").click(function () {
                     var id = $(this).attr("iden");

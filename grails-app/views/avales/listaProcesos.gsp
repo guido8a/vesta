@@ -44,7 +44,7 @@
             <tbody>
                 <g:each in="${procesos}" var="p">
                     <tr data-id="${p?.id}">
-                        <td>${p.proyecto}</td>
+                        <td title="${p.proyecto.toStringCompleto()}">${p.proyecto}</td>
                         <td>${p.nombre}</td>
                         <td style="text-align: center">${p.fechaInicio?.format("dd-MM-yyyy")}</td>
                         <td style="text-align: center">${p.fechaFin?.format("dd-MM-yyyy")}</td>
