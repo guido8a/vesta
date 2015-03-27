@@ -70,7 +70,7 @@
 
         <div class="titulo2" style="margin-top: 5px">CÓD. PROYECTO: <strong>${proyecto.codigo}</strong></div>
 
-        <div class="titulo2" style="margin-top: 20px">Año: ${actual?.anio}</div>
+        <div class="titulo2" style="margin-top: 20px">Plan Operativo: ${actual?.anio}</div>
 
         <table>
             <thead>
@@ -102,7 +102,7 @@
                             ${asg.marcoLogico.numero}
                         </td>
                         <td class="dscr" style="width: 180px;text-align: left">
-                            ${asg.marcoLogico}
+                            ${asg.marcoLogico.toStringCompleto()}
                         </td>
                         <td style="text-align: left">
                             ${asg.unidad.toString()}
