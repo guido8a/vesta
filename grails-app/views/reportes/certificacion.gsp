@@ -193,11 +193,13 @@
                     <td width="25%" style="border: none"></td>
                  </g:if>
 
-                 <g:if test="${aval.firma1?.estado == 'F'}">
+                 <g:if test="${aval.firma1?.estado == 'F' && aval.firma2?.estado != 'F' }">
                 <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
                 <td width="25%" style="border: none"></td>
+                <td width="25%" style="border: none"></td>
+                <td width="25%" style="border: none"></td>
             </g:if>
-            <g:if test="${aval.firma2?.estado == 'F'}">
+            <g:if test="${aval.firma2?.estado == 'F' && aval.firma1?.estado != 'F'}">
                 <td width="25%" style="border: none"></td>
                 <td width="25%" style="border: none"></td>
                 <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
