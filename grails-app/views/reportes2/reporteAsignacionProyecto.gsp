@@ -12,7 +12,7 @@
         <rep:estilos orientacion="l" pagTitle="Proyecto: ${proyecto.nombre}"/>
         <style type="text/css">
         .titulo2 {
-            min-height    : 20px;
+            min-height    : 15px;
             font-size     : 12pt;
             /*font-weight   : bold;*/
             text-align    : left;
@@ -68,9 +68,9 @@
 
         <rep:headerFooter title="Proyecto: ${proyecto.nombre}"/>
 
-        <div class="titulo2" style="margin-top: 3px">CÓD. PROYECTO: <strong>${proyecto.codigo}</strong></div>
+        <div class="titulo2" style="margin-top: 2px">CÓD. PROYECTO: <strong>${proyecto.codigo}</strong></div>
 
-        <div class="titulo2" style="margin-top: 5px">Plan Operativo: ${actual?.anio}</div>
+        <div class="titulo2" style="margin-top: 1px">Plan Operativo: ${actual?.anio}</div>
 
         <table>
             <thead>

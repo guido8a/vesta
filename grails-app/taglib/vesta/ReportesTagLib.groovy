@@ -29,9 +29,9 @@ class ReportesTagLib {
         def pOrientacion = attrs.orientacion.toString().toLowerCase()
         def orientacion = "portrait"
         def margenes = [
-                top   : 3,
+                top   : 2,
                 right : 2,
-                bottom: 3,
+                bottom: 2.5,
                 left  : 2
         ]
         switch (pOrientacion) {
@@ -174,7 +174,7 @@ class ReportesTagLib {
      */
     def footerReporte = { attrs ->
         def html = ""
-        def h = 75
+        def h = 50
         def logoPath = resource(dir: 'images', file: 'logo-pdf-footer.png')
 
         html += '<div id="footer">'
@@ -221,7 +221,7 @@ class ReportesTagLib {
         def pOrientacion = attrs.orientacion.toString().toLowerCase()
         def orientacion = "portrait"
         def margenes = [
-                top   : 3,
+                top   : 2.5,
                 right : 2,
                 bottom: 3,
                 left  : 2
@@ -310,7 +310,7 @@ class ReportesTagLib {
                 "    font-size      : 13pt;\n" +
                 "    font-weight    : bold;\n" +
                 "    border         : solid 1px #000000;\n" +
-                "    margin-top     : 10px;" +
+                "    margin-top     : 8px;" +
                 "    margin-bottom  : 10px;" +
                 "}"
         css += ".numeracion {\n" +
