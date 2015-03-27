@@ -71,7 +71,12 @@
                         UNIDAD RESPONSABLE:
                     </th>
                     <td>
-                        %{--${sol.}--}%
+                        <g:if test="${sol.usuario.unidad.padre.nombre}">
+                            ${sol.usuario.unidad.padre.nombre}
+                        </g:if>
+                        <g:else>
+                            ${sol.usuario.unidad.nombre}
+                        </g:else>
                     </td>
                 </tr>
 
@@ -88,7 +93,7 @@
                         MONTO TOTAL AVAL PARA PROCESO:
                     </th>
                     <td>
-                        %{--<g:formatNumber number="${}" type="currency" currencySymbol=""/>--}%
+                        <g:formatNumber number="${sol?.monto}" type="currency" currencySymbol=""/>
                     </td>
                 </tr>
             </table>

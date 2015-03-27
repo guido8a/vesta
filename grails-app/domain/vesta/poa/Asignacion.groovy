@@ -215,6 +215,46 @@ class Asignacion   {
 
     }
 
+
+
+    /**
+     * Calcula el valor real de la asignación teniendo en cuenta la reubicación
+     * @return el valor real calculado
+     */
+    def getValorPriorizado() {
+        if (this.reubicada == "S") {
+            if (this.priorizado == 0)
+                return this.priorizado
+            def dist = DistribucionAsignacion.findAllByAsignacion(this)
+            def valor = this.priorizado
+            Asignacion.findAllByPadreAndUnidadNotEqual(this, this.marcoLogico.proyecto.unidadEjecutora, [sort: "id"]).each { hd ->
+                valor += getValorHijo(hd)
+            }
+            def vs = 0
+            def mas = ModificacionAsignacion.findAllByDesde(this)
+            def menos = ModificacionAsignacion.findAllByRecibe(this)
+
+            mas.each {
+                if (it.recibe?.padre?.id == it.desde.id) {
+                    vs += it.valor
+                }
+            }
+            valor += vs
+            dist.each {
+                valor = valor - it.valor
+            }
+            if (valor > this.priorizado)
+                valor = this.priorizado
+            if (valor < 0)
+                valor = 0
+            return valor
+        } else {
+            return this.priorizado
+        }
+    }
+
+
+
     /**
      * Calcula el valor de los hijos de la asignación
      * @param asg asignación

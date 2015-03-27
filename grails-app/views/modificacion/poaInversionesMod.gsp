@@ -149,10 +149,11 @@
         <th>Fuente</th>
         <th>Presupuesto</th>
         <th>Acciones</th>
+        <th></th>
         </thead>
         <tbody>
         <g:each in="${asignaciones}" var="asg" status="i">
-            <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" id="det_${i}" pro="${asg?.marcoLogico?.proyecto?.id}" asgn="${asg?.id}" anio="${asg?.anio}">
+            <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" id="det_${i}" pro="${asg?.marcoLogico?.proyecto?.id}" asgn="${asg?.id}" anio="${asg?.anio}" prio="${asg.priorizado}">
                 <td class="programa">
                     ${asg.marcoLogico?.proyecto}
                 </td>
@@ -178,7 +179,7 @@
                 <td class="valor" style="text-align: right">
                     <g:formatNumber number="${asg.priorizado}"
                                     format="###,##0"
-                                    minFractionDigits="2" maxFractionDigits="2"/>
+                                    minFractionDigits="2" maxFractionDigits="2" />
                     <g:set var="total" value="${total.toDouble()+asg.priorizado}"/>
                 </td>
 
@@ -193,9 +194,9 @@
 
                 </td>
                 <td class="agr">
-                    %{--<g:if test="${actual.estado==0}">--}%
+                    <g:if test="${actual.estado==0}">
                         <a href="#" class="btn_agregar btn btn-sm btn-default" title="Dividir en dos partidas" asgn="${asg.id}" anio="${actual.id}"><i class="fa fa-scissors"></i></a>
-                    %{--</g:if>--}%
+                    </g:if>
                 </td>
             </tr>
 
@@ -300,8 +301,8 @@
         });
 
         $("#anio_asg, #programa").change(function () {
-            location.href = "${createLink(controller:'modificacion',action:'poaInversionesMod')}?id=${unidad.id}&anio=" + $("#anio_asg").val() + "&programa=" + $("#programa").val();
-            %{--location.href = "${createLink(controller:'modificacion',action:'poaInversionesMod')}?id=${unidad.id}&anio=" + $("#anio_asg").val();--}%
+            %{--location.href = "${createLink(controller:'modificacion',action:'poaInversionesMod')}?id=${unidad.id}&anio=" + $("#anio_asg").val() + "&programa=" + $("#programa").val();--}%
+            location.href = "${createLink(controller:'modificacion',action:'poaInversionesMod')}?id=${proyecto.id}&anio=" + $("#anio_asg").val();
         });
 
 
@@ -393,8 +394,10 @@
 
         $(".btn_agregar").click(function () {
             var asigna = $(this).attr("asgn");
-            var proyec = $(this).attr("pro");
+            var proyec = ${proyecto?.id}
             var anio =   $(this).attr("anio");
+            var mmo = $(this).attr("prio")
+            console.log("-->" + parseFloat(mmo))
 
 
         bootbox.dialog ({
@@ -438,9 +441,11 @@
                                                 var mxmo = parseFloat($('#maximo').val());
                                                 var valor = str_replace(",", "", $('#vlor').val());
                                                 valor = parseFloat(valor);
+                                                console.log("max " + mmo)
+                                                console.log("valor " + valor)
                                                 $('#vlor').val(valor)
-                                                if (valor > mxmo) {
-                                                    log("La nueva asignación debe ser menor a " + mxmo, "error")
+                                                if (valor > mmo) {
+                                                    log("La nueva asignación debe ser menor a " + mmo, "error")
                                                 } else {
                                                     var partida = $('#prsp2').val()
                                                     var fuente = $('#fuente').val();
