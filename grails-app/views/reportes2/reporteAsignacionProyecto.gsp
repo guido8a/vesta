@@ -16,7 +16,7 @@
             font-size     : 12pt;
             /*font-weight   : bold;*/
             text-align    : left;
-            margin-bottom : 5px;
+            /*margin-bottom : 5px;*/
             width         : 100%;
             /*border-bottom : solid 1px #000000;*/
         }
@@ -68,9 +68,9 @@
 
         <rep:headerFooter title="Proyecto: ${proyecto.nombre}"/>
 
-        <div class="titulo2" style="margin-top: 5px">CÓD. PROYECTO: <strong>${proyecto.codigo}</strong></div>
+        <div class="titulo2" style="margin-top: 3px">CÓD. PROYECTO: <strong>${proyecto.codigo}</strong></div>
 
-        <div class="titulo2" style="margin-top: 20px">Plan Operativo: ${actual?.anio}</div>
+        <div class="titulo2" style="margin-top: 5px">Plan Operativo: ${actual?.anio}</div>
 
         <table>
             <thead>
