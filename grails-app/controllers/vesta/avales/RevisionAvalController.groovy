@@ -340,7 +340,8 @@ class RevisionAvalController extends Shield {
                     aval.concepto = sol.concepto
                     aval.path = " "
                     aval.memo = sol.memo
-                    aval.numero = sol.numero
+//                    aval.numero = sol.numero
+                    aval.numero = 0
                     aval.estado = EstadoAval.findByCodigo("EF1")
                     aval.monto = sol.monto
                     if (!aval.save(flush: true))
@@ -454,12 +455,25 @@ class RevisionAvalController extends Shield {
      */
     def firmarAval = {
         def firma = Firma.findByKey(params.key)
+        def numero = 0
         if (!firma)
             response.sendError(403)
         else {
             def aval = Aval.findByFirma1OrFirma2(firma, firma)
             if (aval.firma1.key != null && aval.firma2.key != null) {
                 aval.fechaAprobacion = new Date()
+                numero = Aval.list([sort: "numero", order: "desc", max: 1])
+                if (numero.size() > 0) {
+                    numero = numero?.pop()?.numero
+                }
+                if (!numero) {
+                    numero = 1
+                } else {
+                    numero = numero + 1
+                }
+
+                aval.numero = numero
+
                 aval.estado = EstadoAval.findByCodigo("E02")
                 aval.save(flush: true)
                 def sol = SolicitudAval.findByAval(aval)
