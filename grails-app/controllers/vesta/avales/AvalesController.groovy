@@ -656,7 +656,16 @@ class AvalesController extends vesta.seguridad.Shield {
                         firma.idAccionVer = sol.id
                         firma.save(flush: true)
                     }
-                    def usuarios = Persona.findAllByUnidad(UnidadEjecutora.findByCodigo("DPI"))
+
+                    // si es por direccion: direccion de planificacion e inversion
+//                    def usuarios = Persona.findAllByUnidad(UnidadEjecutora.findByCodigo("DPI"))
+
+                    //si es por perfil: Direccion de planificacion y Analista de planificacion
+                    def direccionPlanificacion = Prfl.findByCodigo("DP")
+                    def analistaPlanificacion = Prfl.findByCodigo("ASPL")
+                    def listPerfiles = [direccionPlanificacion, analistaPlanificacion]
+                    def usuarios = Sesn.findAllByPerfilInList(listPerfiles).usuario
+
                     usuarios.each { usu ->
                         def alerta = new Alerta()
                         alerta.from = session.usuario
@@ -794,7 +803,7 @@ class AvalesController extends vesta.seguridad.Shield {
             } else {
                 numero = numero + 1
             }
-            sol.numero=numero
+            sol.numero = numero
             sol.save(flush: true)
             try {
                 def perfilDireccionPlanificacion = Prfl.findByCodigo("DP")
