@@ -849,7 +849,7 @@ class ElementosTagLib {
      * @param solicitud (opcional) el id de la solicitud
      */
     def imprimeNumero = { attrs ->
-        println("-->" + attrs)
+        println("imprimeNumero " + attrs)
         def aval = null
         def sol = null
         if (attrs.aval)
