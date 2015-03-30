@@ -3,49 +3,145 @@ package vesta.hitos
 import jxl.Sheet
 import jxl.Workbook
 import jxl.WorkbookSettings
-import org.springframework.dao.DataIntegrityViolationException
 import vesta.avales.Aval
 import vesta.avales.ProcesoAval
-import vesta.seguridad.Shield
+import vesta.parametros.TipoElemento
+import vesta.proyectos.MarcoLogico
+//import vesta.proyectos.Proceso
+import vesta.proyectos.Proyecto
 
+class HitoController {
 
-/**
- * Controlador que muestra las pantallas de manejo de Hito
- */
-class HitoController extends Shield {
+    def crearHito = {
 
-    static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
+        def hito = null
+        if(params.id)
+            hito = Hito.get(params.id)
 
+        def proys = Proyecto.list([sort: "nombre"])
+        def tipos = ["I":"Inicio","N":"Ejecución"]
+        [hito:hito,proyectos:proys,tipos:tipos]
 
-
-    def avancesFinancieros = {
-        println "params "+params
-        def proceso = ProcesoAval.get(params.id)
-        def aval = Aval.findByProceso(proceso)
-        def avances=[]
-        if(aval)
-            avances  = AvanceFinanciero.findAllByAval(aval)
-        [avances:avances,proceso:proceso,aval:aval]
     }
 
-    /*Función para cargar un archivo excel de hitos financiero*/
+    def verHito = {
+        def hito = Hito.get(params.id)
+        [hito:hito]
+    }
+
+    def saveHito = {
+        println "params "+params
+        def hito
+        if(params.id)
+            hito = Hito.get(params.id)
+        else
+            hito = new Hito()
+        def fin = new Date().parse("dd-MM-yyyy",params.fin_input)
+        def inicio = new Date().parse("dd-MM-yyyy",params.inicio_input)
+        hito.descripcion = params.descripcion
+        //hito.fechaPlanificada = fechaP
+        hito.inicio = inicio
+        hito.fechaPlanificada = fin
+        if(!hito.fecha)
+            hito.fecha=new Date()
+        hito.tipo=params.tipo
+        if(!hito.save(flush: true)){
+            println "error save hito "+hito
+        }
+        def componente = MarcoLogico.get(params.comp)
+        def comp = ComposicionHito.findByHito(hito)
+        if(!comp)
+            comp = new ComposicionHito()
+        comp.hito=hito
+        comp.marcoLogico=componente
+        comp.save(flush: true)
+        flash.message="Datos guardados"
+        redirect(action: "lista")
+    }
+
+    def agregarComp = {
+        println "agregar comp "+params
+        def hito = Hito.get(params.id)
+        switch (params.tipo){
+            case "proy":
+                def comp = new ComposicionHito()
+                comp.hito=hito
+                comp.proyecto = Proyecto.get(params.componente)
+                comp.save(flush: true)
+                break;
+            case "ml":
+                def comp = new ComposicionHito()
+                comp.hito=hito
+                comp.marcoLogico = MarcoLogico.get(params.componente)
+                comp.save(flush: true)
+                break;
+            case "proc":
+                def comp = new ComposicionHito()
+                comp.hito=hito
+                comp.proceso = ProcesoAval.get(params.componente)
+                if(!comp.save(flush: true))
+                    println "errores save "+comp.errors
+                break;
+            default:
+                println "wtf"
+                break
+        }
+        redirect(action: "composicion",id: hito.id)
+
+    }
+
+    def composicion = {
+        def hito = Hito.get(params.id)
+        return [comp:ComposicionHito.findAllByHito(hito,[sort: "id"]),ver:params.ver,hito:hito]
+    }
+
+    def componentesProyecto = {
+        def proyecto = Proyecto.get(params.id)
+        def comps = vesta.proyectos.MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
+        [comps:comps]
+    }
+    def cargarActividades = {
+        def comp = MarcoLogico.get(params.id)
+        def acts = MarcoLogico.findAllByMarcoLogico(comp)
+        [acts:acts]
+    }
+
+    def borrarDetalle = {
+        def ch = ComposicionHito.get(params.id)
+        ch.delete()
+        render "ok"
+    }
+
+    def lista = {
+        def hitos = Hito.list([sort: "fecha"])
+        [hitos:hitos]
+    }
 
     def cargarExcelHitos ={
-        println(params)
-            return [ idAval: params.id]
+        if(params.msg)
+            return [msg: params.msg]
     }
-
     /*Función para cargar un archivo excel de hitos financiero*/
     /**
      * Acción
      */
 
-    def subirExcelHitos () {
+    def subirExcelHitos ={
 
-//        println("entro excel hitos" + params)
+        println("entro excel hitos")
+
+//        def path = servletContext.getRealPath("/") + "excel/"
+//        new File(path).mkdirs()
         def f = request.getFile('file')
+
+
         WorkbookSettings ws = new WorkbookSettings();
         ws.setEncoding("ISO-8859-1");
+
+
+        Workbook workbook = Workbook.getWorkbook(f.inputStream, ws)
+        Sheet sheet = workbook.getSheet(0)
+
 
         def n = []
         def m = []
@@ -67,8 +163,6 @@ class HitoController extends Shield {
 
             if(ext == 'xls'){
 
-                Workbook workbook = Workbook.getWorkbook(f.inputStream, ws)
-                Sheet sheet = workbook.getSheet(0)
 
                 println("entro!")
                 for(int r =1; r < sheet.rows; r++){
@@ -102,166 +196,50 @@ class HitoController extends Shield {
                         }else{
                             msg +="<br>El aval número ${aval} está anulado, no se registro su avance"
                         }
+
+
                     }else{
                         msg +="<br>No se econtro el aval número ${aval}"
                     }
+
                 }
+
                 flash.message = 'Archivo cargado existosamente.'
                 flash.estado = "error"
                 flash.icon = "alert"
-                redirect(action: 'avancesFinancieros', id: params.id)
+                redirect(action: 'cargarExcelHitos',params: [msg:msg])
                 return
 
             }else{
                 flash.message = 'El archivo a cargar debe ser del tipo EXCEL con extensión XLS.'
                 flash.estado = "error"
                 flash.icon = "alert"
-                redirect(action: 'avancesFinancieros', id: params.id)
+                redirect(action: 'cargarExcelHitos')
                 return
             }
+
+
         }else{
             flash.message = 'No se ha seleccionado ningun archivo para cargar'
             flash.estado = "error"
             flash.icon = "alert"
-            redirect(action: 'avancesFinancieros', id: params.id)
+            redirect(action: 'cargarExcelHitos')
             return
         }
+
+
+
+    }
+
+    def avancesFinancieros = {
+        println "params "+params
+        def proceso = ProcesoAval.get(params.id)
+        def aval = Aval.findByProceso(proceso)
+        def avances=[]
+        if(aval)
+            avances  = AvanceFinanciero.findAllByAval(aval)
+        [avances:avances,proceso:proceso,aval:aval]
     }
 
 
-    /**
-     * Acción que redirecciona a la lista (acción "list")
-     */
-    def index() {
-        redirect(action:"list", params: params)
-    }
-
-    /**
-     * Función que saca la lista de elementos según los parámetros recibidos
-     * @param params objeto que contiene los parámetros para la búsqueda:: max: el máximo de respuestas, offset: índice del primer elemento (para la paginación), search: para efectuar búsquedas
-     * @param all boolean que indica si saca todos los resultados, ignorando el parámetro max (true) o no (false)
-     * @return lista de los elementos encontrados
-     */
-    def getList(params, all) {
-        params = params.clone()
-        params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
-        params.offset = params.offset ?: 0
-        if(all) {
-            params.remove("max")
-            params.remove("offset")
-        }
-        def list
-        if(params.search) {
-            def c = Hito.createCriteria()
-            list = c.list(params) {
-                or {
-                    /* TODO: cambiar aqui segun sea necesario */
-                    
-                    ilike("descripcion", "%" + params.search + "%")  
-                    ilike("tipo", "%" + params.search + "%")  
-                }
-            }
-        } else {
-            list = Hito.list(params)
-        }
-        if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
-            params.offset = params.offset.toInteger() - 1
-            list = getList(params, all)
-        }
-        return list
-    }
-
-    /**
-     * Acción que muestra la lista de elementos
-     * @return hitoInstanceList: la lista de elementos filtrados, hitoInstanceCount: la cantidad total de elementos (sin máximo)
-     */
-    def list() {
-        def hitoInstanceList = getList(params, false)
-        def hitoInstanceCount = getList(params, true).size()
-        return [hitoInstanceList: hitoInstanceList, hitoInstanceCount: hitoInstanceCount]
-    }
-
-    /**
-     * Acción llamada con ajax que muestra la información de un elemento particular
-     * @return hitoInstance el objeto a mostrar cuando se encontró el elemento
-     * @render ERROR*[mensaje] cuando no se encontró el elemento
-     */
-    def show_ajax() {
-        if(params.id) {
-            def hitoInstance = Hito.get(params.id)
-            if(!hitoInstance) {
-                render "ERROR*No se encontró Hito."
-                return
-            }
-            return [hitoInstance: hitoInstance]
-        } else {
-            render "ERROR*No se encontró Hito."
-        }
-    } //show para cargar con ajax en un dialog
-
-    /**
-     * Acción llamada con ajax que muestra un formulario para crear o modificar un elemento
-     * @return hitoInstance el objeto a modificar cuando se encontró el elemento
-     * @render ERROR*[mensaje] cuando no se encontró el elemento
-     */
-    def form_ajax() {
-        def hitoInstance = new Hito()
-        if(params.id) {
-            hitoInstance = Hito.get(params.id)
-            if(!hitoInstance) {
-                render "ERROR*No se encontró Hito."
-                return
-            }
-        }
-        hitoInstance.properties = params
-        return [hitoInstance: hitoInstance]
-    } //form para cargar con ajax en un dialog
-
-    /**
-     * Acción llamada con ajax que guarda la información de un elemento
-     * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
-     */
-    def save_ajax() {
-        def hitoInstance = new Hito()
-        if(params.id) {
-            hitoInstance = Hito.get(params.id)
-            if(!hitoInstance) {
-                render "ERROR*No se encontró Hito."
-                return
-            }
-        }
-        hitoInstance.properties = params
-        if(!hitoInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Hito: " + renderErrors(bean: hitoInstance)
-            return
-        }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Hito exitosa."
-        return
-    } //save para grabar desde ajax
-
-    /**
-     * Acción llamada con ajax que permite eliminar un elemento
-     * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
-     */
-    def delete_ajax() {
-        if(params.id) {
-            def hitoInstance = Hito.get(params.id)
-            if (!hitoInstance) {
-                render "ERROR*No se encontró Hito."
-                return
-            }
-            try {
-                hitoInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Hito exitosa."
-                return
-            } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Hito"
-                return
-            }
-        } else {
-            render "ERROR*No se encontró Hito."
-            return
-        }
-    } //delete para eliminar via ajax
-    
 }

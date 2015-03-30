@@ -25,7 +25,7 @@ class Hito {
   /*
   * Tipo de hito, financiero o físico
   */
-    String tipo /* F--> fisico  I--> financiero  */
+    String tipo /*  I--> inicio  N--> no inicio  */
     /*
    * avance físico
    */

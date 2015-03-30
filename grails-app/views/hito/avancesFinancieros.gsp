@@ -1,171 +1,143 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 05/03/15
-  Time: 11:57 AM
---%>
-
-<%@ page import="vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
+<%@ page import="yachay.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main"/>
     <title>Avances financieros</title>
-    <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'semaforos.css')}" type="text/css"/>
+    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/jBreadCrumb/Styles', file: 'Base.css')}"
+          type="text/css"/>
+    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/jBreadCrumb/Styles', file: 'BreadCrumb.css')}"
+          type="text/css"/>
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'svt.css')}"
+          type="text/css"/>
+    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.easing.1.3.js')}" type="text/javascript"
+            language="JavaScript"></script>
+    <script src="${resource(dir: 'js/jquery/plugins/jBreadCrumb/js', file: 'jquery.jBreadCrumb.1.1.js')}"
+            type="text/javascript" language="JavaScript"></script>
+
+    <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/select', file: 'jquery.ui.selectmenu.js')}"></script>
+    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/select', file: 'jquery.ui.selectmenu.css')}"/>
+
+    <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins', file: 'jquery.meio.mask.js')}"></script>
 
 </head>
 
 <body>
-
-<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
-
-<div class="btn-toolbar toolbar">
-    <div class="btn-group">
-        <g:link controller="avales" action="listaProcesos" class="btn btn-sm btn-default"><i class="fa fa-bars"></i> Lista de procesos</g:link>
-        %{--<g:link controller="hito" action="cargarExcelHitos" class="btn btn-sm btn-default"><i class="fa fa-check"></i> Registrar avances financieros</g:link>--}%
-        <a href="#" class="btn btn-sm btn-default btnSubir"><i class="fa fa-check"></i> Registrar avances financieros</a>
+<g:if test="${flash.message}">
+    <div class="message ui-state-highlight ui-corner-all">
+        ${flash.message}
     </div>
+</g:if>
+<div class="fila">
+    <g:link controller="avales" action="listaProcesos" class="btn">Lista de procesos</g:link>
+    <g:link controller="hito" action="cargarExcelHitos" class="btn">Registrar avances financieros</g:link>
 </div>
-
-<fieldset>
+<fieldset style="width: 95%;height: 190px;" class="ui-corner-all">
     <legend>Proceso</legend>
+    <div style="width: 65%;float: left;height: 95%">
+        <div class="fila">
+            <div class="labelSvt">Proyecto:</div>
 
-    <div class="row">
-        <div class="col-md-6 alert alert-info sh" style="height: 100%;">
-            <div class="row no-margin-top">
-                <label class="col-md-3 control-label">
-                    Proyecto:
-                </label>
-
-                <div class="col-md-2">
-                    ${proceso.proyecto}
-                </div>
-            </div>
-            <div class="row no-margin-top">
-                <label class="col-md-3 control-label">
-                    Fecha Inicio:
-                </label>
-
-                <div class="col-md-2">
-                    ${proceso.fechaInicio.format("dd-MM-yyyy")}
-                </div>
-                <label class="col-md-3 control-label">
-                    Fecha Fin:
-                </label>
-                <div class="col-md-2">
-                    ${proceso.fechaFin.format("dd-MM-yyyy")}
-                </div>
-            </div>
-            <div class="row no-margin-top">
-                <label class="col-md-3 control-label">
-                    Nombre:
-                </label>
-
-                <div class="col-md-7">
-                    ${proceso.nombre}
-                </div>
-            </div>
-            <div class="row no-margin-top">
-                <label class="col-md-3 control-label">
-                    Reportar cada:
-                </label>
-
-                <div class="col-md-2">
-                    ${proceso.informar} Días
-                </div>
+            <div class="fieldSvt-xxl">
+                ${proceso.proyecto}
             </div>
         </div>
 
-        <div class="col-md-5 alert alert-success sh" style="height: 100%;">
-            <g:set var="dataProceso" value="${aval?.getColorSemaforo()}"/>
-            <g:if test="${aval}">
-                <div class="row no-margin-top">
-                    <label class="col-md-6 control-label">
-                        Avance real al ${new java.util.Date().format("dd/MM/yyyy")}:
-                    </label>
-                    <div class="col-md-4">
-                        $<g:formatNumber number="${dataProceso[1]}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/> (a)
-                    </div>
-                </div>
-                <div class="row no-margin-top">
-                    <label class="col-md-6 control-label">
-                        Avance esperado:
-                    </label>
-                    <div class="col-md-4">
-                        $<g:formatNumber number="${dataProceso[0]}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/> (b)
-                    </div>
-                </div>
-                <div class="row no-margin-top" style="margin-left: 10px">
-                    <div class="semaforo ${dataProceso[2]}" title="Avance esperado al ${new Date().format('dd/MM/yyyy')}: ${dataProceso[0].toDouble().round(2)}$, avance registrado: ${dataProceso[1].toDouble().round(2)}$">
-                    </div>
-                </div>
-                <div class="row no-margin-top">
-                    <label class="col-md-6 control-label">
-                        Último Avance:
-                    </label>
-                    <div class="col-md-4">
-                        ${dataProceso[3]}
-                    </div>
-                </div>
-            </g:if>
+        <div class="fila">
+
+            <div class="labelSvt">Fecha inicio:</div>
+
+            <div class="fieldSvt-small">
+                ${proceso.fechaInicio.format("dd-MM-yyyy")}
+            </div>
+
+            <div class="labelSvt">Fecha fin:</div>
+
+            <div class="fieldSvt-small">
+                ${proceso.fechaFin.format("dd-MM-yyyy")}
+            </div>
+        </div>
+
+        <div class="fila">
+            <div class="labelSvt">Nombre:</div>
+
+            <div class="fieldSvt-xxl">
+                ${proceso.nombre}
+            </div>
+        </div>
+        <div class="fila">
+            <div class="labelSvt">Reportar cada:</div>
+
+            <div class="fieldSvt-xxl">
+                ${proceso.informar} Días
+            </div>
         </div>
     </div>
+    <div style="width: 34%;float: left;height: 95%;font-size: 11px">
+        <g:if test="${aval}">
+            <g:set var="dataProceso" value="${aval.getColorSemaforo()}"></g:set>
+
+            <div class="fila">
+                <b>Avance real al ${new java.util.Date().format("dd/MM/yyyy")}:</b> $<g:formatNumber number="${dataProceso[1]}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/> (a)
+            </div>
+            <div class="fila">
+                <b>Avance esperado:</b> $<g:formatNumber number="${dataProceso[0]}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/> (b)
+            </div>
+            <div class="semaforo ${dataProceso[2]}" title="Avance esperado al ${new Date().format('dd/MM/yyyy')}: ${dataProceso[0].toDouble().round(2)}$, avance registrado: ${dataProceso[1].toDouble().round(2)}$">
+            </div>
+
+            <div class="fila">
+                <b>Último Avance:</b> ${dataProceso[3]}
+            %{--${dataProceso}--}%
+            </div>
+        </g:if>
+    </div>
+
+
 </fieldset>
-
-
 <g:if test="${aval}">
-    <fieldset>
+    <fieldset style="width: 95%;height: 120px;" class="ui-corner-all">
         <legend>Aval</legend>
-        <div class="row">
-            <div class="col-md-7" style="height: 100%;">
-                <div class="row no-margin-top">
-                    <label class="col-md-3 control-label">
-                        Número:
-                    </label>
+        <div style="width: 100%;float: left;height: 95%">
+            <div class="fila">
+                <div class="labelSvt">Número:</div>
 
-                    <div class="col-md-7">
-                        ${aval.fechaAprobacion?.format("yyyy")}-GP No.<elm:imprimeNumero aval="${aval.id}"/>
-                    </div>
+                <div class="fieldSvt-medium">
+                    ${aval.fechaAprobacion?.format("yyyy")}-GP No.<tdn:imprimeNumero aval="${aval.id}"/>
                 </div>
-                <div class="row no-margin-top">
-                    <label class="col-md-3 control-label">
-                        Emisión:
-                    </label>
+                <div class="labelSvt">Emisión:</div>
 
-                    <div class="col-md-7">
-                        ${aval.fechaAprobacion?.format("dd-MM-yyyy")}
-
-                    </div>
+                <div class="fieldSvt-small">
+                    ${aval.fechaAprobacion?.format("dd-MM-yyyy")}
                 </div>
-                <div class="row no-margin-top">
-                    <label class="col-md-3 control-label">
-                        Estado:
-                    </label>
+                <div class="labelSvt">Estado:</div>
 
-                    <div class="col-md-7">
-                        ${aval.estado.descripcion}
-                    </div>
+                <div class="fieldSvt-small">
+                    ${aval.estado.descripcion}
                 </div>
+            </div>
 
-                <div class="row no-margin-top">
-                    <label class="col-md-3 control-label">
-                        Monto:
-                    </label>
+            <div class="fila">
 
-                    <div class="col-md-7">
-                        <g:formatNumber number="${aval.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>$
-                    </div>
+                <div class="labelSvt">Monto:</div>
+
+                <div class="fieldSvt-small">
+                    <g:formatNumber number="${aval.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber>$
                 </div>
+            </div>
         </div>
-       </div>
     </fieldset>
 </g:if>
-
-<fieldset style="margin-top: 20px">
+<fieldset style="width: 95%;height: 350px;overflow: auto" class="ui-corner-all">
     <legend>Avances financieros</legend>
+
+    %{--<div class="fila" style="margin-bottom: 10px;">--}%
+    %{--<a href="#" class="btn" id="btnOpenDlg">Agregar</a>--}%
+    %{--</div>--}%
+
     <div id="detalle" style="width: 95%; height: 260px; overflow: auto;">
         <g:if test="${avances.size()>0}">
-            <table class="table table-condensed table-bordered table-striped table-hover">
+            <table border="1" width="100%" style="font-size: 10px">
                 <thead>
                 <tr>
                     <th>Fecha</th>
@@ -185,6 +157,7 @@
                     </tr>
                 </g:each>
                 <tr>
+
                     <td colspan="3" style="text-align: right;font-weight: bold">
                         Total devengado:
                     </td>
@@ -198,63 +171,23 @@
     </div>
 </fieldset>
 
+
+
 <script type="text/javascript">
+
+
+
+
+
     $(function () {
 
-        var mh = 0;
-
-        $(".sh").each(function () {
-            var h = $(this).height();
-            if (mh < h) {
-                mh = h;
-            }
-        }).each(function () {
-            $(this).height(mh);
+        $(".btn").button();
+        $(".datepicker").datepicker();
+        $(".datepickerR").datepicker({
+            minDate:new Date(${proceso.fechaInicio.format("yyyy")}, ${proceso.fechaInicio.format("MM")}-1, ${proceso.fechaInicio.format("dd")})
         });
-
+        loadTabla();
     });
-
-
-    $(".btnSubir").click(function () {
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: "hito", action:'cargarExcelHitos')}",
-            data      : {
-                id: "${proceso?.id}"
-            },
-            success : function (msg) {
-                var b = bootbox.dialog({
-                    id      : "dlgCargarExcel",
-                    title   : "Cargar avances financieros",
-//                    class   : "modal-lg",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        },
-                        subir: {
-                            label     : "Subir",
-                            className : "btn-success",
-                            callback  : function () {
-                                openLoader();
-                                $("#frmUpload").submit();
-                            }
-                        }
-                    } //buttons
-                }); //dialog
-                setTimeout(function () {
-                    b.find(".form-control").first().focus()
-                }, 500);
-            } //success
-        }); //ajax
-    });
-
-
-
-
 </script>
 
 </body>
