@@ -151,12 +151,19 @@ class ReportesController {
     def certificacion = {
         println "certiificacion aaaa " + params
         def solicitud = SolicitudAval.get(params.id)
-        def aval = solicitud.aval
+        def aval = solicitud?.aval
         println "aval " + aval
         def anio = Anio.findByAnio(new Date().format("yyyy"))
-        def mes = Mes.findByNumero(solicitud.fecha.format("MM").toInteger())
+
+        def mes
+
+         if(solicitud?.fecha){
+             println("fechaf")
+             mes = Mes.findByNumero(solicitud.fecha.format("MM").toInteger())
+         }
+
+
         def anterior = null
-//        anterior=Certificacion.findByAsignacionAndFechaLessThan(cer.asignacion,new Date().parse("dd-MM-yyyy HH:mm","01-01-${anio} 00:00"))
         mes = mes?.descripcion
 
 

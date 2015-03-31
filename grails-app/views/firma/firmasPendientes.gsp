@@ -173,15 +173,18 @@
                                                             }
                                                     );
                                                 } else {
+                                                    log("Documento firmado correctamente", "success")
                                                     setTimeout(function () {
                                                         location.reload(true)
-                                                    }, 5000);
-                                                    location.href = msg
+                                                    }, 3000);
+//                                                    location.href = msg
+                                                    closeLoader();
 
                                                 }
                                             },
                                             error   : function () {
                                                 log("Ha ocurrido un error interno", "error");
+
                                                 closeLoader();
                                             }
                                         });
