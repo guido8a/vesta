@@ -18,6 +18,7 @@
             <th>Partida</th>
             <th>Priorizado</th>
             <th>Monto</th>
+            <th>Devengado</th>
             <g:if test="${!readOnly}">
                 <th></th>
             </g:if>
@@ -25,8 +26,10 @@
     </thead>
     <tbody>
         <g:set var="total" value="${0}"/>
+        <g:set var="totalD" value="${0}"/>
         <g:each in="${detalle}" var="asg">
             <g:set var="total" value="${total.toDouble() + asg.monto}"/>
+            <g:set var="totalD" value="${totalD.toDouble() + asg.devengado}"/>
             <tr iden="${asg?.id}">
                 <td>${asg.asignacion.anio.anio}</td>
                 <td>${asg.asignacion.marcoLogico.marcoLogico}</td>
@@ -38,6 +41,10 @@
                 <td style="text-align: right" id="monto_${asg.id}"
                     valor="${asg.monto}">
                     <g:formatNumber number="${asg.monto}" type="currency" currencySymbol=""/>
+                </td>
+                <td style="text-align: right" id="devengado_${asg.id}"
+                    valor="${asg.devengado}">
+                    <g:formatNumber number="${asg.devengado}" type="currency" currencySymbol=""/>
                 </td>
                 <g:if test="${!readOnly}">
                     <td style="text-align: center">
@@ -64,6 +71,9 @@
             <td colspan="5" style="font-weight: bold">TOTAL PROCESO</td>
             <td style="font-weight: bold;text-align: right">
                 <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
+            </td>
+            <td style="font-weight: bold;text-align: right">
+                <g:formatNumber number="${totalD}" type="currency" currencySymbol=""/>
             </td>
             <g:if test="${!readOnly}">
                 <td></td>

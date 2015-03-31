@@ -130,7 +130,20 @@
                         </div>
                     </span>
 
-                    <div class="col-md-4 text-right">
+                    <span class="grupo">
+                        <label class="col-md-1 control-label">
+                            Devengado
+                        </label>
+
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <g:textField class="form-control input-sm number money" name="devengado" style="text-align: right; margin-right: 10px"/>
+                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                            </div>
+                        </div>
+                    </span>
+
+                    <div class="col-md-2 text-right">
                         <a href="#" class="btn btn-success" id="agregar">
                             <i class="fa fa-plus"></i> Agregar asignación
                         </a>
@@ -196,6 +209,7 @@
 
             function vaciar() {
                 $("#monto").val("");
+                $("#devengado").val("");
                 $("#max").html("");
                 $("#asignacion").val("-1");
             }
@@ -251,6 +265,7 @@
                     $("#actividad").val("-1");
                     $("#asignacion").val("-1");
                     $("#monto").val("");
+                    $("#devengado").val("");
                     $("#max").html("");
                 });
 
@@ -272,6 +287,8 @@
                     var id = $("#idAgregar").val();
                     var monto = $("#monto").val();
                     monto = monto.replace(new RegExp(",", 'g'), "");
+                    var devengado = $("#devengado").val();
+                    devengado = devengado.replace(new RegExp(",", 'g'), "");
                     var max = $("#max").html();
                     max = max.replace(new RegExp(",", 'g'), "");
                     var asg = $("#asignacion").val();
@@ -281,7 +298,6 @@
                     if (asg == "-1" || isNaN(asg)) {
                         msg += "<br>Debe seleccionar una asignación.";
                     } else {
-
                         if (isNaN(monto) || monto == "") {
                             msg += "<br>El monto tiene que ser un número positivo.";
                         } else {
@@ -290,6 +306,12 @@
                             if (monto * 1 > max * 1)
                                 msg += "<br>El monto no puede ser mayor al máximo.";
                         }
+                        if (isNaN(devengado) || devengado == "") {
+                            msg += "<br>El monto devengado tiene que ser un número positivo.";
+                        } else {
+                            if (devengado * 1 < 0)
+                                msg += "<br>El monto devengado tiene que ser un número positivo.";
+                        }
                     }
 
                     if (msg == "") {
@@ -297,10 +319,11 @@
                             type    : "POST",
                             url     : "${createLink(action:'agregarAsignacion')}",
                             data    : {
-                                id      : id,
-                                proceso : proceso,
-                                monto   : monto,
-                                asg     : asg
+                                id        : id,
+                                proceso   : proceso,
+                                monto     : monto,
+                                asg       : asg,
+                                devengado : devengado
                             },
                             success : function (msg) {
                                 getDetalle();

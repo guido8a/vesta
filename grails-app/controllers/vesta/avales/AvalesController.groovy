@@ -154,12 +154,17 @@ class AvalesController extends vesta.seguridad.Shield {
         def proceso = ProcesoAval.get(params.proceso)
         def asg = Asignacion.get(params.asg)
         def monto = params.monto.toDouble()
+        def devengado = params.devengado.toDouble()
+
+//        println "monto: " + monto + "    devengado: " + devengado
+
         def detalle = new ProcesoAsignacion()
         if (params.id && params.id != "")
             detalle = ProcesoAsignacion.get(params.id)
         detalle.asignacion = asg
         detalle.proceso = proceso
         detalle.monto = monto
+        detalle.devengado = devengado
         detalle.save(flush: true)
         render "ok"
     }
