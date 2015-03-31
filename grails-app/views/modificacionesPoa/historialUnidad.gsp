@@ -40,7 +40,7 @@
                         <tr data-id="${p.id}">
                             <td>${p.id}</td>
                             <td>${p.usuario.unidad}</td>
-                            <td>${p.origen.marcoLogico.proyecto}</td>
+                            <td title="${p.origen.marcoLogico.proyecto.toStringCompleto()}">${p.origen.marcoLogico.proyecto}</td>
                             <td>${p.concepto}</td>
                             %{--<td style="text-align: right"> <g:formatNumber number="${p.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>--}%
                             <td style="text-align: center" class="${(p.estado == 0 || p.estado == 4) ? 'solicitado' : (p.estado == 1 || p.estado == 3 || p.estado == 5) ? 'aprobado' : 'negado'}">

@@ -325,7 +325,7 @@ class ModificacionesPoaController extends Shield {
 
     def listaPendientes = {
         def sols = SolicitudModPoa.findAllByEstado(0)
-        def historial = SolicitudModPoa.findAllByEstadoNotEqual(0, [sort: "fechaRevision", order: "desc"])
+        def historial = SolicitudModPoa.findAllByEstadoNotInList([0, 4], [sort: "fechaRevision", order: "desc"])
         [solicitudes: sols, historial: historial]
     }
 

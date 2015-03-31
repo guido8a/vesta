@@ -50,7 +50,7 @@
                                         <td>${p.id}</td>
                                         <td>${p.fecha.format("dd-MM-yyyy")}</td>
                                         <td>${p.usuario.unidad}</td>
-                                        <td>${p.origen.marcoLogico.proyecto}</td>
+                                        <td title="${p.origen.marcoLogico.proyecto.toStringCompleto()}">${p.origen.marcoLogico.proyecto}</td>
                                         <td>${p.concepto}</td>
                                         <td style="text-align: center" class="E0${p.estado}">
                                             <g:if test="${p.estado == 0}">
@@ -110,7 +110,7 @@
                                 <tr>
                                     <td>${p.id}</td>
                                     <td>${p.usuario.unidad}</td>
-                                    <td>${p.origen.marcoLogico.proyecto}</td>
+                                    <td title="${p.origen.marcoLogico.proyecto.toStringCompleto()}">${p.origen.marcoLogico.proyecto}</td>
                                     <td>${p.concepto}</td>
                                     <td style="text-align: center" class="${(p.estado == 0) ? 'solicitado' : (p.estado == 1 || p.estado == 3) ? 'aprobado' : 'negado'}">
                                         <g:if test="${p.estado == 0}">
