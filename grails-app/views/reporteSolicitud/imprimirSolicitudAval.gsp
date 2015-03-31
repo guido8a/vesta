@@ -58,7 +58,7 @@
 <div class="tabla" style="margin-top: 10px">
     <table width="100%" border="1" class="tbl">
         <tr>
-            <th>
+            <th style="width: 200px">
                 UNIDAD REQUIRENTE:
             </th>
             <td>
@@ -95,7 +95,7 @@
                 MONTO TOTAL SOLICITADO:
             </th>
             <td>
-                <g:formatNumber number="${solicitud.monto}" type="currency" currencySymbol=""/>
+                <g:formatNumber number="${solicitud.monto + devengado}" type="currency" currencySymbol=""/>
             </td>
         </tr>
     </table>
@@ -104,7 +104,7 @@
 
         <table width="100%" border="1" class="tbl" style="margin-top: 15px">
             <tr>
-                <td style="width:150px; font-weight: bold">COMPONENTE</td>
+                <td style="width:200px; font-weight: bold">COMPONENTE</td>
                 <td>${primero?.key?.marcoLogico}</td>
             </tr>
             <tr>
@@ -116,18 +116,18 @@
                 <td>${primero?.key?.marcoLogico?.proyecto?.codigo} - ${primero?.key?.marcoLogico?.numeroComp} - ${primero?.key.numero}</td>
             </tr>
             <tr>
-                <td style="font-weight: bold">SUBTOTAL ACTIVIDAD</td>
-                <td><g:formatNumber number="${primero.value.total + devengado}" type="currency" /></td>
+                <td style="font-weight: bold">SUBTOTAL</td>
+                <td><g:formatNumber number="${primero.value.total}" type="currency" /></td>
             </tr>
             <tr>
                 <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
-                <td><g:formatNumber number="${devengado}" type="currency" /></td>
+                <td><g:formatNumber number="${primero.value.devengado}" type="currency" /></td>
             </tr>
 
             <g:set var="total" value="${0}"/>
 
             <g:each in="${primero.value}" var="segundo">
-                <g:if test="${segundo.key != 'total'}">
+                <g:if test="${segundo.key.size() == 4}">
                     <g:set var="total2" value="${0}"/>
                     <tr>
                         <td style="font-weight: bold">
@@ -150,10 +150,10 @@
                     </tr>
                 </g:if>
             </g:each>
-            <tr>
-                <td style="font-weight: bold">MONTO TOTAL AVALADO</td>
-                <td><g:formatNumber number="${primero.value.total}" type="currency" /></td>
-            </tr>
+            %{--<tr>--}%
+                %{--<td style="font-weight: bold">MONTO TOTAL AVALADO</td>--}%
+                %{--<td><g:formatNumber number="${primero.value.total}" type="currency" /></td>--}%
+            %{--</tr>--}%
         </table>
 
     </g:each>

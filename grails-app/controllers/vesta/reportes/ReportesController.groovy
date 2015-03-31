@@ -167,15 +167,16 @@ class ReportesController {
             if(it.asignacion.anio.anio.toInteger() >= anio.anio.toInteger()){
                 if(arr[it.asignacion.marcoLogico]){
                     arr[it.asignacion.marcoLogico]["total"]+=it.monto
+                    arr[it.asignacion.marcoLogico]["devengado"]+=it.devengado
                     if(arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]){
                         arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["asignaciones"].add(it)
                         arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["total"]+=it.monto
+
 
                     }else{
                         def mp=[:]
                         mp.put("asignaciones",[it])
                         mp.put("total",it.monto)
-
                         arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio,mp)
                     }
 
@@ -184,21 +185,34 @@ class ReportesController {
                     def mp=[:]
                     mp.put("asignaciones",[it])
                     mp.put("total",it.monto)
+
                     tmp.put(it.asignacion.anio.anio,mp)
                     tmp.put("total",it.monto)
+                    tmp.put("devengado",it.devengado)
                     arr.put(it.asignacion.marcoLogico, tmp)
                 }
             }
         }
 
+
+        def dosDevengado = 0
+
+        ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
+
+           dosDevengado += it.devengado
+        }
+
+
         println("arr" + arr)
+
+        println("totalf " + dosDevengado)
 
         def devengado = 0
         def transf = NumberToLetterConverter.convertNumberToLetter(solicitud?.monto)
 
         println("-->" + transf)
 
-        return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval, arr: arr, transf: transf, devengado: devengado]
+        return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval, arr: arr, transf: transf, devengado: dosDevengado]
     }
 
     /**
