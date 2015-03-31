@@ -18,6 +18,10 @@ class ProcesoAsignacion  {
      * Monto
      */
     double monto
+    /**
+     * Devengado
+     */
+    double devengado
 
     /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
@@ -33,6 +37,7 @@ class ProcesoAsignacion  {
             proceso column: 'prco__id'
             asignacion column: 'asgn__id'
             monto column: 'poasmnto'
+            devengado column: 'poasdvgd'
 
         }
     }
