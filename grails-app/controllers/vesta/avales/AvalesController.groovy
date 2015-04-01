@@ -607,7 +607,7 @@ class AvalesController extends vesta.seguridad.Shield {
                 }
                 try {
 
-                    println ">>>> " + params
+//                    println ">>>> " + params
 
                     f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
                     def proceso = ProcesoAval.get(params.proceso)
