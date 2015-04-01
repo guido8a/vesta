@@ -636,13 +636,13 @@ class AvalesController extends vesta.seguridad.Shield {
                         firma.accionVer = "imprimirSolicitudAnulacionAval"
                         firma.controladorVer = "reporteSolicitud"
 
-                        firma.documento = "SolicitudDeAnulacionDeAval_" + sol.numero
+                        firma.documento = "SolicitudDeAnulacionDeAval_" + sol.proceso.nombre
                         firma.concepto = "Solicitud de Anulación de aval del proceso: " + proceso.nombre
                     } else {
                         firma.accionVer = "imprimirSolicitudAval"
                         firma.controladorVer = "reporteSolicitud"
 
-                        firma.documento = "SolicitudDeAval_" + sol.numero
+                        firma.documento = "SolicitudDeAval_" + sol.proceso.nombre
                         firma.concepto = "Solicitud de aval del proceso: " + proceso.nombre
                     }
                     if (!firma.save(flush: true)) {
@@ -735,7 +735,7 @@ class AvalesController extends vesta.seguridad.Shield {
             firma.controladorVer = "reporteSolicitud"
             firma.accion = "firmarSolicitud"
             firma.controlador = "avales"
-            firma.documento = "SolicitudDeAval_" + sol.numero
+            firma.documento = "SolicitudDeAval_" + sol.proceso.nombre
             firma.concepto = "Solicitud de aval del proceso: " + proceso.nombre
             firma.save(flush: true)
             sol.firma = firma

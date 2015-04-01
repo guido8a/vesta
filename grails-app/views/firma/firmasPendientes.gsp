@@ -57,7 +57,8 @@
                                 <g:each in="${firmas}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         <td>${f.concepto}</td>
-                                        <td>${f.documento}</td>
+                                        <td>${f.documento} </td>
+
                                         <td style="text-align: center">
                                             <g:if test="${f.accionVer}">
                                                 <g:if test="${f.esPdf != 'N'}">
