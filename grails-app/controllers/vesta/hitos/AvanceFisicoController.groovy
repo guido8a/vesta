@@ -1,6 +1,7 @@
 package vesta.hitos
 
 import vesta.avales.ProcesoAval
+import vesta.proyectos.Proceso
 
 class AvanceFisicoController extends vesta.seguridad.Shield {
 
@@ -53,10 +54,12 @@ class AvanceFisicoController extends vesta.seguridad.Shield {
      * Acción llamada con ajax que agrega un avance físico a un proceso
      */
     def addAvanceFisicoProceso_ajax = {
+//        println("params af " + params)
+
         def proceso = ProcesoAval.get(params.id)
         def avance = new AvanceFisico()
-        params.inicio = new Date().parse("dd/MM/yyyy", params.inicio)
-        params.fin = new Date().parse("dd/MM/yyyy", params.fin)
+        params.inicio = new Date().parse("dd-MM-yyyy", params.inicio)
+        params.fin = new Date().parse("dd-MM-yyyy", params.fin)
         params.avance = params.avance.toString().toDouble()
         avance.properties = params
         avance.proceso = proceso
@@ -65,9 +68,10 @@ class AvanceFisicoController extends vesta.seguridad.Shield {
             def totalAvance = AvanceFisico.findAllByProceso(proceso).sum { it.avance }
             max = 100 - totalAvance
             def minDate = (avance.fecha + 1).format("dd-MM-yyyy")
-            render "OK_" + avance.avance + "_" + max + "_" + minDate
+//            render "SUCCESS_" + avance.avance + "_" + max + "_" + minDate
+            render "SUCCESS*Avance físico " + avance.observaciones + " agregado"
         } else {
-            render "NO"
+            render "error*Ha ocurrido un error"
         }
     }
 
@@ -118,6 +122,15 @@ class AvanceFisicoController extends vesta.seguridad.Shield {
         avance.completado = new Date()
         avance.save(flash: true)
         render "OK"
+    }
+
+
+    def agregarSubact () {
+
+        def proceso = Proceso.get(params.id)
+
+        return [proceso:proceso]
+
     }
 
 }

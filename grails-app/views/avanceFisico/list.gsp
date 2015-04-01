@@ -39,7 +39,7 @@
                         </label>
 
                         <div class="col-md-2">
-                            ${proceso.proyecto}
+                            ${proceso?.proyecto}
                         </div>
                     </div>
 

@@ -16,7 +16,7 @@
 
                 <div class="col-md-4">
                     <div class="input-group">
-                        <g:textField name="aporte" class="form-control number money"/>
+                        <g:textField name="aporte" class="form-control number money required"/>
                         <span class="input-group-addon">%</span>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
 
                 <div class="col-md-4">
                     <div class="input-group">
-                        <g:textField name="avance" class="form-control number money"/>
+                        <g:textField name="avance" class="form-control number money required"/>
                         <span class="input-group-addon">%</span>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
 
                 <div class="col-md-8">
                     <g:if test="${proceso}">
-                        <g:textArea name="observaciones" rows="5" cols="68" style="height: 100px; resize: none" class="form-control input-sm"/>
+                        <g:textArea name="observaciones" rows="5" cols="68" style="height: 100px; resize: none" class="form-control input-sm required"/>
                     </g:if>
                 </div>
             </span>

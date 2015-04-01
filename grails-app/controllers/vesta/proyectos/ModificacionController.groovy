@@ -2,6 +2,7 @@ package vesta.proyectos
 
 
 import vesta.parametros.PresupuestoUnidad
+import vesta.parametros.Unidad
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.parametros.TipoElemento
@@ -744,11 +745,13 @@ class ModificacionController  {
                     println "si destino " + params.destino
                     def origen = Asignacion.get(params.origen)
                     def destino = Asignacion.get(params.destino)
+                    def unidad = UnidadEjecutora.get(params.unidad)
                     def mod = new ModificacionAsignacion()
                     mod.desde = origen
                     mod.recibe = destino
                     mod.valor = params.monto.toDouble()
                     mod.fecha = new Date()
+                    mod.unidad = unidad
                     f.transferTo(new File(pathFile))
                     mod.pdf = fileName
                     origen.priorizado = origen.priorizado - params.monto.toDouble()
@@ -1167,6 +1170,9 @@ class ModificacionController  {
      * Acción
      */
     def verModificacionesPoa = {
+
+println( "params mod poa "+params)
+
         def unidad = UnidadEjecutora.get(params.id)
         def actual
         if (params.anio)
@@ -1185,7 +1191,16 @@ class ModificacionController  {
             }
         }
 
+        println("--> " + res)
+
         res.sort{it.id}
+
+
+
+//        Asignacion.findAllWhere(marcoLogico: )
+
+
+
 
         return [res: res, unidad: unidad, actual: actual]
 
@@ -1336,7 +1351,7 @@ class ModificacionController  {
         def proyecto = Proyecto.get(params.id)
         def asgOrigen = Asignacion.get(params.origen)
         def asgDestino = Asignacion.get(params.destino)
-        return [proyecto: proyecto, asgOrigen: asgOrigen, asgDestino: asgDestino]
+        return [proyecto: proyecto, asgOrigen: asgOrigen, asgDestino: asgDestino, unidad: params.unidad]
 
     }
 

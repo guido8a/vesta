@@ -14,9 +14,9 @@
         <th>Inicio</th>
         <th>Fin</th>
         <th>Completado</th>
-        <th style="width:30px;"></th>
-        <th style="width:30px;"></th>
-        <th style="width:60px;"></th>
+        <th style="width:30px;"><i class="fa fa-pie-chart"></i> </th>
+        <th style="width:30px;">Registrar</th>
+        <th style="width:60px;"><i class="fa fa-trash"></i> </th>
     </tr>
     </thead>
     <tbody>

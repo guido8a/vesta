@@ -13,6 +13,7 @@
     <input type="hidden" id="h_destino" name="destino" value="${asgDestino.id}">
     <input type="hidden" name="tipoPag" value="inv">
     <input type="hidden" id="proyecto" name="proyecto" value="${proyecto.id}">
+    <input type="hidden" id="unidad" name="unidad" value="${unidad}">
 
     <div style="height: 40px">
         <div style="width: 170px;height: 35px;float: left"><b>Monto de la reasignación:</b></div> <g:textField name="monto" id="monto" class="number" style="width: 100px"/>

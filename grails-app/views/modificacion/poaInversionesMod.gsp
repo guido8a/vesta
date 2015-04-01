@@ -19,9 +19,14 @@
     <div class="btn-group">
         <g:link class="btn btn-sm btn-default" controller="modificacion" action="poaInversionesMod" id="${proyecto.id}"><i class="fa fa-eraser"></i> Resetear</g:link>
 
+        <g:link class="btn btn-sm btn-default" controller="modificacion" action="verModificacionesPoa" params="[id:unidad.id,anio:actual.id]"><i class="fa fa-book"></i>Ver modificaciones</g:link>
+
+
+
 
         <b style="margin-left: 50px">Año:</b>
         <g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual.id}"/>
+
 
     </div>
 </div>
@@ -284,9 +289,6 @@
 
         $("[name=programa]").selectmenu({width:550, height:50})
         $("#programa-button").css("height", "40px")
-        $(".btn_arbol").button({icons:{ primary:"ui-icon-bullet"}})
-        $(".btn").button()
-        $(".back").button("option", "icons", {primary:'ui-icon-arrowreturnthick-1-w'});
 
 
         $(".editar").click(function () {
@@ -319,7 +321,8 @@
                     data: {
                         id: ${proyecto?.id},
                         origen: idOrigen,
-                        destino: idDestino
+                        destino: idDestino,
+                        unidad : ${unidad?.id}
 
                     },
                     success: function (msg){
@@ -469,12 +472,7 @@
 
 
 
-        $(".btn_borrar").button({
-            icons:{
-                primary:"ui-icon-trash"
-            },
-            text:false
-        }).click(function () {
+        $(".btn_borrar").click(function () {
             //alert ("id:" +$(this).attr("asgn"))
             if (confirm("Eliminar esta asignación: \n Su valor se sumará a su asignación original y\n la programación deberá revisarse")) {
                 $.ajax({
