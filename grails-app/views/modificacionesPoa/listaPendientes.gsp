@@ -111,20 +111,24 @@
                                     <td>${p.id}</td>
                                     <td>${p.usuario.unidad}</td>
                                     <td title="${p.origen.marcoLogico.proyecto.toStringCompleto()}">${p.origen.marcoLogico.proyecto}</td>
-                                    <td>${p.concepto}</td>
-                                    <td style="text-align: center" class="${(p.estado == 0) ? 'solicitado' : (p.estado == 1 || p.estado == 3) ? 'aprobado' : 'negado'}">
-                                        <g:if test="${p.estado == 0}">
+                                    <td >${p.concepto}</td>
+                                    %{--<td style="text-align: center" class="${(p.estado == 0) ? 'solicitado' : (p.estado == 1 || p.estado == 3) ? 'aprobado' : 'negado'}">--}%
+                                    <td style="text-align: center" class="${p.estado == 0 ? 'azul' : (p.estado == 1 || p.estado == 3) ? 'verde' :  p.estado ==5 ? 'amarillo' :'rojo'}" >
+                                        <strong>
+                                        <g:if test="${p.estado == 0}" >
                                             Solicitado
                                         </g:if>
                                         <g:if test="${p.estado == 1 || p.estado == 3}">
                                             Aprobado
                                         </g:if>
                                         <g:if test="${p.estado == 2}">
-                                            Negado
+                                           Negado
                                         </g:if>
                                         <g:if test="${p.estado == 5}">
                                             Aprobado sin firmas
                                         </g:if>
+                                        </strong>
+
                                     </td>
                                     <td style="text-align: center">
                                         <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: "solicitudReformaPdf", controller: "reporteSolicitud", id: p.id)}"
