@@ -353,7 +353,7 @@ class RevisionAvalController extends Shield {
                     firma1.idAccionVer = sol.id
                     firma1.accion = "firmarAval"
                     firma1.controlador = "revisionAval"
-                    firma1.documento = "aval_" + aval.numero
+                    firma1.documento = "aval_" + aval.numero + "_" + sol.proceso.nombre
                     firma1.concepto = "Aprobación del aval ${aval.numero}"
                     firma1.esPdf = "S"
                     if (!firma1.save(flush: true)) {
@@ -367,7 +367,7 @@ class RevisionAvalController extends Shield {
                     firma2.idAccionVer = sol.id
                     firma2.accion = "firmarAval"
                     firma2.controlador = "revisionAval"
-                    firma2.documento = "aval_" + aval.numero
+                    firma2.documento = "aval_" + aval.numero + "_" + sol.proceso.nombre
                     firma2.concepto = "Aprobación del aval ${aval.numero}"
                     firma2.esPdf = "S"
                     if (!firma2.save(flush: true)) {
