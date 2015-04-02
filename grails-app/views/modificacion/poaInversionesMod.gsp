@@ -19,7 +19,8 @@
     <div class="btn-group">
         <g:link class="btn btn-sm btn-default" controller="modificacion" action="poaInversionesMod" id="${proyecto.id}"><i class="fa fa-eraser"></i> Resetear</g:link>
 
-        <g:link class="btn btn-sm btn-default" controller="modificacion" action="verModificacionesPoa" params="[id:unidad.id,anio:actual.id]"><i class="fa fa-book"></i>Ver modificaciones</g:link>
+        <g:link class="btn btn-sm btn-default" controller="modificacion" action="verModificacionesPoa" params="[id:unidad.id,anio:actual.id, proyecto: proyecto.id]">
+            <i class="fa fa-book"></i> Ver modificaciones</g:link>
 
 
 

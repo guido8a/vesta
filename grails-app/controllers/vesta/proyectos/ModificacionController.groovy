@@ -848,7 +848,7 @@ class ModificacionController  {
                 order("id", "asc")
             }
 
-            println("asignaciones " + asignaciones)
+//            println("asignaciones " + asignaciones)
 
             c = Asignacion.createCriteria()
 
@@ -1171,10 +1171,11 @@ class ModificacionController  {
      */
     def verModificacionesPoa = {
 
-println( "params mod poa "+params)
+//println( "params mod poa "+params)
 
         def unidad = UnidadEjecutora.get(params.id)
         def actual
+        def proyecto = Proyecto.get(params.proyecto)
         if (params.anio)
             actual = Anio.get(params.anio)
         else
@@ -1183,17 +1184,24 @@ println( "params mod poa "+params)
             actual = Anio.list([sort: 'anio', order: 'desc']).pop()
 
 
-        def res = []
-
-        Asignacion.findAllWhere(unidad: unidad, anio: actual).each {asg ->
-            ModificacionAsignacion.findAllByDesdeOrRecibe(asg, asg, [sort: "id"]).each {mod ->
-                res.add(mod)
+        def asignaciones = Asignacion.withCriteria {
+            eq("anio", actual)
+            marcoLogico {
+                eq("proyecto", proyecto)
             }
         }
 
-        println("--> " + res)
+        def res = ModificacionAsignacion.findAllByDesdeInListOrRecibeInList(asignaciones, asignaciones, [sort: "fecha", order:'desc'])
 
-        res.sort{it.id}
+//        Asignacion.findAllWhere(unidad: unidad, anio: actual).each {asg ->
+//            ModificacionAsignacion.findAllByDesdeOrRecibe(asg, asg, [sort: "id"]).each {mod ->
+//                res.add(mod)
+//            }
+//        }
+
+//        println("--> " + res)
+//
+//        res.sort{it.id}
 
 
 
@@ -1202,7 +1210,7 @@ println( "params mod poa "+params)
 
 
 
-        return [res: res, unidad: unidad, actual: actual]
+        return [res: res, unidad: unidad, actual: actual, proyecto: proyecto]
 
     }
 
