@@ -28,21 +28,21 @@
                         Depende de
                     </label>
 
-                    <div class="col-md-10">
-                        <g:select id="padre" name="padre.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${unidadEjecutoraInstance?.padre?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                    <div class="col-md-6" style="width: 530px">
+                        <g:select id="padre" name="padre.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id"
+                                  value="${unidadEjecutoraInstance?.padre?.id}" class="many-to-one form-control input-sm"
+                                  noSelection="['null': '']" style="width: 530px"/>
                     </div>
 
                 </span>
-            </div>
-
-            <div class="form-group keeptogether ${hasErrors(bean: unidadEjecutoraInstance, field: 'orden', 'error')} required">
                 <span class="grupo">
-                    <label for="orden" class="col-md-2 control-label">
+                    <label for="orden" class="col-md-1 control-label" style="margin-left: 30px">
                         Orden
                     </label>
 
-                    <div class="col-md-3">
-                        <g:field name="orden" type="number" value="${unidadEjecutoraInstance.orden}" class="digits form-control input-sm required" required=""/>
+                    <div class="col-md-1">
+                        <g:field name="orden" type="number" value="${unidadEjecutoraInstance.orden}"
+                                 class="digits form-control input-sm required" required="" style="width: 60px;" />
                     </div>
                 </span>
             </div>
@@ -54,7 +54,7 @@
                     </label>
 
                     <div class="col-md-10">
-                        <g:textArea name="objetivo" cols="40" rows="5" maxlength="1023" class="form-control input-sm" value="${unidadEjecutoraInstance?.objetivo}"/>
+                        <g:textArea name="objetivo" cols="40" rows="2" maxlength="1023" class="form-control input-sm" value="${unidadEjecutoraInstance?.objetivo}"/>
                     </div>
 
                 </span>
@@ -109,7 +109,8 @@
                     </label>
 
                     <div class="col-md-10">
-                        <g:textArea name="direccion" maxlength="127" class="form-control input-sm" value="${unidadEjecutoraInstance?.direccion}"/>
+                        <g:textArea name="direccion" maxlength="127" class="form-control input-sm" value="${unidadEjecutoraInstance?.direccion}"
+                                    style="height: 40px;"/>
                     </div>
 
                 </span>
@@ -193,7 +194,8 @@
                     </label>
 
                     <div class="col-md-10">
-                        <g:textArea name="observaciones" maxlength="127" class="form-control input-sm" value="${unidadEjecutoraInstance?.observaciones}"/>
+                        %{--<g:textArea name="observaciones" maxlength="127" class="form-control input-sm" value="${unidadEjecutoraInstance?.observaciones}"/>--}%
+                        <g:textField name="observaciones" maxlength="127" class="form-control input-sm" value="${unidadEjecutoraInstance?.observaciones}"/>
                     </div>
 
                 </span>

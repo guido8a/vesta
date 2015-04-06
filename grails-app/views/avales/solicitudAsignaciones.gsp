@@ -294,10 +294,13 @@
                     var asg = $("#asignacion").val();
                     var proceso = "${proceso?.id}";
 
+                    if(isNaN(devengado) || devengado=="") devengado = 0;
+
                     var msg = "";
                     if (asg == "-1" || isNaN(asg)) {
                         msg += "<br>Debe seleccionar una asignación.";
                     } else {
+//                        console.log(devengado)
                         if (isNaN(monto) || monto == "") {
                             msg += "<br>El monto tiene que ser un número positivo.";
                         } else {
@@ -306,12 +309,12 @@
                             if (monto * 1 > max * 1)
                                 msg += "<br>El monto no puede ser mayor al máximo.";
                         }
-                        if (isNaN(devengado) || devengado == "") {
-                            msg += "<br>El monto devengado tiene que ser un número positivo.";
-                        } else {
+//                        if (isNaN(devengado) || devengado == "") {
+//                            msg += "<br>El monto devengado tiene que ser un número positivo.";
+//                        } else {
                             if (devengado * 1 < 0)
                                 msg += "<br>El monto devengado tiene que ser un número positivo.";
-                        }
+//                        }
                     }
 
                     if (msg == "") {

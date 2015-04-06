@@ -100,8 +100,7 @@
                         </label>
 
                         <div class="col-md-10">
-                            <g:textArea name="direccion" maxlength="127" pattern="${personaInstance.constraints.direccion.matches}" class="form-control input-sm" value="${personaInstance?.direccion}"/>
-                        </div>
+                            <g:textArea name="direccion" cols="80" rows="1" maxlength="127"  pattern="${personaInstance.constraints.direccion.matches}" class="form-control input-sm" value="${personaInstance?.direccion}"/>                        </div>
 
                     </span>
                 </div>
@@ -155,12 +154,13 @@
                             Sigla
                         </label>
 
-                        <div class="col-md-8">
+                        <div class="col-md-3">
                             <g:textField name="sigla" maxlength="8" pattern="${personaInstance.constraints.sigla.matches}" class="form-control input-sm" value="${personaInstance?.sigla}"/>
                         </div>
 
                     </span>
                 </div>
+
             </div>
 
             <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'estaActivo', 'error')} ${hasErrors(bean: personaInstance, field: 'fechaPass', 'error')} required">
@@ -170,12 +170,13 @@
                             Activo
                         </label>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <g:select name="estaActivo" value="${personaInstance.estaActivo}" class="form-control input-sm required" required=""
                                       from="${[1: 'Sí', 0: 'No']}" optionKey="key" optionValue="value"/>
                         </div>
                     </span>
                 </div>
+
             </div>
 
             <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'observaciones', 'error')} ">

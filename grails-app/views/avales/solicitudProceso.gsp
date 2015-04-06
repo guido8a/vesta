@@ -72,7 +72,7 @@
 
                     <div class="col-md-2">
                         <p class="form-control-static">
-                            <g:formatNumber number="${disponible}" type="currency"/>
+                            <strong><g:formatNumber number="${disponible}" type="currency"/></strong>
                         </p>
                     </div>
                 </span>
@@ -113,7 +113,7 @@
                         Doc. de respaldo
                     </label>
 
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                         <g:if test="${!readOnly}">
                             <input type="file" name="file" id="file" class="form-control input-sm required"/>
                         </g:if>
@@ -134,7 +134,7 @@
                         Descripción
                     </label>
 
-                    <div class="col-md-7">
+                    <div class="col-md-9">
                         <g:if test="${!readOnly}">
                             <g:textArea name="concepto" maxlength="1024" required="" class="form-control input-sm required" style="height: 80px;resize: none"/>
                         </g:if>
@@ -153,7 +153,7 @@
                         Aut. electrónica
                     </label>
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <g:if test="${!readOnly}">
                             <g:select from="${personas}" optionKey="id" class="form-control input-sm required" optionValue="${{
                                 it.nombre + ' ' + it.apellido

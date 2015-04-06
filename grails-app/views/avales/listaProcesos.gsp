@@ -24,7 +24,7 @@
         %{--</a>--}%
 
             <g:link controller="avales" action="nuevaSolicitud" class="btn btn-default">
-                <i class="fa fa-file-o"></i> Nuevo proceso de solicitud de aval
+                <i class="fa fa-file-o"></i> Nuevo proceso para solicitud de aval
             </g:link>
 
         </div>

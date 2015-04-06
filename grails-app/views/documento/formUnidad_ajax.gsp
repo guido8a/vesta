@@ -18,7 +18,7 @@
                         Descripción
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <g:textField name="descripcion" maxlength="63" class="form-control input-sm required"
                                      value="${documentoInstance?.descripcion}"/>
                     </div>
@@ -31,7 +31,7 @@
                         Palabras Clave
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <g:textField name="clave" maxlength="63" class="form-control input-sm" value="${documentoInstance?.clave}"/>
                     </div>
                 </span>
@@ -43,7 +43,7 @@
                         Resumen
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <g:textArea name="resumen" cols="40" rows="5" maxlength="1024" class="form-control input-sm" value="${documentoInstance?.resumen}"/>
                     </div>
                 </span>
@@ -52,12 +52,12 @@
             <g:if test="${!documentoInstance.id}">
                 <div class="form-group keeptogether ${hasErrors(bean: documentoInstance, field: 'documento', 'error')} ">
                     <span class="grupo">
-                        <label for="documento" class="col-md-4 control-label">
+                        <label for="documento" class="col-md-2 control-label">
                             Documento
                         </label>
 
-                        <div class="col-md-6">
-                            <input type="file" name="documento" id="documento" class="form-control input-sm required"/>
+                        <div class="col-md-10">
+                            <input type="file" name="documento" id="documento" class="form-control input-sm required" style="height: 35px; margin-top: 0"/>
                         </div>
 
                     </span>
