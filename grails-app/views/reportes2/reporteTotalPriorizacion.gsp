@@ -158,10 +158,10 @@
         <table class="table table-condensed table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>Proyecto</th>
-                    <th>Unidad Administrativa</th>
-                    <th>Monto Planificado</th>
-                    <th>Priorizado</th>
+                    <th style="text-align: center">Proyecto</th>
+                    <th style="text-align: center">Unidad Administrativa</th>
+                    <th style="text-align: center">Monto Planificado</th>
+                    <th style="text-align: center">Priorizado</th>
                 </tr>
             </thead>
             <tbody>
