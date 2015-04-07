@@ -543,8 +543,12 @@ class PersonaController extends Shield {
         if (input != "") {
             input = input.encodeAsMD5()
         }
+        def valida = usu.autorizacion
+        if (valida == null || valida.trim() == "") {
+            valida = ""
+        }
 
-        if (input == usu.autorizacion) {
+        if (input == valida) {
             if (params.authNueva.toString().trim() == params.authConfirm.toString().trim()) {
                 usu.autorizacion = params.authNueva.toString().trim().encodeAsMD5()
                 if (usu.save(flush: true)) {
