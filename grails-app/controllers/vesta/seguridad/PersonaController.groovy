@@ -538,7 +538,13 @@ class PersonaController extends Shield {
      */
     def updateAuth() {
         def usu = Persona.get(session.usuario.id)
-        if (params.input1.toString().trim().encodeAsMD5() == usu.autorizacion) {
+
+        def input = params.input1.toString().trim()
+        if (input != "") {
+            input = input.encodeAsMD5()
+        }
+
+        if (input == usu.autorizacion) {
             if (params.authNueva.toString().trim() == params.authConfirm.toString().trim()) {
                 usu.autorizacion = params.authNueva.toString().trim().encodeAsMD5()
                 if (usu.save(flush: true)) {

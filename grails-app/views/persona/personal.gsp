@@ -113,8 +113,8 @@
                                 log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                                 closeLoader();
                                 $frmAuth[0].reset();
-                                if(parts[0] == "SUCCESS") {
-                                    location.href="${createLink(controller: "inicio", action: "inicio" )}"
+                                if (parts[0] == "SUCCESS") {
+                                    location.href = "${createLink(controller: "inicio", action: "inicio" )}"
                                 }
                             }
                         });

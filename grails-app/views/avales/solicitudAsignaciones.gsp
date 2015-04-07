@@ -269,7 +269,7 @@
                     $("#max").html("");
                 });
 
-                $("#comp").change(function () {
+                $("#comp").val("-1").change(function () {
                     $.ajax({
                         type    : "POST",
                         url     : "${createLink(action:'cargarActividades_ajax')}",
@@ -294,7 +294,7 @@
                     var asg = $("#asignacion").val();
                     var proceso = "${proceso?.id}";
 
-                    if(isNaN(devengado) || devengado=="") devengado = 0;
+                    if (isNaN(devengado) || devengado == "") devengado = 0;
 
                     var msg = "";
                     if (asg == "-1" || isNaN(asg)) {
@@ -312,8 +312,8 @@
 //                        if (isNaN(devengado) || devengado == "") {
 //                            msg += "<br>El monto devengado tiene que ser un número positivo.";
 //                        } else {
-                            if (devengado * 1 < 0)
-                                msg += "<br>El monto devengado tiene que ser un número positivo.";
+                        if (devengado * 1 < 0)
+                            msg += "<br>El monto devengado tiene que ser un número positivo.";
 //                        }
                     }
 
