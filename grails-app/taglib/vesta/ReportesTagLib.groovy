@@ -46,7 +46,7 @@ class ReportesTagLib {
         def css = "<style type='text/css'>"
         css += "* {\n" +
                 "    font-family   : 'PT Sans Narrow';\n" +
-                "    font-size     : 11pt;\n" +
+                "    font-size     : 10pt;\n" +
                 "}"
         css += " @page {\n" +
                 "    size          : A4 ${orientacion};\n" +
@@ -100,7 +100,16 @@ class ReportesTagLib {
                 "    text-transform : uppercase;\n" +
 //                "    font-family    : 'PT Sans';\n" +
                 "    font-size      : 25pt;\n" +
-                "    font-weight    : bold;\n" +
+//                "    font-weight    : bold;\n" +
+                "    color          : #17365D;\n" +
+                "    border-bottom  : solid 2px #4F81BD;\n" +
+                "}"
+        css += ".tituloRprt{\n" +
+                "    text-align     : center;\n" +
+                "    text-transform : uppercase;\n" +
+//                "    font-family    : 'PT Sans';\n" +
+                "    font-size      : 20pt;\n" +
+//                "    font-weight    : bold;\n" +
                 "    color          : #17365D;\n" +
                 "    border-bottom  : solid 2px #4F81BD;\n" +
                 "}"
@@ -137,6 +146,7 @@ class ReportesTagLib {
     def headerReporte = { attrs ->
         println("AQUIF   " + attrs)
         def title = attrs.title ?: ""
+        def titulo = attrs.titulo ?: ""
 
         def estilo = attrs.estilo ?: "center"
 
@@ -152,6 +162,11 @@ class ReportesTagLib {
             html += "<div class='tituloReporte'>"+"\n"
             html += title+"\n"
             html += '</div>'+"\n"
+        }
+        if (titulo) {
+            html += "<div class='tituloRprt'>"
+            html += titulo
+            html += '</div>'
         }
 
         if (attrs.unidad || attrs.numero) {

@@ -64,7 +64,8 @@
                         </label>
 
                         <div class="col-md-2">
-                            <g:select name="anio" from="${Anio.list([sort: 'anio'])}" value="${actual?.id}" class="form-control input-sm" id="anio" optionKey="id" optionValue="anio"/>
+                            <g:select name="anio" from="${Anio.list([sort: 'anio'])}" value="${actual?.id}"
+                                      class="form-control input-sm" id="anio" optionKey="id" optionValue="anio" style="width: 80px;"/>
                         </div>
                     </span>
 

@@ -13,7 +13,7 @@
         <style type="text/css">
         .titulo2 {
             min-height    : 15px;
-            font-size     : 12pt;
+            font-size     : 14pt;
             /*font-weight   : bold;*/
             text-align    : left;
             /*margin-bottom : 5px;*/
@@ -52,12 +52,13 @@
 
         table {
             border-collapse : collapse;
-            font-size       : 9pt;
+            font-size       : 9pt; !important;
             width           : 100%;
         }
 
         table, table td, table th {
             border : solid 1px #444;
+            font-size       : 10pt; !important;
         }
 
 
@@ -66,20 +67,28 @@
 
     <body>
 
-        <rep:headerFooter title="Proyecto: ${proyecto.nombre}"/>
+        <rep:headerFooter titulo="Proyecto: ${proyecto.nombre}"/>
 
-        <div class="titulo2" style="margin-top: 2px">CÓD. PROYECTO: <strong>${proyecto.codigo}</strong></div>
+        <div class="titulo2" style="margin-top: 2px">Plan Operativo: ${actual?.anio}<span style="margin-left: 2cm">CÓDIGO DE PROYECTO: ${proyecto.codigo}</span></div>
 
-        <div class="titulo2" style="margin-top: 1px">Plan Operativo: ${actual?.anio}</div>
-
-        <table>
+        <table style="width: 25.4cm;">
             <thead>
                 <tr>
-                    <th>Componente</th>
-                    <th style="text-align: center">#</th>
-                    <th>Actividad</th>
-                    <th>Responsable</th>
-                    <th>Fecha Inicio / Fecha Fin</th>
+%{--
+                    <th style="width: 2.5cm">Componente</th>
+                    <th style="text-align: center; width: 1.5cm">#</th>
+                    <th style="width: 9.0cm">Actividad</th>
+                    <th style="width: 2.7cm">Responsable</th>
+                    <th style="width: 2.5cm">Fecha Inicio / Fecha Fin</th>
+                    <th style="width: 2.0cm">Partida</th>
+                    <th style="width: 2.5cm">Planificado</th>
+                    <th style="width: 2.5cm">Priorización</th>
+--}%
+                    <th style="width: 3.0cm">Componente</th>
+                    <th style="text-align: center;width: 0.6cm">#</th>
+                    <th style="width: 10.2cm">Actividad</th>
+                    <th style="width: 4.0cm">Responsable</th>
+                    <th style="width: 1.8cm">Fecha Inicio / Fecha Fin</th>
                     <th>Partida</th>
                     <th>Planificado</th>
                     <th>Priorización</th>
@@ -95,20 +104,20 @@
 
                     </g:if>
                     <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" style='${(asg.reubicada == 'S') ? "background: #d5f0d4" : ""}'>
-                        <td class="dscr" style="width: 170px; text-align: left">
+                        <td class="dscr" style="text-align: left">
                             ${asg.marcoLogico.marcoLogico}
                         </td>
-                        <td style="width: 20px">
+                        <td>
                             ${asg.marcoLogico.numero}
                         </td>
-                        <td class="dscr" style="width: 180px;text-align: left">
+                        <td class="dscr" style="text-align: left">
                             ${asg.marcoLogico.toStringCompleto()}
                         </td>
                         <td style="text-align: left">
                             ${asg.unidad.toString()}
                             %{--${raw(asg.unidad)}--}%
                         </td>
-                        <td style="width: 80px; text-align: left">
+                        <td style="text-align: left">
                             ${asg.marcoLogico.fechaInicio.format("dd-MM-yyyy")} / ${asg.marcoLogico.fechaFin.format("dd-MM-yyyy")}
                         </td>
                         <td>

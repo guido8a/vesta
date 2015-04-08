@@ -142,9 +142,9 @@ class Asignacion   {
      */
     String toString() {
         if (this.marcoLogico)
-            "<b>Responsable:</b> ${this.unidad}<b> Priorizado:</b>${this.planificado}  <b>Partida Presupuestaria:</b>${this.presupuesto}<b>Año</b>:${this.anio}"
+            "<b>Responsable:</b> ${this.unidad}<b>  Priorizado: </b>${this.planificado}  <b> Partida Presupuestaria: </b>${this.presupuesto}<b> Año</b>: ${this.anio}"
         else
-            "<b>Priorizado:</b>${this.planificado}  <b>Partida Presupuestaria:</b>${this.presupuesto}<b>Año</b>:${this.anio}"
+            "<b> Priorizado:</b> ${this.planificado}  <b> Partida Presupuestaria: </b>${this.presupuesto}<b> Año</b>: ${this.anio}"
     }
 
     /**

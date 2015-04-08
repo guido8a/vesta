@@ -98,7 +98,7 @@
 
                     <div class="col-md-2">
                         <g:if test="${!readOnly}">
-                            <g:textField name="memorando" class="form-control input-sm required" maxlength="63"/>
+                            <g:textField name="memorando" class="form-control input-sm required" maxlength="63" style="width: 250px"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -109,17 +109,17 @@
                 </span>
 
                 <span class="grupo">
-                    <label for="monto" class="col-md-2 control-label">
+                    <label for="monto" class="col-md-2 control-label" style="margin-left: 10px;">
                         Doc. de respaldo
                     </label>
 
                     <div class="col-md-5">
                         <g:if test="${!readOnly}">
-                            <input type="file" name="file" id="file" class="form-control input-sm required"/>
+                            <input type="file" name="file" id="file" class="form-control input-sm required" style="margin-left: -10px"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
-                                <a href="${resource(dir: 'pdf/solicitudAval', file: solicitud?.path)}" target="_blank">
+                                <a href="${resource(dir: 'pdf/solicitudAval', file: solicitud?.path)}" target="_blank"  style="margin-left: -10px">
                                     ${solicitud?.path}
                                 </a>
                             </p>
@@ -131,7 +131,7 @@
             <div class="row">
                 <span class="grupo">
                     <label for="memorando" class="col-md-2 control-label">
-                        Descripción
+                        Descripción del proceso
                     </label>
 
                     <div class="col-md-9">
@@ -150,7 +150,7 @@
             <div class="row">
                 <span class="grupo">
                     <label for="firma1" class="col-md-2 control-label">
-                        Aut. electrónica
+                        Autorización electrónica
                     </label>
 
                     <div class="col-md-4">
@@ -174,9 +174,9 @@
                         Nota Técnica
                     </label>
 
-                    <div class="col-md-4">
+                    <div class="col-md-9">
                         <g:if test="${!readOnly}">
-                            <g:textArea name="notaTecnica" style="width: 400px;resize: none" maxlength="350" class="form-control input-sm"/>
+                            <g:textArea name="notaTecnica" style="resize: none" maxlength="350" class="form-control input-sm"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">

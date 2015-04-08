@@ -33,7 +33,7 @@
             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
                     <g:form class="form-inline" name="frmAuth" action="updateAuth">
-                        <div class="form-group ">
+                        <div class="form-group">
                             <label for="input1">Clave actual</label>
 
                             <div class="input-group">
@@ -42,7 +42,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="margin-left: 40px;">
                             <label for="authNueva">Nueva clave</label>
 
                             <div class="input-group">
@@ -51,15 +51,15 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="authConfirm">Repita clave</label>
+                        <div class="form-group" style="margin-left: 40px;">
+                            <label for="authConfirm">Confirme la clave nueva</label>
 
                             <div class="input-group">
                                 <g:passwordField name="authConfirm" class="form-control required auth"/>
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                             </div>
                         </div>
-                        <a href="#" id="btnSaveAuth" class="btn btn-success">
+                        <a href="#" id="btnSaveAuth" class="btn btn-success" style="margin-left: 40px;">
                             <i class="fa fa-save"></i> Guardar
                         </a>
                     </g:form>

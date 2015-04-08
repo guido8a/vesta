@@ -31,7 +31,7 @@
     </div>
 </div>
 <elm:container tipo="horizontal" titulo="Programación de las asignaciones del proyecto: ${proyecto?.toStringLargo()}, para el año ${actual}" color="black" >
-    <table  class="table table-condensed table-bordered table-striped" style="font-size: 10px;">
+    <table  class="table table-condensed table-bordered table-striped" style="font-size: 11px;">
         <thead>
         <th style=";">Enero</th>
         <th style=";">Feb.</th>
@@ -65,8 +65,8 @@
         <g:each in="${inversiones}" var="asg" status="i">
             <g:set var="totalFila" value="${0}"></g:set>
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                <td colspan="13"><b>Asignación#${i+1} </b>${asg}</td>
-                <td></td>
+                <td colspan="14" style="font-size: 12px;" ><b>Asignación#${i+1} </b>${asg}</td>
+                %{--<td></td>--}%
             </tr>
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                 <g:each in="${meses}" var="mes" status="j">

@@ -33,12 +33,13 @@
             <thead>
                 <tr>
                     <th>Proyecto</th>
-                    <th>Nombre</th>
+                    <th>Nombre del proceso</th>
                     <th>Inicio</th>
                     <th>Fin</th>
                     <th>Monto</th>
                     <th>Avance</th>
                     <th>Último<br>Avance</th>
+                    <th>Informar<br>Cada (días)</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,6 +62,7 @@
                             </g:if>
                         </td>
 
+                        <td style="text-align: center">${p.informar}</td>
                     </tr>
                 </g:each>
 

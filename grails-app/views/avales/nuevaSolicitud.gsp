@@ -90,7 +90,7 @@
             <div class="row">
                 <span class="grupo">
                     <label for="nombre" class="col-md-2 control-label">
-                        Nombre
+                        Nombre del proceso
                     </label>
 
                     <div class="col-md-9">
@@ -156,9 +156,9 @@
 
                     <div class="col-md-2">
                         <g:if test="${!readOnly}">
-                            <div class="input-group">
+                            <div class="input-group" style="width: 60px">
                                 <g:textField class="form-control input-sm required digits"
-                                             name="informar" value="${proceso?.informar}" id="informar"/>
+                                             name="informar" value="${proceso?.informar}" id="informar" style="width: 60px"/>
                                 <span class="input-group-addon" id="basic-addon2">Días</span>
                             </div>
                         </g:if>
