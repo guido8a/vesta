@@ -77,6 +77,12 @@ class SolicitudAval {
     Firma firma
 
     /**
+     * Nota Técnica de la solicitud
+     */
+    String notaTecnica
+
+
+    /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
      */
     static mapping = {
@@ -104,6 +110,7 @@ class SolicitudAval {
             tipo column: 'slavtipo'
             firma column: 'frma__id'
             unidad column: 'unej__id'
+            notaTecnica column: 'slavnttc'
         }
     }
 
@@ -124,5 +131,6 @@ class SolicitudAval {
         tipo(blank: true, nullable: true, size: 1..1)
         firma(blank: true, nullable: true)
         unidad(nullable: true, blank: true)
+        notaTecnica (nullable: true, blank: true, size: 1..350)
     }
 }

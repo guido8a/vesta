@@ -74,7 +74,6 @@
                     </label>
 
                     <div class="col-md-9">
-                    %{--<g:select name="proyecto.id" from="${proyectos}" class="form-control input-sm required" value="${proceso?.proyecto?.id}" optionKey="id" optionValue="descripcion" id="proyecto"/>--}%
                         <g:if test="${!readOnly}">
                             <g:select name="proyecto.id" from="${proyectos}" class="form-control input-sm required"
                                       optionKey="id" optionValue="nombre" id="proyecto" value="${proceso?.proyecto?.id}"/>

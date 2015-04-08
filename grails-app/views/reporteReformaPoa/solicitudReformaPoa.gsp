@@ -19,11 +19,105 @@
 
     <rep:estilos orientacion="l" pagTitle="Solicitud de reforma al POA"/>
 
+    %{--<style type="text/css">--}%
+    %{--table {--}%
+        %{--font-size : 9pt;--}%
+    %{--}--}%
+
+
+    %{--.totales {--}%
+        %{--font-weight : bold;--}%
+    %{--}--}%
+
+    %{--.num {--}%
+        %{--text-align : right;--}%
+    %{--}--}%
+
+    %{--.header {--}%
+        %{--background : #333333 !important;--}%
+        %{--color      : #AAAAAA;--}%
+    %{--}--}%
+
+    %{--.total {--}%
+        %{--background : #000000 !important;--}%
+        %{--color      : #FFFFFF !important;--}%
+    %{--}--}%
+
+    %{--.odd {--}%
+        %{--background : none repeat scroll 0 0 #E1F1F7;--}%
+    %{--}--}%
+
+    %{--.even {--}%
+        %{--background : none repeat scroll 0 0 #F5F5F5;--}%
+    %{--}--}%
+
+    %{--ol {--}%
+        %{--counter-reset : item;--}%
+        %{--padding       : 0;--}%
+    %{--}--}%
+
+    %{--ol li {--}%
+        %{--display       : block;--}%
+        %{--margin-bottom : 5px;--}%
+    %{--}--}%
+
+    %{--ol li:before {--}%
+        %{--content           : counter(item) ". ";--}%
+        %{--counter-increment : item;--}%
+        %{--font-weight       : bold;--}%
+    %{--}--}%
+
+    %{--.table {--}%
+        %{--border-collapse : collapse;--}%
+        %{--border     : solid 1px #000000;--}%
+    %{--}--}%
+
+    %{--.center {--}%
+        %{--text-align : center;--}%
+    %{--}--}%
+
+    %{--.right {--}%
+        %{--text-align : right;--}%
+    %{--}--}%
+
+    %{--.justificacion {--}%
+        %{--border     : solid 1px #000000;--}%
+        %{--margin-top : 5px;--}%
+        %{--padding    : 10px;--}%
+    %{--}--}%
+
+    %{--.firma {--}%
+        %{--margin-top  : 2cm;--}%
+        %{--margin-left : 10cm;--}%
+    %{--}--}%
+    %{--.valor{--}%
+        %{--text-align: right;--}%
+    %{--}--}%
+    %{--.ttl {--}%
+        %{--text-align  : center;--}%
+        %{--font-weight : bold;--}%
+    %{--}--}%
+
+    %{--.formato {--}%
+        %{--font-weight: bold;--}%
+        %{--background: #008080;--}%
+        %{--color: #ffffff;--}%
+    %{--}--}%
+
+    %{--td {--}%
+        %{--border: solid 1px #000000;--}%
+
+    %{--}--}%
+    %{--th {--}%
+        %{--border: solid 1px #000000;--}%
+    %{--}--}%
+
+    %{--</style>--}%
+
     <style type="text/css">
     table {
         font-size : 9pt;
     }
-
 
     .totales {
         font-weight : bold;
@@ -43,10 +137,6 @@
         color      : #FFFFFF !important;
     }
 
-    /*th {*/
-        /*background : #cccccc;*/
-    /*}*/
-
     .odd {
         background : none repeat scroll 0 0 #E1F1F7;
     }
@@ -62,7 +152,7 @@
 
     ol li {
         display       : block;
-        margin-bottom : 15px;
+        margin-bottom : 5px;
     }
 
     ol li:before {
@@ -73,6 +163,7 @@
 
     .table {
         border-collapse : collapse;
+        border     : solid 1px #000000;
     }
 
     .center {
@@ -90,16 +181,47 @@
     }
 
     .firma {
-        margin-top  : 2cm;
-        margin-left : 10cm;
+    margin-top  : 2cm;
+    margin-left : 10cm;
     }
-    .valor{
-        text-align: right;
+
+    .negro {
+        background : #000000;
+        color      : #f5f5f5;
     }
-    .ttl {
-        text-align  : center;
-        font-weight : bold;
+
+    .numeracion {
+        height : 35px;
     }
+
+    .fright {
+        float : right;
+    }
+
+    .firmas {
+        margin-top : 2cm;
+        width      : 100%;
+        height     : 3cm;
+    }
+
+    .valor {
+        text-align : right;
+    }
+
+    .formato {
+        font-weight: bold;
+        background: #008080;
+        color: #ffffff;
+    }
+
+    td {
+        border: solid 1px #000000;
+
+    }
+    th {
+        border: solid 1px #000000;
+    }
+
 
     </style>
 
@@ -112,7 +234,7 @@
         <div>
             <ol>
                 <li>
-                    <strong>Unidad responsable (Gerencia - Dirección):</strong>${sol.usuario.unidad}
+                    <strong>Unidad responsable (Gerencia - Dirección):</strong> ${sol.usuario.unidad}
                 </li>
                 <li>
                     <strong>Tipo de reforma:</strong>
@@ -137,7 +259,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Reforma por creación de una actividad derivada</td>
+                            <td>Reforma por creación de nueva partida</td>
                             <td class="center">
                                 ${sol.tipo=='D'?'X':''}
                             </td>
@@ -152,14 +274,15 @@
                         </tbody>
                     </table>
                 </li>
-                <li style="margin-left: 20px">
+                %{--<li style="margin-left: 20px">--}%
+                <li>
                     <strong>Matriz de la reforma:</strong>
                     <g:set var="ti" value="${0}"/>
                     <g:set var="tvi" value="${0}"/>
                     <g:set var="tvf" value="${0}"/>
                     <g:set var="tf" value="${0}"/>
 
-                    <table style="width:100%;" class="table " border="1">
+                    <table style="width:100%; border-color: #000099;margin-top: 15px"  class="table " border="1">
                          <thead>
                         <tr>
                             <th style="background: #9dbfdb; text-align: center">Proyecto:</th>
@@ -335,26 +458,29 @@
                             </tr>
                         </g:else>
                         <tr>
-                            <td colspan="5"></td>
-                            <td style="font-weight: bold; background: #008080">TOTAL</td>
-                            <td style="font-weight: bold; background: #008080" class="valor"> <g:formatNumber number="${ti}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
-                            <td  style="font-weight: bold; background: #008080" class="valor"> <g:formatNumber number="${tvi}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
-                            <td style="font-weight: bold; background: #008080" class="valor"> <g:formatNumber number="${tvf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
-                            <td style="font-weight: bold; background: #008080" class="valor"> <g:formatNumber number="${tf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
+                            <td colspan="5" style="background: #008080"></td>
+                            <td class="formato">TOTAL</td>
+                            <td class="valor formato"> <g:formatNumber number="${ti}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
+                            <td class="valor formato"> <g:formatNumber number="${tvi}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
+                            <td class="valor formato"> <g:formatNumber number="${tvf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
+                            <td class="valor formato"> <g:formatNumber number="${tf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2" ></g:formatNumber></td>
                         </tr>
                         </tbody>
                     </table>
                 </li>
-                <li style="margin-left: 20px">
+                %{--<li style="margin-left: 20px">--}%
+                <li style="margin-top: 15px">
                     <strong>Justificación de la reforma al POA solicitada:</strong>
 
-                    <div class="justificacion" style="margin-left: 20px">
+                    %{--<div class="justificacion" style="margin-left: 20px">--}%
+                    <div class="justificacion">
                         ${sol.concepto}
                     </div>
                 </li>
 
             </ol>
-            <div style="margin-left: 20px">
+            %{--<div style="margin-left: 20px">--}%
+            <div>
                 Es importante señalar que la reforma no implica un incremento en el techo del presupuesto programado y que el impacto
                 causado por la modificación de POA no afecta a los objetivos institucionales
             </div>
@@ -362,8 +488,8 @@
                 <div>
                     <span class="spanFirma">
                         <g:if test="${sol?.firmaSol?.estado=='F'}">
-                            <img src="${resource(dir: 'firmas',file: sol.firmaSol.path)}"/><br/>
-                            f) <div style="border-bottom: solid; width: 150px"> </div>
+                            <img src="${resource(dir: 'firmas',file: sol.firmaSol.path)}" style="width: 150px;"/><br/>
+                            <div style="border-bottom: solid; width: 150px"> </div>
                             ${sol.firmaSol.usuario.nombre} ${sol.firmaSol.usuario.apellido}<br/>
                             <b>GERENTE DE ${sol.firmaSol.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/></b>
                         </g:if>

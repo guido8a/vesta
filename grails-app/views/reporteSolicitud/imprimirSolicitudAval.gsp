@@ -42,12 +42,16 @@
     .tbl2, .tbl2 th, .tbl2 td {
         border: solid 1px transparent;
     }
+
+    .noBold {
+        font-weight: normal !important;
+    }
     </style>
 </head>
 
 <body>
 <rep:headerFooter title="Solicitud de Aval de POA" unidad="${solicitud.fecha.format('yyyy')}-${solicitud.unidad?.codigo}"
-                  numero="${elm.imprimeNumero(solicitud: solicitud.id)}"/>
+                  numero="${elm.imprimeNumero(solicitud: solicitud.id)}" estilo="right"/>
 
 <p>
     Con el propósito de ejecutar las actividades programadas en la planificación operativa institucional
@@ -65,7 +69,6 @@
                 ${solicitud.usuario.unidad}
             </td>
         </tr>
-
         <tr>
             <th>
                 PROYECTO:
@@ -83,11 +86,11 @@
             </td>
         </tr>
         <tr>
-            <th>
-                FECHA DE INICIO: ${solicitud?.proceso?.fechaInicio?.format("dd-MM-yyyy")}
+            <th class="noBold">
+                <b>FECHA DE INICIO:</b> ${solicitud?.proceso?.fechaInicio?.format("dd-MM-yyyy")}
             </th>
             <td>
-                FECHA DE FIN: ${solicitud?.proceso?.fechaFin?.format("dd-MM-yyyy")}
+                <b>FECHA DE FIN:</b> ${solicitud?.proceso?.fechaFin?.format("dd-MM-yyyy")}
             </td>
         </tr>
         <tr>
@@ -109,19 +112,19 @@
             </tr>
             <tr>
                 <td style="font-weight: bold">ACTIVIDAD</td>
-                <td> ${primero?.key?.numero} - ${primero?.key?.objeto}</td>
+                <td>${anio} - ${primero?.key?.numero} - ${primero?.key?.objeto}</td>
             </tr>
             <tr>
                 <td style="font-weight: bold">CÓDIGO</td>
-                <td>${primero?.key?.marcoLogico?.proyecto?.codigo} - ${primero?.key?.marcoLogico?.numeroComp} - ${primero?.key.numero}</td>
+                <td>${primero?.key?.marcoLogico?.proyecto?.codigoEsigef} ${primero?.key?.marcoLogico?.numeroComp} ${primero?.key.numero}</td>
             </tr>
             <tr>
                 <td style="font-weight: bold">SUBTOTAL</td>
-                <td><g:formatNumber number="${primero.value.total}" type="currency" /></td>
+                <td><g:formatNumber number="${primero.value.total}" type="number" minFractionDigits="2" /></td>
             </tr>
             <tr>
                 <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
-                <td><g:formatNumber number="${primero.value.devengado}" type="currency" /></td>
+                <td><g:formatNumber number="${primero.value.devengado}" type="number" minFractionDigits="2"/></td>
             </tr>
 
             <g:set var="total" value="${0}"/>
@@ -131,42 +134,38 @@
                     <g:set var="total2" value="${0}"/>
                     <tr>
                         <td style="font-weight: bold">
-                            ${segundo.key}
+                            Monto de Aval ${segundo.key}
                         </td>
                         <td>
                             <table class="tbl2">
                                 <g:each in="${segundo.value.asignaciones}" var="tercero">
                                     <tr>
-                                        <td width="35%"><strong>Fuente ${tercero.asignacion?.fuente?.codigo}:</strong></td>
-                                        <td style="text-align: right;"><g:formatNumber number="${tercero.monto?:0}" type="currency" /></td>
+                                        <td><strong>Fuente ${tercero.asignacion?.fuente?.codigo}:</strong></td>
+                                        <td style="text-align: right;"><g:formatNumber number="${tercero.monto?:0}" type="number" minFractionDigits="2"/></td>
                                     </tr>
                                 </g:each>
                                 <tr>
                                     <td><strong>Total</strong></td>
-                                    <td style="text-align: right; font-weight: bold"><g:formatNumber number="${segundo.value.total}" type="currency" /></td>
+                                    <td style="text-align: right; font-weight: bold"><g:formatNumber number="${segundo.value.total}" type="number" minFractionDigits="2" /></td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
                 </g:if>
             </g:each>
-            %{--<tr>--}%
-                %{--<td style="font-weight: bold">MONTO TOTAL AVALADO</td>--}%
-                %{--<td><g:formatNumber number="${primero.value.total}" type="currency" /></td>--}%
-            %{--</tr>--}%
         </table>
-
     </g:each>
 
 </div>
 
 <div class="texto">
     <p>
-        <strong>Nota Técnica:</strong> El monto solicitado incluye el Impuesto al Valor Agegado IVA 12%.
+        %{--<strong>Nota Técnica:</strong> El monto solicitado incluye el Impuesto al Valor Agegado IVA 12%.--}%
+        <strong>Nota Técnica:</strong> ${solicitud?.notaTecnica}
     </p>
 
-    <p >
-        <strong style="float: right">FECHA:${solicitud.fecha.format("dd-MM-yyyy")}</strong>
+    <p style="float: right" >
+        <strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}
     </p>
 </div>
 

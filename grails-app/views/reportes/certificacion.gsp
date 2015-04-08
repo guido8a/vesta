@@ -45,6 +45,28 @@
     .tbl2, .tbl2 th, .tbl2 td {
         border: solid 1px transparent;
     }
+
+    .pequena {
+        /*font-size: 8px !important;*/
+        font-size: 8pt !important;
+    }
+
+    .observaciones {
+        border: 1px solid black;
+        padding: 5px;
+        text-align: justify;
+        page-break-inside : avoid;
+        font-size: 8pt;
+    }
+    .observaciones p {
+        font-size: 8pt;
+    }
+    .observaciones .ttl {
+        font-size: 9pt;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
     </style>
 
 </head>
@@ -52,7 +74,7 @@
 <body>
 <div class="hoja">
     <rep:headerFooter title="Aval de POA" unidad="${anio}-GP"
-                      numero="${elm.imprimeNumero(solicitud: sol.id)}"/>
+                      numero="${elm.imprimeNumero(solicitud: sol.id)}" estilo="right"/>
 
     <div style="text-align: justify;float: left;font-size: 10pt;">
         <p>
@@ -119,62 +141,61 @@
                     </tr>
                     <tr>
                         <td style="font-weight: bold">ACTIVIDAD</td>
-                        <td> ${primero?.key?.numero} - ${primero?.key?.objeto}</td>
+                        <td> ${anio} - ${primero?.key?.numero} - ${primero?.key?.objeto}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: bold">CÓDIGO</td>
-                        <td>${primero?.key?.marcoLogico?.proyecto?.codigo} - ${primero?.key?.marcoLogico?.numeroComp} - ${primero?.key?.numero}</td>
+                        <td>${primero?.key?.marcoLogico?.proyecto?.codigoEsigef} ${primero?.key?.marcoLogico?.numeroComp} ${primero?.key?.numero}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: bold">SUBTOTAL</td>
-                        <td><g:formatNumber number="${primero.value.total}" type="currency" /></td>
+                        <td><g:formatNumber number="${primero.value.total}" type="number"  minFractionDigits="2"/></td>
                     </tr>
                     <tr>
                         <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
-                        <td><g:formatNumber number="${primero.value.devengado}" type="currency" /></td>
+                        <td><g:formatNumber number="${primero.value.devengado}" type="number" minFractionDigits="2" /></td>
                     </tr>
                     <g:set var="total" value="${0}"/>
-
 
                     <g:each in="${primero.value}" var="segundo">
                         <g:if test="${segundo.key.size()== 4}">
                             <g:set var="total2" value="${0}"/>
                             <tr>
                                 <td style="font-weight: bold">
-                                    ${segundo.key}
+                                    Monto de Aval ${segundo.key}
                                 </td>
                                 <td>
                                     <table class="tbl2">
                                         <g:each in="${segundo.value.asignaciones}" var="tercero">
                                             <tr>
-                                                <td width="35%"><strong>Fuente ${tercero.asignacion?.fuente?.codigo}:</strong></td>
-                                                <td style="text-align: right;"><g:formatNumber number="${tercero.monto?:0}" type="currency" /></td>
+                                                <td><strong>Fuente ${tercero.asignacion?.fuente?.codigo}:</strong></td>
+                                                <td style="text-align: right;"><g:formatNumber number="${tercero.monto?:0}" type="number" minFractionDigits="2" /></td>
                                             </tr>
                                         </g:each>
                                         <tr>
                                             <td><strong>Total</strong></td>
-                                            <td style="text-align: right; font-weight: bold"><g:formatNumber number="${segundo.value.total}" type="currency" /></td>
+                                            <td style="text-align: right; font-weight: bold"><g:formatNumber number="${segundo.value.total}" type="number" minFractionDigits="2"/></td>
                                         </tr>
                                     </table>
                                 </td>
                             </tr>
                         </g:if>
                     </g:each>
-                    %{--<tr>--}%
-                        %{--<td style="font-weight: bold">MONTO TOTAL AVALADO</td>--}%
-                        %{--<td><g:formatNumber number="${primero.value.total}" type="currency" /></td>--}%
-                    %{--</tr>--}%
                 </table>
-
             </g:each>
+        </div>
 
+        <div class="texto">
+            <p>
+                <strong>Nota Técnica:</strong> ${sol?.notaTecnica}
+            </p>
         </div>
 
 
-        <p style="border: 1px solid black;padding: 5px;font-size: 8px;text-align: justify;page-break-inside : avoid;">
-            <b style="text-decoration: underline">OBSERVACIONES:</b><br/>
+        <div class="observaciones">
+            <span class="ttl">OBSERVACIONES:</span>
             ${sol.observaciones}
-        </p>
+        </div>
 
         <p>
             Es importante señalar que la Gerencia Administrativa Financiera en el marco de sus competencias verificará la disponibilidad presupuestaria.
@@ -184,58 +205,54 @@
             <strong>Elaborado por:</strong> ${sol.usuario.sigla}
         </p>
 
-        <p>
-            <strong style="float: right">FECHA:${sol.fecha.format("dd-MM-yyyy")}</strong>
+        <p style="float: right">
+            <strong>FECHA: </strong> ${sol.fecha.format("dd-MM-yyyy")}
         </p>
 
     </div>
-
-
-
-
 
     <div style="text-align: justify;float: left;font-size: 10pt;width: 100%">
         <g:if test="${aval}">
 
             <table width="100%" style="margin-top: 1.5cm; border: none" border="none">
-            <tr>
-                <g:if test="${aval.firma1?.estado == 'F' && aval.firma2?.estado == 'F'}">
-                    <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
-                    <td width="25%" style="border: none"></td>
-                    <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
-                    <td width="25%" style="border: none"></td>
-                 </g:if>
+                <tr>
+                    <g:if test="${aval.firma1?.estado == 'F' && aval.firma2?.estado == 'F'}">
+                        <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
+                        <td width="25%" style="border: none"></td>
+                        <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
+                        <td width="25%" style="border: none"></td>
+                    </g:if>
 
-                 <g:if test="${aval.firma1?.estado == 'F' && aval.firma2?.estado != 'F' }">
-                <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
-                <td width="25%" style="border: none"></td>
-                <td width="25%" style="border: none"></td>
-                <td width="25%" style="border: none"></td>
-            </g:if>
-            <g:if test="${aval.firma2?.estado == 'F' && aval.firma1?.estado != 'F'}">
-                <td width="25%" style="border: none"></td>
-                <td width="25%" style="border: none"></td>
-                <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
-                <td width="25%" style="border: none"></td>
-            </g:if>
-            </tr>
+                    <g:if test="${aval.firma1?.estado == 'F' && aval.firma2?.estado != 'F' }">
+                        <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
+                        <td width="25%" style="border: none"></td>
+                        <td width="25%" style="border: none"></td>
+                        <td width="25%" style="border: none"></td>
+                    </g:if>
+                    <g:if test="${aval.firma2?.estado == 'F' && aval.firma1?.estado != 'F'}">
+                        <td width="25%" style="border: none"></td>
+                        <td width="25%" style="border: none"></td>
+                        <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
+                        <td width="25%" style="border: none"></td>
+                    </g:if>
+                </tr>
             </table>
 
 
-          <table width="100%" style="margin-top: 1.5cm; border: none" border="none">
-              <tr>
-                  <td width="50%" style=" text-align: center;border: none">
+            <table width="100%" style="margin-top: 1.5cm; border: none" border="none">
+                <tr>
+                    <td width="50%" style=" text-align: center;border: none">
                         <g:if test="${aval.firma1?.estado == 'F'}">
-                            <img src="${resource(dir: 'firmas', file: aval.firma1.path)}"/><br/>
+                            <img src="${resource(dir: 'firmas', file: aval.firma1.path)}" style="width: 150px;"/><br/>
                             ${aval.firma1.usuario.nombre} ${aval.firma1.usuario.apellido}<br/>
-                           <b>${aval.firma1.usuario.cargoPersonal}<br/></b>
+                            <b>${aval.firma1.usuario.cargoPersonal}<br/></b>
                         </g:if>
                     </td>
                     <td width="50%" style=" text-align: center;;border: none">
                         <g:if test="${aval.firma2?.estado == 'F'}">
-                            <img src="${resource(dir: 'firmas', file: aval.firma2.path)}"/><br/>
+                            <img src="${resource(dir: 'firmas', file: aval.firma2.path)}" style="width: 150px"/><br/>
                             ${aval.firma2.usuario.nombre} ${aval.firma2.usuario.apellido}<br/>
-                          <b>${aval.firma2.usuario.cargoPersonal}<br/></b>
+                            <b>${aval.firma2.usuario.cargoPersonal}<br/></b>
                         </g:if>
                     </td>
                 </tr>

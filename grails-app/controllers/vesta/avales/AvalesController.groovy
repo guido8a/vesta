@@ -627,6 +627,7 @@ class AvalesController extends vesta.seguridad.Shield {
                     sol.concepto = concepto
                     sol.memo = momorando
                     sol.path = nombre
+                    sol.notaTecnica = params.notaTecnica
                     def firma = new Firma()
                     firma.usuario = usuFirma
                     firma.accion = "firmarSolicitud"
@@ -729,6 +730,7 @@ class AvalesController extends vesta.seguridad.Shield {
             sol.monto = monto
             sol.concepto = concepto
             sol.memo = momorando
+            sol.notaTecnica = params.notaTecnica
             def firma = new Firma()
             firma.usuario = usuFirma
             firma.accionVer = "imprimirSolicitudAval"

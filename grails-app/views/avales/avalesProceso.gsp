@@ -44,7 +44,7 @@
                                     <th>Monto</th>
                                     <th>Estado</th>
                                     <th>Aval</th>
-                                    <th></th>
+                                    <th>Anulación</th>
                                 </tr>
                             </thead>
                             <tbody>

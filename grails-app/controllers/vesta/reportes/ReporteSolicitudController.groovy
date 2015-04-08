@@ -587,7 +587,7 @@ class ReporteSolicitudController {
 
 //        println("--><<<<>>" + arr)
 
-        return [solicitud: solicitud, anios: anios, arr: arr, devengado:dosDevengado]
+        return [solicitud: solicitud, anios: anios, arr: arr, devengado:dosDevengado, anio: anio]
     }
 
     /**

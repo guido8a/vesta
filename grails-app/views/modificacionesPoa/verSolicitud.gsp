@@ -310,7 +310,7 @@
             </tbody>
         </table>
         <fieldset style="width: 95%;height: 150px;" class="ui-corner-all">
-            <legend>Observaciones</legend>
+            <legend>Observación</legend>
 
             <div class="fila">
                 <textarea id="obs" style="width: 95%;height: 80px; resize: none" class="ui-corner-all ui-widget-content" ${(sol.estado != 0) ? 'disabled' : ''}>${sol.observaciones}</textarea>

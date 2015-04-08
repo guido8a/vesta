@@ -105,8 +105,8 @@ class ReportesTagLib {
                 "    border-bottom  : solid 2px #4F81BD;\n" +
                 "}"
         css += ".numeracion {\n" +
-                "    margin-top     : 1cm;\n" +
-                "    margin-bottom  : 1cm;\n" +
+                "    margin-top     : 0.5cm;\n" +
+                "    margin-bottom  : 0.5cm;\n" +
                 "    font-size      : 12.5pt;\n" +
                 "    font-family    : 'PT Sans';\n" +
                 "    color          : white;\n" +
@@ -135,6 +135,7 @@ class ReportesTagLib {
      * @param title el título del reporte
      */
     def headerReporte = { attrs ->
+        println("AQUIF   " + attrs)
         def title = attrs.title ?: ""
 
         def estilo = attrs.estilo ?: "center"
@@ -144,26 +145,26 @@ class ReportesTagLib {
         def logoPath = resource(dir: 'images', file: 'logo-pdf-header.png')
         def html = ""
 
-        html += '<div id="header">'
-        html += "<img src='${logoPath}' style='height:${h}px;'/>"
-        html += '</div>'
+        html += '<div id="header">'+"\n"
+        html += "<img src='${logoPath}' style='height:${h}px;'/>"+"\n"
+        html += '</div>'+"\n"
         if (title) {
-            html += "<div class='tituloReporte'>"
-            html += title
-            html += '</div>'
+            html += "<div class='tituloReporte'>"+"\n"
+            html += title+"\n"
+            html += '</div>'+"\n"
         }
 
         if (attrs.unidad || attrs.numero) {
-            html += "<div class='numeracion'>"
-            html += "<table border='1' ${estilo == 'right' ? 'style=\'float: right\'' : ''}>"
-            html += "<tr>"
-            html += "<td style='background: #0F243E;'>Form. GPE-DPI-01</td>"
-            html += "<td style='background: #008080;'>Numeración:</td>"
-            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>"
-            html += "<td style='background: #008080;'>No. ${attrs.numero ?: ''}</td>"
-            html += "</tr>"
-            html += "</table>"
-            html += "</div>"
+            html += "<div class='numeracion'>"+"\n"
+            html += "<table border='1' ${estilo == 'right' ? 'style=\'float: right\'' : ''}>"+"\n"
+            html += "<tr>"+"\n"
+            html += "<td style='background: #0F243E;'>Form. GPE-DPI-01</td>"+"\n"
+            html += "<td style='background: #008080;'>Numeración:</td>"+"\n"
+            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>"+"\n"
+            html += "<td style='background: #008080;'>No. ${attrs.numero ?: ''}</td>"+"\n"
+            html += "</tr>"+"\n"
+            html += "</table>"+"\n"
+            html += "</div>"+"\n"
         }
 
         out << raw(html)
@@ -310,12 +311,12 @@ class ReportesTagLib {
                 "    font-size      : 13pt;\n" +
                 "    font-weight    : bold;\n" +
                 "    border         : solid 1px #000000;\n" +
-                "    margin-top     : 8px;" +
-                "    margin-bottom  : 10px;" +
+                "    margin-top     : 5px;" +
+                "    margin-bottom  : 5px;" +
                 "}"
         css += ".numeracion {\n" +
-                "    margin-top     : 10px;\n" +
-                "    margin-bottom  : 10px;\n" +
+                "    margin-top     : 0px;\n" +
+                "    margin-bottom  : 0px;\n" +
                 "    font-family    : 'PT Sans';\n" +
                 "    font-weight    : bold;\n" +
                 "    color          : white;\n" +

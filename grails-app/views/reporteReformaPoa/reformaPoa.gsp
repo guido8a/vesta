@@ -40,10 +40,6 @@
             color      : #FFFFFF !important;
         }
 
-        /*th {*/
-        /*background : #cccccc;*/
-        /*}*/
-
         .odd {
             background : none repeat scroll 0 0 #E1F1F7;
         }
@@ -59,7 +55,7 @@
 
         ol li {
             display       : block;
-            margin-bottom : 15px;
+            margin-bottom : 5px;
         }
 
         ol li:before {
@@ -70,6 +66,7 @@
 
         .table {
             border-collapse : collapse;
+            border     : solid 1px #000000;
         }
 
         .center {
@@ -113,6 +110,22 @@
         .valor {
             text-align : right;
         }
+
+        .formato {
+            font-weight: bold;
+            background: #008080;
+            color: #ffffff;
+        }
+
+        td {
+            border: solid 1px #000000;
+
+        }
+        th {
+            border: solid 1px #000000;
+        }
+
+
         </style>
     </head>
 
@@ -295,69 +308,105 @@
                                 </g:else>
                                 <tr style="background: #008080">
                                     <td colspan="4"></td>
-                                    <td style="font-weight: bold; color: #fbf9ff">TOTAL</td>
-                                    <td style="font-weight: bold;" class="valor"><g:formatNumber number="${ti}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
-                                    <td style="font-weight: bold" class="valor"><g:formatNumber number="${tvi}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
-                                    <td style="font-weight: bold" class="valor"><g:formatNumber number="${tvf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
-                                    <td style="font-weight: bold" class="valor"><g:formatNumber number="${tf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
+                                    <td class="formato">TOTAL</td>
+                                    <td class="valor formato"><g:formatNumber number="${ti}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
+                                    <td class="valor formato"><g:formatNumber number="${tvi}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
+                                    <td class="valor formato"><g:formatNumber number="${tvf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
+                                    <td class="valor formato"><g:formatNumber number="${tf}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
                                 </tr>
                             </tbody>
                         </table>
                     </li>
                 </ol>
 
-                <div style="margin-left: 20px; margin-bottom: 20px">
-                    <strong>Observación:</strong>  La reforma efectuada corresponde al tipo " ${sol?.tipo} "; es importante señalar que la reforma no implicó modificación al monto aprobado
+                <div style="margin-bottom: 10px">
+                    %{--<strong>Observación:</strong>  La reforma efectuada corresponde al tipo " ${sol?.tipo} "; es importante señalar que la reforma no implicó modificación al monto aprobado--}%
+                    <strong>Observación:</strong>  ${sol.observaciones}
                 </div>
-
-                <div style="margin-left: 20px">
+                <div>
                     <strong>Elaborado por:</strong> ${sol.revisor?.sigla}
                 </div>
-
                 <div class="fright">
                     <strong>FECHA:</strong> ${sol.fechaRevision?.format("dd-MM-yyyy")}
                 </div>
 
-                <table style="border: solid 1px; margin-left: 220px; height: 130px">
-                    <thead>
-                        <th style="border-right: solid 1px; width: 150px">
-                            Revisado por:
-                        </th>
-                        <th style="width: 150px">
-                            Aprobado por:
-                        </th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="border-right: solid 1px">
-                                <g:if test="${sol?.firma1?.estado == 'F'}">
-                                    <img src="${resource(dir: 'firmas', file: sol.firma1.path)}"/><br/>
-                                    f) <div style="width: 130px; border-bottom: solid 1px"></div>
+                <div class="no-break">
+                <table width="100%" style="margin-top: 0.5cm; border: none" border="none">
+                    <tr>
+                        <g:if test="${sol.firma1?.estado == 'F' && sol.firma2?.estado == 'F'}">
+                            <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
+                            <td width="25%" style="border: none"></td>
+                            <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
+                            <td width="25%" style="border: none"></td>
+                        </g:if>
+
+                        <g:if test="${sol.firma1?.estado == 'F' && sol.firma2?.estado != 'F' }">
+                            <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
+                            <td width="25%" style="border: none"></td>
+                            <td width="25%" style="border: none"></td>
+                            <td width="25%" style="border: none"></td>
+                        </g:if>
+                        <g:if test="${sol.firma2?.estado == 'F' && sol.firma1?.estado != 'F'}">
+                            <td width="25%" style="border: none"></td>
+                            <td width="25%" style="border: none"></td>
+                            <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
+                            <td width="25%" style="border: none"></td>
+                        </g:if>
+                    </tr>
+                </table>
+
+                <table width="100%" style="border: none" border="none">
+                    <tr>
+                        <td width="50%" style=" text-align: center;border: none">
+                            <g:if test="${sol?.firma1?.estado == 'F'}">
+                                <g:if test="${resource(dir: 'firmas', file: sol.firma1.path)}">
+                                    <img src="${resource(dir: 'firmas', file: sol.firma1.path)}" style="width: 150px;"/><br/>
+                                    <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px"></div>
                                     <b style="text-align: center">${sol.firma1.usuario.nombre} ${sol.firma1.usuario.apellido}<br/>
                                     </b>
                                     <b style="text-align: center;">${sol.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
                                     </b>
-                                %{--${sol.firma1.fecha.format("dd-MM-yyyy hh:mm")}--}%
                                 </g:if>
-                            </td>
-                            <td>
-                                <g:if test="${sol?.firma2?.estado == 'F'}">
-                                    <img src="${resource(dir: 'firmas', file: sol.firma2.path)}"/><br/>
-                                    f) <div style="width: 130px; border-bottom: solid 1px"></div>
+                                <g:else>
+                                    <img src="${resource(dir: 'firmas', file: sol.firma1.path)}" style="width: 150px;"/><br/>
+                                    <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px; margin-top: 150px"></div>
+                                    <b style="text-align: center">${sol.firma1.usuario.nombre} ${sol.firma1.usuario.apellido}<br/>
+                                    </b>
+                                    <b style="text-align: center;">${sol.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                    </b>
+                                </g:else>
+
+                            </g:if>
+                        </td>
+                        <td width="50%" style=" text-align: center;;border: none">
+                            <g:if test="${sol?.firma2?.estado == 'F'}">
+                                <g:if test="${resource(dir: 'firmas', file: sol.firma2.path)}">
+                                    <img src="${resource(dir: 'firmas', file: sol.firma2.path)}" style="width: 150px;"/><br/>
+                                    <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px;"></div>
                                     <b class="center">${sol.firma2.usuario.nombre} ${sol.firma2.usuario.apellido}<br/>
                                     </b>
                                     <b class="center">${sol.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
                                     </b>
-                                %{--${sol.firma2.fecha.format("dd-MM-yyyy hh:mm")}--}%
-                                </g:if>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
 
-                <div class="no-break" style="border: solid 1px; width: 300px; height: 100px; margin-left: 220px">
-                    <b>Recepción:</b>
-                </div>
+                                </g:if>
+                                <g:else>
+                                    <img src="${resource(dir: 'firmas', file: sol.firma2.path)}" style="width: 150px;"/><br/>
+                                    <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px; margin-top: 150px"></div>
+                                    <b class="center">${sol.firma2.usuario.nombre} ${sol.firma2.usuario.apellido}<br/>
+                                    </b>
+                                    <b class="center">${sol.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                    </b>
+                                </g:else>
+
+                            </g:if>
+                        </td>
+                    </tr>
+                </table>
+</div>
+
+                %{--<div class="no-break" style="border: solid 1px; width: 300px; height: 100px; margin-left: 220px">--}%
+                    %{--<b>Recepción:</b>--}%
+                %{--</div>--}%
             </div>
         </div>
     </body>

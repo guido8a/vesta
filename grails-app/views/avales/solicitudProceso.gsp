@@ -169,6 +169,25 @@
             </div>
 
             <div class="row">
+                <span class="grupo">
+                    <label for="notaTecnica" class="col-md-2 control-label">
+                        Nota Técnica
+                    </label>
+
+                    <div class="col-md-4">
+                        <g:if test="${!readOnly}">
+                            <g:textArea name="notaTecnica" style="width: 400px;resize: none" maxlength="350" class="form-control input-sm"/>
+                        </g:if>
+                        <g:else>
+                            <p class="form-control-static">
+                                ${solicitud?.notaTecnica}
+                            </p>
+                        </g:else>
+                    </div>
+                </span>
+            </div>
+
+            <div class="row">
                 <div class="col-md-11 text-right">
                     <g:if test="${!readOnly}">
                         <a href="#" id="btnEnviar" class="btn btn-success">
