@@ -61,7 +61,8 @@
 
                                         <td style="text-align: center">
                                             <g:if test="${f.accionVer}">
-                                                <g:if test="${f.esPdf != 'N'}">
+                                                %{--<g:if test="${f.esPdf != 'N'}">--}%
+                                                <g:if test="${f.esPdf == 'S'}">
                                                     <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}" target="_blank" class="btn btn-info btn-sm" style="margin: 5px"><i class="fa fa-search"></i> Ver
                                                     </a>
                                                 </g:if>
@@ -73,6 +74,9 @@
                                             </g:if>
                                             <a href="#" iden="${f.id}" class="aprobar btn btn-success btn-sm" style="margin: 5px">
                                                 <i class="fa fa-paw"></i> Firmar
+                                            </a>
+                                            <a href="#" class="negar btn btn-danger btn-sm">
+                                                <i class="fa fa-thumbs-down"></i> Negar
                                             </a>
                                         </td>
                                     </tr>
@@ -205,8 +209,7 @@
             //        log("dialog",'success')
             //    }
 
-            $(".aprobarAnulacion").button({icons : {primary : "ui-icon-check"}, text : false});
-            $(".negar").button({icons : {primary : "ui-icon-close"}, text : false}).click(function () {
+            $(".negar").click(function () {
                 var id = $(this).attr("iden")
                 if (confirm("Está seguro?")) {
                     $.ajax({

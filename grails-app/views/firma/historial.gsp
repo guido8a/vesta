@@ -25,6 +25,9 @@
                 <g:if test="${firma.estado=='F'}">
                     Firmado
                 </g:if>
+                <g:elseif test="${firma.estado=='S'}">
+                    Pendiente
+                </g:elseif>
                 <g:else>
                     Negado
                 </g:else>

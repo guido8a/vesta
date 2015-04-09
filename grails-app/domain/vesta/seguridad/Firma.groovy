@@ -39,6 +39,18 @@ class Firma {
      */
     String idAccionVer
     /**
+     *  Nombre de la acción para ver el documento antes de firmar
+     */
+    String accionNegar
+    /**
+     *  Nombre del controlador para ver el documento antes de firmar
+     */
+    String controladorNegar
+    /**
+     *  identificador pasado a la accion para ver el documento antes de firmar
+     */
+    String idAccionNegar
+    /**
      *  nombre del documento
      */
     String documento
@@ -66,6 +78,12 @@ class Firma {
      * determina si necesita pasar por el controlador de pdf S-> si N-> no
      */
     String esPdf="S"
+
+
+    /**
+     * tipo de la firma
+     */
+    String tipoFirma
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -98,6 +116,10 @@ class Firma {
             concepto column: 'frmacnct'
             observaciones column: 'frmaobrs'
             esPdf column: 'frmaepdf'
+            tipoFirma column: 'frmatipo'
+            accionNegar column: 'frmaacng'
+            controladorNegar column: 'frmactng'
+            idAccionNegar column: 'frmaidng'
         }
     }
     static constraints = {
@@ -116,5 +138,9 @@ class Firma {
         accionVer(blank:true,nullable: true,size: 1..100)
         controladorVer(blank:true,nullable: true,size: 1..100)
         idAccionVer(blank:true,nullable: true,size: 1..10)
+        tipoFirma(blank: true, nullable: true)
+        accionNegar(blank: true, nullable: true)
+        controladorNegar(blank: true, nullable: true)
+        idAccionNegar(blank: true, nullable: true)
     }
 }

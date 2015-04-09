@@ -65,7 +65,7 @@
 
         <div style="margin-top: 15px">
             Con el proposito de mejorar la ejecución de la planificación operativa institucional,
-            adjunto al presente sírvase encontrar la solicitud de reforma al Plan Operativo - POA 2014
+            adjunto al presente sírvase encontrar la solicitud de reforma al Plan Operativo - POA 2015
 
         </div>
 
