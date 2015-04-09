@@ -22,6 +22,10 @@ jQuery.validator.addMethod("tdnMax", function (value, element, param) {
     return this.optional(element) || value <= param;
 }, jQuery.validator.format("Ingrese un valor inferior o igual a {0}."));
 
+jQuery.validator.addMethod("requiredCombo", function (value, element) {
+    return value.toString() != "-1";
+}, jQuery.validator.format("Por favor seleccione una opción"));
+
 /**
  * verifica que la suma de 2 fields no supere el data de un elemento
  * params[0] : el id del 2do field

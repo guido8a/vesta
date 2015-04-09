@@ -58,6 +58,7 @@ function validarEspacios(ev) {
  * @param hide: si se oculta solo o no (opcional)
  */
 function log(msg, type, title, hide) {
+    type = type.toLowerCase();
     if (hide === undefined) {
         hide = type != "error";
     }
@@ -102,7 +103,7 @@ function openLoader(msg, title) {
         closeButton : false,
         class       : "modal-sm"
     });
-    $("#dlgLoader").css({zIndex:1061})
+    $("#dlgLoader").css({zIndex : 1061})
 }
 function closeLoader() {
     $("#dlgLoader").modal('hide');

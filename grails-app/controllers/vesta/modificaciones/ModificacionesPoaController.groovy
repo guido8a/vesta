@@ -10,6 +10,7 @@ import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.poa.ProgramacionAsignacion
 import vesta.proyectos.MarcoLogico
+import vesta.proyectos.ModificacionAsignacion
 import vesta.proyectos.Proyecto
 import vesta.seguridad.Firma
 import vesta.seguridad.Persona
@@ -17,13 +18,14 @@ import vesta.seguridad.Shield
 
 class ModificacionesPoaController extends Shield {
 
+    def firmasService
+
     def index = {}
 
-    def solicitar = {
+    def ajuste() {
         def proyectos = []
-        def unidad = session.usuario.unidad
         def actual
-        Asignacion.findAllByUnidad(unidad).each {
+        Asignacion.list().each {
 //            println "p "+proyectos
             def p = it.marcoLogico.proyecto
             if (!proyectos?.id.contains(p.id)) {
@@ -35,9 +37,42 @@ class ModificacionesPoaController extends Shield {
         else
             actual = Anio.findByAnio(new Date().format("yyyy"))
 
+        proyectos = proyectos.sort { it.nombre }
+
+        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
-        [proyectos: proyectos, actual: actual, campos: campos]
+        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+        def personasFirmas = Persona.findAllByUnidad(unidad)
+        def gerentes = Persona.findAllByUnidad(unidad.padre)
+
+        [proyectos: proyectos, proyectos2: proyectos2, actual: actual, campos: campos, personas: gerentes + personasFirmas, personasGerente: gerentes]
+    }
+
+    def solicitar = {
+        def proyectos = []
+        def unidad = session.usuario.unidad
+        def actual
+        Asignacion.findAllByUnidad(unidad).each {
+//            println "p "+proyectos
+            def p = it.marcoLogico.proyecto
+            println ">>> " + p + "   " + p.aprobadoPoa
+            if (!proyectos?.id.contains(p.id) && p.aprobadoPoa == 'S') {
+                proyectos.add(p)
+            }
+        }
+
+        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+
+        if (params.anio)
+            actual = Anio.get(params.anio)
+        else
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+//        println "pro "+proyectos
+        [proyectos: proyectos, actual: actual, campos: campos, proyectos2: proyectos2]
     }
 
     def modificar = {
@@ -114,6 +149,22 @@ class ModificacionesPoaController extends Shield {
         [comps: comps, idCombo: params.idCombo, div: params.div]
     }
 
+
+    def componentesProyectoAjuste_ajax = {
+//        println "comp "+params
+        def proyecto = Proyecto.get(params.id)
+        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
+        [comps: comps, idCombo: params.idCombo, div: params.div]
+    }
+
+
+    def componentesProyectoAjuste2_ajax = {
+//        println "comp "+params
+        def proyecto = Proyecto.get(params.id)
+        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
+        [comps: comps, idCombo: params.idCombo, div: params.div]
+    }
+
     def getValor = {
         def asg = Asignacion.get(params.id)
         def valor = asg.priorizado
@@ -126,6 +177,252 @@ class ModificacionesPoaController extends Shield {
         def comp = MarcoLogico.get(params.id)
         def unidad = session.usuario.unidad
         [acts: MarcoLogico.findAllByMarcoLogicoAndResponsable(comp, unidad, [sort: "numero"]), div: params.div, comboId: params.comboId]
+    }
+
+    def guardarAjuste() {
+//        println "Guardar ajuste      " + params
+
+        def origen = Asignacion.get(params.asg)
+        def destino = Asignacion.get(params.asg_dest)
+
+        def errores = ""
+
+        def firma1 = new Firma()
+        firma1.usuario = Persona.get(params.firma2.toLong())
+
+        if (!firma1.save(flush: true)) {
+            println "error al guardar firma1: " + firma1.errors
+            errores += renderErrors(bean: firma1)
+        }
+        if (errores == "") {
+            def firma2 = new Firma()
+            firma2.usuario = Persona.get(params.firma3.toLong())
+
+            if (!firma2.save(flush: true)) {
+                println "error al guardar firma2: " + firma2.errors
+                errores += renderErrors(bean: firma2)
+            }
+            if (errores == "") {
+                def mod = new ModificacionAsignacion()
+                mod.usuario = session.usuario
+                mod.desde = origen
+                mod.recibe = destino
+                mod.valor = params.monto.toDouble()
+                mod.fecha = new Date()
+                mod.textoPdf = params.texto.trim()
+                mod.firma1 = firma1
+                mod.firma2 = firma2
+
+                if (!mod.save(flush: true)) {
+                    println "error al guardar mod temporal: " + mod.errors
+                    errores += renderErrors(bean: mod)
+                } else {
+                    def concepto = "Ajuste de POA de ${g.formatNumber(number: mod.valor, type: 'currency')} de la actividad ${mod.desde.marcoLogico.numero} a ${mod.recibe.marcoLogico.numero}"
+                    def controladorVer = "reporteReformaPoa"
+                    def accionVer = "ajustePOA"
+                    def controlador = "modificacionesPoa"
+                    def accion = "firmarAjuste"
+                    def controladorNegar = "modificacionesPoa"
+                    def accionNegar = "negarAjuste"
+
+                    firma1.concepto = concepto
+                    firma1.controladorVer = controladorVer
+                    firma1.accionVer = accionVer
+                    firma1.idAccionVer = mod.id
+                    firma1.controlador = controlador
+                    firma1.accion = accion
+                    firma1.idAccion = mod.id
+                    firma1.accion = accion
+                    firma1.idAccion = mod.id
+
+                    firma2.concepto = concepto
+                    firma2.controladorVer = controladorVer
+                    firma2.accionVer = accionVer
+                    firma2.idAccionVer = mod.id
+                    firma2.controlador = controlador
+                    firma2.accion = accion
+                    firma2.idAccion = mod.id
+
+                    if (!firma1.save(flush: true)) {
+                        println "error al actualizar la firma 1: " + firma1.errors
+                    }
+                    if (!firma2.save(flush: true)) {
+                        println "error al actualizar la firma 2: " + firma2.errors
+                    }
+
+                }
+            }
+        }
+        if (errores == "") {
+            render "SUCCESS*Ajuste guardado exitosamente"
+        } else {
+            render "ERROR*" + errores
+        }
+    }
+
+    def listaAjustes() {
+
+    }
+
+    def listaAjustes_ajax() {
+        println "LISTA: " + params
+        /*
+        search_hasta:07-04-2015,
+        search_desde:01-04-2015,
+        search_estado:P
+         */
+        def ajustes = ModificacionAsignacion.withCriteria {
+            if (params.search_persona) {
+                or {
+                    firma1 {
+                        eq("usuario", Persona.get(params.search_persona.toLong()))
+                    }
+                    firma2 {
+                        eq("usuario", Persona.get(params.search_persona.toLong()))
+                    }
+                }
+            }
+            if (params.search_desde) {
+                ge("fecha", new Date().parse("dd-MM-yyyy", params.search_desde))
+            }
+            if (params.search_hasta) {
+                le("fecha", new Date().parse("dd-MM-yyyy", params.search_hasta))
+            }
+            if (params.search_estado == "P") {
+                or {
+                    firma1 {
+                        eq("estado", "S")
+                    }
+                    firma2 {
+                        eq("estado", "S")
+                    }
+                }
+            } else if (params.search_estado == "A") {
+                and {
+                    firma1 {
+                        eq("estado", "F")
+                    }
+                    firma2 {
+                        eq("estado", "F")
+                    }
+                }
+            }
+            order("fecha", "desc")
+        }
+        return [ajustes: ajustes, params: params]
+    }
+
+    def ajustesPendientes() {
+        def usu = Persona.get(session.usuario.id)
+        return [usu: usu]
+    }
+
+    def firmarAjuste() {
+        def firma = Firma.findByKey(params.key)
+        if (!firma)
+            response.sendError(403)
+        else {
+            def ajuste = ModificacionAsignacion.findByFirma1OrFirma2(firma, firma)
+
+            if (ajuste.firma1.estado == "F" && ajuste.firma2.estado == "F") {
+                //ya firmaron las 2 personas: se hace el cambio en las asignaciones
+                def msg = ""
+                def origen = ajuste.desde
+                def destino = ajuste.recibe
+
+                origen.priorizado = origen.priorizado - ajuste.valor
+                destino.priorizado = destino.priorizado + ajuste.valor
+
+                if (origen.save(flush: true)) {
+                    msg += "<li>Asignación de origen modificada exitosamente</li>"
+                } else {
+                    println "error origen: " + origen.errors
+                    flash.message = "Ocurrió un error al procesar la asignación de origen de la modificación."
+                    redirect(controller: "modificacionesPoa", action: "ajustesPendientes")
+                    return
+                }
+
+                if (destino.save(flush: true)) {
+                    msg += "<li>Asignación de destino modificada exitosamente</li>"
+                } else {
+                    println "error destino: " + destino.errors
+                    flash.message = "Ocurrió un error al procesar la asignación destino de la modificación."
+                    redirect(controller: "modificacionesPoa", action: "ajustesPendientes")
+                    return
+                }
+            }
+
+            def url = g.createLink(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
+            render "${url}"
+        }
+    }
+
+    def negarAjuste() {
+
+    }
+
+    def firmarAjuste_ajax() {
+        def ajuste = ModificacionAsignacion.get(params.id.toLong())
+        def auth = params.pass.toString().trim()
+
+        def usu = Persona.get(session.usuario.id)
+        def firma = null
+        if (ajuste.firma1Id == usu.id) {
+            firma = ajuste.firma1
+        } else if (ajuste.firma2Id == usu.id) {
+            firma = ajuste.firma2
+        }
+        if (firma != null) {
+            def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
+
+            firmasService.firmarDocumento(usu, auth, firma, baseUri)
+
+            if (ajuste.firma1.key && ajuste.firma2.key) {
+                //Aqui se hace el cambio de verdad y se crea la modificacion en la otra tabla
+                def mod = new ModificacionAsignacion()
+                def origen = ajuste.desde
+                def destino = ajuste.recibe
+                mod.desde = ajuste.desde
+                mod.recibe = ajuste.recibe
+                mod.valor = ajuste.valor
+                mod.fecha = new Date()
+                mod.unidad = ajuste.unidad
+                origen.priorizado = origen.priorizado - ajuste.valor
+                destino.priorizado = destino.priorizado + ajuste.valor
+
+
+                if (origen.save(flush: true)) {
+
+                } else {
+                    println "error origen: " + origen.errors
+                    flash.message = "Ocurrió un error al procesar la asignación de origen de la modificación."
+                    redirect(controller: "modificacionesPoa", action: "ajustesPendientes")
+                    return
+                }
+
+                if (destino.save(flush: true)) {
+
+                } else {
+                    println "error destino: " + destino.errors
+                    flash.message = "Ocurrió un error al procesar la asignación destino de la modificación."
+                    redirect(controller: "modificacionesPoa", action: "ajustesPendientes")
+                    return
+                }
+
+                if (mod.save(flush: true)) {
+
+                } else {
+                    println "error mod: " + mod.errors
+                    flash.message = "Ocurrió un error al procesar la modificación."
+                    redirect(controller: "modificacion", action: "poaInversionesMod", id: params.proyecto)
+                    return
+                }
+
+            }
+
+        } else {
+            render "ERROR*No puede firmar el ajuste seleccionado"
+        }
     }
 
     def guardarSolicitudReasignacion = {

@@ -23,6 +23,7 @@ class FirmasService {
      * @param idAccion es el identificador pasado a la accion
      * @param documento es el nombre del documento
      * @param password es la contraseña de autorizacion del usuario
+     * @param baseUri def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
      * @return un objeto de tipo firma con la información de la firma electrónica
      */
     def firmarDocumento(usuario, password, firma, baseUri) {

@@ -275,7 +275,8 @@ class ElementosTagLib {
         def readonly = attrs.readonly ?: false
         def value = attrs.value
 
-        def clase = attrs["class"]
+        def placeholder = attrs.placeholder ?: ""
+        def clase = attrs["class"] ?: ""
         def claseGrupo = ""
         if (clase.contains("input-sm")) {
             claseGrupo = "input-group-sm"
@@ -346,7 +347,7 @@ class ElementosTagLib {
         def br = "\n"
 
         def textfield = "<input type='text' name='${nameInput}' id='${id}' " + (readonly ? "readonly=''" : "") + " value='${value}'" +
-                " class='${clase}' data-date-format='${formatJS}'/>"
+                " class='${clase}' data-date-format='${formatJS}' placeholder='${placeholder}'/>"
 
         def hiddenDay = "<input type='hidden' name='${nameHiddenDay}' id='${nameHiddenDay}' value='${valueDay}'/>"
         def hiddenMonth = "<input type='hidden' name='${nameHiddenMonth}' id='${nameHiddenMonth}' value='${valueMonth}'/>"

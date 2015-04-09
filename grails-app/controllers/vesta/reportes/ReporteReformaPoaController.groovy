@@ -2,6 +2,7 @@ package vesta.reportes
 
 import vesta.modificaciones.SolicitudModPoa
 import vesta.parametros.poaPac.Anio
+import vesta.proyectos.ModificacionAsignacion
 import vesta.seguridad.Prfl
 import vesta.seguridad.Sesn
 
@@ -39,5 +40,15 @@ class ReporteReformaPoaController {
         }
         [sol: sol, gerente: gerente, director: director, anio: anio]
 
+    }
+
+    /**
+     * Genera el pdf de los ajustes de poa
+     */
+    def ajustePOA() {
+        def ajuste = ModificacionAsignacion.get(params.id)
+        def anio = ajuste.fecha.format("yyyy")
+
+        return [ajuste: ajuste, anio: anio]
     }
 }

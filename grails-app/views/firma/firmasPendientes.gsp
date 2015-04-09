@@ -199,7 +199,7 @@
                         });
                         setTimeout(function () {
                             bAuth.find(".form-control").first().focus();
-                        }, 400);
+                        }, 500);
                     }
                 });
             });
