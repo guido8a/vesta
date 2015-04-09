@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="col-md-2" id="">
-                        <g:select from="${vesta.parametros.poaPac.Anio.list([sort: 'anio'])}" value="${actual?.id}" optionKey="id" optionValue="anio" id="anio" name="anio" class="form-control input-sm"/>
+                        <g:select from="${Anio.list([sort: 'anio'])}" value="${actual?.id}" optionKey="id" optionValue="anio" id="anio" name="anio" class="form-control input-sm"/>
                     </div>
                 </div>
 

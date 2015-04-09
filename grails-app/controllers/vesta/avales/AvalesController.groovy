@@ -218,11 +218,42 @@ class AvalesController extends vesta.seguridad.Shield {
     }
 
     /**
+     * Acción llamada con ajax que carga las actividades (MarcoLogico) de un cierto componente
+     * @param id el componente padre de las actividades
+     */
+    def cargarActividadesAjuste_ajax = {
+        def comp = MarcoLogico.get(params.id)
+        return [acts: MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"]), div: params.div]
+    }
+
+    /**
+     * Acción llamada con ajax que carga las actividades (MarcoLogico) de un cierto componente
+     * @param id el componente padre de las actividades
+     */
+    def cargarActividadesAjuste2_ajax = {
+        def comp = MarcoLogico.get(params.id)
+        return [acts: MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"]), div: params.div]
+    }
+
+    /**
      * Acción llamada con ajax que carga las asignaciones de una cierta actividad (MarcoLogico) de un cierto año
      * @param id el id de la actividad
      * @param anio el id del año
      */
     def cargarAsignaciones_ajax = {
+//        println "cargar asg " + params
+        def act = MarcoLogico.get(params.id)
+        def anio = Anio.get(params.anio)
+//        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
+        [asgs: Asignacion.findAllByMarcoLogicoAndAnio(act, anio)]
+    }
+
+    /**
+     * Acción llamada con ajax que carga las asignaciones de una cierta actividad (MarcoLogico) de un cierto año
+     * @param id el id de la actividad
+     * @param anio el id del año
+     */
+    def cargarAsignaciones2_ajax = {
 //        println "cargar asg " + params
         def act = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)

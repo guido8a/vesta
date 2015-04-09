@@ -144,24 +144,26 @@ class ReportesTagLib {
      * @param title el título del reporte
      */
     def headerReporte = { attrs ->
-        println("AQUIF   " + attrs)
+//        println("AQUIF   " + attrs)
         def title = attrs.title ?: ""
         def titulo = attrs.titulo ?: ""
 
         def estilo = attrs.estilo ?: "center"
+
+        def form = attrs.form ?: 'GPE-DPI-01'
 
         def h = 55
 
         def logoPath = resource(dir: 'images', file: 'logo-pdf-header.png')
         def html = ""
 
-        html += '<div id="header">'+"\n"
-        html += "<img src='${logoPath}' style='height:${h}px;'/>"+"\n"
-        html += '</div>'+"\n"
+        html += '<div id="header">' + "\n"
+        html += "<img src='${logoPath}' style='height:${h}px;'/>" + "\n"
+        html += '</div>' + "\n"
         if (title) {
-            html += "<div class='tituloReporte'>"+"\n"
-            html += title+"\n"
-            html += '</div>'+"\n"
+            html += "<div class='tituloReporte'>" + "\n"
+            html += title + "\n"
+            html += '</div>' + "\n"
         }
         if (titulo) {
             html += "<div class='tituloRprt'>"
@@ -169,17 +171,17 @@ class ReportesTagLib {
             html += '</div>'
         }
 
-        if (attrs.unidad || attrs.numero) {
-            html += "<div class='numeracion'>"+"\n"
-            html += "<table border='1' ${estilo == 'right' ? 'style=\'float: right\'' : ''}>"+"\n"
-            html += "<tr>"+"\n"
-            html += "<td style='background: #0F243E;'>Form. GPE-DPI-01</td>"+"\n"
-            html += "<td style='background: #008080;'>Numeración:</td>"+"\n"
-            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>"+"\n"
-            html += "<td style='background: #008080;'>No. ${attrs.numero ?: ''}</td>"+"\n"
-            html += "</tr>"+"\n"
-            html += "</table>"+"\n"
-            html += "</div>"+"\n"
+        if (attrs.unidad || attrs.numero != null) {
+            html += "<div class='numeracion'>" + "\n"
+            html += "<table border='1' ${estilo == 'right' ? 'style=\'float: right\'' : ''}>" + "\n"
+            html += "<tr>" + "\n"
+            html += "<td style='background: #0F243E;'>Form. ${form}</td>" + "\n"
+            html += "<td style='background: #008080;'>Numeración:</td>" + "\n"
+            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>" + "\n"
+            html += "<td style='background: #008080;'>No. ${attrs.numero != null ? attrs.numero.toString().padLeft(3, '0') : ''}</td>" + "\n"
+            html += "</tr>" + "\n"
+            html += "</table>" + "\n"
+            html += "</div>" + "\n"
         }
 
         out << raw(html)

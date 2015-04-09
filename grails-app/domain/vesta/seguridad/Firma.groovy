@@ -24,9 +24,6 @@ class Firma {
      */
     String idAccion
     /**
-     *  nombre del documento
-     */
-    /**
      *  Nombre de la acción para ver el documento antes de firmar
      */
     String accionVer

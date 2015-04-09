@@ -20,7 +20,9 @@
             %{--<g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>--}%
                 <g:if test="${actual?.estado == 1}">
                     <g:if test="${proyecto.aprobadoPoa == 'S'}">
-                        <g:link class="btn btn-default btn-sm" controller="modificacion" action="poaInversionesMod" id="${proyecto?.id}"><i class="fa fa-random"></i> Modificaciones</g:link>
+                        <g:link class="btn btn-default btn-sm" controller="modificacionesPoa" action="ajuste" id="${proyecto?.id}">
+                            <i class="fa fa-random"></i> Modificaciones
+                        </g:link>
                     </g:if>
                 </g:if>
                 <g:if test="${actual?.estado == 1}">

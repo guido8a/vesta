@@ -2,6 +2,8 @@ package vesta.proyectos
 
 import vesta.parametros.UnidadEjecutora
 import vesta.poa.Asignacion
+import vesta.seguridad.Firma
+import vesta.seguridad.Persona
 
 /*La modificación de la asignación presupuestaria se refiere a la redistribución del valor asignado lo cual implica además una reprogramación.*/
 /**
@@ -9,7 +11,11 @@ import vesta.poa.Asignacion
  * La modificación de la asignación presupuestaria se refiere a la redistribución del valor asignado
  * lo cual implica además una reprogramación
  */
-class ModificacionAsignacion   {
+class ModificacionAsignacion {
+    /**
+     * Usuario que realiza la modificacion
+     */
+    Persona usuario
     /**
      * Asignación que envía
      */
@@ -38,6 +44,26 @@ class ModificacionAsignacion   {
      * Unidad ejecutora
      */
     UnidadEjecutora unidad
+    /**
+     * Primera firma de aprobación
+     */
+    Firma firma1
+    /**
+     * Segunda firma de aprobación
+     */
+    Firma firma2
+    /**
+     * Estado: P = pendiente, A = aprobado
+     */
+    String estado = 'P'
+    /**
+     * Numero de la modificacion
+     */
+    Integer numero = 0
+    /**
+     * Texto para el pdf
+     */
+    String textoPdf
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -55,12 +81,19 @@ class ModificacionAsignacion   {
         version false
         columns {
             id column: 'mdas__id'
+            usuario column: 'prsn__id'
             desde column: 'asgndsde'
             recibe column: 'asgnrcbe'
             modificacionProyecto column: 'mdfc__id'
             fecha column: 'mdasfcha'
             valor column: 'mdasvlor'
             unidad column: 'unej__id'
+            firma1 column: 'frma_id1'
+            firma2 column: 'frma_id2'
+            estado column: 'mdasetdo'
+            numero column: 'mdasnmro'
+            textoPdf column: 'mdastxpd'
+            textoPdf type: 'text'
         }
     }
 
@@ -75,5 +108,10 @@ class ModificacionAsignacion   {
         valor(blank: true, nullable: true, attributes: [mensaje: 'Valor redistribuido, siempre en positivo'])
         pdf(blank: true, nullable: true, size: 1..250)
         unidad(blank: true, nullable: true)
+        firma1(blank: true, nullable: true)
+        firma2(blank: true, nullable: true)
+        estado(blank: true, nullable: true, maxSize: 1)
+        textoPdf(blank: true, nullable: true)
+        usuario(blank: true, nullable: true)
     }
 }
