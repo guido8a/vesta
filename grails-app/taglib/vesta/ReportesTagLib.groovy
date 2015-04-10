@@ -134,6 +134,12 @@ class ReportesTagLib {
                 "    color          : #000;\n" +
                 "    margin-bottom  : 5px;\n" +
                 "}"
+        css += "thead {\n" +
+                "    display:  table-header-group;\n" +
+                "}"
+        css += "tbody {\n" +
+                "    display:  table-row-group;\n" +
+                "}"
         css += "</style>"
 
         out << raw(css)

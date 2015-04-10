@@ -14,9 +14,18 @@
 
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" params="[id: proyecto.id, anio: actual.id]"><i class="fa fa-calendar"></i> Programación</g:link>
-                <g:link class="btn btn-default btn-sm" controller="asignacion" action="agregarAsignacionInv" id="${proyecto?.id}"><i class="fa fa-plus"></i> Agregar Asignaciones</g:link>
-                <a class="btn btn-default btn-sm" id="reporte"><i class="fa fa-print"></i> Reporte Asignaciones</a>
+                <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" params="[id: proyecto.id, anio: actual.id]">
+                    <i class="fa fa-calendar"></i> Programación
+                </g:link>
+                <g:link class="btn btn-default btn-sm" controller="asignacion" action="agregarAsignacionInv" id="${proyecto?.id}">
+                    <i class="fa fa-plus"></i> Agregar Asignaciones
+                </g:link>
+                <a class="btn btn-default btn-sm" id="reporte">
+                    <i class="fa fa-print"></i> Reporte Asignaciones
+                </a>
+                <a class="btn btn-default btn-sm" id="reporte2">
+                    <i class="fa fa-print"></i> Reporte Asignaciones planificado
+                </a>
             %{--<g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectoUnidad" id="${proyecto?.id}">Reporte Unidad</g:link>--}%
                 <g:if test="${actual?.estado == 1}">
                     <g:if test="${proyecto.aprobadoPoa == 'S'}">
@@ -27,15 +36,19 @@
                 </g:if>
                 <g:if test="${actual?.estado == 1}">
                     <g:if test="${proyecto.aprobadoPoa != 'S'}">
-                        <a href="#" id="aprobPrio" class="btn btn-default btn-sm"><i class="fa fa-check"></i> Aprobar Priorización
+                        <a href="#" id="aprobPrio" class="btn btn-default btn-sm">
+                            <i class="fa fa-check"></i> Aprobar Priorización
                         </a>
                     </g:if>
                 </g:if>
-                <a href="#" class="btn btn-default btn-sm" id="btn-filtros"><i class="fa fa-toggle-on"></i> Filtros</a>
+                <a href="#" class="btn btn-default btn-sm" id="btn-filtros">
+                    <i class="fa fa-toggle-on"></i> Filtros
+                </a>
 
                 <div style="margin-left: 15px;display: inline-block;">
                     <b style="font-size: 11px">Año:</b>
-                    <g:select from="${Anio.list([sort: 'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}" style="font-size: 11px;width: 80px;display: inline" class="form-control"/>
+                    <g:select from="${Anio.list([sort: 'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual?.id}"
+                              style="font-size: 11px;width: 80px;display: inline" class="form-control"/>
 
                 </div>
             </div>
@@ -538,8 +551,13 @@
             $("#reporte").click(function () {
                 var anio = $("#anio_asg").val();
                 var url = "${createLink(controller: 'reportes2', action: 'reporteAsignacionProyecto')}?id=" + ${proyecto?.id} +"Wanio=" + anio;
-                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;
-            })
+                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url+"&filename='Reporte_asignaciones.pdf'";
+            });
+            $("#reporte2").click(function () {
+                var anio = $("#anio_asg").val();
+                var url = "${createLink(controller: 'reportes2', action: 'reporteAsignacionProyecto2')}?id=" + ${proyecto?.id} +"Wanio=" + anio;
+                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url+"&filename='Reporte_asignaciones_planificado.pdf'";
+            });
         </script>
     </body>
 </html>

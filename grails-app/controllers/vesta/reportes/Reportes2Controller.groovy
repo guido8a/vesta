@@ -489,6 +489,78 @@ class Reportes2Controller {
     }
 
 
+    def reporteAsignacionProyecto2 = {
+
+        def proyecto = Proyecto.get(params.id)
+        def asignaciones = []
+        def actual
+
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format('yyyy'))
+        }
+
+        if (!actual) {
+            actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+        }
+
+        def data = [:]
+        def anios = []
+
+        def totalPriorizado = 0
+        def totalesAnios = [:]
+
+        MarcoLogico.withCriteria {
+            eq("proyecto", proyecto)
+            eq("tipoElemento", TipoElemento.get(3))
+            eq("estado", 0)
+            marcoLogico {
+                order("numeroComp", "asc")
+            }
+            order("numero", "asc")
+        }.each { ml ->
+            def asig = Asignacion.withCriteria {
+                eq("marcoLogico", ml)
+                anio {
+                    order("anio", "asc")
+                }
+            }
+            if (asig) {
+                asignaciones += asig
+                asig.each { asg ->
+                    def anio = asg.anio.anio
+                    if (!anios.contains(anio)) {
+                        anios += anio
+                    }
+                    if (!totalesAnios[anio]) {
+                        totalesAnios[anio] = 0
+                    }
+                }
+            }
+        }
+
+        asignaciones.each { Asignacion asg ->
+            def ml = "" + asg.marcoLogico.numero
+            def key = ml + "-" + asg.unidad.id + "-" + asg.presupuesto.numero
+            def anio = asg.anio.anio
+            if (!data[key]) {
+                data[key] = [:]
+            }
+            if (!data[key][ml]) {
+                data[key][ml] = [ml: asg.marcoLogico, un: asg.unidad, pa: asg.presupuesto.numero, prio: asg.priorizado, anios: [:]]
+                totalPriorizado += asg.priorizado
+            }
+            if (!data[key][ml]["anios"][anio]) {
+                data[key][ml]["anios"][anio] = asg
+                totalesAnios[anio] += asg.getValorReal()
+            }
+        }
+
+        return [actual: actual, proyecto: proyecto, totalPriorizado: totalPriorizado, totalesAnios: totalesAnios, anios: anios, data: data]
+    }
+
+
     def reporteTotalPriorizacion = {
 
 

@@ -118,7 +118,7 @@
                             %{--${raw(asg.unidad)}--}%
                         </td>
                         <td style="text-align: left">
-                            ${asg.marcoLogico.fechaInicio.format("dd-MM-yyyy")} / ${asg.marcoLogico.fechaFin.format("dd-MM-yyyy")}
+                            ${asg.marcoLogico.fechaInicio?.format("dd-MM-yyyy")} / ${asg.marcoLogico.fechaFin?.format("dd-MM-yyyy")}
                         </td>
                         <td>
                             ${asg.presupuesto.numero}
