@@ -11,6 +11,9 @@ class ReportesNuevosController {
     def poaProyectoGUI() {
     }
 
+    def poaAreaGestionGUI() {
+    }
+
     def poaProyectoWeb() {
         def anio = Anio.get(params.anio.toLong())
         def proys = Proyecto.findAllByIdInList(params.id.split(",")*.toLong())
@@ -21,7 +24,11 @@ class ReportesNuevosController {
         def anio = Anio.get(params.anio.toLong())
         def proys = Proyecto.findAllByIdInList(params.id.split(",")*.toLong())
         def meses = Mes.list([sort: 'numero'])
-        return [proys: proys, meses: meses, anio: anio, params: params]
+        def totales = []
+        for (int i = 0; i < 12; i++) {
+            totales[i] = 0
+        }
+        return [proys: proys, meses: meses, anio: anio, params: params, totales: totales]
     }
 
     def poaProyectoPdf() {

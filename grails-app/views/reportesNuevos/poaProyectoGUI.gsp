@@ -38,7 +38,6 @@
                     <i class="fa fa-print"></i> Imprimir reporte
                 </a>
             </div>
-
         </div>
 
         <g:set var="anio" value="${Anio.findByAnio(new Date().format('yyyy'))}"/>
