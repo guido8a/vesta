@@ -13,10 +13,9 @@ environments {
     development {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://10.0.0.2:5432/vesta_hoy"
-//            url = "jdbc:postgresql://127.0.0.1:5432/sadweb_nuevo2"
-//            url = "jdbc:postgresql://10.0.0.2:5432/sadweb4"
-//            url = "jdbc:postgresql://10.0.0.2:5432/happy10"
+//            url = "jdbc:postgresql://10.0.0.2:5432/vesta_hoy"
+            url = "jdbc:postgresql://10.0.0.2:5432/vesta_prba1"
+//            url = "jdbc:postgresql://10.0.0.2:5432/vesta_prdc"
             username = "postgres"
             password = "postgres"
         }

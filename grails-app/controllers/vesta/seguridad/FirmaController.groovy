@@ -1,5 +1,7 @@
 package vesta.seguridad
 
+import vesta.avales.EstadoAval
+import vesta.avales.SolicitudAval
 import vesta.parametros.poaPac.Anio
 
 class FirmaController extends Shield {
@@ -97,6 +99,40 @@ class FirmaController extends Shield {
         }
 
     }
+
+    /**
+     * Acción de devolver un trámite
+     * @param id es el identificador de la firma
+     * @params obsr es la observación o razón por la que se devuelve
+     */
+    def devolver = {
+        println "devolver " + params
+
+        if (params.obsr) {
+            def firma = Firma.get(params.id)
+            //  def baseUri = request.scheme + "://" + "10.0.0.3" + ":" + request.serverPort
+            println "devolver " + firma
+            if ((firma.class == Firma) && (firma.accion == 'firmarSolicitud') && (firma.controlador == 'avales')) {
+                println "redirect " + firma.controlador + "  " + firma.accion + "  " + firma.idAccion + "  " + firma.key
+                firma.estado = 'N'
+                def slav = SolicitudAval.get(firma.idAccionVer)
+                slav.estado = EstadoAval.findByCodigo("D01")
+                slav.observaciones = params.obsr
+                firma.save(flush: true)
+                slav.save(flush: true)
+                render "ok"
+                //redirect(controller: firma.controlador, action: firma.accion, params: [id: firma.idAccion, key: firma.key])
+            } else {
+                render "error"
+            }
+        } else {
+            println "error"
+            render "error"
+        }
+
+    }
+
+
 /**
  * Acción verificar un documento firmado a través de la llave
  * @param ky es la llave de la firma

@@ -104,7 +104,7 @@ class SolicitudAval {
             concepto column: 'slavcpto'
             estado column: 'edav__id'
             usuario column: 'prsn__id'
-            observaciones column: 'slavobs'
+            observaciones column: 'slavobsr'
             observaciones type: 'text'
             numero column: 'slavnmro'
             tipo column: 'slavtipo'

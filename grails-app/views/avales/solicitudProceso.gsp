@@ -51,7 +51,12 @@
             <g:hiddenField name="monto" value="${disponible}"/>
             <g:hiddenField name="numero" value="${numero}"/>
             <input type="hidden" name="referencial" value="${refencial}">
+            <input type="hidden" name="solicitud" value="${solicitud.id}">
 
+            <g:if test="${solicitud?.observaciones}">
+                SOLICITUD DEVUELTA POR:
+                <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${solicitud?.observaciones}</elm:message>
+            </g:if>
             <div class="row">
                 <span class="grupo">
                     <label class="col-md-2 control-label">
@@ -98,7 +103,8 @@
 
                     <div class="col-md-2">
                         <g:if test="${!readOnly}">
-                            <g:textField name="memorando" class="form-control input-sm required" maxlength="63" style="width: 250px"/>
+                            <g:textField name="memorando" class="form-control input-sm required" maxlength="63" style="width: 250px"
+                            value="${solicitud?.memo}"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -115,7 +121,13 @@
 
                     <div class="col-md-5">
                         <g:if test="${!readOnly}">
-                            <input type="file" name="file" id="file" class="form-control input-sm required" style="margin-left: -10px"/>
+                            <g:if test="${solicitud?.path}">
+                                <input type="text" name="path" id="path" value="${solicitud?.path}" readonly style="margin-left: -10px";/>
+                                <input type="file" name="file" id="file" class="form-control input-sm" style="margin-left: -10px; padding: 0"/>
+                            </g:if>
+                            <g:else>
+                                <input type="file" name="file" id="file" class="form-control input-sm required" style="margin-left: -10px"/>
+                            </g:else>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -136,7 +148,8 @@
 
                     <div class="col-md-9">
                         <g:if test="${!readOnly}">
-                            <g:textArea name="concepto" maxlength="1024" required="" class="form-control input-sm required" style="height: 80px;resize: none"/>
+                            <g:textArea name="concepto" maxlength="1024" required="" class="form-control input-sm required"
+                                        style="height: 80px;resize: none" value="${solicitud?.concepto}"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -155,9 +168,8 @@
 
                     <div class="col-md-4">
                         <g:if test="${!readOnly}">
-                            <g:select from="${personas}" optionKey="id" class="form-control input-sm required" optionValue="${{
-                                it.nombre + ' ' + it.apellido
-                            }}" name="firma1"/>
+                            <g:select from="${personas}" optionKey="id" class="form-control input-sm required"
+                                      optionValue="${{it.nombre + ' ' + it.apellido}}" name="firma1" value="${solicitud?.firma?.usuario}"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -176,7 +188,8 @@
 
                     <div class="col-md-9">
                         <g:if test="${!readOnly}">
-                            <g:textArea name="notaTecnica" style="resize: none" maxlength="350" class="form-control input-sm"/>
+                            <g:textArea name="notaTecnica" style="resize: none" maxlength="350" class="form-control input-sm"
+                            value="${solicitud?.notaTecnica}"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -218,9 +231,8 @@
 
                 $("#btnEnviar").click(function () {
                     if ($(".frmAval").valid()) {
-                        bootbox.confirm("¿Está seguro de querer enviar la solicitud?<br/>" +
-                                        "Una vez enviada no podrá ser modificada ni podrá iniciar otro proceso de solicitud hasta que éste " +
-                                        "sea completado", function (res) {
+                        bootbox.confirm("<strong>¿Está seguro de querer enviar la solicitud?</strong><br/><br/>" +
+                                        "Una vez enviada ya no se podrá modificar los datos de la Solicitud", function (res) {
                             if (res) {
                                 openLoader("Por favor espere");
                                 $(".frmAval").submit();
