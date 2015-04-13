@@ -104,6 +104,14 @@ class ReportesTagLib {
                 "    color          : #17365D;\n" +
                 "    border-bottom  : solid 2px #4F81BD;\n" +
                 "}"
+        css += ".tituloReporteSinLinea{\n" +
+                "    text-align     : center;\n" +
+                "    text-transform : uppercase;\n" +
+//                "    font-family    : 'PT Sans';\n" +
+                "    font-size      : 25pt;\n" +
+//                "    font-weight    : bold;\n" +
+                "    color          : #17365D;\n" +
+                "}"
         css += ".tituloRprt{\n" +
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +
@@ -154,6 +162,8 @@ class ReportesTagLib {
         def title = attrs.title ?: ""
         def titulo = attrs.titulo ?: ""
 
+        def subtitulo = attrs.subtitulo ?: ""
+
         def estilo = attrs.estilo ?: "center"
 
         def form = attrs.form ?: 'GPE-DPI-01'
@@ -167,9 +177,18 @@ class ReportesTagLib {
         html += "<img src='${logoPath}' style='height:${h}px;'/>" + "\n"
         html += '</div>' + "\n"
         if (title) {
-            html += "<div class='tituloReporte'>" + "\n"
+            if (subtitulo == "") {
+                html += "<div class='tituloReporte'>" + "\n"
+            } else {
+                html += "<div class='tituloReporteSinLinea'>" + "\n"
+            }
             html += title + "\n"
             html += '</div>' + "\n"
+            if (subtitulo != "") {
+                html += "<div class='tituloRprt'>"
+                html += subtitulo
+                html += '</div>'
+            }
         }
         if (titulo) {
             html += "<div class='tituloRprt'>"
@@ -334,6 +353,14 @@ class ReportesTagLib {
                 "    font-size      : 13pt;\n" +
                 "    font-weight    : bold;\n" +
                 "    border         : solid 1px #000000;\n" +
+                "    margin-top     : 5px;" +
+                "    margin-bottom  : 5px;" +
+                "}"
+        css += ".tituloReporteSinLinea{\n" +
+                "    text-align     : center;\n" +
+                "    text-transform : uppercase;\n" +
+                "    font-size      : 13pt;\n" +
+                "    font-weight    : bold;\n" +
                 "    margin-top     : 5px;" +
                 "    margin-bottom  : 5px;" +
                 "}"

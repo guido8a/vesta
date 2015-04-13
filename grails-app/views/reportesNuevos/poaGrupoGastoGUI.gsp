@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 13/04/15
+  Date: 10/04/15
   Time: 03:25 PM
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>POA Por Proyecto</title>
+        <title>POA Por Grupo de Gasto</title>
         <style type="text/css">
         .actual {
             background : #c7daed;
@@ -35,18 +35,19 @@
 
             <div class="btn-group" role="group">
                 <g:link action="poaAreaGestionGUI" class="btn btn-default">POA por área de gestión</g:link>
-                <g:link action="poaGrupoGastoGUI" class="btn btn-default">POA por grupo de gasto</g:link>
+                <g:link action="poaProyectoGUI" class="btn btn-default">POA por proyecto</g:link>
             </div>
         </div>
 
         <g:set var="anio" value="${Anio.findByAnio(new Date().format('yyyy'))}"/>
 
-        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Proyecto">
+        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Grupo de Gasto">
+
             <table class="table table-bordered table-hover table-condensed table-bordered">
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Proyecto</th>
+                        <th></th>
                         <th>Arrastre ${anio.anio.toInteger() - 1}</th>
                         <th>Requerimientos ${anio.anio}</th>
                         <th>Total ${anio.anio}</th>
@@ -57,10 +58,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <g:each in="${data}" var="v" status="i">
+                    <g:each in="${data}" var="v">
                         <tr>
-                            <td>${i + 1}</td>
-                            <td>${v.proyecto.toStringCompleto()}</td>
+                            <td>${v.partida.descripcion}</td>
+                            <td class="text-center">${v.partida.numero.replaceAll("0", "")}</td>
                             <td class="text-right actual">
                                 <g:if test="${v.valores["" + (anio.anio.toInteger() - 1)] > 0}">
                                     <g:formatNumber number="${v.valores["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/>
@@ -133,10 +134,10 @@
                 %{--if (detalle) {--}%
                 %{--url = "${createLink(action: 'poaGrupoGastoPdfDetallado')}";--}%
                 %{--} else {--}%
-                url = "${createLink(action: 'poaProyectoPdf')}";
+                url = "${createLink(action: 'poaGrupoGastoPdf')}";
 //                    }
                 url += "?anio=" + $("#anio").val();
-                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_proyecto.pdf";
+                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_grupo_gasto.pdf";
 //                }
             }
 
@@ -149,6 +150,5 @@
                 });
             });
         </script>
-
     </body>
 </html>

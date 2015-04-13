@@ -1,16 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 10/03/15
-  Time: 02:44 PM
+  Date: 13/04/15
+  Time: 02:57 PM
 --%>
 
-<%@ page import="vesta.poa.ProgramacionAsignacion; vesta.poa.Asignacion; vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico; vesta.parametros.poaPac.Mes" contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <title>POA por Grupo de Gastos</title>
 
-        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Proyecto ${anio.anio}"/>
+        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Grupo de Gasto ${anio.anio}"/>
 
         <style type="text/css">
         .table {
@@ -67,13 +67,13 @@
     </head>
 
     <body>
-        <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Proyecto"/>
+        <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Grupo de Gasto"/>
 
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
                 <tr>
                     <th></th>
-                    <th>Proyecto</th>
+                    <th></th>
                     <th>Arrastre ${anio.anio.toInteger() - 1}</th>
                     <th>Requerimientos ${anio.anio}</th>
                     <th>Total ${anio.anio}</th>
@@ -84,10 +84,10 @@
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${data}" var="v" status="i">
+                <g:each in="${data}" var="v">
                     <tr>
-                        <td>${i + 1}</td>
-                        <td>${v.proyecto.toStringCompleto()}</td>
+                        <td>${v.partida.descripcion}</td>
+                        <td class="text-center">${v.partida.numero.replaceAll("0", "")}</td>
                         <td class="text-right actual">
                             <g:if test="${v.valores["" + (anio.anio.toInteger() - 1)] > 0}">
                                 <g:formatNumber number="${v.valores["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/>
@@ -142,5 +142,6 @@
                 </tr>
             </tfoot>
         </table>
+
     </body>
 </html>

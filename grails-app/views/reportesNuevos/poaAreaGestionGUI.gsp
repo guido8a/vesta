@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 13/04/15
-  Time: 03:25 PM
+  Date: 10/04/15
+  Time: 03:18 PM
 --%>
 
 <%@ page import="vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>POA Por Proyecto</title>
+        <title>POA Por Área de Gestión</title>
         <style type="text/css">
         .actual {
             background : #c7daed;
@@ -34,14 +34,14 @@
             </div>
 
             <div class="btn-group" role="group">
-                <g:link action="poaAreaGestionGUI" class="btn btn-default">POA por área de gestión</g:link>
+                <g:link action="poaProyectoGUI" class="btn btn-default">POA por proyecto</g:link>
                 <g:link action="poaGrupoGastoGUI" class="btn btn-default">POA por grupo de gasto</g:link>
             </div>
         </div>
 
         <g:set var="anio" value="${Anio.findByAnio(new Date().format('yyyy'))}"/>
 
-        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Proyecto">
+        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Área de Gestión">
             <table class="table table-bordered table-hover table-condensed table-bordered">
                 <thead>
                     <tr>
