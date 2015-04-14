@@ -1,16 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 10/03/15
-  Time: 02:44 PM
+  Date: 14/04/15
+  Time: 10:50 AM
 --%>
 
 <%@ page import="vesta.poa.ProgramacionAsignacion; vesta.poa.Asignacion; vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico; vesta.parametros.poaPac.Mes" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-        <title>POA por Grupo de Gastos</title>
+        <title>POA por Área de Gestión</title>
 
-        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Proyecto ${anio.anio}"/>
+        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Área de Gestión ${anio.anio}"/>
 
         <style type="text/css">
         .table {
@@ -67,13 +67,14 @@
     </head>
 
     <body>
-        <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Proyecto"/>
+        <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Área de Gestión"/>
 
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
                 <tr>
                     <th></th>
-                    <th>Proyecto</th>
+                    <th>Unidad</th>
+                    <th>Sigla</th>
                     <th>Arrastre ${anio.anio.toInteger() - 1}</th>
                     <th>Requerimientos ${anio.anio}</th>
                     <th>Total ${anio.anio}</th>
@@ -87,7 +88,8 @@
                 <g:each in="${data}" var="v" status="i">
                     <tr>
                         <td>${i + 1}</td>
-                        <td>${v.proyecto.toStringCompleto()}</td>
+                        <td>${v.unidad}</td>
+                        <td class="text-center">${v.unidad.codigo}</td>
                         <td class="text-right actual">
                             <g:if test="${v.valores["" + (anio.anio.toInteger() - 1)] > 0}">
                                 <g:formatNumber number="${v.valores["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/>
@@ -130,7 +132,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-right" colspan="2">TOTAL</th>
+                    <th class="text-right" colspan="3">TOTAL</th>
                     <th class="text-right"><g:formatNumber number="${totales['2014']}" type="currency" currencySymbol=""/></th>
                     <th class="text-right"><g:formatNumber number="${totales['2015']}" type="currency" currencySymbol=""/></th>
                     <th class="text-right"><g:formatNumber number="${totales['T2015']}" type="currency" currencySymbol=""/></th>

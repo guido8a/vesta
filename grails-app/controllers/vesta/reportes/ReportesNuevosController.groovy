@@ -1,6 +1,7 @@
 package vesta.reportes
 
 import vesta.parametros.TipoElemento
+import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Mes
@@ -171,10 +172,10 @@ class ReportesNuevosController {
         totales[keyTotalActual] = 0
         totales[keyTotal] = 0
 
-        def proyectos = Proyecto.list()
-        proyectos.each { proyecto ->
+        def unidades = UnidadEjecutora.list()
+        unidades.each { unidad ->
             def m = [:]
-            m.proyecto = proyecto
+            m.unidad = unidad
             m.valores = [:]
             m.valores[keyArrastre] = 0
             m.valores[keyActual] = 0
@@ -183,7 +184,7 @@ class ReportesNuevosController {
 
             def actividades = MarcoLogico.withCriteria {
                 eq("tipoElemento", TipoElemento.get(3))
-                eq("proyecto", proyecto)
+                eq("responsable", unidad)
             }
 
             def asignaciones = Asignacion.findAllByMarcoLogicoInList(actividades)
@@ -224,9 +225,8 @@ class ReportesNuevosController {
     }
 
     def poaAreaGestionGUI() {
-    }
-
-    def poaAreaGestionPdf() {
+        def data = poaAreaGestion_funcion()
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
     }
 
     def poaGrupoGastoGUI() {
@@ -234,6 +234,25 @@ class ReportesNuevosController {
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
     }
 
+    def poaProyectoGUI() {
+        def data = poaProyecto_funcion()
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
+    }
+
+    def poaAreaGestionPdf() {
+        def data = poaAreaGestion_funcion()
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
+    }
+
+    def poaGrupoGastoPdf() {
+        def data = poaGrupoGastos_funcion()
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
+    }
+
+    def poaProyectoPdf() {
+        def data = poaProyecto_funcion()
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
+    }
 
     // HACIA ABAJO REPORTES ANTIGUOS
 
@@ -342,22 +361,7 @@ class ReportesNuevosController {
         return [anio: anio, data: data]
     }
 
-    def poaGrupoGastoPdf() {
-        def data = poaGrupoGastos_funcion()
-        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
-    }
-
     def poaGrupoGastoPdfDetallado() {
-    }
-
-    def poaProyectoGUI() {
-        def data = poaProyecto_funcion()
-        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
-    }
-
-    def poaProyectoPdf() {
-        def data = poaProyecto_funcion()
-        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
     }
 
     def poaProyectoGUI_old() {

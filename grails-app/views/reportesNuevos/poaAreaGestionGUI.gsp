@@ -46,7 +46,8 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Proyecto</th>
+                        <th>Unidad</th>
+                        <th>Siglas</th>
                         <th>Arrastre ${anio.anio.toInteger() - 1}</th>
                         <th>Requerimientos ${anio.anio}</th>
                         <th>Total ${anio.anio}</th>
@@ -60,7 +61,8 @@
                     <g:each in="${data}" var="v" status="i">
                         <tr>
                             <td>${i + 1}</td>
-                            <td>${v.proyecto.toStringCompleto()}</td>
+                            <td>${v.unidad}</td>
+                            <td class="text-center">${v.unidad.codigo}</td>
                             <td class="text-right actual">
                                 <g:if test="${v.valores["" + (anio.anio.toInteger() - 1)] > 0}">
                                     <g:formatNumber number="${v.valores["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/>
@@ -103,8 +105,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th></th>
-                        <th class="text-right">TOTAL</th>
+                        <th class="text-right" colspan="3">TOTAL</th>
                         <th class="text-right"><g:formatNumber number="${totales['2014']}" type="currency" currencySymbol=""/></th>
                         <th class="text-right"><g:formatNumber number="${totales['2015']}" type="currency" currencySymbol=""/></th>
                         <th class="text-right"><g:formatNumber number="${totales['T2015']}" type="currency" currencySymbol=""/></th>
@@ -133,10 +134,10 @@
                 %{--if (detalle) {--}%
                 %{--url = "${createLink(action: 'poaGrupoGastoPdfDetallado')}";--}%
                 %{--} else {--}%
-                url = "${createLink(action: 'poaProyectoPdf')}";
+                url = "${createLink(action: 'poaAreaGestionPdf')}";
 //                    }
                 url += "?anio=" + $("#anio").val();
-                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_proyecto.pdf";
+                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_area_gestion.pdf";
 //                }
             }
 
