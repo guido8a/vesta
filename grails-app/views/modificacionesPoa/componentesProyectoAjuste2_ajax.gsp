@@ -9,6 +9,7 @@
           style="width: 100%" class="form-control input-sm required requiredCombo"/>
 <script>
     $("#compDest").change(function () {
+        $("#divAct_dest").html(spinner);
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'cargarActividadesAjuste2_ajax',controller: 'avales')}",
@@ -17,7 +18,8 @@
                 div : "divAsg_dest"
             },
             success : function (msg) {
-                $("#divAct_dest").html(msg)
+                $("#divAct_dest").html(msg);
+                $("#divAsg_dest").html("");
             }
         });
     })

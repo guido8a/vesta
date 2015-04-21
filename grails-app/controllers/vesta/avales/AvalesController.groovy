@@ -1,5 +1,6 @@
 package vesta.avales
 
+import vesta.modificaciones.DetalleReforma
 import vesta.parametros.Auxiliar
 import vesta.parametros.Unidad
 import vesta.parametros.poaPac.Anio
@@ -28,8 +29,9 @@ class AvalesController extends vesta.seguridad.Shield {
     def procesos = {
 //        println "procesos " + params
         def proyecto = null
-        if (params.proyecto)
+        if (params.proyecto) {
             proyecto = Proyecto.get(params.proyecto)
+        }
         def procesos = []
         if (proyecto) {
             procesos = ProcesoAval.findAllByProyecto(proyecto)
@@ -60,10 +62,11 @@ class AvalesController extends vesta.seguridad.Shield {
         }
         println "proyectos" + proyectos
         proyectos.sort { it.nombre }
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
         if (params.id) {
             proceso = ProcesoAval.get(params.id)
             def aval = Aval.findAllByProceso(proceso)
@@ -122,10 +125,11 @@ class AvalesController extends vesta.seguridad.Shield {
         println "save proceso " + params
 
         def proceso
-        if (params.id)
+        if (params.id) {
             proceso = ProcesoAval.get(params.id)
-        else
+        } else {
             proceso = new ProcesoAval()
+        }
         proceso.properties = params
         if (!proceso.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar el proceso: " + renderErrors(bean: proceso)
@@ -159,8 +163,9 @@ class AvalesController extends vesta.seguridad.Shield {
 //        println "monto: " + monto + "    devengado: " + devengado
 
         def detalle = new ProcesoAsignacion()
-        if (params.id && params.id != "")
+        if (params.id && params.id != "") {
             detalle = ProcesoAsignacion.get(params.id)
+        }
         detalle.asignacion = asg
         detalle.proceso = proceso
         detalle.monto = monto
@@ -187,8 +192,9 @@ class AvalesController extends vesta.seguridad.Shield {
         if (band) {
             detalle.delete()
             render "ok"
-        } else
+        } else {
             render "no"
+        }
     }
 
     /**
@@ -223,7 +229,11 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def cargarActividadesAjuste_ajax = {
         def comp = MarcoLogico.get(params.id)
-        return [acts: MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"]), div: params.div]
+        def acts = []
+        if (params.id != "-1") {
+            acts = MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"])
+        }
+        return [acts: acts, div: params.div]
     }
 
     /**
@@ -232,7 +242,11 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def cargarActividadesAjuste2_ajax = {
         def comp = MarcoLogico.get(params.id)
-        return [acts: MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"]), div: params.div]
+        def acts = []
+        if (params.id != "-1") {
+            acts = MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"])
+        }
+        return [acts: acts, div: params.div]
     }
 
     /**
@@ -264,18 +278,33 @@ class AvalesController extends vesta.seguridad.Shield {
     /**
      * Acción llamada con ajax que calcula el monto máximo que se le puede dar a una asignación
      * @param id el id de la asignación
-     * @Renders el monto priorizado meno el monto utilizado
+     * @Renders el monto priorizado menos el monto utilizado
      */
     def getMaximoAsg = {
         println "get Maximo asg " + params
         def asg = Asignacion.get(params.id)
         def monto = asg.priorizado
         def usado = 0;
+        def estadoSolicitado = EstadoAval.findByCodigo("E01")
+        def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
+        def estados = [estadoSolicitado, estadoSolicitadoSinFirma, estadoAprobadoSinFirma]
         ProcesoAsignacion.findAllByAsignacion(asg).each {
             usado += it.monto
         }
-
-        render "" + (monto - usado)
+        def locked = 0
+        def detalles = DetalleReforma.withCriteria {
+            reforma {
+                inList("estado", estados)
+            }
+            eq("asignacionOrigen", asg)
+        }
+        if (detalles.size() > 0) {
+            locked = detalles.sum { it.valor }
+        }
+        def disponible = monto - usado - locked
+        println "get Maximo asg " + params + " :  monto: " + monto + "   usado: " + usado + "    locked: " + locked + "     disponible: " + disponible
+        render "" + (disponible)
     }
 
     /**
@@ -303,10 +332,11 @@ class AvalesController extends vesta.seguridad.Shield {
             }
         }
         proyectos.sort { it.nombre }
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
         if (params.id) {
             proceso = ProcesoAval.get(params.id)
             def aval = Aval.findAllByProceso(proceso)
@@ -335,10 +365,11 @@ class AvalesController extends vesta.seguridad.Shield {
         println "save proceso " + params
 
         def proceso
-        if (params.id)
+        if (params.id) {
             proceso = ProcesoAval.get(params.id)
-        else
+        } else {
             proceso = new ProcesoAval()
+        }
         proceso.properties = params
         if (!proceso.save(flush: true)) {
             flash.message = "Ha ocurrido un error al guardar el proceso: " + renderErrors(bean: proceso)
@@ -386,10 +417,11 @@ class AvalesController extends vesta.seguridad.Shield {
             }
 
             def actual
-            if (params.anio)
+            if (params.anio) {
                 actual = Anio.get(params.anio)
-            else
+            } else {
                 actual = Anio.findByAnio(new Date().format("yyyy"))
+            }
 
             return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual]
         } else {
@@ -614,8 +646,7 @@ class AvalesController extends vesta.seguridad.Shield {
             ]
             def nombre = ""
             def pathFile
-            if ((f && !f.empty) || params.solicitud != "null" )
-            {
+            if ((f && !f.empty) || params.solicitud != "null") {
                 def fileName = f.getOriginalFilename() //nombre original del archivo
                 def ext
 
@@ -657,18 +688,21 @@ class AvalesController extends vesta.seguridad.Shield {
                     def concepto = params.concepto
                     def momorando = params.memorando
                     def sol = new SolicitudAval()
-                    if(params.solicitud) {  // no se crea otra solicitud se ya existe
+                    if (params.solicitud) {  // no se crea otra solicitud se ya existe
                         sol = SolicitudAval.get(params.solicitud)
                     }
                     sol.proceso = proceso
-                    if (params.aval)
+                    if (params.aval) {
                         sol.aval = Aval.get(params.aval)
+                    }
                     sol.usuario = session.usuario
                     sol.numero = params.numero?.toInteger()
                     sol.monto = monto
                     sol.concepto = concepto
                     sol.memo = momorando
-                    if(nombre) sol.path = nombre
+                    if (nombre) {
+                        sol.path = nombre
+                    }
                     sol.notaTecnica = params.notaTecnica
                     def firma = new Firma()
                     firma.usuario = usuFirma
@@ -694,8 +728,9 @@ class AvalesController extends vesta.seguridad.Shield {
                     }
                     sol.firma = firma
                     sol.unidad = session.usuario.unidad
-                    if (params.tipo)
+                    if (params.tipo) {
                         sol.tipo = params.tipo
+                    }
                     sol.fecha = new Date();
                     sol.estado = EstadoAval.findByCodigo("EF4")
                     if (!sol.save(flush: true)) {              // ******** guarda solicitud
@@ -765,19 +800,22 @@ class AvalesController extends vesta.seguridad.Shield {
             def concepto = params.concepto
             def momorando = params.memorando
             def sol = new SolicitudAval()
-            if(params.solicitud) {  // no se crea otra solicitud se ya existe
+            if (params.solicitud) {  // no se crea otra solicitud se ya existe
                 sol = SolicitudAval.get(params.solicitud)
             }
             sol.proceso = proceso
-            if (params.aval)
+            if (params.aval) {
                 sol.aval = Aval.get(params.aval)
+            }
             sol.usuario = session.usuario
             sol.numero = params.numero?.toInteger()
             sol.monto = monto
             sol.concepto = concepto
             sol.memo = momorando
             sol.notaTecnica = params.notaTecnica
-            if(params.path) sol.path = params.path  // verificar
+            if (params.path) {
+                sol.path = params.path
+            }  // verificar
             def firma = new Firma()
             firma.usuario = usuFirma
             firma.accionVer = "imprimirSolicitudAval"
@@ -789,8 +827,9 @@ class AvalesController extends vesta.seguridad.Shield {
             firma.save(flush: true)
             sol.firma = firma
             sol.unidad = session.usuario.unidad
-            if (params.tipo)
+            if (params.tipo) {
                 sol.tipo = params.tipo
+            }
             sol.fecha = new Date();
             sol.estado = EstadoAval.findByCodigo("EF4")    //pone solicitado sin firma
 
@@ -844,9 +883,9 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def firmarSolicitud = {
         def firma = Firma.findByKey(params.key)
-        if (!firma)
+        if (!firma) {
             response.sendError(403)
-        else {
+        } else {
             def sol = SolicitudAval.findByFirma(firma)
             sol.estado = EstadoAval.findByCodigo("E01")
             def numero

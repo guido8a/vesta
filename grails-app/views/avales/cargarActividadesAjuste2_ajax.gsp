@@ -13,6 +13,7 @@
 }}' noSelection="['-1': 'Seleccione']" class="form-control input-sm required requiredCombo"/>
 <script>
     $("#actividad_dest").change(function () {
+        $("#divAsg_dest").html(spinner);
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'cargarAsignaciones2_ajax',controller: 'avales')}",

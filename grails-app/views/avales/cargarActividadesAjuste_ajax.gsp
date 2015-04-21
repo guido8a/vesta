@@ -14,6 +14,7 @@
 }}' noSelection="['-1': 'Seleccione']" class="form-control input-sm required requiredCombo"/>
 <script>
     $("#actividad").change(function () {
+        $("#${div?:'divAsg'}").html(spinner);
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'cargarAsignaciones_ajax',controller: 'avales')}",
@@ -22,8 +23,8 @@
                 anio : $("#anio").val()
             },
             success : function (msg) {
-                console.log("#${div?:'divAsg'}");
-                $("#${div?:'divAsg'}").html(msg)
+                $("#${div?:'divAsg'}").html(msg);
+                $("#max").text("");
             }
         });
     })

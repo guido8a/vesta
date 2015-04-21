@@ -57,27 +57,37 @@
                                 <g:each in="${firmas}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         <td>${f.concepto}</td>
-                                        <td>${f.documento} </td>
+                                        <td>${f.documento}</td>
 
                                         <td style="text-align: center">
-                                            <g:if test="${f.accionVer}">
+                                            <div class="btn-group" role="group">
+                                                <g:if test="${f.accionVer}">
                                                 %{--<g:if test="${f.esPdf != 'N'}">--}%
-                                                <g:if test="${f.esPdf == 'S'}">
-                                                    <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}" target="_blank" class="btn btn-info btn-sm" style="margin: 5px"><i class="fa fa-search"></i> Ver
+                                                    <g:if test="${f.esPdf == 'S'}">
+                                                        <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
+                                                           target="_blank" class="btn btn-info btn-sm" title="Ver">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </g:if>
+                                                    <g:else>
+                                                        <a href="${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
+                                                           class="btn btn-info btn-sm" title="Ver">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </g:else>
+                                                </g:if>
+                                                <a href="#" iden="${f.id}" class="aprobar btn btn-success btn-sm" title="Firmar">
+                                                    <i class="fa fa-paw"></i>
+                                                </a>
+                                                <a href="#" class="negar btn btn-danger btn-sm" title="Negar">
+                                                    <i class="fa fa-thumbs-down"></i>
+                                                </a>
+                                                <g:if test="${f.tipoFirma == 'RFRM'}">
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-warning btn-sm" title="Devolver">
+                                                        <i class="fa fa-hand-o-left"></i>
                                                     </a>
                                                 </g:if>
-                                                <g:else>
-                                                    <a href="${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}" class="btn btn-info btn-sm" style="margin: 5px">
-                                                        <i class="fa fa-search"></i> Ver
-                                                    </a>
-                                                </g:else>
-                                            </g:if>
-                                            <a href="#" iden="${f.id}" class="aprobar btn btn-success btn-sm" style="margin: 5px">
-                                                <i class="fa fa-paw"></i> Firmar
-                                            </a>
-                                            <a href="#" class="negar btn btn-danger btn-sm">
-                                                <i class="fa fa-thumbs-down"></i> Negar
-                                            </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 </g:each>
@@ -132,7 +142,7 @@
 
             $(".aprobar").click(function () {
                 id = $(this).attr("iden");
-                bootbox.confirm("¿Está seguro? Esta acción no puede revertirse", function (res) {
+                bootbox.confirm("¿Está seguro de querer firmar este documento? Esta acción no puede revertirse", function (res) {
                     if (res) {
 
                         var msg = $("<div>Ingrese su clave de autorización</div>");
@@ -179,6 +189,80 @@
                                                     );
                                                 } else {
                                                     log("Documento firmado correctamente", "success")
+                                                    setTimeout(function () {
+                                                        location.reload(true)
+                                                    }, 3000);
+//                                                    location.href = msg
+                                                    closeLoader();
+
+                                                }
+                                            },
+                                            error   : function () {
+                                                log("Ha ocurrido un error interno", "error");
+
+                                                closeLoader();
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                        setTimeout(function () {
+                            bAuth.find(".form-control").first().focus();
+                        }, 500);
+                    }
+                });
+            });
+
+            $(".devolver").click(function () {
+                id = $(this).attr("iden");
+                bootbox.confirm("¿Está seguro de querer devolver este documento? Esta acción no puede revertirse", function (res) {
+                    if (res) {
+
+                        var msg = $("<div>Ingrese su clave de autorización</div>");
+                        var $txt = $("<input type='password' class='form-control input-sm'/>");
+
+                        var $group = $('<div class="input-group">');
+                        var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
+                        $group.append($txt).append($span);
+
+                        msg.append($group);
+
+                        var bAuth = bootbox.dialog({
+                            title   : "Autorización electrónica",
+                            message : msg,
+                            class   : "modal-sm",
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                eliminar : {
+                                    label     : "<i class='fa fa-hand-o-left'></i> Devolver",
+                                    className : "btn-warning",
+                                    callback  : function () {
+                                        openLoader("Devolviendo");
+
+                                        $.ajax({
+                                            type    : "POST",
+                                            url     : '${createLink(controller: 'firma', action:'devolverFirma')}',
+                                            data    : {
+                                                id   : id,
+                                                pass : $txt.val()
+                                            },
+                                            success : function (msg) {
+                                                closeLoader();
+                                                if (msg == "error") {
+                                                    bootbox.alert({
+                                                                message : "Clave incorrecta",
+                                                                title   : "Error",
+                                                                class   : "modal-error"
+                                                            }
+                                                    );
+                                                } else {
+                                                    log("Documento devuelto correctamente", "success");
                                                     setTimeout(function () {
                                                         location.reload(true)
                                                     }, 3000);

@@ -26,6 +26,18 @@ jQuery.validator.addMethod("requiredCombo", function (value, element) {
     return value.toString() != "-1";
 }, jQuery.validator.format("Por favor seleccione una opción"));
 
+jQuery.validator.addMethod("uniqueTableBody", function (value, element, params) {
+    var $tableBody = $(params[0]);
+    var data = params[1];
+    var ok = true;
+    $tableBody.children("tr").each(function () {
+        if ("" + $(this).data(data) == "" + value) {
+            ok = false;
+        }
+    });
+    return ok;
+}, jQuery.validator.format("Por favor seleccione otra asignación"));
+
 /**
  * verifica que la suma de 2 fields no supere el data de un elemento
  * params[0] : el id del 2do field

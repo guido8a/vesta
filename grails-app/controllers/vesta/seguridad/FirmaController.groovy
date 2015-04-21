@@ -16,10 +16,11 @@ class FirmaController extends Shield {
     def firmasPendientes = {
         def firmas = Firma.findAllByUsuarioAndEstado(session.usuario, "S", [sort: "id"])
         def actual
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
         [firmas: firmas, actual: actual]
 
     }
@@ -38,7 +39,7 @@ class FirmaController extends Shield {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy hh:mm:ss", "31-12-" + anio + " 23:59:59")
 //            println "inicio "+fechaInicio+"  fin  "+fechaFin
-            datos += Firma.findAllByFechaBetweenAndUsuario(fechaInicio, fechaFin,session.usuario)
+            datos += Firma.findAllByFechaBetweenAndUsuario(fechaInicio, fechaFin, session.usuario)
 
 //            println "datos fecha "+datos
         }
@@ -83,12 +84,12 @@ class FirmaController extends Shield {
 
         if (params.pass.toString().encodeAsMD5() == session.usuario.autorizacion) {
             def firma = Firma.get(params.id)
-          //  def baseUri = request.scheme + "://" + "10.0.0.3" + ":" + request.serverPort
+            //  def baseUri = request.scheme + "://" + "10.0.0.3" + ":" + request.serverPort
             def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
             firma = firmasService.firmarDocumento(session.usuario.id, params.pass, firma, baseUri)
-            println "firma "+firma+"  "+baseUri
+            println "firma " + firma + "  " + baseUri
             if (firma.class == Firma) {
-                println "redirect "+firma.controlador+"  "+firma.accion+"  "+firma.idAccion+"  "+firma.key
+                println "redirect " + firma.controlador + "  " + firma.accion + "  " + firma.idAccion + "  " + firma.key
                 redirect(controller: firma.controlador, action: firma.accion, params: [id: firma.idAccion, key: firma.key])
             } else {
                 render "error"
@@ -98,6 +99,25 @@ class FirmaController extends Shield {
             render "error"
         }
 
+    }
+    /**
+     * Acción de devolver documento (accionNegar)
+     * @param id es el identificador de la firma
+     * @params pass es la constraseña de autorización
+     */
+    def devolverFirma = {
+        println "devolver " + params
+
+        if (params.pass.toString().encodeAsMD5() == session.usuario.autorizacion) {
+            def firma = Firma.get(params.id)
+            firma.estado = 'N'
+            firma.save(flush: true)
+            println "redirect " + firma.controladorNegar + "  " + firma.accionNegar + "  " + firma.idAccionNegar
+            redirect(controller: firma.controladorNegar, action: firma.accionNegar, id: firma.idAccionNegar)
+        } else {
+            println "error"
+            render "error"
+        }
     }
 
     /**
@@ -131,7 +151,6 @@ class FirmaController extends Shield {
         }
 
     }
-
 
 /**
  * Acción verificar un documento firmado a través de la llave

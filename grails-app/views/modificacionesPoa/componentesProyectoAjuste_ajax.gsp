@@ -2,6 +2,7 @@
           style="width: 100%" class="form-control input-sm required requiredCombo"/>
 <script>
     $("#${idCombo?idCombo:'comp'}").change(function () {
+        $("#${div?div:'divAct'}").html(spinner);
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'cargarActividadesAjuste_ajax',controller: 'avales')}",
@@ -13,8 +14,9 @@
                 </g:if>
             },
             success : function (msg) {
-
-                $("#${div?div:'divAct'}").html(msg)
+                $("#${div?div:'divAct'}").html(msg);
+                $("#divAsg").html("");
+                $("#max").text("");
             }
         });
     })
