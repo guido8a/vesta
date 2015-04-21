@@ -24,6 +24,17 @@
     </head>
 
     <body>
+
+        <g:if test="${reforma &&
+                reforma.estado.codigo == "D01" &&
+                reforma.firmaSolicitud.observaciones && reforma.firmaSolicitud.observaciones != '' && reforma.firmaSolicitud.observaciones != 'S'}">
+            <div class="alert alert-warning">
+                <h4>Observaciones de ${reforma.firmaSolicitud.usuario}</h4>
+                ${reforma.firmaSolicitud.observaciones}
+            </div>
+        </g:if>
+
+
         <elm:container tipo="horizontal" titulo="Modificación a asignación existente">
             <div class="row">
                 <div class="col-md-1">

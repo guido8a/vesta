@@ -14,6 +14,7 @@ class FirmaController extends Shield {
      * @param anio es el anio para mostrar el historial de firmas
      */
     def firmasPendientes = {
+
         def firmas = Firma.findAllByUsuarioAndEstado(session.usuario, "S", [sort: "id"])
         def actual
         if (params.anio) {
@@ -111,6 +112,7 @@ class FirmaController extends Shield {
         if (params.pass.toString().encodeAsMD5() == session.usuario.autorizacion) {
             def firma = Firma.get(params.id)
             firma.estado = 'N'
+            firma.observaciones = params.obs.trim()
             firma.save(flush: true)
             println "redirect " + firma.controladorNegar + "  " + firma.accionNegar + "  " + firma.idAccionNegar
             redirect(controller: firma.controladorNegar, action: firma.accionNegar, id: firma.idAccionNegar)

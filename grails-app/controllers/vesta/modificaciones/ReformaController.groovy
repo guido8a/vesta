@@ -5,6 +5,7 @@ import vesta.avales.EstadoAval
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.poa.Asignacion
+import vesta.proyectos.ModificacionAsignacion
 import vesta.proyectos.Proyecto
 import vesta.seguridad.Firma
 import vesta.seguridad.Persona
@@ -36,7 +37,21 @@ class ReformaController extends Shield {
      */
     def pendientes() {
         def estadoSolicitado = EstadoAval.findByCodigo("E01")
-        def reformas = Reforma.findAllByTipoAndEstado("R", estadoSolicitado, [sort: "fecha", order: "desc"])
+        def estadoDevueltoAnalista = EstadoAval.findByCodigo("D02")
+        def estados = [estadoSolicitado, estadoDevueltoAnalista]
+        def reformas = Reforma.findAllByTipoAndEstadoInList("R", estados, [sort: "fecha", order: "desc"])
+        return [reformas: reformas]
+    }
+
+    /**
+     * Acción llamada con ajax que muestra un historial de reformas solicitadas
+     */
+    def historial_ajax() {
+        def estadoAprobado = EstadoAval.findByCodigo("E02")
+        def estadoNegado = EstadoAval.findByCodigo("E03")
+        def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
+        def estados = [estadoAprobadoSinFirma, estadoAprobado, estadoNegado]
+        def reformas = Reforma.findAllByEstadoInList(estados, [sort: "fecha", order: "desc"])
         return [reformas: reformas]
     }
 
@@ -45,15 +60,116 @@ class ReformaController extends Shield {
      */
     def procesar() {
         def reforma = Reforma.get(params.id)
-        def detalles = DetalleReforma.findAllByReforma(reforma)
-        def total = 0
-        if (detalles.size() > 0) {
-            total = detalles.sum { it.valor }
+        if (reforma.estado.codigo == "E01" || reforma.estado.codigo == "D02") {
+            def detalles = DetalleReforma.findAllByReforma(reforma)
+            def total = 0
+            if (detalles.size() > 0) {
+                total = detalles.sum { it.valor }
+            }
+            def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+            def personasFirmas = Persona.findAllByUnidad(unidad)
+            def gerentes = Persona.findAllByUnidad(unidad.padre)
+            return [reforma: reforma, detalles: detalles, total: total, personas: personasFirmas, gerentes: gerentes]
+        } else {
+            redirect(action: "pendientes")
         }
-        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Persona.findAllByUnidad(unidad)
-        def gerentes = Persona.findAllByUnidad(unidad.padre)
-        return [reforma: reforma, detalles: detalles, total: total, personas: personasFirmas, gerentes: gerentes]
+    }
+
+    /**
+     * Acción que marca una solicitud como aprobada y a la espera de las firmas de aprobación
+     */
+    def aprobar() {
+        def reforma = Reforma.get(params.id)
+        def estadoAprobadoSinFirmas = EstadoAval.findByCodigo("EF1")
+
+        def usu = Persona.get(session.usuario.id)
+        def now = new Date()
+
+        reforma.estado = estadoAprobadoSinFirmas
+        reforma.fechaRevision = now
+        reforma.nota = params.observaciones.trim()
+
+        def personaFirma1 = Persona.get(params.firma1.toLong())
+        def personaFirma2 = Persona.get(params.firma2.toLong())
+
+        def firma1 = new Firma()
+        firma1.usuario = personaFirma1
+        firma1.fecha = now
+        firma1.accion = "firmarAprobarReforma"
+        firma1.controlador = "reforma"
+        firma1.idAccion = reforma.id
+        firma1.accionVer = "existente"
+        firma1.controladorVer = "reportesReforma"
+        firma1.idAccionVer = reforma.id
+        firma1.accionNegar = "devolverAprobarReforma"
+        firma1.controladorNegar = "reforma"
+        firma1.idAccionNegar = reforma.id
+        firma1.concepto = "Aprobación de reforma a asignaciones existentes (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+        firma1.tipoFirma = "RFRM"
+        if (!firma1.save(flush: true)) {
+            println "error al crear firma: " + firma1.errors
+            render "ERROR*" + renderErrors(bean: firma1)
+            return
+        }
+        reforma.firma1 = firma1
+        def alerta = new Alerta()
+        alerta.from = usu
+        alerta.persona = personaFirma1
+        alerta.fechaEnvio = now
+        alerta.mensaje = "Aprobación de reforma a asignaciones existentes (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.controlador = "firma"
+        alerta.accion = "firmasPendientes"
+        alerta.id_remoto = 0
+        if (!alerta.save(flush: true)) {
+            println "error alerta: " + alerta.errors
+        }
+
+        def firma2 = new Firma()
+        firma2.usuario = personaFirma2
+        firma2.fecha = now
+        firma2.accion = "firmarAprobarReforma"
+        firma2.controlador = "reforma"
+        firma2.idAccion = reforma.id
+        firma2.accionVer = "existente"
+        firma2.controladorVer = "reportesReforma"
+        firma2.idAccionVer = reforma.id
+        firma2.accionNegar = "devolverAprobarReforma"
+        firma2.controladorNegar = "reforma"
+        firma2.idAccionNegar = reforma.id
+        firma2.concepto = "Aprobación de reforma a asignaciones existentes (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+        firma2.tipoFirma = "RFRM"
+        if (!firma2.save(flush: true)) {
+            println "error al crear firma: " + firma2.errors
+            render "ERROR*" + renderErrors(bean: firma2)
+            return
+        }
+        reforma.firma2 = firma2
+        def alerta2 = new Alerta()
+        alerta2.from = usu
+        alerta2.persona = personaFirma2
+        alerta2.fechaEnvio = now
+        alerta2.mensaje = "Aprobación de reforma a asignaciones existentes (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta2.controlador = "firma"
+        alerta2.accion = "firmasPendientes"
+        alerta2.id_remoto = 0
+        if (!alerta2.save(flush: true)) {
+            println "error alerta: " + alerta2.errors
+        }
+
+        reforma.save(flush: true)
+
+        render "SUCCESS*Firmas solicitadas exitosamente"
+    }
+
+    /**
+     * Acción que marca una solicitud como negada
+     */
+    def negar() {
+        def reforma = Reforma.get(params.id)
+        def estadoNegado = EstadoAval.findByCodigo("E03")
+        reforma.estado = estadoNegado
+        reforma.save(flush: true)
+        render "SUCCESS*Solicitud negada exitosamente"
     }
 
     /**
@@ -321,6 +437,78 @@ class ReformaController extends Shield {
             reforma.save(flush: true)
             render "ok"
         }
+    }
+
+    /**
+     * Acción para firmar la aprobación de la reforma
+     */
+    def firmarAprobarReforma() {
+        def firma = Firma.findByKey(params.key)
+        if (!firma) {
+            response.sendError(403)
+        } else {
+            def reforma = Reforma.findByFirma1OrFirma2(firma, firma)
+            if (reforma.firma1.estado == "F" && reforma.firma2.estado == "F") {
+                //busco el ultimo numero asignado para signar el siguiente
+                def ultimoNum = Reforma.withCriteria {
+                    projections {
+                        max "numero"
+                    }
+                }
+
+                def num = 1
+                if (ultimoNum && ultimoNum.size() == 1) {
+                    num = ultimoNum.first() + 1
+                }
+
+                def estadoAprobado = EstadoAval.findByCodigo("E02")
+                reforma.estado = estadoAprobado
+                reforma.numero = num
+                reforma.save(flush: true)
+                def usu = Persona.get(session.usuario.id)
+                def now = new Date()
+                def errores = ""
+                def detalles = DetalleReforma.findAllByReforma(reforma)
+                detalles.each { detalle ->
+                    def modificacion = new ModificacionAsignacion()
+                    modificacion.usuario = usu
+                    modificacion.desde = detalle.asignacionOrigen
+                    modificacion.recibe = detalle.asignacionDestino
+                    modificacion.fecha = now
+                    modificacion.valor = detalle.valor
+                    modificacion.estado = 'A'
+                    if (!modificacion.save(flush: true)) {
+                        errores += renderErrors(bean: modificacion)
+                    }
+                }
+            }
+            render "ok"
+        }
+    }
+
+    /**
+     * Acción para devolver la solicitud de reforma al analista de planificación
+     */
+    def devolverAprobarReforma() {
+        def now = new Date()
+        def usu = Persona.get(session.usuario.id)
+
+        def reforma = Reforma.get(params.id)
+        reforma.estado = EstadoAval.findByCodigo("D02") //devuelto al analista
+        reforma.save(flush: true)
+        /* TODO: a quien debe mandar la alerta? */
+//        def alerta = new Alerta()
+//        alerta.from = usu
+//        alerta.persona = reforma.persona
+//        alerta.fechaEnvio = now
+//        alerta.mensaje = "Devolución de solicitud de reforma a asignaciones existentes: " + reforma.concepto
+//        alerta.controlador = "reforma"
+//        alerta.accion = "existente"
+//        alerta.id_remoto = reforma.id
+//        if (!alerta.save(flush: true)) {
+//            println "error alerta: " + alerta.errors
+//        }
+        render "OK"
     }
 
 }

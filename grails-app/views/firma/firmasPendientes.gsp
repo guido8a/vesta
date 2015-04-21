@@ -219,19 +219,21 @@
                 bootbox.confirm("¿Está seguro de querer devolver este documento? Esta acción no puede revertirse", function (res) {
                     if (res) {
 
-                        var msg = $("<div>Ingrese su clave de autorización</div>");
+                        var msg = $("<div>Ingrese su clave de autorización y las observaciones para devolver</div>");
                         var $txt = $("<input type='password' class='form-control input-sm'/>");
 
                         var $group = $('<div class="input-group">');
                         var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
                         $group.append($txt).append($span);
 
-                        msg.append($group);
+                        var $ta = $("<textarea class='form-control required' style='margin-top: 10px; height:100px;'>");
+
+                        msg.append($group).append($ta);
 
                         var bAuth = bootbox.dialog({
                             title   : "Autorización electrónica",
                             message : msg,
-                            class   : "modal-sm",
+                            class   : 'modal-sm',
                             buttons : {
                                 cancelar : {
                                     label     : "Cancelar",
@@ -243,40 +245,45 @@
                                     label     : "<i class='fa fa-hand-o-left'></i> Devolver",
                                     className : "btn-warning",
                                     callback  : function () {
-                                        openLoader("Devolviendo");
-
-                                        $.ajax({
-                                            type    : "POST",
-                                            url     : '${createLink(controller: 'firma', action:'devolverFirma')}',
-                                            data    : {
-                                                id   : id,
-                                                pass : $txt.val()
-                                            },
-                                            success : function (msg) {
-                                                closeLoader();
-                                                if (msg == "error") {
-                                                    bootbox.alert({
-                                                                message : "Clave incorrecta",
-                                                                title   : "Error",
-                                                                class   : "modal-error"
-                                                            }
-                                                    );
-                                                } else {
-                                                    log("Documento devuelto correctamente", "success");
-                                                    setTimeout(function () {
-                                                        location.reload(true)
-                                                    }, 3000);
-//                                                    location.href = msg
+                                        if ($.trim($txt.val()) != "" && $.trim($ta.val()) != "") {
+                                            openLoader("Devolviendo");
+                                            $.ajax({
+                                                type    : "POST",
+                                                url     : '${createLink(controller: 'firma', action:'devolverFirma')}',
+                                                data    : {
+                                                    id   : id,
+                                                    pass : $txt.val(),
+                                                    obs  : $ta.val()
+                                                },
+                                                success : function (msg) {
                                                     closeLoader();
+                                                    if (msg == "error") {
+                                                        bootbox.alert({
+                                                                    message : "Clave incorrecta",
+                                                                    title   : "Error",
+                                                                    class   : "modal-error"
+                                                                }
+                                                        );
+                                                    } else {
+                                                        log("Documento devuelto correctamente", "success");
+                                                        setTimeout(function () {
+                                                            location.reload(true)
+                                                        }, 3000);
+//                                                    location.href = msg
+                                                        closeLoader();
 
+                                                    }
+                                                },
+                                                error   : function () {
+                                                    log("Ha ocurrido un error interno", "error");
+
+                                                    closeLoader();
                                                 }
-                                            },
-                                            error   : function () {
-                                                log("Ha ocurrido un error interno", "error");
-
-                                                closeLoader();
-                                            }
-                                        });
+                                            });
+                                        } else {
+                                            msg.prepend("<div class='alert alert-danger'>Por favor ingrese su clave de autorización y las observaciones</div>");
+                                            return false;
+                                        }
                                     }
                                 }
                             }

@@ -59,6 +59,10 @@ class Reforma {
      * Nota técnica u observaciones
      */
     String nota
+    /**
+     * Secuencial generado cuando se aprueba (2da firma de aprobacion)
+     */
+    Integer numero = 0
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -88,6 +92,7 @@ class Reforma {
             tipoSolicitud column: 'rfrmtprf'
             textoPdf column: 'rfrm_pdf'
             nota column: 'rfrmnota'
+            numero column: 'rfrmnmro'
         }
     }
 

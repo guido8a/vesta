@@ -31,6 +31,19 @@
             </div>
         </div>
 
+        <g:if test="${reforma && reforma.estado.codigo == "D02"}">
+            <div class="alert alert-warning">
+                <g:if test="${reforma.firma1.observaciones && reforma.firma1.observaciones != '' && reforma.firma1.observaciones != 'S'}">
+                    <h4>Observaciones de ${reforma.firma1.usuario}</h4>
+                    ${reforma.firma1.observaciones}
+                </g:if>
+                <g:if test="${reforma.firma2.observaciones && reforma.firma2.observaciones != '' && reforma.firma2.observaciones != 'S'}">
+                    <h4>Observaciones de ${reforma.firma2.usuario}</h4>
+                    ${reforma.firma2.observaciones}
+                </g:if>
+            </div>
+        </g:if>
+
         <elm:container tipo="horizontal" titulo="Solicitud de reforma a procesar">
             <div class="row">
                 <div class="col-md-1 show-label">
@@ -151,40 +164,118 @@
             </table>
         </elm:container>
 
-        <elm:container tipo="horizontal" titulo="Datos para la generación del documento">
-            <div class="row">
-                <div class="col-md-1 show-label">Observaciones</div>
+        <form id="frmFirmas">
+            <elm:container tipo="horizontal" titulo="Datos para la generación del documento">
+                <div class="row">
+                    <div class="col-md-1 show-label">Observaciones</div>
 
-                <div class="col-md-11">
-                    <g:textArea name="richText" value=""/>
+                    <div class="col-md-11">
+                        <g:textArea name="richText" value=""/>
+                    </div>
                 </div>
-            </div>
-        </elm:container>
+            </elm:container>
 
-        <elm:container tipo="horizontal" titulo="Autorizaciones electrónicas">
-            <div class="row">
-                <div class="col-md-3">
-                    <g:select from="${personas}" optionKey="id" optionValue="${{
-                        it.nombre + ' ' + it.apellido
-                    }}" noSelection="['': '- Seleccione -']" name="firma1" class="form-control required input-sm"/>
+            <elm:container tipo="horizontal" titulo="Autorizaciones electrónicas">
+                <div class="row">
+                    <div class="col-md-3">
+                        <g:select from="${personas}" optionKey="id" optionValue="${{
+                            it.nombre + ' ' + it.apellido
+                        }}" noSelection="['': '- Seleccione -']" name="firma1" class="form-control required input-sm"/>
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <g:select from="${gerentes}" optionKey="id" optionValue="${{
+                            it.nombre + ' ' + it.apellido
+                        }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
+                    </div>
                 </div>
 
-                <div class="col-md-3">
-
-                    <g:select from="${gerentes}" optionKey="id" optionValue="${{
-                        it.nombre + ' ' + it.apellido
-                    }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" id="btnAprobar" class="btn btn-success">
+                            <i class="fa fa-thumbs-up"></i> Aprobar
+                        </a>
+                        <a href="#" id="btnNegar" class="btn btn-danger">
+                            <i class="fa fa-thumbs-down"></i> Negar
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </elm:container>
+            </elm:container>
+        </form>
 
         <script type="text/javascript">
+
+            function procesar(aprobado) {
+                var url = "${createLink(action:'aprobar')}";
+                var str = "Aprobando";
+                var str2 = "aprobar";
+                var clase = "success";
+                var data = {
+                    id : "${reforma.id}"
+                };
+                if (!aprobado) {
+                    url = "${createLink(action:'negar')}";
+                    str = "Negando";
+                    str2 = "negar";
+                    clase = "danger";
+                } else {
+                    data.firma1 = $("#firma1").val();
+                    data.firma2 = $("#firma2").val();
+                    data.observaciones = $("#richText").val();
+                }
+                bootbox.confirm("¿Está seguro de querer <strong class='text-" + clase + "'>" + str2 + "</strong> esta solicitud de reforma?<br/>Esta acción no puede revertirse.",
+                        function (res) {
+                            if (res) {
+                                openLoader(str);
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : url,
+                                    data    : data,
+                                    success : function (msg) {
+                                        var parts = msg.split("*");
+                                        log(parts[1], parts[0]);
+                                        if (parts[0] == "SUCCESS") {
+                                            location.href = "${createLink(action:'pendientes')}";
+                                        }
+                                    }
+                                });
+                            }
+                        });
+            }
+
             $(function () {
                 $('#richText').ckeditor(function () { /* callback code */
                         },
                         {
                             customConfig : '${resource(dir: 'js/plugins/ckeditor-4.4.6', file: 'config_bullets_only.js')}'
                         });
+                $("#frmFirmas").validate({
+                    errorClass     : "help-block",
+                    onfocusout     : false,
+                    errorPlacement : function (error, element) {
+                        if (element.parent().hasClass("input-group")) {
+                            error.insertAfter(element.parent());
+                        } else {
+                            error.insertAfter(element);
+                        }
+                        element.parents(".grupo").addClass('has-error');
+                    },
+                    success        : function (label) {
+                        label.parents(".grupo").removeClass('has-error');
+                        label.remove();
+                    }
+                });
+                $("#btnAprobar").click(function () {
+                    if ($("#frmFirmas").valid()) {
+                        procesar(true);
+                    }
+                    return false;
+                });
+                $("#btnNegar").click(function () {
+                    procesar(false);
+                    return false;
+                });
             });
         </script>
 
