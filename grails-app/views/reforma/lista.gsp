@@ -45,7 +45,7 @@
                                     <g:link controller="reportes" action="${reforma.tipoSolicitud == 'E' ? 'existente' :
                                             reforma.tipoSolicitud == 'A' ? 'actividad' :
                                                     reforma.tipoSolicitud == 'P' ? 'partida' :
-                                                            reforma.tipoSolicitud == 'I' ? 'incremento' : ''}" class="btn btn-info btn-sm" title="Ver">
+                                                            reforma.tipoSolicitud == 'I' ? 'incremento' : ''}" id="${reforma.id}" class="btn btn-info btn-sm btnVer" title="Ver">
                                         <i class="fa fa-search"></i>
                                     </g:link>
                                 </g:if>
@@ -55,5 +55,15 @@
                 </g:each>
             </tbody>
         </table>
+
+        <script type="text/javascript">
+            $(function () {
+                $(".btnVer").click(function () {
+                    var url = $(this).attr("href");
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud_reforma.pdf";
+                });
+            });
+        </script>
+
     </body>
 </html>
