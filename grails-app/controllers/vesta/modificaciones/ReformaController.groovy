@@ -253,7 +253,16 @@ class ReformaController extends Shield {
     }
 
     def firmarReforma() {
-
+        def firma = Firma.findByKey(params.key)
+        if (!firma) {
+            response.sendError(403)
+        } else {
+            def reforma = Reforma.findByFirmaSolicitud(firma)
+            def estadoSolicitado = EstadoAval.findByCodigo("E01")
+            reforma.estado = estadoSolicitado
+            reforma.save(flush: true)
+            render "ok"
+        }
     }
 
 }

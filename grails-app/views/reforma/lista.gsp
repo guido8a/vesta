@@ -22,6 +22,7 @@
                     <th>Concepto</th>
                     <th>Tipo</th>
                     <th>Estado</th>
+                    <th>Ver</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +39,18 @@
                                                     reforma.tipoSolicitud == 'I' ? ' de incremento' : '??'}
                         </td>
                         <td>${reforma.estado.descripcion}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <g:if test="${reforma.tipo == 'R'}">
+                                    <g:link controller="reportes" action="${reforma.tipoSolicitud == 'E' ? 'existente' :
+                                            reforma.tipoSolicitud == 'A' ? 'actividad' :
+                                                    reforma.tipoSolicitud == 'P' ? 'partida' :
+                                                            reforma.tipoSolicitud == 'I' ? 'incremento' : ''}" class="btn btn-info btn-sm" title="Ver">
+                                        <i class="fa fa-search"></i>
+                                    </g:link>
+                                </g:if>
+                            </div>
+                        </td>
                     </tr>
                 </g:each>
             </tbody>
