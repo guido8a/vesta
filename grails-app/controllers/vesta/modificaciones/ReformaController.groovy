@@ -16,15 +16,49 @@ import vesta.seguridad.Shield
  */
 class ReformaController extends Shield {
 
+    /**
+     * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
+     */
     def reformas() {
 
     }
 
+    /**
+     * Acción que muestra la lista de todas las reformas, con su estado y una opción para ver el pdf
+     */
     def lista() {
         def reformas = Reforma.list([sort: "fecha", order: "desc"])
         return [reformas: reformas]
     }
 
+    /**
+     * Acción que muestra la lista de las reformas solicitadas para q un analista de planificación apruebe y pida firmas o niegue
+     */
+    def pendientes() {
+        def estadoSolicitado = EstadoAval.findByCodigo("E01")
+        def reformas = Reforma.findAllByTipoAndEstado("R", estadoSolicitado, [sort: "fecha", order: "desc"])
+        return [reformas: reformas]
+    }
+
+    /**
+     * Acción para que el analista de planificación apruebe y pida firmas o niegue la solicitud
+     */
+    def procesar() {
+        def reforma = Reforma.get(params.id)
+        def detalles = DetalleReforma.findAllByReforma(reforma)
+        def total = 0
+        if (detalles.size() > 0) {
+            total = detalles.sum { it.valor }
+        }
+        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+        def personasFirmas = Persona.findAllByUnidad(unidad)
+        def gerentes = Persona.findAllByUnidad(unidad.padre)
+        return [reforma: reforma, detalles: detalles, total: total, personas: personasFirmas, gerentes: gerentes]
+    }
+
+    /**
+     * no vale
+     */
     def existente_old() {
         def proyectos = []
         def actual
@@ -58,6 +92,9 @@ class ReformaController extends Shield {
                 personasGerente: gerentes, totalOrigen: totalOrigen, totalDestino: totalDestino]
     }
 
+    /**
+     * Acción que permite realizar una solicitud de reforma a asignaciones existentes
+     */
     def existente() {
         def proyectos = []
         def actual
@@ -106,6 +143,9 @@ class ReformaController extends Shield {
                 personasGerente: gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
     }
 
+    /**
+     * Acción llamada con ajax que elimina un detalle de una reforma existente
+     */
     def deleteDetalle_ajax() {
         def detalle = DetalleReforma.get(params.id)
         try {
@@ -116,6 +156,9 @@ class ReformaController extends Shield {
         render "SUCCESS*Detalle eliminado exitosamente"
     }
 
+    /**
+     * Acción llamada con ajax que guarda una solicitud de reforma de asignaciones existentes
+     */
     def saveExistente_ajax() {
         def anio = Anio.get(params.anio.toLong())
         def personaRevisa
@@ -219,18 +262,30 @@ class ReformaController extends Shield {
         }
     }
 
+    /**
+     * Acción que permite realizar una solicitud de reforma a nueva actividad
+     */
     def actividad() {
 
     }
 
+    /**
+     * Acción que permite realizar una solicitud de reforma a nueva partida
+     */
     def partida() {
 
     }
 
+    /**
+     * Acción que permite realizar una solicitud de reforma de incremento
+     */
     def incremento() {
 
     }
 
+    /**
+     * Acción para que un director requirente devuelva una reforma al requirente
+     */
     def devolverReforma() {
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -252,6 +307,9 @@ class ReformaController extends Shield {
         render "OK"
     }
 
+    /**
+     * Acción para que un director requirente firme una reforma
+     */
     def firmarReforma() {
         def firma = Firma.findByKey(params.key)
         if (!firma) {

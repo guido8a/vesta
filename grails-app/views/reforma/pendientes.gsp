@@ -2,17 +2,19 @@
   Created by IntelliJ IDEA.
   User: luz
   Date: 21/04/15
-  Time: 08:50 AM
+  Time: 12:26 PM
 --%>
+
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de reformas</title>
+        <title>Reformas pendientes</title>
     </head>
 
     <body>
+
         <table class="table table-bordered table-hover table-condensed">
             <thead>
                 <tr>
@@ -21,7 +23,7 @@
                     <th>Concepto</th>
                     <th>Tipo</th>
                     <th>Estado</th>
-                    <th>Ver</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,15 +41,16 @@
                         </td>
                         <td>${reforma.estado.descripcion}</td>
                         <td>
-                            <div class="btn-group" role="group">
-                                <g:if test="${reforma.tipo == 'R'}">
-                                    <g:link controller="reportes" action="${reforma.tipoSolicitud == 'E' ? 'existente' :
-                                            reforma.tipoSolicitud == 'A' ? 'actividad' :
-                                                    reforma.tipoSolicitud == 'P' ? 'partida' :
-                                                            reforma.tipoSolicitud == 'I' ? 'incremento' : ''}" id="${reforma.id}" class="btn btn-info btn-sm btnVer" title="Ver">
-                                        <i class="fa fa-search"></i>
-                                    </g:link>
-                                </g:if>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <g:link controller="reportes" action="${reforma.tipoSolicitud == 'E' ? 'existente' :
+                                        reforma.tipoSolicitud == 'A' ? 'actividad' :
+                                                reforma.tipoSolicitud == 'P' ? 'partida' :
+                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : ''}" id="${reforma.id}" class="btn btn-info btnVer" title="Ver">
+                                    <i class="fa fa-search"></i>
+                                </g:link>
+                                <g:link action="procesar" id="${reforma.id}" class="btn btn-default" title="Procesar">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </g:link>
                             </div>
                         </td>
                     </tr>
