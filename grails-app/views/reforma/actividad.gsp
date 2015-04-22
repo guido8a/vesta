@@ -5,7 +5,7 @@
   Time: 09:37 AM
 --%>
 
-<%@ page import="vesta.parametros.poaPac.Fuente; vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.proyectos.Categoria; vesta.parametros.poaPac.Fuente; vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
@@ -45,7 +45,7 @@
 
                 <div class="col-md-2">
                     <g:if test="${editable}">
-                        <g:select from="${Anio.list([sort: 'anio'])}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
+                        <g:select from="${Anio.findAllByEstado(1, [sort: 'anio'])}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
                                   class="form-control input-sm required requiredCombo"/>
                     </g:if>
                     <g:else>
@@ -169,6 +169,15 @@
                                             format="dd-MM-yyyy"/>
                         </div>
 
+                        <div class="col-md-1">
+                            <label>Categoría</label>
+                        </div>
+
+                        <div class="col-md-2">
+                            <g:select from="${Categoria.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" name="categoria"
+                                      class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']"/>
+                        </div>
+
                         <div class="col-md-2">
                             <a href="#" id="btnAddReforma" class="btn btn-success pull-right">
                                 <i class="fa fa-plus"></i> Agregar
@@ -180,7 +189,8 @@
 
             <div id="detallesExistentes">
                 <g:each in="${detalles}" var="detalle" status="i">
-                    <table class='table table-bordered table-hover table-condensed tableReforma tableReformaExistente'>
+                    <table class='table table-bordered table-hover table-condensed tableReforma tableReformaExistente'
+                           data-monto="${detalle.valor}">
                         <thead>
                             <th colspan='5'>
                                 Detalle existente ${i + 1}
@@ -288,7 +298,14 @@
             var cont = 1;
 
             function addData() {
-
+                $(".tableReformaExistente").each(function () {
+                    var data = {
+                        origen : {
+                            monto : $(this).data("monto")
+                        }
+                    };
+                    $(this).data(data);
+                });
             }
 
             function getMaximo(asg) {
@@ -336,6 +353,7 @@
                 $("#prsp_id").val("");
                 $("#inicio").val("");
                 $("#fin").val("");
+                $("#categoria").val("");
             }
 
             function validarPar(dataOrigen, dataDestino) {
@@ -435,6 +453,9 @@
             }
 
             $(function () {
+
+                addData();
+
                 $("#frmReforma").validate({
                     errorClass     : "help-block",
                     onfocusout     : false,
@@ -515,6 +536,7 @@
                         dataDestino.asignacion_nombre = "Responsable: ${unidad}, Partida: " + partidaNum + ", Monto: " + number_format(dataOrigen.monto, 2, ".", ",");
                         dataDestino.inicio = $("#inicio").val();
                         dataDestino.fin = $("#fin").val();
+                        dataDestino.categoria_id = $("#categoria").val();
                         if (validarPar(dataOrigen, dataDestino)) {
                             addReforma(dataOrigen, dataDestino);
                             resetForm();
@@ -575,6 +597,7 @@
                                 data["r" + c].partida = d.destino.partida_id;
                                 data["r" + c].inicio = d.destino.inicio;
                                 data["r" + c].fin = d.destino.fin;
+                                data["r" + c].categoria = d.destino.categoria_id;
                                 c++;
                             });
                             data.firma = $("#firma").val();

@@ -45,7 +45,7 @@
 
                 <div class="col-md-2">
                     <g:if test="${editable}">
-                        <g:select from="${Anio.list([sort: 'anio'])}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
+                        <g:select from="${Anio.findAllByEstado(1, [sort: 'anio'])}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
                                   class="form-control input-sm required requiredCombo"/>
                     </g:if>
                     <g:else>
@@ -137,7 +137,10 @@
 
             <div id="detallesExistentes">
                 <g:each in="${detalles}" var="detalle" status="i">
-                    <table class='table table-bordered table-hover table-condensed tableReforma tableReformaExistente'>
+                    <table class='table table-bordered table-hover table-condensed tableReforma tableReformaExistente'
+                           data-monto="${detalle.valor}"
+                           data-aso="${detalle.asignacionOrigenId}"
+                           data-asd="${detalle.asignacionDestinoId}">
                         <thead>
                             <th colspan='5'>
                                 Detalle existente ${i + 1}
@@ -242,7 +245,19 @@
             var cont = 1;
 
             function addData() {
-
+                $(".tableReformaExistente").each(function () {
+                    var d = $(this).data();
+                    var data = {
+                        origen  : {
+                            monto         : d.monto,
+                            asignacion_id : d.aso
+                        },
+                        destino : {
+                            asignacion_id : d.asd
+                        }
+                    };
+                    $(this).data(data);
+                });
             }
 
             function getMaximo(asg) {
@@ -388,6 +403,7 @@
             }
 
             $(function () {
+                addData();
                 $("#frmReforma").validate({
                     errorClass     : "help-block",
                     onfocusout     : false,

@@ -2,6 +2,7 @@ package vesta.modificaciones
 
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
+import vesta.proyectos.Categoria
 import vesta.proyectos.MarcoLogico
 
 class DetalleReforma {
@@ -43,6 +44,10 @@ class DetalleReforma {
      */
     Date fechaFinNuevaActividad
     /**
+     * Categoría para la nueva actividad
+     */
+    Categoria categoria
+    /**
      * Saldo para usarse en incrementos
      */
     Double saldo = 0
@@ -65,12 +70,13 @@ class DetalleReforma {
             reforma column: 'rfrm__id'
             asignacionOrigen column: 'asgn__id'
             asignacionDestino column: 'asgndstn'
-            presupuesto column: 'prps__id'
+            presupuesto column: 'prsp__id'
             componente column: 'mrlg__id'
             valor column: 'dtrfvlor'
             descripcionNuevaActividad column: 'dtrfactv'
             fechaInicioNuevaActividad column: 'dtrfacfi'
             fechaFinNuevaActividad column: 'dtrfacff'
+            categoria column: 'ctgr__id'
             saldo column: 'dtrfsldo'
         }
     }
@@ -86,5 +92,6 @@ class DetalleReforma {
         descripcionNuevaActividad nullable: true
         fechaInicioNuevaActividad nullable: true
         fechaFinNuevaActividad nullable: true
+        categoria nullable: true
     }
 }
