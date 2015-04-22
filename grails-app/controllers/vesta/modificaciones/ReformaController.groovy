@@ -220,57 +220,6 @@ class ReformaController extends Shield {
     }
 
     /**
-     * Acción que permite realizar una solicitud de reforma a asignaciones existentes
-     */
-    def existente() {
-        def proyectos = []
-        def actual
-        Asignacion.list().each {
-//            println "p "+proyectos
-            def p = it.marcoLogico.proyecto
-            if (!proyectos?.id.contains(p.id)) {
-                proyectos.add(p)
-            }
-        }
-        if (params.anio) {
-            actual = Anio.get(params.anio)
-        } else {
-            actual = Anio.findByAnio(new Date().format("yyyy"))
-        }
-
-        proyectos = proyectos.sort { it.nombre }
-
-        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
-
-        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
-//        println "pro "+proyectos
-        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Persona.findAllByUnidad(unidad)
-        def gerentes = Persona.findAllByUnidad(unidad.padre)
-
-        def total = 0
-
-        def reforma = null, detalles = [], editable = true
-        if (params.id) {
-            editable = false
-            reforma = Reforma.get(params.id)
-            detalles = DetalleReforma.findAllByReforma(reforma)
-            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-            def devuelto = EstadoAval.findByCodigo("D01")
-            def estados = [solicitadoSinFirma, devuelto]
-            if (estados.contains(reforma.estado)) {
-                editable = true
-            }
-            if (detalles.size() > 0) {
-                total = detalles.sum { it.valor }
-            }
-        }
-
-        return [proyectos      : proyectos, proyectos2: proyectos2, actual: actual, campos: campos, personas: gerentes + personasFirmas,
-                personasGerente: gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
-    }
-
-    /**
      * Acción llamada con ajax que elimina un detalle de una reforma existente
      */
     def deleteDetalle_ajax() {
@@ -365,7 +314,7 @@ class ReformaController extends Shield {
                 if (parts.size() >= 3) {
                     def origenId = parts[0].toLong()
                     def destinoId = parts[1].toLong()
-                    def monto = parts[2].toDouble()
+                    def monto = parts[2].toString().replaceAll(",", "").toDouble()
 
                     def asignacionOrigen = Asignacion.get(origenId)
                     def asignacionDestion = Asignacion.get(destinoId)
@@ -390,16 +339,111 @@ class ReformaController extends Shield {
     }
 
     /**
-     * Acción que permite realizar una solicitud de reforma a nueva actividad
+     * Acción que permite realizar una solicitud de reforma a asignaciones existentes
      */
-    def actividad() {
+    def existente() {
+        def proyectos = []
+        def actual
+        Asignacion.list().each {
+//            println "p "+proyectos
+            def p = it.marcoLogico.proyecto
+            if (!proyectos?.id.contains(p.id)) {
+                proyectos.add(p)
+            }
+        }
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
 
+        proyectos = proyectos.sort { it.nombre }
+
+        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+//        println "pro "+proyectos
+        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+        def personasFirmas = Persona.findAllByUnidad(unidad)
+        def gerentes = Persona.findAllByUnidad(unidad.padre)
+
+        def total = 0
+
+        def reforma = null, detalles = [], editable = true
+        if (params.id) {
+            editable = false
+            reforma = Reforma.get(params.id)
+            detalles = DetalleReforma.findAllByReforma(reforma)
+            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+            def devuelto = EstadoAval.findByCodigo("D01")
+            def estados = [solicitadoSinFirma, devuelto]
+            if (estados.contains(reforma.estado)) {
+                editable = true
+            }
+            if (detalles.size() > 0) {
+                total = detalles.sum { it.valor }
+            }
+        }
+
+        return [proyectos      : proyectos, proyectos2: proyectos2, actual: actual, campos: campos, personas: gerentes + personasFirmas,
+                personasGerente: gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
     }
 
     /**
      * Acción que permite realizar una solicitud de reforma a nueva partida
      */
     def partida() {
+        def proyectos = []
+        def actual
+        Asignacion.list().each {
+//            println "p "+proyectos
+            def p = it.marcoLogico.proyecto
+            if (!proyectos?.id.contains(p.id)) {
+                proyectos.add(p)
+            }
+        }
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        proyectos = proyectos.sort { it.nombre }
+
+        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+//        println "pro "+proyectos
+        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+        def personasFirmas = Persona.findAllByUnidad(unidad)
+        def gerentes = Persona.findAllByUnidad(unidad.padre)
+
+        def total = 0
+
+        def reforma = null, detalles = [], editable = true
+        if (params.id) {
+            editable = false
+            reforma = Reforma.get(params.id)
+            detalles = DetalleReforma.findAllByReforma(reforma)
+            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+            def devuelto = EstadoAval.findByCodigo("D01")
+            def estados = [solicitadoSinFirma, devuelto]
+            if (estados.contains(reforma.estado)) {
+                editable = true
+            }
+            if (detalles.size() > 0) {
+                total = detalles.sum { it.valor }
+            }
+        }
+
+        return [proyectos      : proyectos, proyectos2: proyectos2, actual: actual, campos: campos, personas: gerentes + personasFirmas,
+                personasGerente: gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
+    }
+
+    /**
+     * Acción que permite realizar una solicitud de reforma a nueva actividad
+     */
+    def actividad() {
 
     }
 
@@ -481,16 +525,30 @@ class ReformaController extends Shield {
                 def errores = ""
                 def detalles = DetalleReforma.findAllByReforma(reforma)
                 detalles.each { detalle ->
+                    def origen = detalle.asignacionOrigen
+                    def destino = detalle.asignacionDestino
                     def modificacion = new ModificacionAsignacion()
                     modificacion.usuario = usu
-                    modificacion.desde = detalle.asignacionOrigen
-                    modificacion.recibe = detalle.asignacionDestino
+                    modificacion.desde = origen
+                    modificacion.recibe = destino
                     modificacion.fecha = now
                     modificacion.valor = detalle.valor
                     modificacion.estado = 'A'
                     modificacion.detalleReforma = detalle
                     if (!modificacion.save(flush: true)) {
+                        println "error save modificacion: " + modificacion.errors
                         errores += renderErrors(bean: modificacion)
+                    } else {
+                        origen.priorizado -= detalle.valor
+                        destino.priorizado += detalle.valor
+                        if (!origen.save(flush: true)) {
+                            println "error save origen: " + origen.errors
+                            errores += renderErrors(bean: origen)
+                        }
+                        if (!destino.save(flush: true)) {
+                            println "error save destino: " + destino.errors
+                            errores += renderErrors(bean: destino)
+                        }
                     }
                 }
             }
