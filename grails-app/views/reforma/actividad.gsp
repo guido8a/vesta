@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 14/04/15
-  Time: 03:31 PM
+  Date: 22/04/15
+  Time: 09:37 AM
 --%>
 
-<%@ page import="vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.parametros.poaPac.Fuente; vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Modificación a asignación existente</title>
+        <title>Modificación a nuevas actividades</title>
 
         <style type="text/css">
         .titulo-azul.subtitulo {
@@ -35,7 +35,7 @@
         </g:if>
 
 
-        <elm:container tipo="horizontal" titulo="Modificación a asignación existente">
+        <elm:container tipo="horizontal" titulo="Modificación a nuevas actividades">
             <div class="row">
                 <div class="col-md-1">
                     <label for="anio">
@@ -65,7 +65,8 @@
             </div>
 
             <g:if test="${editable}">
-                <form id="frmReforma">
+                <form id="frmReforma" style="margin-bottom: 10px;">
+                    <h3 class="text-info">Asignación de origen</h3>
                     <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
                         <thead>
                             <tr>
@@ -75,13 +76,9 @@
                                 <th style="width:234px;">Asignación</th>
                                 <th style="width:195px;">Monto</th>
                                 <th style="width:135px;">Máximo</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="info">
-                                <td colspan="7">Asignación de origen</td>
-                            </tr>
                             <tr class="info">
                                 <td class="grupo">
                                     <g:select from="${proyectos}" optionKey="id" optionValue="nombre" name="proyecto" class="form-control input-sm required requiredCombo"
@@ -103,35 +100,81 @@
                                 <td id="max">
 
                                 </td>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr class="success">
-                                <td colspan="7">Asignación de destino</td>
-                            </tr>
-                            <tr class="success">
-                                <td class="grupo">
-                                    <g:select from="${proyectos2}" optionKey="id" optionValue="nombre" name="proyecto_dest" id="proyectoDest" style="width:100%"
-                                              class="form-control required requiredCombo input-sm" noSelection="['-1': 'Seleccione...']"/>
-                                </td>
-                                <td class="grupo" id="divComp_dest">
-                                </td>
-                                <td class="grupo" id="divAct_dest">
-                                </td>
-                                <td class="grupo" id="divAsg_dest">
-                                </td>
-                                <td class="grupo" id="divMonto_dest">
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-success" id="btnAddReforma" title="Agregar reforma">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                </td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <h3 class="text-info">Nueva actividad de destino</h3>
+
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label>Proyecto</label>
+                        </div>
+
+                        <div class="col-md-5 grupo">
+                            <g:select from="${proyectos2}" optionKey="id" optionValue="nombre" name="proyecto_dest" id="proyectoDest" style="width:100%"
+                                      class="form-control required requiredCombo input-sm" noSelection="['-1': 'Seleccione...']"/>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label>Componente</label>
+                        </div>
+
+                        <div class="col-md-5 grupo" id="divComp_dest">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label for="actividad_dest">Actividad</label>
+                        </div>
+
+                        <div class="col-md-5 grupo">
+                            <g:textField name="actividad_dest" class="form-control input-sm required"/>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label>Partida</label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
+                                          titulo="Busque una partida" campos="${campos}" clase="required"/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label>Fecha Incio</label>
+                        </div>
+
+                        <div class="col-md-2 grupo">
+                            <elm:datepicker class="form-control input-sm fechaInicio required"
+                                            name="fechaInicio"
+                                            title="Fecha de inicio de la actividad"
+                                            id="inicio"/>
+
+                        </div>
+
+                        <div class="col-md-1">
+                            <label>Fecha Fin</label>
+                        </div>
+
+                        <div class="col-md-2 grupo">
+                            <elm:datepicker class="form-control input-sm fechaFin required"
+                                            name="fechaFin"
+                                            title="Fecha fin de la actividad"
+                                            id="fin"
+                                            format="dd-MM-yyyy"/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="#" id="btnAddReforma" class="btn btn-success pull-right">
+                                <i class="fa fa-plus"></i> Agregar
+                            </a>
+                        </div>
+                    </div>
                 </form>
             </g:if>
 
@@ -173,16 +216,19 @@
                             </tr>
                             <tr class="success">
                                 <td>
-                                    ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
+                                    ${detalle.componente.proyecto.toStringCompleto()}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()}
+                                    ${detalle.componente.toStringCompleto()}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino.marcoLogico.numero} - ${detalle.asignacionDestino.marcoLogico.toStringCompleto()}
+                                    ${detalle.descripcionNuevaActividad}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino}
+                                    <strong>Responsable:</strong> ${reforma.persona.unidad}
+                                    <strong>Priorizado:</strong> <g:formatNumber number="${detalle.valor}" type="currency"/>
+                                    <strong>Partida Presupuestaria:</strong> ${detalle.presupuesto}
+                                    <strong>Año:</strong> ${reforma.anio.anio}
                                 </td>
                                 <td class="text-right">
                                     <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
@@ -285,26 +331,27 @@
 
                 $("#proyectoDest").val("-1");
                 $("#divComp_dest").html("");
-                $("#divAct_dest").html("");
-                $("#divAsg_dest").html("");
-                $("#monto_dest").val("");
-                $("#tdTotalDestino").html("");
+                $("#actividad_dest").val("");
+                $("#bsc-desc-prsp_id").val("");
+                $("#prsp_id").val("");
+                $("#inicio").val("");
+                $("#fin").val("");
             }
 
             function validarPar(dataOrigen, dataDestino) {
                 var ok = true;
-                $(".tableReforma").each(function () {
-                    var d = $(this).data();
-                    if (d.origen.asignacion_id == dataOrigen.asignacion_id && d.destino.asignacion_id == dataDestino.asignacion_id) {
-                        ok = false;
-                        bootbox.alert("No puede seleccionar un par de asignaciones ya ingresados");
-                    } else {
-                        if (d.origen.asignacion_id == dataDestino.asignacion_id || d.destino.asignacion_id == dataOrigen.asignacion_id) {
-                            ok = false;
-                            bootbox.alert("No puede seleccionar una asignación de origen que está listada como destino ni vice versa");
-                        }
-                    }
-                });
+//                $(".tableReforma").each(function () {
+//                    var d = $(this).data();
+//                    if (d.origen.asignacion_id == dataOrigen.asignacion_id && d.destino.asignacion_id == dataDestino.asignacion_id) {
+//                        ok = false;
+//                        bootbox.alert("No puede seleccionar un par de asignaciones ya ingresados");
+//                    } else {
+//                        if (d.origen.asignacion_id == dataDestino.asignacion_id || d.destino.asignacion_id == dataOrigen.asignacion_id) {
+//                            ok = false;
+//                            bootbox.alert("No puede seleccionar una asignación de origen que está listada como destino ni vice versa");
+//                        }
+//                    }
+//                });
                 return ok;
             }
 
@@ -391,16 +438,6 @@
                 $("#frmReforma").validate({
                     errorClass     : "help-block",
                     onfocusout     : false,
-                    rules          : {
-                        asg_dest : {
-                            notEqualTo : "#asignacion"
-                        }
-                    },
-                    messages       : {
-                        asg_dest : {
-                            notEqualTo : "Ingrese una asignación diferente a la de origen"
-                        }
-                    },
                     errorPlacement : function (error, element) {
                         if (element.parent().hasClass("input-group")) {
                             error.insertAfter(element.parent());
@@ -470,9 +507,14 @@
                         var dataDestino = {};
                         dataDestino.proyecto_nombre = $("#proyectoDest").find("option:selected").text();
                         dataDestino.componente_nombre = $("#compDest").find("option:selected").text();
-                        dataDestino.actividad_nombre = $("#actividad_dest").find("option:selected").text();
-                        dataDestino.asignacion_nombre = $("#asignacion_dest").find("option:selected").text();
-                        dataDestino.asignacion_id = $("#asignacion_dest").val();
+                        dataDestino.componente_id = $("#compDest").val();
+                        dataDestino.actividad_nombre = $("#actividad_dest").val();
+                        dataDestino.partida_nombre = $("#bsc-desc-prsp_id").val();
+                        dataDestino.partida_id = $("#prsp_id").val();
+                        var partidaNum = $.trim(dataDestino.partida_nombre.split("(")[0]);
+                        dataDestino.asignacion_nombre = "Responsable: ${unidad}, Partida: " + partidaNum + ", Monto: " + number_format(dataOrigen.monto, 2, ".", ",");
+                        dataDestino.inicio = $("#inicio").val();
+                        dataDestino.fin = $("#fin").val();
                         if (validarPar(dataOrigen, dataDestino)) {
                             addReforma(dataOrigen, dataDestino);
                             resetForm();
@@ -517,7 +559,7 @@
 
                 $("#btnSave").click(function () {
                     if ($(this).hasClass("disabled")) {
-                        bootbox.alert("Por favor seleccione al menos un grupo de asignaciones para la modificación")
+                        bootbox.alert("Por favor seleccione al menos una asignación de origen y una nueva actividad de destino para la modificación")
                     } else {
                         if ($("#frmFirma").valid()) {
                             openLoader();
@@ -525,7 +567,14 @@
                             var c = 0;
                             $(".tableReformaNueva").each(function () {
                                 var d = $(this).data();
-                                data["r" + c] = d.origen.asignacion_id + "_" + d.destino.asignacion_id + "_" + d.origen.monto;
+                                data["r" + c] = {};
+                                data["r" + c].origen = d.origen.asignacion_id;
+                                data["r" + c].monto = d.origen.monto;
+                                data["r" + c].componente = d.destino.componente_id;
+                                data["r" + c].actividad = d.destino.actividad_nombre;
+                                data["r" + c].partida = d.destino.partida_id;
+                                data["r" + c].inicio = d.destino.inicio;
+                                data["r" + c].fin = d.destino.fin;
                                 c++;
                             });
                             data.firma = $("#firma").val();
@@ -534,7 +583,7 @@
                             data.id = "${reforma?.id}";
                             $.ajax({
                                 type    : "POST",
-                                url     : "${createLink(action:'saveExistente_ajax')}",
+                                url     : "${createLink(action:'saveActividad_ajax')}",
                                 data    : data,
                                 success : function (msg) {
                                     var parts = msg.split("*");
@@ -552,7 +601,6 @@
                                     closeLoader();
                                 }
                             });
-
                         }
                     }
                     return false;

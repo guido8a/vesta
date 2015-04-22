@@ -25,7 +25,7 @@ class DetalleReforma {
     /**
      * Nueva actividad componente
      */
-    MarcoLogico actividad
+    MarcoLogico componente
     /**
      * Valor
      */
@@ -66,7 +66,7 @@ class DetalleReforma {
             asignacionOrigen column: 'asgn__id'
             asignacionDestino column: 'asgndstn'
             presupuesto column: 'prps__id'
-            actividad column: 'mrlg__id'
+            componente column: 'mrlg__id'
             valor column: 'dtrfvlor'
             descripcionNuevaActividad column: 'dtrfactv'
             fechaInicioNuevaActividad column: 'dtrfacfi'
@@ -82,7 +82,7 @@ class DetalleReforma {
         asignacionOrigen nullable: true
         asignacionDestino nullable: true
         presupuesto nullable: true
-        actividad nullable: true
+        componente nullable: true
         descripcionNuevaActividad nullable: true
         fechaInicioNuevaActividad nullable: true
         fechaFinNuevaActividad nullable: true
