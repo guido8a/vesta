@@ -170,7 +170,7 @@
                     <div class="col-md-1 show-label">Observaciones</div>
 
                     <div class="col-md-11">
-                        <g:textArea name="richText" value=""/>
+                        <g:textArea name="richText" value="${reforma.nota}"/>
                     </div>
                 </div>
             </elm:container>
@@ -178,16 +178,25 @@
             <elm:container tipo="horizontal" titulo="Autorizaciones electrónicas">
                 <div class="row">
                     <div class="col-md-3">
-                        <g:select from="${personas}" optionKey="id" optionValue="${{
-                            it.nombre + ' ' + it.apellido
-                        }}" noSelection="['': '- Seleccione -']" name="firma1" class="form-control required input-sm"/>
+                        <g:if test="${reforma.estado.codigo == "D02"}">
+                            ${reforma.firma1.usuario}
+                        </g:if>
+                        <g:else>
+                            <g:select from="${personas}" optionKey="id" optionValue="${{
+                                it.nombre + ' ' + it.apellido
+                            }}" noSelection="['': '- Seleccione -']" name="firma1" class="form-control required input-sm"/>
+                        </g:else>
                     </div>
 
                     <div class="col-md-3">
-
-                        <g:select from="${gerentes}" optionKey="id" optionValue="${{
-                            it.nombre + ' ' + it.apellido
-                        }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
+                        <g:if test="${reforma.estado.codigo == "D02"}">
+                            ${reforma.firma2.usuario}
+                        </g:if>
+                        <g:else>
+                            <g:select from="${gerentes}" optionKey="id" optionValue="${{
+                                it.nombre + ' ' + it.apellido
+                            }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
+                        </g:else>
                     </div>
                 </div>
 

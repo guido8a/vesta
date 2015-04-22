@@ -1,5 +1,7 @@
 package vesta.proyectos
 
+import vesta.modificaciones.DetalleReforma
+import vesta.modificaciones.Reforma
 import vesta.parametros.UnidadEjecutora
 import vesta.poa.Asignacion
 import vesta.seguridad.Firma
@@ -64,6 +66,10 @@ class ModificacionAsignacion {
      * Texto para el pdf
      */
     String textoPdf
+    /**
+     * Detalle de reforma que originó esta modificación
+     */
+    DetalleReforma detalleReforma
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -94,6 +100,7 @@ class ModificacionAsignacion {
             numero column: 'mdasnmro'
             textoPdf column: 'mdastxpd'
             textoPdf type: 'text'
+            detalleReforma column: 'dtrf__id'
         }
     }
 

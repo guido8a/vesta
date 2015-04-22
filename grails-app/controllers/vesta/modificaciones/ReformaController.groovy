@@ -85,33 +85,65 @@ class ReformaController extends Shield {
         def usu = Persona.get(session.usuario.id)
         def now = new Date()
 
+        def edit = reforma.estado.codigo == "D02"
+
         reforma.estado = estadoAprobadoSinFirmas
         reforma.fechaRevision = now
         reforma.nota = params.observaciones.trim()
 
-        def personaFirma1 = Persona.get(params.firma1.toLong())
-        def personaFirma2 = Persona.get(params.firma2.toLong())
+        def personaFirma1
+        def personaFirma2
 
-        def firma1 = new Firma()
-        firma1.usuario = personaFirma1
-        firma1.fecha = now
-        firma1.accion = "firmarAprobarReforma"
-        firma1.controlador = "reforma"
-        firma1.idAccion = reforma.id
-        firma1.accionVer = "existente"
-        firma1.controladorVer = "reportesReforma"
-        firma1.idAccionVer = reforma.id
-        firma1.accionNegar = "devolverAprobarReforma"
-        firma1.controladorNegar = "reforma"
-        firma1.idAccionNegar = reforma.id
-        firma1.concepto = "Aprobación de reforma a asignaciones existentes (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
-        firma1.tipoFirma = "RFRM"
-        if (!firma1.save(flush: true)) {
-            println "error al crear firma: " + firma1.errors
-            render "ERROR*" + renderErrors(bean: firma1)
-            return
+        if (edit) {
+            personaFirma1 = reforma.firma1.usuario
+            personaFirma2 = reforma.firma2.usuario
+        } else {
+            personaFirma1 = Persona.get(params.firma1.toLong())
+            personaFirma2 = Persona.get(params.firma2.toLong())
+
+            def firma1 = new Firma()
+            firma1.usuario = personaFirma1
+            firma1.fecha = now
+            firma1.accion = "firmarAprobarReforma"
+            firma1.controlador = "reforma"
+            firma1.idAccion = reforma.id
+            firma1.accionVer = "existente"
+            firma1.controladorVer = "reportesReforma"
+            firma1.idAccionVer = reforma.id
+            firma1.accionNegar = "devolverAprobarReforma"
+            firma1.controladorNegar = "reforma"
+            firma1.idAccionNegar = reforma.id
+            firma1.concepto = "Aprobación de reforma a asignaciones existentes (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma1.tipoFirma = "RFRM"
+            if (!firma1.save(flush: true)) {
+                println "error al crear firma: " + firma1.errors
+                render "ERROR*" + renderErrors(bean: firma1)
+                return
+            }
+            reforma.firma1 = firma1
+
+            def firma2 = new Firma()
+            firma2.usuario = personaFirma2
+            firma2.fecha = now
+            firma2.accion = "firmarAprobarReforma"
+            firma2.controlador = "reforma"
+            firma2.idAccion = reforma.id
+            firma2.accionVer = "existente"
+            firma2.controladorVer = "reportesReforma"
+            firma2.idAccionVer = reforma.id
+            firma2.accionNegar = "devolverAprobarReforma"
+            firma2.controladorNegar = "reforma"
+            firma2.idAccionNegar = reforma.id
+            firma2.concepto = "Aprobación de reforma a asignaciones existentes (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma2.tipoFirma = "RFRM"
+            if (!firma2.save(flush: true)) {
+                println "error al crear firma: " + firma2.errors
+                render "ERROR*" + renderErrors(bean: firma2)
+                return
+            }
+            reforma.firma2 = firma2
         }
-        reforma.firma1 = firma1
+
         def alerta = new Alerta()
         alerta.from = usu
         alerta.persona = personaFirma1
@@ -123,27 +155,6 @@ class ReformaController extends Shield {
         if (!alerta.save(flush: true)) {
             println "error alerta: " + alerta.errors
         }
-
-        def firma2 = new Firma()
-        firma2.usuario = personaFirma2
-        firma2.fecha = now
-        firma2.accion = "firmarAprobarReforma"
-        firma2.controlador = "reforma"
-        firma2.idAccion = reforma.id
-        firma2.accionVer = "existente"
-        firma2.controladorVer = "reportesReforma"
-        firma2.idAccionVer = reforma.id
-        firma2.accionNegar = "devolverAprobarReforma"
-        firma2.controladorNegar = "reforma"
-        firma2.idAccionNegar = reforma.id
-        firma2.concepto = "Aprobación de reforma a asignaciones existentes (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
-        firma2.tipoFirma = "RFRM"
-        if (!firma2.save(flush: true)) {
-            println "error al crear firma: " + firma2.errors
-            render "ERROR*" + renderErrors(bean: firma2)
-            return
-        }
-        reforma.firma2 = firma2
         def alerta2 = new Alerta()
         alerta2.from = usu
         alerta2.persona = personaFirma2
@@ -477,6 +488,7 @@ class ReformaController extends Shield {
                     modificacion.fecha = now
                     modificacion.valor = detalle.valor
                     modificacion.estado = 'A'
+                    modificacion.detalleReforma = detalle
                     if (!modificacion.save(flush: true)) {
                         errores += renderErrors(bean: modificacion)
                     }
