@@ -57,7 +57,7 @@
                                 <g:each in="${firmas}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         <td>${f.concepto}</td>
-                                        <td>${f.documento} </td>
+                                        <td>${f.documento}</td>
 
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group">
@@ -88,7 +88,7 @@
                                                     </a>
                                                 </g:if>
                                             </div>
-                                                %{--</g:else>--}%
+                                            %{--</g:else>--}%
                                             %{--</g:if>--}%
                                             <a href="#" iden="${f.id}" class="aprobar btn btn-success btn-sm" style="margin: 5px">
                                                 <i class="fa fa-paw"></i> Firmar
@@ -375,7 +375,6 @@
                     }
                 });
             });
-
 
             //
             //    function aprobar (id) {

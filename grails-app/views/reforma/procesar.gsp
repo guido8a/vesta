@@ -22,7 +22,7 @@
     </head>
 
     <body>
-
+        <g:hiddenField name="anio" value="${reforma.anioId}"/>
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link action="pendientes" class="btn btn-default">
@@ -58,7 +58,7 @@
                     Total
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-2" id="divTotal">
                     <g:formatNumber number="${total}" type="currency"/>
                 </div>
 
@@ -75,17 +75,20 @@
                 <table class="table table-bordered table-hover table-condensed">
                     <thead>
                         <tr>
-                            <th>Proyecto</th>
-                            <th>Componente</th>
+                            <th style="width: 100px;">Proyecto</th>
+                            <th style="width: 100px;">Componente</th>
                             <th>Actividad</th>
                             <th>Asignación</th>
-                            <th>Valor inicial</th>
-                            <th>Disminución</th>
-                            <th>Aumento</th>
-                            <th>Valor final</th>
+                            <th style="width: 80px;">Valor inicial</th>
+                            <th style="width: 80px;">Disminución</th>
+                            <th style="width: 80px;">Aumento</th>
+                            <th style="width: 80px;">Valor final</th>
+                            <g:if test="${reforma.tipoSolicitud == 'I'}">
+                                <th style="width: 30px;"></th>
+                            </g:if>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tb">
                         <g:set var="totalInicial" value="${0}"/>
                         <g:set var="totalDisminucion" value="${0}"/>
                         <g:set var="totalAumento" value="${0}"/>
@@ -97,38 +100,53 @@
                                 <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
                                 <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen.priorizado - detalle.valor) + (detalle.asignacionDestino.priorizado + detalle.valor))}"/>
                             </g:if>
+                            <g:elseif test="${reforma.tipoSolicitud == 'I'}">
+                                <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionDestino.priorizado)}"/>
+                                <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
+                                <g:set var="totalFinal" value="${totalFinal + (detalle.asignacionDestino.priorizado + detalle.valor)}"/>
+                            </g:elseif>
                             <g:elseif test="${reforma.tipoSolicitud == 'A'}">
                                 <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen.priorizado)}"/>
                                 <g:set var="totalDisminucion" value="${totalDisminucion + detalle.valor}"/>
                                 <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
                                 <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen.priorizado - detalle.valor) + (detalle.valor))}"/>
                             </g:elseif>
-                            <tr class="info">
-                                <td>
-                                    ${detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionOrigen.marcoLogico.numero} - ${detalle.asignacionOrigen.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionOrigen}
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.asignacionOrigen.priorizado}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td></td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.asignacionOrigen.priorizado - detalle.valor}" type="currency" currencySymbol=""/>
-                                </td>
-                            </tr>
-                            <tr class="success">
-                                <g:if test="${reforma.tipoSolicitud == 'E'}">
+                            <g:if test="${reforma.tipoSolicitud != 'I'}">
+                                <tr class="info">
+                                    <td>
+                                        ${detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
+                                    </td>
+                                    <td>
+                                        ${detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()}
+                                    </td>
+                                    <td>
+                                        ${detalle.asignacionOrigen.marcoLogico.numero} - ${detalle.asignacionOrigen.marcoLogico.toStringCompleto()}
+                                    </td>
+                                    <td>
+                                        ${detalle.asignacionOrigen}
+                                    </td>
+                                    <td class="text-right">
+                                        <g:formatNumber number="${detalle.asignacionOrigen.priorizado}" type="currency" currencySymbol=""/>
+                                    </td>
+                                    <td class="text-right">
+                                        <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <g:formatNumber number="${detalle.asignacionOrigen.priorizado - detalle.valor}" type="currency" currencySymbol=""/>
+                                    </td>
+                                </tr>
+                            </g:if>
+                            <tr class="success"
+                                data-id="${detalle.id}"
+                                data-asd="${detalle.asignacionDestinoId}"
+                                data-aso=""
+                                data-monto="${detalle.valor}"
+                                data-ti="${detalle.asignacionDestino.priorizado}"
+                                data-ta="${detalle.valor}"
+                                data-td="${0}"
+                                data-tf="${detalle.asignacionDestino.priorizado + detalle.valor}">
+                                <g:if test="${reforma.tipoSolicitud == 'E' || reforma.tipoSolicitud == 'I'}">
                                     <td>
                                         ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
                                     </td>
@@ -151,6 +169,13 @@
                                     <td class="text-right">
                                         <g:formatNumber number="${detalle.asignacionDestino.priorizado + detalle.valor}" type="currency" currencySymbol=""/>
                                     </td>
+                                    <g:if test="${reforma.tipoSolicitud == 'I'}">
+                                        <td>
+                                            <a href="#" class="btn btn-xs btn-success btnSelect" title="Seleccionar asignación de origen" data-id="${detalle.id}">
+                                                <i class="fa fa-pencil-square"></i>
+                                            </a>
+                                        </td>
+                                    </g:if>
                                 </g:if>
                                 <g:elseif test="${reforma.tipoSolicitud == 'A'}">
                                     <td>
@@ -185,16 +210,16 @@
                     <tfoot>
                         <tr>
                             <th class="text-right" colspan="4">TOTAL</th>
-                            <th class="text-right">
+                            <th class="text-right" id="totalInicial" data-valor="${totalInicial}">
                                 <g:formatNumber number="${totalInicial}" type="currency" currencySymbol=""/>
                             </th>
-                            <th class="text-right">
+                            <th class="text-right" id="totalDism">
                                 <g:formatNumber number="${totalDisminucion}" type="currency" currencySymbol=""/>
                             </th>
-                            <th class="text-right">
+                            <th class="text-right" id="totalAum">
                                 <g:formatNumber number="${totalAumento}" type="currency" currencySymbol=""/>
                             </th>
-                            <th class="text-right">
+                            <th class="text-right" id="totalFinal" data-valor="${totalFinal}">
                                 <g:formatNumber number="${totalFinal}" type="currency" currencySymbol=""/>
                             </th>
                         </tr>
@@ -293,7 +318,7 @@
 
             <elm:container tipo="horizontal" titulo="Autorizaciones electrónicas">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-3 grupo">
                         <g:if test="${reforma.estado.codigo == "D02"}">
                             ${reforma.firma1.usuario}
                         </g:if>
@@ -304,7 +329,7 @@
                         </g:else>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3 grupo">
                         <g:if test="${reforma.estado.codigo == "D02"}">
                             ${reforma.firma2.usuario}
                         </g:if>
@@ -318,7 +343,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="#" id="btnAprobar" class="btn btn-success">
+                        <a href="#" id="btnAprobar" class="btn btn-success ${reforma.tipoSolicitud == 'I' ? 'disabled' : ''}">
                             <i class="fa fa-thumbs-up"></i> Aprobar
                         </a>
                         <a href="#" id="btnNegar" class="btn btn-danger">
@@ -348,6 +373,16 @@
                     data.firma1 = $("#firma1").val();
                     data.firma2 = $("#firma2").val();
                     data.observaciones = $("#richText").val();
+                    var i = 0;
+                    <g:if test="${reforma.tipoSolicitud == 'I'}">
+                    $("#tb").children().each(function () {
+                        var $tr = $(this);
+                        if ($tr.hasClass("info")) {
+                            data["r" + i] = $tr.next().data("id") + "_" + $tr.data("aso");
+                            i++;
+                        }
+                    });
+                    </g:if>
                 }
                 bootbox.confirm("¿Está seguro de querer <strong class='text-" + clase + "'>" + str2 + "</strong> esta solicitud de reforma?<br/>Esta acción no puede revertirse.",
                         function (res) {
@@ -392,8 +427,19 @@
                     }
                 });
                 $("#btnAprobar").click(function () {
-                    if ($("#frmFirmas").valid()) {
-                        procesar(true);
+                    var ok = true;
+                    <g:if test="${reforma.tipoSolicitud == 'I'}">
+                    var ti = parseFloat(number_format($("#totalInicial").data("valor"), 2, ".", ""));
+                    var tf = parseFloat(number_format($("#totalFinal").data("valor"), 2, ".", ""));
+                    if (ti != tf) {
+                        bootbox.alert("Debe seleccionar las asignaciones de origen de tal manera que el total inicial sea igual al total final");
+                        ok = false;
+                    }
+                    </g:if>
+                    if (ok) {
+                        if ($("#frmFirmas").valid()) {
+                            procesar(true);
+                        }
                     }
                     return false;
                 });
@@ -401,6 +447,151 @@
                     procesar(false);
                     return false;
                 });
+
+                <g:if test="${reforma.tipoSolicitud == 'I'}">
+                function validarPar(dataOrigen, dataDestino) {
+                    var ok = true;
+                    if (dataOrigen.monto > dataOrigen.max) {
+                        ok = false;
+                        bootbox.alert("No puede seleccionar una asignación cuyo máximo es menor que el valor de la asignación de destino");
+                    }
+                    if (ok) {
+                        $("#tb").children().each(function () {
+                            var d = $(this).data();
+                            if (ok) {
+                                if (d.aso == dataOrigen.asignacion_id && d.asd == dataDestino.asignacion_id) {
+                                    ok = false;
+                                    bootbox.alert("No puede seleccionar un par de asignaciones ya ingresados");
+                                } else {
+                                    if (d.aso == dataDestino.asignacion_id || d.asd == dataOrigen.asignacion_id) {
+                                        ok = false;
+                                        bootbox.alert("No puede seleccionar una asignación de origen que está listada como destino");
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    return ok;
+                }
+
+                function calcularTotal() {
+                    var totInicial = 0;
+                    var totFinal = 0;
+                    var totAumento = 0;
+                    var totDism = 0;
+                    $("#tb").children().each(function () {
+                        totInicial += parseFloat($(this).data("ti"));
+                        totFinal += parseFloat($(this).data("tf"));
+                        totAumento += parseFloat($(this).data("ta"));
+                        totDism += parseFloat($(this).data("td"));
+                    });
+                    if (parseFloat(number_format(totInicial, 2, ".", "")) == parseFloat(number_format(totFinal, 2, ".", ""))) {
+                        $("#btnAprobar").removeClass("disabled");
+                    } else {
+                        $("#btnbtnAprobar").addClass("disabled");
+                    }
+                    $("#totalInicial").text(number_format(totInicial, 2, ".", ",")).data("valor", totInicial);
+                    $("#totalFinal").text(number_format(totFinal, 2, ".", ",")).data("valor", totFinal);
+                    $("#totalAum").text(number_format(totAumento, 2, ".", ","));
+                    $("#totalDism").text(number_format(totDism, 2, ".", ","));
+                }
+
+                function addOrigen(dataOrigen, dataDestino, $trDestino) {
+                    var data = {origen : dataOrigen, destino : dataDestino};
+                    data.ti = number_format(dataOrigen.inicial, 2, ".", "");
+                    data.ta = 0;
+                    data.td = number_format(dataOrigen.monto, 2, ".", "");
+                    data.tf = number_format(parseFloat(dataOrigen.inicial) - parseFloat(dataOrigen.monto), 2, ".", "");
+                    data.aso = dataOrigen.asignacion_id;
+                    data.asd = "";
+
+                    var $rowOrigen = $("<tr class='info'>");
+
+                    var $tdPrO = $("<td>");
+                    var $tdCmO = $("<td>");
+                    var $tdAcO = $("<td>");
+                    var $tdAsO = $("<td>");
+                    var $tdInO = $("<td class='text-right'>");
+                    var $tdMnO = $("<td class='text-right'>");
+                    var $tdAuO = $("<td>");
+                    var $tdFnO = $("<td class='text-right'>");
+                    var $tdVcO = $("<td>");
+
+                    $tdPrO.text(dataOrigen.proyecto_nombre);
+                    $tdCmO.text(dataOrigen.componente_nombre);
+                    $tdAcO.text(dataOrigen.actividad_nombre);
+                    $tdAsO.text(dataOrigen.asignacion_nombre);
+                    $tdInO.text(number_format(dataOrigen.inicial, 2, ".", ","));
+                    $tdMnO.text(number_format(dataOrigen.monto, 2, ".", ","));
+                    $tdFnO.text(number_format(parseFloat(dataOrigen.inicial) - parseFloat(dataOrigen.monto), 2, ".", ","));
+
+                    $rowOrigen.data(data).append($tdPrO).append($tdCmO).append($tdAcO).append($tdAsO).append($tdInO).append($tdMnO).append($tdAuO).append($tdFnO).append($tdVcO);
+
+                    if ($trDestino.prev().hasClass("info")) {
+                        $trDestino.prev().replaceWith($rowOrigen);
+                    } else {
+                        $trDestino.before($rowOrigen);
+                    }
+                    calcularTotal();
+                }
+
+                $(".btnSelect").click(function () {
+                    var $btn = $(this);
+                    var $tr = $btn.parents("tr");
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(action:'asignarOrigen_ajax')}",
+                        data    : {
+                            id  : "${reforma.id}",
+                            det : $btn.data("id")
+                        },
+                        success : function (msg) {
+                            var b = bootbox.dialog({
+                                id      : "dlgCreateEdit",
+                                title   : "Asignación de origen",
+                                class   : "modal-lg",
+                                message : msg,
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+                                    guardar  : {
+                                        id        : "btnSave",
+                                        label     : "<i class='fa fa-save'></i> Guardar",
+                                        className : "btn-success",
+                                        callback  : function () {
+                                            var dataDestino = {
+                                                asignacion_id : $tr.data("asignacion")
+                                            };
+                                            var dataOrigen = {
+                                                monto : $tr.data("monto")
+                                            };
+                                            dataOrigen.proyecto_nombre = $("#proyecto").find("option:selected").text();
+                                            dataOrigen.componente_nombre = $("#comp").find("option:selected").text();
+                                            dataOrigen.actividad_nombre = $("#actividad").find("option:selected").text();
+                                            dataOrigen.asignacion_nombre = $("#asignacion").find("option:selected").text();
+                                            dataOrigen.asignacion_id = $("#asignacion").val();
+                                            dataOrigen.inicial = $("#asignacion").find("option:selected").attr("class");
+                                            dataOrigen.max = $("#max").data("max");
+                                            if (validarPar(dataOrigen, dataDestino)) {
+                                                addOrigen(dataOrigen, dataDestino, $tr);
+                                            }
+                                        } //callback
+                                    } //guardar
+                                } //buttons
+                            }); //dialog
+                            setTimeout(function () {
+                                b.find(".form-control").first().focus()
+                            }, 500);
+                        } //success
+                    }); //ajax
+                    return false;
+                });
+
+                </g:if>
             });
         </script>
 

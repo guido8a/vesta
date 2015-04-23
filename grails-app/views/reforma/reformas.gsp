@@ -42,7 +42,7 @@
                         se crea nuevas actividades con asignación de origen, valor, actividad nueva (con fecha de incio, fecha de fin, justificación, valor y componente)
                     </p>
                 </g:link>
-                <g:link action="existente" class="list-group-item">
+                <g:link action="incremento" class="list-group-item">
                     <h4 class="list-group-item-heading"><span class="icon"></span> Incremento</h4>
 
                     <p class="list-group-item-text">
