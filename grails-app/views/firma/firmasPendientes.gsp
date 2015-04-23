@@ -60,42 +60,47 @@
                                         <td>${f.documento}</td>
 
                                         <td style="text-align: center">
-                                            <div class="btn-group" role="group">
+                                            <div class="btn-group btn-group-sm" role="group">
                                                 <g:if test="${f.accionVer}">
                                                 %{--<g:if test="${f.esPdf != 'N'}">--}%
                                                     <g:if test="${f.esPdf == 'S'}">
                                                         <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
-                                                           target="_blank" class="btn btn-info btn-sm" title="Ver">
+                                                           target="_blank" class="btn btn-info" title="Ver">
                                                             <i class="fa fa-search"></i>
                                                         </a>
                                                     </g:if>
                                                     <g:else>
                                                         <a href="${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
-                                                           class="btn btn-info btn-sm" title="Ver">
+                                                           class="btn btn-info" title="Ver">
                                                             <i class="fa fa-search"></i>
                                                         </a>
                                                     </g:else>
                                                 </g:if>
-                                                <a href="#" iden="${f.id}" class="aprobar btn btn-success btn-sm" title="Firmar">
+                                                <a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">
                                                     <i class="fa fa-paw"></i>
                                                 </a>
-                                            %{--<a href="#" class="negar btn btn-danger btn-sm" title="Negar">--}%
+                                            %{--<a href="#" class="negar btn btn-danger" title="Negar">--}%
                                             %{--<i class="fa fa-thumbs-down"></i>--}%
                                             %{--</a>--}%
                                                 <g:if test="${f.tipoFirma == 'RFRM'}">
-                                                    <a href="#" iden="${f.id}" class="devolver btn btn-warning btn-sm" title="Devolver">
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-warning" title="Devolver">
                                                         <i class="fa fa-hand-o-left"></i>
                                                     </a>
                                                 </g:if>
+                                                <g:else>
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
+                                                        <i class="fa fa-thumbs-down"></i>
+                                                    </a>
+                                                </g:else>
                                             </div>
                                             %{--</g:else>--}%
                                             %{--</g:if>--}%
-                                            <a href="#" iden="${f.id}" class="aprobar btn btn-success btn-sm" style="margin: 5px">
-                                                <i class="fa fa-paw"></i> Firmar
-                                            </a>
-                                            <a href="#" iden="${f.id}" class="devolver btn btn-danger btn-sm">
-                                                <i class="fa fa-thumbs-down"></i> Devolver
-                                            </a>
+                                            %{--<a href="#" iden="${f.id}" class="aprobar btn btn-success" style="margin: 5px">--}%
+                                            %{--<i class="fa fa-paw"></i> Firmar--}%
+                                            %{--</a>--}%
+                                            %{--<a href="#" iden="${f.id}" class="devolver btn btn-danger">--}%
+                                            %{--<i class="fa fa-thumbs-down"></i> Devolver--}%
+                                            %{--</a>--}%
                                         </td>
                                     </tr>
                                 </g:each>
