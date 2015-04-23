@@ -79,9 +79,9 @@
                                                 <a href="#" iden="${f.id}" class="aprobar btn btn-success btn-sm" title="Firmar">
                                                     <i class="fa fa-paw"></i>
                                                 </a>
-                                                <a href="#" class="negar btn btn-danger btn-sm" title="Negar">
-                                                    <i class="fa fa-thumbs-down"></i>
-                                                </a>
+                                            %{--<a href="#" class="negar btn btn-danger btn-sm" title="Negar">--}%
+                                            %{--<i class="fa fa-thumbs-down"></i>--}%
+                                            %{--</a>--}%
                                                 <g:if test="${f.tipoFirma == 'RFRM'}">
                                                     <a href="#" iden="${f.id}" class="devolver btn btn-warning btn-sm" title="Devolver">
                                                         <i class="fa fa-hand-o-left"></i>
