@@ -15,6 +15,6 @@
 <script>
     $("#asignacion").change(function () {
         var max = getMaximo($("#asignacion").val(), 0);
-        $("#max").text(number_format(max, 2, '.', ','))
+        $("#max").text(number_format(max, 2, '.', ',')).data("max", max);
     });
 </script>

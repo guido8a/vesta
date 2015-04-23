@@ -16,7 +16,7 @@
             success : function (msg) {
                 $("#${div?div:'divAct'}").html(msg);
                 $("#divAsg").html("");
-                $("#max").text("");
+                $("#max").html("").data("max", 0);
             }
         });
     })

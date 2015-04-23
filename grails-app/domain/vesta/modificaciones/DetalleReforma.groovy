@@ -1,5 +1,6 @@
 package vesta.modificaciones
 
+import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.proyectos.Categoria
@@ -51,6 +52,10 @@ class DetalleReforma {
      * Saldo para usarse en incrementos
      */
     Double saldo = 0
+    /**
+     * Fuente para la nueva partida
+     */
+    Fuente fuente
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -78,6 +83,7 @@ class DetalleReforma {
             fechaFinNuevaActividad column: 'dtrfacff'
             categoria column: 'ctgr__id'
             saldo column: 'dtrfsldo'
+            fuente column: 'fnte__id'
         }
     }
 
@@ -93,5 +99,6 @@ class DetalleReforma {
         fechaInicioNuevaActividad nullable: true
         fechaFinNuevaActividad nullable: true
         categoria nullable: true
+        fuente nullable: true
     }
 }

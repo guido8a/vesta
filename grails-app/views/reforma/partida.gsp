@@ -5,7 +5,7 @@
   Time: 09:06 AM
 --%>
 
-<%@ page import="vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.modificaciones.DetalleReforma; vesta.parametros.poaPac.Fuente; vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
@@ -65,7 +65,8 @@
             </div>
 
             <g:if test="${editable}">
-                <form id="frmReforma">
+                <form id="frmReforma" style="margin-bottom: 10px;">
+                    <h3 class="text-info">Asignación de origen</h3>
                     <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
                         <thead>
                             <tr>
@@ -73,15 +74,10 @@
                                 <th style="width:234px;">Componente</th>
                                 <th style="width:234px;">Actividad</th>
                                 <th style="width:234px;">Asignación</th>
-                                <th style="width:195px;">Monto</th>
                                 <th style="width:135px;">Máximo</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="info">
-                                <td colspan="7">Asignación de origen</td>
-                            </tr>
                             <tr class="info">
                                 <td>
                                     <g:select from="${proyectos}" optionKey="id" optionValue="nombre" name="proyecto" class="form-control input-sm required requiredCombo"
@@ -93,83 +89,113 @@
                                 </td>
                                 <td id="divAsg">
                                 </td>
-                                <td>
-                                    <div class="input-group">
-                                        <g:textField type="text" name="monto"
-                                                     class="form-control required input-sm number money"/>
-                                        <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                    </div>
-                                </td>
-                                <td id="max">
+                                <td id="max" data-max="0">
 
-                                </td>
-                                <td>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </form>
+
+                <form id="frmPartida">
+                    <h3 class="text-info">Partidas de destino</h3>
+
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label for="fuente">Fuente</label>
+                        </div>
+
+                        <div class="col-md-2">
+                            <g:select name="fuente" from="${Fuente.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"
+                                      class="form-control required"/>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label>Partida</label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
+                                          titulo="Busque una partida" campos="${campos}" clase="required" style="width:100%;"/>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label for="monto">Monto</label>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <g:textField type="text" name="monto"
+                                             class="form-control required input-sm number money"/>
+                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <a href="#" class="btn btn-success btn-sm " id="btnAddReforma">
+                                <i class="fa fa-plus"></i> Agregar
+                            </a>
+                        </div>
+                    </div>
+                </form>
             </g:if>
 
-            <div id="detallesExistentes">
-                <g:each in="${detalles}" var="detalle" status="i">
-                    <table class='table table-bordered table-hover table-condensed tableReforma'>
-                        <thead>
+            <div id="detallesExistentes" style="margin-top: 15px;">
+                <table class='table table-bordered table-hover table-condensed'>
+                    <thead>
+                        <tr>
                             <th colspan='5'>
-                                Detalle existente ${i + 1}
-                                <a href='' class='btn btn-danger btn-xs pull-right btnDeleteDetalle' data-id="${detalle.id}">
-                                    <i class='fa fa-trash-o'></i>
-                                </a>
+                                Detalles existentes
                             </th>
-                            <tr>
-                                <th style='width:234px;'>Proyecto</th>
-                                <th style='width:234px;'>Componente</th>
-                                <th style='width:234px;'>Actividad</th>
-                                <th>Asignación</th>
-                                <th style='width:195px;'>Monto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="info">
+                        </tr>
+                        <tr>
+                            <th style="width: 300px;">Fuente</th>
+                            <th>Partida</th>
+                            <th style="width: 180px;">Monto</th>
+                            <th style="width: 40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <g:each in="${detalles}" var="detalle" status="i">
+                            <tr class="success tableReforma tableReformaExistente"
+                                data-monto="${detalle.valor}"
+                                data-asignacion="${detalle.asignacionOrigenId}"
+                                data-fuente="${detalle.fuenteId}"
+                                data-presupuesto="${detalle.presupuestoId}">
                                 <td>
-                                    ${detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
+                                    ${detalle.fuente}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionOrigen.marcoLogico.numero} - ${detalle.asignacionOrigen.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionOrigen}
-                                </td>
-                                <td class="text-right">
-                                    -<g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                </td>
-                            </tr>
-                            <tr class="success">
-                                <td>
-                                    ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionDestino.marcoLogico.numero} - ${detalle.asignacionDestino.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionDestino}
+                                    ${detalle.presupuesto}
                                 </td>
                                 <td class="text-right">
                                     <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
                                 </td>
+                                <td>
+                                    <a href='' class='btn btn-danger btn-xs pull-right btnDeleteDetalle' data-id="${detalle.id}">
+                                        <i class='fa fa-trash-o'></i>
+                                    </a>
+                                </td>
                             </tr>
-                        </tbody>
-                    </table>
-                </g:each>
+                        </g:each>
+                    </tbody>
+                </table>
             </div>
 
-            <div id="divReformas">
+            <div style="margin-top: 15px;">
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="width: 300px;">Fuente</th>
+                            <th>Partida</th>
+                            <th style="width: 180px;">Monto</th>
+                            <th style="width: 40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="divReformas">
+
+                    </tbody>
+                </table>
             </div>
         </elm:container>
 
@@ -217,6 +243,24 @@
         <script type="text/javascript">
             var cont = 1;
 
+            function addData() {
+                $(".tableReformaExistente").each(function () {
+                    var d = $(this).data();
+                    var data = {
+                        origen  : {
+                            monto         : d.monto,
+                            asignacion_id : d.asignacion
+                        },
+                        destino : {
+                            fuente_id      : d.fuente,
+                            presupuesto_id : d.presupuesto
+                        }
+                    };
+                    $(this).data(data);
+                });
+                calcularTotal();
+            }
+
             function getMaximo(asg) {
                 if ($("#asignacion").val() != "-1") {
                     $.ajax({
@@ -240,7 +284,7 @@
 //                            console.log("utilizable= ", ok);
 
                             $("#max").html("$" + number_format(ok, 2, ".", ","))
-                                    .attr("valor", ok);
+                                    .attr("valor", ok).data("max", ok);
                             $("#monto").attr("tdnMax", ok);
                         }
                     });
@@ -248,35 +292,34 @@
             }
 
             function resetForm() {
-                $("#proyecto").val("-1");
-                $("#divComp").html("");
-                $("#divAct").html("");
-                $("#divAsg").html("");
+                $("#bsc-desc-prsp_id").val("");
+                $("#prsp_id").val("");
                 $("#monto").val("");
-                $("#max").html("");
-
-                $("#proyectoDest").val("-1");
-                $("#divComp_dest").html("");
-                $("#divAct_dest").html("");
-                $("#divAsg_dest").html("");
-                $("#monto_dest").val("");
-                $("#tdTotalDestino").html("");
             }
 
             function validarPar(dataOrigen, dataDestino) {
                 var ok = true;
+                var max = parseFloat($("#max").data("max"));
+                var total = 0;
                 $(".tableReforma").each(function () {
                     var d = $(this).data();
-                    if (d.origen.asignacion_id == dataOrigen.asignacion_id && d.destino.asignacion_id == dataDestino.asignacion_id) {
+                    var v = str_replace(",", "", d.origen.monto);
+                    total += parseFloat(v);
+                    if (dataDestino.fuente_id == d.destino.fuente_id && dataDestino.partida_id == d.destino.partida_id) {
                         ok = false;
-                        bootbox.alert("No puede seleccionar un par de asignaciones ya ingresados");
-                    } else {
-                        if (d.origen.asignacion_id == dataDestino.asignacion_id || d.destino.asignacion_id == dataOrigen.asignacion_id) {
-                            ok = false;
-                            bootbox.alert("No puede seleccionar una asignación de origen que está listada como destino ni vice versa");
-                        }
                     }
                 });
+                if (!ok) {
+                    bootbox.alert("No puede seleccionar 2 veces la misma combinación de fuente y partida");
+                } else {
+                    if (dataDestino) {
+                        total += parseFloat(dataOrigen.monto);
+                    }
+                    if (total > max) {
+                        ok = false;
+                        bootbox.alert("No puede sobrepasar el valor máximo de la asignación de origen");
+                    }
+                }
                 return ok;
             }
 
@@ -296,98 +339,56 @@
             function addReforma(dataOrigen, dataDestino) {
                 var data = {origen : dataOrigen, destino : dataDestino};
 
-                var $tabla = $("<table class='table table-bordered table-hover table-condensed tableReforma tableReformaNueva'>");
-                var $thead = $("<thead>");
-                var $tbody = $("<tbody>");
-                var $rowOrigen = $("<tr class='info'>");
-                var $rowDestino = $("<tr class='success'>");
+//                var $tabla = $("<table class='table table-bordered table-hover table-condensed tableReforma tableReformaNueva'>");
+//                var $thead = $("<thead>");
+//                var $tbody = $("<tbody>");
+                var $rowDestino = $("<tr class='success tableReforma tableReformaNueva'>");
 
                 var $btn = $("<a href='' class='btn btn-danger btn-xs pull-right'><i class='fa fa-trash-o'></i></a>");
                 $btn.click(function () {
-                    $(this).parents("table").remove();
+                    $(this).parents("tr").remove();
                     cont--;
                     calcularTotal();
                     return false;
                 });
 
-                var $trTitulo = $("<tr>");
-                var $thTitulo = $("<th colspan='5'>Detalle " + cont + "</th>");
-                $thTitulo.append($btn);
-                $thTitulo.appendTo($trTitulo);
-                cont++;
-                $thead.append($trTitulo);
+//                var $trTitulo = $("<tr>");
+//                var $thTitulo = $("<th colspan='5'>Detalle " + cont + "</th>");
+//                $thTitulo.append($btn);
+//                $thTitulo.appendTo($trTitulo);
+//                cont++;
+//                $thead.append($trTitulo);
 
-                var $trHead = $("<tr>");
-                $("<th style='width:234px;'>Proyecto</th>").appendTo($trHead);
-                $("<th style='width:234px;'>Componente</th>").appendTo($trHead);
-                $("<th style='width:234px;'>Actividad</th>").appendTo($trHead);
-                $("<th>Asignación</th>").appendTo($trHead);
-                $("<th style='width:195px;'>Monto</th>").appendTo($trHead);
-                $thead.append($trHead);
+//                var $trHead = $("<tr>");
+//                $("<th style='width:300px;'>Fuente</th>").appendTo($trHead);
+//                $("<th>Partida</th>").appendTo($trHead);
+//                $("<th style='width:180px;'>Monto</th>").appendTo($trHead);
+//                $thead.append($trHead);
 
-                var $tdPrO = $("<td>");
-                var $tdCmO = $("<td>");
-                var $tdAcO = $("<td>");
-                var $tdAsO = $("<td>");
-                var $tdMnO = $("<td class='text-right'>");
+                var $tdF = $("<td>");
+                var $tdP = $("<td>");
+                var $tdM = $("<td class='text-right'>");
+                var $tdB = $("<td>");
 
-                var $tdPrD = $("<td>");
-                var $tdCmD = $("<td>");
-                var $tdAcD = $("<td>");
-                var $tdAsD = $("<td>");
-                var $tdMnD = $("<td class='text-right'>");
+                $tdF.text(dataDestino.fuente_nombre);
+                $tdP.text(dataDestino.partida_nombre);
+                $tdM.text(number_format(dataOrigen.monto, 2, ".", ","));
+                $tdB.append($btn);
 
-                $tdPrO.text(dataOrigen.proyecto_nombre);
-                $tdCmO.text(dataOrigen.componente_nombre);
-                $tdAcO.text(dataOrigen.actividad_nombre);
-                $tdAsO.text(dataOrigen.asignacion_nombre);
-                $tdMnO.text("-" + number_format(dataOrigen.monto, 2, ".", ","));
+                $rowDestino.data(data).append($tdF).append($tdP).append($tdM).append($tdB);
 
-                $tdPrD.text(dataDestino.proyecto_nombre);
-                $tdCmD.text(dataDestino.componente_nombre);
-                $tdAcD.text(dataDestino.actividad_nombre);
-                $tdAsD.text(dataDestino.asignacion_nombre);
-                $tdMnD.text(number_format(dataOrigen.monto, 2, ".", ","));
-
-                $rowOrigen.data(dataOrigen).append($tdPrO).append($tdCmO).append($tdAcO).append($tdAsO).append($tdMnO);
-                $rowDestino.data(dataDestino).append($tdPrD).append($tdCmD).append($tdAcD).append($tdAsD).append($tdMnD);
-
-                $tbody.append($rowOrigen).append($rowDestino);
-
-                $tabla.data(data).append($thead).append($tbody);
-                $("#divReformas").prepend($tabla);
+//                $tbody.append($rowDestino);
+//
+//                $tabla.data(data).append($thead).append($tbody);
+                $("#divReformas").prepend($rowDestino);
                 calcularTotal();
             }
 
             $(function () {
-                $("#frmReforma").validate({
-                    errorClass     : "help-block",
-                    onfocusout     : false,
-                    rules          : {
-                        asg_dest : {
-                            notEqualTo : "#asignacion"
-                        }
-                    },
-                    messages       : {
-                        asg_dest : {
-                            notEqualTo : "Ingrese una asignación diferente a la de origen"
-                        }
-                    },
-                    errorPlacement : function (error, element) {
-                        if (element.parent().hasClass("input-group")) {
-                            error.insertAfter(element.parent());
-                        } else {
-                            error.insertAfter(element);
-                        }
-                        element.parents(".grupo").addClass('has-error');
-                    },
-                    success        : function (label) {
-                        label.parents(".grupo").removeClass('has-error');
-                        label.remove();
-                    }
-                });
 
-                $("#frmFirma").validate({
+                addData();
+
+                $("#frmReforma, #frmPartida, #frmFirma").validate({
                     errorClass     : "help-block",
                     onfocusout     : false,
                     errorPlacement : function (error, element) {
@@ -406,7 +407,7 @@
 
                 $(".btnDeleteDetalle").click(function () {
                     var id = $(this).data("id");
-                    var $tabla = $(this).parents("table");
+                    var $tabla = $(this).parents("tr");
                     bootbox.confirm("¿Está seguro de querer eliminar este detalle? Se eliminará permantente de esta reforma.", function (res) {
                         if (res) {
                             $.ajax({
@@ -430,21 +431,22 @@
                 });
 
                 $("#btnAddReforma").click(function () {
-                    if ($("#frmReforma").valid()) {
+                    if ($("#frmPartida").valid()) {
                         var dataOrigen = {};
-                        dataOrigen.proyecto_nombre = $("#proyecto").find("option:selected").text();
-                        dataOrigen.componente_nombre = $("#comp").find("option:selected").text();
-                        dataOrigen.actividad_nombre = $("#actividad").find("option:selected").text();
-                        dataOrigen.asignacion_nombre = $("#asignacion").find("option:selected").text();
+//                        dataOrigen.proyecto_nombre = $("#proyecto").find("option:selected").text();
+//                        dataOrigen.componente_nombre = $("#comp").find("option:selected").text();
+//                        dataOrigen.actividad_nombre = $("#actividad").find("option:selected").text();
+//                        dataOrigen.asignacion_nombre = $("#asignacion").find("option:selected").text();
                         dataOrigen.asignacion_id = $("#asignacion").val();
                         dataOrigen.monto = $("#monto").val();
 
                         var dataDestino = {};
-                        dataDestino.proyecto_nombre = $("#proyectoDest").find("option:selected").text();
-                        dataDestino.componente_nombre = $("#compDest").find("option:selected").text();
-                        dataDestino.actividad_nombre = $("#actividad_dest").find("option:selected").text();
-                        dataDestino.asignacion_nombre = $("#asignacion_dest").find("option:selected").text();
-                        dataDestino.asignacion_id = $("#asignacion_dest").val();
+                        dataDestino.fuente_nombre = $("#fuente").find("option:selected").text();
+                        dataDestino.fuente_id = $("#fuente").val();
+                        dataDestino.partida_nombre = $("#bsc-desc-prsp_id").val();
+                        dataDestino.partida_id = $("#prsp_id").val();
+//                        dataDestino.monto = $("#monto").val();
+
                         if (validarPar(dataOrigen, dataDestino)) {
                             addReforma(dataOrigen, dataDestino);
                             resetForm();
@@ -465,27 +467,22 @@
                             $("#divComp").html(msg);
                             $("#divAct").html("");
                             $("#divAsg").html("");
+                            $("#max").html("").data("max", 0);
                         }
                     });
                 });
-
-                $("#proyectoDest").val("-1").change(function () {
-                    $("#divComp_dest").html(spinner);
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste2_ajax')}",
-                        data    : {
-                            id      : $("#proyectoDest").val(),
-                            idCombo : "compDest",
-                            div     : "divAct_dest"
-                        },
-                        success : function (msg) {
-                            $("#divComp_dest").html(msg);
-                            $("#divAct_dest").html("");
-                            $("#divAsg_dest").html("");
-                        }
-                    });
-                });
+                <g:if test="${reforma && reforma.id}">
+                $("#proyecto").val("${DetalleReforma.findByReforma(reforma).asignacionOrigen.marcoLogico.proyectoId}").change();
+                setTimeout(function () {
+                    $("#comp").val("${DetalleReforma.findByReforma(reforma).asignacionOrigen.marcoLogico.marcoLogicoId}").change();
+                    setTimeout(function () {
+                        $("#actividad").val("${DetalleReforma.findByReforma(reforma).asignacionOrigen.marcoLogicoId}").change();
+                        setTimeout(function () {
+                            $("#asignacion").val("${DetalleReforma.findByReforma(reforma).asignacionOrigenId}").change();
+                        }, 500);
+                    }, 500);
+                }, 500);
+                </g:if>
 
                 $("#btnSave").click(function () {
                     if ($(this).hasClass("disabled")) {
@@ -497,7 +494,11 @@
                             var c = 0;
                             $(".tableReformaNueva").each(function () {
                                 var d = $(this).data();
-                                data["r" + c] = d.origen.asignacion_id + "_" + d.destino.asignacion_id + "_" + d.origen.monto;
+                                data["r" + c] = {};
+                                data["r" + c].origen = d.origen.asignacion_id;
+                                data["r" + c].monto = d.origen.monto;
+                                data["r" + c].fuente = d.destino.fuente_id;
+                                data["r" + c].partida = d.destino.partida_id;
                                 c++;
                             });
                             data.firma = $("#firma").val();
@@ -506,7 +507,7 @@
                             data.id = "${reforma?.id}";
                             $.ajax({
                                 type    : "POST",
-                                url     : "${createLink(action:'saveExistente_ajax')}",
+                                url     : "${createLink(action:'savePartida_ajax')}",
                                 data    : data,
                                 success : function (msg) {
                                     var parts = msg.split("*");

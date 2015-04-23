@@ -24,7 +24,7 @@
             },
             success : function (msg) {
                 $("#${div?:'divAsg'}").html(msg);
-                $("#max").text("");
+                $("#max").html("").data("max", 0);
             }
         });
     })

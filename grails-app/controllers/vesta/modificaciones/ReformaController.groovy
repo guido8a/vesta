@@ -6,6 +6,7 @@ import vesta.parametros.TipoElemento
 import vesta.parametros.Unidad
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.proyectos.Categoria
@@ -499,6 +500,122 @@ class ReformaController extends Shield {
     }
 
     /**
+     * Acción llamada con ajax que guarda una solicitud de reforma de nueva partida
+     */
+    def savePartida_ajax() {
+//        println params
+        def detalles = [:]
+        params.each { k, v ->
+            if (k.toString().startsWith("r")) {
+                def parts = k.split("\\[")
+                def pos = parts[0]
+                def campo = parts[1].split("]")[0]
+                if (!detalles[pos]) {
+                    detalles[pos] = [:]
+                }
+                detalles[pos][campo] = v
+            }
+        }
+
+        def anio = Anio.get(params.anio.toLong())
+        def personaRevisa
+        def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+
+        def now = new Date()
+        def usu = Persona.get(session.usuario.id)
+
+        def reforma
+        if (params.id) {
+            reforma = Reforma.get(params.id)
+            if (!reforma) {
+                reforma = new Reforma()
+            }
+            personaRevisa = reforma.firmaSolicitud.usuario
+        } else {
+            reforma = new Reforma()
+            personaRevisa = Persona.get(params.firma.toLong())
+        }
+
+        reforma.anio = anio
+        reforma.persona = usu
+        reforma.estado = solicitadoSinFirma
+        reforma.concepto = params.concepto.trim()
+        reforma.fecha = now
+        reforma.tipo = "R"
+        reforma.tipoSolicitud = "P"
+        if (!reforma.save(flush: true)) {
+            println "error al crear la reforma: " + reforma.errors
+            render "ERROR*" + renderErrors(bean: reforma)
+            return
+        }
+
+        if (params.id) {
+            def firmaRevisa = reforma.firmaSolicitud
+            firmaRevisa.estado = "S"
+            firmaRevisa.save(flush: true)
+        } else {
+            def firmaRevisa = new Firma()
+            firmaRevisa.usuario = personaRevisa
+            firmaRevisa.fecha = now
+            firmaRevisa.accion = "firmarReforma"
+            firmaRevisa.controlador = "reforma"
+            firmaRevisa.idAccion = reforma.id
+            firmaRevisa.accionVer = "partida"
+            firmaRevisa.controladorVer = "reportesReforma"
+            firmaRevisa.idAccionVer = reforma.id
+            firmaRevisa.accionNegar = "devolverReforma"
+            firmaRevisa.controladorNegar = "reforma"
+            firmaRevisa.idAccionNegar = reforma.id
+            firmaRevisa.concepto = "Reforma a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.tipoFirma = "RFRM"
+            if (!firmaRevisa.save(flush: true)) {
+                println "error al crear firma: " + firmaRevisa.errors
+                render "ERROR*" + renderErrors(bean: firmaRevisa)
+                return
+            }
+            reforma.firmaSolicitud = firmaRevisa
+            reforma.save(flush: true)
+        }
+        def alerta = new Alerta()
+        alerta.from = usu
+        alerta.persona = personaRevisa
+        alerta.fechaEnvio = now
+        alerta.mensaje = "Solicitud de reforma a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.controlador = "firma"
+        alerta.accion = "firmasPendientes"
+        alerta.id_remoto = 0
+        if (!alerta.save(flush: true)) {
+            println "error alerta: " + alerta.errors
+        }
+//          [r1:[monto:500.00, origen:322, partida:218, fuente:9], r0:[origen:322, fuente:9, partida:223, monto:150.00]]
+        def errores = ""
+        detalles.each { k, det ->
+            def monto = det.monto.replaceAll(",", "").toDouble()
+
+            def asignacionOrigen = Asignacion.get(det.origen.toLong())
+            def presupuesto = Presupuesto.get(det.partida.toLong())
+            def fuente = Fuente.get(det.fuente.toLong())
+
+            def detalle = new DetalleReforma()
+            detalle.reforma = reforma
+            detalle.asignacionOrigen = asignacionOrigen
+            detalle.valor = monto
+            detalle.presupuesto = presupuesto
+            detalle.fuente = fuente
+
+            if (!detalle.save(flush: true)) {
+                println "error al guardar detalle: " + detalle.errors
+                errores += renderErrors(bean: detalle)
+            }
+        }
+        if (errores == "") {
+            render "SUCCESS*Reforma solicitada exitosamente"
+        } else {
+            render "ERROR*" + errores
+        }
+    }
+
+    /**
      * Acción que permite realizar una solicitud de reforma a asignaciones existentes
      */
     def existente() {
@@ -574,6 +691,8 @@ class ReformaController extends Shield {
 
         def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
+        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
+
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
         def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
@@ -598,7 +717,7 @@ class ReformaController extends Shield {
             }
         }
 
-        return [proyectos      : proyectos, proyectos2: proyectos2, actual: actual, campos: campos, personas: gerentes + personasFirmas,
+        return [proyectos      : proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: gerentes + personasFirmas,
                 personasGerente: gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
     }
 
@@ -791,7 +910,7 @@ class ReformaController extends Shield {
                             nuevaActividad.numero = numAct
 
                             if (!nuevaActividad.save(flush: true)) {
-                                println "error al guardar la actividad " + nuevaActividad.errors
+                                println "error al guardar la actividad (A) " + nuevaActividad.errors
                                 errores += renderErrors(bean: nuevaActividad)
                             } else {
                                 destino = new Asignacion()
@@ -803,14 +922,26 @@ class ReformaController extends Shield {
                                 destino.unidad = nuevaActividad.responsable
                                 destino.priorizado = 0
                                 if (!destino.save(flush: true)) {
-                                    println "error al guardar la asignacion " + destino.errors
+                                    println "error al guardar la asignacion (A) " + destino.errors
                                     errores += renderErrors(bean: destino)
                                     destino = null
                                 }
                             }
                             break;
                         case "P":
-
+                            destino = new Asignacion()
+                            destino.anio = reforma.anio
+                            destino.fuente = origen.fuente
+                            destino.marcoLogico = origen.marcoLogico
+                            destino.presupuesto = detalle.presupuesto
+                            destino.planificado = detalle.valor
+                            destino.unidad = origen.marcoLogico.responsable
+                            destino.priorizado = 0
+                            if (!destino.save(flush: true)) {
+                                println "error al guardar la asignacion (P) " + destino.errors
+                                errores += renderErrors(bean: destino)
+                                destino = null
+                            }
                             break;
                         case "I":
 

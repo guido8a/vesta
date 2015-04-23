@@ -71,134 +71,213 @@
                 </div>
             </div>
 
-            <table class="table table-bordered table-hover table-condensed">
-                <thead>
-                    <tr>
-                        <th>Proyecto</th>
-                        <th>Componente</th>
-                        <th>Actividad</th>
-                        <th>Asignación</th>
-                        <th>Valor inicial</th>
-                        <th>Disminución</th>
-                        <th>Aumento</th>
-                        <th>Valor final</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <g:set var="totalInicial" value="${0}"/>
-                    <g:set var="totalDisminucion" value="${0}"/>
-                    <g:set var="totalAumento" value="${0}"/>
-                    <g:set var="totalFinal" value="${0}"/>
-                    <g:each in="${detalles}" var="detalle">
-                        <g:if test="${reforma.tipoSolicitud == 'E'}">
-                            <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen.priorizado + detalle.asignacionDestino.priorizado)}"/>
-                            <g:set var="totalDisminucion" value="${totalDisminucion + detalle.valor}"/>
-                            <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
-                            <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen.priorizado - detalle.valor) + (detalle.asignacionDestino.priorizado + detalle.valor))}"/>
-                        </g:if>
-                        <g:elseif test="${reforma.tipoSolicitud == 'A'}">
-                            <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen.priorizado)}"/>
-                            <g:set var="totalDisminucion" value="${totalDisminucion + detalle.valor}"/>
-                            <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
-                            <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen.priorizado - detalle.valor) + (detalle.valor))}"/>
-                        </g:elseif>
+            <g:if test="${reforma.tipoSolicitud != 'P'}">
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Componente</th>
+                            <th>Actividad</th>
+                            <th>Asignación</th>
+                            <th>Valor inicial</th>
+                            <th>Disminución</th>
+                            <th>Aumento</th>
+                            <th>Valor final</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <g:set var="totalInicial" value="${0}"/>
+                        <g:set var="totalDisminucion" value="${0}"/>
+                        <g:set var="totalAumento" value="${0}"/>
+                        <g:set var="totalFinal" value="${0}"/>
+                        <g:each in="${detalles}" var="detalle">
+                            <g:if test="${reforma.tipoSolicitud == 'E'}">
+                                <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen.priorizado + detalle.asignacionDestino.priorizado)}"/>
+                                <g:set var="totalDisminucion" value="${totalDisminucion + detalle.valor}"/>
+                                <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
+                                <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen.priorizado - detalle.valor) + (detalle.asignacionDestino.priorizado + detalle.valor))}"/>
+                            </g:if>
+                            <g:elseif test="${reforma.tipoSolicitud == 'A'}">
+                                <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen.priorizado)}"/>
+                                <g:set var="totalDisminucion" value="${totalDisminucion + detalle.valor}"/>
+                                <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
+                                <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen.priorizado - detalle.valor) + (detalle.valor))}"/>
+                            </g:elseif>
+                            <tr class="info">
+                                <td>
+                                    ${detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
+                                </td>
+                                <td>
+                                    ${detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()}
+                                </td>
+                                <td>
+                                    ${detalle.asignacionOrigen.marcoLogico.numero} - ${detalle.asignacionOrigen.marcoLogico.toStringCompleto()}
+                                </td>
+                                <td>
+                                    ${detalle.asignacionOrigen}
+                                </td>
+                                <td class="text-right">
+                                    <g:formatNumber number="${detalle.asignacionOrigen.priorizado}" type="currency" currencySymbol=""/>
+                                </td>
+                                <td class="text-right">
+                                    <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
+                                </td>
+                                <td></td>
+                                <td class="text-right">
+                                    <g:formatNumber number="${detalle.asignacionOrigen.priorizado - detalle.valor}" type="currency" currencySymbol=""/>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <g:if test="${reforma.tipoSolicitud == 'E'}">
+                                    <td>
+                                        ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
+                                    </td>
+                                    <td>
+                                        ${detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()}
+                                    </td>
+                                    <td>
+                                        ${detalle.asignacionDestino.marcoLogico.numero} - ${detalle.asignacionDestino.marcoLogico.toStringCompleto()}
+                                    </td>
+                                    <td>
+                                        ${detalle.asignacionDestino}
+                                    </td>
+                                    <td class="text-right">
+                                        <g:formatNumber number="${detalle.asignacionDestino.priorizado}" type="currency" currencySymbol=""/>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
+                                    </td>
+                                    <td class="text-right">
+                                        <g:formatNumber number="${detalle.asignacionDestino.priorizado + detalle.valor}" type="currency" currencySymbol=""/>
+                                    </td>
+                                </g:if>
+                                <g:elseif test="${reforma.tipoSolicitud == 'A'}">
+                                    <td>
+                                        ${detalle.componente.proyecto.toStringCompleto()}
+                                    </td>
+                                    <td>
+                                        ${detalle.componente.toStringCompleto()}
+                                    </td>
+                                    <td>
+                                        ${detalle.descripcionNuevaActividad}
+                                    </td>
+                                    <td>
+                                        <strong>Responsable:</strong> ${reforma.persona.unidad}
+                                        <strong>Priorizado:</strong> ${detalle.valor}
+                                        <strong>Partida Presupuestaria:</strong> ${detalle.presupuesto}
+                                        <strong>Año:</strong> ${reforma.anio.anio}
+                                    </td>
+                                    <td class="text-right">
+                                        <g:formatNumber number="${0}" type="currency" currencySymbol=""/>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
+                                    </td>
+                                    <td class="text-right">
+                                        <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
+                                    </td>
+                                </g:elseif>
+                            </tr>
+                        </g:each>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="text-right" colspan="4">TOTAL</th>
+                            <th class="text-right">
+                                <g:formatNumber number="${totalInicial}" type="currency" currencySymbol=""/>
+                            </th>
+                            <th class="text-right">
+                                <g:formatNumber number="${totalDisminucion}" type="currency" currencySymbol=""/>
+                            </th>
+                            <th class="text-right">
+                                <g:formatNumber number="${totalAumento}" type="currency" currencySymbol=""/>
+                            </th>
+                            <th class="text-right">
+                                <g:formatNumber number="${totalFinal}" type="currency" currencySymbol=""/>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </g:if>
+            <g:else>
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Componente</th>
+                            <th>Actividad</th>
+                            <th>Asignación</th>
+                            <th>Valor inicial</th>
+                            <th>Disminución</th>
+                            <th>Aumento</th>
+                            <th>Valor final</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <g:set var="valorFinal" value="${detalles.sum { it.valor }}"/>
                         <tr class="info">
                             <td>
-                                ${detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
+                                ${detalles.first().asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
                             </td>
                             <td>
-                                ${detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()}
+                                ${detalles.first().asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()}
                             </td>
                             <td>
-                                ${detalle.asignacionOrigen.marcoLogico.numero} - ${detalle.asignacionOrigen.marcoLogico.toStringCompleto()}
+                                ${detalles.first().asignacionOrigen.marcoLogico.numero} - ${detalles.first().asignacionOrigen.marcoLogico.toStringCompleto()}
                             </td>
                             <td>
-                                ${detalle.asignacionOrigen}
+                                ${detalles.first().asignacionOrigen}
                             </td>
                             <td class="text-right">
-                                <g:formatNumber number="${detalle.asignacionOrigen.priorizado}" type="currency" currencySymbol=""/>
+                                <g:formatNumber number="${detalles.first().asignacionOrigen.priorizado}" type="currency" currencySymbol=""/>
                             </td>
                             <td class="text-right">
-                                <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
+                                <g:formatNumber number="${valorFinal}" type="currency" currencySymbol=""/>
                             </td>
                             <td></td>
                             <td class="text-right">
-                                <g:formatNumber number="${detalle.asignacionOrigen.priorizado - detalle.valor}" type="currency" currencySymbol=""/>
+                                <g:formatNumber number="${detalles.first().asignacionOrigen.priorizado - valorFinal}" type="currency" currencySymbol=""/>
                             </td>
                         </tr>
-                        <tr class="success">
-                            <g:if test="${reforma.tipoSolicitud == 'E'}">
-                                <td>
-                                    ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionDestino.marcoLogico.numero} - ${detalle.asignacionDestino.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionDestino}
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.asignacionDestino.priorizado}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td></td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.asignacionDestino.priorizado + detalle.valor}" type="currency" currencySymbol=""/>
-                                </td>
-                            </g:if>
-                            <g:elseif test="${reforma.tipoSolicitud == 'A'}">
-                                <td>
-                                    ${detalle.componente.proyecto.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.componente.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.descripcionNuevaActividad}
-                                </td>
-                                <td>
-                                    <strong>Responsable:</strong> ${reforma.persona.unidad}
-                                    <strong>Priorizado:</strong> ${detalle.valor}
-                                    <strong>Partida Presupuestaria:</strong> ${detalle.presupuesto}
-                                    <strong>Año:</strong> ${reforma.anio.anio}
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${0}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td></td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                </td>
-                            </g:elseif>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="width: 300px;">Fuente</th>
+                            <th>Partida</th>
+                            <th style="width: 180px;">Monto</th>
                         </tr>
-                    </g:each>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th class="text-right" colspan="4">TOTAL</th>
-                        <th class="text-right">
-                            <g:formatNumber number="${totalInicial}" type="currency" currencySymbol=""/>
-                        </th>
-                        <th class="text-right">
-                            <g:formatNumber number="${totalDisminucion}" type="currency" currencySymbol=""/>
-                        </th>
-                        <th class="text-right">
-                            <g:formatNumber number="${totalAumento}" type="currency" currencySymbol=""/>
-                        </th>
-                        <th class="text-right">
-                            <g:formatNumber number="${totalFinal}" type="currency" currencySymbol=""/>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
+                    </thead>
+                    <tbody>
+                        <g:set var="total" value="${0}"/>
+                        <g:each in="${detalles}" var="detalle">
+                            <g:set var="total" value="${total + detalle.valor}"/>
+                            <tr class="success">
+                                <td>
+                                    ${detalle.fuente}
+                                </td>
+                                <td>
+                                    ${detalle.presupuesto}
+                                </td>
+                                <td class="text-right">
+                                    <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
+                                </td>
+                            </tr>
+                        </g:each>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2" class="text-right">TOTAL</th>
+                            <th class="text-right">
+                                <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </g:else>
         </elm:container>
 
         <form id="frmFirmas">
