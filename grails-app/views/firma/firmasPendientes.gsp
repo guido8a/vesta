@@ -49,7 +49,7 @@
                                 <tr>
                                     <th>Concepto</th>
                                     <th>Documento</th>
-                                    <th>Acciones</th>
+                                    <th style="width: 250px;">Acciones</th>
                                     %{--<th>Firmar</th>--}%
                                 </tr>
                             </thead>
@@ -57,7 +57,7 @@
                                 <g:each in="${firmas}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         <td>${f.concepto}</td>
-                                        <td>${f.documento}</td>
+                                        <td>${f.documento} </td>
 
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group">
@@ -88,6 +88,14 @@
                                                     </a>
                                                 </g:if>
                                             </div>
+                                                %{--</g:else>--}%
+                                            %{--</g:if>--}%
+                                            <a href="#" iden="${f.id}" class="aprobar btn btn-success btn-sm" style="margin: 5px">
+                                                <i class="fa fa-paw"></i> Firmar
+                                            </a>
+                                            <a href="#" iden="${f.id}" class="devolver btn btn-danger btn-sm">
+                                                <i class="fa fa-thumbs-down"></i> Devolver
+                                            </a>
                                         </td>
                                     </tr>
                                 </g:each>
@@ -142,7 +150,7 @@
 
             $(".aprobar").click(function () {
                 id = $(this).attr("iden");
-                bootbox.confirm("¿Está seguro de querer firmar este documento? Esta acción no puede revertirse", function (res) {
+                bootbox.confirm("¿Está seguro? Esta acción no puede revertirse", function (res) {
                     if (res) {
 
                         var msg = $("<div>Ingrese su clave de autorización</div>");
@@ -294,6 +302,80 @@
                     }
                 });
             });
+
+            $(".devolver1").click(function () {
+                id = $(this).attr("iden");
+                bootbox.confirm("¿Devolver solicitud", function (res) {
+                    if (res) {
+
+                        var msg = $("<div>Ingrese la razón por la que se devuelve</div>");
+                        var $txt = $("<input type='text' class='form-control input-sm'/>");
+
+                        var $group = $('<div class="input-group">');
+                        var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
+                        $group.append($txt).append($span);
+
+                        msg.append($group);
+
+                        var bAuth = bootbox.dialog({
+                            title   : "Devolver trámite",
+                            message : msg,
+                            class   : "modal-sm",
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                eliminar : {
+                                    label     : "<i class='fa fa-thumbs-down'></i> Devolver",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        openLoader("Firmando aprobación");
+                                        $.ajax({
+                                            type    : "POST",
+                                            url     : '${createLink(controller: 'firma', action:'devolver')}',
+                                            data    : {
+                                                id   : id,
+                                                obsr : $txt.val()
+                                            },
+                                            success : function (msg) {
+                                                closeLoader();
+                                                if (msg == "error") {
+                                                    bootbox.alert({
+                                                                message : "No se pudo devolver el trámite",
+                                                                title   : "Error",
+                                                                class   : "modal-error"
+                                                            }
+                                                    );
+                                                } else {
+                                                    log("Documento devuelto", "success")
+                                                    setTimeout(function () {
+                                                        location.reload(true)
+                                                    }, 3000);
+//                                                    location.href = msg
+                                                    closeLoader();
+
+                                                }
+                                            },
+                                            error   : function () {
+                                                log("Ha ocurrido un error interno", "error");
+
+                                                closeLoader();
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                        setTimeout(function () {
+                            bAuth.find(".form-control").first().focus();
+                        }, 400);
+                    }
+                });
+            });
+
 
             //
             //    function aprobar (id) {

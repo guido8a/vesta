@@ -107,6 +107,7 @@ class FirmaController extends Shield {
     def devolverFirma = {
         println "devolver " + params
 
+        /** TODO: si se trata de solicitud de aval, se debe invocar a devolver */
         if (params.pass.toString().encodeAsMD5() == session.usuario.autorizacion) {
             def firma = Firma.get(params.id)
             firma.estado = 'N'
@@ -132,6 +133,7 @@ class FirmaController extends Shield {
             def firma = Firma.get(params.id)
             //  def baseUri = request.scheme + "://" + "10.0.0.3" + ":" + request.serverPort
             println "devolver " + firma
+            println "controlador: $firma.controlador  accion: $firma.accion id de accion: $firma.idAccion key: $firma.key"
             if ((firma.class == Firma) && (firma.accion == 'firmarSolicitud') && (firma.controlador == 'avales')) {
                 println "redirect " + firma.controlador + "  " + firma.accion + "  " + firma.idAccion + "  " + firma.key
                 firma.estado = 'N'

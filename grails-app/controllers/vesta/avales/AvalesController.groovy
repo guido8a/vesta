@@ -635,7 +635,8 @@ class AvalesController extends vesta.seguridad.Shield {
         /* montoProceso: monto del proceso
            referencial:  saldo de la asignación
          */
-        if (montoProceso > referencial) {
+        if (montoProceso > referencial)
+        {
             println "if "
             def path = servletContext.getRealPath("/") + "pdf/solicitudAval/"
             new File(path).mkdirs()
@@ -657,29 +658,32 @@ class AvalesController extends vesta.seguridad.Shield {
                         fileName += obj
                     }
                 }
-
-                ext = okContents[f.getContentType()]
-                fileName = fileName.size() < 40 ? fileName : fileName[0..39]
-                fileName = fileName.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
-                if (!ext) {
-                    ext = "pdf"
-                }
-                nombre = fileName + "." + ext
-                pathFile = path + nombre
-                def fn = fileName
-                def src = new File(pathFile)
-                def i = 1
-                while (src.exists()) {
-                    nombre = fn + "_" + i + "." + ext
+                if(fileName.size() > 0){
+                    ext = okContents[f.getContentType()]
+                    fileName = fileName.size() < 40 ? fileName : fileName[0..39]
+                    fileName = fileName.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
+                    if (!ext) {
+                        ext = "pdf"
+                    }
+                    nombre = fileName + "." + ext
                     pathFile = path + nombre
-                    src = new File(pathFile)
-                    i++
+                    def fn = fileName
+                    def src = new File(pathFile)
+                    def i = 1
+                    while (src.exists()) {
+                        nombre = fn + "_" + i + "." + ext
+                        pathFile = path + nombre
+                        src = new File(pathFile)
+                        i++
+                    }
                 }
                 try {
 
 //                    println ">>>> " + params
 
-                    f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+                    if(fileName.size() > 0){
+                        f.transferTo(new File(pathFile))  // guarda el archivo subido al nuevo path
+                    }
                     def proceso = ProcesoAval.get(params.proceso)
                     def usuFirma = Persona.get(params.firma1)
 

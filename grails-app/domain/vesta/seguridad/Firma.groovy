@@ -38,18 +38,6 @@ class Firma {
     /**
      *  Nombre de la acción para ver el documento antes de firmar
      */
-    String accionNegar
-    /**
-     *  Nombre del controlador para ver el documento antes de firmar
-     */
-    String controladorNegar
-    /**
-     *  identificador pasado a la accion para ver el documento antes de firmar
-     */
-    String idAccionNegar
-    /**
-     *  nombre del documento
-     */
     String documento
     /**
      *  path del codigo QR
@@ -114,9 +102,6 @@ class Firma {
             observaciones column: 'frmaobrs'
             esPdf column: 'frmaepdf'
             tipoFirma column: 'frmatipo'
-            accionNegar column: 'frmaacng'
-            controladorNegar column: 'frmactng'
-            idAccionNegar column: 'frmaidng'
         }
     }
     static constraints = {
@@ -136,8 +121,5 @@ class Firma {
         controladorVer(blank:true,nullable: true,size: 1..100)
         idAccionVer(blank:true,nullable: true,size: 1..10)
         tipoFirma(blank: true, nullable: true)
-        accionNegar(blank: true, nullable: true)
-        controladorNegar(blank: true, nullable: true)
-        idAccionNegar(blank: true, nullable: true)
     }
 }
