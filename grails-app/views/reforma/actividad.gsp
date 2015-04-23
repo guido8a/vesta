@@ -236,7 +236,7 @@
                                 </td>
                                 <td>
                                     <strong>Responsable:</strong> ${reforma.persona.unidad}
-                                    <strong>Priorizado:</strong> <g:formatNumber number="${detalle.valor}" type="currency"/>
+                                    <strong>Priorizado:</strong> ${detalle.valor}
                                     <strong>Partida Presupuestaria:</strong> ${detalle.presupuesto}
                                     <strong>Año:</strong> ${reforma.anio.anio}
                                 </td>

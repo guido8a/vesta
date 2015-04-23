@@ -174,8 +174,16 @@
                         <div class="row">
                             <div class="col-md-1">POA año:</div>
 
-                            <div class="col-md-2">
-                                <g:select from="${vesta.parametros.poaPac.Anio.list([sort: 'anio'])}" value="${actual?.id}" optionKey="id" optionValue="anio" id="anio_nueva" name="anio" class="form-control input-sm"/>
+                            <div class="col-md-2" id="div_anio_na">
+                                %{--<g:select from="${vesta.parametros.poaPac.Anio.list([sort: 'anio'])}" value="${actual?.id}" optionKey="id" optionValue="anio" id="anio_nueva" name="anio" class="form-control input-sm"/>--}%
+                                <g:textField name="anioName" value="${actual?.anio}" readonly="true"  id="anio_nueva" style="width: 70px;"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-1">Componente:</div>
+                            <div class="col-md-10" id="div_comp_na">
+                                %{--<g:select from="${[]}" name="componenteNa" id="compNa" noSelection="['-1': 'Seleccione...']" style="width: 100%" class="form-control input-sm"/>--}%
+                                <g:select from="${[]}" name="compNa" id="comp_na" noSelection="['-1': 'Seleccione...']" style="width: 100%" class="form-control input-sm"/>
                             </div>
                         </div>
 
@@ -229,7 +237,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-1">Concepto:</div>
+                            <div class="col-md-1">Descripción:</div>
 
                             <div class="col-md-10">
                                 <textarea id="concepto_nueva" style="height: 80px" class="form-control input-sm"></textarea>
@@ -433,6 +441,7 @@
                 var actividad = $("#actividad_nueva").val()
                 var inicio = $("#inicio").val()
                 var fin = $("#fin").val()
+                var componente = $("#comp_na").val()
                 if (asgOrigen == "-1") {
                     msg += "<br>Por favor, seleccione una asignación de origen"
                 }
@@ -450,10 +459,10 @@
                     }
                 }
                 if (concepto.trim().length == 0) {
-                    msg += "<br>Por favor, ingrese concepto"
+                    msg += "<br>Por favor, ingrese una descripción"
                 }
                 if (actividad.trim().length == 0) {
-                    msg += "<br>Por favor, insgrese una actividad para la nueva asignación"
+                    msg += "<br>Por favor, ingrese una actividad para la nueva asignación"
                 }
                 if (actividad.trim().length == 1023) {
                     msg += "<br>La actividad debe tener un máximo de 1023 caracteres"
@@ -482,7 +491,8 @@
                             actividad   : actividad,
                             inicio      : inicio,
                             fin         : fin,
-                            firma       : $("#firma").val()
+                            firma       : $("#firma").val(),
+                            componente  : componente
                         },
                         success : function (msg) {
                             location.href = "${g.createLink(controller: 'modificacionesPoa',action: 'historialUnidad')}"
@@ -626,7 +636,22 @@
                         $("#div_comp").html(msg)
                     }
                 });
-            })
+
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'componenteNa')}",
+                    data    : {
+                        id : $("#proyecto").val()
+                    },
+                    success : function (msg) {
+                          $("#div_comp_na").html(msg)
+                    }
+                });
+
+
+            });
+
+
             //            .selectmenu({width : 600});
             //    $("#proyecto").selectmenu({width : 600});
             //    $("#comp").selectmenu({width : 600});
@@ -654,6 +679,22 @@
                     }
                 });
             })
+
+
+            $("#anio").change(function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'anioProyecto')}",
+                    data    : {
+                        id      : $("#anio").val()
+                  },
+                    success : function (msg) {
+                        $("#div_anio_na").html(msg)
+
+                    }
+                });
+            });
+
         </script>
     </body>
 </html>

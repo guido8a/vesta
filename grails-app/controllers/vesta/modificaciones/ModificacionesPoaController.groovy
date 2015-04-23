@@ -142,6 +142,18 @@ class ModificacionesPoaController extends Shield {
     }
 
 
+    def anioProyecto = {
+    def anio = Anio.get(params.id)
+    return [anio: anio]
+    }
+
+    def componenteNa = {
+        def proyecto = Proyecto.get(params.id)
+        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
+        [comps: comps, idCombo: params.idCombo, div: params.div]
+    }
+
+
     def componentesProyecto = {
 //        println "comp "+params
         def proyecto = Proyecto.get(params.id)
@@ -483,7 +495,7 @@ class ModificacionesPoaController extends Shield {
     }
 
     def guardarSolicitudNueva = {
-//        println "params nueva"+params
+        println "params nueva"+params
         def inicio = new Date().parse("dd-MM-yyyy", params.inicio)
         def fin = new Date().parse("dd-MM-yyyy", params.fin)
         def solicitud = new SolicitudModPoa()
@@ -501,10 +513,12 @@ class ModificacionesPoaController extends Shield {
         solicitud.fin = fin
         solicitud.origen = Asignacion.get(params.origen)
         solicitud.fuente = Fuente.get(params.fuente)
+        solicitud.marcoLogico = MarcoLogico.get(params.componente)
         solicitud.actividad = params.actividad
         solicitud.valorOrigenSolicitado = solicitud.origen.priorizado
         solicitud.valorDestinoSolicitado = 0
         solicitud.estado = 4
+
 //        solicitud.marcoLogico = MarcoLogico.get(params.actividad)
         solicitud.presupuesto = Presupuesto.get(params.presupuesto)
         solicitud.valor = params.monto?.toDouble()

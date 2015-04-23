@@ -49,7 +49,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 100px;"># Sol.</th>
-                                    <th>Unidad</th>
+                                    <th>Requirente</th>
                                     <th>Proceso</th>
                                     <th>Tipo</th>
                                     <th>Concepto</th>
