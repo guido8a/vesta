@@ -279,7 +279,14 @@ class ReformaController extends Shield {
     def procesar() {
         def reforma = Reforma.get(params.id)
         if (reforma.estado.codigo == "E01" || reforma.estado.codigo == "D02") {
-            def detalles = DetalleReforma.findAllByReforma(reforma)
+            def detalles, detalles2 = []
+            if (reforma.tipoSolicitud == 'I') {
+                detalles2 = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNull(reforma, [sort: "id"])
+                detalles = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(reforma, [sort: "id"])
+            } else {
+                detalles = DetalleReforma.findAllByReforma(reforma, [sort: "id"])
+            }
+
             def total = 0
             if (detalles.size() > 0) {
                 total = detalles.sum { it.valor }
@@ -287,7 +294,7 @@ class ReformaController extends Shield {
             def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
             def personasFirmas = Persona.findAllByUnidad(unidad)
             def gerentes = Persona.findAllByUnidad(unidad.padre)
-            return [reforma: reforma, detalles: detalles, total: total, personas: personasFirmas, gerentes: gerentes]
+            return [reforma: reforma, detalles: detalles, detalles2: detalles2, total: total, personas: personasFirmas, gerentes: gerentes]
         } else {
             redirect(action: "pendientes")
         }
@@ -305,6 +312,60 @@ class ReformaController extends Shield {
     }
 
     /**
+     * Acción llamada con ajax que guarda los pares de asignaciones seleccionados por el asistente de planificación para completar la solicitud de incremento
+     */
+    def asignarParAsignaciones_ajax() {
+        def detalle = DetalleReforma.get(params.det.toLong())
+        def asignacionOrigen = Asignacion.get(params.asg.toLong())
+        def monto = (params.mnt.toString().replaceAll(",", "")).toDouble()
+
+        def nuevoDetalle = new DetalleReforma()
+        nuevoDetalle.properties = detalle.properties
+        nuevoDetalle.saldo = 0
+        nuevoDetalle.valor = monto
+        nuevoDetalle.asignacionOrigen = asignacionOrigen
+        if (nuevoDetalle.save(flush: true)) {
+            detalle.saldo -= monto
+            if (!detalle.save(flush: true)) {
+                println "error al disminuir saldo de detalle: " + detalle.errors
+            }
+        } else {
+            println "error al guardar nuevo detalle: " + nuevoDetalle.errors
+            render "ERROR*" + renderErrors(bean: nuevoDetalle)
+            return
+        }
+        render "SUCCESS*Detalle guardado exitosamente"
+    }
+
+    /**
+     * Acción llamada con ajax que eliminar un par de asignaciones seleccionado por el asistente de planificación para completar la solicitud de incremento
+     */
+    def eliminarParAsignaciones_ajax() {
+        def detalle = DetalleReforma.get(params.id.toLong())
+        def detalleOriginal = DetalleReforma.findAllByAsignacionDestinoAndAsignacionOrigenIsNull(detalle.asignacionDestino)
+        if (detalleOriginal.size() == 1) {
+            def monto = detalle.valor
+            try {
+                detalleOriginal = detalleOriginal.first()
+                detalle.delete(flush: true)
+                detalleOriginal.saldo += monto
+                if (detalleOriginal.save(flush: true)) {
+                    render "SUCCESS*Detalle eliminado exitosamente"
+                } else {
+                    render "ERROR*" + renderErrors(bean: detalleOriginal)
+                }
+            } catch (e) {
+                println "ERROR al eliminar detalle"
+                e.printStackTrace()
+                render "ERROR*Ha ocurrido un error grave, no puede eliminar este detalle"
+            }
+        } else {
+            println "Detalle original: ${detalleOriginal}"
+            render "ERROR*Ha ocurrido un error grave, no puede eliminar este detalle"
+        }
+    }
+
+    /**
      * Acción que marca una solicitud como aprobada y a la espera de las firmas de aprobación
      */
     def aprobar() {
@@ -318,6 +379,7 @@ class ReformaController extends Shield {
 
         reforma.estado = estadoAprobadoSinFirmas
         reforma.fechaRevision = now
+        reforma.analista = usu
         reforma.nota = params.observaciones.trim()
 
         def personaFirma1
@@ -451,9 +513,14 @@ class ReformaController extends Shield {
      * Acción que marca una solicitud como negada
      */
     def negar() {
+        def usu = Persona.get(session.usuario.id)
+        def now = new Date()
+
         def reforma = Reforma.get(params.id)
         def estadoNegado = EstadoAval.findByCodigo("E03")
         reforma.estado = estadoNegado
+        reforma.fechaRevision = now
+        reforma.analista = usu
         reforma.save(flush: true)
         render "SUCCESS*Solicitud negada exitosamente"
     }
@@ -825,6 +892,7 @@ class ReformaController extends Shield {
                     detalle.reforma = reforma
                     detalle.asignacionDestino = asignacionDestino
                     detalle.valor = monto
+                    detalle.saldo = monto
                     if (!detalle.save(flush: true)) {
                         println "error al guardar detalle: " + detalle.errors
                         errores += renderErrors(bean: detalle)
@@ -1048,7 +1116,12 @@ class ReformaController extends Shield {
                 def usu = Persona.get(session.usuario.id)
                 def now = new Date()
                 def errores = ""
-                def detalles = DetalleReforma.findAllByReforma(reforma)
+                def detalles
+                if (reforma.tipoSolicitud == 'I') {
+                    detalles = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(reforma)
+                } else {
+                    detalles = DetalleReforma.findAllByReforma(reforma)
+                }
                 detalles.each { detalle ->
                     def origen = detalle.asignacionOrigen
                     def destino
@@ -1117,9 +1190,6 @@ class ReformaController extends Shield {
                                 errores += renderErrors(bean: destino)
                                 destino = null
                             }
-                            break;
-                        case "I":
-
                             break;
                     }
                     if (origen && destino) {

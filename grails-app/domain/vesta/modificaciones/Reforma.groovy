@@ -63,6 +63,10 @@ class Reforma {
      * Secuencial generado cuando se aprueba (2da firma de aprobacion)
      */
     Integer numero = 0
+    /**
+     * Analista de planificación que revisó la solicitud de reforma
+     */
+    Persona analista
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -93,6 +97,7 @@ class Reforma {
             textoPdf column: 'rfrm_pdf'
             nota column: 'rfrmnota'
             numero column: 'rfrmnmro'
+            analista column: 'rfrmpran'
         }
     }
 
@@ -106,5 +111,6 @@ class Reforma {
         fechaRevision nullable: true
         textoPdf blank: true, nullable: true
         nota blank: true, nullable: true
+        analista nullable: true
     }
 }

@@ -92,8 +92,7 @@
                                 </td>
                                 <td class="grupo">
                                     <div class="input-group">
-                                        <g:textField type="text" name="monto"
-                                                     class="form-control required input-sm number money"/>
+                                        <g:textField type="text" name="monto" class="form-control required input-sm number money"/>
                                         <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                                     </div>
                                 </td>

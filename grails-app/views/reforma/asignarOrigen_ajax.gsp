@@ -30,9 +30,33 @@
                 <td class="grupo" id="divAsg">
                 </td>
                 <td class="grupo text-right">
-                    <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
+                    <div class="input-group">
+                        <g:textField type="text" name="monto" class="form-control required input-sm number money"/>
+                        <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                    </div>
                 </td>
                 <td id="max">
+
+                </td>
+            </tr>
+            <tr class="success">
+                <td>
+                    ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
+                </td>
+                <td>
+                    ${detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()}
+                </td>
+                <td>
+                    ${detalle.asignacionDestino.marcoLogico.numero} - ${detalle.asignacionDestino.marcoLogico.toStringCompleto()}
+                </td>
+                <td>
+                    ${detalle.asignacionDestino}
+                </td>
+                <td>
+                    <strong>Total:</strong> <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/><br/>
+                    <strong>Por asignar:</strong> <g:formatNumber number="${detalle.saldo}" type="currency" currencySymbol=""/><br/>
+                </td>
+                <td>
 
                 </td>
             </tr>
@@ -64,15 +88,36 @@
 //                            console.log("tot=", tot);
 //                            console.log("utilizable= ", ok);
 
-                    $("#max").html("$" + number_format(ok, 2, ".", ","))
-                            .attr("valor", ok).data("max", ok);
-                    $("#monto").attr("tdnMax", ok);
+                    var val = parseFloat("${detalle.saldo}");
+                    var max = Math.min(val, ok);
+
+                    $("#max").html("$" + number_format(max, 2, ".", ","))
+                            .attr("valor", max).data("max", max);
+                    $("#monto").attr("tdnMax", max);
                 }
             });
         }
     }
 
     $(function () {
+
+        $("#frmReforma").validate({
+            errorClass     : "help-block",
+            onfocusout     : false,
+            errorPlacement : function (error, element) {
+                if (element.parent().hasClass("input-group")) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+                element.parents(".grupo").addClass('has-error');
+            },
+            success        : function (label) {
+                label.parents(".grupo").removeClass('has-error');
+                label.remove();
+            }
+        });
+
         $("#proyecto").val("-1").change(function () {
             $("#divComp").html(spinner);
             $.ajax({
