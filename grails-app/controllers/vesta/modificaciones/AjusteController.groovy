@@ -161,7 +161,7 @@ class AjusteController extends Shield {
 
         def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
-        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
+        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -177,7 +177,7 @@ class AjusteController extends Shield {
             reforma = Reforma.get(params.id)
             detalles = DetalleReforma.findAllByReforma(reforma)
             def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-            def devuelto = EstadoAval.findByCodigo("D01")
+            def devuelto = EstadoAval.findByCodigo("D02")
             def estados = [solicitadoSinFirma, devuelto]
             if (estados.contains(reforma.estado)) {
                 editable = true
@@ -187,8 +187,8 @@ class AjusteController extends Shield {
             }
         }
 
-        return [proyectos      : proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: gerentes + personasFirmas,
-                personasGerente: gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
+        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: gerentes + personasFirmas,
+                gerentes : gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
     }
 
     /**
@@ -338,7 +338,7 @@ class AjusteController extends Shield {
      * Acción llamada con ajax que guarda una solicitud de reforma de nueva actividad
      */
     def saveActividad_ajax() {
-//        println params
+        println params
         def detalles = [:]
         params.each { k, v ->
             if (k.toString().startsWith("r")) {
@@ -353,8 +353,8 @@ class AjusteController extends Shield {
         }
 
         def anio = Anio.get(params.anio.toLong())
-        def personaRevisa
-        def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def personaFirma1, personaFirma2
+        def aprobadoSinFirma = EstadoAval.findByCodigo("EF1")
 
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -365,62 +365,101 @@ class AjusteController extends Shield {
             if (!reforma) {
                 reforma = new Reforma()
             }
-            personaRevisa = reforma.firmaSolicitud.usuario
+            personaFirma1 = reforma.firma1.usuario
+            personaFirma2 = reforma.firma2.usuario
         } else {
             reforma = new Reforma()
-            personaRevisa = Persona.get(params.firma.toLong())
+            personaFirma1 = Persona.get(params.firma1.toLong())
+            personaFirma2 = Persona.get(params.firma2.toLong())
         }
 
         reforma.anio = anio
         reforma.persona = usu
-        reforma.estado = solicitadoSinFirma
+        reforma.analista = usu
+        reforma.estado = aprobadoSinFirma
         reforma.concepto = params.concepto.trim()
         reforma.fecha = now
-        reforma.tipo = "R"
+        reforma.tipo = "A"
         reforma.tipoSolicitud = "A"
         if (!reforma.save(flush: true)) {
-            println "error al crear la reforma: " + reforma.errors
+            println "error al crear el ajuste: " + reforma.errors
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
 
         if (params.id) {
-            def firmaRevisa = reforma.firmaSolicitud
-            firmaRevisa.estado = "S"
-            firmaRevisa.save(flush: true)
+            def firma1 = reforma.firma1
+            firma1.estado = "S"
+            firma1.save(flush: true)
+            def firma2 = reforma.firma2
+            firma2.estado = "S"
+            firma2.save(flush: true)
         } else {
-            def firmaRevisa = new Firma()
-            firmaRevisa.usuario = personaRevisa
-            firmaRevisa.fecha = now
-            firmaRevisa.accion = "firmarReforma"
-            firmaRevisa.controlador = "reforma"
-            firmaRevisa.idAccion = reforma.id
-            firmaRevisa.accionVer = "actividad"
-            firmaRevisa.controladorVer = "reportesReforma"
-            firmaRevisa.idAccionVer = reforma.id
-            firmaRevisa.accionNegar = "devolverReforma"
-            firmaRevisa.controladorNegar = "reforma"
-            firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "Reforma a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.tipoFirma = "RFRM"
-            if (!firmaRevisa.save(flush: true)) {
-                println "error al crear firma: " + firmaRevisa.errors
-                render "ERROR*" + renderErrors(bean: firmaRevisa)
+            def firma1 = new Firma()
+            firma1.usuario = personaFirma1
+            firma1.fecha = now
+            firma1.accion = "firmarAprobarAjuste"
+            firma1.controlador = "ajuste"
+            firma1.idAccion = reforma.id
+            firma1.accionVer = "actividad"
+            firma1.controladorVer = "reportesReforma"
+            firma1.idAccionVer = reforma.id
+            firma1.accionNegar = "devolverAprobarAjuste"
+            firma1.controladorNegar = "ajuste"
+            firma1.idAccionNegar = reforma.id
+            firma1.concepto = "Ajuste a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma1.tipoFirma = "AJST"
+            if (!firma1.save(flush: true)) {
+                println "error al crear firma1: " + firma1.errors
+                render "ERROR*" + renderErrors(bean: firma1)
                 return
             }
-            reforma.firmaSolicitud = firmaRevisa
+            println "firma1: " + firma1
+            def firma2 = new Firma()
+            firma2.usuario = personaFirma2
+            firma2.fecha = now
+            firma2.accion = "firmarAprobarAjuste"
+            firma2.controlador = "ajuste"
+            firma2.idAccion = reforma.id
+            firma2.accionVer = "actividad"
+            firma2.controladorVer = "reportesReforma"
+            firma2.idAccionVer = reforma.id
+            firma2.accionNegar = "devolverAprobarAjuste"
+            firma2.controladorNegar = "ajuste"
+            firma2.idAccionNegar = reforma.id
+            firma2.concepto = "Ajuste a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma2.tipoFirma = "AJST"
+            if (!firma2.save(flush: true)) {
+                println "error al crear firma2: " + firma2.errors
+                render "ERROR*" + renderErrors(bean: firma2)
+                return
+            }
+            println "firma2: " + firma2
+            reforma.firma1 = firma1
+            reforma.firma2 = firma2
             reforma.save(flush: true)
         }
-        def alerta = new Alerta()
-        alerta.from = usu
-        alerta.persona = personaRevisa
-        alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de reforma a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-        alerta.controlador = "firma"
-        alerta.accion = "firmasPendientes"
-        alerta.id_remoto = 0
-        if (!alerta.save(flush: true)) {
-            println "error alerta: " + alerta.errors
+        def alerta1 = new Alerta()
+        alerta1.from = usu
+        alerta1.persona = personaFirma1
+        alerta1.fechaEnvio = now
+        alerta1.mensaje = "Ajuste a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta1.controlador = "firma"
+        alerta1.accion = "firmasPendientes"
+        alerta1.id_remoto = 0
+        if (!alerta1.save(flush: true)) {
+            println "error alerta: " + alerta1.errors
+        }
+        def alerta2 = new Alerta()
+        alerta2.from = usu
+        alerta2.persona = personaFirma2
+        alerta2.fechaEnvio = now
+        alerta2.mensaje = "Ajuste a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta2.controlador = "firma"
+        alerta2.accion = "firmasPendientes"
+        alerta2.id_remoto = 0
+        if (!alerta2.save(flush: true)) {
+            println "error alerta: " + alerta2.errors
         }
 
         def errores = ""
@@ -448,7 +487,7 @@ class AjusteController extends Shield {
             }
         }
         if (errores == "") {
-            render "SUCCESS*Reforma solicitada exitosamente"
+            render "SUCCESS*Ajuste solicitado exitosamente"
         } else {
             render "ERROR*" + errores
         }
@@ -475,7 +514,7 @@ class AjusteController extends Shield {
 
         def anio = Anio.get(params.anio.toLong())
         def personaFirma1, personaFirma2
-        def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def aprobadoSinFirma = EstadoAval.findByCodigo("EF1")
 
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -497,7 +536,7 @@ class AjusteController extends Shield {
         reforma.anio = anio
         reforma.persona = usu
         reforma.analista = usu
-        reforma.estado = solicitadoSinFirma
+        reforma.estado = aprobadoSinFirma
         reforma.concepto = params.concepto.trim()
         reforma.fecha = now
         reforma.tipo = "A"

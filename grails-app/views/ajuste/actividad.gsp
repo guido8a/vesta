@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Modificación a nuevas actividades</title>
+        <title>Ajuste a nuevas actividades</title>
 
         <style type="text/css">
         .titulo-azul.subtitulo {
@@ -25,17 +25,20 @@
 
     <body>
 
-        <g:if test="${reforma &&
-                reforma.estado.codigo == "D01" &&
-                reforma.firmaSolicitud.observaciones && reforma.firmaSolicitud.observaciones != '' && reforma.firmaSolicitud.observaciones != 'S'}">
+        <g:if test="${reforma && reforma.estado.codigo == "D02"}">
             <div class="alert alert-warning">
-                <h4>Observaciones de ${reforma.firmaSolicitud.usuario}</h4>
-                ${reforma.firmaSolicitud.observaciones}
+                <g:if test="${reforma.firma1.observaciones && reforma.firma1.observaciones != '' && reforma.firma1.observaciones != 'S'}">
+                    <h4>Observaciones de ${reforma.firma1.usuario}</h4>
+                    ${reforma.firma1.observaciones}
+                </g:if>
+                <g:if test="${reforma.firma2.observaciones && reforma.firma2.observaciones != '' && reforma.firma2.observaciones != 'S'}">
+                    <h4>Observaciones de ${reforma.firma2.usuario}</h4>
+                    ${reforma.firma2.observaciones}
+                </g:if>
             </div>
         </g:if>
 
-
-        <elm:container tipo="horizontal" titulo="Modificación a nuevas actividades">
+        <elm:container tipo="horizontal" titulo="Ajuste a nuevas actividades">
             <div class="row">
                 <div class="col-md-1">
                     <label for="anio">
@@ -268,22 +271,36 @@
                 </div>
             </div>
 
-            <div class="row" style="margin-bottom: 100px">
+            <div class="row">
                 <div class="col-md-1">
-                    <label>Firma</label>
+                    <label>Firmas</label>
                 </div>
 
                 <div class="col-md-3 grupo">
-                    <g:if test="${!reforma}">
-                        <g:select from="${Persona.findAllByUnidad(session.usuario.unidad, [sort: 'nombre'])}" optionKey="id" optionValue="" id="firma" name="firma"
-                                  class="form-control input-sm required" noSelection="['': '- Seleccione -']" value="${reforma ? reforma.firmaSolicitud.usuarioId : ''}"/>
+                    <g:if test="${reforma}">
+                        ${reforma.firma1.usuario}
                     </g:if>
                     <g:else>
-                        ${reforma.firmaSolicitud.usuario}
+                        <g:select from="${personas}" optionKey="id" optionValue="${{
+                            it.nombre + ' ' + it.apellido
+                        }}" noSelection="['': '- Seleccione -']" name="firma1" class="form-control required input-sm"/>
                     </g:else>
                 </div>
 
-                <div class="col-md-2 col-md-offset-6">
+                <div class="col-md-3 grupo">
+                    <g:if test="${reforma}">
+                        ${reforma.firma2.usuario}
+                    </g:if>
+                    <g:else>
+                        <g:select from="${gerentes}" optionKey="id" optionValue="${{
+                            it.nombre + ' ' + it.apellido
+                        }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
+                    </g:else>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
                     <g:if test="${editable}">
                         <a href="#" class="btn btn-success pull-right ${!reforma ? 'disabled' : ''}" id="btnSave">
                             <i class="fa fa-floppy-o"></i> Guardar
@@ -599,7 +616,8 @@
                                 data["r" + c].categoria = d.destino.categoria_id;
                                 c++;
                             });
-                            data.firma = $("#firma").val();
+                            data.firma1 = $("#firma1").val();
+                            data.firma2 = $("#firma2").val();
                             data.anio = $("#anio").val();
                             data.concepto = $("#concepto").val();
                             data.id = "${reforma?.id}";

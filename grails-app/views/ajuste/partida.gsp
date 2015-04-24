@@ -25,12 +25,16 @@
 
     <body>
 
-        <g:if test="${reforma &&
-                reforma.estado.codigo == "D01" &&
-                reforma.firmaSolicitud.observaciones && reforma.firmaSolicitud.observaciones != '' && reforma.firmaSolicitud.observaciones != 'S'}">
+        <g:if test="${reforma && reforma.estado.codigo == "D02"}">
             <div class="alert alert-warning">
-                <h4>Observaciones de ${reforma.firmaSolicitud.usuario}</h4>
-                ${reforma.firmaSolicitud.observaciones}
+                <g:if test="${reforma.firma1.observaciones && reforma.firma1.observaciones != '' && reforma.firma1.observaciones != 'S'}">
+                    <h4>Observaciones de ${reforma.firma1.usuario}</h4>
+                    ${reforma.firma1.observaciones}
+                </g:if>
+                <g:if test="${reforma.firma2.observaciones && reforma.firma2.observaciones != '' && reforma.firma2.observaciones != 'S'}">
+                    <h4>Observaciones de ${reforma.firma2.usuario}</h4>
+                    ${reforma.firma2.observaciones}
+                </g:if>
             </div>
         </g:if>
 
