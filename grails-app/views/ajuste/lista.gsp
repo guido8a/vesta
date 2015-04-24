@@ -50,20 +50,7 @@
                             </div>
 
                         </td>
-                        <td style="text-align: center">
-                            <g:if test="${reforma.estado.codigo != 'E02'}">
-                                <div class="btn-group" role="group">
-                                    <g:if test="${reforma.tipo == 'R'}">
-                                        <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: reforma.tipoSolicitud == 'E' ? 'existenteReforma' :
-                                                reforma.tipoSolicitud == 'A' ? 'actividadReforma' :
-                                                        reforma.tipoSolicitud == 'P' ? 'partidaReforma' :
-                                                                reforma.tipoSolicitud == 'I' ? 'incrementoReforma' : '', id: reforma.id)}" class="btn btn-sm btn-info btnVer" title="Reforma">
-                                            <i class="fa fa-search"></i> Reforma
-                                        </a>
-                                    </g:if>
-                                </div>
-                            </g:if>
-                        </td>
+
                     </tr>
                 </g:each>
             </tbody>

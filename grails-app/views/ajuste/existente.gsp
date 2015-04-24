@@ -199,22 +199,22 @@
             <div id="divReformas">
             </div>
 
-            <div class="row">
-                <div class="col-md-1">
-                    <label>Concepto</label>
-                </div>
-
-                <div class="col-md-11 grupo">
-                    <g:if test="${editable}">
-                        <g:textArea name="concepto" class="form-control required" style="height: 100px;" value="${reforma?.concepto}"/>
-                    </g:if>
-                    <g:else>
-                        ${reforma.concepto}
-                    </g:else>
-                </div>
-            </div>
-
             <form id="frmFirma">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Concepto</label>
+                    </div>
+
+                    <div class="col-md-11 grupo">
+                        <g:if test="${editable}">
+                            <g:textArea name="concepto" class="form-control required" style="height: 100px;" value="${reforma?.concepto}"/>
+                        </g:if>
+                        <g:else>
+                            ${reforma.concepto}
+                        </g:else>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-1">
                         <label>Firmas</label>

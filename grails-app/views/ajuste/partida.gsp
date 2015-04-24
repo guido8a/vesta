@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Modificación a nuevas partidas</title>
+        <title>Ajuste a nuevas partidas</title>
 
         <style type="text/css">
         .titulo-azul.subtitulo {
@@ -35,7 +35,7 @@
         </g:if>
 
 
-        <elm:container tipo="horizontal" titulo="Modificación a nuevas partidas">
+        <elm:container tipo="horizontal" titulo="Ajuste a nuevas partidas">
             <div class="row">
                 <div class="col-md-1">
                     <label for="anio">
@@ -207,7 +207,7 @@
                     <label>Concepto</label>
                 </div>
 
-                <div class="col-md-11">
+                <div class="col-md-11 grupo">
                     <g:if test="${editable}">
                         <g:textArea name="concepto" class="form-control required" style="height: 100px;" value="${reforma?.concepto}"/>
                     </g:if>
@@ -217,22 +217,36 @@
                 </div>
             </div>
 
-            <div class="row" style="margin-bottom: 100px">
+            <div class="row">
                 <div class="col-md-1">
-                    <label>Firma</label>
+                    <label>Firmas</label>
                 </div>
 
-                <div class="col-md-3">
-                    <g:if test="${!reforma}">
-                        <g:select from="${Persona.findAllByUnidad(session.usuario.unidad, [sort: 'nombre'])}" optionKey="id" optionValue="" id="firma" name="firma"
-                                  class="form-control input-sm required" noSelection="['': '- Seleccione -']" value="${reforma ? reforma.firmaSolicitud.usuarioId : ''}"/>
+                <div class="col-md-3 grupo">
+                    <g:if test="${reforma}">
+                        ${reforma.firma1.usuario}
                     </g:if>
                     <g:else>
-                        ${reforma.firmaSolicitud.usuario}
+                        <g:select from="${personas}" optionKey="id" optionValue="${{
+                            it.nombre + ' ' + it.apellido
+                        }}" noSelection="['': '- Seleccione -']" name="firma1" class="form-control required input-sm"/>
                     </g:else>
                 </div>
 
-                <div class="col-md-2 col-md-offset-6">
+                <div class="col-md-3 grupo">
+                    <g:if test="${reforma}">
+                        ${reforma.firma2.usuario}
+                    </g:if>
+                    <g:else>
+                        <g:select from="${gerentes}" optionKey="id" optionValue="${{
+                            it.nombre + ' ' + it.apellido
+                        }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
+                    </g:else>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
                     <g:if test="${editable}">
                         <a href="#" class="btn btn-success pull-right ${!reforma ? 'disabled' : ''}" id="btnSave">
                             <i class="fa fa-floppy-o"></i> Guardar
@@ -503,7 +517,8 @@
                                 data["r" + c].partida = d.destino.partida_id;
                                 c++;
                             });
-                            data.firma = $("#firma").val();
+                            data.firma1 = $("#firma1").val();
+                            data.firma2 = $("#firma2").val();
                             data.anio = $("#anio").val();
                             data.concepto = $("#concepto").val();
                             data.id = "${reforma?.id}";
