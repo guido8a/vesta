@@ -140,8 +140,16 @@
 </head>
 
 <body>
-<rep:headerFooter title="SOLICITUD DE REFORMA AL POA" unidad="${anio}-GP"
-                  numero="${ reforma.id}" estilo="right"/>
+<g:if test="${reforma?.tipo == 'R'}">
+    <rep:headerFooter title="SOLICITUD DE REFORMA AL POA" unidad="${anio}-GP"
+                      numero="${ reforma.id}" estilo="right"/>
+</g:if>
+<g:else>
+    <rep:headerFooter title="SOLICITUD DE AJUSTE AL POA" unidad="${anio}-GP"
+                      numero="${ reforma.id}" estilo="right"/>
+</g:else>
+
+
 <div style="margin-left: 10px;">
     <div>
         <ol>
@@ -149,47 +157,86 @@
                 <strong>Unidad responsable (Gerencia - Dirección):</strong> ${reforma.persona.unidad}
             </li>
             <li>
-                <strong>Tipo de reforma:</strong>
-                <table class="table " border="1" style="margin-left: 280px">
-                    <thead>
-                    <tr>
-                        <th style="text-align: center">Detalle</th>
-                        <th>(Marcar X)</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Reforma entre actividades por reasignación de recursos o saldos</td>
-                        <td class="center">
-                            %{--${reforma.tipo=='E'?'X':''}--}%
-                            ${'X'}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Reforma por creación de una nueva actividad</td>
-                        <td class="center">
-                            %{--${reforma.tipo=='A'?'X':''}--}%
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Reforma por creación de nueva partida</td>
-                        <td class="center">
-                            %{--${reforma.tipo=='P'?'X':''}--}%
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Reforma por Incremento</td>
-                        <td class="center">
-                            %{--${reforma.tipo=='I'?'X':''}--}%
-                        </td>
-                    </tr>
+                <g:if test="${reforma?.tipo == 'R'}">
+                    <strong>Tipo de reforma:</strong>
+                    <table class="table " border="1" style="margin-left: 280px">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center">Detalle</th>
+                            <th>(Marcar X)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Reforma entre actividades por reasignación de recursos o saldos</td>
+                            <td class="center">
+                                ${'X'}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Reforma por creación de una nueva actividad</td>
+                            <td class="center">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Reforma por creación de nueva partida</td>
+                            <td class="center">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Reforma por Incremento</td>
+                            <td class="center">
+                            </td>
+                        </tr>
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </g:if>
+                <g:else>
+                    <strong>Tipo de ajuste:</strong>
+                    <table class="table " border="1" style="margin-left: 280px">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center">Detalle</th>
+                            <th>(Marcar X)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Ajuste entre actividades por reasignación de recursos o saldos</td>
+                            <td class="center">
+                                ${'X'}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ajuste por creación de una nueva actividad</td>
+                            <td class="center">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ajuste por creación de nueva partida</td>
+                            <td class="center">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ajuste por Incremento</td>
+                            <td class="center">
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </g:else>
+
             </li>
-            %{--<li style="margin-left: 20px">--}%
             <li>
-                <strong>Matriz de la reforma:</strong>
+                <g:if test="${reforma?.tipo == 'R'}">
+                    <strong>Matriz de la reforma:</strong>
+                </g:if>
+                <g:else>
+                    <strong>Matriz de ajuste:</strong>
+                </g:else>
+
                 <g:set var="ti" value="${0}"/>
                 <g:set var="tvi" value="${0}"/>
                 <g:set var="tvf" value="${0}"/>
@@ -286,32 +333,48 @@
                         </tr>
                     </g:each>
                     <tr>
-                    <td colspan="5" style="background: #008080"></td>
-                    <td class="formato">TOTAL</td>
-                    <td class="valor formato"><g:formatNumber number="${totalInicial}" type="currency" currencySymbol=""/>
-                    </td>
-                    <td class="valor formato"> <g:formatNumber number="${totalDisminucion}" type="currency" currencySymbol=""/>
-                    </td>
-                    <td class="valor formato"> <g:formatNumber number="${totalAumento}" type="currency" currencySymbol=""/>
-                    </td>
-                    <td class="valor formato"> <g:formatNumber number="${totalFinal}" type="currency" currencySymbol=""/>
-                    </td>
+                        <td colspan="5" style="background: #008080"></td>
+                        <td class="formato">TOTAL</td>
+                        <td class="valor formato"><g:formatNumber number="${totalInicial}" type="currency" currencySymbol=""/>
+                        </td>
+                        <td class="valor formato"> <g:formatNumber number="${totalDisminucion}" type="currency" currencySymbol=""/>
+                        </td>
+                        <td class="valor formato"> <g:formatNumber number="${totalAumento}" type="currency" currencySymbol=""/>
+                        </td>
+                        <td class="valor formato"> <g:formatNumber number="${totalFinal}" type="currency" currencySymbol=""/>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
             </li>
             <li style="margin-top: 15px">
-                <strong>Justificación de la reforma al POA solicitada:</strong>
+                <g:if test="${reforma?.tipo == 'R'}">
+                    <strong>Justificación de la reforma al POA solicitada:</strong>
+                </g:if>
+                <g:else>
+                    <strong>Justificación del ajuste al POA solicitada:</strong>
+                </g:else>
+
                 <div class="justificacion">
                     ${reforma.concepto}
                 </div>
             </li>
 
         </ol>
-        <div>
-            Es importante señalar que la reforma no implica un incremento en el techo del presupuesto programado y que el impacto
-            causado por la modificación de POA no afecta a los objetivos institucionales
-        </div>
+        <g:if test="${reforma?.tipo == 'R'}">
+            <div>
+                Es importante señalar que la reforma no implica un incremento en el techo del presupuesto programado y que el impacto
+                causado por la modificación de POA no afecta a los objetivos institucionales
+            </div>
+        </g:if>
+        <g:else>
+            <div>
+                Es importante señalar que el ajuste no implica un incremento en el techo del presupuesto programado y que el impacto
+                causado por la modificación de POA no afecta a los objetivos institucionales
+            </div>
+        </g:else>
+
+
         <div class="firma ">
             <div>
                 <span class="spanFirma">

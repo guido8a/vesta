@@ -21,8 +21,7 @@
                     <th>Concepto</th>
                     <th>Tipo</th>
                     <th>Estado</th>
-                    <th>Solicitud</th>
-                    <th>Reforma</th>
+                    <th>Ver</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,8 +44,8 @@
                                 <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: reforma.tipoSolicitud == 'E' ? 'existente' :
                                         reforma.tipoSolicitud == 'A' ? 'actividad' :
                                                 reforma.tipoSolicitud == 'P' ? 'partida' :
-                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : '', id: reforma.id)}" class="btn btn-sm btn-info btnVer" title="Solicitud">
-                                    <i class="fa fa-search"></i> Solicitud
+                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : '', id: reforma.id)}" class="btn btn-sm btn-info btnVer" title="Ajuste">
+                                    <i class="fa fa-search"></i> Ajuste
                                 </a>
                             </div>
 

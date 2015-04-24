@@ -53,14 +53,18 @@ class ReportesReformaController {
 
     def incremento () {
         def reforma = Reforma.get(params.id)
-        def detalles = DetalleReforma.findAllByReforma(reforma)
+        def detalles = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNull(reforma)
+        def detalles2 = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(reforma)
+
+
+
         def total = 0
         if (detalles.size() > 0) {
             total = detalles.sum { it.valor }
         }
         def anio = Anio.findByAnio(new Date().format("yyyy"))
 
-        return [reforma: reforma, anio: anio, detalles: detalles,total: total]
+        return [reforma: reforma, anio: anio, detalles: detalles,total: total, detalles2: detalles2]
 
     }
 
@@ -68,16 +72,22 @@ class ReportesReformaController {
 
         def reforma = Reforma.get(params.id)
         def detalles = DetalleReforma.findAllByReforma(reforma)
+
+        println("detalles " + detalles)
         def modificaciones = ModificacionAsignacion.findAllByDetalleReformaInList(detalles)
+        println("modificaciones " + modificaciones)
 
         def anio = Anio.findByAnio(new Date().format("yyyy"))
 
-//        println("1 " + detalles.size())
-//        println("2 " + modificaciones.size())
+//        def total = 0
+//        if (detalles.size() > 0) {
+//            total = detalles.sum { it.valor }
+//        }
+//        def anio = Anio.findByAnio(new Date().format("yyyy"))
 
-        println("modificaciones " + modificaciones)
 
         return [reforma: reforma, anio: anio, modificaciones: modificaciones]
+//        return [reforma: reforma, anio: anio, detalles: detalles]
 
     }
 
@@ -105,6 +115,20 @@ class ReportesReformaController {
         def anio = Anio.findByAnio(new Date().format("yyyy"))
 
         return [reforma: reforma, anio: anio, detalles: detalles,total: total]
+
+    }
+
+
+    def incrementoReforma () {
+
+        def reforma = Reforma.get(params.id)
+        def detalles = DetalleReforma.findAllByReforma(reforma)
+
+        def modificaciones = ModificacionAsignacion.findAllByDetalleReformaInList(detalles)
+
+        def anio = Anio.findByAnio(new Date().format("yyyy"))
+
+        return [reforma: reforma, anio: anio, modificaciones: modificaciones]
 
     }
 
