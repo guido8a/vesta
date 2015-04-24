@@ -53,7 +53,7 @@
 <rep:headerFooter title="Solicitud de Aval de POA" unidad="${solicitud.fecha.format('yyyy')}-${solicitud.unidad?.codigo}"
                   numero="${elm.imprimeNumero(solicitud: solicitud.id)}" estilo="right"/>
 
-<p>
+<p style="margin-top: 40px">
     Con el propósito de ejecutar las actividades programadas en la planificación operativa institucional
     ${solicitud.proceso.fechaInicio?.format("yyyy")}, la ${solicitud.usuario.unidad}
     solicita emitir el Aval de POA correspondiente al proceso que se detalla a continuación:

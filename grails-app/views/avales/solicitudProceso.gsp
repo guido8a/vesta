@@ -51,7 +51,7 @@
             <g:hiddenField name="monto" value="${disponible}"/>
             <g:hiddenField name="numero" value="${numero}"/>
             <input type="hidden" name="referencial" value="${refencial}">
-            <input type="hidden" name="solicitud" value="${solicitud.id}">
+            <input type="hidden" name="solicitud" value="${solicitud?.id}">
 
             <g:if test="${solicitud?.observaciones}">
                 SOLICITUD DEVUELTA POR:

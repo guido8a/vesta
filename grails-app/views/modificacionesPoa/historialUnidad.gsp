@@ -17,7 +17,7 @@
 
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link controller="modificacionesPoa" action="solicitar" class="btn btn-default button"><i class="fa fa-gavel"></i> Solicitar</g:link>
+                <g:link controller="reforma" action="reformas" class="btn btn-default button"><i class="fa fa-gavel"></i> Solicitar</g:link>
             </div>
         </div>
 
