@@ -15,6 +15,8 @@ import vesta.proyectos.ModificacionAsignacion
 import vesta.proyectos.Proyecto
 import vesta.seguridad.Firma
 import vesta.seguridad.Persona
+import vesta.seguridad.Prfl
+import vesta.seguridad.Sesn
 import vesta.seguridad.Shield
 
 
@@ -22,6 +24,13 @@ import vesta.seguridad.Shield
  * Controlador que muestra las pantallas de manejo de Reforma
  */
 class ReformaController extends Shield {
+
+    /**
+     * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
+     */
+    def reformas() {
+
+    }
 
     /**
      * Acción que permite realizar una solicitud de reforma a asignaciones existentes
@@ -236,17 +245,10 @@ class ReformaController extends Shield {
     }
 
     /**
-     * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
-     */
-    def reformas() {
-
-    }
-
-    /**
      * Acción que muestra la lista de todas las reformas, con su estado y una opción para ver el pdf
      */
     def lista() {
-        def reformas = Reforma.list([sort: "fecha", order: "desc"])
+        def reformas = Reforma.findAllByTipo('R', [sort: "fecha", order: "desc"])
         return [reformas: reformas]
     }
 
@@ -294,7 +296,7 @@ class ReformaController extends Shield {
             def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
             def personasFirmas = Persona.findAllByUnidad(unidad)
             def gerentes = Persona.findAllByUnidad(unidad.padre)
-            return [reforma: reforma, detalles: detalles, detalles2: detalles2, total: total, personas: personasFirmas, gerentes: gerentes]
+            return [reforma: reforma, detalles: detalles, detalles2: detalles2, total: total, personas: personasFirmas + gerentes, gerentes: gerentes]
         } else {
             redirect(action: "pendientes")
         }
@@ -1083,6 +1085,52 @@ class ReformaController extends Shield {
             def estadoSolicitado = EstadoAval.findByCodigo("E01")
             reforma.estado = estadoSolicitado
             reforma.save(flush: true)
+
+            /* TODO: a quien debe mandar la alerta? */
+
+            def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
+            def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
+            def now = new Date()
+            def usu = Persona.get(session.usuario.id)
+
+            def accion, mensaje
+            //E: existente, A: actividad, P: partida, I: incremento
+            switch (reforma.tipoSolicitud) {
+                case "E":
+                    accion = "existente"
+                    mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+                    break;
+                case "A":
+                    accion = "actividad"
+                    mensaje = "Devolución de solicitud de reforma a nuevas actividades: "
+                    break;
+                case "P":
+                    accion = "partida"
+                    mensaje = "Devolución de solicitud de reforma a nuevas partidas: "
+                    break;
+                case "I":
+                    accion = "incremento"
+                    mensaje = "Devolución de solicitud de reforma de incremento: "
+                    break;
+                default:
+                    accion = "existente"
+                    mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+            }
+
+            analistas.each { a ->
+                def alerta = new Alerta()
+                alerta.from = usu
+                alerta.persona = reforma.persona
+                alerta.fechaEnvio = now
+                alerta.mensaje = mensaje + reforma.concepto
+                alerta.controlador = "reforma"
+                alerta.accion = accion
+                alerta.id_remoto = reforma.id
+                if (!alerta.save(flush: true)) {
+                    println "error alerta: " + alerta.errors
+                }
+            }
+
             render "ok"
         }
     }
@@ -1099,6 +1147,7 @@ class ReformaController extends Shield {
             if (reforma.firma1.estado == "F" && reforma.firma2.estado == "F") {
                 //busco el ultimo numero asignado para signar el siguiente
                 def ultimoNum = Reforma.withCriteria {
+                    eq("tipo", "R")
                     projections {
                         max "numero"
                     }
@@ -1234,17 +1283,47 @@ class ReformaController extends Shield {
         reforma.estado = EstadoAval.findByCodigo("D02") //devuelto al analista
         reforma.save(flush: true)
         /* TODO: a quien debe mandar la alerta? */
-//        def alerta = new Alerta()
-//        alerta.from = usu
-//        alerta.persona = reforma.persona
-//        alerta.fechaEnvio = now
-//        alerta.mensaje = "Devolución de solicitud de reforma a asignaciones existentes: " + reforma.concepto
-//        alerta.controlador = "reforma"
-//        alerta.accion = "existente"
-//        alerta.id_remoto = reforma.id
-//        if (!alerta.save(flush: true)) {
-//            println "error alerta: " + alerta.errors
-//        }
+
+        def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
+        def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
+
+        def accion, mensaje
+        //E: existente, A: actividad, P: partida, I: incremento
+        switch (reforma.tipoSolicitud) {
+            case "E":
+                accion = "existente"
+                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+                break;
+            case "A":
+                accion = "actividad"
+                mensaje = "Devolución de solicitud de reforma a nuevas actividades: "
+                break;
+            case "P":
+                accion = "partida"
+                mensaje = "Devolución de solicitud de reforma a nuevas partidas: "
+                break;
+            case "I":
+                accion = "incremento"
+                mensaje = "Devolución de solicitud de reforma de incremento: "
+                break;
+            default:
+                accion = "existente"
+                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+        }
+
+        analistas.each { a ->
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = reforma.persona
+            alerta.fechaEnvio = now
+            alerta.mensaje = mensaje + reforma.concepto
+            alerta.controlador = "reforma"
+            alerta.accion = accion
+            alerta.id_remoto = reforma.id
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
+            }
+        }
         render "OK"
     }
 

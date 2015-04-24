@@ -82,7 +82,7 @@
                                             %{--<a href="#" class="negar btn btn-danger" title="Negar">--}%
                                             %{--<i class="fa fa-thumbs-down"></i>--}%
                                             %{--</a>--}%
-                                                <g:if test="${f.tipoFirma == 'RFRM'}">
+                                                <g:if test="${f.tipoFirma == 'RFRM' || f.tipoFirma == 'AJST'}">
                                                     <a href="#" iden="${f.id}" class="devolver btn btn-warning" title="Devolver">
                                                         <i class="fa fa-hand-o-left"></i>
                                                     </a>
