@@ -39,15 +39,27 @@
                         </td>
                         <td>${reforma.estado.descripcion}</td>
                         <td style="text-align: center">
+                    <g:if test="${reforma.estado.codigo == 'E02'}">
+                        <div class="btn-group" role="group">
+                            <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: reforma.tipoSolicitud == 'E' ? 'existenteReforma' :
+                                    reforma.tipoSolicitud == 'A' ? 'actividadReforma' :
+                                            reforma.tipoSolicitud == 'P' ? 'partidaReforma' :
+                                                    reforma.tipoSolicitud == 'I' ? 'incrementoReforma' : '', id: reforma.id)}" class="btn btn-sm btn-success btnVer" title="Ajuste">
+                                <i class="fa fa-sign-out"></i> Reforma
+                            </a>
+                        </div>
+                    </g:if>
+                     <g:else>
+                         <div class="btn-group" role="group">
+                             <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: reforma.tipoSolicitud == 'E' ? 'existente' :
+                                     reforma.tipoSolicitud == 'A' ? 'actividad' :
+                                             reforma.tipoSolicitud == 'P' ? 'partida' :
+                                                     reforma.tipoSolicitud == 'I' ? 'incremento' : '', id: reforma.id)}" class="btn btn-sm btn-info btnVer" title="Ajuste">
+                                 <i class="fa fa-sign-in"></i> Ajuste
+                             </a>
+                         </div>
+                     </g:else>
 
-                            <div class="btn-group" role="group">
-                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: reforma.tipoSolicitud == 'E' ? 'existente' :
-                                        reforma.tipoSolicitud == 'A' ? 'actividad' :
-                                                reforma.tipoSolicitud == 'P' ? 'partida' :
-                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : '', id: reforma.id)}" class="btn btn-sm btn-info btnVer" title="Ajuste">
-                                    <i class="fa fa-search"></i> Ajuste
-                                </a>
-                            </div>
 
                         </td>
 

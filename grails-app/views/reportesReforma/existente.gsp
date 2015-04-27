@@ -22,9 +22,14 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+<g:if test="${reforma?.tipo == 'R'}">
     <title>Solicitud de reforma al POA</title>
+    <rep:estilos orientacion="l" pagTitle="Solicitud de reforma al POA"/>
+</g:if><g:else>
+    <title>Ajuste al POA</title>
+    <rep:estilos orientacion="l" pagTitle="Ajuste al POA"/>
+</g:else>
 
-    <rep:estilos orientacion="l" pagTitle="Solicitud de reforma al poa"/>
 
     <style type="text/css">
     table {
@@ -145,7 +150,7 @@
                       numero="${ reforma.id}" estilo="right"/>
 </g:if>
 <g:else>
-    <rep:headerFooter title="SOLICITUD DE AJUSTE AL POA" unidad="${anio}-GP"
+    <rep:headerFooter title="AJUSTE AL POA" unidad="${anio}-GP"
                       numero="${ reforma.id}" estilo="right"/>
 </g:else>
 
@@ -218,11 +223,11 @@
                             <td class="center">
                             </td>
                         </tr>
-                        <tr>
-                            <td>Ajuste por Incremento</td>
-                            <td class="center">
-                            </td>
-                        </tr>
+                        %{--<tr>--}%
+                            %{--<td>Ajuste por Incremento</td>--}%
+                            %{--<td class="center">--}%
+                            %{--</td>--}%
+                        %{--</tr>--}%
 
                         </tbody>
                     </table>
