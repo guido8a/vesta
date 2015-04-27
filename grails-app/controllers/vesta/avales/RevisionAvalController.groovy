@@ -1,13 +1,9 @@
 package vesta.avales
 
-import vesta.parametros.poaPac.Anio
+import vesta.alertas.Alerta
 import vesta.parametros.UnidadEjecutora
-import vesta.seguridad.Firma
-import vesta.seguridad.Persona
-import vesta.seguridad.Prfl
-import vesta.seguridad.Sesn
-import vesta.seguridad.Persona
-import vesta.seguridad.Shield
+import vesta.parametros.poaPac.Anio
+import vesta.seguridad.*
 
 /**
  * Controlador que muestra las pantallas de manejo de revisiones de avales
@@ -23,10 +19,11 @@ class RevisionAvalController extends Shield {
     def pendientes = {
         def solicitudes = SolicitudAval.findAllByEstado(EstadoAval.findByCodigo("E01"))
         def actual
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
         [solicitudes: solicitudes, actual: actual]
     }
 
@@ -58,10 +55,11 @@ class RevisionAvalController extends Shield {
      */
     def listaAvales = {
         def actual
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
         [actual: actual]
     }
 
@@ -100,10 +98,11 @@ class RevisionAvalController extends Shield {
             numero = " and numero like ('%${numero}%')"
         }
         if (params.sort && params.sort != "") {
-            if (!externos.contains(params.sort))
+            if (!externos.contains(params.sort)) {
                 orderBy = " order by ${params.sort} ${params.order}"
-            else
+            } else {
                 band = false
+            }
         }
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy HH:mm:ss", "01-01-" + anio + " 00:01:01")
@@ -168,8 +167,9 @@ class RevisionAvalController extends Shield {
                     datos = datos.sort { it.proceso.proyecto.nombre }
                     break;
             }
-            if (params.order == "desc")
+            if (params.order == "desc") {
                 datos = datos.reverse()
+            }
 
         }
         [datos: datos, estado: estado, sort: params.sort, order: params.order, now: now]
@@ -258,15 +258,17 @@ class RevisionAvalController extends Shield {
         def numero = 0
         def max = Aval.list([sort: "numero", order: "desc", max: 1])
 //        println "max " + max.numero
-        if (max.size() > 0)
+        if (max.size() > 0) {
             numero = max[0].numero + 1
+        }
         def solicitud = SolicitudAval.get(params.id)
         def band = false
         def usuario = Persona.get(session.usuario.id)
         /*todo validar quien puede*/
         band = true
-        if (!band)
+        if (!band) {
             response.sendError(403)
+        }
         return [solicitud: solicitud, personas: gerentes + personasFirmas, personasGerente: gerentes, numero: numero]
     }
 
@@ -280,8 +282,9 @@ class RevisionAvalController extends Shield {
         def usuario = Persona.get(session.usuario.id)
         /*todo validar quien puede*/
         band = true
-        if (!band)
+        if (!band) {
             response.sendError(403)
+        }
         [solicitud: solicitud]
     }
 
@@ -335,49 +338,73 @@ class RevisionAvalController extends Shield {
                 /*Todo aqui validar quien puede*/
                 band = true
                 if (band) {
-                    def aval = new Aval()
-                    aval.proceso = sol.proceso
-                    aval.concepto = sol.concepto
-                    aval.path = " "
-                    aval.memo = sol.memo
+                    def firma1, firma2, aval
+                    if (!sol.aval) {
+                        aval = new Aval()
+                        aval.proceso = sol.proceso
+                        aval.concepto = sol.concepto
+                        aval.path = " "
+                        aval.memo = sol.memo
 //                    aval.numero = sol.numero
-                    aval.numero = 0
-                    aval.estado = EstadoAval.findByCodigo("EF1")
-                    aval.monto = sol.monto
-                    if (!aval.save(flush: true))
-                        println "error save aval 1 " + aval.errors
-                    def firma1 = new Firma()
-                    firma1.usuario = Persona.get(params.firma2)
-                    firma1.accionVer = "certificacion"
-                    firma1.controladorVer = "reportes"
-                    firma1.idAccionVer = sol.id
-                    firma1.accion = "firmarAval"
-                    firma1.controlador = "revisionAval"
-                    firma1.documento = "aval_" + aval.numero + "_" + sol.proceso.nombre
-                    firma1.concepto = "Aprobación del aval ${aval.numero}"
-                    firma1.esPdf = "S"
-                    if (!firma1.save(flush: true)) {
-                        println "error firma1 " + firma1.errors
-                        errores += renderErrors(bean: firma1)
+                        aval.numero = 0
+                        aval.estado = EstadoAval.findByCodigo("EF1")
+                        aval.monto = sol.monto
+                        if (!aval.save(flush: true)) {
+                            println "error save aval 1 " + aval.errors
+                        }
+                        firma1 = new Firma()
+                        firma1.usuario = Persona.get(params.firma2)
+                        firma1.accionVer = "certificacion"
+                        firma1.controladorVer = "reportes"
+                        firma1.idAccionVer = sol.id
+                        firma1.accion = "firmarAval"
+                        firma1.controlador = "revisionAval"
+
+                        firma1.controladorNegar = "revisionAval"
+                        firma1.accionNegar = "devolverAval"
+                        firma1.idAccionNegar = sol.id
+                        firma1.tipoFirma = "AVAL"
+
+                        firma1.documento = "aval_" + aval.numero + "_" + sol.proceso.nombre
+                        firma1.concepto = "Aprobación del aval ${aval.numero}"
+                        firma1.esPdf = "S"
+                        if (!firma1.save(flush: true)) {
+                            println "error firma1 " + firma1.errors
+                            errores += renderErrors(bean: firma1)
+                        }
+                        firma2 = new Firma()
+                        firma2.usuario = Persona.get(params.firma3)
+                        firma2.accionVer = "certificacion"
+                        firma2.controladorVer = "reportes"
+                        firma2.idAccionVer = sol.id
+                        firma2.accion = "firmarAval"
+                        firma2.controlador = "revisionAval"
+
+                        firma2.controladorNegar = "revisionAval"
+                        firma2.accionNegar = "devolverAval"
+                        firma2.idAccionNegar = sol.id
+                        firma2.tipoFirma = "AVAL"
+
+                        firma2.documento = "aval_" + aval.numero + "_" + sol.proceso.nombre
+                        firma2.concepto = "Aprobación del aval ${aval.numero}"
+                        firma2.esPdf = "S"
+                        if (!firma2.save(flush: true)) {
+                            println "error firma2 " + firma2.errors
+                            errores += renderErrors(bean: firma2)
+                        }
+                        aval.firma1 = firma1
+                        aval.firma2 = firma2
+                    } else {
+                        aval = sol.aval
+                        firma1 = aval.firma1
+                        firma2 = aval.firma2
+
+                        firma1.estado = "S"
+                        firma2.estado = "S"
                     }
-                    def firma2 = new Firma()
-                    firma2.usuario = Persona.get(params.firma3)
-                    firma2.accionVer = "certificacion"
-                    firma2.controladorVer = "reportes"
-                    firma2.idAccionVer = sol.id
-                    firma2.accion = "firmarAval"
-                    firma2.controlador = "revisionAval"
-                    firma2.documento = "aval_" + aval.numero + "_" + sol.proceso.nombre
-                    firma2.concepto = "Aprobación del aval ${aval.numero}"
-                    firma2.esPdf = "S"
-                    if (!firma2.save(flush: true)) {
-                        println "error firma2 " + firma2.errors
-                        errores += renderErrors(bean: firma2)
-                    }
-                    aval.firma1 = firma1
-                    aval.firma2 = firma2
-                    if (!aval.save(flush: true))
+                    if (!aval.save(flush: true)) {
                         println "error save aval 2"
+                    }
                     firma1.idAccion = aval.id
                     firma2.idAccion = aval.id
                     firma1.save()
@@ -388,6 +415,28 @@ class RevisionAvalController extends Shield {
                         println "ERROR AVAL!!!!! " + aval.errors
                     }
                     sol.save(flush: true)
+
+                    def alerta1 = new Alerta()
+                    alerta1.from = usuario
+                    alerta1.persona = firma1.usuario
+                    alerta1.fechaEnvio = new Date()
+                    alerta1.mensaje = "Aval pendiente de firma para aprobación: " + sol.concepto
+                    alerta1.controlador = "firma"
+                    alerta1.accion = "firmasPendientes"
+                    if (!alerta1.save(flush: true)) {
+                        println "error alerta1: " + alerta1.errors
+                    }
+                    def alerta2 = new Alerta()
+                    alerta2.from = usuario
+                    alerta2.persona = firma1.usuario
+                    alerta2.fechaEnvio = new Date()
+                    alerta2.mensaje = "Aval pendiente de firma para aprobación: " + sol.concepto
+                    alerta2.controlador = "firma"
+                    alerta2.accion = "firmasPendientes"
+                    if (!alerta2.save(flush: true)) {
+                        println "error alerta2: " + alerta2.errors
+                    }
+
                     try {
                         def mail = aval.firma1.usuario.mail
                         if (mail) {
@@ -422,10 +471,11 @@ class RevisionAvalController extends Shield {
                     //flash.message = "Solciitud de firmas enviada para aprobación"
                 } else {
                     def msn = "Usted no tiene permisos para aprobar esta solicitud"
-                    if (params.tipo)
+                    if (params.tipo) {
                         redirect(action: "listaCertificados", params: [cer: cer, id: cer.asignacion.unidad.id])
-                    else
+                    } else {
                         redirect(action: 'listaSolicitudes', params: [msn: msn])
+                    }
                 }
             }
         }
@@ -450,15 +500,43 @@ class RevisionAvalController extends Shield {
     }
 
     /**
+     * Acción que permite devolver un aval al analista de planificacion
+     */
+    def devolverAval() {
+        def sol = SolicitudAval.get(params.id)
+        sol.estado = EstadoAval.findByCodigo("D02") //devuelto al analista
+
+        def now = new Date()
+        def usu = Persona.get(session.usuario.id)
+
+        def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
+        def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
+
+        analistas.each { a ->
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = a
+            alerta.fechaEnvio = now
+            alerta.mensaje = "Devolución de aval: " + sol.concepto
+            alerta.controlador = "revisionAval"
+            alerta.accion = "pendientes"
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
+            }
+        }
+        render "OK"
+    }
+
+    /**
      * Acción que permite firmar electrónicamente un Aval
      * @params id es el identificador del aval
      */
     def firmarAval = {
         def firma = Firma.findByKey(params.key)
         def numero = 0
-        if (!firma)
+        if (!firma) {
             response.sendError(403)
-        else {
+        } else {
             def aval = Aval.findByFirma1OrFirma2(firma, firma)
             if (aval.firma1.key != null && aval.firma2.key != null) {
                 aval.fechaAprobacion = new Date()
@@ -485,8 +563,9 @@ class RevisionAvalController extends Shield {
                     /*drrq*/
                     Persona.findAllByUnidad(sol.unidad).each {
                         def ses = Sesn.findAllByPerfilAndUsuario(perDir, it)
-                        if (ses.size() > 0)
+                        if (ses.size() > 0) {
                             sesiones += ses
+                        }
                     }
                     if (sesiones.size() > 0) {
                         println "Se enviaran ${sesiones.size()} mails"
@@ -808,10 +887,11 @@ class RevisionAvalController extends Shield {
                     redirect(action: 'pendientes', controller: 'revisionAval')
                 } else {
                     msn = "Usted no tiene permisos para aprobar esta solicitud"
-                    if (params.tipo)
+                    if (params.tipo) {
                         redirect(action: "listaCertificados", params: [cer: cer, id: cer.asignacion.unidad.id])
-                    else
+                    } else {
                         redirect(action: 'listaSolicitudes', params: [msn: msn])
+                    }
                 }
             }
         }
@@ -822,12 +902,14 @@ class RevisionAvalController extends Shield {
      * @param anio el año para el cual se van a mostrar las solicitudes. Si no recibe este parámetro muestra del año actual.
      */
     def pendientes() {
-        def solicitudes = SolicitudAval.findAllByEstado(EstadoAval.findByCodigo("E01"))
+        def estados = [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("D02")]
+        def solicitudes = SolicitudAval.findAllByEstadoInList(estados)
         def actual
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
         return [solicitudes: solicitudes, actual: actual]
     }
 

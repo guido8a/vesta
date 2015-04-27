@@ -25,12 +25,26 @@
             </div>
         </div>
 
-        <g:if test="${solicitud.aval}">
+        <g:if test="${solicitud.aval && solicitud.estado.codigo != 'D02'}">
             <div class="alert alert-danger">
                 <i class="fa fa-exclamation-triangle fa-2x"></i> Ya ha solicitado la firma para esta solicitud, no puede hacerlo nuevamente
             </div>
         </g:if>
         <g:else>
+
+            <g:if test="${solicitud.estado.codigo == "D02"}">
+                <div class="alert alert-warning">
+                    <g:if test="${solicitud.aval.firma1.observaciones && solicitud.aval.firma1.observaciones != '' && solicitud.aval.firma1.observaciones != 'S'}">
+                        <h4>Observaciones de ${solicitud.aval.firma1.usuario}</h4>
+                        ${solicitud.aval.firma1.observaciones}
+                    </g:if>
+                    <g:if test="${solicitud.aval.firma2.observaciones && solicitud.aval.firma2.observaciones != '' && solicitud.aval.firma2.observaciones != 'S'}">
+                        <h4>Observaciones de ${solicitud.aval.firma2.usuario}</h4>
+                        ${solicitud.aval.firma2.observaciones}
+                    </g:if>
+                </div>
+            </g:if>
+
             <fieldset>
                 <legend>Solicitud a aprobar</legend>
                 <table class="table table-condensed table-bordered">
@@ -114,16 +128,25 @@
                     <div class="col-md-1 show-label">Autorizaciones electrónicas:</div>
 
                     <div class="col-md-3">
-                        <g:select from="${personas}" optionKey="id" optionValue="${{
-                            it.nombre + ' ' + it.apellido
-                        }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
+                        <g:if test="${solicitud.estado.codigo == "D02"}">
+                            ${solicitud.aval.firma1.usuario}
+                        </g:if>
+                        <g:else>
+                            <g:select from="${personas}" optionKey="id" optionValue="${{
+                                it.nombre + ' ' + it.apellido
+                            }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
+                        </g:else>
                     </div>
 
                     <div class="col-md-3">
-
-                        <g:select from="${personasGerente}" optionKey="id" optionValue="${{
-                            it.nombre + ' ' + it.apellido
-                        }}" noSelection="['': '- Seleccione -']" name="firma3" class="form-control required input-sm"/>
+                        <g:if test="${solicitud.estado.codigo == "D02"}">
+                            ${solicitud.aval.firma2.usuario}
+                        </g:if>
+                        <g:else>
+                            <g:select from="${personasGerente}" optionKey="id" optionValue="${{
+                                it.nombre + ' ' + it.apellido
+                            }}" noSelection="['': '- Seleccione -']" name="firma3" class="form-control required input-sm"/>
+                        </g:else>
                     </div>
                 </div>
             </fieldset>

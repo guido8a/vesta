@@ -1314,7 +1314,7 @@ class ReformaController extends Shield {
         analistas.each { a ->
             def alerta = new Alerta()
             alerta.from = usu
-            alerta.persona = reforma.persona
+            alerta.persona = a
             alerta.fechaEnvio = now
             alerta.mensaje = mensaje + reforma.concepto
             alerta.controlador = "reforma"
