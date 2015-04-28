@@ -62,12 +62,12 @@
                                         <td>${reforma.estado.descripcion}</td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <g:link controller="reportes" action="${reforma.tipoSolicitud == 'E' ? 'existente' :
+                                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller:"reportesReforma",  action: reforma.tipoSolicitud == 'E' ? 'existente' :
                                                         reforma.tipoSolicitud == 'A' ? 'actividad' :
                                                                 reforma.tipoSolicitud == 'P' ? 'partida' :
-                                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : ''}" id="${reforma.id}" class="btn btn-info btnVer" title="Ver">
+                                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : '', id: reforma.id )}" class="btn btn-sm btn-info btnVer" title="Solicitud">
                                                     <i class="fa fa-search"></i>
-                                                </g:link>
+                                                </a>
                                                 <g:link action="procesar" id="${reforma.id}" class="btn btn-default" title="Procesar">
                                                     <i class="fa fa-pencil-square-o"></i>
                                                 </g:link>

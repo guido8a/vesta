@@ -77,7 +77,7 @@
                                                     </g:else>
                                                 </g:if>
                                                 <a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">
-                                                    <i class="fa fa-paw"></i>
+                                                    <i class="fa fa-pencil"></i>
                                                 </a>
                                             %{--<a href="#" class="negar btn btn-danger" title="Negar">--}%
                                             %{--<i class="fa fa-thumbs-down"></i>--}%
@@ -97,7 +97,7 @@
                                             %{--</g:else>--}%
                                             %{--</g:if>--}%
                                             %{--<a href="#" iden="${f.id}" class="aprobar btn btn-success" style="margin: 5px">--}%
-                                            %{--<i class="fa fa-paw"></i> Firmar--}%
+                                            %{--<i class="fa fa-pencil"></i> Firmar--}%
                                             %{--</a>--}%
                                             %{--<a href="#" iden="${f.id}" class="devolver btn btn-danger">--}%
                                             %{--<i class="fa fa-thumbs-down"></i> Devolver--}%
@@ -180,7 +180,7 @@
                                     }
                                 },
                                 eliminar : {
-                                    label     : "<i class='fa fa-paw'></i> Firmar",
+                                    label     : "<i class='fa fa-pencil'></i> Firmar",
                                     className : "btn-success",
                                     callback  : function () {
                                         openLoader("Firmando aprobación");

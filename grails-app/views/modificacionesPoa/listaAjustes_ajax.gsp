@@ -140,7 +140,7 @@
                         <g:else>
                         %{--<g:if test="${ajuste.firma1.usuarioId.toString() == params.firma}">--}%
                         %{--<a href="#" class="btn btn-success btnFirmar" data-id="${ajuste.id}">--}%
-                        %{--<i class="fa fa-paw"></i> Firmar--}%
+                        %{--<i class="fa fa-pencil"></i> Firmar--}%
                         %{--</a>--}%
                         %{--</g:if>--}%
                         %{--<g:else>--}%
@@ -160,7 +160,7 @@
                         <g:else>
                         %{--<g:if test="${ajuste.firma2.usuarioId.toString() == params.firma}">--}%
                         %{--<a href="#" class="btn btn-success btnFirmar" data-id="${ajuste.id}">--}%
-                        %{--<i class="fa fa-paw"></i> Firmar--}%
+                        %{--<i class="fa fa-pencil"></i> Firmar--}%
                         %{--</a>--}%
                         %{--</g:if>--}%
                         %{--<g:else>--}%
@@ -203,7 +203,7 @@
         %{--}--}%
         %{--},--}%
         %{--eliminar : {--}%
-        %{--label     : "<i class='fa fa-paw'></i> Firmar",--}%
+        %{--label     : "<i class='fa fa-pencil'></i> Firmar",--}%
         %{--className : "btn-success",--}%
         %{--callback  : function () {--}%
         %{--openLoader("Firmando ajuste");--}%
