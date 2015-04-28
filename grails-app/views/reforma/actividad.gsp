@@ -174,7 +174,7 @@
 
                         <div class="col-md-2">
                             <g:select from="${Categoria.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" name="categoria"
-                                      class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']"/>
+                                      class="form-control input-sm" noSelection="['': 'Seleccione...']"/>
                         </div>
 
                         <div class="col-md-2">

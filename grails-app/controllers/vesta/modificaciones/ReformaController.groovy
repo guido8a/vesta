@@ -788,7 +788,9 @@ class ReformaController extends Shield {
             detalle.descripcionNuevaActividad = det.actividad.trim()
             detalle.fechaInicioNuevaActividad = new Date().parse("dd-MM-yyyy", det.inicio)
             detalle.fechaFinNuevaActividad = new Date().parse("dd-MM-yyyy", det.fin)
-            detalle.categoria = Categoria.get(det.categoria.toLong())
+            if(det.categoria) {
+                detalle.categoria = Categoria.get(det.categoria.toLong())
+            }
 
             if (!detalle.save(flush: true)) {
                 println "error al guardar detalle: " + detalle.errors
