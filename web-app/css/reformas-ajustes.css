@@ -1,0 +1,32 @@
+.bgExistentes {
+    background : rgba(74, 129, 160, 0.65);
+}
+
+.bgPartidas {
+    background : rgba(125, 176, 159, 0.65);
+}
+
+.bgActividades {
+    /*background : #896897;*/
+    background : rgba(196, 131, 75, 0.65);
+}
+
+.bgIncremento {
+    background : rgba(217, 194, 146, 0.65);
+}
+
+.txExistentes {
+    color : #4A81A0;
+}
+
+.txPartidas {
+    color : #7DB09F;
+}
+
+.txActividades {
+    color : #C4834B;
+}
+
+.txIncremento {
+    color : #D9C292;
+}
