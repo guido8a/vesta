@@ -1,18 +1,35 @@
 .bgExistentes {
-    background : rgba(74, 129, 160, 0.65);
+    background : rgba(74, 129, 160, 0.5);
+}
+
+.bgExistentes:hover {
+    background : rgba(74, 129, 160, 0.75) !important;
 }
 
 .bgPartidas {
-    background : rgba(125, 176, 159, 0.65);
+    background : rgba(125, 176, 159, 0.5);
+}
+
+.bgPartidas:hover {
+    background : rgba(125, 176, 159, 0.75) !important;
 }
 
 .bgActividades {
     /*background : #896897;*/
-    background : rgba(196, 131, 75, 0.65);
+    background : rgba(196, 131, 75, 0.5);
+}
+
+.bgActividades:hover {
+    /*background : #896897;*/
+    background : rgba(196, 131, 75, 0.75) !important;
 }
 
 .bgIncremento {
-    background : rgba(217, 194, 146, 0.65);
+    background : rgba(217, 194, 146, 0.5);
+}
+
+.bgIncremento:hover {
+    background : rgba(217, 194, 146, 0.75) !important;
 }
 
 .txExistentes {
