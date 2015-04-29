@@ -15,14 +15,33 @@ class FirmaController extends Shield {
      */
     def firmasPendientes = {
 
-        def firmas = Firma.findAllByUsuarioAndEstado(session.usuario, "S", [sort: "id"])
+//        def firmas = Firma.findAllByUsuarioAndEstado(session.usuario, "S", [sort: "id"])
+
+        def firmas = Firma.withCriteria {
+            eq("usuario", session.usuario)
+            eq("estado", "S")
+            isNull("tipoFirma")
+        }
+
+        def firmasReformas = Firma.withCriteria {
+            eq("usuario", session.usuario)
+            eq("estado", "S")
+            eq("tipoFirma", "RFRM")
+        }
+
+        def firmasAjustes = Firma.withCriteria {
+            eq("usuario", session.usuario)
+            eq("estado", "S")
+            eq("tipoFirma", "AJST")
+        }
+
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-        [firmas: firmas, actual: actual]
+        [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, actual: actual]
 
     }
 /**

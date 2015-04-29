@@ -14,9 +14,9 @@
     </head>
 
     <body>
-        <elm:container tipo="horizontal" titulo="Modificaciones">
+        <elm:container tipo="horizontal" titulo="Reformas">
             <p>
-                Existen 4 tipos de modificaciones posibles:
+                Existen 4 tipos de Reformas posibles:
                 asignaciones existentes, actividad nueva, partida nueva, incremento
             </p>
 

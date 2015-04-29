@@ -93,9 +93,9 @@
                         <g:set var="totalFinal" value="${0}"/>
                         <g:set var="totalSaldo" value="${0}"/>
                         <g:each in="${detalles2}" var="detalle">
-                            <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionDestino.priorizado)}"/>
+                            <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionDestino?.priorizado)}"/>
                             <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
-                            <g:set var="totalFinal" value="${totalFinal + (detalle.asignacionDestino.priorizado + detalle.valor)}"/>
+                            <g:set var="totalFinal" value="${totalFinal + (detalle.asignacionDestino?.priorizado + detalle.valor)}"/>
                             <g:set var="totalSaldo" value="${totalSaldo + detalle.saldo}"/>
                             <tr class="success"
                                 data-id="${detalle.id}"
@@ -103,10 +103,10 @@
                                 data-aso=""
                                 data-monto="${detalle.valor}"
                                 data-saldo="${detalle.saldo}"
-                                data-ti="${detalle.asignacionDestino.priorizado}"
+                                data-ti="${detalle.asignacionDestino?.priorizado}"
                                 data-ta="${detalle.valor}"
                                 data-td="${0}"
-                                data-tf="${detalle.asignacionDestino.priorizado + detalle.valor}">
+                                data-tf="${detalle.asignacionDestino?.priorizado + detalle.valor}">
                                 <td>
                                     ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
                                 </td>
@@ -120,14 +120,14 @@
                                     ${detalle.asignacionDestino}
                                 </td>
                                 <td class="text-right">
-                                    <g:formatNumber number="${detalle.asignacionDestino.priorizado}" type="currency" currencySymbol=""/>
+                                    <g:formatNumber number="${detalle.asignacionDestino?.priorizado}" type="currency" currencySymbol=""/>
                                 </td>
                                 <td></td>
                                 <td class="text-right">
                                     <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
                                 </td>
                                 <td class="text-right">
-                                    <g:formatNumber number="${detalle.asignacionDestino.priorizado + detalle.valor}" type="currency" currencySymbol=""/>
+                                    <g:formatNumber number="${detalle.asignacionDestino?.priorizado + detalle.valor}" type="currency" currencySymbol=""/>
                                 </td>
                                 <g:if test="${reforma.tipoSolicitud == 'I'}">
                                     <td class="text-right">
@@ -193,27 +193,30 @@
                             <g:set var="totalFinal" value="${0}"/>
                             <g:each in="${detalles}" var="detalle">
                                 <g:if test="${reforma.tipoSolicitud == 'E' || reforma.tipoSolicitud == 'I'}">
-                                    <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen.priorizado + detalle.asignacionDestino.priorizado)}"/>
+                                    <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen?.priorizado + detalle.asignacionDestino?.priorizado)}"/>
                                     <g:set var="totalDisminucion" value="${totalDisminucion + detalle.valor}"/>
                                     <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
-                                    <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen.priorizado - detalle.valor) + (detalle.asignacionDestino.priorizado + detalle.valor))}"/>
+                                    <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen?.priorizado - detalle.valor) + (detalle.asignacionDestino?.priorizado + detalle.valor))}"/>
+                                    <g:set var="tf" value="${detalle.asignacionDestino?.priorizado + detalle.valor}"/>
                                 </g:if>
                                 <g:elseif test="${reforma.tipoSolicitud == 'A'}">
-                                    <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen.priorizado)}"/>
+                                    <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen?.priorizado)}"/>
                                     <g:set var="totalDisminucion" value="${totalDisminucion + detalle.valor}"/>
                                     <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
-                                    <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen.priorizado - detalle.valor) + (detalle.valor))}"/>
+                                    <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen?.priorizado - detalle.valor) + (detalle.valor))}"/>
+                                    <g:set var="tf" value="${0}"/>
                                 </g:elseif>
                                 <tr class="info"
                                     data-id="${detalle.id}"
                                     data-asd="${detalle.asignacionDestinoId}"
                                     data-aso="${detalle.asignacionOrigenId}"
                                     data-monto="${detalle.valor}"
-                                    data-ti="${detalle.asignacionDestino.priorizado}"
+                                    data-ti="${detalle.asignacionDestino?.priorizado}"
                                     data-ta="${detalle.valor}"
                                     data-td="${0}"
-                                    data-tf="${detalle.asignacionDestino.priorizado + detalle.valor}">
+                                    data-tf="${tf}">
                                     <td>
+
                                         ${detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
                                     </td>
                                     <td>
@@ -226,14 +229,14 @@
                                         ${detalle.asignacionOrigen}
                                     </td>
                                     <td class="text-right">
-                                        <g:formatNumber number="${detalle.asignacionOrigen.priorizado}" type="currency" currencySymbol=""/>
+                                        <g:formatNumber number="${detalle.asignacionOrigen?.priorizado}" type="currency" currencySymbol=""/>
                                     </td>
                                     <td class="text-right">
                                         <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
                                     </td>
                                     <td></td>
                                     <td class="text-right">
-                                        <g:formatNumber number="${detalle.asignacionOrigen.priorizado - detalle.valor}" type="currency" currencySymbol=""/>
+                                        <g:formatNumber number="${detalle.asignacionOrigen?.priorizado - detalle.valor}" type="currency" currencySymbol=""/>
                                     </td>
                                     <g:if test="${reforma.tipoSolicitud == 'I'}">
                                         <td rowspan="2" class="danger" style="vertical-align: middle;">
@@ -248,10 +251,10 @@
                                     data-asd="${detalle.asignacionDestinoId}"
                                     data-aso="${detalle.asignacionOrigenId}"
                                     data-monto="${detalle.valor}"
-                                    data-ti="${detalle.asignacionDestino.priorizado}"
+                                    data-ti="${detalle.asignacionDestino?.priorizado}"
                                     data-ta="${detalle.valor}"
                                     data-td="${0}"
-                                    data-tf="${detalle.asignacionDestino.priorizado + detalle.valor}">
+                                    data-tf="${tf}">
                                     <g:if test="${reforma.tipoSolicitud == 'E' || reforma.tipoSolicitud == 'I'}">
                                         <td>
                                             ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
@@ -266,14 +269,14 @@
                                             ${detalle.asignacionDestino}
                                         </td>
                                         <td class="text-right">
-                                            <g:formatNumber number="${detalle.asignacionDestino.priorizado}" type="currency" currencySymbol=""/>
+                                            <g:formatNumber number="${detalle.asignacionDestino?.priorizado}" type="currency" currencySymbol=""/>
                                         </td>
                                         <td></td>
                                         <td class="text-right">
                                             <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
                                         </td>
                                         <td class="text-right">
-                                            <g:formatNumber number="${detalle.asignacionDestino.priorizado + detalle.valor}" type="currency" currencySymbol=""/>
+                                            <g:formatNumber number="${detalle.asignacionDestino?.priorizado + detalle.valor}" type="currency" currencySymbol=""/>
                                         </td>
                                     %{--<g:if test="${reforma.tipoSolicitud == 'I'}">--}%
                                     %{--<td>--}%
@@ -365,14 +368,14 @@
                                     ${detalles.first().asignacionOrigen}
                                 </td>
                                 <td class="text-right">
-                                    <g:formatNumber number="${detalles.first().asignacionOrigen.priorizado}" type="currency" currencySymbol=""/>
+                                    <g:formatNumber number="${detalles.first().asignacionOrigen?.priorizado}" type="currency" currencySymbol=""/>
                                 </td>
                                 <td class="text-right">
                                     <g:formatNumber number="${valorFinal}" type="currency" currencySymbol=""/>
                                 </td>
                                 <td></td>
                                 <td class="text-right">
-                                    <g:formatNumber number="${detalles.first().asignacionOrigen.priorizado - valorFinal}" type="currency" currencySymbol=""/>
+                                    <g:formatNumber number="${detalles.first().asignacionOrigen?.priorizado - valorFinal}" type="currency" currencySymbol=""/>
                                 </td>
                             </tr>
                         </tbody>
