@@ -710,7 +710,7 @@ class AjusteController extends Shield {
                             nuevaActividad.numero = numAct
 
                             if (!nuevaActividad.save(flush: true)) {
-                                println "error al guardar la actividad (A) " + nuevaActividad.errors
+                                println "error al guardar la actividad (AA) " + nuevaActividad.errors
                                 errores += renderErrors(bean: nuevaActividad)
                             } else {
                                 destino = new Asignacion()
@@ -718,11 +718,11 @@ class AjusteController extends Shield {
                                 destino.fuente = origen.fuente
                                 destino.marcoLogico = nuevaActividad
                                 destino.presupuesto = detalle.presupuesto
-                                destino.planificado = detalle.valor
+                                destino.planificado = 0
                                 destino.unidad = nuevaActividad.responsable
                                 destino.priorizado = 0
                                 if (!destino.save(flush: true)) {
-                                    println "error al guardar la asignacion (A) " + destino.errors
+                                    println "error al guardar la asignacion (AA) " + destino.errors
                                     errores += renderErrors(bean: destino)
                                     destino = null
                                 }
@@ -734,11 +734,11 @@ class AjusteController extends Shield {
                             destino.fuente = origen.fuente
                             destino.marcoLogico = origen.marcoLogico
                             destino.presupuesto = detalle.presupuesto
-                            destino.planificado = detalle.valor
+                            destino.planificado = 0
                             destino.unidad = origen.marcoLogico.responsable
                             destino.priorizado = 0
                             if (!destino.save(flush: true)) {
-                                println "error al guardar la asignacion (P) " + destino.errors
+                                println "error al guardar la asignacion (AP) " + destino.errors
                                 errores += renderErrors(bean: destino)
                                 destino = null
                             }
@@ -753,6 +753,8 @@ class AjusteController extends Shield {
                         modificacion.valor = detalle.valor
                         modificacion.estado = 'A'
                         modificacion.detalleReforma = detalle
+                        modificacion.originalOrigen = origen.priorizado
+                        modificacion.originalDestino = destino.priorizado
                         if (!modificacion.save(flush: true)) {
                             println "error save modificacion: " + modificacion.errors
                             errores += renderErrors(bean: modificacion)

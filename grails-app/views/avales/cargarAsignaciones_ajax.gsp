@@ -11,7 +11,7 @@
 
 <elm:select name="asg" from="${asgs}" optionKey="id" id="asignacion" optionClass="priorizado"
             optionValue='${{
-                "Monto: " + g.formatNumber(number: it.priorizado, type: "currency", currencySymbol: " ") + ", Partida: " + it.presupuesto.numero
+                "Monto: " + g.formatNumber(number: it.priorizado, type: "currency", currencySymbol: " ") + ", Partida: " + it.presupuesto.numero + ", Fuente: " + it.fuente.codigo
             }}' noSelection="['-1': 'Seleccione..']" class="form-control input-sm required requiredCombo"/>
 <script>
     $("#asignacion").change(function () {

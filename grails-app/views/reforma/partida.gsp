@@ -101,14 +101,14 @@
                     <h3 class="text-info">Partidas de destino</h3>
 
                     <div class="row">
-                        <div class="col-md-1">
-                            <label for="fuente">Fuente</label>
-                        </div>
+                        %{--<div class="col-md-1">--}%
+                        %{--<label for="fuente">Fuente</label>--}%
+                        %{--</div>--}%
 
-                        <div class="col-md-2">
-                            <g:select name="fuente" from="${Fuente.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"
-                                      class="form-control required"/>
-                        </div>
+                        %{--<div class="col-md-2">--}%
+                        %{--<g:select name="fuente" from="${Fuente.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"--}%
+                        %{--class="form-control required"/>--}%
+                        %{--</div>--}%
 
                         <div class="col-md-1">
                             <label>Partida</label>
@@ -150,7 +150,7 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th style="width: 300px;">Fuente</th>
+                                %{--<th style="width: 300px;">Fuente</th>--}%
                                 <th>Partida</th>
                                 <th style="width: 180px;">Monto</th>
                                 <th style="width: 40px;"></th>
@@ -188,7 +188,7 @@
                 <table class="table table-bordered table-hover table-condensed">
                     <thead>
                         <tr>
-                            <th style="width: 300px;">Fuente</th>
+                            %{--<th style="width: 300px;">Fuente</th>--}%
                             <th>Partida</th>
                             <th style="width: 180px;">Monto</th>
                             <th style="width: 40px;"></th>
@@ -367,17 +367,18 @@
 //                $("<th style='width:180px;'>Monto</th>").appendTo($trHead);
 //                $thead.append($trHead);
 
-                var $tdF = $("<td>");
+//                var $tdF = $("<td>");
                 var $tdP = $("<td>");
                 var $tdM = $("<td class='text-right'>");
                 var $tdB = $("<td>");
 
-                $tdF.text(dataDestino.fuente_nombre);
+//                $tdF.text(dataDestino.fuente_nombre);
                 $tdP.text(dataDestino.partida_nombre);
                 $tdM.text(number_format(dataOrigen.monto, 2, ".", ","));
                 $tdB.append($btn);
 
-                $rowDestino.data(data).append($tdF).append($tdP).append($tdM).append($tdB);
+//                $rowDestino.data(data).append($tdF).append($tdP).append($tdM).append($tdB);
+                $rowDestino.data(data).append($tdP).append($tdM).append($tdB);
 
 //                $tbody.append($rowDestino);
 //
@@ -440,7 +441,7 @@
 //                        dataOrigen.actividad_nombre = $("#actividad").find("option:selected").text();
 //                        dataOrigen.asignacion_nombre = $("#asignacion").find("option:selected").text();
                         dataOrigen.asignacion_id = $("#asignacion").val();
-                        dataOrigen.monto = $("#monto").val();
+                        dataOrigen.monto = str_replace(",", "", $("#monto").val());
 
                         var dataDestino = {};
                         dataDestino.fuente_nombre = $("#fuente").find("option:selected").text();
@@ -499,7 +500,6 @@
                                 data["r" + c] = {};
                                 data["r" + c].origen = d.origen.asignacion_id;
                                 data["r" + c].monto = d.origen.monto;
-                                data["r" + c].fuente = d.destino.fuente_id;
                                 data["r" + c].partida = d.destino.partida_id;
                                 c++;
                             });

@@ -11,6 +11,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main"/>
         <title>Firmas pendientes</title>
+
+        <script src="${resource(dir: 'js/plugins/jquery-cookie-1.4.1', file: 'jquery.cookie.js')}"></script>
     </head>
 
     <body>
@@ -32,7 +34,7 @@
 
         <div role="tabpanel" style="margin-top: 50px">
 
-            <ul class="nav nav-pills" role="tablist">
+            <ul class="nav nav-pills" role="tablist" id="tabsFirmas">
                 <li role="presentation" class="active">
                     <a href="#solicitudes" class="active" role="tab" data-toggle="tab">Firmas Pendientes</a>
                 </li>
@@ -48,7 +50,7 @@
             </ul>
 
             <div class="tab-content">
-                <div class="tab-pane fade in active" id="solicitudes">
+                <div role="tabpanel" class="tab-pane fade in active" id="solicitudes">
                     <g:if test="${firmas.size() > 0}">
                         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
@@ -83,7 +85,7 @@
                                                     </g:else>
                                                 </g:if>
                                                 <a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">
-                                                    <i class="fa fa-pencil"></i>
+                                                    ${imgFirma}
                                                 </a>
                                             %{--<a href="#" class="negar btn btn-danger" title="Negar">--}%
                                             %{--<i class="fa fa-thumbs-down"></i>--}%
@@ -119,7 +121,7 @@
                     </g:else>
                 </div>
 
-                <div class="tab-pane fade" id="reformas">
+                <div role="tabpanel" class="tab-pane fade" id="reformas">
                     <g:if test="${firmasReformas.size() > 0}">
                         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
@@ -150,7 +152,7 @@
                                                     </g:else>
                                                 </g:if>
                                                 <a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">
-                                                    <i class="fa fa-pencil"></i>
+                                                    ${imgFirma}
                                                 </a>
                                                 <g:if test="${f.tipoFirma && f.tipoFirma != ''}">
                                                     <a href="#" iden="${f.id}" class="devolver btn btn-warning" title="Devolver">
@@ -174,7 +176,7 @@
                     </g:else>
                 </div>
 
-                <div class="tab-pane fade" id="ajustes">
+                <div role="tabpanel" class="tab-pane fade" id="ajustes">
                     <g:if test="${firmasAjustes.size() > 0}">
                         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
@@ -205,7 +207,7 @@
                                                     </g:else>
                                                 </g:if>
                                                 <a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">
-                                                    <i class="fa fa-pencil"></i>
+                                                    ${imgFirma}
                                                 </a>
                                                 <g:if test="${f.tipoFirma && f.tipoFirma != ''}">
                                                     <a href="#" iden="${f.id}" class="devolver btn btn-warning" title="Devolver">
@@ -259,135 +261,76 @@
                 });
 
             }
-            cargarHistorial($("#anio").val());
-            $("#anio").change(function () {
-                cargarHistorial($("#anio").val())
-            });
 
-            $(".descRespaldo").click(function () {
-                location.href = "${createLink(controller:'avales',action:'descargaSolicitud')}/" + $(this).attr("iden")
-            });
+            $(function () {
 
-            var id;
-
-            $(".aprobar").click(function () {
-                id = $(this).attr("iden");
-                bootbox.confirm("¿Está seguro? Esta acción no puede revertirse", function (res) {
-                    if (res) {
-
-                        var msg = $("<div>Ingrese su clave de autorización</div>");
-                        var $txt = $("<input type='password' class='form-control input-sm'/>");
-
-                        var $group = $('<div class="input-group">');
-                        var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
-                        $group.append($txt).append($span);
-
-                        msg.append($group);
-
-                        var bAuth = bootbox.dialog({
-                            title   : "Autorización electrónica",
-                            message : msg,
-                            class   : "modal-sm",
-                            buttons : {
-                                cancelar : {
-                                    label     : "Cancelar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                },
-                                eliminar : {
-                                    label     : "<i class='fa fa-pencil'></i> Firmar",
-                                    className : "btn-success",
-                                    callback  : function () {
-                                        openLoader("Firmando aprobación");
-
-                                        $.ajax({
-                                            type    : "POST",
-                                            url     : '${createLink(controller: 'firma', action:'firmar')}',
-                                            data    : {
-                                                id   : id,
-                                                pass : $txt.val()
-                                            },
-                                            success : function (msg) {
-                                                closeLoader();
-                                                if (msg == "error") {
-                                                    bootbox.alert({
-                                                                message : "Clave incorrecta",
-                                                                title   : "Error",
-                                                                class   : "modal-error"
-                                                            }
-                                                    );
-                                                } else {
-                                                    log("Documento firmado correctamente", "success")
-                                                    setTimeout(function () {
-                                                        location.reload(true)
-                                                    }, 3000);
-//                                                    location.href = msg
-                                                    closeLoader();
-
-                                                }
-                                            },
-                                            error   : function () {
-                                                log("Ha ocurrido un error interno", "error");
-
-                                                closeLoader();
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        });
-                        setTimeout(function () {
-                            bAuth.find(".form-control").first().focus();
-                        }, 500);
-                    }
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    //save the latest tab using a cookie:
+                    $.cookie('last_tab_firmas', $(e.target).attr('href'));
                 });
-            });
 
-            $(".devolver").click(function () {
-                id = $(this).attr("iden");
-                bootbox.confirm("¿Está seguro de querer devolver este documento? Esta acción no puede revertirse", function (res) {
-                    if (res) {
+                //activate latest tab, if it exists:
+                var lastTab = $.cookie('last_tab_firmas');
+                if (lastTab) {
+                    $('ul.nav-pills').children().removeClass('active');
+                    $('a[href=' + lastTab + ']').parents('li:first').addClass('active');
+                    $('div.tab-content').children().removeClass('in active');
+                    $(lastTab).addClass('in active');
+                }
 
-                        var msg = $("<div>Ingrese su clave de autorización y las observaciones para devolver</div>");
-                        var $txt = $("<input type='password' class='form-control input-sm'/>");
+                cargarHistorial($("#anio").val());
+                $("#anio").change(function () {
+                    cargarHistorial($("#anio").val())
+                });
 
-                        var $group = $('<div class="input-group">');
-                        var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
-                        $group.append($txt).append($span);
+                $(".descRespaldo").click(function () {
+                    location.href = "${createLink(controller:'avales',action:'descargaSolicitud')}/" + $(this).attr("iden")
+                });
 
-                        var $ta = $("<textarea class='form-control required' style='margin-top: 10px; height:100px;'>");
+                var id;
 
-                        msg.append($group).append($ta);
+                $(".aprobar").click(function () {
+                    id = $(this).attr("iden");
+                    bootbox.confirm("¿Está seguro? Esta acción no puede revertirse", function (res) {
+                        if (res) {
 
-                        var bAuth = bootbox.dialog({
-                            title   : "Autorización electrónica",
-                            message : msg,
-                            class   : 'modal-sm',
-                            buttons : {
-                                cancelar : {
-                                    label     : "Cancelar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                },
-                                eliminar : {
-                                    label     : "<i class='fa fa-hand-o-left'></i> Devolver",
-                                    className : "btn-warning",
-                                    callback  : function () {
-                                        if ($.trim($txt.val()) != "" && $.trim($ta.val()) != "") {
-                                            openLoader("Devolviendo");
+                            var msg = $("<div>Ingrese su clave de autorización</div>");
+                            var $txt = $("<input type='password' class='form-control input-sm'/>");
+
+                            var $group = $('<div class="input-group">');
+                            var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
+                            $group.append($txt).append($span);
+
+                            msg.append($group);
+
+                            var bAuth = bootbox.dialog({
+                                title   : "Autorización electrónica",
+                                message : msg,
+                                class   : "modal-sm",
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+                                    eliminar : {
+                                        label     : "${imgFirma} Firmar",
+                                        className : "btn-success",
+                                        callback  : function () {
+                                            openLoader("Firmando aprobación");
+
                                             $.ajax({
                                                 type    : "POST",
-                                                url     : '${createLink(controller: 'firma', action:'devolverFirma')}',
+                                                url     : '${createLink(controller: 'firma', action:'firmar')}',
                                                 data    : {
                                                     id   : id,
-                                                    pass : $txt.val(),
-                                                    obs  : $ta.val()
+                                                    pass : $txt.val()
                                                 },
                                                 success : function (msg) {
-                                                    closeLoader();
+//                                                closeLoader();
                                                     if (msg == "error") {
+                                                        closeLoader();
                                                         bootbox.alert({
                                                                     message : "Clave incorrecta",
                                                                     title   : "Error",
@@ -395,10 +338,10 @@
                                                                 }
                                                         );
                                                     } else {
-                                                        log("Documento devuelto correctamente", "success");
+                                                        log("Documento firmado correctamente", "success");
                                                         setTimeout(function () {
                                                             location.reload(true)
-                                                        }, 3000);
+                                                        }, 1000);
 //                                                    location.href = msg
                                                         closeLoader();
 
@@ -410,169 +353,185 @@
                                                     closeLoader();
                                                 }
                                             });
-                                        } else {
-                                            msg.prepend("<div class='alert alert-danger'>Por favor ingrese su clave de autorización y las observaciones</div>");
-                                            return false;
                                         }
                                     }
                                 }
-                            }
-                        });
-                        setTimeout(function () {
-                            bAuth.find(".form-control").first().focus();
-                        }, 500);
-                    }
-                });
-            });
-
-            $(".devolver1").click(function () {
-                id = $(this).attr("iden");
-                bootbox.confirm("¿Devolver solicitud", function (res) {
-                    if (res) {
-
-                        var msg = $("<div>Ingrese la razón por la que se devuelve</div>");
-                        var $txt = $("<input type='text' class='form-control input-sm'/>");
-
-                        var $group = $('<div class="input-group">');
-                        var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
-                        $group.append($txt).append($span);
-
-                        msg.append($group);
-
-                        var bAuth = bootbox.dialog({
-                            title   : "Devolver trámite",
-                            message : msg,
-                            class   : "modal-sm",
-                            buttons : {
-                                cancelar : {
-                                    label     : "Cancelar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                },
-                                eliminar : {
-                                    label     : "<i class='fa fa-thumbs-down'></i> Devolver",
-                                    className : "btn-success",
-                                    callback  : function () {
-                                        openLoader("Firmando aprobación");
-                                        $.ajax({
-                                            type    : "POST",
-                                            url     : '${createLink(controller: 'firma', action:'devolver')}',
-                                            data    : {
-                                                id   : id,
-                                                obsr : $txt.val()
-                                            },
-                                            success : function (msg) {
-                                                closeLoader();
-                                                if (msg == "error") {
-                                                    bootbox.alert({
-                                                                message : "No se pudo devolver el trámite",
-                                                                title   : "Error",
-                                                                class   : "modal-error"
-                                                            }
-                                                    );
-                                                } else {
-                                                    log("Documento devuelto", "success")
-                                                    setTimeout(function () {
-                                                        location.reload(true)
-                                                    }, 3000);
-//                                                    location.href = msg
-                                                    closeLoader();
-
-                                                }
-                                            },
-                                            error   : function () {
-                                                log("Ha ocurrido un error interno", "error");
-
-                                                closeLoader();
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        });
-                        setTimeout(function () {
-                            bAuth.find(".form-control").first().focus();
-                        }, 400);
-                    }
-                });
-            });
-
-            //
-            //    function aprobar (id) {
-            //        log("dialog",'success')
-            //    }
-
-            $(".negar").click(function () {
-                var id = $(this).attr("iden")
-                if (confirm("Está seguro?")) {
-                    $.ajax({
-                        type    : "POST", url : "${createLink(action:'negar', controller: 'firma' )}",
-                        data    : "id=" + id,
-                        success : function (msg) {
-                            if (msg != "no") {
-                                location.reload(true)
-                            } else {
-                                $.box({
-                                    title  : "Error",
-                                    text   : "Ha ocurrido un error interno",
-                                    dialog : {
-                                        resizable : false,
-                                        width     : 400,
-                                        buttons   : {
-                                            "Cerrar" : function () {
-
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-
+                            });
+                            setTimeout(function () {
+                                bAuth.find(".form-control").first().focus();
+                            }, 500);
                         }
                     });
-                }
-            });
-            $("#firmarDlg").dialog({
-                autoOpen  : false,
-                resizable : false,
-                title     : 'Autorización Electrónica',
-                modal     : true,
-                draggable : true,
-                width     : 500,
-                height    : 200,
-                position  : 'center',
-                open      : function (event, ui) {
-                    $(".ui-dialog-titlebar-close").hide();
-                },
-                buttons   : {
-                    "Cancelar"  : function () {
-                        $("#firmarDlg").dialog("close")
-                    }, "Firmar" : function () {
+                });
+
+                $(".devolver").click(function () {
+                    id = $(this).attr("iden");
+                    bootbox.confirm("¿Está seguro de querer devolver este documento? Esta acción no puede revertirse", function (res) {
+                        if (res) {
+
+                            var msg = $("<div>Ingrese su clave de autorización y las observaciones para devolver</div>");
+                            var $txt = $("<input type='password' class='form-control input-sm'/>");
+
+                            var $group = $('<div class="input-group">');
+                            var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
+                            $group.append($txt).append($span);
+
+                            var $ta = $("<textarea class='form-control required' style='margin-top: 10px; height:100px;'>");
+
+                            msg.append($group).append($ta);
+
+                            var bAuth = bootbox.dialog({
+                                title   : "Autorización electrónica",
+                                message : msg,
+                                class   : 'modal-sm',
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+                                    eliminar : {
+                                        label     : "<i class='fa fa-hand-o-left'></i> Devolver",
+                                        className : "btn-warning",
+                                        callback  : function () {
+                                            if ($.trim($txt.val()) != "" && $.trim($ta.val()) != "") {
+                                                openLoader("Devolviendo");
+                                                $.ajax({
+                                                    type    : "POST",
+                                                    url     : '${createLink(controller: 'firma', action:'devolverFirma')}',
+                                                    data    : {
+                                                        id   : id,
+                                                        pass : $txt.val(),
+                                                        obs  : $ta.val()
+                                                    },
+                                                    success : function (msg) {
+                                                        closeLoader();
+                                                        if (msg == "error") {
+                                                            closeLoader();
+                                                            bootbox.alert({
+                                                                        message : "Clave incorrecta",
+                                                                        title   : "Error",
+                                                                        class   : "modal-error"
+                                                                    }
+                                                            );
+                                                        } else {
+                                                            log("Documento devuelto correctamente", "success");
+                                                            setTimeout(function () {
+                                                                location.reload(true)
+                                                            }, 1000);
+//                                                    location.href = msg
+                                                            closeLoader();
+
+                                                        }
+                                                    },
+                                                    error   : function () {
+                                                        log("Ha ocurrido un error interno", "error");
+
+                                                        closeLoader();
+                                                    }
+                                                });
+                                            } else {
+                                                msg.prepend("<div class='alert alert-danger'>Por favor ingrese su clave de autorización y las observaciones</div>");
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                            setTimeout(function () {
+                                bAuth.find(".form-control").first().focus();
+                            }, 500);
+                        }
+                    });
+                });
+
+                $(".devolver1").click(function () {
+                    id = $(this).attr("iden");
+                    bootbox.confirm("¿Devolver solicitud", function (res) {
+                        if (res) {
+
+                            var msg = $("<div>Ingrese la razón por la que se devuelve</div>");
+                            var $txt = $("<input type='text' class='form-control input-sm'/>");
+
+                            var $group = $('<div class="input-group">');
+                            var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
+                            $group.append($txt).append($span);
+
+                            msg.append($group);
+
+                            var bAuth = bootbox.dialog({
+                                title   : "Devolver trámite",
+                                message : msg,
+                                class   : "modal-sm",
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+                                    eliminar : {
+                                        label     : "<i class='fa fa-thumbs-down'></i> Devolver",
+                                        className : "btn-success",
+                                        callback  : function () {
+                                            openLoader("Firmando aprobación");
+                                            $.ajax({
+                                                type    : "POST",
+                                                url     : '${createLink(controller: 'firma', action:'devolver')}',
+                                                data    : {
+                                                    id   : id,
+                                                    obsr : $txt.val()
+                                                },
+                                                success : function (msg) {
+//                                                closeLoader();
+                                                    if (msg == "error") {
+                                                        bootbox.alert({
+                                                                    message : "No se pudo devolver el trámite",
+                                                                    title   : "Error",
+                                                                    class   : "modal-error"
+                                                                }
+                                                        );
+                                                    } else {
+                                                        log("Documento devuelto", "success")
+                                                        setTimeout(function () {
+                                                            location.reload(true)
+                                                        }, 1000);
+//                                                    location.href = msg
+                                                        closeLoader();
+
+                                                    }
+                                                },
+                                                error   : function () {
+                                                    log("Ha ocurrido un error interno", "error");
+
+                                                    closeLoader();
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+                            setTimeout(function () {
+                                bAuth.find(".form-control").first().focus();
+                            }, 400);
+                        }
+                    });
+                });
+
+                $(".negar").click(function () {
+                    var id = $(this).attr("iden")
+                    if (confirm("Está seguro?")) {
                         $.ajax({
-                            type    : "POST", url : "${createLink(action:'firmar', controller: 'firma' )}",
-                            data    : "id=" + id + "&pass=" + $("#atrz").val(),
+                            type    : "POST", url : "${createLink(action:'negar', controller: 'firma' )}",
+                            data    : "id=" + id,
                             success : function (msg) {
                                 if (msg != "no") {
-                                    $("#firmarDlg").dialog("close")
-                                    $.box({
-                                        title  : "Firma",
-                                        text   : "Documento firmado",
-                                        dialog : {
-                                            resizable : false,
-                                            width     : 400,
-                                            buttons   : {
-                                                "Cerrar" : function () {
-                                                    location.reload(true)
-                                                }
-                                            }
-                                        }
-                                    });
-                                    location.href = msg
+                                    location.reload(true)
                                 } else {
-
                                     $.box({
                                         title  : "Error",
-                                        text   : "Contraseña incorrecta",
+                                        text   : "Ha ocurrido un error interno",
                                         dialog : {
                                             resizable : false,
                                             width     : 400,
@@ -583,46 +542,13 @@
                                             }
                                         }
                                     });
-
                                 }
 
                             }
                         });
                     }
-                }
+                });
             });
-            $("#negar").dialog({
-                autoOpen  : false,
-                resizable : false,
-                title     : 'Negar solicitud',
-                modal     : true,
-                draggable : true,
-                width     : 400,
-                height    : 150,
-                position  : 'center',
-                open      : function (event, ui) {
-                    $(".ui-dialog-titlebar-close").hide();
-                },
-                buttons   : {
-                    "Cancelar" : function () {
-                        $("#negar").dialog("close")
-                    }, "Negar" : function () {
-                        $.ajax({
-                            type    : "POST", url : "${createLink(action:'negarAval', controller: 'revisionAval')}",
-                            data    : "id=" + $("#avalId").val(),
-                            success : function (msg) {
-                                if (msg != "no")
-                                    location.reload(true)
-                                else
-                                    location.href = "${createLink(controller:'certificacion',action:'listaSolicitudes')}/?msn=Usted no tiene los permisos para negar esta solicitud"
-
-                            }
-                        });
-                    }
-                }
-            });
-
-
         </script>
     </body>
 </html>

@@ -481,8 +481,9 @@
                         dataOrigen.actividad_nombre = $("#actividad").find("option:selected").text();
                         dataOrigen.asignacion_nombre = $("#asignacion").find("option:selected").text();
                         dataOrigen.asignacion_id = $("#asignacion").val();
-                        dataOrigen.monto = $("#monto").val();
-
+//                        dataOrigen.monto = $("#monto").val();
+                        dataOrigen.monto = str_replace(",", "", $("#monto").val());
+                        
                         var dataDestino = {};
                         dataDestino.proyecto_nombre = $("#proyectoDest").find("option:selected").text();
                         dataDestino.componente_nombre = $("#compDest").find("option:selected").text();

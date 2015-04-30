@@ -70,6 +70,14 @@ class ModificacionAsignacion {
      * Detalle de reforma que originó esta modificación
      */
     DetalleReforma detalleReforma
+    /**
+     * Valor inicial de la asignación de origen
+     */
+    Double originalOrigen = 0
+    /**
+     * Valor inicial de la asignación de destino
+     */
+    Double originalDestino = 0
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -101,6 +109,8 @@ class ModificacionAsignacion {
             textoPdf column: 'mdastxpd'
             textoPdf type: 'text'
             detalleReforma column: 'dtrf__id'
+            originalOrigen column: 'mdasoror'
+            originalDestino column: 'mdasords'
         }
     }
 

@@ -3,10 +3,8 @@ package vesta.modificaciones
 import vesta.alertas.Alerta
 import vesta.avales.EstadoAval
 import vesta.parametros.TipoElemento
-import vesta.parametros.Unidad
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
-import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.proyectos.Categoria
@@ -259,7 +257,19 @@ class ReformaController extends Shield {
         def estadoSolicitado = EstadoAval.findByCodigo("E01")
         def estadoDevueltoAnalista = EstadoAval.findByCodigo("D02")
         def estados = [estadoSolicitado, estadoDevueltoAnalista]
-        def reformas = Reforma.findAllByTipoAndEstadoInList("R", estados, [sort: "fecha", order: "desc"])
+//        def reformas = Reforma.findAllByTipoAndEstadoInList("R", estados, [sort: "fecha", order: "desc"])
+
+        def reformas = Reforma.withCriteria {
+            eq("tipo", "R")
+            inList("estado", estados)
+            order("fecha", "asc")
+        }
+
+//        println params
+//        println reformas
+//        println reformas.estado
+//        println reformas.estado.codigo
+
         return [reformas: reformas]
     }
 
@@ -280,6 +290,7 @@ class ReformaController extends Shield {
      */
     def procesar() {
         def reforma = Reforma.get(params.id)
+        println "init: reforma=${reforma.id} estado reforma id=${reforma.estado.id} cod=${reforma.estado.codigo}"
         if (reforma.estado.codigo == "E01" || reforma.estado.codigo == "D02") {
             def detalles, detalles2 = []
             if (reforma.tipoSolicitud == 'I') {
@@ -298,6 +309,7 @@ class ReformaController extends Shield {
             def gerentes = Persona.findAllByUnidad(unidad.padre)
             return [reforma: reforma, detalles: detalles, detalles2: detalles2, total: total, personas: personasFirmas + gerentes, gerentes: gerentes]
         } else {
+            println "redireccionando: reforma=${reforma.id} estado reforma=${reforma.estado.codigo}"
             redirect(action: "pendientes")
         }
     }
@@ -317,10 +329,12 @@ class ReformaController extends Shield {
      * Acción llamada con ajax que guarda los pares de asignaciones seleccionados por el asistente de planificación para completar la solicitud de incremento
      */
     def asignarParAsignaciones_ajax() {
+        println "\tasignar par asignaciones: " + params
         def detalle = DetalleReforma.get(params.det.toLong())
         def asignacionOrigen = Asignacion.get(params.asg.toLong())
         def monto = (params.mnt.toString().replaceAll(",", "")).toDouble()
 
+        println "\tdetalle ANTES: ${detalle.id}, monto: ${detalle.valor}, saldo: ${detalle.saldo}"
         def nuevoDetalle = new DetalleReforma()
         nuevoDetalle.properties = detalle.properties
         nuevoDetalle.saldo = 0
@@ -331,6 +345,7 @@ class ReformaController extends Shield {
             if (!detalle.save(flush: true)) {
                 println "error al disminuir saldo de detalle: " + detalle.errors
             }
+            println "\tdetalle DESPUES: ${detalle.id}, monto: ${detalle.valor}, saldo: ${detalle.saldo}"
         } else {
             println "error al guardar nuevo detalle: " + nuevoDetalle.errors
             render "ERROR*" + renderErrors(bean: nuevoDetalle)
@@ -788,7 +803,7 @@ class ReformaController extends Shield {
             detalle.descripcionNuevaActividad = det.actividad.trim()
             detalle.fechaInicioNuevaActividad = new Date().parse("dd-MM-yyyy", det.inicio)
             detalle.fechaFinNuevaActividad = new Date().parse("dd-MM-yyyy", det.fin)
-            if(det.categoria) {
+            if (det.categoria) {
                 detalle.categoria = Categoria.get(det.categoria.toLong())
             }
 
@@ -854,7 +869,7 @@ class ReformaController extends Shield {
             firmaRevisa.accion = "firmarReforma"
             firmaRevisa.controlador = "reforma"
             firmaRevisa.idAccion = reforma.id
-            firmaRevisa.accionVer = "existente"
+            firmaRevisa.accionVer = "incremento"
             firmaRevisa.controladorVer = "reportesReforma"
             firmaRevisa.idAccionVer = reforma.id
             firmaRevisa.accionNegar = "devolverReforma"
@@ -1006,14 +1021,14 @@ class ReformaController extends Shield {
 
             def asignacionOrigen = Asignacion.get(det.origen.toLong())
             def presupuesto = Presupuesto.get(det.partida.toLong())
-            def fuente = Fuente.get(det.fuente.toLong())
+//            def fuente = Fuente.get(det.fuente.toLong())
 
             def detalle = new DetalleReforma()
             detalle.reforma = reforma
             detalle.asignacionOrigen = asignacionOrigen
             detalle.valor = monto
             detalle.presupuesto = presupuesto
-            detalle.fuente = fuente
+            detalle.fuente = asignacionOrigen.fuente
 
             if (!detalle.save(flush: true)) {
                 println "error al guardar detalle: " + detalle.errors
@@ -1217,11 +1232,11 @@ class ReformaController extends Shield {
                                 destino.fuente = origen.fuente
                                 destino.marcoLogico = nuevaActividad
                                 destino.presupuesto = detalle.presupuesto
-                                destino.planificado = detalle.valor
+                                destino.planificado = 0
                                 destino.unidad = nuevaActividad.responsable
                                 destino.priorizado = 0
                                 if (!destino.save(flush: true)) {
-                                    println "error al guardar la asignacion (A) " + destino.errors
+                                    println "error al guardar la asignacion (RA) " + destino.errors
                                     errores += renderErrors(bean: destino)
                                     destino = null
                                 }
@@ -1233,7 +1248,7 @@ class ReformaController extends Shield {
                             destino.fuente = origen.fuente
                             destino.marcoLogico = origen.marcoLogico
                             destino.presupuesto = detalle.presupuesto
-                            destino.planificado = detalle.valor
+                            destino.planificado = 0
                             destino.unidad = origen.marcoLogico.responsable
                             destino.priorizado = 0
                             if (!destino.save(flush: true)) {
@@ -1252,6 +1267,8 @@ class ReformaController extends Shield {
                         modificacion.valor = detalle.valor
                         modificacion.estado = 'A'
                         modificacion.detalleReforma = detalle
+                        modificacion.originalOrigen = origen.priorizado
+                        modificacion.originalDestino = destino.priorizado
                         if (!modificacion.save(flush: true)) {
                             println "error save modificacion: " + modificacion.errors
                             errores += renderErrors(bean: modificacion)

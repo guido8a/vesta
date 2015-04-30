@@ -44,7 +44,11 @@
             </div>
         </g:if>
 
-        <elm:container tipo="horizontal" titulo="Solicitud de reforma a procesar">
+        <elm:container tipo="horizontal" titulo="Solicitud de reforma a procesar:  ${reforma.tipo == 'R' ? 'Reforma' : reforma.tipo == 'A' ? 'Ajuste' : '??'}
+        ${reforma.tipoSolicitud == 'E' ? ' a asignaciones existentes' :
+                reforma.tipoSolicitud == 'A' ? ' a nueva actividad' :
+                        reforma.tipoSolicitud == 'P' ? 'a nueva partida' :
+                                reforma.tipoSolicitud == 'I' ? ' de incremento' : '??'}">
             <div class="row">
                 <div class="col-md-1 show-label">
                     POA Año
@@ -383,7 +387,7 @@
                     <table class="table table-bordered table-hover table-condensed">
                         <thead>
                             <tr>
-                                <th style="width: 300px;">Fuente</th>
+                                %{--<th style="width: 300px;">Fuente</th>--}%
                                 <th>Partida</th>
                                 <th style="width: 180px;">Monto</th>
                             </tr>
@@ -393,9 +397,9 @@
                             <g:each in="${detalles}" var="detalle">
                                 <g:set var="total" value="${total + detalle.valor}"/>
                                 <tr class="success">
-                                    <td>
-                                        ${detalle.fuente}
-                                    </td>
+                                    %{--<td>--}%
+                                        %{--${detalle.fuente}--}%
+                                    %{--</td>--}%
                                     <td>
                                         ${detalle.presupuesto}
                                     </td>
@@ -407,7 +411,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="2" class="text-right">TOTAL</th>
+                                <th colspan="1" class="text-right">TOTAL</th>
                                 <th class="text-right">
                                     <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
                                 </th>
@@ -563,8 +567,10 @@
 
                 <g:if test="${reforma.tipoSolicitud == 'I'}">
                 function validarPar(dataOrigen, dataDestino) {
+                    var monto = parseFloat($.trim(str_replace(",", "", $("#monto").val())));
+//                    console.log(dataOrigen.monto, monto, dataOrigen.max);
                     var ok = true;
-                    if (dataOrigen.monto > dataOrigen.max) {
+                    if (monto > dataOrigen.max) {
                         ok = false;
                         bootbox.alert("No puede seleccionar una asignación cuyo máximo es menor que el valor de la asignación de destino");
                     }
@@ -576,7 +582,7 @@
                                     ok = false;
                                     bootbox.alert("No puede seleccionar un par de asignaciones ya ingresados");
                                 } else {
-                                    console.log(d.aso, dataDestino.asignacion_id, d.asd, dataOrigen.asignacion_id, d.aso == dataDestino.asignacion_id, d.asd == dataOrigen.asignacion_id, d.aso == dataDestino.asignacion_id || d.asd == dataOrigen.asignacion_id)
+//                                    console.log(d.aso, dataDestino.asignacion_id, d.asd, dataOrigen.asignacion_id, d.aso == dataDestino.asignacion_id, d.asd == dataOrigen.asignacion_id, d.aso == dataDestino.asignacion_id || d.asd == dataOrigen.asignacion_id)
                                     if (d.aso == dataDestino.asignacion_id || d.asd == dataOrigen.asignacion_id) {
                                         ok = false;
                                         bootbox.alert("No puede seleccionar una asignación de origen que está listada como destino");

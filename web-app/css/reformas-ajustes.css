@@ -1,49 +1,37 @@
 .bgExistentes {
-    background : rgba(74, 129, 160, 0.5);
+    /*background : rgba(74, 129, 160, 0.5);*/
+    background : #e3e6f2;
 }
 
 .bgExistentes:hover {
-    background : rgba(74, 129, 160, 0.75) !important;
+    /*background : rgba(74, 129, 160, 0.75) !important;*/
+    background : #BCC3E5 !important;
 }
 
 .bgPartidas {
-    background : rgba(125, 176, 159, 0.5);
+    /*background : rgba(125, 176, 159, 0.5);*/
 }
 
 .bgPartidas:hover {
-    background : rgba(125, 176, 159, 0.75) !important;
+    /*background : rgba(125, 176, 159, 0.75) !important;*/
 }
 
 .bgActividades {
     /*background : #896897;*/
-    background : rgba(196, 131, 75, 0.5);
+    /*background : rgba(196, 131, 75, 0.5);*/
+    background : #e3e6f2;
 }
 
 .bgActividades:hover {
     /*background : #896897;*/
-    background : rgba(196, 131, 75, 0.75) !important;
+    /*background : rgba(196, 131, 75, 0.75) !important;*/
+    background : #BCC3E5 !important;
 }
 
 .bgIncremento {
-    background : rgba(217, 194, 146, 0.5);
+    /*background : rgba(217, 194, 146, 0.5);*/
 }
 
 .bgIncremento:hover {
-    background : rgba(217, 194, 146, 0.75) !important;
-}
-
-.txExistentes {
-    color : #4A81A0;
-}
-
-.txPartidas {
-    color : #7DB09F;
-}
-
-.txActividades {
-    color : #C4834B;
-}
-
-.txIncremento {
-    color : #D9C292;
+    /*background : rgba(217, 194, 146, 0.75) !important;*/
 }

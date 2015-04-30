@@ -48,6 +48,15 @@
                             </thead>
                             <tbody>
                                 <g:each in="${reformas}" var="reforma">
+                                    <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existente' :
+                                            reforma.tipoSolicitud == 'A' ? 'actividad' :
+                                                    reforma.tipoSolicitud == 'P' ? 'partida' :
+                                                            reforma.tipoSolicitud == 'I' ? 'incremento' : ''}"/>
+                                    <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'solicitud_existente' :
+                                            reforma.tipoSolicitud == 'A' ? 'solicitud_actividad' :
+                                                    reforma.tipoSolicitud == 'P' ? 'solicitud_partida' :
+                                                            reforma.tipoSolicitud == 'I' ? 'solicitud_incremento' : ''}.pdf"/>
+
                                     <tr>
                                         <td>${reforma.persona}</td>
                                         <td>${reforma.fecha.format("dd-MM-yyyy")}</td>
@@ -62,10 +71,8 @@
                                         <td>${reforma.estado.descripcion}</td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller:"reportesReforma",  action: reforma.tipoSolicitud == 'E' ? 'existente' :
-                                                        reforma.tipoSolicitud == 'A' ? 'actividad' :
-                                                                reforma.tipoSolicitud == 'P' ? 'partida' :
-                                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : '', id: reforma.id )}" class="btn btn-sm btn-info btnVer" title="Solicitud">
+                                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", accion, id: reforma.id)}&filename=${fileName}"
+                                                   class="btn btn-sm btn-info btnVer" title="Solicitud">
                                                     <i class="fa fa-search"></i>
                                                 </a>
                                                 <g:link action="procesar" id="${reforma.id}" class="btn btn-default" title="Procesar">
@@ -135,10 +142,6 @@
 
             $(function () {
                 buscar();
-                $(".btnVer").click(function () {
-                    var url = $(this).attr("href");
-                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud_reforma.pdf";
-                });
             });
         </script>
     </body>
