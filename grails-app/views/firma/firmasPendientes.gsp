@@ -264,6 +264,11 @@
 
             $(function () {
 
+                $(".btn-success, .btn-danger").addClass("disabled");
+                $(".btn-info").click(function () {
+                    $(this).siblings().removeClass("disabled");
+                });
+
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                     //save the latest tab using a cookie:
                     $.cookie('last_tab_firmas', $(e.target).attr('href'));
