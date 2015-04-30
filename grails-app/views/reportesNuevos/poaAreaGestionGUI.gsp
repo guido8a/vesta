@@ -25,11 +25,11 @@
 
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group" role="group">
-                %{--<a href="#" class="btn btn-default" id="btnVer">--}%
-                %{--<i class="fa fa-search"></i> Ver reporte--}%
-                %{--</a>--}%
                 <a href="#" class="btn btn-default" id="btnPrint">
-                    <i class="fa fa-print"></i> Imprimir reporte
+                    <i class="fa fa-file-pdf-o text-danger"></i> Exportar a PDF
+                </a>
+                <a href="#" class="btn btn-default" id="btnXls">
+                    <i class="fa fa-file-excel-o text-success"></i> Exportar a Excel
                 </a>
             </div>
 
@@ -119,34 +119,25 @@
         </elm:container>
 
         <script type="text/javascript">
-            function reporte(print) {
-//                var detalle = $("#detallar").is(":checked");
+            function reporte(tipo) {
                 var url;
-                %{--if (!print) {--}%
-                %{--if (detalle) {--}%
-                %{--url = "${createLink(action: 'poaGrupoGastoWebDetallado')}";--}%
-                %{--} else {--}%
-                %{--url = "${createLink(action: 'poaGrupoGastoWeb')}";--}%
-                %{--}--}%
-                %{--url += "?anio=" + $("#anio").val();--}%
-                %{--window.open(url, "_blank");--}%
-                %{--} else {--}%
-                %{--if (detalle) {--}%
-                %{--url = "${createLink(action: 'poaGrupoGastoPdfDetallado')}";--}%
-                %{--} else {--}%
-                url = "${createLink(action: 'poaAreaGestionPdf')}";
-//                    }
-                url += "?anio=" + $("#anio").val();
-                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_area_gestion.pdf";
-//                }
+                if (tipo == "pdf") {
+                    url = "${createLink(action: 'poaAreaGestionPdf')}";
+                    url += "?anio=" + $("#anio").val();
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_Area_gestion.pdf";
+                } else if (tipo == "xls") {
+                    url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaAreaGestionXls')}";
+                    url += "?anio=" + $("#anio").val();
+                    location.href = url;
+                }
             }
 
             $(function () {
-                $("#btnVer").click(function () {
-                    reporte(false);
+                $("#btnXls").click(function () {
+                    reporte("xls");
                 });
                 $("#btnPrint").click(function () {
-                    reporte(true);
+                    reporte("pdf");
                 });
             });
         </script>

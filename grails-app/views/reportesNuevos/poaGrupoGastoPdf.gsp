@@ -132,9 +132,9 @@
                 <tr>
                     <th></th>
                     <th class="text-right">TOTAL</th>
-                    <th class="text-right"><g:formatNumber number="${totales['2014']}" type="currency" currencySymbol=""/></th>
-                    <th class="text-right"><g:formatNumber number="${totales['2015']}" type="currency" currencySymbol=""/></th>
-                    <th class="text-right"><g:formatNumber number="${totales['T2015']}" type="currency" currencySymbol=""/></th>
+                    <th class="text-right"><g:formatNumber number="${totales['' + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/></th>
+                    <th class="text-right"><g:formatNumber number="${totales[anio.anio]}" type="currency" currencySymbol=""/></th>
+                    <th class="text-right"><g:formatNumber number="${totales['T' + anio.anio]}" type="currency" currencySymbol=""/></th>
                     <g:each in="${anios}" var="a">
                         <th class="text-right"><g:formatNumber number="${totales[a] ?: 0}" type="currency" currencySymbol=""/></th>
                     </g:each>
