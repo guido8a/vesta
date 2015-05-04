@@ -1103,8 +1103,6 @@ class ReformaController extends Shield {
             reforma.estado = estadoSolicitado
             reforma.save(flush: true)
 
-            /* TODO: a quien debe mandar la alerta? */
-
             def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
             def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
             def now = new Date()
@@ -1115,29 +1113,29 @@ class ReformaController extends Shield {
             switch (reforma.tipoSolicitud) {
                 case "E":
                     accion = "existente"
-                    mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+                    mensaje = "Solicitud de reforma a asignaciones existentes: "
                     break;
                 case "A":
                     accion = "actividad"
-                    mensaje = "Devolución de solicitud de reforma a nuevas actividades: "
+                    mensaje = "Solicitud de reforma a nuevas actividades: "
                     break;
                 case "P":
                     accion = "partida"
-                    mensaje = "Devolución de solicitud de reforma a nuevas partidas: "
+                    mensaje = "Solicitud de reforma a nuevas partidas: "
                     break;
                 case "I":
                     accion = "incremento"
-                    mensaje = "Devolución de solicitud de reforma de incremento: "
+                    mensaje = "Solicitud de reforma de incremento: "
                     break;
                 default:
                     accion = "existente"
-                    mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+                    mensaje = "Solicitud de reforma a asignaciones existentes: "
             }
 
             analistas.each { a ->
                 def alerta = new Alerta()
                 alerta.from = usu
-                alerta.persona = reforma.persona
+                alerta.persona = a
                 alerta.fechaEnvio = now
                 alerta.mensaje = mensaje + reforma.concepto
                 alerta.controlador = "reforma"

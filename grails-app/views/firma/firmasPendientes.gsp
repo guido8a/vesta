@@ -264,7 +264,7 @@
 
             $(function () {
 
-                $(".btn-success, .btn-danger").addClass("disabled");
+                $(".btn-success, .btn-danger, .btn-warning").addClass("disabled");
                 $(".btn-info").click(function () {
                     $(this).siblings().removeClass("disabled");
                 });

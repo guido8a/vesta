@@ -51,7 +51,6 @@
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${alertaInstance}" field="mensaje"/></elm:textoBusqueda></td>
                             <td>${alertaInstance.from}</td>
                             <td class="text-center">
-                                ${createLink(controller: alertaInstance.controlador, action: alertaInstance.accion, id: alertaInstance.id_remoto)}
                                 <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
                             </td>
                         </tr>

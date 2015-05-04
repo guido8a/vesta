@@ -13,6 +13,16 @@
     </head>
 
     <body>
+
+        <!-- botones -->
+        <div class="btn-toolbar toolbar">
+            <div class="btn-group">
+                <g:link action="reformas" class="btn btn-default btnCrear">
+                    <i class="fa fa-file-o"></i> Solicitar reforma
+                </g:link>
+            </div>
+        </div>
+
         <table class="table table-bordered table-hover table-condensed">
             <thead>
                 <tr>
@@ -40,38 +50,38 @@
                         </td>
                         <td>${reforma.estado.descripcion}</td>
                         <td style="text-align: center">
-                            %{--<g:if test="${reforma.estado.codigo == 'E02'}">--}%
-                            <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existenteReforma' :
-                                    reforma.tipoSolicitud == 'A' ? 'actividadReforma' :
-                                            reforma.tipoSolicitud == 'P' ? 'partidaReforma' :
-                                                    reforma.tipoSolicitud == 'I' ? 'incrementoReforma' : ''}"/>
-                            <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'reforma_existente' :
-                                    reforma.tipoSolicitud == 'A' ? 'reforma_actividad' :
-                                            reforma.tipoSolicitud == 'P' ? 'reforma_partida' :
-                                                    reforma.tipoSolicitud == 'I' ? 'reforma_incremento' : ''}.pdf"/>
-                            <div class="btn-group" role="group">
-                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"
-                                   class="btn btn-sm btn-success btnVer" title="Reforma">
-                                    <i class="fa fa-sign-out"></i> Reforma
-                                </a>
-                            </div>
-                            %{--</g:if>--}%
-                            %{--<g:else>--}%
-                            <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existente' :
-                                    reforma.tipoSolicitud == 'A' ? 'actividad' :
-                                            reforma.tipoSolicitud == 'P' ? 'partida' :
-                                                    reforma.tipoSolicitud == 'I' ? 'incremento' : ''}"/>
-                            <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'solicitud_existente' :
-                                    reforma.tipoSolicitud == 'A' ? 'solicitud_actividad' :
-                                            reforma.tipoSolicitud == 'P' ? 'solicitud_partida' :
-                                                    reforma.tipoSolicitud == 'I' ? 'solicitud_incremento' : ''}.pdf"/>
-                            <div class="btn-group" role="group">
-                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"
-                                   class="btn btn-sm btn-info btnVer" title="Solicitud">
-                                    <i class="fa fa-sign-in"></i> Solicitud
-                                </a>
-                            </div>
-                            %{--</g:else>--}%
+                            <g:if test="${reforma.estado.codigo == 'E02'}">
+                                <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existenteReforma' :
+                                        reforma.tipoSolicitud == 'A' ? 'actividadReforma' :
+                                                reforma.tipoSolicitud == 'P' ? 'partidaReforma' :
+                                                        reforma.tipoSolicitud == 'I' ? 'incrementoReforma' : ''}"/>
+                                <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'reforma_existente' :
+                                        reforma.tipoSolicitud == 'A' ? 'reforma_actividad' :
+                                                reforma.tipoSolicitud == 'P' ? 'reforma_partida' :
+                                                        reforma.tipoSolicitud == 'I' ? 'reforma_incremento' : ''}.pdf"/>
+                                <div class="btn-group" role="group">
+                                    <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"
+                                       class="btn btn-sm btn-success btnVer" title="Reforma">
+                                        <i class="fa fa-sign-out"></i> Reforma
+                                    </a>
+                                </div>
+                            </g:if>
+                            <g:else>
+                                <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existente' :
+                                        reforma.tipoSolicitud == 'A' ? 'actividad' :
+                                                reforma.tipoSolicitud == 'P' ? 'partida' :
+                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : ''}"/>
+                                <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'solicitud_existente' :
+                                        reforma.tipoSolicitud == 'A' ? 'solicitud_actividad' :
+                                                reforma.tipoSolicitud == 'P' ? 'solicitud_partida' :
+                                                        reforma.tipoSolicitud == 'I' ? 'solicitud_incremento' : ''}.pdf"/>
+                                <div class="btn-group" role="group">
+                                    <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"
+                                       class="btn btn-sm btn-info btnVer" title="Solicitud">
+                                        <i class="fa fa-sign-in"></i> Solicitud
+                                    </a>
+                                </div>
+                            </g:else>
                         </td>
                     </tr>
                 </g:each>
