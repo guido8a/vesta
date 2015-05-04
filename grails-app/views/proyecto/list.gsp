@@ -240,7 +240,7 @@
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                            "¿Está seguro que desea eliminar el Proyecto seleccionado? Esta acción no se puede deshacer.</p>",
+                              "¿Está seguro que desea eliminar el Proyecto seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -548,7 +548,9 @@
                                 var id = $element.data("id");
                                 location.href = "${createLink(controller: 'asignacion', action:'asignacionProyectov2')}/" + id
                             }
-                        },
+                        }
+                        <g:if test="${usu.esDirector || usu.esGerente}">
+                        ,
                         eliminar    : {
                             label            : "Eliminar",
                             icon             : "fa fa-trash-o",
@@ -558,6 +560,7 @@
                                 deleteProyecto(id);
                             }
                         }
+                        </g:if>
                     },
                     onShow : function ($element) {
                         $element.addClass("success");

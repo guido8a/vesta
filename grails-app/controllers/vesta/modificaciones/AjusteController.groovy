@@ -17,6 +17,9 @@ import vesta.seguridad.Persona
 import vesta.seguridad.Shield
 
 class AjusteController extends Shield {
+
+    def firmasService
+
     /**
      * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
      */
@@ -59,9 +62,10 @@ class AjusteController extends Shield {
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
-        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Persona.findAllByUnidad(unidad)
-        def gerentes = Persona.findAllByUnidad(unidad.padre)
+//        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+//        def personasFirmas = Persona.findAllByUnidad(unidad)
+//        def gerentes = Persona.findAllByUnidad(unidad.padre)
+        def firmas = firmasService.listaFirmasCombos()
 
         def total = 0
 
@@ -81,8 +85,8 @@ class AjusteController extends Shield {
             }
         }
 
-        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: gerentes + personasFirmas,
-                gerentes : gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
+        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
+                gerentes : firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
     }
 
     /**
@@ -112,9 +116,10 @@ class AjusteController extends Shield {
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
-        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Persona.findAllByUnidad(unidad)
-        def gerentes = Persona.findAllByUnidad(unidad.padre)
+//        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+//        def personasFirmas = Persona.findAllByUnidad(unidad)
+//        def gerentes = Persona.findAllByUnidad(unidad.padre)
+        def firmas = firmasService.listaFirmasCombos()
 
         def total = 0
 
@@ -134,8 +139,8 @@ class AjusteController extends Shield {
             }
         }
 
-        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: gerentes + personasFirmas,
-                gerentes : gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
+        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
+                gerentes : firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
     }
 
     /**
@@ -165,9 +170,10 @@ class AjusteController extends Shield {
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
-        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Persona.findAllByUnidad(unidad)
-        def gerentes = Persona.findAllByUnidad(unidad.padre)
+//        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+//        def personasFirmas = Persona.findAllByUnidad(unidad)
+//        def gerentes = Persona.findAllByUnidad(unidad.padre)
+        def firmas = firmasService.listaFirmasCombos()
 
         def total = 0
 
@@ -187,8 +193,8 @@ class AjusteController extends Shield {
             }
         }
 
-        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: gerentes + personasFirmas,
-                gerentes : gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
+        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
+                gerentes : firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
     }
 
     /**

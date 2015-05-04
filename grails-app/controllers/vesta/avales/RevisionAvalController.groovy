@@ -11,6 +11,7 @@ import vesta.seguridad.*
 class RevisionAvalController extends Shield {
 
     def mailService
+    def firmasService
 
     /**
      * Acción que muestra la lista de solicitudes de aval pendientes (estadoAval código E01)
@@ -252,9 +253,10 @@ class RevisionAvalController extends Shield {
      * @param id el id de la solicitud de aval a aprobar
      */
     def aprobarAval = {
-        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Persona.findAllByUnidad(unidad)
-        def gerentes = Persona.findAllByUnidad(unidad.padre)
+//        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+//        def personasFirmas = Persona.findAllByUnidad(unidad)
+//        def gerentes = Persona.findAllByUnidad(unidad.padre)
+        def firmas = firmasService.listaFirmasCombos()
         def numero = 0
         def max = Aval.list([sort: "numero", order: "desc", max: 1])
 //        println "max " + max.numero
@@ -269,7 +271,7 @@ class RevisionAvalController extends Shield {
         if (!band) {
             response.sendError(403)
         }
-        return [solicitud: solicitud, personas: gerentes + personasFirmas, personasGerente: gerentes, numero: numero]
+        return [solicitud: solicitud, personas: firmas.directores, personasGerente: firmas.gerentes, numero: numero]
     }
 
     /**

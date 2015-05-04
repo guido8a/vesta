@@ -21,6 +21,7 @@ import vesta.seguridad.Persona
 class AvalesController extends vesta.seguridad.Shield {
 
     def mailService
+    def firmasService
 
     /**
      * Acción que muestra la pantalla de lista de procesos por proyecto

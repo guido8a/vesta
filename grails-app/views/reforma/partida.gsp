@@ -35,6 +35,15 @@
         </g:if>
 
 
+    <!-- botones -->
+        <div class="btn-toolbar toolbar">
+            <div class="btn-group">
+                <g:link action="reformas" class="btn btn-default btnCrear">
+                    <i class="fa fa-file-o"></i> Solicitar nueva
+                </g:link>
+            </div>
+        </div>
+
         <elm:container tipo="horizontal" titulo="Modificación a nuevas partidas">
             <div class="row">
                 <div class="col-md-1">
@@ -74,7 +83,7 @@
                                 <th style="width:234px;">Componente</th>
                                 <th style="width:234px;">Actividad</th>
                                 <th style="width:234px;">Asignación</th>
-                                <th style="width:135px;">Máximo</th>
+                                <th style="width:135px;">Saldo</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -120,7 +129,7 @@
                         </div>
 
                         <div class="col-md-1">
-                            <label for="monto">Monto</label>
+                            <label for="monto">Monto a aumentar</label>
                         </div>
 
                         <div class="col-md-2">
@@ -152,7 +161,7 @@
                             <tr>
                                 %{--<th style="width: 300px;">Fuente</th>--}%
                                 <th>Partida</th>
-                                <th style="width: 180px;">Monto</th>
+                                <th style="width: 180px;">Monto a aumentar</th>
                                 <th style="width: 40px;"></th>
                             </tr>
                         </thead>
@@ -190,7 +199,7 @@
                         <tr>
                             %{--<th style="width: 300px;">Fuente</th>--}%
                             <th>Partida</th>
-                            <th style="width: 180px;">Monto</th>
+                            <th style="width: 180px;">Monto a aumentar</th>
                             <th style="width: 40px;"></th>
                         </tr>
                     </thead>

@@ -160,4 +160,14 @@ class Persona {
     String toString() {
         "${this.nombre} ${this.apellido}"
     }
+
+    Boolean getEsDirector() {
+        // si se cambia esto cambiar tambien en firmasService/listaFirmasCombos
+        return this.cargoPersonal?.descripcion?.toLowerCase()?.contains("director")
+    }
+
+    Boolean getEsGerente() {
+        // si se cambia esto cambiar tambien en firmasService/listaFirmasCombos
+        return this.cargoPersonal?.descripcion?.toLowerCase()?.contains("gerente")
+    }
 }

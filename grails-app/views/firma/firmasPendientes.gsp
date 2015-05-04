@@ -92,8 +92,8 @@
                                             %{--</a>--}%
                                             %{--<g:if test="${f.tipoFirma == 'RFRM' || f.tipoFirma == 'AJST'}">--}%
                                                 <g:if test="${f.tipoFirma && f.tipoFirma != ''}">
-                                                    <a href="#" iden="${f.id}" class="devolver btn btn-warning" title="Devolver">
-                                                        <i class="fa fa-hand-o-left"></i>
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
+                                                        <i class="fa fa-thumbs-down"></i>
                                                     </a>
                                                 </g:if>
                                                 <g:else>
@@ -155,8 +155,8 @@
                                                     ${imgFirma}
                                                 </a>
                                                 <g:if test="${f.tipoFirma && f.tipoFirma != ''}">
-                                                    <a href="#" iden="${f.id}" class="devolver btn btn-warning" title="Devolver">
-                                                        <i class="fa fa-hand-o-left"></i>
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
+                                                        <i class="fa fa-thumbs-down"></i>
                                                     </a>
                                                 </g:if>
                                                 <g:else>
@@ -210,8 +210,8 @@
                                                     ${imgFirma}
                                                 </a>
                                                 <g:if test="${f.tipoFirma && f.tipoFirma != ''}">
-                                                    <a href="#" iden="${f.id}" class="devolver btn btn-warning" title="Devolver">
-                                                        <i class="fa fa-hand-o-left"></i>
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
+                                                        <i class="fa fa-thumbs-down"></i>
                                                     </a>
                                                 </g:if>
                                                 <g:else>
@@ -264,7 +264,7 @@
 
             $(function () {
 
-                $(".btn-success, .btn-danger, .btn-warning").addClass("disabled");
+                $(".btn-success, .btn-danger").addClass("disabled");
                 $(".btn-info").click(function () {
                     $(this).siblings().removeClass("disabled");
                 });
@@ -397,8 +397,8 @@
                                         }
                                     },
                                     eliminar : {
-                                        label     : "<i class='fa fa-hand-o-left'></i> Devolver",
-                                        className : "btn-warning",
+                                        label     : "<i class='fa fa-thumbs-down'></i> Devolver",
+                                        className : "btn-danger",
                                         callback  : function () {
                                             if ($.trim($txt.val()) != "" && $.trim($ta.val()) != "") {
                                                 openLoader("Devolviendo");

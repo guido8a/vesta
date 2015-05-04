@@ -347,6 +347,7 @@ class EntidadController extends Shield {
             hijos.each { hijo ->
                 def tp = ""
                 def data = ""
+                def ico = ""
                 if (hijo instanceof UnidadEjecutora) {
                     lbl = hijo.nombre
                     if (hijo.codigo) {
@@ -385,6 +386,12 @@ class EntidadController extends Shield {
                             lbl = "${hijo.apellido} ${hijo.nombre} ${hijo.login ? '(' + hijo.login + ')' : ''}"
                     }
 
+                    if (hijo.esDirector) {
+                        ico = ", \"icon\":\"fa fa-user-secret text-warning\""
+                    } else if (hijo.esGerente) {
+                        ico = ", \"icon\":\"fa fa-user-secret text-danger\""
+                    }
+
                     tp = "usu"
                     rel = "usuario"
                     clase = "usuario"
@@ -398,7 +405,7 @@ class EntidadController extends Shield {
                     }
                 }
 
-                tree += "<li id='li${tp}_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${rel}\"}' >"
+                tree += "<li id='li${tp}_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${rel}\" ${ico}}' >"
                 tree += "<a href='#' class='label_arbol'>" + lbl + "</a>"
                 tree += "</li>"
             }

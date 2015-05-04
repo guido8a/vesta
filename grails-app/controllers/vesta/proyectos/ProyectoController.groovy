@@ -52,8 +52,12 @@ class ProyectoController extends Shield {
         }
         def list
 //        println "PARAMS: " + params
-        if (!params.sort) params.sort = 'codigo'
-        if (!params.order) params.order = 'asc'
+        if (!params.sort) {
+            params.sort = 'codigo'
+        }
+        if (!params.order) {
+            params.order = 'asc'
+        }
 
         if (params.search_programa || params.search_nombre || params.search_desde || params.search_hasta) {
             def c = Proyecto.createCriteria()
@@ -96,8 +100,8 @@ class ProyectoController extends Shield {
                 distinct "anio"
             }
         }
-
-        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount, anios: anios]
+        def usu = Persona.get(session.usuario.id)
+        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount, anios: anios, usu: usu]
     }
 
     /**
@@ -257,8 +261,9 @@ class ProyectoController extends Shield {
         def estr = new Estrategia()
         if (params.proy__id) {
             def proyecto = Proyecto.get(params.proy__id.toLong())
-            if (proyecto.estrategia)
+            if (proyecto.estrategia) {
                 estr = proyecto.estrategia
+            }
         }
         if (params.id != "null") {
 //            println params
@@ -548,8 +553,9 @@ class ProyectoController extends Shield {
                                     redirect(action: "cargarExcel")
                                     return
                                 }
-                                if (!acts.contains(actividad.id))
+                                if (!acts.contains(actividad.id)) {
                                     acts.add(actividad.id)
+                                }
 
                                 // println "-->monto fin!!!!!!! para ${proyecto.id} " + proyecto.monto
                             }

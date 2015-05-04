@@ -35,6 +35,15 @@
         </g:if>
 
 
+    <!-- botones -->
+        <div class="btn-toolbar toolbar">
+            <div class="btn-group">
+                <g:link action="reformas" class="btn btn-default btnCrear">
+                    <i class="fa fa-file-o"></i> Solicitar nueva
+                </g:link>
+            </div>
+        </div>
+
         <elm:container tipo="horizontal" titulo="Modificación a nuevas actividades">
             <div class="row">
                 <div class="col-md-1">
@@ -74,8 +83,8 @@
                                 <th style="width:234px;">Componente</th>
                                 <th style="width:234px;">Actividad</th>
                                 <th style="width:234px;">Asignación</th>
-                                <th style="width:195px;">Monto</th>
-                                <th style="width:135px;">Máximo</th>
+                                <th style="width:195px;">Monto a reducir</th>
+                                <th style="width:135px;">Saldo</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -174,7 +183,7 @@
 
                         <div class="col-md-2">
                             <g:select from="${Categoria.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" name="categoria"
-                                      class="form-control input-sm" noSelection="['': 'Seleccione...']"/>
+                                      class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']"/>
                         </div>
 
                         <div class="col-md-2">

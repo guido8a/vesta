@@ -84,6 +84,12 @@
                     </a>
                 </div>
             </div>
+
+            <div class="col-md-4 text-right pull-right">
+                <i class="fa fa-user text-info"></i> Usuario
+                <i class="fa fa-user-secret text-warning"></i> Director
+                <i class="fa fa-user-secret text-danger"></i> Gerente
+            </div>
         </div>
 
         <div id="tree" class="well hidden">

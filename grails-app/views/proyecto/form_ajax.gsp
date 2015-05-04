@@ -19,7 +19,8 @@
                     <div class="col-md-9">
                         <g:select id="objetivoEstrategico" name="objetivoEstrategico.id"
                                   from="${ObjetivoEstrategicoProyecto.list([sort: 'descripcion'])}"
-                                  optionKey="id" optionValue="descripcion" value="${proyectoInstance?.objetivoEstrategico?.id}"
+                                  optionKey="id" optionValue="descripcion"
+                                  value="${proyectoInstance?.objetivoEstrategico?.id}"
                                   class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                     </div>
                 </span>
@@ -33,7 +34,8 @@
 
                     <div class="col-md-9" id="divEstrategia">
                         <g:select id="estrategia" name="estrategia.id" from="${Estrategia.list([sort: 'descripcion'])}"
-                                  optionKey="id" optionValue="descripcion" value="${proyectoInstance?.estrategia?.id}"
+                                  optionKey="id" optionValue="descripcion"
+                                  value="${proyectoInstance?.estrategia?.id}"
                                   class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                     </div>
                 </span>

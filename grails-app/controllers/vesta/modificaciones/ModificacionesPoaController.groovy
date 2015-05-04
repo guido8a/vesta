@@ -43,11 +43,12 @@ class ModificacionesPoaController extends Shield {
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
-        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Persona.findAllByUnidad(unidad)
-        def gerentes = Persona.findAllByUnidad(unidad.padre)
+//        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+//        def personasFirmas = Persona.findAllByUnidad(unidad)
+//        def gerentes = Persona.findAllByUnidad(unidad.padre)
+        def firmas = firmasService.listaFirmasCombos()
 
-        [proyectos: proyectos, proyectos2: proyectos2, actual: actual, campos: campos, personas: gerentes + personasFirmas, personasGerente: gerentes]
+        [proyectos: proyectos, proyectos2: proyectos2, actual: actual, campos: campos, personas: firmas.directores, personasGerente: firmas.gerentes]
     }
 
     def solicitar = {
@@ -650,17 +651,18 @@ class ModificacionesPoaController extends Shield {
     def verSolicitud = {
         def sol = SolicitudModPoa.get(params.id)
 
-        def unidadGerencia = UnidadEjecutora.findByCodigo("GPE") // GERENCIA DE PLANIFICACIÓN ESTRATÉGICA
-        def personasGerencia = Persona.findAllByUnidad(unidadGerencia)
+//        def unidadGerencia = UnidadEjecutora.findByCodigo("GPE") // GERENCIA DE PLANIFICACIÓN ESTRATÉGICA
+//        def personasGerencia = Persona.findAllByUnidad(unidadGerencia)
 
-        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-        def personasFirmas = Persona.findAllByUnidad(unidad)
+//        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+//        def personasFirmas = Persona.findAllByUnidad(unidad)
+//
+//
+//        unidad = UnidadEjecutora.findByCodigo("DRPL")
+//        def perGerencia = Persona.findAllByUnidad(unidad)
+        def firmas = firmasService.listaFirmasCombos()
 
-
-        unidad = UnidadEjecutora.findByCodigo("DRPL")
-        def perGerencia = Persona.findAllByUnidad(unidad)
-
-        return [sol: sol, personas: personasGerencia + personasFirmas, perGerencia: personasGerencia]
+        return [sol: sol, personas: firmas.directores, perGerencia: firmas.gerentes]
     }
 
 

@@ -34,6 +34,14 @@
             </div>
         </g:if>
 
+        <!-- botones -->
+        <div class="btn-toolbar toolbar">
+            <div class="btn-group">
+                <g:link action="reformas" class="btn btn-default btnCrear">
+                    <i class="fa fa-file-o"></i> Solicitar nueva
+                </g:link>
+            </div>
+        </div>
 
         <elm:container tipo="horizontal" titulo="Modificación a asignación existente">
             <div class="row">
@@ -74,7 +82,7 @@
                                 <th style="width:234px;">Actividad</th>
                                 <th style="width:234px;">Asignación</th>
                                 <th style="width:195px;">Monto</th>
-                                <th style="width:135px;">Máximo</th>
+                                <th style="width:135px;">Saldo</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -483,7 +491,7 @@
                         dataOrigen.asignacion_id = $("#asignacion").val();
 //                        dataOrigen.monto = $("#monto").val();
                         dataOrigen.monto = str_replace(",", "", $("#monto").val());
-                        
+
                         var dataDestino = {};
                         dataDestino.proyecto_nombre = $("#proyectoDest").find("option:selected").text();
                         dataDestino.componente_nombre = $("#compDest").find("option:selected").text();

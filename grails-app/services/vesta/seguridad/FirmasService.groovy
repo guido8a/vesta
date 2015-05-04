@@ -1,4 +1,7 @@
 package vesta.seguridad
+
+import vesta.parametros.UnidadEjecutora
+
 /**
  * Servicio para el firmar electronicamente documentos
  */
@@ -15,6 +18,27 @@ class FirmasService {
     static transactional = true
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib()
 
+    def listaFirmasCombos() {
+        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+//        def personasFirmas = Persona.findAllByUnidad(unidad)
+//        def gerentes = Persona.findAllByUnidad(unidad.padre)
+
+        def directores = Persona.withCriteria {
+            eq("unidad", unidad)
+            cargoPersonal {
+                ilike("descripcion", "%director%")
+            }
+        }
+        def gerentes = Persona.withCriteria {
+            eq("unidad", unidad.padre)
+            cargoPersonal {
+                ilike("descripcion", "%gerente%")
+            }
+        }
+
+        return [directores: directores + gerentes, gerentes: gerentes]
+    }
+
     /**
      * Firma digitalmente un documento
      * @param usuario es el usuario que firma
@@ -28,8 +52,9 @@ class FirmasService {
      */
     def firmarDocumento(usuario, password, firma, baseUri) {
         def user = Persona.get(usuario)
-        if (firma.usuario != user)
+        if (firma.usuario != user) {
             return "ERROR*El usuario no concuerda con la firma"
+        }
         if (user.autorizacion == password.encodeAsMD5()) {
 //            println "paso  "
             try {

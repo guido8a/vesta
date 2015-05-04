@@ -35,6 +35,15 @@
         </g:if>
 
 
+    <!-- botones -->
+        <div class="btn-toolbar toolbar">
+            <div class="btn-group">
+                <g:link action="reformas" class="btn btn-default btnCrear">
+                    <i class="fa fa-file-o"></i> Solicitar nueva
+                </g:link>
+            </div>
+        </div>
+
         <elm:container tipo="horizontal" titulo="Modificación de incremento">
             <div class="row">
                 <div class="col-md-1">
@@ -73,7 +82,7 @@
                                 <th style="width:234px;">Componente</th>
                                 <th style="width:234px;">Actividad</th>
                                 <th>Asignación</th>
-                                <th style="width:195px;">Monto</th>
+                                <th style="width:195px;">Monto a aumentar</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -124,7 +133,7 @@
                                 <th style='width:234px;'>Componente</th>
                                 <th style='width:234px;'>Actividad</th>
                                 <th>Asignación</th>
-                                <th style='width:195px;'>Monto</th>
+                                <th style='width:195px;'>Monto a aumentar</th>
                                 <th style="width: 40px;"></th>
                             </tr>
                         </thead>
@@ -169,7 +178,7 @@
                             <th style='width:234px;'>Componente</th>
                             <th style='width:234px;'>Actividad</th>
                             <th>Asignación</th>
-                            <th style='width:195px;'>Monto</th>
+                            <th style='width:195px;'>Monto a aumentar</th>
                             <th style="width: 40px;"></th>
                         </tr>
                     </thead>
