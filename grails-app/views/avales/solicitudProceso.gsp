@@ -103,7 +103,7 @@
 
                     <div class="col-md-2">
                         <g:if test="${!readOnly}">
-                            <g:textField name="memorando" class="form-control input-sm required" maxlength="63" style="width: 250px"
+                            <g:textField name="memorando" class="form-control input-sm " maxlength="63" style="width: 250px"
                             value="${solicitud?.memo}"/>
                         </g:if>
                         <g:else>
@@ -126,7 +126,7 @@
                                 <input type="file" name="file" id="file" class="form-control input-sm" style="margin-left: -10px; padding: 0"/>
                             </g:if>
                             <g:else>
-                                <input type="file" name="file" id="file" class="form-control input-sm required" style="margin-left: -10px"/>
+                                <input type="file" name="file" id="file" class="form-control input-sm " style="margin-left: -10px"/>
                             </g:else>
                         </g:if>
                         <g:else>

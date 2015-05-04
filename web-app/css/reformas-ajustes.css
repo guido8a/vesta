@@ -28,10 +28,22 @@
     background : #BCC3E5 !important;
 }
 
-.bgIncremento {
+.bgActividades2 {
     /*background : rgba(217, 194, 146, 0.5);*/
 }
 
-.bgIncremento:hover {
+.bgActividades2:hover {
     /*background : rgba(217, 194, 146, 0.75) !important;*/
+}
+
+.bgIncremento {
+    /*background : #896897;*/
+    /*background : rgba(196, 131, 75, 0.5);*/
+    background : #e3e6f2;
+}
+
+.bgIncremento:hover {
+    /*background : #896897;*/
+    /*background : rgba(196, 131, 75, 0.75) !important;*/
+    background : #BCC3E5 !important;
 }

@@ -110,7 +110,7 @@
             <div class="row">
                 <span class="grupo">
                     <label for="fechaInicio" class="col-md-2 control-label">
-                        Fecha Inicio
+                        Fecha Inicio (requerimiento de aval)
                     </label>
 
                     <div class="col-md-3">
@@ -131,7 +131,7 @@
                 %{--<div class="row">--}%
                 <span class="grupo">
                     <label for="fechaFin" class="col-md-2 control-label">
-                        Fecha Fin
+                        Fecha fin de la actividad
                     </label>
 
                     <div class="col-md-3">

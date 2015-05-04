@@ -146,14 +146,18 @@
                                     </g:if>
                                 </g:if>
                                 <g:else>
+%{--
                                     <a href="#" class="btn btn-default btn-xs btn_agregar_prio" asgn="${asg.id}" proy="${proyecto.id}" anio="${actual.id}" title="Dividir en dos partidas">
                                         <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
                                     </a>
+--}%
+%{--
                                     <g:if test="${asg.padre != null}">
                                         <a href="#" class=" btn btn-danger btn-xs btn_borrar_prio" asgn="${asg.id}" title="Eliminar la Asignación">
                                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                         </a>
                                     </g:if>
+--}%
                                 </g:else>
                             </td>
                         </tr>
