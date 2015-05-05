@@ -1147,7 +1147,7 @@ class ReformaController extends Shield {
                 alerta.fechaEnvio = now
                 alerta.mensaje = mensaje + reforma.concepto
                 alerta.controlador = "reforma"
-                alerta.accion = accion
+                alerta.accion = "pendientes"
                 alerta.id_remoto = reforma.id
                 if (!alerta.save(flush: true)) {
                     println "error alerta: " + alerta.errors

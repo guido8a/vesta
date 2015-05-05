@@ -71,10 +71,34 @@
                                         <td>${reforma.estado.descripcion}</td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", accion, id: reforma.id)}&filename=${fileName}"
-                                                   class="btn btn-sm btn-info btnVer" title="Solicitud">
-                                                    <i class="fa fa-search"></i>
-                                                </a>
+                                                <g:if test="${reforma.estado.codigo == 'E02'}">
+                                                    <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existenteReforma' :
+                                                            reforma.tipoSolicitud == 'A' ? 'actividadReforma' :
+                                                                    reforma.tipoSolicitud == 'P' ? 'partidaReforma' :
+                                                                            reforma.tipoSolicitud == 'I' ? 'incrementoReforma' : ''}"/>
+                                                    <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'reforma_existente' :
+                                                            reforma.tipoSolicitud == 'A' ? 'reforma_actividad' :
+                                                                    reforma.tipoSolicitud == 'P' ? 'reforma_partida' :
+                                                                            reforma.tipoSolicitud == 'I' ? 'reforma_incremento' : ''}.pdf"/>
+                                                    <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"
+                                                       class="btn btn-sm btn-success btnVer" title="Reforma">
+                                                        <i class="fa fa-search"></i>
+                                                    </a>
+                                                </g:if>
+                                                <g:else>
+                                                    <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existente' :
+                                                            reforma.tipoSolicitud == 'A' ? 'actividad' :
+                                                                    reforma.tipoSolicitud == 'P' ? 'partida' :
+                                                                            reforma.tipoSolicitud == 'I' ? 'incremento' : ''}"/>
+                                                    <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'solicitud_existente' :
+                                                            reforma.tipoSolicitud == 'A' ? 'solicitud_actividad' :
+                                                                    reforma.tipoSolicitud == 'P' ? 'solicitud_partida' :
+                                                                            reforma.tipoSolicitud == 'I' ? 'solicitud_incremento' : ''}.pdf"/>
+                                                    <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"
+                                                       class="btn btn-sm btn-info btnVer" title="Solicitud">
+                                                        <i class="fa fa-search"></i>
+                                                    </a>
+                                                </g:else>
                                                 <g:link action="procesar" id="${reforma.id}" class="btn btn-default" title="Procesar">
                                                     <i class="fa fa-pencil-square-o"></i>
                                                 </g:link>

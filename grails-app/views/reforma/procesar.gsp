@@ -398,7 +398,7 @@
                                 <g:set var="total" value="${total + detalle.valor}"/>
                                 <tr class="success">
                                     %{--<td>--}%
-                                        %{--${detalle.fuente}--}%
+                                    %{--${detalle.fuente}--}%
                                     %{--</td>--}%
                                     <td>
                                         ${detalle.presupuesto}
@@ -460,6 +460,9 @@
 
                 <div class="row">
                     <div class="col-md-12">
+                        <a href="#" id="btnPreview" class="btn btn-info ${reforma.tipoSolicitud == 'I' && totalSaldo > 0 ? 'disabled' : ''}">
+                            <i class="fa fa-search"></i> Previsualizar
+                        </a>
                         <a href="#" id="btnAprobar" class="btn btn-success ${reforma.tipoSolicitud == 'I' && totalSaldo > 0 ? 'disabled' : ''}">
                             <i class="fa fa-thumbs-up"></i> Aprobar
                         </a>

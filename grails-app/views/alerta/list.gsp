@@ -49,7 +49,7 @@
                             <td class="d${(((new Date()) - alertaInstance.fechaEnvio) > 2) ? "mas" : (new Date()) - alertaInstance.fechaEnvio}"></td>
                             <td><g:formatDate date="${alertaInstance.fechaEnvio}" format="dd-MM-yyyy"/></td>
                             <td><elm:textoBusqueda busca="${params.search}"><g:fieldValue bean="${alertaInstance}" field="mensaje"/></elm:textoBusqueda></td>
-                            <td>${alertaInstance.from}</td>
+                            <td>${alertaInstance.from.unidad}</td>
                             <td class="text-center">
                                 <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
                             </td>
