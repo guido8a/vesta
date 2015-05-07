@@ -42,10 +42,10 @@ class FirmaController extends Shield {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
 
-//        def imgFirma = "<i class=\"fa fa-pencil\"></i>";
+        def imgFirma = "<i class='fa fa-pencil'></i>";
 //        def imgFirma = "<img src='${resource(dir: 'images/ico', file: 'feather.png')}' alt='Firmar'/>"
 
-        return [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, actual: actual]
+        return [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, actual: actual, imgFirma: imgFirma]
 
     }
 /**

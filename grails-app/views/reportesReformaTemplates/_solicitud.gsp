@@ -5,11 +5,10 @@
 <div style="margin-left: 10px;">
     <div>
         <ol>
-            <li class="no-break">
+            <li>
                 <strong>Unidad responsable (Gerencia - Dirección):</strong> ${reforma.persona.unidad}
             </li>
-            <li class="no-break">
-
+            <li>
                 <strong>Tipo de ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>
                 ${reforma.tipo == 'R' ? 'Reforma' : 'Ajuste'}
                 <g:if test="${tipo == 'e'}">
@@ -18,6 +17,9 @@
                 <g:elseif test="${tipo == 'a'}">
                     por creación de nuevas actividades
                 </g:elseif>
+                <g:elseif test="${tipo == 'c'}">
+                    por incremento con creación de nuevas actividades
+                </g:elseif>
                 <g:elseif test="${tipo == 'i'}">
                     por incremento
                 </g:elseif>
@@ -25,17 +27,14 @@
                     por creación de nuevas partidas
                 </g:elseif>
             </li>
-            <li class="no-break">
+            <li>
                 <strong>Matriz de la ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>
-
                 <g:render template="/reportesReformaTemplates/tablaSolicitud"
                           model="[det: det, tipo: tipo]"/>
-
-                <g:if test="${reforma.analista && det2}">
+                <g:if test="${det2}">
                     <g:render template="/reportesReformaTemplates/tablaSolicitud"
                               model="[det: det2, tipo: tipo, analista: reforma.analista]"/>
                 </g:if>
-
             </li>
             <li class="no-break" style="margin-top: 15px">
                 <strong>Justificación ${reforma.tipo == 'R' ? 'de la reforma' : 'del ajuste'} al POA solicitada:</strong>
@@ -44,8 +43,15 @@
                     ${reforma.concepto}
                 </div>
             </li>
-
         </ol>
+
+        <div>
+            <strong>Elaborado por:</strong> ${reforma.persona.sigla}
+        </div>
+
+        <div class="fright">
+            <strong>FECHA:</strong> ${reforma.fecha?.format("dd-MM-yyyy")}
+        </div>
 
         <div>
             Es importante señalar que ${reforma.tipo == 'R' ? 'la reforma' : 'el ajuste'} no implica un incremento en el techo del presupuesto programado y que el impacto

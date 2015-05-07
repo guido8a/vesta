@@ -85,8 +85,7 @@
                                                     </g:else>
                                                 </g:if>
                                                 <a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">
-                                                    <i class="fa fa-pencil"></i>
-                                                    %{--${imgFirma}--}%
+                                                    ${imgFirma}
                                                 </a>
                                             %{--<a href="#" class="negar btn btn-danger" title="Negar">--}%
                                             %{--<i class="fa fa-thumbs-down"></i>--}%

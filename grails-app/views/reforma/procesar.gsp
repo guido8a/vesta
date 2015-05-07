@@ -18,8 +18,14 @@
         .horizontal-container {
             border-bottom : none;
         }
+
+        .table {
+            margin-top : 15px;
+        }
         </style>
     </head>
+
+    <g:set var="btnSelect" value="${tipo == 'I' || tipo == 'C'}"/>
 
     <body>
         <g:hiddenField name="anio" value="${reforma.anioId}"/>
@@ -47,8 +53,9 @@
         <elm:container tipo="horizontal" titulo="Solicitud de reforma a procesar:  ${reforma.tipo == 'R' ? 'Reforma' : reforma.tipo == 'A' ? 'Ajuste' : '??'}
         ${reforma.tipoSolicitud == 'E' ? ' a asignaciones existentes' :
                 reforma.tipoSolicitud == 'A' ? ' a nueva actividad' :
-                        reforma.tipoSolicitud == 'P' ? 'a nueva partida' :
-                                reforma.tipoSolicitud == 'I' ? ' de incremento' : '??'}">
+                        reforma.tipoSolicitud == 'C' ? ' de incremento a nueva actividad' :
+                                reforma.tipoSolicitud == 'P' ? 'a nueva partida' :
+                                        reforma.tipoSolicitud == 'I' ? ' de incremento' : '??'}">
             <div class="row">
                 <div class="col-md-1 show-label">
                     POA Año
@@ -66,6 +73,16 @@
                     <g:formatNumber number="${total}" type="currency"/>
                 </div>
 
+                <g:if test="${btnSelect}">
+                    <div class="col-md-1 show-label">
+                        Saldo
+                    </div>
+
+                    <div class="col-md-2" id="divTotal">
+                        <g:formatNumber number="${totalSaldo}" type="currency"/>
+                    </div>
+                </g:if>
+
                 <div class="col-md-1 show-label">
                     Fecha
                 </div>
@@ -75,351 +92,18 @@
                 </div>
             </div>
 
-            <g:if test="${detalles2.size() > 0}">
-                <table class="table table-bordered table-hover table-condensed">
-                    <thead>
-                        <tr>
-                            <th style="width: 100px;">Proyecto</th>
-                            <th style="width: 100px;">Componente</th>
-                            <th>Actividad</th>
-                            <th>Asignación</th>
-                            <th style="width: 80px;">Valor inicial</th>
-                            <th style="width: 80px;">Disminución</th>
-                            <th style="width: 80px;">Aumento</th>
-                            <th style="width: 80px;">Valor final</th>
-                            <th style="width: 100px;">Saldo</th>
-                            <th style="width: 30px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="tb">
-                        <g:set var="totalInicial" value="${0}"/>
-                        <g:set var="totalAumento" value="${0}"/>
-                        <g:set var="totalFinal" value="${0}"/>
-                        <g:set var="totalSaldo" value="${0}"/>
-                        <g:each in="${detalles2}" var="detalle">
-                            <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionDestino?.priorizado)}"/>
-                            <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
-                            <g:set var="totalFinal" value="${totalFinal + (detalle.asignacionDestino?.priorizado + detalle.valor)}"/>
-                            <g:set var="totalSaldo" value="${totalSaldo + detalle.saldo}"/>
-                            <tr class="success"
-                                data-id="${detalle.id}"
-                                data-asd="${detalle.asignacionDestinoId}"
-                                data-aso=""
-                                data-monto="${detalle.valor}"
-                                data-saldo="${detalle.saldo}"
-                                data-ti="${detalle.asignacionDestino?.priorizado}"
-                                data-ta="${detalle.valor}"
-                                data-td="${0}"
-                                data-tf="${detalle.asignacionDestino?.priorizado + detalle.valor}">
-                                <td>
-                                    ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionDestino.marcoLogico.numero} - ${detalle.asignacionDestino.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalle.asignacionDestino}
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.asignacionDestino?.priorizado}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td></td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalle.asignacionDestino?.priorizado + detalle.valor}" type="currency" currencySymbol=""/>
-                                </td>
-                                <g:if test="${reforma.tipoSolicitud == 'I'}">
-                                    <td class="text-right">
-                                        <g:formatNumber number="${detalle.saldo}" type="currency" currencySymbol=""/>
-                                    </td>
-                                    <td>
-                                        <g:if test="${detalle.saldo > 0}">
-                                            <a href="#" class="btn btn-xs btn-success btnSelect" title="Seleccionar asignación de origen" data-id="${detalle.id}">
-                                                <i class="fa fa-pencil-square"></i>
-                                            </a>
-                                        </g:if>
-                                    </td>
-                                </g:if>
-                            </tr>
-                        </g:each>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th class="text-right" colspan="4">TOTAL</th>
-                            <th class="text-right" data-valor="${totalInicial}">
-                                <g:formatNumber number="${totalInicial}" type="currency" currencySymbol=""/>
-                            </th>
-                            <th class="text-right">
-                                <g:formatNumber number="${0}" type="currency" currencySymbol=""/>
-                            </th>
-                            <th class="text-right">
-                                <g:formatNumber number="${totalAumento}" type="currency" currencySymbol=""/>
-                            </th>
-                            <th class="text-right" data-valor="${totalFinal}">
-                                <g:formatNumber number="${totalFinal}" type="currency" currencySymbol=""/>
-                            </th>
-                            <th class="text-right" data-valor="${totalSaldo}">
-                                <g:formatNumber number="${totalSaldo}" type="currency" currencySymbol=""/>
-                            </th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </g:if>
-
-            <g:if test="${detalles.size() > 0}">
-                <g:if test="${reforma.tipoSolicitud != 'P'}">
-                    <table class="table table-bordered table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                <th style="width: 100px;">Proyecto</th>
-                                <th style="width: 100px;">Componente</th>
-                                <th>Actividad</th>
-                                <th>Asignación</th>
-                                <th style="width: 80px;">Valor inicial</th>
-                                <th style="width: 80px;">Disminución</th>
-                                <th style="width: 80px;">Aumento</th>
-                                <th style="width: 80px;">Valor final</th>
-                                <g:if test="${reforma.tipoSolicitud == 'I'}">
-                                    <th style="width: 30px;"></th>
-                                </g:if>
-                            </tr>
-                        </thead>
-                        <tbody class="tb">
-                            <g:set var="totalInicial" value="${0}"/>
-                            <g:set var="totalDisminucion" value="${0}"/>
-                            <g:set var="totalAumento" value="${0}"/>
-                            <g:set var="totalFinal" value="${0}"/>
-                            <g:each in="${detalles}" var="detalle">
-                                <g:if test="${reforma.tipoSolicitud == 'E' || reforma.tipoSolicitud == 'I'}">
-                                    <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen?.priorizado + detalle.asignacionDestino?.priorizado)}"/>
-                                    <g:set var="totalDisminucion" value="${totalDisminucion + detalle.valor}"/>
-                                    <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
-                                    <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen?.priorizado - detalle.valor) + (detalle.asignacionDestino?.priorizado + detalle.valor))}"/>
-                                    <g:set var="tf" value="${detalle.asignacionDestino?.priorizado + detalle.valor}"/>
-                                </g:if>
-                                <g:elseif test="${reforma.tipoSolicitud == 'A'}">
-                                    <g:set var="totalInicial" value="${totalInicial + (detalle.asignacionOrigen?.priorizado)}"/>
-                                    <g:set var="totalDisminucion" value="${totalDisminucion + detalle.valor}"/>
-                                    <g:set var="totalAumento" value="${totalAumento + detalle.valor}"/>
-                                    <g:set var="totalFinal" value="${totalFinal + ((detalle.asignacionOrigen?.priorizado - detalle.valor) + (detalle.valor))}"/>
-                                    <g:set var="tf" value="${0}"/>
-                                </g:elseif>
-                                <tr class="info"
-                                    data-id="${detalle.id}"
-                                    data-asd="${detalle.asignacionDestinoId}"
-                                    data-aso="${detalle.asignacionOrigenId}"
-                                    data-monto="${detalle.valor}"
-                                    data-ti="${detalle.asignacionDestino?.priorizado}"
-                                    data-ta="${detalle.valor}"
-                                    data-td="${0}"
-                                    data-tf="${tf}">
-                                    <td>
-
-                                        ${detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
-                                    </td>
-                                    <td>
-                                        ${detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()}
-                                    </td>
-                                    <td>
-                                        ${detalle.asignacionOrigen.marcoLogico.numero} - ${detalle.asignacionOrigen.marcoLogico.toStringCompleto()}
-                                    </td>
-                                    <td>
-                                        ${detalle.asignacionOrigen}
-                                    </td>
-                                    <td class="text-right">
-                                        <g:formatNumber number="${detalle.asignacionOrigen?.priorizado}" type="currency" currencySymbol=""/>
-                                    </td>
-                                    <td class="text-right">
-                                        <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                    </td>
-                                    <td></td>
-                                    <td class="text-right">
-                                        <g:formatNumber number="${detalle.asignacionOrigen?.priorizado - detalle.valor}" type="currency" currencySymbol=""/>
-                                    </td>
-                                    <g:if test="${reforma.tipoSolicitud == 'I'}">
-                                        <td rowspan="2" class="danger" style="vertical-align: middle;">
-                                            <a href="#" class="btn btn-xs btn-danger btnDeleteDetalle" title="Eliminar detalle" data-id="${detalle.id}">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </td>
-                                    </g:if>
-                                </tr>
-                                <tr class="success"
-                                    data-id="${detalle.id}"
-                                    data-asd="${detalle.asignacionDestinoId}"
-                                    data-aso="${detalle.asignacionOrigenId}"
-                                    data-monto="${detalle.valor}"
-                                    data-ti="${detalle.asignacionDestino?.priorizado}"
-                                    data-ta="${detalle.valor}"
-                                    data-td="${0}"
-                                    data-tf="${tf}">
-                                    <g:if test="${reforma.tipoSolicitud == 'E' || reforma.tipoSolicitud == 'I'}">
-                                        <td>
-                                            ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
-                                        </td>
-                                        <td>
-                                            ${detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()}
-                                        </td>
-                                        <td>
-                                            ${detalle.asignacionDestino.marcoLogico.numero} - ${detalle.asignacionDestino.marcoLogico.toStringCompleto()}
-                                        </td>
-                                        <td>
-                                            ${detalle.asignacionDestino}
-                                        </td>
-                                        <td class="text-right">
-                                            <g:formatNumber number="${detalle.asignacionDestino?.priorizado}" type="currency" currencySymbol=""/>
-                                        </td>
-                                        <td></td>
-                                        <td class="text-right">
-                                            <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                        </td>
-                                        <td class="text-right">
-                                            <g:formatNumber number="${detalle.asignacionDestino?.priorizado + detalle.valor}" type="currency" currencySymbol=""/>
-                                        </td>
-                                    %{--<g:if test="${reforma.tipoSolicitud == 'I'}">--}%
-                                    %{--<td>--}%
-                                    %{--<a href="#" class="btn btn-xs btn-danger btnDelete" title="Eliminar detalle" data-id="${detalle.id}">--}%
-                                    %{--<i class="fa fa-trash-o"></i>--}%
-                                    %{--</a>--}%
-                                    %{--</td>--}%
-                                    %{--</g:if>--}%
-                                    </g:if>
-                                    <g:elseif test="${reforma.tipoSolicitud == 'A'}">
-                                        <td>
-                                            ${detalle.componente.proyecto.toStringCompleto()}
-                                        </td>
-                                        <td>
-                                            ${detalle.componente.toStringCompleto()}
-                                        </td>
-                                        <td>
-                                            ${detalle.descripcionNuevaActividad}
-                                        </td>
-                                        <td>
-                                            <strong>Responsable:</strong> ${reforma.persona.unidad}
-                                            <strong>Priorizado:</strong> ${detalle.valor}
-                                            <strong>Partida Presupuestaria:</strong> ${detalle.presupuesto}
-                                            <strong>Año:</strong> ${reforma.anio.anio}
-                                        </td>
-                                        <td class="text-right">
-                                            <g:formatNumber number="${0}" type="currency" currencySymbol=""/>
-                                        </td>
-                                        <td></td>
-                                        <td class="text-right">
-                                            <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                        </td>
-                                        <td class="text-right">
-                                            <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                        </td>
-                                    </g:elseif>
-                                </tr>
-                            </g:each>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th class="text-right" colspan="4">TOTAL</th>
-                                <th class="text-right" id="totalInicial" data-valor="${totalInicial}">
-                                    <g:formatNumber number="${totalInicial}" type="currency" currencySymbol=""/>
-                                </th>
-                                <th class="text-right" id="totalDism">
-                                    <g:formatNumber number="${totalDisminucion}" type="currency" currencySymbol=""/>
-                                </th>
-                                <th class="text-right" id="totalAum">
-                                    <g:formatNumber number="${totalAumento}" type="currency" currencySymbol=""/>
-                                </th>
-                                <th class="text-right" id="totalFinal" data-valor="${totalFinal}">
-                                    <g:formatNumber number="${totalFinal}" type="currency" currencySymbol=""/>
-                                </th>
-                                <g:if test="${reforma.tipoSolicitud == 'I'}">
-                                    <th colspan="2"></th>
-                                </g:if>
-                            </tr>
-                        </tfoot>
-                    </table>
+            <g:if test="${btnSelect}">
+                <g:render template="/reportesReformaTemplates/tablaSolicitud"
+                          model="[det: det2, tipo: tipo, btnSelect: btnSelect, btnDelete: false]"/>
+                <g:if test="${detallado.size() > 0}">
+                    <g:render template="/reportesReformaTemplates/tablaSolicitud"
+                              model="[det: detallado, tipo: tipo, btnSelect: false, btnDelete: btnSelect]"/>
                 </g:if>
-                <g:else>
-                    <table class="table table-bordered table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Proyecto</th>
-                                <th>Componente</th>
-                                <th>Actividad</th>
-                                <th>Asignación</th>
-                                <th>Valor inicial</th>
-                                <th>Disminución</th>
-                                <th>Aumento</th>
-                                <th>Valor final</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <g:set var="valorFinal" value="${detalles.sum { it.valor }}"/>
-                            <tr class="info">
-                                <td>
-                                    ${detalles.first().asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalles.first().asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalles.first().asignacionOrigen.marcoLogico.numero} - ${detalles.first().asignacionOrigen.marcoLogico.toStringCompleto()}
-                                </td>
-                                <td>
-                                    ${detalles.first().asignacionOrigen}
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalles.first().asignacionOrigen?.priorizado}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${valorFinal}" type="currency" currencySymbol=""/>
-                                </td>
-                                <td></td>
-                                <td class="text-right">
-                                    <g:formatNumber number="${detalles.first().asignacionOrigen?.priorizado - valorFinal}" type="currency" currencySymbol=""/>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                %{--<th style="width: 300px;">Fuente</th>--}%
-                                <th>Partida</th>
-                                <th style="width: 180px;">Monto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <g:set var="total" value="${0}"/>
-                            <g:each in="${detalles}" var="detalle">
-                                <g:set var="total" value="${total + detalle.valor}"/>
-                                <tr class="success">
-                                    %{--<td>--}%
-                                    %{--${detalle.fuente}--}%
-                                    %{--</td>--}%
-                                    <td>
-                                        ${detalle.presupuesto}
-                                    </td>
-                                    <td class="text-right">
-                                        <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
-                                    </td>
-                                </tr>
-                            </g:each>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="1" class="text-right">TOTAL</th>
-                                <th class="text-right">
-                                    <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
-                                </th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </g:else>
             </g:if>
+            <g:else>
+                <g:render template="/reportesReformaTemplates/tablaSolicitud"
+                          model="[det: det, tipo: tipo, btnSelect: false, btnDelete: false]"/>
+            </g:else>
         </elm:container>
 
         <form id="frmFirmas">
@@ -460,10 +144,25 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="#" id="btnPreview" class="btn btn-info ${reforma.tipoSolicitud == 'I' && totalSaldo > 0 ? 'disabled' : ''}">
+                        %{--<a href="#" id="btnPreview" class="btn btn-info ${btnSelect && totalSaldo > 0 ? 'disabled' : ''}">--}%
+                        %{--<i class="fa fa-search"></i> Previsualizar--}%
+                        %{--</a>--}%
+
+                        <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existente' :
+                                reforma.tipoSolicitud == 'A' ? 'actividad' :
+                                        reforma.tipoSolicitud == 'C' ? 'incrementoActividad' :
+                                                reforma.tipoSolicitud == 'P' ? 'partida' :
+                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : ''}"/>
+                        <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'solicitud_existente' :
+                                reforma.tipoSolicitud == 'A' ? 'solicitud_actividad' :
+                                        reforma.tipoSolicitud == 'C' ? 'solicitud_incremento_actividad' :
+                                                reforma.tipoSolicitud == 'P' ? 'solicitud_partida' :
+                                                        reforma.tipoSolicitud == 'I' ? 'solicitud_incremento' : ''}.pdf"/>
+                        <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"
+                           class="btn btn-sm btn-info">
                             <i class="fa fa-search"></i> Previsualizar
                         </a>
-                        <a href="#" id="btnAprobar" class="btn btn-success ${reforma.tipoSolicitud == 'I' && totalSaldo > 0 ? 'disabled' : ''}">
+                        <a href="#" id="btnAprobar" class="btn btn-success ${btnSelect && totalSaldo > 0 ? 'disabled' : ''}">
                             <i class="fa fa-thumbs-up"></i> Aprobar
                         </a>
                         <a href="#" id="btnNegar" class="btn btn-danger">
@@ -568,8 +267,9 @@
                     return false;
                 });
 
-                <g:if test="${reforma.tipoSolicitud == 'I'}">
+                <g:if test="${btnSelect}">
                 function validarPar(dataOrigen, dataDestino) {
+//                    console.log(dataDestino);
                     var monto = parseFloat($.trim(str_replace(",", "", $("#monto").val())));
 //                    console.log(dataOrigen.monto, monto, dataOrigen.max);
                     var ok = true;
@@ -581,12 +281,30 @@
                         $(".tb").children().each(function () {
                             var d = $(this).data();
                             if (ok) {
-                                if (d.aso == dataOrigen.asignacion_id && d.asd == dataDestino.asignacion_id) {
+
+                                var b1 = false, b2 = false;
+                                if (d.aso) {
+                                    b1 = d.aso == dataOrigen.asignacion_id;
+                                    b2 = d.aso == dataDestino.asignacion_id
+                                    if (d.asd) {
+                                        b1 = b1 && d.asd == dataDestino.asignacion_id;
+                                        b2 = b2 || d.asd == dataOrigen.asignacion_id
+                                    }
+                                } else {
+                                    if (d.asd) {
+//                                        b1 = d.asd == dataDestino.asignacion_id;
+                                        b2 = d.asd == dataOrigen.asignacion_id
+                                    }
+                                }
+
+//                                console.log($(this), d.aso, "==", dataOrigen.asignacion_id, "&&", d.asd, "==", dataDestino.asignacion_id, (d.aso == dataOrigen.asignacion_id && d.asd == dataDestino.asignacion_id), "b1:", b1);
+                                if (b1) {
                                     ok = false;
                                     bootbox.alert("No puede seleccionar un par de asignaciones ya ingresados");
                                 } else {
 //                                    console.log(d.aso, dataDestino.asignacion_id, d.asd, dataOrigen.asignacion_id, d.aso == dataDestino.asignacion_id, d.asd == dataOrigen.asignacion_id, d.aso == dataDestino.asignacion_id || d.asd == dataOrigen.asignacion_id)
-                                    if (d.aso == dataDestino.asignacion_id || d.asd == dataOrigen.asignacion_id) {
+//                                    console.log(d.aso, "==", dataDestino.asignacion_id, "||", d.asd, "==", dataOrigen.asignacion_id, (d.aso == dataDestino.asignacion_id || d.asd == dataOrigen.asignacion_id), "b2: ", b2);
+                                    if (b2) {
                                         ok = false;
                                         bootbox.alert("No puede seleccionar una asignación de origen que está listada como destino");
                                     }
@@ -655,7 +373,7 @@
                                         callback  : function () {
                                             if ($("#frmReforma").valid()) {
                                                 var dataDestino = {
-                                                    asignacion_id : $tr.data("asignacion")
+                                                    asignacion_id : $tr.data("asd")
                                                 };
                                                 var dataOrigen = {
                                                     monto : $tr.data("saldo")

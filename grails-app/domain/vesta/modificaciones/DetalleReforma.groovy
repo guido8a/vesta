@@ -56,6 +56,10 @@ class DetalleReforma {
      * Fuente para la nueva partida
      */
     Fuente fuente
+    /**
+     * Detalle original (para las modificaciones de incremento cuando ya se les asigna un origen)
+     */
+    DetalleReforma detalleOriginal
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -84,6 +88,7 @@ class DetalleReforma {
             categoria column: 'ctgr__id'
             saldo column: 'dtrfsldo'
             fuente column: 'fnte__id'
+            detalleOriginal column: 'dtrfdtrf'
         }
     }
 
@@ -100,5 +105,6 @@ class DetalleReforma {
         fechaFinNuevaActividad nullable: true
         categoria nullable: true
         fuente nullable: true
+        detalleOriginal nullable: true
     }
 }

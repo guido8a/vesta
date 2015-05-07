@@ -5,12 +5,14 @@ import vesta.avales.EstadoAval
 import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.proyectos.Categoria
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.ModificacionAsignacion
 import vesta.proyectos.Proyecto
+import vesta.reportes.ReportesReformaController
 import vesta.seguridad.Firma
 import vesta.seguridad.Persona
 import vesta.seguridad.Prfl
@@ -195,6 +197,60 @@ class ReformaController extends Shield {
     }
 
     /**
+     * Acción que permite realizar una solicitud de reforma a nueva actividad sin asignación de origen
+     */
+    def incrementoActividad() {
+        def proyectos = []
+        def actual
+        Asignacion.list().each {
+//            println "p "+proyectos
+            def p = it.marcoLogico.proyecto
+            if (!proyectos?.id.contains(p.id)) {
+                proyectos.add(p)
+            }
+        }
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        proyectos = proyectos.sort { it.nombre }
+
+        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+
+        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
+
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+//        println "pro "+proyectos
+//        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
+//        def personasFirmas = Persona.findAllByUnidad(unidad)
+//        def gerentes = Persona.findAllByUnidad(unidad.padre)
+        def firmas = firmasService.listaFirmasCombos()
+
+        def total = 0
+
+        def reforma = null, detalles = [], editable = true
+        if (params.id) {
+            editable = false
+            reforma = Reforma.get(params.id)
+            detalles = DetalleReforma.findAllByReforma(reforma)
+            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+            def devuelto = EstadoAval.findByCodigo("D01")
+            def estados = [solicitadoSinFirma, devuelto]
+            if (estados.contains(reforma.estado)) {
+                editable = true
+            }
+            if (detalles.size() > 0) {
+                total = detalles.sum { it.valor }
+            }
+        }
+
+        return [proyectos      : proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
+                personasGerente: firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
+    }
+
+    /**
      * Acción que permite realizar una solicitud de reforma de incremento
      */
     def incremento() {
@@ -298,10 +354,49 @@ class ReformaController extends Shield {
         def reforma = Reforma.get(params.id)
         println "init: reforma=${reforma.id} estado reforma id=${reforma.estado.id} cod=${reforma.estado.codigo}"
         if (reforma.estado.codigo == "E01" || reforma.estado.codigo == "D02") {
-            def detalles, detalles2 = []
-            if (reforma.tipoSolicitud == 'I') {
-                detalles2 = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNull(reforma, [sort: "id"])
+            def d
+
+            switch (reforma.tipoSolicitud) {
+                case "E": //existente
+                    d = ReportesReformaController.generaDetallesSolicitudExistente(reforma)
+                    break;
+                case "A": //actividad
+                    d = ReportesReformaController.generaDetallesSolicitudActividad(reforma)
+                    break;
+                case "C": //incremento actividad (a nuevas actividades sin origen)
+                    d = ReportesReformaController.generaDetallesSolicitudIncrementoActividad(reforma)
+                    break;
+                case "P": //partida
+                    d = ReportesReformaController.generaDetallesSolicitudPartida(reforma)
+                    break;
+                case "I": //incremento
+                    d = ReportesReformaController.generaDetallesSolicitudIncremento(reforma)
+                    break;
+            }
+            def det = d.det
+            def det2 = d.det2
+            def detallado = d.detallado
+            def total = d.total
+            def totalSaldo = d.saldo
+
+            def firmas = firmasService.listaFirmasCombos()
+            return [reforma : reforma, det: det, det2: det2, detallado: detallado, total: total, personas: firmas.directores,
+                    gerentes: firmas.gerentes, tipo: reforma.tipoSolicitud, totalSaldo: totalSaldo]
+        } else {
+            println "redireccionando: reforma=${reforma.id} estado reforma=${reforma.estado.codigo}"
+            redirect(action: "pendientes")
+        }
+    }
+
+    def procesar_old() {
+        def reforma = Reforma.get(params.id)
+        println "init: reforma=${reforma.id} estado reforma id=${reforma.estado.id} cod=${reforma.estado.codigo}"
+        if (reforma.estado.codigo == "E01" || reforma.estado.codigo == "D02") {
+            def detalles, detalles2 = [:]
+
+            if (reforma.tipoSolicitud == 'I' || reforma.tipoSolicitud == 'C') {
                 detalles = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(reforma, [sort: "id"])
+                detalles2 = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNull(reforma, [sort: "id"])
             } else {
                 detalles = DetalleReforma.findAllByReforma(reforma, [sort: "id"])
             }
@@ -347,6 +442,7 @@ class ReformaController extends Shield {
         nuevoDetalle.saldo = 0
         nuevoDetalle.valor = monto
         nuevoDetalle.asignacionOrigen = asignacionOrigen
+        nuevoDetalle.detalleOriginal = detalle
         if (nuevoDetalle.save(flush: true)) {
             detalle.saldo -= monto
             if (!detalle.save(flush: true)) {
@@ -366,27 +462,36 @@ class ReformaController extends Shield {
      */
     def eliminarParAsignaciones_ajax() {
         def detalle = DetalleReforma.get(params.id.toLong())
-        def detalleOriginal = DetalleReforma.findAllByAsignacionDestinoAndAsignacionOrigenIsNull(detalle.asignacionDestino)
-        if (detalleOriginal.size() == 1) {
-            def monto = detalle.valor
-            try {
-                detalleOriginal = detalleOriginal.first()
-                detalle.delete(flush: true)
-                detalleOriginal.saldo += monto
-                if (detalleOriginal.save(flush: true)) {
-                    render "SUCCESS*Detalle eliminado exitosamente"
-                } else {
-                    render "ERROR*" + renderErrors(bean: detalleOriginal)
-                }
-            } catch (e) {
-                println "ERROR al eliminar detalle"
-                e.printStackTrace()
-                render "ERROR*Ha ocurrido un error grave, no puede eliminar este detalle"
+        def detalleOriginal = detalle.detalleOriginal
+//        def detalleOriginal = []
+//        if (detalle.reforma.tipoSolicitud == 'I') {
+//            detalleOriginal = DetalleReforma.findAllByAsignacionDestinoAndAsignacionOrigenIsNull(detalle.asignacionDestino)
+//        } else if (detalle.reforma.tipoSolicitud == 'C') {
+//            detalleOriginal = DetalleReforma.findAllByDescripcionNuevaActividadAndAsignacionOrigenIsNull(detalle.descripcionNuevaActividad)
+//        }
+//        if (detalleOriginal.size() == 1) {
+        def monto = detalle.valor
+        try {
+//            detalleOriginal = detalleOriginal.first()
+            detalle.delete(flush: true)
+//            println "saldo antes: " + detalleOriginal.saldo
+            detalleOriginal.saldo += monto
+//            println "saldo despues: " + detalleOriginal.saldo
+            if (detalleOriginal.save(flush: true)) {
+//                println "saldo saved"
+                render "SUCCESS*Detalle eliminado exitosamente"
+            } else {
+                render "ERROR*" + renderErrors(bean: detalleOriginal)
             }
-        } else {
-            println "Detalle original: ${detalleOriginal}"
+        } catch (e) {
+            println "ERROR al eliminar detalle"
+            e.printStackTrace()
             render "ERROR*Ha ocurrido un error grave, no puede eliminar este detalle"
         }
+//        } else {
+//            println "Detalle original: ${detalleOriginal}"
+//            render "ERROR*Ha ocurrido un error grave, no puede eliminar este detalle"
+//        }
     }
 
     /**
@@ -420,6 +525,10 @@ class ReformaController extends Shield {
             case "A":
                 accion = "actividad"
                 mensaje = "Aprobación de reforma a nuevas actividades"
+                break;
+            case "C":
+                accion = "incrementoActividad"
+                mensaje = "Aprobación de reforma de incremento a nuevas actividades"
                 break;
             case "P":
                 accion = "partida"
@@ -828,6 +937,130 @@ class ReformaController extends Shield {
     }
 
     /**
+     * Acción llamada con ajax que guarda una solicitud de reforma de incremento en nueva actividad
+     */
+    def saveIncrementoActividad_ajax() {
+//        println params
+        def detalles = [:]
+        params.each { k, v ->
+            if (k.toString().startsWith("r")) {
+                def parts = k.split("\\[")
+                def pos = parts[0]
+                def campo = parts[1].split("]")[0]
+                if (!detalles[pos]) {
+                    detalles[pos] = [:]
+                }
+                detalles[pos][campo] = v
+            }
+        }
+
+        def anio = Anio.get(params.anio.toLong())
+        def personaRevisa
+        def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+
+        def now = new Date()
+        def usu = Persona.get(session.usuario.id)
+
+        def reforma
+        if (params.id) {
+            reforma = Reforma.get(params.id)
+            if (!reforma) {
+                reforma = new Reforma()
+            }
+            personaRevisa = reforma.firmaSolicitud.usuario
+        } else {
+            reforma = new Reforma()
+            personaRevisa = Persona.get(params.firma.toLong())
+        }
+
+        reforma.anio = anio
+        reforma.persona = usu
+        reforma.estado = solicitadoSinFirma
+        reforma.concepto = params.concepto.trim()
+        reforma.fecha = now
+        reforma.tipo = "R"
+        reforma.tipoSolicitud = "C"
+        if (!reforma.save(flush: true)) {
+            println "error al crear la reforma: " + reforma.errors
+            render "ERROR*" + renderErrors(bean: reforma)
+            return
+        }
+
+        if (params.id) {
+            def firmaRevisa = reforma.firmaSolicitud
+            firmaRevisa.estado = "S"
+            firmaRevisa.save(flush: true)
+        } else {
+            def firmaRevisa = new Firma()
+            firmaRevisa.usuario = personaRevisa
+            firmaRevisa.fecha = now
+            firmaRevisa.accion = "firmarReforma"
+            firmaRevisa.controlador = "reforma"
+            firmaRevisa.idAccion = reforma.id
+            firmaRevisa.accionVer = "incrementoActividad"
+            firmaRevisa.controladorVer = "reportesReforma"
+            firmaRevisa.idAccionVer = reforma.id
+            firmaRevisa.accionNegar = "devolverReforma"
+            firmaRevisa.controladorNegar = "reforma"
+            firmaRevisa.idAccionNegar = reforma.id
+            firmaRevisa.concepto = "Reforma de incremento a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.tipoFirma = "RFRM"
+            if (!firmaRevisa.save(flush: true)) {
+                println "error al crear firma: " + firmaRevisa.errors
+                render "ERROR*" + renderErrors(bean: firmaRevisa)
+                return
+            }
+            reforma.firmaSolicitud = firmaRevisa
+            reforma.save(flush: true)
+        }
+        def alerta = new Alerta()
+        alerta.from = usu
+        alerta.persona = personaRevisa
+        alerta.fechaEnvio = now
+        alerta.mensaje = "Solicitud de reforma de incremento a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.controlador = "firma"
+        alerta.accion = "firmasPendientes"
+        alerta.id_remoto = 0
+        if (!alerta.save(flush: true)) {
+            println "error alerta: " + alerta.errors
+        }
+
+        def errores = ""
+        detalles.each { k, det ->
+            def monto = det.monto.replaceAll(",", "").toDouble()
+
+//            def asignacionOrigen = Asignacion.get(det.origen.toLong())
+            def presupuesto = Presupuesto.get(det.partida.toLong())
+            def componente = MarcoLogico.get(det.componente.toLong())
+
+            def detalle = new DetalleReforma()
+            detalle.reforma = reforma
+//            detalle.asignacionOrigen = asignacionOrigen
+            detalle.valor = monto
+            detalle.saldo = monto
+            detalle.presupuesto = presupuesto
+            detalle.componente = componente
+            detalle.descripcionNuevaActividad = det.actividad.trim()
+            detalle.fechaInicioNuevaActividad = new Date().parse("dd-MM-yyyy", det.inicio)
+            detalle.fechaFinNuevaActividad = new Date().parse("dd-MM-yyyy", det.fin)
+            detalle.fuente = Fuente.get(det.fuente.toLong())
+            if (det.categoria) {
+                detalle.categoria = Categoria.get(det.categoria.toLong())
+            }
+
+            if (!detalle.save(flush: true)) {
+                println "error al guardar detalle: " + detalle.errors
+                errores += renderErrors(bean: detalle)
+            }
+        }
+        if (errores == "") {
+            render "SUCCESS*Reforma solicitada exitosamente"
+        } else {
+            render "ERROR*" + errores
+        }
+    }
+
+    /**
      * Acción llamada con ajax que guarda una solicitud de reforma de nueva actividad
      */
     def saveIncremento_ajax() {
@@ -1070,6 +1303,10 @@ class ReformaController extends Shield {
                 accion = "actividad"
                 mensaje = "Devolución de solicitud de reforma a nuevas actividades: "
                 break;
+            case "C":
+                accion = "incrementoActividad"
+                mensaje = "Devolución de solicitud de reforma de incremento a nuevas actividades: "
+                break;
             case "P":
                 accion = "partida"
                 mensaje = "Devolución de solicitud de reforma a nuevas partidas: "
@@ -1127,6 +1364,10 @@ class ReformaController extends Shield {
                     accion = "actividad"
                     mensaje = "Solicitud de reforma a nuevas actividades: "
                     break;
+                case "C":
+                    accion = "incrementoActividad"
+                    mensaje = "Solicitud de reforma de incremento a nuevas actividades: "
+                    break;
                 case "P":
                     accion = "partida"
                     mensaje = "Solicitud de reforma a nuevas partidas: "
@@ -1162,12 +1403,18 @@ class ReformaController extends Shield {
      * Acción para firmar la aprobación de la reforma
      */
     def firmarAprobarReforma() {
+//        println "FIRMAR APROBAR REFORMA"
+//        println params
+
         def firma = Firma.findByKey(params.key)
         if (!firma) {
             response.sendError(403)
         } else {
             def reforma = Reforma.findByFirma1OrFirma2(firma, firma)
+//            println "existe la firma de la reforma " + reforma.id
+//            println "estado firma 1: ${reforma.firma1.estado}, estado firma 2: ${reforma.firma2.estado}"
             if (reforma.firma1.estado == "F" && reforma.firma2.estado == "F") {
+//                println "Estan las 2 firmas, entra a hacer la modificacion"
                 //busco el ultimo numero asignado para signar el siguiente
                 def ultimoNum = Reforma.withCriteria {
                     eq("tipo", "R")
@@ -1185,15 +1432,16 @@ class ReformaController extends Shield {
                 reforma.estado = estadoAprobado
                 reforma.numero = num
                 reforma.save(flush: true)
+//                println "Modificada la reforma al estado " + estadoAprobado.descripcion + " (" + estadoAprobado.id + ")"
                 def usu = Persona.get(session.usuario.id)
                 def now = new Date()
                 def errores = ""
                 def detalles
-                if (reforma.tipoSolicitud == 'I') {
-                    detalles = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(reforma)
-                } else {
-                    detalles = DetalleReforma.findAllByReforma(reforma)
-                }
+//                if (reforma.tipoSolicitud == 'I') {
+                detalles = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(reforma)
+//                } else {
+//                    detalles = DetalleReforma.findAllByReforma(reforma)
+//                }
                 detalles.each { detalle ->
                     def origen = detalle.asignacionOrigen
                     def destino
@@ -1204,48 +1452,70 @@ class ReformaController extends Shield {
                             destino = detalle.asignacionDestino
                             break;
                         case "A":
-                            //busco el ultimo numero asignado para signar el siguiente
-                            def ultimoNumAct = MarcoLogico.withCriteria {
-                                projections {
-                                    max "numero"
+                        case "C":
+//                            println "Entro aqui: " + reforma.tipoSolicitud
+                            //1ro verifico si existe una actividad con el mismo nombre (especialmente para el caso tipo C)
+                            def testActividad = MarcoLogico.findAllByTipoElementoAndObjeto(TipoElemento.get(3), detalle.descripcionNuevaActividad)
+
+                            if (testActividad.size() == 0) {
+                                //no existe la actividad, la creo
+                                //busco el ultimo numero asignado para signar el siguiente
+                                def ultimoNumAct = MarcoLogico.withCriteria {
+                                    projections {
+                                        max "numero"
+                                    }
                                 }
-                            }
 
-                            def numAct = 1
-                            if (ultimoNumAct && ultimoNumAct.size() == 1) {
-                                numAct = ultimoNumAct.first() + 1
-                            }
+                                def numAct = 1
+                                if (ultimoNumAct && ultimoNumAct.size() == 1) {
+                                    numAct = ultimoNumAct.first() + 1
+                                }
 
-                            def nuevaActividad = new MarcoLogico()
-                            nuevaActividad.proyecto = detalle.componente.proyecto
-                            nuevaActividad.tipoElemento = TipoElemento.get(3)
-                            nuevaActividad.marcoLogico = detalle.componente
-                            nuevaActividad.objeto = detalle.descripcionNuevaActividad
-                            nuevaActividad.monto = detalle.valor
-                            nuevaActividad.estado = 0
-                            nuevaActividad.categoria = detalle.categoria
-                            nuevaActividad.fechaInicio = detalle.fechaInicioNuevaActividad
-                            nuevaActividad.fechaFin = detalle.fechaFinNuevaActividad
-                            nuevaActividad.responsable = reforma.persona.unidad
-                            nuevaActividad.numero = numAct
+                                def nuevaActividad = new MarcoLogico()
+                                nuevaActividad.proyecto = detalle.componente.proyecto
+                                nuevaActividad.tipoElemento = TipoElemento.get(3)
+                                nuevaActividad.marcoLogico = detalle.componente
+                                nuevaActividad.objeto = detalle.descripcionNuevaActividad
+                                nuevaActividad.monto = detalle.valor
+                                nuevaActividad.estado = 0
+                                nuevaActividad.categoria = detalle.categoria
+                                nuevaActividad.fechaInicio = detalle.fechaInicioNuevaActividad
+                                nuevaActividad.fechaFin = detalle.fechaFinNuevaActividad
+                                nuevaActividad.responsable = reforma.persona.unidad
+                                nuevaActividad.numero = numAct
 
-                            if (!nuevaActividad.save(flush: true)) {
-                                println "error al guardar la actividad (A) " + nuevaActividad.errors
-                                errores += renderErrors(bean: nuevaActividad)
-                            } else {
-                                destino = new Asignacion()
-                                destino.anio = reforma.anio
-                                destino.fuente = origen.fuente
-                                destino.marcoLogico = nuevaActividad
-                                destino.presupuesto = detalle.presupuesto
-                                destino.planificado = 0
-                                destino.unidad = nuevaActividad.responsable
-                                destino.priorizado = 0
-                                if (!destino.save(flush: true)) {
-                                    println "error al guardar la asignacion (RA) " + destino.errors
-                                    errores += renderErrors(bean: destino)
+                                if (!nuevaActividad.save(flush: true)) {
+                                    println "error al guardar la actividad (A) " + nuevaActividad.errors
+                                    errores += renderErrors(bean: nuevaActividad)
+                                } else {
+//                                    println "Creo la actividad nueva: " + nuevaActividad.objeto + " con numero " + nuevaActividad.numero + " y id " + nuevaActividad.id
+                                    destino = new Asignacion()
+                                    destino.anio = reforma.anio
+                                    destino.fuente = origen.fuente
+                                    destino.marcoLogico = nuevaActividad
+                                    destino.presupuesto = detalle.presupuesto
+                                    destino.planificado = 0
+                                    destino.unidad = nuevaActividad.responsable
+                                    destino.priorizado = 0
+                                    if (!destino.save(flush: true)) {
+                                        println "error al guardar la asignacion (RA) " + destino.errors
+                                        errores += renderErrors(bean: destino)
+                                        destino = null
+                                    }
+//                                    println "Creo la asignacion nueva con id " + destino?.id
+                                }
+                            } else if (testActividad.size() == 1) {
+                                //ya existe la activida, utilizo esa
+                                testActividad = testActividad.first()
+                                def testDestino = Asignacion.findAllByMarcoLogico(testActividad)
+                                if (testDestino.size() == 1) {
+                                    destino = testDestino.first()
+                                } else {
                                     destino = null
+                                    println "LA actividad " + testActividad.id + " (" + testActividad.objeto + ") tiene ${testDestino.size()} asignaciones y no se cual utilizar"
                                 }
+                            } else {
+                                println "Existen ${testActividad.size()} actividades con objeto ${detalle.descripcionNuevaActividad} y no se cual utilizar"
                             }
                             break;
                         case "P":
@@ -1265,6 +1535,7 @@ class ReformaController extends Shield {
                             break;
                     }
                     if (origen && destino) {
+//                        println "Existen el origen (${origen.id}) y el destino(${destino.id})"
                         def modificacion = new ModificacionAsignacion()
                         modificacion.usuario = usu
                         modificacion.desde = origen
@@ -1279,6 +1550,9 @@ class ReformaController extends Shield {
                             println "error save modificacion: " + modificacion.errors
                             errores += renderErrors(bean: modificacion)
                         } else {
+//                            println "Crear la modificacion nueva con id " + modificacion.id
+//                            println "origen.priorizado=" + origen.priorizado
+//                            println "destino.priorizado=" + destino.priorizado
                             origen.priorizado -= detalle.valor
                             destino.priorizado += detalle.valor
                             if (!origen.save(flush: true)) {
@@ -1289,6 +1563,8 @@ class ReformaController extends Shield {
                                 println "error save destino: " + destino.errors
                                 errores += renderErrors(bean: destino)
                             }
+//                            println "origen.priorizado=" + origen.priorizado
+//                            println "destino.priorizado=" + destino.priorizado
                         }
                     }
                 }
@@ -1322,6 +1598,10 @@ class ReformaController extends Shield {
             case "A":
                 accion = "actividad"
                 mensaje = "Devolución de solicitud de reforma a nuevas actividades: "
+                break;
+            case "C":
+                accion = "incrementoActividad"
+                mensaje = "Devolución de solicitud de reforma de incremento a nuevas actividades: "
                 break;
             case "P":
                 accion = "partida"

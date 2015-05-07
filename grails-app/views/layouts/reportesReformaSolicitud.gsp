@@ -43,12 +43,6 @@
             margin-left : 10cm;
         }
 
-        .formato {
-            font-weight : bold;
-            background  : #008080;
-            color       : #ffffff;
-        }
-
         td, th {
             border  : solid 1px #000000;
             padding : 3px;
@@ -56,6 +50,22 @@
 
         .text-right {
             text-align : right;
+        }
+
+        .table {
+            width      : 100%;
+            margin-top : 15px;
+        }
+
+        .table thead th {
+            background : #9dbfdb;
+            text-align : center;
+        }
+
+        .formato {
+            font-weight : bold;
+            background  : #008080;
+            color       : #ffffff;
         }
         </style>
 

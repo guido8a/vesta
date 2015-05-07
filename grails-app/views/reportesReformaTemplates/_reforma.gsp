@@ -15,12 +15,12 @@
             </li>
         </ol>
 
-        <div style="margin-bottom: 10px">
-            <strong>Observación:</strong>  ${reforma.concepto}
+        <div class="no-break" style="margin-bottom: 10px">
+            <strong>Observación:</strong>  ${reforma.nota}
         </div>
 
         <div>
-            <strong>Elaborado por:</strong> ${reforma.persona.sigla}
+            <strong>Elaborado por:</strong> ${reforma.analista ? reforma.analista.sigla : reforma.persona.sigla}
         </div>
 
         <div class="fright">
@@ -31,14 +31,14 @@
             <table width="100%" style="margin-top: 0.5cm; border: none" border="none">
                 <tr>
                     <g:if test="${reforma.firma1?.estado == 'F' && reforma.firma2?.estado == 'F'}">
-                        <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
+                        <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
                         <td width="25%" style="border: none"></td>
                         <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
                         <td width="25%" style="border: none"></td>
                     </g:if>
 
                     <g:if test="${reforma.firma1?.estado == 'F' && reforma.firma2?.estado != 'F'}">
-                        <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
+                        <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
                         <td width="25%" style="border: none"></td>
                         <td width="25%" style="border: none"></td>
                         <td width="25%" style="border: none"></td>

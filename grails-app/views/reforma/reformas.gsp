@@ -43,11 +43,11 @@
                         se crea nuevas actividades con asignación de origen, valor, actividad nueva (con fecha de incio, fecha de fin, justificación, valor y componente)
                     </p>
                 </g:link>
-                <g:link action="actividad" class="list-group-item bgActividades2">
+                <g:link action="incrementoActividad" class="list-group-item bgActividades2">
                     <h4 class="list-group-item-heading"><span class="icon"></span>Reformas nuevas actividades sin financiamiento de recursos del área</h4>
 
                     <p class="list-group-item-text">
-                        se crea nuevas actividades con asignación de origen, valor, actividad nueva (con fecha de incio, fecha de fin, justificación, valor y componente)
+                        se crea nuevas actividades sin asignación de origen, valor, actividad nueva (con fecha de incio, fecha de fin, justificación, valor y componente)
                     </p>
                 </g:link>
                 <g:link action="incremento" class="list-group-item bgIncremento">
