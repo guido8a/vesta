@@ -67,6 +67,14 @@
             background  : #008080;
             color       : #ffffff;
         }
+
+        tr.success td {
+            background : #b3cea7;
+        }
+
+        tr.info td {
+            background : #c0ccdf;
+        }
         </style>
 
     </head>

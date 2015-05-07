@@ -285,7 +285,7 @@ class ReportesReformaController {
         detalles.eachWithIndex { detalle, i ->
             total += detalle.valor
             def key = "" + detalle.asignacionOrigenId
-            def keyDestino = "" + detalle.asignacionDestinoId
+            def keyDestino = "" + detalle.descripcionNuevaActividad
             def keyDetallado = "" + i
             if (!det[key]) {
                 det[key] = [:]
@@ -343,7 +343,8 @@ class ReportesReformaController {
                     "<strong>Priorizado:</strong> ${detalle.valor}\n" +
                     "<strong>Partida Presupuestaria:</strong> ${detalle.presupuesto}\n" +
                     "<strong>Año:</strong> ${reforma.anio.anio}"
-            m.inicial = 0
+            m.inicial = valorFinalDestino[keyDestino]
+
             m.dism = 0
             m.aum = detalle.valor
             m.saldo = detalle.saldo
