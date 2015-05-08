@@ -49,6 +49,48 @@ class ReportesReformaController {
     }
 
     /**
+     * Acción que muestra el pdf de previsualización de reforma existente
+     */
+    def existentePreviewReforma() {
+        def reforma = Reforma.get(params.id)
+        return [reforma: reforma, det: generaDetallesSolicitudExistente(reforma).det]
+    }
+
+    /**
+     * Acción que muestra el pdf de previsualización de reforma de a nueva actividad
+     */
+    def actividadPreviewReforma() {
+        def reforma = Reforma.get(params.id)
+        return [reforma: reforma, det: generaDetallesSolicitudActividad(reforma).det]
+    }
+
+    /**
+     * Acción que muestra el pdf de previsualización de reforma de incremento a nuevas actividades
+     */
+    def incrementoActividadPreviewReforma() {
+        def reforma = Reforma.get(params.id)
+        def d = generaDetallesSolicitudIncrementoActividad(reforma)
+        return [reforma: reforma, det: d.det]
+    }
+
+    /**
+     * Acción que muestra el pdf de previsualización de reforma a nuevas partidas
+     */
+    def partidaPreviewReforma() {
+        def reforma = Reforma.get(params.id)
+        return [reforma: reforma, det: generaDetallesSolicitudPartida(reforma).det]
+    }
+
+    /**
+     * Acción que muestra el pdf de previsualización de reforma de incremento
+     */
+    def incrementoPreviewReforma() {
+        def reforma = Reforma.get(params.id)
+        def d = generaDetallesSolicitudIncremento(reforma)
+        return [reforma: reforma, det: d.det]
+    }
+
+    /**
      * Acción que muestra el pdf de reforma existente
      */
     def existenteReforma() {

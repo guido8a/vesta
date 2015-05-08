@@ -24,7 +24,6 @@
     </head>
 
     <body>
-
         <g:if test="${reforma &&
                 reforma.estado.codigo == "D01" &&
                 reforma.firmaSolicitud.observaciones && reforma.firmaSolicitud.observaciones != '' && reforma.firmaSolicitud.observaciones != 'S'}">
@@ -520,19 +519,19 @@
                 });
 
                 %{--$("#proyecto").val("-1").change(function () {--}%
-                    %{--$("#divComp").html(spinner);--}%
-                    %{--$.ajax({--}%
-                        %{--type    : "POST",--}%
-                        %{--url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste_ajax')}",--}%
-                        %{--data    : {--}%
-                            %{--id : $("#proyecto").val()--}%
-                        %{--},--}%
-                        %{--success : function (msg) {--}%
-                            %{--$("#divComp").html(msg);--}%
-                            %{--$("#divAct").html("");--}%
-                            %{--$("#divAsg").html("");--}%
-                        %{--}--}%
-                    %{--});--}%
+                %{--$("#divComp").html(spinner);--}%
+                %{--$.ajax({--}%
+                %{--type    : "POST",--}%
+                %{--url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste_ajax')}",--}%
+                %{--data    : {--}%
+                %{--id : $("#proyecto").val()--}%
+                %{--},--}%
+                %{--success : function (msg) {--}%
+                %{--$("#divComp").html(msg);--}%
+                %{--$("#divAct").html("");--}%
+                %{--$("#divAsg").html("");--}%
+                %{--}--}%
+                %{--});--}%
                 %{--});--}%
 
                 $("#proyectoDest").val("-1").change(function () {

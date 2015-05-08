@@ -148,16 +148,16 @@
                         %{--<i class="fa fa-search"></i> Previsualizar--}%
                         %{--</a>--}%
 
-                        <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existente' :
-                                reforma.tipoSolicitud == 'A' ? 'actividad' :
-                                        reforma.tipoSolicitud == 'C' ? 'incrementoActividad' :
-                                                reforma.tipoSolicitud == 'P' ? 'partida' :
-                                                        reforma.tipoSolicitud == 'I' ? 'incremento' : ''}"/>
-                        <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'solicitud_existente' :
-                                reforma.tipoSolicitud == 'A' ? 'solicitud_actividad' :
-                                        reforma.tipoSolicitud == 'C' ? 'solicitud_incremento_actividad' :
-                                                reforma.tipoSolicitud == 'P' ? 'solicitud_partida' :
-                                                        reforma.tipoSolicitud == 'I' ? 'solicitud_incremento' : ''}.pdf"/>
+                        <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existentePreviewReforma' :
+                                reforma.tipoSolicitud == 'A' ? 'actividadPreviewReforma' :
+                                        reforma.tipoSolicitud == 'C' ? 'incrementoActividadPreviewReforma' :
+                                                reforma.tipoSolicitud == 'P' ? 'partidaPreviewReforma' :
+                                                        reforma.tipoSolicitud == 'I' ? 'incrementoPreviewReforma' : ''}"/>
+                        <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'reforma_existente' :
+                                reforma.tipoSolicitud == 'A' ? 'reforma_actividad' :
+                                        reforma.tipoSolicitud == 'C' ? 'reforma_incremento_actividad' :
+                                                reforma.tipoSolicitud == 'P' ? 'reforma_partida' :
+                                                        reforma.tipoSolicitud == 'I' ? 'reforma_incremento' : ''}.pdf"/>
                         <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"
                            class="btn btn-sm btn-info">
                             <i class="fa fa-search"></i> Previsualizar

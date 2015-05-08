@@ -1,4 +1,4 @@
-<rep:headerFooter title="REFORMA AL POA" unidad="${reforma.fecha.format('YYYY')}-GP"
+<rep:headerFooter title="REFORMA AL POA" unidad="${reforma.fecha.format('yyyy')}-GP"
                   numero="${reforma.numero}" estilo="right"/>
 
 <div style="margin-left: 10px;">

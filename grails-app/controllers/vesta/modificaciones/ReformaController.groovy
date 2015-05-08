@@ -72,6 +72,10 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
+            if (reforma.estado.codigo != "D01") {
+                redirect(action: "lista")
+                return
+            }
             detalles = DetalleReforma.findAllByReforma(reforma)
             def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
             def devuelto = EstadoAval.findByCodigo("D01")
@@ -126,6 +130,10 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
+            if (reforma.estado.codigo != "D01") {
+                redirect(action: "lista")
+                return
+            }
             detalles = DetalleReforma.findAllByReforma(reforma)
             def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
             def devuelto = EstadoAval.findByCodigo("D01")
@@ -180,6 +188,10 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
+            if (reforma.estado.codigo != "D01") {
+                redirect(action: "lista")
+                return
+            }
             detalles = DetalleReforma.findAllByReforma(reforma)
             def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
             def devuelto = EstadoAval.findByCodigo("D01")
@@ -234,6 +246,10 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
+            if (reforma.estado.codigo != "D01") {
+                redirect(action: "lista")
+                return
+            }
             detalles = DetalleReforma.findAllByReforma(reforma)
             def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
             def devuelto = EstadoAval.findByCodigo("D01")
@@ -288,6 +304,10 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
+            if (reforma.estado.codigo != "D01") {
+                redirect(action: "lista")
+                return
+            }
             detalles = DetalleReforma.findAllByReforma(reforma)
             def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
             def devuelto = EstadoAval.findByCodigo("D01")
@@ -519,23 +539,23 @@ class ReformaController extends Shield {
         //E: existente, A: actividad, P: partida, I: incremento
         switch (reforma.tipoSolicitud) {
             case "E":
-                accion = "existente"
+                accion = "existentePreviewReforma"
                 mensaje = "Aprobación de reforma a asignaciones existentes"
                 break;
             case "A":
-                accion = "actividad"
+                accion = "actividadPreviewReforma"
                 mensaje = "Aprobación de reforma a nuevas actividades"
                 break;
             case "C":
-                accion = "incrementoActividad"
+                accion = "incrementoActividadPreviewReforma"
                 mensaje = "Aprobación de reforma de incremento a nuevas actividades"
                 break;
             case "P":
-                accion = "partida"
+                accion = "partidaPreviewReforma"
                 mensaje = "Aprobación de reforma a nuevas partidas"
                 break;
             case "I":
-                accion = "incremento"
+                accion = "incrementoPreviewReforma"
                 mensaje = "Aprobación de reforma de incremento"
                 params.each { k, v ->
                     if (k.toString().startsWith("r")) {
@@ -550,8 +570,8 @@ class ReformaController extends Shield {
                 }
                 break;
             default:
-                accion = "existente"
-                mensaje = "Aprobación de reforma a asignaciones existentes"
+                accion = "existentePreviewReforma"
+                mensaje = "Tipo de solicitud ${reforma.tipoSolicitud} no reconocido"
         }
 
         if (edit) {
@@ -562,7 +582,11 @@ class ReformaController extends Shield {
             personaFirma2 = firma2.usuario
 
             firma1.estado = "S"
+            firma1.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
+            firma1.accionVer = accion
             firma2.estado = "S"
+            firma2.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
+            firma2.accionVer = accion
 
             firma1.save(flush: true)
             firma2.save(flush: true)
@@ -583,7 +607,7 @@ class ReformaController extends Shield {
             firma1.accionNegar = "devolverAprobarReforma"
             firma1.controladorNegar = "reforma"
             firma1.idAccionNegar = reforma.id
-            firma1.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma1.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
             firma1.tipoFirma = "RFRM"
             if (!firma1.save(flush: true)) {
                 println "error al crear firma: " + firma1.errors
@@ -604,7 +628,7 @@ class ReformaController extends Shield {
             firma2.accionNegar = "devolverAprobarReforma"
             firma2.controladorNegar = "reforma"
             firma2.idAccionNegar = reforma.id
-            firma2.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma2.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
             firma2.tipoFirma = "RFRM"
             if (!firma2.save(flush: true)) {
                 println "error al crear firma: " + firma2.errors
@@ -618,7 +642,7 @@ class ReformaController extends Shield {
         alerta.from = usu
         alerta.persona = personaFirma1
         alerta.fechaEnvio = now
-        alerta.mensaje = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.mensaje = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
         alerta.controlador = "firma"
         alerta.accion = "firmasPendientes"
         alerta.id_remoto = 0
@@ -629,7 +653,7 @@ class ReformaController extends Shield {
         alerta2.from = usu
         alerta2.persona = personaFirma2
         alerta2.fechaEnvio = now
-        alerta2.mensaje = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta2.mensaje = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
         alerta2.controlador = "firma"
         alerta2.accion = "firmasPendientes"
         alerta2.id_remoto = 0
@@ -747,6 +771,7 @@ class ReformaController extends Shield {
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
+            firmaRevisa.concepto = "Reforma a asignaciones existentes (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -867,6 +892,7 @@ class ReformaController extends Shield {
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
+            firmaRevisa.concepto = "Reforma a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -989,6 +1015,7 @@ class ReformaController extends Shield {
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
+            firmaRevisa.concepto = "Reforma de incremento a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -1102,6 +1129,7 @@ class ReformaController extends Shield {
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
+            firmaRevisa.concepto = "Reforma de incremento (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -1220,6 +1248,7 @@ class ReformaController extends Shield {
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
+            firmaRevisa.concepto = "Reforma a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -1287,6 +1316,7 @@ class ReformaController extends Shield {
      * Acción para que un director requirente devuelva una reforma al requirente
      */
     def devolverReforma() {
+        println "devolver: " + params
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
 
@@ -1319,7 +1349,9 @@ class ReformaController extends Shield {
                 accion = "existente"
                 mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
         }
+//        println "ESTADO ANTES: " + reforma.estado + "    " + reforma.estado.codigo
         reforma.estado = EstadoAval.findByCodigo("D01") //devuelto
+//        println "ESTADO DESPUES: " + reforma.estado + "    " + reforma.estado.codigo
         reforma.save(flush: true)
         def alerta = new Alerta()
         alerta.from = usu
@@ -1455,7 +1487,12 @@ class ReformaController extends Shield {
                         case "C":
 //                            println "Entro aqui: " + reforma.tipoSolicitud
                             //1ro verifico si existe una actividad con el mismo nombre (especialmente para el caso tipo C)
-                            def testActividad = MarcoLogico.findAllByTipoElementoAndObjeto(TipoElemento.get(3), detalle.descripcionNuevaActividad)
+//                            def testActividad = MarcoLogico.findAllByTipoElementoAndObjeto(TipoElemento.get(3), detalle.descripcionNuevaActividad)
+
+                            def testActividad = MarcoLogico.withCriteria {
+                                eq("marcoLogico", detalle.componente)
+                                eq("objeto", detalle.descripcionNuevaActividad)
+                            }
 
                             if (testActividad.size() == 0) {
                                 //no existe la actividad, la creo
@@ -1483,6 +1520,7 @@ class ReformaController extends Shield {
                                 nuevaActividad.fechaFin = detalle.fechaFinNuevaActividad
                                 nuevaActividad.responsable = reforma.persona.unidad
                                 nuevaActividad.numero = numAct
+                                nuevaActividad.reforma = reforma
 
                                 if (!nuevaActividad.save(flush: true)) {
                                     println "error al guardar la actividad (A) " + nuevaActividad.errors
@@ -1583,7 +1621,6 @@ class ReformaController extends Shield {
         def reforma = Reforma.get(params.id)
         reforma.estado = EstadoAval.findByCodigo("D02") //devuelto al analista
         reforma.save(flush: true)
-        /* TODO: a quien debe mandar la alerta? */
 
         def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
         def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
@@ -1623,7 +1660,7 @@ class ReformaController extends Shield {
             alerta.fechaEnvio = now
             alerta.mensaje = mensaje + reforma.concepto
             alerta.controlador = "reforma"
-            alerta.accion = accion
+            alerta.accion = "pendientes"
             alerta.id_remoto = reforma.id
             if (!alerta.save(flush: true)) {
                 println "error alerta: " + alerta.errors

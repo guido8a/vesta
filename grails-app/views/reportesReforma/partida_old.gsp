@@ -82,7 +82,7 @@
 
     <body>
         <g:if test="${reforma?.tipo == 'R'}">
-            <rep:headerFooter title="SOLICITUD DE REFORMA AL POA" unidad="${reforma.fecha.format('YYYY')}-GP"
+            <rep:headerFooter title="SOLICITUD DE REFORMA AL POA" unidad="${reforma.fecha.format('yyyy')}-GP"
                               numero="${reforma.id}" estilo="right"/>
         </g:if>
         <g:else>

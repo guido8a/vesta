@@ -1,5 +1,6 @@
 package vesta.proyectos
 
+import vesta.modificaciones.Reforma
 import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
@@ -75,6 +76,11 @@ class MarcoLogico {
     String numeroComp;
 
     /**
+     * Reforma que genera la creación de la actividad
+     */
+    Reforma reforma
+
+    /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
     static auditable = [ignore: []]
@@ -105,6 +111,7 @@ class MarcoLogico {
             tieneAsignacion column: 'mrlgtnas'
             numero column: 'mrlgnmro'
             numeroComp column: 'mrlgnmcm'
+            reforma column: 'rfrm__id'
         }
     }
 
@@ -126,6 +133,7 @@ class MarcoLogico {
         fechaInicio(nullable: true, blank: true)
         tieneAsignacion(nullable: true, blank: true)
         numeroComp(nullable: true, blank: true)
+        reforma(nullable: true, blank: true)
     }
 
     /**
