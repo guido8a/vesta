@@ -37,8 +37,7 @@
                 <div class="row color1">
                     <div class="col-xs-9">
                         <h3>Gestión de Proyectos</h3>
-                        Marco lógico, metas, indicadores,
-                        cronograma de inversión, fuentes de financiamiento, programación de inversiones plurianual.
+                        Definir e implementar directrices e instrumentos para la gestión integral de proyectos en la empresa
                     </div>
 
                     <div class="col-xs-3">
