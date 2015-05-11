@@ -69,8 +69,8 @@
                         %{--<i class="fa fa-sign-in"></i> Solicitud--}%
                         %{--</a>--}%
                         %{--</g:else>--}%
-                    </div>
-                    </g:if>
+                    %{--</div>--}%
+                    %{--</g:if>--}%
                 </div>
                 </td>
             </tr>
