@@ -37,7 +37,7 @@
         <div class="col-md-4">
             <div class='grupo'>
                 <div class='input-group input-group-sm'>
-                    <g:textField name="originalCorrientes" class="form-control input-sm required number money"
+                    <g:textField name="originalCorrientes" class="form-control input-sm required number money" readonly=""
                                  value="${presupuesto ? g.formatNumber(number: presupuesto.originalCorrientes, maxFractionDigits: 2, minFractionDigits: 2) : ''}"/>
                     <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                 </div>
