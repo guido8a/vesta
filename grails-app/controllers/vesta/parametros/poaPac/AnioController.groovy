@@ -172,7 +172,8 @@ class AnioController extends Shield {
             def anio = Anio.get(params.anio)
             anio.estado = 1
             anio.save(flush: true)
-            Asignacion.executeUpdate("UPDATE Asignacion SET priorizado=planificado WHERE anio=${anio.id}")
+            Asignacion.executeUpdate("UPDATE Asignacion SET priorizado = planificado WHERE anio=${anio.id}")
+            Asignacion.executeUpdate("UPDATE Asignacion SET priorizadoOriginal = planificado WHERE anio=${anio.id}")
             flash.message = "Las asignaciones del año ${anio.anio} han sido aprobadas."
             render "ok"
 
@@ -216,49 +217,58 @@ class AnioController extends Shield {
         unidades.each {
             def temp = []
             cn.eachRow("select count(asgn__id) as cont,sum(asgnplan) as suma from asgn where unej__id=${it.id} and anio__id = ${anio.id} and mrlg__id is not null ") { d ->
-                if (d.suma == null)
+                if (d.suma == null) {
                     temp.add(0)
-                else
+                } else {
                     temp.add(d.suma.toFloat().round(2))
-                if (d.cont == null)
+                }
+                if (d.cont == null) {
                     temp.add(0)
-                else
+                } else {
                     temp.add(d.cont)
+                }
             }
             cn.eachRow("select count(obra__id) as cont,sum(obracntd*obracsto) as suma from obra,asgn where asgn.asgn__id=obra.asgn__id and   asgn.unej__id=${it.id} and asgn.anio__id = ${anio.id} and asgn.mrlg__id is not null ") { d ->
-                if (d.suma == null)
+                if (d.suma == null) {
                     temp.add(0)
-                else
+                } else {
                     temp.add(d.suma.toFloat().round(2))
-                if (d.cont == null)
+                }
+                if (d.cont == null) {
                     temp.add(0)
-                else
+                } else {
                     temp.add(d.cont)
+                }
             }
 
             cn.eachRow("select count(asgn__id) as cont,sum(asgnplan) as suma from asgn where unej__id=${it.id} and anio__id = ${anio.id} ") { d ->
-                if (d.suma == null)
+                if (d.suma == null) {
                     temp.add(0)
-                else
+                } else {
                     temp.add(d.suma.toFloat().round(2))
-                if (d.cont == null)
+                }
+                if (d.cont == null) {
                     temp.add(0)
-                else
+                } else {
                     temp.add(d.cont)
+                }
             }
             cn.eachRow("select count(obra__id) as cont,sum(obracntd*obracsto) as suma from obra,asgn where asgn.asgn__id=obra.asgn__id and   asgn.unej__id=${it.id} and asgn.anio__id = ${anio.id}  ") { d ->
-                if (d.suma == null)
+                if (d.suma == null) {
                     temp.add(0)
-                else
+                } else {
                     temp.add(d.suma.toFloat().round(2))
-                if (d.cont == null)
+                }
+                if (d.cont == null) {
                     temp.add(0)
-                else
+                } else {
                     temp.add(d.cont)
+                }
             }
             temp.add(it.id)
-            if ((temp[0] + temp[2] + temp[4] + temp[6]) > 0)
+            if ((temp[0] + temp[2] + temp[4] + temp[6]) > 0) {
                 datos.put(it.nombre, temp)
+            }
             temp = []
 
         }

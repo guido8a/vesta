@@ -26,7 +26,7 @@
             <g:set var="tDism" value="${tDism + d.desde.dism}"/>
             <g:set var="tAum" value="${tAum + d.desde.aum}"/>
             <g:set var="tFinal" value="${tFinal + d.desde.final}"/>
-            <tr>
+            <tr class="info">
                 <td>${d.desde.proyecto}</td>
                 <td>${d.desde.componente}</td>
                 <td>${d.desde.no}</td>
@@ -42,7 +42,7 @@
                 <g:set var="tDism" value="${tDism + h.dism}"/>
                 <g:set var="tAum" value="${tAum + h.aum}"/>
                 <g:set var="tFinal" value="${tFinal + h.final}"/>
-                <tr>
+                <tr class="success">
                     <td>${h.proyecto}</td>
                     <td>${h.componente}</td>
                     <td>${h.no}</td>

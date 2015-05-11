@@ -68,6 +68,7 @@
                     <th style="width: 60px;">Partida</th>
                     <th>Planificado</th>
                     <g:if test="${actual?.estado == 1}">
+                        <th>Priorizado inicial</th>
                         <th>Priorizado</th>
                     </g:if>
                     <th></th>
@@ -75,6 +76,7 @@
                 <tbody>
                     <g:set var="total" value="${0}"/>
                     <g:set var="totalP" value="${0}"/>
+                    <g:set var="totalO" value="${0}"/>
                     <g:each in="${asignaciones}" var="asg" status="i">
                         <g:if test="${asg.planificado > 0}">
                             <g:if test="${actual?.estado == 0}">
@@ -83,6 +85,7 @@
                             <g:else>
                                 <g:set var="total" value="${total.toDouble() + asg.getValorReal()}"/>
                                 <g:set var="totalP" value="${totalP.toDouble() + asg.priorizado}"/>
+                                <g:set var="totalO" value="${totalO.toDouble() + asg.priorizadoOriginal}"/>
                             </g:else>
                         </g:if>
                         <tr>
@@ -118,7 +121,8 @@
                                         <div class="input-group input-group-sm" style="width: 160px">
                                             <input type="text" name="prio_${asg.id}" class="form-control txt-prio  number money" style="text-align: right;" id="prio_${asg.id}" value="${asg.priorizado}">
                                             <span class="input-group-btn">
-                                                <a href="#prio_${asg.id}" class="savePrio btn btn-info " iden="${asg.id}" title="Guardar"><i class="fa fa-floppy-o"></i>
+                                                <a href="#prio_${asg.id}" class="savePrio btn btn-info " iden="${asg.id}" title="Guardar">
+                                                    <i class="fa fa-floppy-o"></i>
                                                 </a>
                                             </span>
                                         </div><!-- /input-group -->
@@ -126,9 +130,10 @@
                                     </td>
                                 </g:if><g:else>
                                 <td class="valor" style="text-align: right">
-                                    <div style="">
-                                        <g:formatNumber number="${asg.priorizado.toDouble()}" type="currency" currencySymbol=""/>
-                                    </div>
+                                    <g:formatNumber number="${asg.priorizadoOriginal.toDouble()}" type="currency" currencySymbol=""/>
+                                </td>
+                                <td class="valor" style="text-align: right">
+                                    <g:formatNumber number="${asg.priorizado.toDouble()}" type="currency" currencySymbol=""/>
                                 </td>
                             </g:else>
                             </g:if>
@@ -146,18 +151,18 @@
                                     </g:if>
                                 </g:if>
                                 <g:else>
-%{--
-                                    <a href="#" class="btn btn-default btn-xs btn_agregar_prio" asgn="${asg.id}" proy="${proyecto.id}" anio="${actual.id}" title="Dividir en dos partidas">
-                                        <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
-                                    </a>
---}%
-%{--
-                                    <g:if test="${asg.padre != null}">
-                                        <a href="#" class=" btn btn-danger btn-xs btn_borrar_prio" asgn="${asg.id}" title="Eliminar la Asignación">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        </a>
-                                    </g:if>
---}%
+                                %{--
+                                                                    <a href="#" class="btn btn-default btn-xs btn_agregar_prio" asgn="${asg.id}" proy="${proyecto.id}" anio="${actual.id}" title="Dividir en dos partidas">
+                                                                        <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+                                                                    </a>
+                                --}%
+                                %{--
+                                                                    <g:if test="${asg.padre != null}">
+                                                                        <a href="#" class=" btn btn-danger btn-xs btn_borrar_prio" asgn="${asg.id}" title="Eliminar la Asignación">
+                                                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                        </a>
+                                                                    </g:if>
+                                --}%
                                 </g:else>
                             </td>
                         </tr>
@@ -174,6 +179,9 @@
                             <g:formatNumber number="${total.toDouble()}" type="currency" currencySymbol=""/>
                         </td>
                         <g:if test="${actual?.estado != 0}">
+                            <td style="text-align: right; font-weight: bold;" id="totalPrio">
+                                <g:formatNumber number="${totalO.toDouble()}" type="currency" currencySymbol=""/>
+                            </td>
                             <td style="text-align: right; font-weight: bold;" id="totalPrio">
                                 <g:formatNumber number="${totalP.toDouble()}" type="currency" currencySymbol=""/>
                             </td>
@@ -555,12 +563,12 @@
             $("#reporte").click(function () {
                 var anio = $("#anio_asg").val();
                 var url = "${createLink(controller: 'reportes2', action: 'reporteAsignacionProyecto')}?id=" + ${proyecto?.id} +"Wanio=" + anio;
-                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url+"&filename='Reporte_asignaciones.pdf'";
+                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename='Reporte_asignaciones.pdf'";
             });
             $("#reporte2").click(function () {
                 var anio = $("#anio_asg").val();
                 var url = "${createLink(controller: 'reportes2', action: 'reporteAsignacionProyecto2')}?id=" + ${proyecto?.id} +"Wanio=" + anio;
-                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url+"&filename='Reporte_asignaciones_planificado.pdf'";
+                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename='Reporte_asignaciones_planificado.pdf'";
             });
         </script>
     </body>

@@ -1,5 +1,5 @@
 <rep:headerFooter title="${reforma.tipo == 'R' ? 'SOLICITUD DE REFORMA' : 'AJUSTE'} AL POA"
-                  unidad="${reforma.fecha.format('yyyy')}-GP"
+                  unidad="${reforma.fecha.format('yyyy')}-GPE"
                   numero="${reforma.id}" estilo="right"/>
 
 <div style="margin-left: 10px;">
@@ -10,22 +10,23 @@
             </li>
             <li>
                 <strong>Tipo de ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>
-                ${reforma.tipo == 'R' ? 'Reforma' : 'Ajuste'}
-                <g:if test="${tipo == 'e'}">
-                    entre actividades por reasignación de recursos o saldos
-                </g:if>
-                <g:elseif test="${tipo == 'a'}">
-                    por creación de nuevas actividades
-                </g:elseif>
-                <g:elseif test="${tipo == 'c'}">
-                    por incremento con creación de nuevas actividades
-                </g:elseif>
-                <g:elseif test="${tipo == 'i'}">
-                    por incremento
-                </g:elseif>
-                <g:elseif test="${tipo == 'p'}">
-                    por creación de nuevas partidas
-                </g:elseif>
+                <elm:tipoReforma reforma="${reforma}"/>
+                %{--${reforma.tipo == 'R' ? 'Reforma' : 'Ajuste'}--}%
+                %{--<g:if test="${tipo == 'e'}">--}%
+                %{--a asignaciones existentes--}%
+                %{--</g:if>--}%
+                %{--<g:elseif test="${tipo == 'a'}">--}%
+                %{--por creación de nuevas actividades--}%
+                %{--</g:elseif>--}%
+                %{--<g:elseif test="${tipo == 'c'}">--}%
+                %{--por incremento con creación de nuevas actividades--}%
+                %{--</g:elseif>--}%
+                %{--<g:elseif test="${tipo == 'i'}">--}%
+                %{--por incremento--}%
+                %{--</g:elseif>--}%
+                %{--<g:elseif test="${tipo == 'p'}">--}%
+                %{--partidas presupuestarias--}%
+                %{--</g:elseif>--}%
             </li>
             <li>
                 <strong>Matriz de la ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>

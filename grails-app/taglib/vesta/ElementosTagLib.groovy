@@ -6,6 +6,7 @@ import org.springframework.context.MessageSourceResolvable
 import org.springframework.web.servlet.support.RequestContextUtils
 import vesta.avales.Aval
 import vesta.avales.SolicitudAval
+import vesta.modificaciones.Reforma
 
 class ElementosTagLib {
 
@@ -472,11 +473,17 @@ class ElementosTagLib {
         def action = (attrs.action ? attrs.action : (params.action ? params.action : "list"))
 
         def linkParams = [:]
-        if (attrs.params) linkParams.putAll(attrs.params)
+        if (attrs.params) {
+            linkParams.putAll(attrs.params)
+        }
 //        linkParams.offset = offset - max
         linkParams.max = max
-        if (params.sort) linkParams.sort = params.sort
-        if (params.order) linkParams.order = params.order
+        if (params.sort) {
+            linkParams.sort = params.sort
+        }
+        if (params.order) {
+            linkParams.order = params.order
+        }
 
         def linkTagAttrs = [action: action]
         if (attrs.controller) {
@@ -686,16 +693,22 @@ class ElementosTagLib {
                         writer << "class='" << message.encodeAsHTML() << "'"
                     } else if (keyValue && keys) {
                         def s = el.toString()
-                        if (s) writer << "class='" << s.encodeAsHTML() << "'"
+                        if (s) {
+                            writer << "class='" << s.encodeAsHTML() << "'"
+                        }
                     } else if (keyValue) {
                         writer << "class='" << keyValue.encodeAsHTML() << "'"
                     } else {
                         def s = el.toString()
-                        if (s) writer << "class='" << s.encodeAsHTML() << "'"
+                        if (s) {
+                            writer << "class='" << s.encodeAsHTML() << "'"
+                        }
                     }
                 } else {
                     def s = el.toString()
-                    if (s) writer << "class='" << s.encodeAsHTML() << "'"
+                    if (s) {
+                        writer << "class='" << s.encodeAsHTML() << "'"
+                    }
                 }
                 /** **********************************************************************************************************************************************************/
 
@@ -714,16 +727,22 @@ class ElementosTagLib {
                         writer << message.encodeAsHTML()
                     } else if (keyValue && keys) {
                         def s = el.toString()
-                        if (s) writer << s.encodeAsHTML()
+                        if (s) {
+                            writer << s.encodeAsHTML()
+                        }
                     } else if (keyValue) {
                         writer << keyValue.encodeAsHTML()
                     } else {
                         def s = el.toString()
-                        if (s) writer << s.encodeAsHTML()
+                        if (s) {
+                            writer << s.encodeAsHTML()
+                        }
                     }
                 } else {
                     def s = el.toString()
-                    if (s) writer << s.encodeAsHTML()
+                    if (s) {
+                        writer << s.encodeAsHTML()
+                    }
                 }
                 writer << '</option>'
                 writer.println()
@@ -853,17 +872,20 @@ class ElementosTagLib {
 //        println("imprimeNumero " + attrs)
         def aval = null
         def sol = null
-        if (attrs.aval)
+        if (attrs.aval) {
             aval = Aval.get(attrs.aval)
-        if (attrs.solicitud)
+        }
+        if (attrs.solicitud) {
             sol = SolicitudAval.get(attrs.solicitud)
+        }
         def num = null
         def output = ""
         if (aval) {
             num = aval.numero
         }
-        if (sol)
+        if (sol) {
             num = sol.numero.toString()
+        }
 
 //        println("num " + num)
 
@@ -879,6 +901,95 @@ class ElementosTagLib {
         out << output
     }
 
+    def tipoReforma = { attrs ->
+        Reforma reforma = attrs.reforma
+        if (!reforma) {
+            out << "ERROR"
+        } else {
+            out << tipoReformaStr(tipo: reforma.tipo == 'R' ? 'Reforma' : 'Ajuste', tipoSolicitud: reforma.tipoSolicitud)
+        }
+    }
 
+    def tipoReformaStr = { attrs ->
+        def str = attrs.tipo + " "
+        switch (attrs.tipoSolicitud) {
+            case "E":
+                str += "a asignaciones existentes"
+                break;
+            case "A":
+                str += "Nuevas actividades financiadas con recursos del Area"
+                break;
+            case "C":
+                str += "Nuevas actividades sin financiamiento de recursos del Area"
+                break;
+            case "I":
+                str += "Incremento de recursos"
+                break;
+            case "P":
+                str += "partidas presupuestarias"
+                break;
+        }
+        out << "" + str
+    }
 
+    def linkPdfReforma = { attrs ->
+        Reforma reforma = attrs.reforma
+        if (!reforma) {
+            out << "ERROR"
+        } else {
+
+            def preview = attrs.preview ?: false
+
+            def accion = ""
+            def fileName = ""
+            switch (reforma.tipoSolicitud) {
+                case "E":
+                    accion = "existente"
+                    fileName = "existente"
+                    break;
+                case "A":
+                    accion = "actividad"
+                    fileName = "actividad"
+                    break;
+                case "C":
+                    accion = "incrementoActividad"
+                    fileName = "incremento_actividad"
+                    break;
+                case "I":
+                    accion = "incremento"
+                    fileName = "incremento"
+                    break;
+                case "P":
+                    accion = "partida"
+                    fileName = "partida"
+                    break;
+            }
+            def title, clase
+            if (preview) {
+                accion += "PreviewReforma"
+                fileName += "_previsualizacion"
+                title = "Previsualizar"
+                clase = "info"
+            } else {
+                if (reforma.estado.codigo == 'E02') {
+                    accion += "Reforma"
+                    fileName += "_reforma"
+                    title = "Reforma"
+                    clase = "success"
+                } else {
+                    fileName = "ajuste_" + fileName + "_solicitud"
+                    title = "Solicitud"
+                    clase = "info"
+                }
+            }
+
+            fileName += ".pdf"
+
+            def str = "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: 'reportesReforma', action: accion, id: reforma.id)}&filename=${fileName}\""
+            str += "class='btn btn-sm btn-${clase} btnVer' title='${title}'>"
+            str += "<i class='fa fa-search'></i> ${title}"
+            str += "</a>"
+            out << str
+        }
+    }
 }

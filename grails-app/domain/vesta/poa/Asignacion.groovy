@@ -14,7 +14,7 @@ import vesta.proyectos.ModificacionAsignacion
 /**
  * Clase para conectar con la tabla 'asgn' de la base de datos
  */
-class Asignacion   {
+class Asignacion {
     /**
      * Año de la asignación
      */
@@ -79,6 +79,10 @@ class Asignacion   {
      * Indicador de la asignación
      */
     String indicador
+    /**
+     * Valor priorizado original
+     */
+    Double priorizadoOriginal = 0
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -112,6 +116,7 @@ class Asignacion   {
             meta column: 'asgnmeta'
             indicador column: 'asgnindi'
             priorizado column: 'asgnprio'
+            priorizadoOriginal column: 'asgnpror'
         }
     }
 
@@ -141,12 +146,12 @@ class Asignacion   {
      * caso contrario, el monto, el presupuesto, el año concatenados
      */
     String toString() {
-        if (this.marcoLogico){
+        if (this.marcoLogico) {
 //            "<b>Responsable:</b> ${this.unidad}<b>  Priorizado: </b>${this.planificado}  <b> Partida Presupuestaria: </b>${this.presupuesto}<b> Año</b>: ${this.anio}"
-              "<b>Priorizado: </b>${this.planificado}  <b> Partida Presupuestaria: </b>${this.presupuesto}"
-        }
-        else
+            "<b>Priorizado: </b>${this.planificado}  <b> Partida Presupuestaria: </b>${this.presupuesto}"
+        } else {
             "<b> Priorizado:</b> ${this.planificado}  <b> Partida Presupuestaria: </b>${this.presupuesto}<b> Año</b>: ${this.anio}"
+        }
     }
 
     /**
@@ -155,8 +160,9 @@ class Asignacion   {
      */
     def getValorReal() {
         if (this.reubicada == "S") {
-            if (this.planificado == 0)
+            if (this.planificado == 0) {
                 return this.planificado
+            }
 //            println "ASIGNACION this --> "+this.id+" val "+this.planificado
             def dist = DistribucionAsignacion.findAllByAsignacion(this)
 
@@ -205,10 +211,12 @@ class Asignacion   {
 //            println "valor "+valor
 //            println "-------------------------------"
 
-            if (valor > this.planificado)
+            if (valor > this.planificado) {
                 valor = this.planificado
-            if (valor < 0)
+            }
+            if (valor < 0) {
                 valor = 0
+            }
 
             return valor
         } else {
@@ -217,16 +225,15 @@ class Asignacion   {
 
     }
 
-
-
     /**
      * Calcula el valor real de la asignación teniendo en cuenta la reubicación
      * @return el valor real calculado
      */
     def getValorPriorizado() {
         if (this.reubicada == "S") {
-            if (this.priorizado == 0)
+            if (this.priorizado == 0) {
                 return this.priorizado
+            }
             def dist = DistribucionAsignacion.findAllByAsignacion(this)
             def valor = this.priorizado
             Asignacion.findAllByPadreAndUnidadNotEqual(this, this.marcoLogico.proyecto.unidadEjecutora, [sort: "id"]).each { hd ->
@@ -245,17 +252,17 @@ class Asignacion   {
             dist.each {
                 valor = valor - it.valor
             }
-            if (valor > this.priorizado)
+            if (valor > this.priorizado) {
                 valor = this.priorizado
-            if (valor < 0)
+            }
+            if (valor < 0) {
                 valor = 0
+            }
             return valor
         } else {
             return this.priorizado
         }
     }
-
-
 
     /**
      * Calcula el valor de los hijos de la asignación
@@ -320,19 +327,20 @@ class Asignacion   {
         return valor
     }
 
-    def getAvanceFisico(){
+    def getAvanceFisico() {
         println "-->Asignacion!!!"
         def avance = 0
-        if(this.priorizado==0)
+        if (this.priorizado == 0) {
             return 0
-        ProcesoAsignacion.findAllByAsignacion(this).each {pa->
-            def representacion = pa.monto*100/this.priorizado
-            println "a "+this.id+" priorizado  "+this.priorizado+" representacion "+representacion
-            def avp = pa.proceso.getAvanceFisico()
-            println "avance proceso "+pa.proceso.nombre+"  "+avp
-            avance+=representacion*avp/100
         }
-        println "return "+avance
+        ProcesoAsignacion.findAllByAsignacion(this).each { pa ->
+            def representacion = pa.monto * 100 / this.priorizado
+            println "a " + this.id + " priorizado  " + this.priorizado + " representacion " + representacion
+            def avp = pa.proceso.getAvanceFisico()
+            println "avance proceso " + pa.proceso.nombre + "  " + avp
+            avance += representacion * avp / 100
+        }
+        println "return " + avance
         return avance
     }
 }

@@ -64,6 +64,10 @@ class RevisionAvalController extends Shield {
         [actual: actual]
     }
 
+    def liberarAvales() {
+        redirect(action: "listaAvales")
+    }
+
     /**
      * Acción que muestra la pantalla que permite liberar un aval
      * @param id el id del aval a liberar

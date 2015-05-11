@@ -1593,14 +1593,19 @@ class ReformaController extends Shield {
 //                            println "destino.priorizado=" + destino.priorizado
                             origen.priorizado -= detalle.valor
                             destino.priorizado += detalle.valor
+//                            println "????"
                             if (!origen.save(flush: true)) {
+//                                println "1"
                                 println "error save origen: " + origen.errors
                                 errores += renderErrors(bean: origen)
                             }
+//                            println "1 *****"
                             if (!destino.save(flush: true)) {
+//                                println "2"
                                 println "error save destino: " + destino.errors
                                 errores += renderErrors(bean: destino)
                             }
+//                            println "2 *****"
 //                            println "origen.priorizado=" + origen.priorizado
 //                            println "destino.priorizado=" + destino.priorizado
                         }

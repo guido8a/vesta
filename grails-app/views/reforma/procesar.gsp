@@ -50,12 +50,13 @@
             </div>
         </g:if>
 
-        <elm:container tipo="horizontal" titulo="Solicitud de reforma a procesar:  ${reforma.tipo == 'R' ? 'Reforma' : reforma.tipo == 'A' ? 'Ajuste' : '??'}
-        ${reforma.tipoSolicitud == 'E' ? ' a asignaciones existentes' :
-                reforma.tipoSolicitud == 'A' ? ' a nueva actividad' :
-                        reforma.tipoSolicitud == 'C' ? ' de incremento a nueva actividad' :
-                                reforma.tipoSolicitud == 'P' ? 'a nueva partida' :
-                                        reforma.tipoSolicitud == 'I' ? ' de incremento' : '??'}">
+        <elm:container tipo="horizontal" titulo="Solicitud de reforma a procesar:  ${elm.tipoReforma(reforma: reforma)}">
+        %{--<elm:container tipo="horizontal" titulo="Solicitud de reforma a procesar:  ${reforma.tipo == 'R' ? 'Reforma' : reforma.tipo == 'A' ? 'Ajuste' : '??'}--}%
+        %{--${reforma.tipoSolicitud == 'E' ? ' a asignaciones existentes' :--}%
+        %{--reforma.tipoSolicitud == 'A' ? ' a nueva actividad' :--}%
+        %{--reforma.tipoSolicitud == 'C' ? ' de incremento a nueva actividad' :--}%
+        %{--reforma.tipoSolicitud == 'P' ? 'a nueva partida' :--}%
+        %{--reforma.tipoSolicitud == 'I' ? ' de incremento' : '??'}">--}%
             <div class="row">
                 <div class="col-md-1 show-label">
                     POA Año
@@ -148,20 +149,21 @@
                         %{--<i class="fa fa-search"></i> Previsualizar--}%
                         %{--</a>--}%
 
-                        <g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existentePreviewReforma' :
-                                reforma.tipoSolicitud == 'A' ? 'actividadPreviewReforma' :
-                                        reforma.tipoSolicitud == 'C' ? 'incrementoActividadPreviewReforma' :
-                                                reforma.tipoSolicitud == 'P' ? 'partidaPreviewReforma' :
-                                                        reforma.tipoSolicitud == 'I' ? 'incrementoPreviewReforma' : ''}"/>
-                        <g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'reforma_existente' :
-                                reforma.tipoSolicitud == 'A' ? 'reforma_actividad' :
-                                        reforma.tipoSolicitud == 'C' ? 'reforma_incremento_actividad' :
-                                                reforma.tipoSolicitud == 'P' ? 'reforma_partida' :
-                                                        reforma.tipoSolicitud == 'I' ? 'reforma_incremento' : ''}.pdf"/>
-                        <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"
-                           class="btn btn-sm btn-info">
-                            <i class="fa fa-search"></i> Previsualizar
-                        </a>
+                        <elm:linkPdfReforma reforma="${reforma}" preview="${true}"/>
+                        %{--<g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existentePreviewReforma' :--}%
+                        %{--reforma.tipoSolicitud == 'A' ? 'actividadPreviewReforma' :--}%
+                        %{--reforma.tipoSolicitud == 'C' ? 'incrementoActividadPreviewReforma' :--}%
+                        %{--reforma.tipoSolicitud == 'P' ? 'partidaPreviewReforma' :--}%
+                        %{--reforma.tipoSolicitud == 'I' ? 'incrementoPreviewReforma' : ''}"/>--}%
+                        %{--<g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'reforma_existente' :--}%
+                        %{--reforma.tipoSolicitud == 'A' ? 'reforma_actividad' :--}%
+                        %{--reforma.tipoSolicitud == 'C' ? 'reforma_incremento_actividad' :--}%
+                        %{--reforma.tipoSolicitud == 'P' ? 'reforma_partida' :--}%
+                        %{--reforma.tipoSolicitud == 'I' ? 'reforma_incremento' : ''}.pdf"/>--}%
+                        %{--<a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"--}%
+                        %{--class="btn btn-sm btn-info">--}%
+                        %{--<i class="fa fa-search"></i> Previsualizar--}%
+                        %{--</a>--}%
                         <a href="#" id="btnAprobar" class="btn btn-success ${btnSelect && totalSaldo > 0 ? 'disabled' : ''}">
                             <i class="fa fa-thumbs-up"></i> Aprobar
                         </a>
