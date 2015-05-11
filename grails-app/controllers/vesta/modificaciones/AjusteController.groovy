@@ -236,6 +236,8 @@ class AjusteController extends Shield {
             return
         }
 
+        def tipoStr = elm.tipoReformaStr(tipo: 'Ajuste', tipoSolicitud: reforma.tipoSolicitud)
+
         if (params.id) {
             def firma1 = reforma.firma1
             firma1.estado = "S"
@@ -256,7 +258,7 @@ class AjusteController extends Shield {
             firma1.accionNegar = "devolverAprobarAjuste"
             firma1.controladorNegar = "ajuste"
             firma1.idAccionNegar = reforma.id
-            firma1.concepto = "Ajuste a asignaciones existentes (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma1.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firma1.tipoFirma = "AJST"
             if (!firma1.save(flush: true)) {
                 println "error al crear firma1: " + firma1.errors
@@ -275,7 +277,7 @@ class AjusteController extends Shield {
             firma1.accionNegar = "devolverAprobarAjuste"
             firma2.controladorNegar = "ajuste"
             firma2.idAccionNegar = reforma.id
-            firma2.concepto = "Ajuste a asignaciones existentes (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma2.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firma2.tipoFirma = "AJST"
             if (!firma2.save(flush: true)) {
                 println "error al crear firma: " + firma2.errors
@@ -290,7 +292,7 @@ class AjusteController extends Shield {
         alerta1.from = usu
         alerta1.persona = personaFirma1
         alerta1.fechaEnvio = now
-        alerta1.mensaje = "Ajuste a asignaciones existentes (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta1.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta1.controlador = "firma"
         alerta1.accion = "firmasPendientes"
         alerta1.id_remoto = 0
@@ -301,7 +303,7 @@ class AjusteController extends Shield {
         alerta2.from = usu
         alerta2.persona = personaFirma2
         alerta2.fechaEnvio = now
-        alerta2.mensaje = "Ajuste a asignaciones existentes (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta2.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta2.controlador = "firma"
         alerta2.accion = "firmasPendientes"
         alerta2.id_remoto = 0
@@ -393,6 +395,8 @@ class AjusteController extends Shield {
             return
         }
 
+        def tipoStr = elm.tipoReformaStr(tipo: 'Ajuste', tipoSolicitud: reforma.tipoSolicitud)
+
         if (params.id) {
             def firma1 = reforma.firma1
             firma1.estado = "S"
@@ -413,7 +417,7 @@ class AjusteController extends Shield {
             firma1.accionNegar = "devolverAprobarAjuste"
             firma1.controladorNegar = "ajuste"
             firma1.idAccionNegar = reforma.id
-            firma1.concepto = "Ajuste a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma1.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firma1.tipoFirma = "AJST"
             if (!firma1.save(flush: true)) {
                 println "error al crear firma1: " + firma1.errors
@@ -433,7 +437,7 @@ class AjusteController extends Shield {
             firma2.accionNegar = "devolverAprobarAjuste"
             firma2.controladorNegar = "ajuste"
             firma2.idAccionNegar = reforma.id
-            firma2.concepto = "Ajuste a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma2.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firma2.tipoFirma = "AJST"
             if (!firma2.save(flush: true)) {
                 println "error al crear firma2: " + firma2.errors
@@ -449,7 +453,7 @@ class AjusteController extends Shield {
         alerta1.from = usu
         alerta1.persona = personaFirma1
         alerta1.fechaEnvio = now
-        alerta1.mensaje = "Ajuste a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta1.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta1.controlador = "firma"
         alerta1.accion = "firmasPendientes"
         alerta1.id_remoto = 0
@@ -460,7 +464,7 @@ class AjusteController extends Shield {
         alerta2.from = usu
         alerta2.persona = personaFirma2
         alerta2.fechaEnvio = now
-        alerta2.mensaje = "Ajuste a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta2.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta2.controlador = "firma"
         alerta2.accion = "firmasPendientes"
         alerta2.id_remoto = 0
@@ -553,6 +557,8 @@ class AjusteController extends Shield {
             return
         }
 
+        def tipoStr = elm.tipoReformaStr(tipo: 'Ajuste', tipoSolicitud: reforma.tipoSolicitud)
+
         if (params.id) {
             def firma1 = reforma.firma1
             firma1.estado = "S"
@@ -570,7 +576,7 @@ class AjusteController extends Shield {
             firma1.accionNegar = "devolverAprobarAjuste"
             firma1.controladorNegar = "ajuste"
             firma1.idAccionNegar = reforma.id
-            firma1.concepto = "Ajuste a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma1.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firma1.tipoFirma = "AJST"
             if (!firma1.save(flush: true)) {
                 println "error al crear firma1: " + firma1.errors
@@ -589,7 +595,7 @@ class AjusteController extends Shield {
             firma2.accionNegar = "devolverAprobarAjuste"
             firma2.controladorNegar = "ajuste"
             firma2.idAccionNegar = reforma.id
-            firma2.concepto = "Ajuste a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firma2.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firma2.tipoFirma = "AJST"
             if (!firma2.save(flush: true)) {
                 println "error al crear firma2: " + firma2.errors
@@ -604,7 +610,7 @@ class AjusteController extends Shield {
         alerta1.from = usu
         alerta1.persona = personaFirma1
         alerta1.fechaEnvio = now
-        alerta1.mensaje = "Ajuste a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta1.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta1.controlador = "firma"
         alerta1.accion = "firmasPendientes"
         alerta1.id_remoto = 0
@@ -615,7 +621,7 @@ class AjusteController extends Shield {
         alerta2.from = usu
         alerta2.persona = personaFirma2
         alerta2.fechaEnvio = now
-        alerta2.mensaje = "Ajuste a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta2.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta2.controlador = "firma"
         alerta2.accion = "firmasPendientes"
         alerta2.id_remoto = 0
@@ -629,14 +635,14 @@ class AjusteController extends Shield {
 
             def asignacionOrigen = Asignacion.get(det.origen.toLong())
             def presupuesto = Presupuesto.get(det.partida.toLong())
-            def fuente = Fuente.get(det.fuente.toLong())
+//            def fuente = Fuente.get(det.fuente.toLong())
 
             def detalle = new DetalleReforma()
             detalle.reforma = reforma
             detalle.asignacionOrigen = asignacionOrigen
             detalle.valor = monto
             detalle.presupuesto = presupuesto
-            detalle.fuente = fuente
+            detalle.fuente = asignacionOrigen.fuente
 
             if (!detalle.save(flush: true)) {
                 println "error al guardar detalle: " + detalle.errors
@@ -793,25 +799,26 @@ class AjusteController extends Shield {
         def reforma = Reforma.get(params.id)
         reforma.estado = EstadoAval.findByCodigo("D02") //devuelto al analista
         reforma.save(flush: true)
-
-        def accion, mensaje
+        def tipoStr = elm.tipoReformaStr(tipo: 'Ajuste', tipoSolicitud: reforma.tipoSolicitud)
+        def accion
+        def mensaje = "Devolución de ${tipoStr}"
         //E: existente, A: actividad, P: partida
         switch (reforma.tipoSolicitud) {
             case "E":
                 accion = "existente"
-                mensaje = "Devolución de ajuste a asignaciones existentes: "
+//                mensaje = "Devolución de ${tipoStr}: "
                 break;
             case "A":
                 accion = "actividad"
-                mensaje = "Devolución de ajuste a nuevas actividades: "
+//                mensaje = "Devolución de ${tipoStr}: "
                 break;
             case "P":
                 accion = "partida"
-                mensaje = "Devolución de ajuste a nuevas partidas: "
+//                mensaje = "Devolución de ${tipoStr}: "
                 break;
             default:
                 accion = "existente"
-                mensaje = "Devolución de ajuste a asignaciones existentes: "
+//                mensaje = "Devolución de ${tipoStr}: "
         }
 
         def alerta = new Alerta()

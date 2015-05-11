@@ -534,29 +534,32 @@ class ReformaController extends Shield {
         def personaFirma1
         def personaFirma2
 
-        def accion, mensaje
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
+
+        def accion
+        def mensaje = "Aprobación de ${tipoStr}"
 
         //E: existente, A: actividad, P: partida, I: incremento
         switch (reforma.tipoSolicitud) {
             case "E":
                 accion = "existentePreviewReforma"
-                mensaje = "Aprobación de reforma a asignaciones existentes"
+//                mensaje = "Aprobación de ${tipoStr}"
                 break;
             case "A":
                 accion = "actividadPreviewReforma"
-                mensaje = "Aprobación de reforma a nuevas actividades"
+//                mensaje = "Aprobación de ${tipoStr}"
                 break;
             case "C":
                 accion = "incrementoActividadPreviewReforma"
-                mensaje = "Aprobación de reforma de incremento a nuevas actividades"
+//                mensaje = "Aprobación de reforma de incremento a nuevas actividades"
                 break;
             case "P":
                 accion = "partidaPreviewReforma"
-                mensaje = "Aprobación de reforma a nuevas partidas"
+//                mensaje = "Aprobación de reforma a nuevas partidas"
                 break;
             case "I":
                 accion = "incrementoPreviewReforma"
-                mensaje = "Aprobación de reforma de incremento"
+//                mensaje = "Aprobación de reforma de incremento"
                 params.each { k, v ->
                     if (k.toString().startsWith("r")) {
                         def parts = v.split("_")
@@ -767,11 +770,11 @@ class ReformaController extends Shield {
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
-
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "Reforma a asignaciones existentes (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -786,7 +789,7 @@ class ReformaController extends Shield {
             firmaRevisa.accionNegar = "devolverReforma"
             firmaRevisa.controladorNegar = "reforma"
             firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "Reforma a asignaciones existentes (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.tipoFirma = "RFRM"
             if (!firmaRevisa.save(flush: true)) {
                 println "error al crear firma: " + firmaRevisa.errors
@@ -800,7 +803,7 @@ class ReformaController extends Shield {
         alerta.from = usu
         alerta.persona = personaRevisa
         alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de reforma a asignaciones existentes (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta.controlador = "firma"
         alerta.accion = "firmasPendientes"
         alerta.id_remoto = 0
@@ -888,11 +891,11 @@ class ReformaController extends Shield {
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
-
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "Reforma a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -907,7 +910,7 @@ class ReformaController extends Shield {
             firmaRevisa.accionNegar = "devolverReforma"
             firmaRevisa.controladorNegar = "reforma"
             firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "Reforma a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.tipoFirma = "RFRM"
             if (!firmaRevisa.save(flush: true)) {
                 println "error al crear firma: " + firmaRevisa.errors
@@ -921,7 +924,7 @@ class ReformaController extends Shield {
         alerta.from = usu
         alerta.persona = personaRevisa
         alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de reforma a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta.controlador = "firma"
         alerta.accion = "firmasPendientes"
         alerta.id_remoto = 0
@@ -1011,11 +1014,11 @@ class ReformaController extends Shield {
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
-
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "Reforma de incremento a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -1030,7 +1033,7 @@ class ReformaController extends Shield {
             firmaRevisa.accionNegar = "devolverReforma"
             firmaRevisa.controladorNegar = "reforma"
             firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "Reforma de incremento a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.tipoFirma = "RFRM"
             if (!firmaRevisa.save(flush: true)) {
                 println "error al crear firma: " + firmaRevisa.errors
@@ -1044,7 +1047,7 @@ class ReformaController extends Shield {
         alerta.from = usu
         alerta.persona = personaRevisa
         alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de reforma de incremento a nuevas actividades (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta.controlador = "firma"
         alerta.accion = "firmasPendientes"
         alerta.id_remoto = 0
@@ -1125,11 +1128,11 @@ class ReformaController extends Shield {
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
-
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "Reforma de incremento (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -1144,7 +1147,7 @@ class ReformaController extends Shield {
             firmaRevisa.accionNegar = "devolverReforma"
             firmaRevisa.controladorNegar = "reforma"
             firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "Reforma de incremento (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.tipoFirma = "RFRM"
             if (!firmaRevisa.save(flush: true)) {
                 println "error al crear firma: " + firmaRevisa.errors
@@ -1158,7 +1161,7 @@ class ReformaController extends Shield {
         alerta.from = usu
         alerta.persona = personaRevisa
         alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de reforma de incremento (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta.controlador = "firma"
         alerta.accion = "firmasPendientes"
         alerta.id_remoto = 0
@@ -1244,11 +1247,11 @@ class ReformaController extends Shield {
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
-
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
         if (params.id) {
             def firmaRevisa = reforma.firmaSolicitud
             firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "Reforma a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.save(flush: true)
         } else {
             def firmaRevisa = new Firma()
@@ -1263,7 +1266,7 @@ class ReformaController extends Shield {
             firmaRevisa.accionNegar = "devolverReforma"
             firmaRevisa.controladorNegar = "reforma"
             firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "Reforma a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             firmaRevisa.tipoFirma = "RFRM"
             if (!firmaRevisa.save(flush: true)) {
                 println "error al crear firma: " + firmaRevisa.errors
@@ -1277,7 +1280,7 @@ class ReformaController extends Shield {
         alerta.from = usu
         alerta.persona = personaRevisa
         alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de reforma a nuevas partidas (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
         alerta.controlador = "firma"
         alerta.accion = "firmasPendientes"
         alerta.id_remoto = 0
@@ -1321,33 +1324,34 @@ class ReformaController extends Shield {
         def usu = Persona.get(session.usuario.id)
 
         def reforma = Reforma.get(params.id)
-
-        def accion, mensaje
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
+        def accion
+        def mensaje = "Devolución de solicitud de ${tipoStr}: "
         //E: existente, A: actividad, P: partida, I: incremento
         switch (reforma.tipoSolicitud) {
             case "E":
                 accion = "existente"
-                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+//                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
                 break;
             case "A":
                 accion = "actividad"
-                mensaje = "Devolución de solicitud de reforma a nuevas actividades: "
+//                mensaje = "Devolución de solicitud de reforma a nuevas actividades: "
                 break;
             case "C":
                 accion = "incrementoActividad"
-                mensaje = "Devolución de solicitud de reforma de incremento a nuevas actividades: "
+//                mensaje = "Devolución de solicitud de reforma de incremento a nuevas actividades: "
                 break;
             case "P":
                 accion = "partida"
-                mensaje = "Devolución de solicitud de reforma a nuevas partidas: "
+//                mensaje = "Devolución de solicitud de reforma a nuevas partidas: "
                 break;
             case "I":
                 accion = "incremento"
-                mensaje = "Devolución de solicitud de reforma de incremento: "
+//                mensaje = "Devolución de solicitud de reforma de incremento: "
                 break;
             default:
                 accion = "existente"
-                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+//                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
         }
 //        println "ESTADO ANTES: " + reforma.estado + "    " + reforma.estado.codigo
         reforma.estado = EstadoAval.findByCodigo("D01") //devuelto
@@ -1384,34 +1388,35 @@ class ReformaController extends Shield {
             def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
             def now = new Date()
             def usu = Persona.get(session.usuario.id)
-
-            def accion, mensaje
+            def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
+//            def accion
+            def mensaje = "Solicitud de ${tipoStr}: "
             //E: existente, A: actividad, P: partida, I: incremento
-            switch (reforma.tipoSolicitud) {
-                case "E":
-                    accion = "existente"
-                    mensaje = "Solicitud de reforma a asignaciones existentes: "
-                    break;
-                case "A":
-                    accion = "actividad"
-                    mensaje = "Solicitud de reforma a nuevas actividades: "
-                    break;
-                case "C":
-                    accion = "incrementoActividad"
-                    mensaje = "Solicitud de reforma de incremento a nuevas actividades: "
-                    break;
-                case "P":
-                    accion = "partida"
-                    mensaje = "Solicitud de reforma a nuevas partidas: "
-                    break;
-                case "I":
-                    accion = "incremento"
-                    mensaje = "Solicitud de reforma de incremento: "
-                    break;
-                default:
-                    accion = "existente"
-                    mensaje = "Solicitud de reforma a asignaciones existentes: "
-            }
+//            switch (reforma.tipoSolicitud) {
+//                case "E":
+//                    accion = "existente"
+////                    mensaje = "Solicitud de reforma a asignaciones existentes: "
+//                    break;
+//                case "A":
+//                    accion = "actividad"
+////                    mensaje = "Solicitud de reforma a nuevas actividades: "
+//                    break;
+//                case "C":
+//                    accion = "incrementoActividad"
+////                    mensaje = "Solicitud de reforma de incremento a nuevas actividades: "
+//                    break;
+//                case "P":
+//                    accion = "partida"
+////                    mensaje = "Solicitud de reforma a nuevas partidas: "
+//                    break;
+//                case "I":
+//                    accion = "incremento"
+////                    mensaje = "Solicitud de reforma de incremento: "
+//                    break;
+//                default:
+//                    accion = "existente"
+////                    mensaje = "Solicitud de reforma a asignaciones existentes: "
+//            }
 
             analistas.each { a ->
                 def alerta = new Alerta()
@@ -1629,34 +1634,35 @@ class ReformaController extends Shield {
 
         def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
         def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
-
-        def accion, mensaje
-        //E: existente, A: actividad, P: partida, I: incremento
-        switch (reforma.tipoSolicitud) {
-            case "E":
-                accion = "existente"
-                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
-                break;
-            case "A":
-                accion = "actividad"
-                mensaje = "Devolución de solicitud de reforma a nuevas actividades: "
-                break;
-            case "C":
-                accion = "incrementoActividad"
-                mensaje = "Devolución de solicitud de reforma de incremento a nuevas actividades: "
-                break;
-            case "P":
-                accion = "partida"
-                mensaje = "Devolución de solicitud de reforma a nuevas partidas: "
-                break;
-            case "I":
-                accion = "incremento"
-                mensaje = "Devolución de solicitud de reforma de incremento: "
-                break;
-            default:
-                accion = "existente"
-                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
-        }
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
+        def mensaje = "Devolución de solicitud de ${tipoStr}"
+//        def accion, mensaje
+//        //E: existente, A: actividad, P: partida, I: incremento
+//        switch (reforma.tipoSolicitud) {
+//            case "E":
+//                accion = "existente"
+//                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+//                break;
+//            case "A":
+//                accion = "actividad"
+//                mensaje = "Devolución de solicitud de reforma a nuevas actividades: "
+//                break;
+//            case "C":
+//                accion = "incrementoActividad"
+//                mensaje = "Devolución de solicitud de reforma de incremento a nuevas actividades: "
+//                break;
+//            case "P":
+//                accion = "partida"
+//                mensaje = "Devolución de solicitud de reforma a nuevas partidas: "
+//                break;
+//            case "I":
+//                accion = "incremento"
+//                mensaje = "Devolución de solicitud de reforma de incremento: "
+//                break;
+//            default:
+//                accion = "existente"
+//                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
+//        }
 
         analistas.each { a ->
             def alerta = new Alerta()

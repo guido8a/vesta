@@ -449,7 +449,7 @@ class ReportesReformaController {
             m.no = detalle.asignacionOrigen.marcoLogico.numero
             m.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
             m.partida = "<strong>Priorizado:</strong> 0.00\n" +
-                    " <strong>Partida:</strong> ${detalle.presupuesto}\n"
+                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}\n"
             m.inicial = valorFinalDestino[keyDestino]
             m.dism = 0
             m.aum = detalle.valor
