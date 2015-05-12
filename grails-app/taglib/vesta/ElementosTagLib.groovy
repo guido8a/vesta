@@ -928,6 +928,9 @@ class ElementosTagLib {
             case "P":
                 str += "partidas presupuestarias"
                 break;
+            case "T":
+                str += "por modificación de techo presupuestario"
+                break;
         }
         out << "" + str
     }

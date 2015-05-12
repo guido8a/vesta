@@ -421,4 +421,19 @@ class Proyecto {
         }
     }
 
+    def getValorPriorizadoAnio(Anio anio) {
+//        println "PROYECTO " + this.nombre
+        def total = 0
+        def marcos = MarcoLogico.findAllByProyectoAndTipoElemento(this, TipoElemento.get(3))
+        if (marcos.size() > 0) {
+            marcos.each { m ->
+                total += m.getTotalPriorizadoAnio(anio)
+            }
+//            println "TOTAL = " + total
+            return total
+        } else {
+            return 0
+        }
+    }
+
 }

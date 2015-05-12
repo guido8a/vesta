@@ -67,7 +67,7 @@ public abstract class NumberToLetterConverter {
 
 //        System.out.println("llega" + doubleNumber);
 
-        doubleNumber = Math.round(doubleNumber*100.0)/100.0;
+        doubleNumber = Math.round(doubleNumber * 100.0) / 100.0;
 //        System.out.println("a...:" + doubleNumber);
 
         if (doubleNumber < 0)
@@ -76,13 +76,13 @@ public abstract class NumberToLetterConverter {
         String splitNumber[] = String.valueOf(doubleNumber).replace('.', '#')
                 .split("#");
 //        System.out.println(splitNumber[0] + "con" + splitNumber[1]);
-        if(splitNumber[1].length() == 1) {
+        if (splitNumber[1].length() == 1) {
             splitNumber[1] = splitNumber[1] + "0";
-        } else if(splitNumber[1].length() > 2) {
-            splitNumber[1] = splitNumber[1].substring(0,2);
+        } else if (splitNumber[1].length() > 2) {
+            splitNumber[1] = splitNumber[1].substring(0, 2);
         }
 
-            // Descompone el trio de millones
+        // Descompone el trio de millones
         int millon = Integer.parseInt(String.valueOf(getDigitAt(splitNumber[0],
                 8))
                 + String.valueOf(getDigitAt(splitNumber[0], 7))
@@ -116,7 +116,7 @@ public abstract class NumberToLetterConverter {
         if (cientos > 1)
             converted.append(convertNumber(String.valueOf(cientos)));
 
-        converted.append("DOLARES");
+        converted.append("DÓLARES");
 
         // Descompone los centavos
         int centavos = Integer.parseInt(String.valueOf(getDigitAt(
@@ -128,12 +128,14 @@ public abstract class NumberToLetterConverter {
 //        System.out.println("pos 2:" + String.valueOf(getDigitAt(splitNumber[1], 2)));
 //        System.out.println("pos 1:" + String.valueOf(getDigitAt(splitNumber[1], 1)));
 //        System.out.println("pos 0:" + String.valueOf(getDigitAt(splitNumber[1], 0)));
-        if (centavos == 1)
+        if (centavos == 1) {
             converted.append(" CON UN CENTAVO");
-        else if (centavos > 1)
+        } else if (centavos > 1) {
             converted.append(" CON " + convertNumber(String.valueOf(centavos))
                     + "CENTAVOS");
-
+        } else {
+            converted.append(" CON 00 CENTAVOS");
+        }
 
         return converted.toString();
     }

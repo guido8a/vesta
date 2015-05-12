@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Ajuste a asignación existente</title>
+        <title><elm:tipoReformaStr tipo="Ajuste" tipoSolicitud="E"/></title>
 
         <style type="text/css">
         .titulo-azul.subtitulo {
@@ -37,7 +37,7 @@
             </div>
         </g:if>
 
-        <elm:container tipo="horizontal" titulo="Ajuste a asignación existente">
+        <elm:container tipo="horizontal" titulo="${elm.tipoReformaStr(tipo: "Ajuste", tipoSolicitud: "E")}">
             <div class="row">
                 <div class="col-md-1">
                     <label for="anio">

@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Modificación a nuevas actividades</title>
+        <title><elm:tipoReformaStr tipo="Reforma" tipoSolicitud="C"/></title>
 
         <style type="text/css">
         .titulo-azul.subtitulo {
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <elm:container tipo="horizontal" titulo="Modificación a nuevas actividades">
+        <elm:container tipo="horizontal" titulo="${elm.tipoReformaStr(tipo: "Reforma", tipoSolicitud: "C")}">
             <div class="row">
                 <div class="col-md-1">
                     <label for="anio">

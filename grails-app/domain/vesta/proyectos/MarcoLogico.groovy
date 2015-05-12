@@ -141,10 +141,11 @@ class MarcoLogico {
      * @return el objeto limitado a 40 caracteres
      */
     String toString() {
-        if (this.objeto.length() < 40)
+        if (this.objeto.length() < 40) {
             return this.objeto
-        else
+        } else {
             return this.objeto.substring(0, 40) + "..."
+        }
     }
 
     /**
@@ -212,7 +213,7 @@ class MarcoLogico {
     def getTotalPlanificadoAnio(Anio anio) {
 //        println "get total planificado anio " + anio.anio
         def total = 0
-        if (this.tipoElemento.id == 3) {
+        if (this.tipoElemento.id == 3.toLong()) {
 //            println "caso 1"
             Asignacion.findAllByMarcoLogicoAndAnio(this, anio).each {
 //                println "\t\tplanificado=" + it.planificado
@@ -221,12 +222,39 @@ class MarcoLogico {
 //            println "total ml = " + total
             return total
         } else {
-            def marcos = MarcoLogico.findAllByMarcoLogico(this)
+            def marcos = findAllByMarcoLogico(this)
             if (marcos.size() > 0) {
 //                println "caso 2"
                 Asignacion.findAllByMarcoLogicoInListAndAnio(marcos, anio).each { a ->
 //                    println "\t\tplanificado=" + a.planificado
                     total += a.planificado
+                }
+//                println "total ml = " + total
+                return total
+            } else {
+                return 0
+            }
+        }
+    }
+
+    def getTotalPriorizadoAnio(Anio anio) {
+//        println "get total planificado anio " + anio.anio
+        def total = 0
+        if (this.tipoElemento.id == 3.toLong()) {
+//            println "caso 1"
+            Asignacion.findAllByMarcoLogicoAndAnio(this, anio).each {
+//                println "\t\tplanificado=" + it.planificado
+                total += it.priorizado
+            }
+//            println "total ml = " + total
+            return total
+        } else {
+            def marcos = findAllByMarcoLogico(this)
+            if (marcos.size() > 0) {
+//                println "caso 2"
+                Asignacion.findAllByMarcoLogicoInListAndAnio(marcos, anio).each { a ->
+//                    println "\t\tplanificado=" + a.planificado
+                    total += a.priorizado
                 }
 //                println "total ml = " + total
                 return total

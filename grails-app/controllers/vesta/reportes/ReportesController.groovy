@@ -40,12 +40,14 @@ class ReportesController {
     def modificacionesPoa = {
         def unidad = UnidadEjecutora.get(params.id)
         def actual
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
-        if (!actual)
+        }
+        if (!actual) {
             actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+        }
 
 
         def res = []
@@ -78,18 +80,20 @@ class ReportesController {
     def modUnidad = {
         def actual
         def unidad = UnidadEjecutora.get(params.id)
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
 
 
         def poa = Asignacion.findAllByUnidadAndAnio(unidad, actual)
         def res = []
         poa.each {
             def pac = Obra.findAllByAsignacion(it)
-            if (pac)
+            if (pac) {
                 res += pac
+            }
         }
 
         [res: res, unidad: unidad, actual: actual]
@@ -100,10 +104,11 @@ class ReportesController {
      */
     def reporteCertificaciones = {
         def actual
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
 
 
         def mapa = [:]
@@ -125,10 +130,11 @@ class ReportesController {
      */
     def reporteGeneralCertificaciones = {
         def actual
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
 
 
         def mapa = [:]
@@ -157,10 +163,10 @@ class ReportesController {
 
         def mes
 
-         if(solicitud?.fecha){
-             println("fechaf")
-             mes = Mes.findByNumero(solicitud.fecha.format("MM").toInteger())
-         }
+        if (solicitud?.fecha) {
+            println("fechaf")
+            mes = Mes.findByNumero(solicitud.fecha.format("MM").toInteger())
+        }
 
 
         def anterior = null
@@ -171,31 +177,31 @@ class ReportesController {
         def arr = [:]
         def total
         ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
-            if(it.asignacion.anio.anio.toInteger() >= anio.anio.toInteger()){
-                if(arr[it.asignacion.marcoLogico]){
-                    arr[it.asignacion.marcoLogico]["total"]+=it.monto
-                    arr[it.asignacion.marcoLogico]["devengado"]+=it.devengado
-                    if(arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]){
+            if (it.asignacion.anio.anio.toInteger() >= anio.anio.toInteger()) {
+                if (arr[it.asignacion.marcoLogico]) {
+                    arr[it.asignacion.marcoLogico]["total"] += it.monto
+                    arr[it.asignacion.marcoLogico]["devengado"] += it.devengado
+                    if (arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]) {
                         arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["asignaciones"].add(it)
-                        arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["total"]+=it.monto
+                        arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["total"] += it.monto
 
 
-                    }else{
-                        def mp=[:]
-                        mp.put("asignaciones",[it])
-                        mp.put("total",it.monto)
-                        arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio,mp)
+                    } else {
+                        def mp = [:]
+                        mp.put("asignaciones", [it])
+                        mp.put("total", it.monto)
+                        arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio, mp)
                     }
 
-                }else{
+                } else {
                     def tmp = [:]
-                    def mp=[:]
-                    mp.put("asignaciones",[it])
-                    mp.put("total",it.monto)
+                    def mp = [:]
+                    mp.put("asignaciones", [it])
+                    mp.put("total", it.monto)
 
-                    tmp.put(it.asignacion.anio.anio,mp)
-                    tmp.put("total",it.monto)
-                    tmp.put("devengado",it.devengado)
+                    tmp.put(it.asignacion.anio.anio, mp)
+                    tmp.put("total", it.monto)
+                    tmp.put("devengado", it.devengado)
                     arr.put(it.asignacion.marcoLogico, tmp)
                 }
             }
@@ -206,7 +212,7 @@ class ReportesController {
 
         ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
 
-           dosDevengado += it.devengado
+            dosDevengado += it.devengado
         }
 
 
@@ -216,6 +222,10 @@ class ReportesController {
 
         def devengado = 0
         def transf = NumberToLetterConverter.convertNumberToLetter(solicitud?.monto)
+
+        def montoTest = solicitud.monto + 0.56
+        println "\n\n\nMonto test"
+        println NumberToLetterConverter.convertNumberToLetter(montoTest)
 
         println("-->" + transf)
 
@@ -1237,8 +1247,9 @@ class ReportesController {
     }
 
     def treeLabel(String label, String tipo, attrs) {
-        if (!attrs)
+        if (!attrs) {
             attrs = ""
+        }
         def str = ""
         switch (tipo) {
             case "link":
@@ -2165,8 +2176,9 @@ class ReportesController {
 
             def asgInvDiv = []
             sigs.each { asig ->
-                if (asig.marcoLogico.proyecto.unidadEjecutora.id.toInteger() != unidad.id.toInteger())
+                if (asig.marcoLogico.proyecto.unidadEjecutora.id.toInteger() != unidad.id.toInteger()) {
                     asgInvDiv.add(asig)
+                }
             }
             def proyectos = Proyecto.findAllByUnidadEjecutora(unidad)
             def programas = []
@@ -2809,10 +2821,11 @@ class ReportesController {
                 m.unidadEjecutora = obra.asignacion.unidad.codigo
                 m.unidadDesconcentrada = "0000"
                 //println "obra "+obra.id+" asgn "+obra.asignacion.id
-                if (obra.asignacion.marcoLogico)
+                if (obra.asignacion.marcoLogico) {
                     m.programa = obra.asignacion.marcoLogico.proyecto.programaPresupuestario.descripcion
-                else
+                } else {
                     m.programa = obra.asignacion.programa.descripcion
+                }
                 m.subprograma = "00"
                 m.proyecto = (obra.asignacion?.tipoGasto?.id == 2.toLong()) ? obra.asignacion?.marcoLogico?.proyecto?.nombre : "000"
                 //m.actividad = obra.asignacion.actividad
@@ -2867,10 +2880,11 @@ class ReportesController {
                 m.unidadEjecutora = obra.asignacion.unidad.codigo
                 m.unidadDesconcentrada = "0000"
 //                m.programa = obra.asignacion.programa.codigo
-                if (obra.asignacion.marcoLogico)
+                if (obra.asignacion.marcoLogico) {
                     m.programa = obra.asignacion.marcoLogico.proyecto.programaPresupuestario.codigo
-                else
+                } else {
                     m.programa = obra.asignacion.programa.codigo
+                }
                 m.subprograma = "00"
                 m.proyecto = (obra.asignacion?.tipoGasto?.id == 2.toLong()) ? obra.asignacion?.marcoLogico?.proyecto?.nombre : "000"
                 //m.actividad = obra.asignacion.actividad
@@ -3528,10 +3542,11 @@ class ReportesController {
                     totalAsignado += inv.planificado
 
 
-                    if (params.mes == "true")
-                        number = new Number(29, columna, total);
-                    else
-                        number = new Number(17, columna, total);
+                    if (params.mes == "true") {
+                        number = new Number(29, columna, total)
+                    } else {
+                        number = new Number(17, columna, total)
+                    };
                     sheet.addCell(number);
                     totalTotal += total
                     columna++
@@ -3616,10 +3631,11 @@ class ReportesController {
                                         }
 
                                         totalAsignado += asignacion.planificado
-                                        if (params.mes == "true")
-                                            number = new Number(29, columna, total);
-                                        else
-                                            number = new Number(17, columna, total);
+                                        if (params.mes == "true") {
+                                            number = new Number(29, columna, total)
+                                        } else {
+                                            number = new Number(17, columna, total)
+                                        };
                                         sheet.addCell(number);
                                         totalTotal += total
                                         columna++
@@ -3703,10 +3719,11 @@ class ReportesController {
                     }
 
 
-                    if (params.mes == "true")
-                        number = new Number(29, columna, tot);
-                    else
-                        number = new Number(17, columna, tot);
+                    if (params.mes == "true") {
+                        number = new Number(29, columna, tot)
+                    } else {
+                        number = new Number(17, columna, tot)
+                    };
                     sheet.addCell(number);
                     totalTotal += tot
                     columna++
@@ -3757,10 +3774,11 @@ class ReportesController {
                         sheet.addCell(number);
                     }
                 }
-                if (params.mes == "true")
-                    number = new Number(29, columna, totalTotal);
-                else
-                    number = new Number(17, columna, totalTotal);
+                if (params.mes == "true") {
+                    number = new Number(29, columna, totalTotal)
+                } else {
+                    number = new Number(17, columna, totalTotal)
+                };
                 sheet.addCell(number);
                 granTotal += totalTotal
                 columna += 2
@@ -3777,8 +3795,9 @@ class ReportesController {
     }
 
     def format(val, tipo) {
-        if (!texto || text == "")
+        if (!texto || text == "") {
             text = ""
+        }
         def ret
         if (tipo == "text") {
             ret = val ? val.toString().replaceAll("\\n", "") : ""
@@ -3969,10 +3988,11 @@ class ReportesController {
                     }
                 }
                 inversion += format(total, "number") + sep
-                if (params.mes == "true")
-                    number = new Number(30, columna, total);
-                else
-                    number = new Number(18, columna, total);
+                if (params.mes == "true") {
+                    number = new Number(30, columna, total)
+                } else {
+                    number = new Number(18, columna, total)
+                };
                 sheet.addCell(number);
                 totalTotal += total
                 inversion += "\n"
@@ -4055,10 +4075,11 @@ class ReportesController {
                                     }
                                 }
                                 inversion += format(total, "number") + sep
-                                if (params.mes == "true")
-                                    number = new Number(30, columna, total);
-                                else
-                                    number = new Number(18, columna, total);
+                                if (params.mes == "true") {
+                                    number = new Number(30, columna, total)
+                                } else {
+                                    number = new Number(18, columna, total)
+                                };
                                 sheet.addCell(number);
                                 totalTotal += total
                                 inversion += "\n"
@@ -4135,10 +4156,11 @@ class ReportesController {
                     }
                 }
                 corriente += format(tot, "number") + sep
-                if (params.mes == "true")
-                    number = new Number(30, columna, tot);
-                else
-                    number = new Number(18, columna, tot);
+                if (params.mes == "true") {
+                    number = new Number(30, columna, tot)
+                } else {
+                    number = new Number(18, columna, tot)
+                };
                 sheet.addCell(number);
                 totalTotal += tot
                 corriente += "\n"
@@ -4189,10 +4211,11 @@ class ReportesController {
                     }
                 }
                 corriente += format(totalTotal) + sep
-                if (params.mes == "true")
-                    number = new Number(30, columna, totalTotal);
-                else
-                    number = new Number(18, columna, totalTotal);
+                if (params.mes == "true") {
+                    number = new Number(30, columna, totalTotal)
+                } else {
+                    number = new Number(18, columna, totalTotal)
+                };
                 sheet.addCell(number);
                 granTotal += totalTotal
                 corriente += "\n\n"
@@ -4816,12 +4839,14 @@ class ReportesController {
         }
         println "anio " + params.anio + " id " + params.id
         def actual
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
-        if (!actual)
+        }
+        if (!actual) {
             actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+        }
 
         return [tabla: reportePoaInversiones(actual.id, params.id)]
     }
@@ -4894,7 +4919,9 @@ class ReportesController {
                   mrlg.mrlg__id = 31 and mess.mess__id = crng.mess__id
             order by mess.messnmro """
         cn.eachRow(tx) { d ->
-            if (resultados.size() == 0) resultados << d.proynmbr
+            if (resultados.size() == 0) {
+                resultados << d.proynmbr
+            }
             detalle << [d.asgn__id, d.mess__id, d.messvlor]
         }
         resultados << detalle

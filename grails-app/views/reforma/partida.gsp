@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Modificación a nuevas partidas</title>
+        <title><elm:tipoReformaStr tipo="Reforma" tipoSolicitud="P"/></title>
 
         <style type="text/css">
         .titulo-azul.subtitulo {
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <elm:container tipo="horizontal" titulo="Modificación a nuevas partidas">
+        <elm:container tipo="horizontal" titulo="${elm.tipoReformaStr(tipo: "Reforma", tipoSolicitud: "P")}">
             <div class="row">
                 <div class="col-md-1">
                     <label for="anio">

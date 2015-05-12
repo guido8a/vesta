@@ -48,7 +48,7 @@ class Reforma {
      */
     String tipo
     /**
-     * Tipo de la solicitud E: existente, A: actividad, P: partida, I: incremento, C: incremento actividad (a nuevas actividades sin origen)
+     * Tipo de la solicitud E: existente, A: actividad, P: partida, I: incremento, C: incremento actividad (a nuevas actividades sin origen), T: modificación de techos
      */
     String tipoSolicitud
     /**
