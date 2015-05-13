@@ -16,8 +16,8 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link controller="avales" action="listaProcesos" class="btn btn-default btn-sm"><i class="fa fa-bars"></i> Lista de procesos</g:link>
-                <g:link controller="hito" action="cargarExcelHitos" class="btn btn-default btn-sm"><i class="fa fa-check"></i> Registrar avances financieros</g:link>
-
+                %{--<g:link controller="hito" action="cargarExcelHitos" class="btn btn-default btn-sm"><i class="fa fa-check"></i> Registrar avances financieros</g:link>--}%
+                <a href="#" class="btn btn-success btn-sm btnCargar"><i class="fa fa-check"></i> Registrar avances financieros</a>
             </div>
         </div>
     </div>
@@ -210,6 +210,45 @@
         });
 
 //        loadTabla();
+
+
+        $(".btnCargar").click(function () {
+            var data = ''
+            $.ajax({
+               type: "POST",
+                url: "${createLink(action: 'cargarExcel_ajax')}",
+                data: data,
+                success : function (msg){
+                    var b = bootbox.dialog({
+                        id    : "dlgCargar",
+                        title : "Cargar avances financieros",
+
+//                        class : "modal-lg",
+
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-arrow-up'></i> Subir",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitForm();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                }
+
+
+            });
+
+        });
 
     });
 

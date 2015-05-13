@@ -362,8 +362,9 @@ class ReformaController extends Shield {
         def estadoAprobado = EstadoAval.findByCodigo("E02")
         def estadoNegado = EstadoAval.findByCodigo("E03")
         def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
+        def tipo = 'R'
         def estados = [estadoAprobadoSinFirma, estadoAprobado, estadoNegado]
-        def reformas = Reforma.findAllByEstadoInList(estados, [sort: "fecha", order: "desc"])
+        def reformas = Reforma.findAllByEstadoInListAndTipo(estados, tipo,  [sort: "fecha", order: "desc"])
         return [reformas: reformas]
     }
 

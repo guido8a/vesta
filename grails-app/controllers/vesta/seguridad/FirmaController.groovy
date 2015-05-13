@@ -38,6 +38,12 @@ class FirmaController extends Shield {
             order("fecha", "desc")
         }
 
+        def firmasAvales = Firma.withCriteria {
+            eq("usuario", session.usuario)
+            eq("estado", "S")
+            eq("tipoFirma", "AVAL")
+        }
+
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
@@ -48,7 +54,7 @@ class FirmaController extends Shield {
         def imgFirma = "<i class='fa fa-pencil'></i>";
 //        def imgFirma = "<img src='${resource(dir: 'images/ico', file: 'feather.png')}' alt='Firmar'/>"
 
-        return [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, actual: actual, imgFirma: imgFirma]
+        return [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes,firmasAvales: firmasAvales, actual: actual, imgFirma: imgFirma]
 
     }
 /**

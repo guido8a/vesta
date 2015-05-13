@@ -242,4 +242,9 @@ class HitoController {
     }
 
 
+    def cargarExcel_ajax() {
+
+    }
+
+
 }
