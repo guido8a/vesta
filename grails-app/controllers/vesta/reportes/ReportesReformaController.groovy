@@ -138,6 +138,14 @@ class ReportesReformaController {
         return [reforma: reforma, det: generaDetallesReforma_function(reforma)]
     }
 
+    /**
+     * Acción que muestra el pdf de reforma de modificación de techos
+     */
+    def techoReforma() {
+        def reforma = Reforma.get(params.id)
+        return [reforma: reforma, det: generaDetallesReforma_function(reforma)]
+    }
+
     public static Map generaDetallesReforma_function(Reforma reforma) {
         def detalles = DetalleReforma.findAllByReforma(reforma)
         def modificaciones = ModificacionAsignacion.findAllByDetalleReformaInList(detalles)
@@ -162,24 +170,36 @@ class ReportesReformaController {
 
                 det[key].hasta = []
             }
-            det[key].desde.dism += modificacion.valor
-            det[key].desde.final -= modificacion.valor
+            if(modificacion.detalleReforma.reforma.tipoSolicitud == "T") {
+                if (modificacion.valor < 0) {
+                    det[key].desde.dism += modificacion.valor * -1
+                    det[key].desde.final -= modificacion.valor * -1
+                } else {
+                    det[key].desde.aum += modificacion.valor
+                    det[key].desde.final += modificacion.valor
+                }
+            } else {
+                det[key].desde.dism += modificacion.valor
+                det[key].desde.final -= modificacion.valor
+            }
 
-            def m = [:]
+            if (modificacion.recibe) {
+                def m = [:]
 
-            m.proyecto = modificacion.recibe.marcoLogico.proyecto.toStringCompleto()
-            m.componente = modificacion.recibe.marcoLogico.marcoLogico.toStringCompleto()
-            m.no = modificacion.recibe.marcoLogico.numero
-            m.actividad = modificacion.recibe.marcoLogico.toStringCompleto()
+                m.proyecto = modificacion.recibe.marcoLogico.proyecto.toStringCompleto()
+                m.componente = modificacion.recibe.marcoLogico.marcoLogico.toStringCompleto()
+                m.no = modificacion.recibe.marcoLogico.numero
+                m.actividad = modificacion.recibe.marcoLogico.toStringCompleto()
 //            m.partida = modificacion.recibe.toString()
-            m.partida = "<strong>Priorizado:</strong> " + modificacion.recibe.priorizado +
-                    " <strong>Partida:</strong> ${modificacion.recibe.presupuesto.numero}"
-            m.inicial = modificacion.originalDestino
-            m.dism = 0
-            m.aum = modificacion.valor
-            m.final = modificacion.originalDestino + modificacion.valor
+                m.partida = "<strong>Priorizado:</strong> " + modificacion.recibe.priorizado +
+                        " <strong>Partida:</strong> ${modificacion.recibe.presupuesto.numero}"
+                m.inicial = modificacion.originalDestino
+                m.dism = 0
+                m.aum = modificacion.valor
+                m.final = modificacion.originalDestino + modificacion.valor
 
-            det[key].hasta += m
+                det[key].hasta += m
+            }
         }
         return det
     }
@@ -599,7 +619,6 @@ class ReportesReformaController {
 
     public static Map generaDetallesSolicitudTecho(Reforma reforma) {
         def detalles = DetalleReforma.findAllByReforma(reforma, [sort: "asignacionOrigen"])
-        def valorFinalDestino = [:]
         def det = [:]
         def total = 0
         detalles.each { detalle ->

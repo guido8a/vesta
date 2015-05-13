@@ -788,7 +788,7 @@ class AjusteController extends Shield {
             firma1.accion = "firmarAprobarAjuste"
             firma1.controlador = "ajuste"
             firma1.idAccion = reforma.id
-            firma1.accionVer = "partida"
+            firma1.accionVer = "techo"
             firma1.controladorVer = "reportesReforma"
             firma1.idAccionVer = reforma.id
             firma1.accionNegar = "devolverAprobarAjuste"
@@ -807,7 +807,7 @@ class AjusteController extends Shield {
             firma2.accion = "firmarAprobarAjuste"
             firma2.controlador = "ajuste"
             firma2.idAccion = reforma.id
-            firma2.accionVer = "partida"
+            firma2.accionVer = "techo"
             firma2.controladorVer = "reportesReforma"
             firma2.idAccionVer = reforma.id
             firma2.accionNegar = "devolverAprobarAjuste"
@@ -1005,18 +1005,20 @@ class AjusteController extends Shield {
                             //origen = detalle.asignacionOrigen
 
                             //caso 2: incremento a nueva asignacion
-                            origen = new Asignacion()
-                            origen.anio = reforma.anio
-                            origen.fuente = detalle.fuente
-                            origen.marcoLogico = detalle.componente
-                            origen.presupuesto = detalle.presupuesto
-                            origen.planificado = 0
-                            origen.unidad = detalle.componente.responsable
-                            origen.priorizado = 0
-                            if (!origen.save(flush: true)) {
-                                println "error al guardar la asignacion (AP) " + origen.errors
-                                errores += renderErrors(bean: destino)
-                                origen = null
+                            if (detalle.componente) {
+                                origen = new Asignacion()
+                                origen.anio = reforma.anio
+                                origen.fuente = detalle.fuente
+                                origen.marcoLogico = detalle.componente
+                                origen.presupuesto = detalle.presupuesto
+                                origen.planificado = 0
+                                origen.unidad = detalle.componente.responsable
+                                origen.priorizado = 0
+                                if (!origen.save(flush: true)) {
+                                    println "error al guardar la asignacion (AP) " + origen.errors
+                                    errores += renderErrors(bean: destino)
+                                    origen = null
+                                }
                             }
                             break;
                     }

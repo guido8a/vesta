@@ -21,18 +21,21 @@ class FirmaController extends Shield {
             eq("usuario", session.usuario)
             eq("estado", "S")
             isNull("tipoFirma")
+            order("fecha", "desc")
         }
 
         def firmasReformas = Firma.withCriteria {
             eq("usuario", session.usuario)
             eq("estado", "S")
             eq("tipoFirma", "RFRM")
+            order("fecha", "desc")
         }
 
         def firmasAjustes = Firma.withCriteria {
             eq("usuario", session.usuario)
             eq("estado", "S")
             eq("tipoFirma", "AJST")
+            order("fecha", "desc")
         }
 
         def actual
