@@ -49,6 +49,14 @@ class ReportesReformaController {
     }
 
     /**
+     * Acción que muestra el pdf de la solicitud de reforma de modificacion de techos
+     */
+    def techo() {
+        def reforma = Reforma.get(params.id)
+        return [reforma: reforma, det: generaDetallesSolicitudTecho(reforma).det]
+    }
+
+    /**
      * Acción que muestra el pdf de previsualización de reforma existente
      */
     def existentePreviewReforma() {
@@ -587,5 +595,64 @@ class ReportesReformaController {
             valorFinalDestino[keyDestino] = m.final
         }
         return [det: det, det2: det2, detallado: detallado, total: total, saldo: totalSaldo]
+    }
+
+    public static Map generaDetallesSolicitudTecho(Reforma reforma) {
+        def detalles = DetalleReforma.findAllByReforma(reforma, [sort: "asignacionOrigen"])
+        def valorFinalDestino = [:]
+        def det = [:]
+        def total = 0
+        detalles.each { detalle ->
+            total += detalle.valor
+            def key = ""
+            if (detalle.asignacionOrigen) {
+                key += detalle.asignacionOrigenId
+                if (!det[key]) {
+                    det[key] = [:]
+                    det[key].desde = [:]
+                    det[key].desde.proyecto = detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()
+                    det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
+                    det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
+                    det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
+//                det[key].desde.partida = detalle.asignacionOrigen.toString()
+                    det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
+                            " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+                    det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+                    det[key].desde.dism = 0
+                    det[key].desde.aum = 0
+                    det[key].desde.final = detalle.asignacionOrigen.priorizado
+
+                    det[key].hasta = []
+                }
+            } else {
+                key += detalle.presupuestoId
+                if (!det[key]) {
+                    det[key] = [:]
+                    det[key].desde = [:]
+                    det[key].desde.proyecto = detalle.componente.proyecto.toStringCompleto()
+                    det[key].desde.componente = detalle.componente.marcoLogico.toStringCompleto()
+                    det[key].desde.no = detalle.componente.numero
+                    det[key].desde.actividad = detalle.componente.toStringCompleto()
+//                det[key].desde.partida = detalle.asignacionOrigen.toString()
+                    det[key].desde.partida = "<strong>Priorizado:</strong> 0.00" +
+                            " <strong>Partida:</strong> ${detalle.presupuesto.numero}"
+                    det[key].desde.inicial = 0
+                    det[key].desde.dism = 0
+                    det[key].desde.aum = 0
+                    det[key].desde.final = 0
+
+                    det[key].hasta = []
+                }
+            }
+
+            if (detalle.valor < 0) {
+                det[key].desde.dism += detalle.valor * -1
+                det[key].desde.final -= detalle.valor * -1
+            } else {
+                det[key].desde.aum += detalle.valor
+                det[key].desde.final += detalle.valor
+            }
+        }
+        return [det: det, det2: [:], total: total]
     }
 }

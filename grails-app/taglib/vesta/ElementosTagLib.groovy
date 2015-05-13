@@ -966,6 +966,10 @@ class ElementosTagLib {
                     accion = "partida"
                     fileName = "partida"
                     break;
+                case "T":
+                    accion = "techo"
+                    fileName = "techo"
+                    break;
             }
             def title, clase
             if (preview) {
@@ -980,7 +984,11 @@ class ElementosTagLib {
                     title = "Reforma"
                     clase = "success"
                 } else {
-                    fileName = "ajuste_" + fileName + "_solicitud"
+                    if (reforma.tipo == "A") {
+                        fileName = "ajuste_" + fileName + "_solicitud"
+                    } else {
+                        fileName = "reforma_" + fileName + "_solicitud"
+                    }
                     title = "Solicitud"
                     clase = "info"
                 }

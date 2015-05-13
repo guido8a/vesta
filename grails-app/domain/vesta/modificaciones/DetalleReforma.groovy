@@ -25,7 +25,7 @@ class DetalleReforma {
      */
     Presupuesto presupuesto
     /**
-     * Nueva actividad componente
+     * Nueva actividad componente, en el caso de ajuste de techos es la actividad
      */
     MarcoLogico componente
     /**

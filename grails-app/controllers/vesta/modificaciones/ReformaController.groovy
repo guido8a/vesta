@@ -1353,6 +1353,7 @@ class ReformaController extends Shield {
                 accion = "existente"
 //                mensaje = "Devolución de solicitud de reforma a asignaciones existentes: "
         }
+
 //        println "ESTADO ANTES: " + reforma.estado + "    " + reforma.estado.codigo
         reforma.estado = EstadoAval.findByCodigo("D01") //devuelto
 //        println "ESTADO DESPUES: " + reforma.estado + "    " + reforma.estado.codigo
@@ -1636,6 +1637,11 @@ class ReformaController extends Shield {
         def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
         def mensaje = "Devolución de solicitud de ${tipoStr}"
+
+        reforma.firma1.estado = "S"
+        reforma.firma2.estado = "S"
+        reforma.firma1.save(flush: true)
+        reforma.firma2.save(flush: true)
 //        def accion, mensaje
 //        //E: existente, A: actividad, P: partida, I: incremento
 //        switch (reforma.tipoSolicitud) {

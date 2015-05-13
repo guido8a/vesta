@@ -170,6 +170,15 @@
 
                     <div class="row">
                         <div class="col-md-1">
+                            <label>Fuente</label>
+                        </div>
+
+                        <div class="col-md-2 grupo">
+                            <g:select name="fuente" from="${Fuente.list([sort: 'descripcion'])}" optionKey="id"
+                                      class="form-control required requiredCmb"/>
+                        </div>
+
+                        <div class="col-md-1">
                             <label>Monto a aumentar</label>
                         </div>
 
@@ -577,6 +586,8 @@
                         dataOrigen.monto = str_replace(",", "", $("#monto_dest").val());
                         dataOrigen.tipo_nombre = "Incremento";
                         dataOrigen.tipo_id = "+";
+                        dataOrigen.fuente_nombre = $("#fuente").find("option:selected").text();
+                        dataOrigen.fuente_id = $("#fuente").val();
 
                         if (validar2(dataOrigen)) {
                             addReforma2(dataOrigen);
@@ -692,7 +703,8 @@
                                 data["r" + c].monto = d.origen.monto;
                                 data["r" + c].tipo = d.origen.tipo_id;
                                 data["r" + c].actividad = d.origen.actividad_id;
-                                data["r" + c].partida = d.destino.partida_id;
+                                data["r" + c].partida = d.origen.partida_id;
+                                data["r" + c].fuente = d.origen.fuente_id;
 
                                 c++;
                             });

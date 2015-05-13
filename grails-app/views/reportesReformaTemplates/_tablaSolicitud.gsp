@@ -51,7 +51,7 @@
             <g:if test="${d.desde.proyecto}">
                 <tr class="info"
                     data-aso="${d.desde.asignacion}"
-                    data-asd="${d.hasta?.first()?.asignacion}">
+                    data-asd="${d.hasta && d.hasta.size() > 0 ? d.hasta?.first()?.asignacion : ''}">
                     <td>${d.desde.proyecto}</td>
                     <td>${d.desde.componente}</td>
                     <td>${d.desde.no}</td>
