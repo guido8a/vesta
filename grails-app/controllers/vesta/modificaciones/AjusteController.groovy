@@ -1008,15 +1008,15 @@ class AjusteController extends Shield {
                             origen = new Asignacion()
                             origen.anio = reforma.anio
                             origen.fuente = detalle.fuente
-                            destino.marcoLogico = origen.marcoLogico
-                            destino.presupuesto = detalle.presupuesto
-                            destino.planificado = 0
-                            destino.unidad = origen.marcoLogico.responsable
-                            destino.priorizado = 0
-                            if (!destino.save(flush: true)) {
-                                println "error al guardar la asignacion (AP) " + destino.errors
+                            origen.marcoLogico = detalle.componente
+                            origen.presupuesto = detalle.presupuesto
+                            origen.planificado = 0
+                            origen.unidad = detalle.componente.responsable
+                            origen.priorizado = 0
+                            if (!origen.save(flush: true)) {
+                                println "error al guardar la asignacion (AP) " + origen.errors
                                 errores += renderErrors(bean: destino)
-                                destino = null
+                                origen = null
                             }
                             break;
                     }
@@ -1070,8 +1070,8 @@ class AjusteController extends Shield {
         reforma.estado = EstadoAval.findByCodigo("D02") //devuelto al analista
         reforma.save(flush: true)
 
-        reforma.firma1.estado = "S"
-        reforma.firma2.estado = "S"
+        reforma.firma1.estado = "N"
+        reforma.firma2.estado = "N"
         reforma.firma1.save(flush: true)
         reforma.firma2.save(flush: true)
 

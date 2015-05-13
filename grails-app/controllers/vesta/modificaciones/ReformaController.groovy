@@ -1326,6 +1326,7 @@ class ReformaController extends Shield {
         def reforma = Reforma.get(params.id)
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
         def accion
+
         def mensaje = "Devolución de solicitud de ${tipoStr}: "
         //E: existente, A: actividad, P: partida, I: incremento
         switch (reforma.tipoSolicitud) {
@@ -1638,8 +1639,8 @@ class ReformaController extends Shield {
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
         def mensaje = "Devolución de solicitud de ${tipoStr}"
 
-        reforma.firma1.estado = "S"
-        reforma.firma2.estado = "S"
+        reforma.firma1.estado = "N"
+        reforma.firma2.estado = "N"
         reforma.firma1.save(flush: true)
         reforma.firma2.save(flush: true)
 //        def accion, mensaje
