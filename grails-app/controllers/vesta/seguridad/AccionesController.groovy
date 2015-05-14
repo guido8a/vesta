@@ -23,6 +23,10 @@ class AccionesController extends Shield {
     def acciones_ajax() {
         def acciones = Accn.withCriteria {
             eq("modulo", Modulo.get(params.id))
+            not {
+                ilike("nombre", "%_ajax%")
+                ilike("nombre", "%_old%")
+            }
             order("tipo", "asc")
             control {
                 order("nombre", "asc")
@@ -148,10 +152,11 @@ class AccionesController extends Shield {
                                     accn.control = Ctrl.findByNombre(ct.getName())
                                     accn.descripcion = s[2]
                                     accn.accnAuditable = 1
-                                    if (s[2] =~ "save" || s[2] =~ "update" || s[2] =~ "delete" || s[2] =~ "guardar")
+                                    if (s[2] =~ "save" || s[2] =~ "update" || s[2] =~ "delete" || s[2] =~ "guardar") {
                                         accn.tipo = Tpac.get(2)
-                                    else
+                                    } else {
                                         accn.tipo = Tpac.get(1)
+                                    }
                                     accn.modulo = Modulo.findByDescripcionLike("no%asignado")
                                     accn.save(flush: true)
                                     i++
@@ -193,6 +198,10 @@ class AccionesController extends Shield {
         def modulo = Modulo.get(params.id)
         def acciones = Accn.withCriteria {
             eq("modulo", modulo)
+            not {
+                ilike("nombre", "%_ajax%")
+                ilike("nombre", "%_old%")
+            }
             order("tipo", "asc")
             control {
                 order("nombre", "asc")

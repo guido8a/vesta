@@ -68,11 +68,11 @@ class ReformaController extends Shield {
 
         def total = 0
 
-        def reforma = null, detalles = []
+        def reforma = null, detalles = [], editable = true
         if (params.id) {
+            editable = false
             reforma = Reforma.get(params.id)
-
-            if (reforma.estado.codigo != "D01" && reforma.estado.codigo != "P01") {
+            if (reforma.estado.codigo != "D01") {
                 redirect(action: "lista")
                 return
             }
@@ -81,7 +81,7 @@ class ReformaController extends Shield {
             def devuelto = EstadoAval.findByCodigo("D01")
             def estados = [solicitadoSinFirma, devuelto]
             if (estados.contains(reforma.estado)) {
-//                editable = true
+                editable = true
             }
             if (detalles.size() > 0) {
                 total = detalles.sum { it.valor }
@@ -89,7 +89,7 @@ class ReformaController extends Shield {
         }
 
         return [proyectos      : proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
-                personasGerente: firmas.gerentes, total: total, reforma: reforma, detalles: detalles]
+                personasGerente: firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
     }
 
     /**
@@ -740,16 +740,9 @@ class ReformaController extends Shield {
      * Acción llamada con ajax que guarda una solicitud de reforma de asignaciones existentes
      */
     def saveExistente_ajax() {
-        println "Save existente: "
-        params.each { k, v ->
-            println k + ":\t" + v
-        }
         def anio = Anio.get(params.anio.toLong())
-        def personaRevisa = null
+        def personaRevisa
         def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-        if (params.preview && params.preview == "S") {
-            solicitadoSinFirma = EstadoAval.findByCodigo("P01")
-        }
 
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -760,22 +753,10 @@ class ReformaController extends Shield {
             if (!reforma) {
                 reforma = new Reforma()
             }
-            if (params.preview && params.preview == "S") {
-                println "es preview: no hay firma aun"
-            } else {
-                if (reforma.firmaSolicitud) {
-                    personaRevisa = reforma.firmaSolicitud.usuario
-                } else {
-                    personaRevisa = Persona.get(params.firma.toLong())
-                }
-            }
+            personaRevisa = reforma.firmaSolicitud.usuario
         } else {
             reforma = new Reforma()
-            if (params.preview && params.preview == "S") {
-                println "es preview: no hay firma aun"
-            } else {
-                personaRevisa = Persona.get(params.firma.toLong())
-            }
+            personaRevisa = Persona.get(params.firma.toLong())
         }
 
         reforma.anio = anio
@@ -790,29 +771,13 @@ class ReformaController extends Shield {
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
-        def haceFirma = false
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
         if (params.id) {
-            if (params.preview && params.preview == "S") {
-                println "es preview: no se guarda la firma aun"
-            } else {
-                def firmaRevisa = reforma.firmaSolicitud
-                if (firmaRevisa) {
-                    firmaRevisa.estado = "S"
-                    firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-                    firmaRevisa.save(flush: true)
-                } else {
-                    haceFirma = true
-                }
-            }
+            def firmaRevisa = reforma.firmaSolicitud
+            firmaRevisa.estado = "S"
+            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            firmaRevisa.save(flush: true)
         } else {
-            if (params.preview && params.preview == "S") {
-                println "es preview: no se guarda la firma aun"
-            } else {
-                haceFirma = true
-            }
-        }
-        if (haceFirma && personaRevisa) {
             def firmaRevisa = new Firma()
             firmaRevisa.usuario = personaRevisa
             firmaRevisa.fecha = now
@@ -835,20 +800,16 @@ class ReformaController extends Shield {
             reforma.firmaSolicitud = firmaRevisa
             reforma.save(flush: true)
         }
-        if (params.preview && params.preview == "S") {
-            println "es preview: no se manda la alerta aun"
-        } else {
-            def alerta = new Alerta()
-            alerta.from = usu
-            alerta.persona = personaRevisa
-            alerta.fechaEnvio = now
-            alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            alerta.controlador = "firma"
-            alerta.accion = "firmasPendientes"
-            alerta.id_remoto = 0
-            if (!alerta.save(flush: true)) {
-                println "error alerta: " + alerta.errors
-            }
+        def alerta = new Alerta()
+        alerta.from = usu
+        alerta.persona = personaRevisa
+        alerta.fechaEnvio = now
+        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+        alerta.controlador = "firma"
+        alerta.accion = "firmasPendientes"
+        alerta.id_remoto = 0
+        if (!alerta.save(flush: true)) {
+            println "error alerta: " + alerta.errors
         }
 
         def errores = ""
@@ -876,11 +837,7 @@ class ReformaController extends Shield {
             }
         }
         if (errores == "") {
-            if (params.preview && params.preview == "S") {
-                render "PREVIEW*" + reforma.id
-            } else {
-                render "SUCCESS*Reforma solicitada exitosamente"
-            }
+            render "SUCCESS*Reforma solicitada exitosamente"
         } else {
             render "ERROR*" + errores
         }

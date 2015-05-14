@@ -935,49 +935,6 @@ class ElementosTagLib {
         out << "" + str
     }
 
-    def linkEditarReforma = { attrs ->
-        Reforma reforma = attrs.reforma
-        def str = ""
-        if (reforma.estado.codigo == 'P01' && attrs.usuario.id == reforma.personaId) {
-            if (!reforma) {
-                out << "ERROR"
-            } else {
-                def accion = ""
-                def controlador = "reforma"
-                switch (reforma.tipoSolicitud) {
-                    case "E":
-                        accion = "existente"
-                        break;
-                    case "A":
-                        accion = "actividad"
-                        break;
-                    case "C":
-                        accion = "incrementoActividad"
-                        break;
-                    case "I":
-                        accion = "incremento"
-                        break;
-                    case "P":
-                        accion = "partida"
-                        break;
-                    case "T":
-                        accion = "techo"
-                        break;
-                }
-
-                if (reforma.tipo == "A") {
-                    controlador = "ajuste"
-                }
-
-                str = "<a href=\"${g.createLink(controller: controlador, action: accion, id: reforma.id)}\""
-                str += "class='btn btn-warning btnEdit' title='Modificar'>"
-                str += "<i class='fa fa-pencil'></i>"
-                str += "</a>"
-            }
-            out << str
-        }
-    }
-
     def linkPdfReforma = { attrs ->
         Reforma reforma = attrs.reforma
         if (!reforma) {
@@ -1040,8 +997,8 @@ class ElementosTagLib {
             fileName += ".pdf"
 
             def str = "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: 'reportesReforma', action: accion, id: reforma.id)}&filename=${fileName}\""
-            str += "class='btn btn-${clase} btnVer' title='${title}'>"
-            str += "<i class='fa fa-search'></i>"
+            str += "class='btn btn-sm btn-${clase} btnVer' title='${title}'>"
+            str += "<i class='fa fa-search'></i> ${title}"
             str += "</a>"
             out << str
         }
