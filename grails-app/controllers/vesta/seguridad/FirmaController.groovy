@@ -54,7 +54,7 @@ class FirmaController extends Shield {
         def imgFirma = "<i class='fa fa-pencil'></i>";
 //        def imgFirma = "<img src='${resource(dir: 'images/ico', file: 'feather.png')}' alt='Firmar'/>"
 
-        return [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes,firmasAvales: firmasAvales, actual: actual, imgFirma: imgFirma]
+        return [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, firmasAvales: firmasAvales, actual: actual, imgFirma: imgFirma]
 
     }
 /**

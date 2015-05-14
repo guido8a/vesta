@@ -11,22 +11,6 @@
             <li>
                 <strong>Tipo de ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>
                 <elm:tipoReforma reforma="${reforma}"/>
-                %{--${reforma.tipo == 'R' ? 'Reforma' : 'Ajuste'}--}%
-                %{--<g:if test="${tipo == 'e'}">--}%
-                %{--a asignaciones existentes--}%
-                %{--</g:if>--}%
-                %{--<g:elseif test="${tipo == 'a'}">--}%
-                %{--por creación de nuevas actividades--}%
-                %{--</g:elseif>--}%
-                %{--<g:elseif test="${tipo == 'c'}">--}%
-                %{--por incremento con creación de nuevas actividades--}%
-                %{--</g:elseif>--}%
-                %{--<g:elseif test="${tipo == 'i'}">--}%
-                %{--por incremento--}%
-                %{--</g:elseif>--}%
-                %{--<g:elseif test="${tipo == 'p'}">--}%
-                %{--partidas presupuestarias--}%
-                %{--</g:elseif>--}%
             </li>
             <li>
                 <strong>Matriz de la ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>
@@ -41,7 +25,7 @@
                 <strong>Justificación ${reforma.tipo == 'R' ? 'de la reforma' : 'del ajuste'} al POA solicitada:</strong>
 
                 <div class="justificacion">
-                    ${reforma.concepto}
+                    ${reforma.concepto.encodeAsHTML()}
                 </div>
             </li>
         </ol>
