@@ -485,11 +485,13 @@ class AvalesController extends vesta.seguridad.Shield {
         def band = true
         def message = ""
         def now = new Date()
+/*
         if (proceso.fechaInicio < now) {    // ya se inició el proceso ... no se puede editar ni solicitar aval
             message = "El proceso ${proceso.nombre}  (${proceso.fechaInicio.format('dd-MM-yyyy')} - " +
                     "${proceso.fechaFin.format('dd-MM-yyyy')}) esta en ejecución, si desea solicitar un aval " +
                     "modifique las fechas de inicio y fin"
         }
+*/
         def avales = Aval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E02"), EstadoAval.findByCodigo("E05"), EstadoAval.findByCodigo("EF1")])
         def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
         def disponible = proceso.getMonto()
