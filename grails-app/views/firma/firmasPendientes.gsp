@@ -175,7 +175,7 @@
                         </table>
                     </g:if>
                     <g:else>
-                        <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen firmas de reformas pendientes</div>
+                        <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen firmas de avales pendientes</div>
                     </g:else>
                 </div>
 
