@@ -19,6 +19,7 @@ import vesta.seguridad.Shield
 class ModificacionesPoaController extends Shield {
 
     def firmasService
+    def proyectosService
 
     def index = {}
 
@@ -32,10 +33,11 @@ class ModificacionesPoaController extends Shield {
                 proyectos.add(p)
             }
         }
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
 
         proyectos = proyectos.sort { it.nombre }
 
@@ -66,10 +68,11 @@ class ModificacionesPoaController extends Shield {
 
         def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
-        if (params.anio)
+        if (params.anio) {
             actual = Anio.get(params.anio)
-        else
+        } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -144,8 +147,8 @@ class ModificacionesPoaController extends Shield {
 
 
     def anioProyecto = {
-    def anio = Anio.get(params.id)
-    return [anio: anio]
+        def anio = Anio.get(params.id)
+        return [anio: anio]
     }
 
     def componenteNa = {
@@ -166,7 +169,9 @@ class ModificacionesPoaController extends Shield {
     def componentesProyectoAjuste_ajax = {
 //        println "comp "+params
         def proyecto = Proyecto.get(params.id)
-        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
+//        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
+        def anio = Anio.get(params.anio)
+        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto)
         [comps: comps, idCombo: params.idCombo, div: params.div]
     }
 
@@ -174,15 +179,18 @@ class ModificacionesPoaController extends Shield {
     def componentesProyectoAjuste2_ajax = {
 //        println "comp "+params
         def proyecto = Proyecto.get(params.id)
-        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
+//        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
+        def anio = Anio.get(params.anio)
+        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto)
         [comps: comps, idCombo: params.idCombo, div: params.div]
     }
 
     def getValor = {
         def asg = Asignacion.get(params.id)
         def valor = asg.priorizado
-        if (!valor)
+        if (!valor) {
             valor = 0
+        }
         render "" + valor
     }
 
@@ -332,9 +340,9 @@ class ModificacionesPoaController extends Shield {
 
     def firmarAjuste() {
         def firma = Firma.findByKey(params.key)
-        if (!firma)
+        if (!firma) {
             response.sendError(403)
-        else {
+        } else {
             def ajuste = ModificacionAsignacion.findByFirma1OrFirma2(firma, firma)
 
             if (ajuste.firma1.estado == "F" && ajuste.firma2.estado == "F") {
@@ -470,9 +478,9 @@ class ModificacionesPoaController extends Shield {
             firma.controlador = "modificacionesPoa"
             firma.documento = "SolicitudDeModificacionPoa_" + solicitud.id
             firma.concepto = "Solicitud de modificación del P.O.A. "
-            if (!firma.save(flush: true))
+            if (!firma.save(flush: true)) {
                 println "error firma save " + firma.errors
-            else {
+            } else {
                 solicitud.firmaSol = firma
                 solicitud.save(flush: true)
             }
@@ -483,9 +491,9 @@ class ModificacionesPoaController extends Shield {
     }
     def firmarSolicitud = {
         def firma = Firma.findByKey(params.key)
-        if (!firma)
+        if (!firma) {
             response.sendError(403)
-        else {
+        } else {
             def sol = SolicitudModPoa.findByFirmaSol(firma)
             sol.estado = 0
             sol.save(flush: true)
@@ -496,7 +504,7 @@ class ModificacionesPoaController extends Shield {
     }
 
     def guardarSolicitudNueva = {
-        println "params nueva"+params
+        println "params nueva" + params
         def inicio = new Date().parse("dd-MM-yyyy", params.inicio)
         def fin = new Date().parse("dd-MM-yyyy", params.fin)
         def solicitud = new SolicitudModPoa()
@@ -695,8 +703,9 @@ class ModificacionesPoaController extends Shield {
         firma1.documento = "reformaPoa_" + sol.id
         firma1.concepto = "Aprobación de la reforma del P.O.A. No${sol.id}"
         firma1.esPdf = "S"
-        if (!firma1.save(flush: true))
+        if (!firma1.save(flush: true)) {
             println "error firma1 " + firma1.errors
+        }
         def firma2 = new Firma()
         firma2.usuario = Persona.get(params.firma2)
         firma2.accionVer = "reformaPoa"
@@ -707,8 +716,9 @@ class ModificacionesPoaController extends Shield {
         firma2.documento = "reformaPoa_" + sol.id
         firma2.concepto = "Aprobación de la reforma del P.O.A. No${sol.id}"
         firma2.esPdf = "S"
-        if (!firma2.save(flush: true))
+        if (!firma2.save(flush: true)) {
             println "error firma2 " + firma2.errors
+        }
         sol.firma1 = firma1
         sol.firma2 = firma2
 
@@ -727,9 +737,9 @@ class ModificacionesPoaController extends Shield {
      */
     def firmarModificacion = {
         def firma = Firma.findByKey(params.key)
-        if (!firma)
+        if (!firma) {
             response.sendError(403)
-        else {
+        } else {
             def sol = SolicitudModPoa.findByFirma1OrFirma2(firma, firma)
             if (sol.firma1.key != null && sol.firma2.key != null) {
                 sol.estado = 1
@@ -805,10 +815,11 @@ class ModificacionesPoaController extends Shield {
                 nueva.proyecto = origen.marcoLogico.proyecto
                 nueva.categoria = origen.marcoLogico.categoria
                 def maxNum = MarcoLogico.list([sort: "numero", order: "desc", max: 1])?.pop()?.numero
-                if (maxNum)
+                if (maxNum) {
                     maxNum = maxNum + 1
-                else
+                } else {
                     maxNum = 1
+                }
                 nueva.numero = maxNum
                 if (!nueva.save(flush: true)) {
                     println "error save actividad " + nueva.errors

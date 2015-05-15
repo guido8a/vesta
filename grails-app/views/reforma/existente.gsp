@@ -34,7 +34,7 @@
             </div>
         </g:if>
 
-        <!-- botones -->
+    <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link action="reformas" class="btn btn-default btnCrear">
@@ -53,7 +53,7 @@
 
                 <div class="col-md-2">
                     <g:if test="${editable}">
-                        <g:select from="${Anio.findAllByEstado(1, [sort: 'anio'])}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
+                        <g:select from="${[actual]}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
                                   class="form-control input-sm required requiredCombo"/>
                     </g:if>
                     <g:else>
@@ -512,7 +512,8 @@
                         type    : "POST",
                         url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste_ajax')}",
                         data    : {
-                            id : $("#proyecto").val()
+                            id   : $("#proyecto").val(),
+                            anio : $("#anio").val()
                         },
                         success : function (msg) {
                             $("#divComp").html(msg);
@@ -529,6 +530,7 @@
                         url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste2_ajax')}",
                         data    : {
                             id      : $("#proyectoDest").val(),
+                            anio    : $("#anio").val(),
                             idCombo : "compDest",
                             div     : "divAct_dest"
                         },

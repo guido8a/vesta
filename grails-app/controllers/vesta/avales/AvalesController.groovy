@@ -22,6 +22,7 @@ class AvalesController extends vesta.seguridad.Shield {
 
     def mailService
     def firmasService
+    def proyectosService
 
     /**
      * Acción que muestra la pantalla de lista de procesos por proyecto
@@ -221,7 +222,9 @@ class AvalesController extends vesta.seguridad.Shield {
     def cargarActividades_ajax = {
         def comp = MarcoLogico.get(params.id)
         def unidad = UnidadEjecutora.get(params.unidad)
-        return [acts: MarcoLogico.findAllByMarcoLogicoAndResponsable(comp, unidad, [sort: "numero"])]
+        def anio = Anio.get(params.anio)
+        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp)
+        return [acts: acts]
     }
 
     /**
@@ -230,10 +233,13 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def cargarActividadesAjuste_ajax = {
         def comp = MarcoLogico.get(params.id)
-        def acts = []
-        if (params.id != "-1") {
-            acts = MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"])
-        }
+//        def acts = []
+//        if (params.id != "-1") {
+//            acts = MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"])
+//        }
+//        def acts = proyectosService.getActividadesUnidadComponente(session.asignaciones, comp)
+        def anio = Anio.get(params.anio)
+        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp)
         return [acts: acts, div: params.div]
     }
 
@@ -243,10 +249,13 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def cargarActividadesAjuste2_ajax = {
         def comp = MarcoLogico.get(params.id)
-        def acts = []
-        if (params.id != "-1") {
-            acts = MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"])
-        }
+//        def acts = []
+//        if (params.id != "-1") {
+//            acts = MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"])
+//        }
+//        def acts = proyectosService.getActividadesUnidadComponente(session.asignaciones, comp)
+        def anio = Anio.get(params.anio)
+        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp)
         return [acts: acts, div: params.div]
     }
 
@@ -260,7 +269,10 @@ class AvalesController extends vesta.seguridad.Shield {
         def act = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
 //        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
-        [asgs: Asignacion.findAllByMarcoLogicoAndAnio(act, anio)]
+//        def asg = Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
+//        def asg = proyectosService.getAsignacionesUnidadActividad(session.asignaciones, act)
+        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act)
+        [asgs: asg]
     }
 
     /**
@@ -273,7 +285,8 @@ class AvalesController extends vesta.seguridad.Shield {
         def act = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
 //        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
-        [asgs: Asignacion.findAllByMarcoLogicoAndAnio(act, anio)]
+        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act)
+        [asgs: asg]
     }
 
     /**
@@ -356,6 +369,8 @@ class AvalesController extends vesta.seguridad.Shield {
             }
         }
 
+        proyectos = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
+
         return [proyectos: proyectos, proceso: proceso, actual: actual, band: band, unidad: unidad, readOnly: readOnly]
     }
 
@@ -424,7 +439,10 @@ class AvalesController extends vesta.seguridad.Shield {
                 actual = Anio.findByAnio(new Date().format("yyyy"))
             }
 
-            return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual]
+
+            def componentes = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), actual, proceso.proyecto)
+
+            return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual, componentes: componentes]
         } else {
             redirect(action: "nuevaSolicitud")
         }
@@ -638,8 +656,7 @@ class AvalesController extends vesta.seguridad.Shield {
         /* montoProceso: monto del proceso
            referencial:  saldo de la asignación
          */
-        if (montoProceso > referencial)
-        {
+        if (montoProceso > referencial) {
             println "if "
             def path = servletContext.getRealPath("/") + "pdf/solicitudAval/"
             new File(path).mkdirs()
@@ -661,7 +678,7 @@ class AvalesController extends vesta.seguridad.Shield {
                         fileName += obj
                     }
                 }
-                if(fileName.size() > 0){
+                if (fileName.size() > 0) {
                     ext = okContents[f.getContentType()]
                     fileName = fileName.size() < 40 ? fileName : fileName[0..39]
                     fileName = fileName.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
@@ -684,7 +701,7 @@ class AvalesController extends vesta.seguridad.Shield {
 
 //                    println ">>>> " + params
 
-                    if(fileName.size() > 0){
+                    if (fileName.size() > 0) {
                         f.transferTo(new File(pathFile))  // guarda el archivo subido al nuevo path
                     }
                     def proceso = ProcesoAval.get(params.proceso)

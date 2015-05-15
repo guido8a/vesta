@@ -7,10 +7,11 @@
             type    : "POST",
             url     : "${createLink(action:'cargarActividadesAjuste_ajax',controller: 'avales')}",
             data    : {
-                id  : $("#${idCombo?idCombo:'comp'}").val()
+                id   : $("#${idCombo?idCombo:'comp'}").val(),
+                anio : $("#anio").val()
                 <g:if test="${div}">
                 ,
-                div : "divAsg_dest"
+                div  : "divAsg_dest"
                 </g:if>
             },
             success : function (msg) {

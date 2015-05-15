@@ -1,4 +1,4 @@
-<%@ page import="vesta.seguridad.Prfl; vesta.seguridad.Persona" %>
+<%@ page import="vesta.parametros.UnidadEjecutora; vesta.seguridad.Prfl; vesta.seguridad.Persona" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!personaInstance}">
@@ -114,7 +114,7 @@
                         </label>
 
                         <div class="col-md-8">
-                            <g:select id="unidad" name="unidad.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" value="${personaInstance?.unidad?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                            <g:select id="unidad" name="unidad.id" from="${UnidadEjecutora.list([sort:'nombre'])}" optionKey="id" value="${personaInstance?.unidad?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                         </div>
 
                     </span>

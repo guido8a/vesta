@@ -14,8 +14,9 @@
             type    : "POST",
             url     : "${createLink(action:'cargarActividadesAjuste2_ajax',controller: 'avales')}",
             data    : {
-                id  : $("#compDest").val(),
-                div : "divAsg_dest"
+                id   : $("#compDest").val(),
+                anio : $("#anio").val(),
+                div  : "divAsg_dest"
             },
             success : function (msg) {
                 $("#divAct_dest").html(msg);

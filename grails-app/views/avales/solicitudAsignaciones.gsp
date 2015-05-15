@@ -90,7 +90,7 @@
 
                         <div class="col-md-4" id="div_comp">
                             <g:if test="${!readOnly}">
-                                <g:select name="comp" from="${MarcoLogico.findAllByProyectoAndTipoElemento(proceso?.proyecto, TipoElemento.get(2))}" class="form-control input-sm" optionKey="id" optionValue="objeto" id="comp" noSelection="['-1': 'Seleccione...']"/>
+                                <g:select name="comp" from="${componentes}" class="form-control input-sm" optionKey="id" optionValue="objeto" id="comp" noSelection="['-1': 'Seleccione...']"/>
                             </g:if>
                             <g:else>
                                 <p class="form-control-static">
@@ -276,6 +276,7 @@
                         url     : "${createLink(action:'cargarActividades_ajax')}",
                         data    : {
                             id     : $("#comp").val(),
+                            anio   : $("#anio").val(),
                             unidad : "${unidad?.id}"
                         },
                         success : function (msg) {

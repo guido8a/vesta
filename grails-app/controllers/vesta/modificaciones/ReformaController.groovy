@@ -1,5 +1,6 @@
 package vesta.modificaciones
 
+import vesta.ProyectosService
 import vesta.alertas.Alerta
 import vesta.avales.EstadoAval
 import vesta.parametros.TipoElemento
@@ -26,6 +27,7 @@ import vesta.seguridad.Shield
 class ReformaController extends Shield {
 
     def firmasService
+    def proyectosService
 
     /**
      * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
@@ -38,26 +40,34 @@ class ReformaController extends Shield {
      * Acción que permite realizar una solicitud de reforma a asignaciones existentes
      */
     def existente() {
-        def proyectos = []
+
         def actual
-        Asignacion.list().each {
-//            println "p "+proyectos
-            def p = it.marcoLogico.proyecto
-            if (!proyectos?.id.contains(p.id)) {
-                proyectos.add(p)
-            }
-        }
         if (params.anio) {
             actual = Anio.get(params.anio)
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
 
-        proyectos = proyectos.sort { it.nombre }
+//        def proyectos = []
+//        Asignacion.list().each {
+////            println "p "+proyectos
+//            def p = it.marcoLogico.proyecto
+//            if (!proyectos?.id.contains(p.id)) {
+//                proyectos.add(p)
+//            }
+//        }
 
-        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+//        proyectosService.getAsignacionesUnidad(UnidadEjecutora.get(session.unidad.id))
+//        proyectosService.getAsignacionesUnidad(UnidadEjecutora.findByCodigo("DTH"))
+//        proyectosService.getAsignacionesUnidad(UnidadEjecutora.get(143))
+//        proyectosService.getAsignacionesUnidad(UnidadEjecutora.get(133))
 
-        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
+//        proyectos = proyectos.sort { it.nombre }
+//
+//        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+//
+//        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -96,26 +106,35 @@ class ReformaController extends Shield {
      * Acción que permite realizar una solicitud de reforma a nueva partida
      */
     def partida() {
-        def proyectos = []
+
         def actual
-        Asignacion.list().each {
-//            println "p "+proyectos
-            def p = it.marcoLogico.proyecto
-            if (!proyectos?.id.contains(p.id)) {
-                proyectos.add(p)
-            }
-        }
         if (params.anio) {
             actual = Anio.get(params.anio)
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
 
-        proyectos = proyectos.sort { it.nombre }
-
-        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
-
-        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
+//        def proyectos = []
+//        def actual
+//        Asignacion.list().each {
+////            println "p "+proyectos
+//            def p = it.marcoLogico.proyecto
+//            if (!proyectos?.id.contains(p.id)) {
+//                proyectos.add(p)
+//            }
+//        }
+//        if (params.anio) {
+//            actual = Anio.get(params.anio)
+//        } else {
+//            actual = Anio.findByAnio(new Date().format("yyyy"))
+//        }
+//
+//        proyectos = proyectos.sort { it.nombre }
+//
+//        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+//
+//        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -154,26 +173,33 @@ class ReformaController extends Shield {
      * Acción que permite realizar una solicitud de reforma a nueva actividad
      */
     def actividad() {
-        def proyectos = []
         def actual
-        Asignacion.list().each {
-//            println "p "+proyectos
-            def p = it.marcoLogico.proyecto
-            if (!proyectos?.id.contains(p.id)) {
-                proyectos.add(p)
-            }
-        }
         if (params.anio) {
             actual = Anio.get(params.anio)
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-
-        proyectos = proyectos.sort { it.nombre }
-
-        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
-
-        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
+//        def proyectos = []
+//        def actual
+//        Asignacion.list().each {
+////            println "p "+proyectos
+//            def p = it.marcoLogico.proyecto
+//            if (!proyectos?.id.contains(p.id)) {
+//                proyectos.add(p)
+//            }
+//        }
+//        if (params.anio) {
+//            actual = Anio.get(params.anio)
+//        } else {
+//            actual = Anio.findByAnio(new Date().format("yyyy"))
+//        }
+//
+//        proyectos = proyectos.sort { it.nombre }
+//
+//        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+//
+//        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -211,27 +237,33 @@ class ReformaController extends Shield {
     /**
      * Acción que permite realizar una solicitud de reforma a nueva actividad sin asignación de origen
      */
-    def incrementoActividad() {
-        def proyectos = []
-        def actual
-        Asignacion.list().each {
-//            println "p "+proyectos
-            def p = it.marcoLogico.proyecto
-            if (!proyectos?.id.contains(p.id)) {
-                proyectos.add(p)
-            }
-        }
+    def incrementoActividad() {  def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-
-        proyectos = proyectos.sort { it.nombre }
-
-        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
-
-        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
+//        def proyectos = []
+//        def actual
+//        Asignacion.list().each {
+////            println "p "+proyectos
+//            def p = it.marcoLogico.proyecto
+//            if (!proyectos?.id.contains(p.id)) {
+//                proyectos.add(p)
+//            }
+//        }
+//        if (params.anio) {
+//            actual = Anio.get(params.anio)
+//        } else {
+//            actual = Anio.findByAnio(new Date().format("yyyy"))
+//        }
+//
+//        proyectos = proyectos.sort { it.nombre }
+//
+//        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+//
+//        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -270,26 +302,33 @@ class ReformaController extends Shield {
      * Acción que permite realizar una solicitud de reforma de incremento
      */
     def incremento() {
-        def proyectos = []
         def actual
-        Asignacion.list().each {
-//            println "p "+proyectos
-            def p = it.marcoLogico.proyecto
-            if (!proyectos?.id.contains(p.id)) {
-                proyectos.add(p)
-            }
-        }
         if (params.anio) {
             actual = Anio.get(params.anio)
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-
-        proyectos = proyectos.sort { it.nombre }
-
-        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
-
-        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
+//        def proyectos = []
+//        def actual
+//        Asignacion.list().each {
+////            println "p "+proyectos
+//            def p = it.marcoLogico.proyecto
+//            if (!proyectos?.id.contains(p.id)) {
+//                proyectos.add(p)
+//            }
+//        }
+//        if (params.anio) {
+//            actual = Anio.get(params.anio)
+//        } else {
+//            actual = Anio.findByAnio(new Date().format("yyyy"))
+//        }
+//
+//        proyectos = proyectos.sort { it.nombre }
+//
+//        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+//
+//        def proyectos3 = Proyecto.findAllByAprobadoPoaAndUnidadAdministradora('S', session.unidad, [sort: 'nombre'])
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -364,7 +403,7 @@ class ReformaController extends Shield {
         def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
         def tipo = 'R'
         def estados = [estadoAprobadoSinFirma, estadoAprobado, estadoNegado]
-        def reformas = Reforma.findAllByEstadoInListAndTipo(estados, tipo,  [sort: "fecha", order: "desc"])
+        def reformas = Reforma.findAllByEstadoInListAndTipo(estados, tipo, [sort: "fecha", order: "desc"])
         return [reformas: reformas]
     }
 
