@@ -86,6 +86,7 @@ class FirmasService {
                 firma.key = key
                 firma.path = nombre
                 firma.estado = "F"
+                println("FIRMA " + firma)
                 firma.save(flush: true)
                 return firma
             } catch (e) {

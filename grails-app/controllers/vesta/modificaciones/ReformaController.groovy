@@ -367,7 +367,12 @@ class ReformaController extends Shield {
      * Acción que muestra la lista de todas las reformas, con su estado y una opción para ver el pdf
      */
     def lista() {
-        def reformas = Reforma.findAllByTipo('R', [sort: "fecha", order: "desc"])
+
+        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+        def personas = Persona.findAllByUnidadInList(unidades)
+
+        def reformas = Reforma.findAllByTipoAndPersonaInList('R',personas,  [sort: "fecha", order: "desc"])
+
         return [reformas: reformas]
     }
 
@@ -378,13 +383,17 @@ class ReformaController extends Shield {
         def estadoSolicitado = EstadoAval.findByCodigo("E01")
         def estadoDevueltoAnalista = EstadoAval.findByCodigo("D02")
         def estados = [estadoSolicitado, estadoDevueltoAnalista]
-//        def reformas = Reforma.findAllByTipoAndEstadoInList("R", estados, [sort: "fecha", order: "desc"])
+        def reformas = Reforma.findAllByTipoAndEstadoInList("R", estados, [sort: "fecha", order: "desc"])
 
-        def reformas = Reforma.withCriteria {
-            eq("tipo", "R")
-            inList("estado", estados)
-            order("fecha", "asc")
-        }
+//        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+//        def personas = Persona.findAllByUnidadInList(unidades)
+//
+//        def reformas = Reforma.withCriteria {
+//            eq("tipo", "R")
+//            inList("estado", estados)
+//            inList("persona", personas)
+//            order("fecha", "asc")
+//        }
 
 //        println params
 //        println reformas
@@ -403,7 +412,15 @@ class ReformaController extends Shield {
         def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
         def tipo = 'R'
         def estados = [estadoAprobadoSinFirma, estadoAprobado, estadoNegado]
-        def reformas = Reforma.findAllByEstadoInListAndTipo(estados, tipo, [sort: "fecha", order: "desc"])
+//        def reformas = Reforma.findAllByEstadoInListAndTipo(estados, tipo, [sort: "fecha", order: "desc"])
+        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.id))
+        def personas = Persona.findAllByUnidadInList(unidades)
+        def reformas = Reforma.withCriteria {
+            eq("tipo", tipo)
+            inList("estado", estados)
+            inList("persona", personas)
+            order("fecha", "desc")
+        }
         return [reformas: reformas]
     }
 

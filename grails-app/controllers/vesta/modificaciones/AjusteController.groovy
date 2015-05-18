@@ -19,6 +19,7 @@ import vesta.seguridad.Shield
 class AjusteController extends Shield {
 
     def firmasService
+    def proyectosService
 
     /**
      * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
@@ -31,7 +32,10 @@ class AjusteController extends Shield {
      * Acción que muestra la lista de todos las reformas, con su estado y una opción para ver el pdf
      */
     def lista() {
-        def reformas = Reforma.findAllByTipo('A', [sort: "fecha", order: "desc"])
+        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+        def personas = Persona.findAllByUnidadInList(unidades)
+
+        def reformas = Reforma.findAllByTipoAndPersonaInList('A',personas, [sort: "fecha", order: "desc"])
         return [reformas: reformas]
     }
 

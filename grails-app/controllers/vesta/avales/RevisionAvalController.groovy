@@ -12,6 +12,7 @@ class RevisionAvalController extends Shield {
 
     def mailService
     def firmasService
+    def proyectosService
 
     /**
      * Acción que muestra la lista de solicitudes de aval pendientes (estadoAval código E01)
@@ -99,6 +100,18 @@ class RevisionAvalController extends Shield {
         def orderBy = ""
         def externos = ["usuario", "proceso", "proyecto"]
         def band = true
+
+        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+        def personasLista = Persona.findAllByUnidadInList(unidades)
+
+        println("-->" + unidades)
+
+
+
+
+
+
+
         if (params.numero && params.numero != "") {
             numero = " and numero like ('%${numero}%')"
         }
@@ -150,17 +163,29 @@ class RevisionAvalController extends Shield {
             datos = datosTemp
 //            println "datos proceso "+datos
         }
-        if (params.requirente) {
-            def req = UnidadEjecutora.get(params.requirente.toLong())
+//        def datosTemp2 = []
+//        datos.each { d->
+//             SolicitudAval.findAllByAval(d).each { s->
+//                 if(!datosTemp2.contains(d ) && unidades.contains(s.unidad)) {
+//                     datosTemp2 += d
+//                 }
+//             }
+//
+//
+//        }
+//        datos = datosTemp2
+//        if (params.requirente) {
+//            def req = UnidadEjecutora.get(params.requirente.toLong())
             def datosTemp = []
             datos.each { av ->
-                def solicitud = SolicitudAval.countByAvalAndUnidad(av, req)
+//                def solicitud = SolicitudAval.countByAvalAndUnidad(av, req)
+                def solicitud = SolicitudAval.countByAvalAndUnidadInList(av, unidades)
                 if (solicitud > 0) {
                     datosTemp.add(av)
                 }
             }
             datos = datosTemp
-        }
+//        }
         if (!band) {
             switch (params.sort) {
                 case "proceso":
@@ -198,6 +223,7 @@ class RevisionAvalController extends Shield {
         def datos = []
         def fechaInicio
         def fechaFin
+        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy hh:mm:ss", "31-12-" + anio + " 23:59:59")
@@ -207,9 +233,10 @@ class RevisionAvalController extends Shield {
             datos = SolicitudAval.withCriteria {
                 ne("estado", estadoSinFirma)
                 between("fecha", fechaInicio, fechaFin)
-                if (requirente) {
-                    eq("unidad", requirente)
-                }
+//                if (requirente) {
+//                    eq("unidad", requirente)
+//                }
+                inList("unidad", unidades)
                 if (numero && numero != "") {
                     aval {
                         ilike("numero", "%" + numero + "%")
@@ -911,7 +938,9 @@ class RevisionAvalController extends Shield {
      */
     def pendientes() {
         def estados = [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("D02")]
-        def solicitudes = SolicitudAval.findAllByEstadoInList(estados)
+        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+        def personas = Persona.findAllByUnidadInList(unidades)
+        def solicitudes = SolicitudAval.findAllByEstadoInListAndUnidadInList(estados, unidades)
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
