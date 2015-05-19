@@ -831,11 +831,13 @@
                 });
 
                 $('#btnSearchArbol').click(function () {
+                    $treeContainer.jstree("open_all");
                     $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
                     return false;
                 });
                 $("#searchArbol").keypress(function (ev) {
                     if (ev.keyCode == 13) {
+                        $treeContainer.jstree("open_all");
                         $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
                         return false;
                     }

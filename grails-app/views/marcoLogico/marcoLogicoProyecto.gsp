@@ -52,6 +52,11 @@
     </div>
 </g:if>
 
+<div class="alert alert-info" style="text-align: center">
+    <strong>Proyecto: ${proyecto?.nombre}</strong>
+</div>
+
+
 <g:if test="${componentes.size() > 0}">
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <g:set var="tc" value="0"/>
