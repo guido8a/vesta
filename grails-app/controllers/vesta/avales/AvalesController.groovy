@@ -329,12 +329,8 @@ class AvalesController extends vesta.seguridad.Shield {
         def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
         def l = []
         procesos.each { p->
-            def avales = Aval.findAllByProceso(p)
-            avales.each { a->
-                if(SolicitudAval.countByAvalAndUnidadInList(a, unidades) >0) {
-                    l+=p
-                }
-
+            if(SolicitudAval.countByProcesoAndUnidadInList(p, unidades) >0) {
+                l+=p
             }
         }
         [procesos: l]
