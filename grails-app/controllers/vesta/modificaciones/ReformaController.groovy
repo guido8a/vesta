@@ -367,11 +367,24 @@ class ReformaController extends Shield {
      * Acción que muestra la lista de todas las reformas, con su estado y una opción para ver el pdf
      */
     def lista() {
+        def reformas
+        def perfil = session.perfil.codigo
+        def perfiles = ["GAF", "ASPL"]
 
-        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-        def personas = Persona.findAllByUnidadInList(unidades)
+        if(perfiles.contains(perfil)) {
+            reformas = Reforma.withCriteria {
+                eq("tipo", "R")
+                persona {
+                    order("unidad", "asc")
+                }
+                order("fecha", "desc")
+            }
+        } else {
+            def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+            def personas = Persona.findAllByUnidadInList(unidades)
 
-        def reformas = Reforma.findAllByTipoAndPersonaInList('R',personas,  [sort: "fecha", order: "desc"])
+            reformas = Reforma.findAllByTipoAndPersonaInList('R',personas,  [sort: "fecha", order: "desc"])
+        }
 
         return [reformas: reformas]
     }
@@ -413,13 +426,26 @@ class ReformaController extends Shield {
         def tipo = 'R'
         def estados = [estadoAprobadoSinFirma, estadoAprobado, estadoNegado]
 //        def reformas = Reforma.findAllByEstadoInListAndTipo(estados, tipo, [sort: "fecha", order: "desc"])
-        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.id))
-        def personas = Persona.findAllByUnidadInList(unidades)
-        def reformas = Reforma.withCriteria {
-            eq("tipo", tipo)
-            inList("estado", estados)
-            inList("persona", personas)
-            order("fecha", "desc")
+        def reformas
+        def perfil = session.perfil.codigo
+        def perfiles = ["GAF", "ASPL"]
+        if(perfiles.contains(perfil)) {
+            reformas = Reforma.withCriteria {
+                eq("tipo", "A")
+                persona {
+                    order("unidad", "asc")
+                }
+                order("fecha", "desc")
+            }
+        } else {
+            def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.id))
+            def personas = Persona.findAllByUnidadInList(unidades)
+            reformas = Reforma.withCriteria {
+                eq("tipo", tipo)
+                inList("estado", estados)
+                inList("persona", personas)
+                order("fecha", "desc")
+            }
         }
         return [reformas: reformas]
     }

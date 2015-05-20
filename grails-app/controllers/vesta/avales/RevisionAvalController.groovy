@@ -3,6 +3,7 @@ package vesta.avales
 import vesta.alertas.Alerta
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
+import vesta.poa.Asignacion
 import vesta.seguridad.*
 
 /**
@@ -62,7 +63,30 @@ class RevisionAvalController extends Shield {
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-        [actual: actual]
+
+        def perfil = session.perfil.codigo
+        def perfiles = ["GAF", "ASPL"]
+        def unidades
+
+        if(perfiles.contains(perfil)) {
+            unidades = Asignacion.withCriteria {
+                projections {
+                    distinct("unidad")
+                }
+            }
+        } else {
+            def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+            unidades = Asignacion.withCriteria {
+                inList("unidad", uns)
+                projections {
+                    distinct("unidad")
+                }
+            }
+        }
+
+        unidades = unidades.sort {it.nombre}
+
+        return [actual: actual, unidades: unidades]
     }
 
     def liberarAvales() {
@@ -101,16 +125,21 @@ class RevisionAvalController extends Shield {
         def externos = ["usuario", "proceso", "proyecto"]
         def band = true
 
-        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+        def perfil = session.perfil.codigo
+        def perfiles = ["GAF", "ASPL"]
+
+        def unidades
+        if (params.requirente) {
+            unidades = [UnidadEjecutora.get(params.requirente.toLong())]
+        } else {
+            if (perfiles.contains(perfil)) {
+                unidades = UnidadEjecutora.list()
+            } else {
+                unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+            }
+        }
+
         def personasLista = Persona.findAllByUnidadInList(unidades)
-
-        println("-->" + unidades)
-
-
-
-
-
-
 
         if (params.numero && params.numero != "") {
             numero = " and numero like ('%${numero}%')"
@@ -174,17 +203,16 @@ class RevisionAvalController extends Shield {
 //
 //        }
 //        datos = datosTemp2
-//        if (params.requirente) {
-//            def req = UnidadEjecutora.get(params.requirente.toLong())
-            def datosTemp = []
-            datos.each { av ->
+
+        def datosTemp = []
+        datos.each { av ->
 //                def solicitud = SolicitudAval.countByAvalAndUnidad(av, req)
-                def solicitud = SolicitudAval.countByAvalAndUnidadInList(av, unidades)
-                if (solicitud > 0) {
-                    datosTemp.add(av)
-                }
+            def solicitud = SolicitudAval.countByAvalAndUnidadInList(av, unidades)
+            if (solicitud > 0) {
+                datosTemp.add(av)
             }
-            datos = datosTemp
+        }
+        datos = datosTemp
 //        }
         if (!band) {
             switch (params.sort) {
@@ -223,7 +251,21 @@ class RevisionAvalController extends Shield {
         def datos = []
         def fechaInicio
         def fechaFin
-        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+
+        def perfil = session.perfil.codigo
+        def perfiles = ["GAF", "ASPL"]
+
+        def unidades
+        if (params.requirente) {
+            unidades = [UnidadEjecutora.get(params.requirente.toLong())]
+        } else {
+            if (perfiles.contains(perfil)) {
+                unidades = UnidadEjecutora.list()
+            } else {
+                unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+            }
+        }
+
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy hh:mm:ss", "31-12-" + anio + " 23:59:59")
@@ -233,6 +275,7 @@ class RevisionAvalController extends Shield {
             datos = SolicitudAval.withCriteria {
                 ne("estado", estadoSinFirma)
                 between("fecha", fechaInicio, fechaFin)
+                inList("unidad", unidades)
 //                if (requirente) {
 //                    eq("unidad", requirente)
 //                }
@@ -938,8 +981,14 @@ class RevisionAvalController extends Shield {
      */
     def pendientes() {
         def estados = [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("D02")]
-        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-        def personas = Persona.findAllByUnidadInList(unidades)
+        def perfil = session.perfil.codigo
+        def perfiles = ["GAF", "ASPL"]
+        def unidades
+        if(perfiles.contains(perfil)) {
+            unidades = UnidadEjecutora.list()
+        } else {
+            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+        }
         def solicitudes = SolicitudAval.findAllByEstadoInListAndUnidadInList(estados, unidades)
         def actual
         if (params.anio) {
@@ -947,7 +996,28 @@ class RevisionAvalController extends Shield {
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-        return [solicitudes: solicitudes, actual: actual]
+
+        def unidadesList
+
+        if(perfiles.contains(perfil)) {
+            unidadesList = Asignacion.withCriteria {
+                projections {
+                    distinct("unidad")
+                }
+            }
+        } else {
+            def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+            unidadesList = Asignacion.withCriteria {
+                inList("unidad", uns)
+                projections {
+                    distinct("unidad")
+                }
+            }
+        }
+
+        unidadesList = unidadesList.sort {it.nombre}
+
+        return [solicitudes: solicitudes, actual: actual, unidades: unidadesList]
     }
 
 }

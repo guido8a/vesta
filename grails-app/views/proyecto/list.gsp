@@ -224,6 +224,7 @@
                                         location.reload(true);
                                     } else {
                                         metasProyecto(parts[2], true);
+                                        closeLoader()
                                     }
                                 } else {
                                     spinner.replaceWith($btn);

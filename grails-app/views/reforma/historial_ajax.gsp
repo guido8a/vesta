@@ -19,7 +19,7 @@
     <tbody>
         <g:each in="${reformas}" var="reforma">
             <tr>
-                <td>${reforma.persona}</td>
+                <td>${reforma.persona.unidad} - ${reforma.persona}</td>
                 <td>${reforma.fecha.format("dd-MM-yyyy")}</td>
                 <td>${reforma.concepto}</td>
                 <td>

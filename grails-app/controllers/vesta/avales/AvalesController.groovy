@@ -326,7 +326,15 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def listaProcesos = {
         def procesos = ProcesoAval.list([sort: "id"])
-        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+
+        def perfil = session.perfil.codigo
+        def perfiles = ["GAF", "ASPL"]
+        def unidades
+        if(perfiles.contains(perfil)) {
+            unidades = UnidadEjecutora.list()
+        } else {
+            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+        }
         def l = []
         procesos.each { p->
             if(SolicitudAval.countByProcesoAndUnidadInList(p, unidades) >0) {
