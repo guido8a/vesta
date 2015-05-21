@@ -25,6 +25,9 @@
                 <g:link controller="avales" action="listaProcesos" class="btn btn-default">
                     <i class="fa fa-bars"></i> Lista de Procesos
                 </g:link>
+                <g:link controller="avales" action="avalesProceso" id="${proceso.id}" class="btn btn-default">
+                    <i class="fa fa-bars"></i> Solicitudes y avales del proceso
+                </g:link>
             </div>
         </div>
 

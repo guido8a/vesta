@@ -12,12 +12,6 @@
         <title>Solicitudes pendientes</title>
 
         <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'avales.css')}" type="text/css"/>
-
-        <style type="text/css">
-        td {
-            word-wrap : break-word;
-        }
-        </style>
     </head>
 
     <body>
@@ -70,7 +64,7 @@
                                 <g:each in="${solicitudes}" var="p">
                                     <g:set var="title"/>
                                     <g:if test="${p.estado.codigo == 'D01'}">
-                                        <g:set var="title" value="${}"/>
+                                        <g:set var="title" value="${p.observaciones}"/>
                                     </g:if>
                                     <g:if test="${p.estado.codigo == 'D02'}">
                                         <g:set var="title" value="Devuelto por ${p.firma.usuario}${p.firma.observaciones && p.firma.observaciones != 'S' ? ': ' + p.firma.observaciones : ''}"/>
