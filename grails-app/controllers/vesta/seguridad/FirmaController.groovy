@@ -54,7 +54,7 @@ class FirmaController extends Shield {
         def imgFirma = "<i class='fa fa-pencil'></i>";
 //        def imgFirma = "<img src='${resource(dir: 'images/ico', file: 'feather.png')}' alt='Firmar'/>"
 
-        return [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes,firmasAvales: firmasAvales, actual: actual, imgFirma: imgFirma]
+        return [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, firmasAvales: firmasAvales, actual: actual, imgFirma: imgFirma, params: params]
 
     }
 /**
@@ -138,14 +138,12 @@ class FirmaController extends Shield {
      */
     def devolverFirma = {
         println "devolver " + params
-
-        /** TODO: si se trata de solicitud de aval, se debe invocar a devolver */
         if (params.pass.toString().encodeAsMD5() == session.usuario.autorizacion) {
             def firma = Firma.get(params.id)
             firma.estado = 'N'
             firma.observaciones = params.obs.trim()
             firma.save(flush: true)
-            println "redirect " + firma.controladorNegar + "  " + firma.accionNegar + "  " + firma.idAccionNegar
+            println "redirect de negar " + firma.controladorNegar + "  " + firma.accionNegar + "  " + firma.idAccionNegar
             redirect(controller: firma.controladorNegar, action: firma.accionNegar, id: firma.idAccionNegar)
         } else {
             println "error"

@@ -5,13 +5,14 @@
   Time: 12:57 PM
 --%>
 
-<%@ page import="vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.avales.SolicitudAval; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main"/>
         <title>Lista de Procesos</title>
         <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'semaforos.css')}" type="text/css"/>
+        <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'avales.css')}" type="text/css"/>
     </head>
 
     <body>
@@ -34,6 +35,7 @@
                 <tr>
                     <th>Proyecto</th>
                     <th>Nombre del proceso</th>
+                    <th>Solicitudes</th>
                     <th>Inicio</th>
                     <th>Fin</th>
                     <th>Monto</th>
@@ -44,9 +46,14 @@
             </thead>
             <tbody>
                 <g:each in="${procesos}" var="p">
+                    <g:set var="sols" value="${SolicitudAval.findAllByProceso(p).estado}"/>
                     <tr data-id="${p?.id}">
                         <td title="${p.proyecto.toStringCompleto()}">${p.proyecto}</td>
                         <td>${p.nombre}</td>
+                        <td class="${sols.codigo.join(" ")}">
+                            %{--${SolicitudAval.findAllByProcesoAndEstadoInList(p, estados).estado.descripcion.join(", ")}--}%
+                            ${sols.descripcion.join(", ")}
+                        </td>
                         <td style="text-align: center">${p.fechaInicio?.format("dd-MM-yyyy")}</td>
                         <td style="text-align: center">${p.fechaFin?.format("dd-MM-yyyy")}</td>
                         <td style="text-align: right">

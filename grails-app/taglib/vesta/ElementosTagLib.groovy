@@ -97,6 +97,11 @@ class ElementosTagLib {
     def message = { attrs, body ->
         def contenido = body()
 
+        def close = true
+        if (attrs.close && (attrs.close == "false" || attrs.close == "0" || attrs.close == false || attrs.close == 0 || attrs.close.toLowerCase() == "n" || attrs.close.toLowerCase() == "no")) {
+            close = false
+        }
+
         if (!contenido) {
             if (attrs.contenido) {
                 contenido = attrs.contenido
@@ -115,34 +120,36 @@ class ElementosTagLib {
                 switch (attrs.tipo?.toLowerCase()) {
                     case "error":
                         icono = "fa fa-times"
-                        clase += "alert-danger"
+                        clase += " alert-danger"
                         break;
                     case "success":
                         icono = "fa fa-check"
-                        clase += "alert-success"
+                        clase += " alert-success"
                         break;
                     case "notfound":
                         icono = "icon-ghost"
-                        clase += "alert-info"
+                        clase += " alert-info"
                         break;
                     case "warning":
                         icono = "fa fa-warning"
-                        clase += "alert-warning"
+                        clase += " alert-warning"
                         break;
                     case "info":
                         icono = "fa fa-info-circle"
-                        clase += "alert-info"
+                        clase += " alert-info"
                         break;
                     case "bug":
                         icono = "fa fa-bug"
-                        clase += "alert-warning"
+                        clase += " alert-warning"
                         break;
                     default:
-                        clase += "alert-info"
+                        clase += " alert-info"
                 }
             }
             def html = "<div class=\"alert alert-dismissable ${clase}\">"
-            html += "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>"
+            if (close) {
+                html += "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>"
+            }
             html += "<p style='margin-bottom:15px;'>"
             html += "<i class=\"${icono} fa-2x pull-left iconMargin text-shadow\"></i> "
             out << html << contenido << finHtml

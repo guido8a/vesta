@@ -155,10 +155,10 @@ class ReportesController {
      * Acción
      */
     def certificacion = {
-        println "certiificacion aaaa " + params
+//        println "certiificacion aaaa " + params
         def solicitud = SolicitudAval.get(params.id)
         def aval = solicitud?.aval
-        println "aval " + aval
+//        println "aval " + aval
         def anio = Anio.findByAnio(new Date().format("yyyy"))
 
         def mes
@@ -168,10 +168,8 @@ class ReportesController {
             mes = Mes.findByNumero(solicitud.fecha.format("MM").toInteger())
         }
 
-
         def anterior = null
         mes = mes?.descripcion
-
 
         def anios = [:]
         def arr = [:]

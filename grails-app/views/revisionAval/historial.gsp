@@ -32,7 +32,7 @@
                 <td style="text-align: right">
                     <g:formatNumber number="${sol.monto}" type="currency" currencySymbol=""/>
                 </td>
-                <td style="text-align: center" class="${sol.estado?.codigo}">${sol.estado?.codigo} ${sol.estado?.descripcion}</td>
+                <td style="text-align: center" class="${sol.estado?.codigo}">${sol.estado?.descripcion}</td>
                 <td style="text-align: center">
                     <g:if test="${sol.tipo != 'A'}">
                         <a href="#" class="btn btn-default btn-xs imprimirSolicitud" iden="${sol.id}">

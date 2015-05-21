@@ -39,6 +39,10 @@ class Alerta {
      * Id necesario para el redireccionamiento
      */
     int id_remoto
+    /**
+     * Parámetros extra para el redireccionamiento
+     */
+    String parametros
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -64,6 +68,7 @@ class Alerta {
             controlador column: 'alerctrl'
             accion column: 'aleraccn'
             id_remoto column: 'aleridrm'
+            parametros column: 'alerprmt'
         }
     }
 
@@ -79,6 +84,7 @@ class Alerta {
         controlador(nullable: true, blank: true)
         accion(nullable: true, blank: true)
         id_remoto(nullable: true, blank: true)
+        parametros(nullable: true, blank: true)
     }
 
     /**

@@ -39,6 +39,32 @@ class FirmasService {
         return [directores: directores + gerentes, gerentes: gerentes]
     }
 
+    def listaDirectoresUnidad(UnidadEjecutora unidad) {
+        def directores = Persona.withCriteria {
+            eq("unidad", unidad)
+            cargoPersonal {
+                ilike("descripcion", "%director%")
+            }
+        }
+        return directores
+    }
+
+    def listaGerentesUnidad(UnidadEjecutora unidad) {
+        def gerentes = []
+        def padre = unidad.padre
+        if (padre.codigo == '9999') {
+            gerentes = listaDirectoresUnidad(unidad)
+        } else {
+            gerentes = Persona.withCriteria {
+                eq("unidad", padre)
+                cargoPersonal {
+                    ilike("descripcion", "%gerente%")
+                }
+            }
+        }
+        return gerentes
+    }
+
     /**
      * Firma digitalmente un documento
      * @param usuario es el usuario que firma

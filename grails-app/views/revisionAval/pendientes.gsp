@@ -12,6 +12,12 @@
         <title>Solicitudes pendientes</title>
 
         <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'avales.css')}" type="text/css"/>
+
+        <style type="text/css">
+        td {
+            word-wrap : break-word;
+        }
+        </style>
     </head>
 
     <body>
@@ -50,9 +56,9 @@
                                 <tr>
                                     <th style="width: 100px;"># Sol.</th>
                                     <th>Requirente</th>
-                                    <th>Proceso</th>
+                                    <th style="width: 200px;">Proceso</th>
                                     <th>Tipo</th>
-                                    <th>Concepto</th>
+                                    <th style="width: 200px;">Concepto</th>
                                     <th>Monto</th>
                                     <th>Estado</th>
                                     <th>Doc. Respaldo</th>
@@ -62,6 +68,13 @@
                             </thead>
                             <tbody>
                                 <g:each in="${solicitudes}" var="p">
+                                    <g:set var="title"/>
+                                    <g:if test="${p.estado.codigo == 'D01'}">
+                                        <g:set var="title" value="${}"/>
+                                    </g:if>
+                                    <g:if test="${p.estado.codigo == 'D02'}">
+                                        <g:set var="title" value="Devuelto por ${p.firma.usuario}${p.firma.observaciones && p.firma.observaciones != 'S' ? ': ' + p.firma.observaciones : ''}"/>
+                                    </g:if>
                                     <tr>
                                         <td>
                                             ${p.unidad?.codigo}-${p.numero}
@@ -81,7 +94,7 @@
                                         <td class="text-right">
                                             <g:formatNumber number="${p.monto}" type="currency" currencySymbol=""/>
                                         </td>
-                                        <td style="text-align: center" class="text-center ${p.estado?.codigo}">
+                                        <td style="text-align: center" class="text-center ${p.estado?.codigo}" title="${title}">
                                             ${p.estado?.descripcion}
                                         </td>
                                         <td class="text-center">
@@ -100,19 +113,37 @@
                                         </td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-xs" role="group">
-                                                <g:if test="${p.tipo != 'A'}">
-                                                    <a href="${g.createLink(action: 'aprobarAval', id: p.id)}" class="aprobar btn btn-success" title="Aprobar">
-                                                        <i class="fa fa-check"></i>
-                                                    </a>
+                                                <g:if test="${p.estado.codigo == 'P01' || p.estado.codigo == 'D01'}">
+                                                    <g:if test="${session.usuario.id == p.usuarioId}">
+                                                        <a href="${g.createLink(controller: 'avales', action: 'nuevaSolicitud', id: p.proceso.id)}" class="aprobar btn btn-info" title="Editar">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    </g:if>
                                                 </g:if>
-                                                <g:else>
-                                                    <a href="${g.createLink(action: 'aprobarAnulacion', id: p.id)}" class="aprobarAnulacion btn btn-success" title="Aprobar">
-                                                        <i class="fa fa-check"></i>
-                                                    </a>
-                                                </g:else>
-                                                <a href="#" class="negar btn btn-warning " iden="${p.id}" title="Negar">
-                                                    <i class="fa fa-times-circle"></i>
-                                                </a>
+                                                <g:elseif test="${p.estado.codigo == 'R01' || p.estado.codigo == 'D02'}">
+                                                    <g:if test="${session.usuario.id == p.directorId}">
+                                                        <a href="${g.createLink(action: 'revisionSolicitud', id: p.id)}" class="aprobar btn btn-info" title="Revisar">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    </g:if>
+                                                </g:elseif>
+                                                <g:elseif test="${p.estado.codigo == 'E01' || p.estado.codigo == 'D03'}">
+                                                    <g:if test="${session.perfil.codigo == 'ASPL'}">
+                                                        <g:if test="${p.tipo != 'A'}">
+                                                            <a href="${g.createLink(action: 'aprobarAval', id: p.id)}" class="aprobar btn btn-success" title="Revisar">
+                                                                <i class="fa fa-check"></i>
+                                                            </a>
+                                                        </g:if>
+                                                        <g:else>
+                                                            <a href="${g.createLink(action: 'aprobarAnulacion', id: p.id)}" class="aprobarAnulacion btn btn-success" title="Aprobar">
+                                                                <i class="fa fa-check"></i>
+                                                            </a>
+                                                            <a href="#" class="negar btn btn-warning " iden="${p.id}" title="Negar">
+                                                                <i class="fa fa-times-circle"></i>
+                                                            </a>
+                                                        </g:else>
+                                                    </g:if>
+                                                </g:elseif>
                                             </div>
                                         </td>
                                     </tr>

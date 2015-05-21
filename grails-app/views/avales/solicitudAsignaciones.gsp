@@ -28,6 +28,14 @@
             </div>
         </div>
 
+        <g:if test="${solicitud && solicitud.estado.codigo == 'D01' && solicitud.observaciones}">
+            <div class="row">
+                <div class="col-md-12">
+                    <elm:message tipo="warning" close="false">${solicitud?.observaciones}</elm:message>
+                </div>
+            </div>
+        </g:if>
+
         <input type="hidden" name="id" value="${proceso?.id}">
 
         <div class="wizard-container row">
@@ -64,7 +72,7 @@
                         </label>
 
                         <div class="col-md-2">
-                            <g:select name="anio" from="${Anio.list([sort: 'anio'])}" value="${actual?.id}"
+                            <g:select name="anio" from="${Anio.findAllByEstado(1, [sort: 'anio'])}" value="${actual?.id}"
                                       class="form-control input-sm" id="anio" optionKey="id" optionValue="anio" style="width: 80px;"/>
                         </div>
                     </span>
@@ -77,7 +85,7 @@
                         </label>
 
                         <div class="col-md-4" id="divAsg">
-                            <g:select name="asignacion" from="${[]}" class="form-control input-sm" id="asignacion" noSelection="['-1': 'Seleccione...']"/>
+                            %{--<g:select name="asignacion" from="${[]}" class="form-control input-sm" id="asignacion" noSelection="['-1': 'Seleccione...']"/>--}%
                         </div>
                     </span>
                 </div>
@@ -90,7 +98,7 @@
 
                         <div class="col-md-4" id="div_comp">
                             <g:if test="${!readOnly}">
-                                <g:select name="comp" from="${componentes}" class="form-control input-sm" optionKey="id" optionValue="objeto" id="comp" noSelection="['-1': 'Seleccione...']"/>
+                            %{--<g:select name="comp" from="${componentes}" class="form-control input-sm" optionKey="id" optionValue="objeto" id="comp" noSelection="['-1': 'Seleccione...']"/>--}%
                             </g:if>
                             <g:else>
                                 <p class="form-control-static">
@@ -127,11 +135,11 @@
                         </label>
 
                         <div class="col-md-4" id="divAct">
-                            <g:select name="actividad" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>
+                            %{--<g:select name="actividad" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>--}%
                         </div>
                     </span>
 
-                    <span class="grupo">
+                    <span class="grupo hidden" id="spanDevengado">
                         <label class="col-md-1 control-label">
                             Devengado
                         </label>
@@ -256,18 +264,39 @@
             %{--});--}%
             %{--}--}%
 
+            function cargarCompAnio() {
+                $("#div_comp").html(spinner);
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'cargarComponentes_ajax')}",
+                    data    : {
+                        id   : "${proceso.proyectoId}",
+                        anio : $("#anio").val()
+                    },
+                    success : function (msg) {
+                        $("#div_comp").html(msg);
+                        $("#divAct").html("");
+                        $("#divAsg").html("");
+                        $("#spanDevengado").addClass("hidden");
+                    }
+                });
+            }
+
             $(function () {
                 <g:if test="${proceso}">
                 getDetalle();
                 </g:if>
+                cargarCompAnio();
 
                 $("#anio").change(function () {
-                    $("#comp").val("-1");
-                    $("#actividad").val("-1");
-                    $("#asignacion").val("-1");
-                    $("#monto").val("");
-                    $("#devengado").val("");
+//                    $("#comp").val("-1");
+//                    $("#actividad").val("-1");
+//                    $("#asignacion").val("-1");
+//                    $("#monto").val("");
+//                    $("#devengado").val("");
                     $("#max").html("");
+
+                    cargarCompAnio();
                 });
 
                 $("#comp").val("-1").change(function () {

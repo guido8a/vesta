@@ -33,6 +33,18 @@ td {
     font-weight : bold;
 }
 
+.P01 {
+    background : #baddc0;
+}
+
+.R01 {
+    background : #e2d9bc;
+}
+
+.D01 {
+    background : #e0bcbc;
+}
+
 .aprobado {
     background  : #c3d5a6;
     font-weight : bold;

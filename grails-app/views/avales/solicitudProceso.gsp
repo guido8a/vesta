@@ -18,6 +18,8 @@
 
     <body>
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
+        <elm:message tipo="error" clase="error">${params.error}</elm:message>
+
 
         <input type="hidden" name="id" value="${proceso?.id}">
 
@@ -28,6 +30,14 @@
                 </g:link>
             </div>
         </div>
+
+        <g:if test="${solicitud && solicitud.estado.codigo == 'D01' && solicitud.observaciones}">
+            <div class="row">
+                <div class="col-md-12">
+                    <elm:message tipo="warning" close="false">${solicitud?.observaciones}</elm:message>
+                </div>
+            </div>
+        </g:if>
 
         <div class="wizard-container row">
             <div class="col-md-4 wizard-step wizard-next-step corner-left wizard-completed">
@@ -50,13 +60,10 @@
             <g:hiddenField name="disp" id="disponible" value="${disponible}"/>
             <g:hiddenField name="monto" value="${disponible}"/>
             <g:hiddenField name="numero" value="${numero}"/>
-            <input type="hidden" name="referencial" value="${refencial}">
-            <input type="hidden" name="solicitud" value="${solicitud?.id}">
+            <g:hiddenField name="referencial" value="${refencial}"/>
+            <g:hiddenField name="solicitud" value="${solicitud?.id}"/>
+            <g:hiddenField name="preview" value=""/>
 
-            <g:if test="${solicitud?.observaciones}">
-                SOLICITUD DEVUELTA POR:
-                <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${solicitud?.observaciones}</elm:message>
-            </g:if>
             <div class="row">
                 <span class="grupo">
                     <label class="col-md-2 control-label">
@@ -104,7 +111,7 @@
                     <div class="col-md-2">
                         <g:if test="${!readOnly}">
                             <g:textField name="memorando" class="form-control input-sm " maxlength="63" style="width: 250px"
-                            value="${solicitud?.memo}"/>
+                                         value="${solicitud?.memo}"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -122,18 +129,24 @@
                     <div class="col-md-5">
                         <g:if test="${!readOnly}">
                             <g:if test="${solicitud?.path}">
-                                <input type="text" name="path" id="path" value="${solicitud?.path}" readonly style="margin-left: -10px";/>
-                                <input type="file" name="file" id="file" class="form-control input-sm" style="margin-left: -10px; padding: 0"/>
+                                <input type="hidden" name="path" id="path" value="${solicitud?.path}" readonly style="margin-left: -10px"/>
+                                Archivo subido:
+                                <a href="${resource(dir: 'pdf/solicitudAval', file: solicitud?.path)}" target="_blank">
+                                    <i class="fa fa-download"></i> ${solicitud?.path}
+                                </a>
                             </g:if>
-                            <g:else>
-                                <input type="file" name="file" id="file" class="form-control input-sm " style="margin-left: -10px"/>
-                            </g:else>
+                            <input type="file" name="file" id="file" class="form-control input-sm " style="margin-left: -10px"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
-                                <a href="${resource(dir: 'pdf/solicitudAval', file: solicitud?.path)}" target="_blank"  style="margin-left: -10px">
-                                    ${solicitud?.path}
-                                </a>
+                                <g:if test="${solicitud?.path}">
+                                    <a href="${resource(dir: 'pdf/solicitudAval', file: solicitud?.path)}" target="_blank" style="margin-left: -10px">
+                                        <i class="fa fa-download"></i> ${solicitud?.path}
+                                    </a>
+                                </g:if>
+                                <g:else>
+                                    No ha subido un archivo
+                                </g:else>
                             </p>
                         </g:else>
                     </div>
@@ -163,17 +176,27 @@
             <div class="row">
                 <span class="grupo">
                     <label for="firma1" class="col-md-2 control-label">
-                        Autorización electrónica
+                        Pedir revisión de
                     </label>
 
                     <div class="col-md-4">
                         <g:if test="${!readOnly}">
-                            <g:select from="${personas}" optionKey="id" class="form-control input-sm required"
-                                      optionValue="${{it.nombre + ' ' + it.apellido}}" name="firma1" value="${solicitud?.firma?.usuario}"/>
+                            <g:if test="${solicitud?.estado?.codigo == 'D01'}">
+                                <p class="form-control-static">
+                                    ${solicitud?.director}
+                                </p>
+                            </g:if>
+                            <g:else>
+                              *${solicitud?.directorId}*
+                                <g:select from="${personas}" optionKey="id" class="form-control input-sm required"
+                                          optionValue="${{
+                                              it.nombre + ' ' + it.apellido
+                                          }}" name="firma1" value="${solicitud?.directorId}" noSelection="['': '.. Seleccione ..']"/>
+                            </g:else>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
-                                ${solicitud?.firma?.usuario}
+                                ${solicitud?.director}
                             </p>
                         </g:else>
                     </div>
@@ -189,7 +212,7 @@
                     <div class="col-md-9">
                         <g:if test="${!readOnly}">
                             <g:textArea name="notaTecnica" style="resize: none" maxlength="350" class="form-control input-sm"
-                            value="${solicitud?.notaTecnica}"/>
+                                        value="${solicitud?.notaTecnica}"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -203,9 +226,17 @@
             <div class="row">
                 <div class="col-md-11 text-right">
                     <g:if test="${!readOnly}">
-                        <a href="#" id="btnEnviar" class="btn btn-success">
-                            <i class="fa fa-save"></i> Guardar y Enviar <i class="fa fa-paper-plane-o"></i>
-                        </a>
+                        <div class="btn-group" role="group">
+                            <a href="#" id="btnPreview" class="btn btn-default ${solicitud ? '' : 'disabled'}">
+                                <i class="fa fa-search"></i> Previsualizar
+                            </a>
+                            <a href="#" id="btnGuardar" class="btn btn-info">
+                                <i class="fa fa-save"></i> Guardar
+                            </a>
+                            <a href="#" id="btnEnviar" class="btn btn-success">
+                                <i class="fa fa-save"></i> Guardar y Enviar <i class="fa fa-paper-plane-o"></i>
+                            </a>
+                        </div>
                     </g:if>
                 </div>
             </div>
@@ -230,6 +261,7 @@
                 });
 
                 $("#btnEnviar").click(function () {
+                    $("#preview").val("");
                     if ($(".frmAval").valid()) {
                         bootbox.confirm("<strong>¿Está seguro de querer enviar la solicitud?</strong><br/><br/>" +
                                         "Una vez enviada ya no se podrá modificar los datos de la Solicitud", function (res) {
@@ -239,6 +271,19 @@
                             }
                         });
                     }
+                });
+
+                $("#btnGuardar").click(function () {
+                    if ($(".frmAval").valid()) {
+                        $("#preview").val("S");
+                        openLoader("Por favor espere");
+                        $(".frmAval").submit();
+                    }
+                });
+
+                $("#btnPreview").click(function () {
+                    var url = "${g.createLink(controller: 'reporteSolicitud',action: 'imprimirSolicitudAval')}/?id=${solicitud?.id}";
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud.pdf"
                 });
             });
         </script>

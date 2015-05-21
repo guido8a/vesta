@@ -204,7 +204,7 @@
 
                 <div class="observaciones">
                     <span class="ttl">OBSERVACIONES:</span>
-                    ${sol.observaciones}
+                    ${sol.observacionesPdf}
                 </div>
 
                 <p>
@@ -212,7 +212,7 @@
                 </p>
 
                 <p>
-                    <strong>Elaborado por:</strong> ${sol.usuario.sigla}
+                    <strong>Elaborado por:</strong> ${sol.usuario.sigla ?: sol.usuario.nombre + ' ' + sol.usuario.apellido}
                 </p>
 
                 <p style="float: right">

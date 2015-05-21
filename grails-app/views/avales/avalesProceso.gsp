@@ -1,4 +1,4 @@
-<%@ page import="vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.avales.SolicitudAval; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -18,6 +18,8 @@
                 </g:link>
             </div>
         </div>
+
+        <h3 class="text-info">Avales y solicitudes de aval del proceso <em>${proceso.nombre}</em></h3>
 
         <div role="tabpanel">
             <!-- Nav tabs -->
@@ -63,7 +65,7 @@
                                         </td>
 
                                         <td style="text-align: center">
-                                            <a href="#" class="imprimiAval btn btn-info btn-sm" title="Imprimir" iden="${vesta.avales.SolicitudAval.findByAval(p)?.id}">
+                                            <a href="#" class="imprimiAval btn btn-info btn-sm" title="Imprimir" iden="${SolicitudAval.findByAval(p)?.id}">
                                                 <i class="fa fa-print "></i>
                                             </a>
                                         </td>

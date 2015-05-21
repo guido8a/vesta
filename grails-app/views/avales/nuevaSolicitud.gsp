@@ -30,6 +30,14 @@
             </div>
         </div>
 
+        <g:if test="${solicitud && solicitud.estado.codigo == 'D01' && solicitud.observaciones}">
+            <div class="row">
+                <div class="col-md-12">
+                    <elm:message tipo="warning" close="false">${solicitud?.observaciones}</elm:message>
+                </div>
+            </div>
+        </g:if>
+
         <div class="wizard-container row">
             <div class="col-md-4 wizard-step wizard-next-step corner-left wizard-current">
                 <span class="badge wizard-badge">1</span> Proceso de aval
@@ -80,7 +88,7 @@
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
-                                ${proceso?.proyecto.toStringCompleto()}
+                                ${proceso?.proyecto?.toStringCompleto()}
                             </p>
                         </g:else>
                     </div>

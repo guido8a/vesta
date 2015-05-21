@@ -61,6 +61,7 @@ class AlertaController extends Shield {
     def list() {
         def alertaInstanceList = getList(params, false)
         def alertaInstanceCount = getList(params, true).size()
+
         return [alertaInstanceList: alertaInstanceList, alertaInstanceCount: alertaInstanceCount]
     }
 
@@ -72,6 +73,16 @@ class AlertaController extends Shield {
         alerta.fechaRecibido = new Date()
         alerta.save(flush: true)
         params.id = alerta.id_remoto
-        redirect(controller: alerta.controlador, action: alerta.accion, params: params)
+        def params = [:]
+        if (alerta.parametros && alerta.parametros != "") {
+            def parts = alerta.parametros.split("&")
+            parts.each { part ->
+                def p = part.split("=")
+                params[p[0]] = p[1]
+            }
+        }
+
+//        redirect(controller: alerta.controlador, action: alerta.accion, params: params)
+        redirect(controller: alerta.controlador, action: alerta.accion, id: alerta.id_remoto, params: params)
     }
 }

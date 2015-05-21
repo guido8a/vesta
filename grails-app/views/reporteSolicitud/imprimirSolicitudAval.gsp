@@ -195,7 +195,7 @@
 
         <div class="no-break">
             <div class="texto">
-                <strong>Elaborado por:</strong>  ${solicitud?.usuario?.sigla}
+                <strong>Elaborado por:</strong>  ${solicitud?.usuario?.sigla ?: solicitud?.usuario?.nombre + ' ' + solicitud?.usuario?.apellido}
             </div>
             <g:if test="${solicitud.firma?.estado == 'F'}">
                 <table width="100%" style="margin-top: 1.5cm;">

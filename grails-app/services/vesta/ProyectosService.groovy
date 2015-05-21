@@ -93,9 +93,9 @@ class ProyectosService {
 //            }
 //        }
 
-        asignaciones.each {e ->
+        asignaciones.each { e ->
             i = e.marcoLogico.proyecto.id
-            if(!proyectos2.contains(i)){
+            if (!proyectos2.contains(i)) {
                 proyectos2.add(i)
             }
         }
@@ -120,10 +120,10 @@ class ProyectosService {
 //            }
 //        }
 
-        asignaciones.each {f->
+        asignaciones.each { f ->
             def p2 = f.marcoLogico.proyecto
             def c2 = f.marcoLogico.marcoLogico.id
-            if(p2.id == proyecto.id && !componentes2.contains(c2)){
+            if (p2.id == proyecto.id && !componentes2.contains(c2)) {
                 componentes2.add(c2)
             }
 
@@ -149,10 +149,10 @@ class ProyectosService {
 //            }
 //        }
 
-        asignaciones.each {b->
+        asignaciones.each { b ->
             def c3 = b.marcoLogico.marcoLogico
             def act2 = b.marcoLogico.id
-            if(c3.id == componente.id && !actividades2.contains(act2)){
+            if (c3.id == componente.id && !actividades2.contains(act2)) {
                 actividades2.add(act2)
             }
         }

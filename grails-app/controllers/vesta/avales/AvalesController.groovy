@@ -2,7 +2,6 @@ package vesta.avales
 
 import vesta.modificaciones.DetalleReforma
 import vesta.parametros.Auxiliar
-import vesta.parametros.Unidad
 import vesta.parametros.poaPac.Anio
 import vesta.poa.Asignacion
 import vesta.proyectos.MarcoLogico
@@ -10,7 +9,6 @@ import vesta.proyectos.Proyecto
 import vesta.parametros.UnidadEjecutora
 import vesta.alertas.Alerta
 import vesta.seguridad.Firma
-import vesta.seguridad.Persona
 import vesta.seguridad.Prfl
 import vesta.seguridad.Sesn
 import vesta.seguridad.Persona
@@ -89,7 +87,6 @@ class AvalesController extends vesta.seguridad.Shield {
     /**
      * Acción llamada con ajax que muestra la pantalla que permite crear modificar una asignacion
      */
-
     def editarAsignacion_ajax() {
         def band = params.band
         def asg = ProcesoAsignacion.get(params.id)
@@ -215,6 +212,17 @@ class AvalesController extends vesta.seguridad.Shield {
     }
 
     /**
+     * Acción llamada con ajax que carga los componentes (MarcoLogico) de un cierto proyecto, año y unidad
+     * @param id el proyecto padre de los componentes
+     */
+    def cargarComponentes_ajax = {
+        def proyecto = Proyecto.get(params.id)
+        def anio = Anio.get(params.anio)
+        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto)
+        return [comps: comps]
+    }
+
+    /**
      * Acción llamada con ajax que carga las actividades (MarcoLogico) de un cierto componente y una cierta unidad
      * @param id el componente padre de las actividades
      * @param unidad el id de la unidad
@@ -222,6 +230,18 @@ class AvalesController extends vesta.seguridad.Shield {
     def cargarActividades_ajax = {
         def comp = MarcoLogico.get(params.id)
         def unidad = UnidadEjecutora.get(params.unidad)
+        def anio = Anio.get(params.anio)
+        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp)
+        return [acts: acts]
+    }
+
+    /**
+     * Acción llamada con ajax que carga las actividades (MarcoLogico) de un cierto componente y una cierta unidad
+     * @param id el componente padre de las actividades
+     * @param unidad el id de la unidad
+     */
+    def cargarActividades2_ajax = {
+        def comp = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
         def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp)
         return [acts: acts]
@@ -265,6 +285,22 @@ class AvalesController extends vesta.seguridad.Shield {
      * @param anio el id del año
      */
     def cargarAsignaciones_ajax = {
+//        println "cargar asg " + params
+        def act = MarcoLogico.get(params.id)
+        def anio = Anio.get(params.anio)
+//        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
+//        def asg = Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
+//        def asg = proyectosService.getAsignacionesUnidadActividad(session.asignaciones, act)
+        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act)
+        [asgs: asg]
+    }
+
+    /**
+     * Acción llamada con ajax que carga las asignaciones de una cierta actividad (MarcoLogico) de un cierto año
+     * @param id el id de la actividad
+     * @param anio el id del año
+     */
+    def cargarAsignaciones3_ajax = {
 //        println "cargar asg " + params
         def act = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
@@ -330,37 +366,43 @@ class AvalesController extends vesta.seguridad.Shield {
         def perfil = session.perfil.codigo
         def perfiles = ["GAF", "ASPL"]
         def unidades
-        if(perfiles.contains(perfil)) {
+        if (perfiles.contains(perfil)) {
             unidades = UnidadEjecutora.list()
         } else {
             unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
         }
         def l = []
-        procesos.each { p->
-            if(SolicitudAval.countByProcesoAndUnidadInList(p, unidades) >0) {
-                l+=p
+        procesos.each { p ->
+            if (SolicitudAval.countByProcesoAndUnidadInList(p, unidades) > 0) {
+                l += p
             }
         }
-        [procesos: l]
+        def estadoDevuelto = EstadoAval.findByCodigo("D01")
+        def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estadoPorRevisar = EstadoAval.findByCodigo("R01")
+        def estados = [estadoDevuelto, estadoSolicitadoSinFirma, estadoPendiente, estadoPorRevisar]
+        return [procesos: l, estados: estados]
     }
 
     /**
      * Acción que muestra la pantalla de creación de solicitud de aval
      */
     def nuevaSolicitud() {
-        def proceso
+        def proceso = null
+        def solicitud = null
         def actual
         def band = true
         def proyectos = []
         def readOnly = false
         def unidad = session.usuario.unidad
-        Asignacion.findAllByUnidad(unidad).each {
-            def p = it.marcoLogico.proyecto
-            if (!proyectos.contains(p)) {
-                proyectos.add(p)
-            }
-        }
-        proyectos.sort { it.nombre }
+//        Asignacion.findAllByUnidad(unidad).each {
+//            def p = it.marcoLogico.proyecto
+//            if (!proyectos.contains(p)) {
+//                proyectos.add(p)
+//            }
+//        }
+//        proyectos.sort { it.nombre }
         if (params.anio) {
             actual = Anio.get(params.anio)
         } else {
@@ -382,11 +424,19 @@ class AvalesController extends vesta.seguridad.Shield {
             if (flash.message != "") {
                 readOnly = true
             }
+            def estadoDevuelto = EstadoAval.findByCodigo("D01")
+            def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+            def estadoPendiente = EstadoAval.findByCodigo("P01")
+            def estados = [estadoDevuelto, estadoSolicitadoSinFirma, estadoPendiente]
+            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, estados)
+            if (solicitudes.size() == 1) {
+                solicitud = solicitudes.first()
+            }
         }
 
         proyectos = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
 
-        return [proyectos: proyectos, proceso: proceso, actual: actual, band: band, unidad: unidad, readOnly: readOnly]
+        return [proyectos: proyectos, proceso: proceso, actual: actual, band: band, unidad: unidad, readOnly: readOnly, solicitud: solicitud]
     }
 
     /**
@@ -453,11 +503,19 @@ class AvalesController extends vesta.seguridad.Shield {
             } else {
                 actual = Anio.findByAnio(new Date().format("yyyy"))
             }
-
+            def solicitud = null
+            def estadoDevuelto = EstadoAval.findByCodigo("D01")
+            def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+            def estadoPendiente = EstadoAval.findByCodigo("P01")
+            def estados = [estadoDevuelto, estadoSolicitadoSinFirma, estadoPendiente]
+            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, estados)
+            if (solicitudes.size() == 1) {
+                solicitud = solicitudes.first()
+            }
 
             def componentes = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), actual, proceso.proyecto)
 
-            return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual, componentes: componentes]
+            return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual, componentes: componentes, solicitud: solicitud]
         } else {
             redirect(action: "nuevaSolicitud")
         }
@@ -472,7 +530,9 @@ class AvalesController extends vesta.seguridad.Shield {
             def proceso = ProcesoAval.get(params.id)
 
             def unidad = UnidadEjecutora.get(session.unidad.id)
-            def personasFirma = Persona.findAllByUnidad(unidad)
+//            def personasFirma = Persona.findAllByUnidad(unidad)
+            def personasFirma = firmasService.listaDirectoresUnidad(unidad)
+//            println "Personas Firma: " + personasFirma
             def aux = Auxiliar.list()
             def referencial = 7000
             if (aux.size() > 0) {
@@ -481,8 +541,8 @@ class AvalesController extends vesta.seguridad.Shield {
                 referencial = referencial.round(2)
                 println "referencial " + referencial
             }
-            def numero
-            numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
+//            def numero
+//            numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
 //            if (numero.size() > 0) {
 //                numero = numero?.pop()?.numero
 //            }
@@ -491,7 +551,7 @@ class AvalesController extends vesta.seguridad.Shield {
 //            } else {
 //                numero = numero + 1
 //            }
-            numero = 0
+//            numero = 0
             def r = verificarProceso(proceso)
             flash.message = r.message
             if (flash.message != "") {
@@ -500,14 +560,22 @@ class AvalesController extends vesta.seguridad.Shield {
             def disponible = r.disponible
 
 //            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
-            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("D01"), EstadoAval.findByCodigo("EF4")])
+
+            def estadoDevuelto = EstadoAval.findByCodigo("D01")
+            def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+            def estadoPendiente = EstadoAval.findByCodigo("P01")
+            def estados = [estadoDevuelto, estadoSolicitadoSinFirma, estadoPendiente]
+
+            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, estados)
             def solicitud = null
             if (solicitudes.size() == 1) {
                 solicitud = solicitudes.first()
             }
 
-            return [proceso  : proceso, disponible: disponible, personas: personasFirma, numero: numero,
-                    refencial: referencial, readOnly: readOnly, solicitud: solicitud]
+//            println "Aqui:   " + proceso + "    " + solicitud
+
+            return [proceso  : proceso, disponible: disponible, personas: personasFirma, numero: 0,
+                    refencial: referencial, readOnly: readOnly, solicitud: solicitud, params: params]
         } else {
             redirect(action: "nuevaSolicitud")
             return
@@ -515,7 +583,7 @@ class AvalesController extends vesta.seguridad.Shield {
     }
 
     def verificarProceso(ProcesoAval proceso) {
-        def band = true
+//        def band = true
         def message = ""
         def now = new Date()
 /*
@@ -525,20 +593,49 @@ class AvalesController extends vesta.seguridad.Shield {
                     "modifique las fechas de inicio y fin"
         }
 */
-        def avales = Aval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E02"), EstadoAval.findByCodigo("E05"), EstadoAval.findByCodigo("EF1")])
-        def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
+        def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
+        def estadoAprobado = EstadoAval.findByCodigo("E02")
+        def estadoAnulado = EstadoAval.findByCodigo("E05")
+
+//        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estadoPorRevisar = EstadoAval.findByCodigo("R01")
+        def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estadoSolicitado = EstadoAval.findByCodigo("E01")
+//        def estadoDevueltoReq = EstadoAval.findByCodigo("D01")
+        def estadoDevueltoDirReq = EstadoAval.findByCodigo("D02")
+
+        def avales = Aval.findAllByProcesoAndEstadoInList(proceso, [estadoAprobado, estadoAnulado, estadoAprobadoSinFirma])
+        def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [estadoPorRevisar, estadoSolicitadoSinFirma, estadoSolicitado, estadoDevueltoDirReq])
         def disponible = proceso.getMonto()
-        avales.each {
-            band = false
-            disponible -= it.monto
+
+        if (avales.size() > 0) {
+            disponible -= (avales.sum { it.monto })
+            message = "Este proceso tiene un aval vigente"
         }
-        solicitudes.each {
-            band = false
-            disponible -= it.monto
+        if (solicitudes.size() > 0) {
+            disponible -= (solicitudes.sum { it.monto })
+            if (message == "") {
+                message = "Este proceso tiene "
+            } else {
+                message += " y "
+            }
+            message += "${solicitudes.size() == 1 ? 'una' : solicitudes.size()} solicitud${solicitudes.size() == 1 ? '' : 'es'} <strong>${solicitudes.estado.descripcion.join(', ')}</strong>"
         }
-        if (!band) {
-            message = "Este proceso ya tiene un aval vigente o tiene una solicitud pendiente, no puede solicitar otro."
+        if (message != "") {
+            message += ", no puede solicitar otro."
         }
+
+//        avales.each {
+////            band = false
+//            disponible -= it.monto
+//        }
+//        solicitudes.each {
+////            band = false
+//            disponible -= it.monto
+//        }
+//        if (!band) {
+//            message = "Este proceso ya tiene un aval vigente o tiene una solicitud pendiente, no puede solicitar otro."
+//        }
         return [message: message, disponible: disponible]
     }
 
@@ -657,7 +754,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * ejecuta:
      * @param params los parámetros enviados por el submit del formulario
      */
-    def guardarSolicitud = {
+    def guardarSolicitudBck = {
         println "solicitud aval " + params
         /*TODO enviar alertas*/
 
@@ -743,6 +840,7 @@ class AvalesController extends vesta.seguridad.Shield {
                         sol.path = nombre
                     }
                     sol.notaTecnica = params.notaTecnica
+
                     def firma = new Firma()
                     firma.usuario = usuFirma
                     firma.accion = "firmarSolicitud"
@@ -834,6 +932,7 @@ class AvalesController extends vesta.seguridad.Shield {
             println "else"
             def proceso = ProcesoAval.get(params.proceso)
             def usuFirma = Persona.get(params.firma1)
+
             def monto = params.monto
             monto = monto.toDouble()
             def concepto = params.concepto
@@ -855,6 +954,7 @@ class AvalesController extends vesta.seguridad.Shield {
             if (params.path) {
                 sol.path = params.path
             }  // verificar
+
             def firma = new Firma()
             firma.usuario = usuFirma
             firma.accionVer = "imprimirSolicitudAval"
@@ -916,11 +1016,244 @@ class AvalesController extends vesta.seguridad.Shield {
         }
     }
 
+    def guardarSolicitud() {
+        println "solicitud aval " + params
+
+        def preview = params.preview == "S"
+
+        def path = servletContext.getRealPath("/") + "pdf/solicitudAval/"
+        new File(path).mkdirs()
+        def f = request.getFile('file')
+        def okContents = [
+                'application/pdf'     : 'pdf',
+                'application/download': 'pdf'
+        ]
+        def nombre, pathFile
+        def fileName = ""
+        if (f && !f.empty) {
+            fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            println okContents.containsKey(f.getContentType())
+            if (!okContents.containsKey(f.getContentType())) {
+                redirect(action: 'solicitudProceso', params: [id: params.proceso, error: "Error: Seleccione un archivo de tipo PDF"])
+                return
+            }
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                }
+            }
+            if (fileName.size() > 0) {
+                ext = okContents[f.getContentType()]
+                fileName = fileName.size() < 40 ? fileName : fileName[0..39]
+                fileName = fileName.tr(/áéíóúñÑÜüÁÉÍÓÚàèìòùÀÈÌÒÙÇç .!¡¿?&#°"'/, "aeiounNUuAEIOUaeiouAEIOUCc_")
+                if (!ext) {
+                    ext = "pdf"
+                }
+                nombre = fileName + "." + ext
+                pathFile = path + nombre
+                def fn = fileName
+                def src = new File(pathFile)
+                def i = 1
+                while (src.exists()) {
+                    nombre = fn + "_" + i + "." + ext
+                    pathFile = path + nombre
+                    src = new File(pathFile)
+                    i++
+                }
+                try {
+                    if (fileName.size() > 0) {
+                        f.transferTo(new File(pathFile))  // guarda el archivo subido al nuevo path
+                    }
+                } catch (e) {
+                    println "????????\n" + e + "\n???????????"
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        def proceso = ProcesoAval.get(params.proceso)
+        def usuFirma
+
+        def monto = params.monto
+        monto = monto.toDouble()
+        def concepto = params.concepto
+        def memorando = params.memorando
+        def sol = new SolicitudAval()
+        if (params.solicitud) {  // no se crea otra solicitud se ya existe
+            sol = SolicitudAval.get(params.solicitud)
+            usuFirma = sol.director
+        } else {
+            usuFirma = Persona.get(params.firma1)
+        }
+        println "usuFirma: " + usuFirma
+        sol.director = usuFirma
+        println "director: " + sol.director
+        sol.estado = EstadoAval.findByCodigo("P01")
+
+        sol.proceso = proceso
+        if (params.aval) {
+            sol.aval = Aval.get(params.aval)
+        }
+        sol.usuario = session.usuario
+        sol.numero = params.numero?.toInteger()
+        sol.monto = monto
+        sol.concepto = concepto
+        sol.memo = memorando
+        sol.notaTecnica = params.notaTecnica
+        sol.unidad = session.usuario.unidad
+        if (nombre) {
+            sol.path = nombre
+        } else if (params.path) {
+            sol.path = params.path
+        }  // verificar
+        if (params.tipo) {
+            sol.tipo = params.tipo
+        }
+        sol.fecha = new Date();
+
+        if (!sol.save(flush: true)) {              // ******** guarda solicitud
+            println "error save solicitud aval" + sol.errors
+        } else {
+            if (!preview) {
+                println "No es preview: hace alerta y marca para revision"
+                sol.estado = EstadoAval.findByCodigo("R01")
+                if (!sol.save(flush: true)) {
+                    println "ERROR: " + sol.errors
+                }
+//                def firma = new Firma()
+//                firma.usuario = usuFirma
+//
+//                firma.accion = "firmarSolicitud"
+//                firma.controlador = "avales"
+//
+//                firma.idAccion = sol.id
+//                firma.idAccionVer = sol.id
+//
+//                if (params.tipo == "A") {
+//                    firma.accionVer = "imprimirSolicitudAnulacionAval"
+//                    firma.controladorVer = "reporteSolicitud"
+//
+//                    firma.documento = "SolicitudDeAnulacionDeAval_" + sol.proceso.nombre
+//                    firma.concepto = "Solicitud de Anulación de aval del proceso: " + proceso.nombre
+//                } else {
+//                    firma.accionVer = "imprimirSolicitudAval"
+//                    firma.controladorVer = "reporteSolicitud"
+//
+//                    firma.documento = "SolicitudDeAval_" + sol.proceso.nombre
+//                    firma.concepto = "Solicitud de aval del proceso: " + proceso.nombre
+//                }
+//
+//                if (!firma.save(flush: true)) {            // ******** guarda firmas
+//                    println "Error en firma: " + firma.errors
+//                }
+//                sol.firma = firma
+
+                def alerta = new Alerta()
+                alerta.from = session.usuario
+                alerta.persona = usuFirma
+                alerta.fechaEnvio = new Date()
+                alerta.mensaje = "Nueva solicitud de aval: " + sol.concepto
+                alerta.controlador = "revisionAval"
+                alerta.accion = "pendientes"
+                alerta.id_remoto = sol.id
+                if (!alerta.save(flush: true)) {
+                    println "error alerta: " + alerta.errors
+                }
+                try {
+                    def mail = usuFirma.mail
+                    if (mail) {
+
+                        mailService.sendMail {
+                            to mail
+                            subject "Nueva solicitud de aval"
+                            body "Tiene una solicitud de aval pendiente que requiere su revisión para aprobación "
+                        }
+
+                    } else {
+                        println "El usuario ${sol.firma.usuario.login} no tiene email"
+                    }
+                } catch (e) {
+                    println "error email " + e.printStackTrace()
+                }
+            } else {
+                println "Es preview: no hace ni firma ni alerta"
+            }
+        }
+        if (preview) {
+            flash.message = "Solicitud guardada"
+            redirect(action: 'solicitudProceso', params: [id: params.proceso])
+            return
+        } else {
+            flash.message = "Solicitud enviada"
+            redirect(action: 'avalesProceso', params: [id: params.proceso])
+            return
+        }
+    }
+
+    /**
+     * Acción que permite realizar la nueva revision antes de la firma
+     */
+    def revisarSolicitud() {
+        def firma = Firma.findByKey(params.key)
+        if (!firma) {
+            response.sendError(403)
+        } else {
+            def sol = SolicitudAval.findByFirma(firma)
+            sol.estado = EstadoAval.findByCodigo("R01")
+//            def numero
+//            numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
+//            if (numero.size() > 0) {
+//                numero = numero?.pop()?.numero
+//            }
+//            if (!numero) {
+//                numero = 1
+//            } else {
+//                numero = numero + 1
+//            }
+//            sol.numero = numero
+            sol.save(flush: true)
+            try {
+                def gerentes = firmasService.listaGerentesUnidad(sol.usuario.unidad)
+
+                if (gerentes.size() > 0) {
+                    def persona = Persona.get(session.usuario.personaId)
+
+//                    println "Se enviaran ${sesiones.size()} mails"
+                    gerentes.each { usro ->
+                        def mail = usro.mail
+                        if (mail) {
+                            mailService.sendMail {
+                                to mail
+                                subject "Nueva solicitud de aval"
+                                body "Ha recibido una nueva solicitud de aval de la unidad " + sol.unidad
+                            }
+                        } else {
+                            println "El usuario ${usro.login} no tiene email"
+                        }
+                    }
+                } else {
+                    println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
+                }
+            } catch (e) {
+                println "Error al enviar mail: ${e.printStackTrace()}"
+            }
+//            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
+            def url = g.createLink(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
+            render "${url}"
+        }
+    }
+
     /**
      * Acción que permite firmar electronicamente la solicitud
      * @param key de la firma
      */
     def firmarSolicitud = {
+//        println "Firmar solicitud: " + params
         def firma = Firma.findByKey(params.key)
         if (!firma) {
             response.sendError(403)
@@ -939,37 +1272,56 @@ class AvalesController extends vesta.seguridad.Shield {
             }
             sol.numero = numero
             sol.save(flush: true)
-            try {
-                def perfilDireccionPlanificacion = Prfl.findByCodigo("DP")
+            def perfilDireccionPlanificacion = Prfl.findByCodigo("ASPL") //igual q en reformas
+//                def perfilDireccionPlanificacion = Prfl.findByCodigo("DP")
 //            def perfilDireccionComprasPublicas = Prfl.findByCodigo("GJ")
-                def perfiles = [perfilDireccionPlanificacion]
-                def sesiones = Sesn.findAllByPerfilInList(perfiles)
+            def perfiles = [perfilDireccionPlanificacion]
+            def sesiones = Sesn.findAllByPerfilInList(perfiles)
 
-                if (sesiones.size() > 0) {
-                    def persona = Persona.get(session.usuario.personaId)
+//            println "sesiones: " + sesiones
+//            println "personas: " + sesiones.usuario
+//            println "usuarios: " + sesiones.usuario.login
+
+            if (sesiones.size() > 0) {
+                def persona = Persona.get(session.usuario.id)
+                def now = new Date()
 
 //                    println "Se enviaran ${sesiones.size()} mails"
-                    sesiones.each { sesn ->
-                        Persona usro = sesn.usuario
-                        def mail = usro.mail
-                        if (mail) {
+                sesiones.each { sesn ->
+                    Persona usro = sesn.usuario
+                    def mail = usro.mail
 
+                    def alerta = new Alerta()
+                    alerta.from = persona
+                    alerta.persona = usro
+                    alerta.fechaEnvio = now
+                    alerta.mensaje = "Solicitud de aval: " + sol.concepto
+                    alerta.controlador = "revisionAval"
+                    alerta.accion = "pendientes"
+                    alerta.id_remoto = sol.id
+                    if (!alerta.save(flush: true)) {
+                        println "error alerta: " + alerta.errors
+                    }/* else {
+                        println "alerta a ${usro}"
+                    }*/
+                    if (mail) {
+                        try {
                             mailService.sendMail {
                                 to mail
-                                subject "Nueve solicitud de aval"
+                                subject "Nueva solicitud de aval"
                                 body "Ha recibido una nueva solicitud de aval de la unidad " + sol.unidad
                             }
-
-                        } else {
-                            println "El usuario ${usro.login} no tiene email"
+                        } catch (e) {
+                            println "Error al enviar mail: ${e.printStackTrace()}"
                         }
+                    } else {
+                        println "El usuario ${usro.login} no tiene email"
                     }
-                } else {
-                    println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
                 }
-            } catch (e) {
-                println "Error al enviar mail: ${e.printStackTrace()}"
+            } else {
+                println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
             }
+
 //            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
             def url = g.createLink(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
             render "${url}"

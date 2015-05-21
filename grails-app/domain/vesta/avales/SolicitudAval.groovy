@@ -61,6 +61,10 @@ class SolicitudAval {
      */
     String observaciones
     /**
+     * Observaciones de la solicitud para el pdf
+     */
+    String observacionesPdf
+    /**
      * Número de la solicitud
      */
     int numero
@@ -72,15 +76,21 @@ class SolicitudAval {
     String tipo /*A--> anulacion*/
 
     /**
-     * Firma de la solicitud
+     * Firma de la solicitud (gerente)
      */
     Firma firma
-
+    /**
+     * Director que va a revisar la solicitud
+     */
+    Persona director
+    /**
+     * Analista de planificación que solicita las firmas
+     */
+    Persona analista
     /**
      * Nota Técnica de la solicitud
      */
     String notaTecnica
-
 
     /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
@@ -106,11 +116,15 @@ class SolicitudAval {
             usuario column: 'prsn__id'
             observaciones column: 'slavobsr'
             observaciones type: 'text'
+            observacionesPdf column: 'slavopdf'
+            observacionesPdf type: 'text'
             numero column: 'slavnmro'
             tipo column: 'slavtipo'
             firma column: 'frma__id'
             unidad column: 'unej__id'
             notaTecnica column: 'slavnttc'
+            director column: 'prsndrct'
+            analista column: 'prsnanls'
         }
     }
 
@@ -127,10 +141,13 @@ class SolicitudAval {
         contrato(blank: true, nullable: true, size: 1..30)
         memo(blank: true, nullable: true, size: 1..63)
         observaciones(blank: true, nullable: true)
+        observacionesPdf(blank: true, nullable: true)
         numero(blank: true, nullable: true)
         tipo(blank: true, nullable: true, size: 1..1)
         firma(blank: true, nullable: true)
         unidad(nullable: true, blank: true)
-        notaTecnica (nullable: true, blank: true, size: 1..350)
+        notaTecnica(nullable: true, blank: true, size: 1..350)
+        director(nullable: true, blank: true)
+        analista(nullable: true, blank: true)
     }
 }
