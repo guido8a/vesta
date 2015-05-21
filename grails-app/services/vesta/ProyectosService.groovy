@@ -149,17 +149,17 @@ class ProyectosService {
 //            }
 //        }
 
-//        asignaciones.each {b->
-//            def c3 = b.marcoLogico.marcoLogico
-//            def act2 = b.marcoLogico.id
-//            if(c3.id == componente.id && !actividades2.contains(act2)){
-//                actividades2.add(act2)
-//            }
-//        }
-//
-//        actividades2.each {
-//            actividades += MarcoLogico.get(it)
-//        }
+        asignaciones.each {b->
+            def c3 = b.marcoLogico.marcoLogico
+            def act2 = b.marcoLogico.id
+            if(c3.id == componente.id && !actividades2.contains(act2)){
+                actividades2.add(act2)
+            }
+        }
+
+        actividades2.each {
+            actividades += MarcoLogico.get(it)
+        }
 
         println("act " + actividades)
         return actividades.unique().sort { it.numero }

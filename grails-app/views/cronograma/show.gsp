@@ -359,7 +359,7 @@
                                 var $tr = $element.parents("tr");
                                 var index = $element.index();
 
-                                var $mes = $("#trMeses").children().eq(index);
+                                var $mes = $("#trMeses").children().eq(index-1);
                                 var mes = $mes.attr("title");
                                 $('#modalCronoVer').modal("show");
                                 $("#modalTitleVer").text("Cronograma - " + mes);
