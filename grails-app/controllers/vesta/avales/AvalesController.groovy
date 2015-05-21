@@ -1034,7 +1034,7 @@ class AvalesController extends vesta.seguridad.Shield {
             fileName = f.getOriginalFilename() //nombre original del archivo
             def ext
 
-            println okContents.containsKey(f.getContentType())
+//            println okContents.containsKey(f.getContentType())
             if (!okContents.containsKey(f.getContentType())) {
                 redirect(action: 'solicitudProceso', params: [id: params.proceso, error: "Error: Seleccione un archivo de tipo PDF"])
                 return
@@ -1087,12 +1087,15 @@ class AvalesController extends vesta.seguridad.Shield {
         if (params.solicitud) {  // no se crea otra solicitud se ya existe
             sol = SolicitudAval.get(params.solicitud)
             usuFirma = sol.director
+            if (!usuFirma) {
+                usuFirma = Persona.get(params.firma1)
+            }
         } else {
             usuFirma = Persona.get(params.firma1)
         }
-        println "usuFirma: " + usuFirma
+//        println "usuFirma: " + usuFirma
         sol.director = usuFirma
-        println "director: " + sol.director
+//        println "director: " + sol.director
         sol.estado = EstadoAval.findByCodigo("P01")
 
         sol.proceso = proceso

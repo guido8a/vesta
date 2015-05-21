@@ -187,7 +187,7 @@
                                 </p>
                             </g:if>
                             <g:else>
-                              *${solicitud?.directorId}*
+                            %{--*${solicitud?.directorId}*--}%
                                 <g:select from="${personas}" optionKey="id" class="form-control input-sm required"
                                           optionValue="${{
                                               it.nombre + ' ' + it.apellido
