@@ -3,27 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main"/>
-    <title>Crear Hito</title>
-    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/jBreadCrumb/Styles', file: 'Base.css')}"
-          type="text/css"/>
-    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/jBreadCrumb/Styles', file: 'BreadCrumb.css')}"
-          type="text/css"/>
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'svt.css')}"
-          type="text/css"/>
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.easing.1.3.js')}" type="text/javascript"
-            language="JavaScript"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jBreadCrumb/js', file: 'jquery.jBreadCrumb.1.1.js')}"
-            type="text/javascript" language="JavaScript"></script>
+    <title>Ver Ejecución</title>
 
-    <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/select', file: 'jquery.ui.selectmenu.js')}"></script>
-    <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/select', file: 'jquery.ui.selectmenu.css')}"/>
-
-    <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins', file: 'jquery.meio.mask.js')}"></script>
-    <style>
-    .tipo{
-        font-weight: bold;
-    }
-    </style>
 </head>
 <body>
 <g:if test="${flash.message}">
@@ -32,27 +13,32 @@
     </div>
 </g:if>
 <div class="fila">
-    <g:link controller="hito" action="lista" class="btn">Lista de hitos</g:link>
-    %{--<g:link controller="avales" action="crearProceso" class="btn">Crear nuevo</g:link>--}%
-
+    <g:link controller="hito" action="lista" class="btn btn-default btn-sm">Lista de hitos</g:link>
 </div>
-<fieldset style="width: 95%;height: 240px;" class="ui-corner-all">
+<fieldset style="width: 95%;height: 240px; margin-top: 20px" class="ui-corner-all">
     <legend>Hito</legend>
     <g:form action="saveHito" class="frmHito">
         <input type="hidden" name="id" value="${hito?.id}">
-        <div class="fila" >
-            <div class="fieldSvt-large" style="font-weight: bold;margin-left: 10px">
-                Fecha planificada de cumplimiento
-            </div>
-            <div class="fieldSvt-medium" >
-                ${hito?.fechaPlanificada?.format('dd/MM/yyyy')}
-            </div>
+
+
+        <div class="row">
+         <div class="col-md-7 alert alert-info sh" style="height: 100%;">
+         <div class="row no-margin-top">
+                        <label class="col-md-5 control-label">
+                          Fecha planificada de cumplimiento:
+                        </label>
+                        <div class="col-md-5">
+        ${hito?.fechaPlanificada?.format('dd-MM-yyyy')}
         </div>
-        <div class="fila" style="height: 110px">
-            <div class="labelSvt">Descripción:</div>
-            <div class="fieldSvt-xxxl" style="width: 800px">
+        </div>
+        <div class="row no-margin-top">
+            <label class="col-md-5 control-label">
+                Descripción:
+            </label>
+            <div class="col-md-5">
                 ${hito?.descripcion}
             </div>
+        </div>
         </div>
 
     </g:form>

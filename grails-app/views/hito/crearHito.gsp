@@ -147,7 +147,7 @@
     });
     <g:if test="${hito}">
     $("#proy").change()
-    $("#comp").val(${componente.marcoLogico.id})
+    $("#comp").val(${componente?.marcoLogico?.id})
     </g:if>
 </script>
 </body>

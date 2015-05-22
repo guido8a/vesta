@@ -1,5 +1,4 @@
-<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins', file: 'jquery.meio.mask.js')}"></script>
-<table style="width: 100%;font-size: 10px">
+<table class="table table-condensed table-bordered table-striped table-hover">
     <thead>
     <th>Fecha</th>
     <th>Tipo</th>

@@ -19,7 +19,7 @@
 </g:if>
 <div class="btn-toolbar toolbar" style="margin-top: 10px">
     <div class="btn-group">
-        <g:link controller="hito" action="crearHito" class="btn btn-default">Crear nuevo</g:link>
+        <g:link controller="hito" action="crearHito" class="btn btn-default"> <i class="fa fa-file-o"></i> Crear nuevo</g:link>
     </div>
 </div>
 <elm:container tipo="horizontal" titulo="Lista de hitos">
@@ -32,8 +32,8 @@
                     <th>Descripción</th>
                     <th>Inicio</th>
                     <th>Fin</th>
-                    <th></th>
-                    <th></th>
+                    <th>Ver</th>
+                    <th>Editar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,10 +43,10 @@
                         <td style="text-align: center">${h.inicio?.format("dd-MM-yyyy")}</td>
                         <td style="text-align: center">${h.fechaPlanificada?.format("dd-MM-yyyy")}</td>
                         <td style="text-align: center">
-                            <g:link controller="hito" action="verHito" id="${h.id}" class="btn btn-info btn-sm" >Ver ejecucíon</g:link>
+                            <g:link controller="hito" action="verHito" id="${h.id}" class="btn btn-info btn-sm" ><i class="fa fa-gear"></i> Ver ejecución</g:link>
                         </td>
                         <td style="text-align: center">
-                            <g:link controller="hito" action="crearHito" id="${h.id}" class="btn btn-info btn-sm" >Editar</g:link>
+                            <g:link controller="hito" action="crearHito" id="${h.id}" class="btn btn-info btn-sm" ><i class="fa fa-pencil"></i> Editar</g:link>
                         </td>
                     </tr>
                 </g:each>
