@@ -28,6 +28,7 @@ class ReformaController extends Shield {
 
     def firmasService
     def proyectosService
+    def mailService
 
     /**
      * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
@@ -74,7 +75,10 @@ class ReformaController extends Shield {
 //        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
 //        def personasFirmas = Persona.findAllByUnidad(unidad)
 //        def gerentes = Persona.findAllByUnidad(unidad.padre)
-        def firmas = firmasService.listaFirmasCombos()
+//        def firmas = firmasService.listaFirmasCombos()
+        def estadoDevuelto = EstadoAval.findByCodigo("D01")
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estados = [estadoPendiente, estadoDevuelto]
 
         def total = 0
 
@@ -82,24 +86,21 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
-            if (reforma.estado.codigo != "D01") {
+            if (!estados.contains(reforma.estado)) {
+                println "esta en estado: ${reforma.estado.descripcion} (${reforma.estado.codigo}) asiq redirecciona a la lista"
                 redirect(action: "lista")
                 return
             }
             detalles = DetalleReforma.findAllByReforma(reforma)
-            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-            def devuelto = EstadoAval.findByCodigo("D01")
-            def estados = [solicitadoSinFirma, devuelto]
-            if (estados.contains(reforma.estado)) {
-                editable = true
-            }
             if (detalles.size() > 0) {
                 total = detalles.sum { it.valor }
             }
         }
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def personasFirma = firmasService.listaDirectoresUnidad(unidad)
 
-        return [proyectos      : proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
-                personasGerente: firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
+        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: personasFirma,
+                total    : total, reforma: reforma, detalles: detalles]
     }
 
     /**
@@ -141,7 +142,10 @@ class ReformaController extends Shield {
 //        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
 //        def personasFirmas = Persona.findAllByUnidad(unidad)
 //        def gerentes = Persona.findAllByUnidad(unidad.padre)
-        def firmas = firmasService.listaFirmasCombos()
+//        def firmas = firmasService.listaFirmasCombos()
+        def estadoDevuelto = EstadoAval.findByCodigo("D01")
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estados = [estadoPendiente, estadoDevuelto]
 
         def total = 0
 
@@ -149,24 +153,23 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
-            if (reforma.estado.codigo != "D01") {
+            if (!estados.contains(reforma.estado)) {
+                println "esta en estado: ${reforma.estado.descripcion} (${reforma.estado.codigo}) asiq redirecciona a la lista"
                 redirect(action: "lista")
                 return
             }
             detalles = DetalleReforma.findAllByReforma(reforma)
-            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-            def devuelto = EstadoAval.findByCodigo("D01")
-            def estados = [solicitadoSinFirma, devuelto]
-            if (estados.contains(reforma.estado)) {
-                editable = true
-            }
+//            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+//            def devuelto = EstadoAval.findByCodigo("D01")
             if (detalles.size() > 0) {
                 total = detalles.sum { it.valor }
             }
         }
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def personasFirma = firmasService.listaDirectoresUnidad(unidad)
 
-        return [proyectos      : proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
-                personasGerente: firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles]
+        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: personasFirma,
+                total    : total, editable: editable, reforma: reforma, detalles: detalles]
     }
 
     /**
@@ -206,7 +209,10 @@ class ReformaController extends Shield {
 //        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
 //        def personasFirmas = Persona.findAllByUnidad(unidad)
 //        def gerentes = Persona.findAllByUnidad(unidad.padre)
-        def firmas = firmasService.listaFirmasCombos()
+//        def firmas = firmasService.listaFirmasCombos()
+        def estadoDevuelto = EstadoAval.findByCodigo("D01")
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estados = [estadoPendiente, estadoDevuelto]
 
         def total = 0
 
@@ -214,30 +220,28 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
-            if (reforma.estado.codigo != "D01") {
+            if (!estados.contains(reforma.estado)) {
+                println "esta en estado: ${reforma.estado.descripcion} (${reforma.estado.codigo}) asiq redirecciona a la lista"
                 redirect(action: "lista")
                 return
             }
             detalles = DetalleReforma.findAllByReforma(reforma)
-            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-            def devuelto = EstadoAval.findByCodigo("D01")
-            def estados = [solicitadoSinFirma, devuelto]
-            if (estados.contains(reforma.estado)) {
-                editable = true
-            }
             if (detalles.size() > 0) {
                 total = detalles.sum { it.valor }
             }
         }
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def personasFirma = firmasService.listaDirectoresUnidad(unidad)
 
-        return [proyectos      : proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
-                personasGerente: firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
+        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: personasFirma,
+                total    : total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
     }
 
     /**
      * Acción que permite realizar una solicitud de reforma a nueva actividad sin asignación de origen
      */
-    def incrementoActividad() {  def actual
+    def incrementoActividad() {
+        def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
         } else {
@@ -270,7 +274,10 @@ class ReformaController extends Shield {
 //        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
 //        def personasFirmas = Persona.findAllByUnidad(unidad)
 //        def gerentes = Persona.findAllByUnidad(unidad.padre)
-        def firmas = firmasService.listaFirmasCombos()
+//        def firmas = firmasService.listaFirmasCombos()
+        def estadoDevuelto = EstadoAval.findByCodigo("D01")
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estados = [estadoPendiente, estadoDevuelto]
 
         def total = 0
 
@@ -278,24 +285,21 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
-            if (reforma.estado.codigo != "D01") {
+            if (!estados.contains(reforma.estado)) {
+                println "esta en estado: ${reforma.estado.descripcion} (${reforma.estado.codigo}) asiq redirecciona a la lista"
                 redirect(action: "lista")
                 return
             }
             detalles = DetalleReforma.findAllByReforma(reforma)
-            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-            def devuelto = EstadoAval.findByCodigo("D01")
-            def estados = [solicitadoSinFirma, devuelto]
-            if (estados.contains(reforma.estado)) {
-                editable = true
-            }
             if (detalles.size() > 0) {
                 total = detalles.sum { it.valor }
             }
         }
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def personasFirma = firmasService.listaDirectoresUnidad(unidad)
 
-        return [proyectos      : proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
-                personasGerente: firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
+        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: personasFirma,
+                total    : total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
     }
 
     /**
@@ -335,7 +339,10 @@ class ReformaController extends Shield {
 //        def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
 //        def personasFirmas = Persona.findAllByUnidad(unidad)
 //        def gerentes = Persona.findAllByUnidad(unidad.padre)
-        def firmas = firmasService.listaFirmasCombos()
+//        def firmas = firmasService.listaFirmasCombos()
+        def estadoDevuelto = EstadoAval.findByCodigo("D01")
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estados = [estadoPendiente, estadoDevuelto]
 
         def total = 0
 
@@ -343,24 +350,22 @@ class ReformaController extends Shield {
         if (params.id) {
             editable = false
             reforma = Reforma.get(params.id)
-            if (reforma.estado.codigo != "D01") {
+            if (!estados.contains(reforma.estado)) {
+                println "esta en estado: ${reforma.estado.descripcion} (${reforma.estado.codigo}) asiq redirecciona a la lista"
                 redirect(action: "lista")
                 return
             }
             detalles = DetalleReforma.findAllByReforma(reforma)
-            def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-            def devuelto = EstadoAval.findByCodigo("D01")
-            def estados = [solicitadoSinFirma, devuelto]
-            if (estados.contains(reforma.estado)) {
-                editable = true
-            }
+
             if (detalles.size() > 0) {
                 total = detalles.sum { it.valor }
             }
         }
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def personasFirma = firmasService.listaDirectoresUnidad(unidad)
 
-        return [proyectos      : proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: firmas.directores,
-                personasGerente: firmas.gerentes, total: total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
+        return [proyectos: proyectos3, proyectos2: proyectos3, actual: actual, campos: campos, personas: personasFirma,
+                total    : total, editable: editable, reforma: reforma, detalles: detalles, unidad: UnidadEjecutora.get(session.unidad.id)]
     }
 
     /**
@@ -371,7 +376,7 @@ class ReformaController extends Shield {
         def perfil = session.perfil.codigo
         def perfiles = ["GAF", "ASPL"]
 
-        if(perfiles.contains(perfil)) {
+        if (perfiles.contains(perfil)) {
             reformas = Reforma.withCriteria {
                 eq("tipo", "R")
                 persona {
@@ -383,7 +388,7 @@ class ReformaController extends Shield {
             def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
             def personas = Persona.findAllByUnidadInList(unidades)
 
-            reformas = Reforma.findAllByTipoAndPersonaInList('R',personas,  [sort: "fecha", order: "desc"])
+            reformas = Reforma.findAllByTipoAndPersonaInList('R', personas, [sort: "fecha", order: "desc"])
         }
 
         return [reformas: reformas]
@@ -393,10 +398,11 @@ class ReformaController extends Shield {
      * Acción que muestra la lista de las reformas solicitadas para q un analista de planificación apruebe y pida firmas o niegue
      */
     def pendientes() {
-        def estadoSolicitado = EstadoAval.findByCodigo("E01")
-        def estadoDevueltoAnalista = EstadoAval.findByCodigo("D02")
-        def estados = [estadoSolicitado, estadoDevueltoAnalista]
-        def reformas = Reforma.findAllByTipoAndEstadoInList("R", estados, [sort: "fecha", order: "desc"])
+//        def estadoSolicitado = EstadoAval.findByCodigo("E01")
+//        def estadoDevueltoAnalista = EstadoAval.findByCodigo("D02")
+//        def estados = [estadoSolicitado, estadoDevueltoAnalista]
+//
+//        def reformas = Reforma.findAllByTipoAndEstadoInList("R", estados, [sort: "fecha", order: "desc"])
 
 //        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
 //        def personas = Persona.findAllByUnidadInList(unidades)
@@ -413,40 +419,136 @@ class ReformaController extends Shield {
 //        println reformas.estado
 //        println reformas.estado.codigo
 
-        return [reformas: reformas]
+//        return [reformas: reformas]
+
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estadoDevueltoReq = EstadoAval.findByCodigo("D01")
+        def estadoPorRevisar = EstadoAval.findByCodigo("R01")
+        def estadoSolicitado = EstadoAval.findByCodigo("E01")
+        def estadoDevueltoDirReq = EstadoAval.findByCodigo("D02")
+        def estadoDevueltoAnPlan = EstadoAval.findByCodigo("D03")
+        def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+
+        def estados = []
+        def perfil = session.perfil.codigo
+        def perfiles = ["GAF", "ASPL"]
+        def unidades
+        if (perfiles.contains(perfil)) {
+            unidades = UnidadEjecutora.list()
+        } else {
+            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+        }
+
+        def filtroDirector = null,
+            filtroPersona = null
+
+        switch (perfil) {
+            case "RQ":
+                estados = [estadoPendiente, estadoDevueltoReq]
+                filtroPersona = Persona.get(session.usuario.id)
+                break;
+            case "DRRQ":
+                estados = [estadoPorRevisar, estadoDevueltoDirReq]
+                filtroDirector = Persona.get(session.usuario.id)
+                break;
+            case "ASPL":
+                estados = [estadoSolicitado, estadoDevueltoAnPlan]
+                break;
+        }
+
+        def reformas = Reforma.withCriteria {
+            if (estados.size() > 0) {
+                inList("estado", estados)
+            }
+            if (unidades.size() > 0) {
+                persona {
+                    inList("unidad", unidades)
+                }
+            }
+            if (filtroPersona) {
+                eq("persona", filtroPersona)
+            }
+            if (filtroDirector) {
+                eq("director", filtroDirector)
+            }
+        }
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def unidadesList
+
+        if (perfiles.contains(perfil)) {
+            unidadesList = Asignacion.withCriteria {
+                projections {
+                    distinct("unidad")
+                }
+            }
+        } else {
+            def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+            unidadesList = Asignacion.withCriteria {
+                inList("unidad", uns)
+                projections {
+                    distinct("unidad")
+                }
+            }
+        }
+
+        unidadesList = unidadesList.sort { it.nombre }
+
+        return [reformas: reformas, actual: actual, unidades: unidadesList]
     }
 
     /**
      * Acción llamada con ajax que muestra un historial de reformas solicitadas
      */
     def historial_ajax() {
-        def estadoAprobado = EstadoAval.findByCodigo("E02")
-        def estadoNegado = EstadoAval.findByCodigo("E03")
-        def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
+//        def estadoAprobado = EstadoAval.findByCodigo("E02")
+//        def estadoNegado = EstadoAval.findByCodigo("E03")
+//        def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
         def tipo = 'R'
-        def estados = [estadoAprobadoSinFirma, estadoAprobado, estadoNegado]
+//        def estados = [estadoAprobadoSinFirma, estadoAprobado, estadoNegado]
+        def estados = EstadoAval.list()
 //        def reformas = Reforma.findAllByEstadoInListAndTipo(estados, tipo, [sort: "fecha", order: "desc"])
         def reformas
         def perfil = session.perfil.codigo
         def perfiles = ["GAF", "ASPL"]
-        if(perfiles.contains(perfil)) {
-            reformas = Reforma.withCriteria {
-                eq("tipo", "A")
-                persona {
-                    order("unidad", "asc")
-                }
-                order("fecha", "desc")
-            }
+        def unidades
+        if (perfiles.contains(perfil)) {
+            unidades = UnidadEjecutora.list()
         } else {
-            def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.id))
-            def personas = Persona.findAllByUnidadInList(unidades)
-            reformas = Reforma.withCriteria {
-                eq("tipo", tipo)
-                inList("estado", estados)
-                inList("persona", personas)
-                order("fecha", "desc")
-            }
+            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
         }
+        reformas = Reforma.withCriteria {
+            eq("tipo", tipo)
+            inList("estado", estados)
+            persona {
+                inList("unidad", unidades)
+            }
+            order("fecha", "desc")
+        }
+
+//        if (perfiles.contains(perfil)) {
+//            reformas = Reforma.withCriteria {
+//                eq("tipo", "A")
+//                persona {
+//                    order("unidad", "asc")
+//                }
+//                order("fecha", "desc")
+//            }
+//        } else {
+//            def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+//            def personas = Persona.findAllByUnidadInList(unidades)
+//            reformas = Reforma.withCriteria {
+//                eq("tipo", tipo)
+//                inList("estado", estados)
+//                inList("persona", personas)
+//                order("fecha", "desc")
+//            }
+//        }
         return [reformas: reformas]
     }
 
@@ -456,7 +558,7 @@ class ReformaController extends Shield {
     def procesar() {
         def reforma = Reforma.get(params.id)
         println "init: reforma=${reforma.id} estado reforma id=${reforma.estado.id} cod=${reforma.estado.codigo}"
-        if (reforma.estado.codigo == "E01" || reforma.estado.codigo == "D02") {
+        if (reforma.estado.codigo == "E01" || reforma.estado.codigo == "D03") {
             def d
 
             switch (reforma.tipoSolicitud) {
@@ -601,155 +703,158 @@ class ReformaController extends Shield {
      * Acción que marca una solicitud como aprobada y a la espera de las firmas de aprobación
      */
     def aprobar() {
-        def reforma = Reforma.get(params.id)
-        def estadoAprobadoSinFirmas = EstadoAval.findByCodigo("EF1")
-
         def usu = Persona.get(session.usuario.id)
-        def now = new Date()
+        if (params.auth.toString().trim().encodeAsMD5() == usu.autorizacion) {
+            def now = new Date()
+            def reforma = Reforma.get(params.id)
+            def estadoAprobadoSinFirmas = EstadoAval.findByCodigo("EF1")
 
-        def edit = reforma.estado.codigo == "D02"
+            def edit = reforma.estado.codigo == "D02"
 
-        reforma.estado = estadoAprobadoSinFirmas
-        reforma.fechaRevision = now
-        reforma.analista = usu
-        reforma.nota = params.observaciones.trim()
+            reforma.estado = estadoAprobadoSinFirmas
+            reforma.fechaRevision = now
+            reforma.analista = usu
+            reforma.nota = params.observaciones.trim()
 
-        def personaFirma1
-        def personaFirma2
+            def personaFirma1
+            def personaFirma2
 
-        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
+            def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
 
-        def accion
-        def mensaje = "Aprobación de ${tipoStr}"
+            def accion
+            def mensaje = "Aprobación de ${tipoStr}"
 
-        //E: existente, A: actividad, P: partida, I: incremento
-        switch (reforma.tipoSolicitud) {
-            case "E":
-                accion = "existentePreviewReforma"
+            //E: existente, A: actividad, P: partida, I: incremento
+            switch (reforma.tipoSolicitud) {
+                case "E":
+                    accion = "existentePreviewReforma"
 //                mensaje = "Aprobación de ${tipoStr}"
-                break;
-            case "A":
-                accion = "actividadPreviewReforma"
+                    break;
+                case "A":
+                    accion = "actividadPreviewReforma"
 //                mensaje = "Aprobación de ${tipoStr}"
-                break;
-            case "C":
-                accion = "incrementoActividadPreviewReforma"
+                    break;
+                case "C":
+                    accion = "incrementoActividadPreviewReforma"
 //                mensaje = "Aprobación de reforma de incremento a nuevas actividades"
-                break;
-            case "P":
-                accion = "partidaPreviewReforma"
+                    break;
+                case "P":
+                    accion = "partidaPreviewReforma"
 //                mensaje = "Aprobación de reforma a nuevas partidas"
-                break;
-            case "I":
-                accion = "incrementoPreviewReforma"
+                    break;
+                case "I":
+                    accion = "incrementoPreviewReforma"
 //                mensaje = "Aprobación de reforma de incremento"
-                params.each { k, v ->
-                    if (k.toString().startsWith("r")) {
-                        def parts = v.split("_")
-                        if (parts.size() == 2) {
-                            def detalle = DetalleReforma.get(parts[0].toLong())
-                            def asignacionOrigen = Asignacion.get(parts[1].toLong())
-                            detalle.asignacionOrigen = asignacionOrigen
-                            detalle.save(flush: true)
+                    params.each { k, v ->
+                        if (k.toString().startsWith("r")) {
+                            def parts = v.split("_")
+                            if (parts.size() == 2) {
+                                def detalle = DetalleReforma.get(parts[0].toLong())
+                                def asignacionOrigen = Asignacion.get(parts[1].toLong())
+                                detalle.asignacionOrigen = asignacionOrigen
+                                detalle.save(flush: true)
+                            }
                         }
                     }
+                    break;
+                default:
+                    accion = "existentePreviewReforma"
+                    mensaje = "Tipo de solicitud ${reforma.tipoSolicitud} no reconocido"
+            }
+
+            if (edit) {
+                def firma1 = reforma.firma1
+                def firma2 = reforma.firma2
+
+                personaFirma1 = firma1.usuario
+                personaFirma2 = firma2.usuario
+
+                firma1.estado = "S"
+                firma1.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+                firma1.accionVer = accion
+                firma2.estado = "S"
+                firma2.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+                firma2.accionVer = accion
+
+                firma1.save(flush: true)
+                firma2.save(flush: true)
+
+            } else {
+                personaFirma1 = Persona.get(params.firma1.toLong())
+                personaFirma2 = Persona.get(params.firma2.toLong())
+
+                def firma1 = new Firma()
+                firma1.usuario = personaFirma1
+                firma1.fecha = now
+                firma1.accion = "firmarAprobarReforma"
+                firma1.controlador = "reforma"
+                firma1.idAccion = reforma.id
+                firma1.accionVer = accion
+                firma1.controladorVer = "reportesReforma"
+                firma1.idAccionVer = reforma.id
+                firma1.accionNegar = "devolverAprobarReforma"
+                firma1.controladorNegar = "reforma"
+                firma1.idAccionNegar = reforma.id
+                firma1.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+                firma1.tipoFirma = "RFRM"
+                if (!firma1.save(flush: true)) {
+                    println "error al crear firma: " + firma1.errors
+                    render "ERROR*" + renderErrors(bean: firma1)
+                    return
                 }
-                break;
-            default:
-                accion = "existentePreviewReforma"
-                mensaje = "Tipo de solicitud ${reforma.tipoSolicitud} no reconocido"
-        }
+                reforma.firma1 = firma1
 
-        if (edit) {
-            def firma1 = reforma.firma1
-            def firma2 = reforma.firma2
+                def firma2 = new Firma()
+                firma2.usuario = personaFirma2
+                firma2.fecha = now
+                firma2.accion = "firmarAprobarReforma"
+                firma2.controlador = "reforma"
+                firma2.idAccion = reforma.id
+                firma2.accionVer = accion
+                firma2.controladorVer = "reportesReforma"
+                firma2.idAccionVer = reforma.id
+                firma2.accionNegar = "devolverAprobarReforma"
+                firma2.controladorNegar = "reforma"
+                firma2.idAccionNegar = reforma.id
+                firma2.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+                firma2.tipoFirma = "RFRM"
+                if (!firma2.save(flush: true)) {
+                    println "error al crear firma: " + firma2.errors
+                    render "ERROR*" + renderErrors(bean: firma2)
+                    return
+                }
+                reforma.firma2 = firma2
+            }
 
-            personaFirma1 = firma1.usuario
-            personaFirma2 = firma2.usuario
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = personaFirma1
+            alerta.fechaEnvio = now
+            alerta.mensaje = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta.controlador = "firma"
+            alerta.accion = "firmasPendientes"
+            alerta.id_remoto = 0
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
+            }
+            def alerta2 = new Alerta()
+            alerta2.from = usu
+            alerta2.persona = personaFirma2
+            alerta2.fechaEnvio = now
+            alerta2.mensaje = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta2.controlador = "firma"
+            alerta2.accion = "firmasPendientes"
+            alerta2.id_remoto = 0
+            if (!alerta2.save(flush: true)) {
+                println "error alerta: " + alerta2.errors
+            }
 
-            firma1.estado = "S"
-            firma1.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
-            firma1.accionVer = accion
-            firma2.estado = "S"
-            firma2.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
-            firma2.accionVer = accion
+            reforma.save(flush: true)
 
-            firma1.save(flush: true)
-            firma2.save(flush: true)
-
+            render "SUCCESS*Firmas solicitadas exitosamente"
         } else {
-            personaFirma1 = Persona.get(params.firma1.toLong())
-            personaFirma2 = Persona.get(params.firma2.toLong())
-
-            def firma1 = new Firma()
-            firma1.usuario = personaFirma1
-            firma1.fecha = now
-            firma1.accion = "firmarAprobarReforma"
-            firma1.controlador = "reforma"
-            firma1.idAccion = reforma.id
-            firma1.accionVer = accion
-            firma1.controladorVer = "reportesReforma"
-            firma1.idAccionVer = reforma.id
-            firma1.accionNegar = "devolverAprobarReforma"
-            firma1.controladorNegar = "reforma"
-            firma1.idAccionNegar = reforma.id
-            firma1.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
-            firma1.tipoFirma = "RFRM"
-            if (!firma1.save(flush: true)) {
-                println "error al crear firma: " + firma1.errors
-                render "ERROR*" + renderErrors(bean: firma1)
-                return
-            }
-            reforma.firma1 = firma1
-
-            def firma2 = new Firma()
-            firma2.usuario = personaFirma2
-            firma2.fecha = now
-            firma2.accion = "firmarAprobarReforma"
-            firma2.controlador = "reforma"
-            firma2.idAccion = reforma.id
-            firma2.accionVer = accion
-            firma2.controladorVer = "reportesReforma"
-            firma2.idAccionVer = reforma.id
-            firma2.accionNegar = "devolverAprobarReforma"
-            firma2.controladorNegar = "reforma"
-            firma2.idAccionNegar = reforma.id
-            firma2.concepto = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
-            firma2.tipoFirma = "RFRM"
-            if (!firma2.save(flush: true)) {
-                println "error al crear firma: " + firma2.errors
-                render "ERROR*" + renderErrors(bean: firma2)
-                return
-            }
-            reforma.firma2 = firma2
+            render "ERROR*Clave de autorización incorrecta"
         }
-
-        def alerta = new Alerta()
-        alerta.from = usu
-        alerta.persona = personaFirma1
-        alerta.fechaEnvio = now
-        alerta.mensaje = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
-        alerta.controlador = "firma"
-        alerta.accion = "firmasPendientes"
-        alerta.id_remoto = 0
-        if (!alerta.save(flush: true)) {
-            println "error alerta: " + alerta.errors
-        }
-        def alerta2 = new Alerta()
-        alerta2.from = usu
-        alerta2.persona = personaFirma2
-        alerta2.fechaEnvio = now
-        alerta2.mensaje = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.nota
-        alerta2.controlador = "firma"
-        alerta2.accion = "firmasPendientes"
-        alerta2.id_remoto = 0
-        if (!alerta2.save(flush: true)) {
-            println "error alerta: " + alerta2.errors
-        }
-
-        reforma.save(flush: true)
-
-        render "SUCCESS*Firmas solicitadas exitosamente"
     }
 
     /**
@@ -758,14 +863,17 @@ class ReformaController extends Shield {
     def negar() {
         def usu = Persona.get(session.usuario.id)
         def now = new Date()
-
-        def reforma = Reforma.get(params.id)
-        def estadoNegado = EstadoAval.findByCodigo("E03")
-        reforma.estado = estadoNegado
-        reforma.fechaRevision = now
-        reforma.analista = usu
-        reforma.save(flush: true)
-        render "SUCCESS*Solicitud negada exitosamente"
+        if (params.auth.toString().trim().encodeAsMD5() == usu.autorizacion) {
+            def reforma = Reforma.get(params.id)
+            def estadoNegado = EstadoAval.findByCodigo("E03")
+            reforma.estado = estadoNegado
+            reforma.fechaRevision = now
+            reforma.analista = usu
+            reforma.save(flush: true)
+            render "SUCCESS*Solicitud negada exitosamente"
+        } else {
+            render "ERROR*Clave de autorización incorrecta"
+        }
     }
 
     /**
@@ -824,7 +932,10 @@ class ReformaController extends Shield {
     def saveExistente_ajax() {
         def anio = Anio.get(params.anio.toLong())
         def personaRevisa
-        def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estado = EstadoAval.findByCodigo("P01") //pendiente
+        if (params.send == "S") {
+            estado = EstadoAval.findByCodigo("R01") //por revisar
+        }
 
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -835,7 +946,7 @@ class ReformaController extends Shield {
             if (!reforma) {
                 reforma = new Reforma()
             }
-            personaRevisa = reforma.firmaSolicitud.usuario
+            personaRevisa = reforma.director
         } else {
             reforma = new Reforma()
             personaRevisa = Persona.get(params.firma.toLong())
@@ -843,55 +954,77 @@ class ReformaController extends Shield {
 
         reforma.anio = anio
         reforma.persona = usu
-        reforma.estado = solicitadoSinFirma
+        reforma.estado = estado
         reforma.concepto = params.concepto.trim()
         reforma.fecha = now
         reforma.tipo = "R"
         reforma.tipoSolicitud = "E"
+        reforma.director = personaRevisa
         if (!reforma.save(flush: true)) {
             println "error al crear la reforma: " + reforma.errors
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
-        if (params.id) {
-            def firmaRevisa = reforma.firmaSolicitud
-            firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.save(flush: true)
-        } else {
-            def firmaRevisa = new Firma()
-            firmaRevisa.usuario = personaRevisa
-            firmaRevisa.fecha = now
-            firmaRevisa.accion = "firmarReforma"
-            firmaRevisa.controlador = "reforma"
-            firmaRevisa.idAccion = reforma.id
-            firmaRevisa.accionVer = "existente"
-            firmaRevisa.controladorVer = "reportesReforma"
-            firmaRevisa.idAccionVer = reforma.id
-            firmaRevisa.accionNegar = "devolverReforma"
-            firmaRevisa.controladorNegar = "reforma"
-            firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.tipoFirma = "RFRM"
-            if (!firmaRevisa.save(flush: true)) {
-                println "error al crear firma: " + firmaRevisa.errors
-                render "ERROR*" + renderErrors(bean: firmaRevisa)
-                return
+//        if (params.id) {
+//            def firmaRevisa = reforma.firmaSolicitud
+//            firmaRevisa.estado = "S"
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.save(flush: true)
+//        } else {
+//            def firmaRevisa = new Firma()
+//            firmaRevisa.usuario = personaRevisa
+//            firmaRevisa.fecha = now
+//            firmaRevisa.accion = "firmarReforma"
+//            firmaRevisa.controlador = "reforma"
+//            firmaRevisa.idAccion = reforma.id
+//            firmaRevisa.accionVer = "existente"
+//            firmaRevisa.controladorVer = "reportesReforma"
+//            firmaRevisa.idAccionVer = reforma.id
+//            firmaRevisa.accionNegar = "devolverReforma"
+//            firmaRevisa.controladorNegar = "reforma"
+//            firmaRevisa.idAccionNegar = reforma.id
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.tipoFirma = "RFRM"
+//            if (!firmaRevisa.save(flush: true)) {
+//                println "error al crear firma: " + firmaRevisa.errors
+//                render "ERROR*" + renderErrors(bean: firmaRevisa)
+//                return
+//            }
+//            reforma.firmaSolicitud = firmaRevisa
+//            reforma.save(flush: true)
+//        }
+        if (params.send == "S") {
+            println "se va a mandar: se hace la alerta y se manda mail"
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = personaRevisa
+            alerta.fechaEnvio = now
+            alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta.controlador = "reforma"
+            alerta.accion = "pendientes"
+            alerta.id_remoto = 0
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
             }
-            reforma.firmaSolicitud = firmaRevisa
-            reforma.save(flush: true)
-        }
-        def alerta = new Alerta()
-        alerta.from = usu
-        alerta.persona = personaRevisa
-        alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-        alerta.controlador = "firma"
-        alerta.accion = "firmasPendientes"
-        alerta.id_remoto = 0
-        if (!alerta.save(flush: true)) {
-            println "error alerta: " + alerta.errors
+            try {
+                def mail = personaRevisa.mail
+                if (mail) {
+
+                    mailService.sendMail {
+                        to mail
+                        subject "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+                        body "Tiene una Solicitud de ${tipoStr} pendiente que requiere su revisión"
+                    }
+
+                } else {
+                    println "El usuario ${personaRevisa} no tiene email"
+                }
+            } catch (e) {
+                println "eror email " + e.printStackTrace()
+            }
+        } else {
+            println "no se manda: no se hace alerta ni se manda mail"
         }
 
         def errores = ""
@@ -919,7 +1052,11 @@ class ReformaController extends Shield {
             }
         }
         if (errores == "") {
-            render "SUCCESS*Reforma solicitada exitosamente"
+            if (params.send == "S") {
+                render "SUCCESS*Reforma solicitada exitosamente"
+            } else {
+                render "SUCCESS*Reforma guardada exitosamente*" + reforma.id
+            }
         } else {
             render "ERROR*" + errores
         }
@@ -945,7 +1082,10 @@ class ReformaController extends Shield {
 
         def anio = Anio.get(params.anio.toLong())
         def personaRevisa
-        def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estado = EstadoAval.findByCodigo("P01") //pendiente
+        if (params.send == "S") {
+            estado = EstadoAval.findByCodigo("R01") //por revisar
+        }
 
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -956,7 +1096,7 @@ class ReformaController extends Shield {
             if (!reforma) {
                 reforma = new Reforma()
             }
-            personaRevisa = reforma.firmaSolicitud.usuario
+            personaRevisa = reforma.director
         } else {
             reforma = new Reforma()
             personaRevisa = Persona.get(params.firma.toLong())
@@ -964,55 +1104,77 @@ class ReformaController extends Shield {
 
         reforma.anio = anio
         reforma.persona = usu
-        reforma.estado = solicitadoSinFirma
+        reforma.estado = estado
         reforma.concepto = params.concepto.trim()
         reforma.fecha = now
         reforma.tipo = "R"
         reforma.tipoSolicitud = "A"
+        reforma.director = personaRevisa
         if (!reforma.save(flush: true)) {
             println "error al crear la reforma: " + reforma.errors
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
-        if (params.id) {
-            def firmaRevisa = reforma.firmaSolicitud
-            firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.save(flush: true)
-        } else {
-            def firmaRevisa = new Firma()
-            firmaRevisa.usuario = personaRevisa
-            firmaRevisa.fecha = now
-            firmaRevisa.accion = "firmarReforma"
-            firmaRevisa.controlador = "reforma"
-            firmaRevisa.idAccion = reforma.id
-            firmaRevisa.accionVer = "actividad"
-            firmaRevisa.controladorVer = "reportesReforma"
-            firmaRevisa.idAccionVer = reforma.id
-            firmaRevisa.accionNegar = "devolverReforma"
-            firmaRevisa.controladorNegar = "reforma"
-            firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.tipoFirma = "RFRM"
-            if (!firmaRevisa.save(flush: true)) {
-                println "error al crear firma: " + firmaRevisa.errors
-                render "ERROR*" + renderErrors(bean: firmaRevisa)
-                return
+//        if (params.id) {
+//            def firmaRevisa = reforma.firmaSolicitud
+//            firmaRevisa.estado = "S"
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.save(flush: true)
+//        } else {
+//            def firmaRevisa = new Firma()
+//            firmaRevisa.usuario = personaRevisa
+//            firmaRevisa.fecha = now
+//            firmaRevisa.accion = "firmarReforma"
+//            firmaRevisa.controlador = "reforma"
+//            firmaRevisa.idAccion = reforma.id
+//            firmaRevisa.accionVer = "actividad"
+//            firmaRevisa.controladorVer = "reportesReforma"
+//            firmaRevisa.idAccionVer = reforma.id
+//            firmaRevisa.accionNegar = "devolverReforma"
+//            firmaRevisa.controladorNegar = "reforma"
+//            firmaRevisa.idAccionNegar = reforma.id
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.tipoFirma = "RFRM"
+//            if (!firmaRevisa.save(flush: true)) {
+//                println "error al crear firma: " + firmaRevisa.errors
+//                render "ERROR*" + renderErrors(bean: firmaRevisa)
+//                return
+//            }
+//            reforma.firmaSolicitud = firmaRevisa
+//            reforma.save(flush: true)
+//        }
+        if (params.send == "S") {
+            println "se va a mandar: se hace la alerta y se manda mail"
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = personaRevisa
+            alerta.fechaEnvio = now
+            alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta.controlador = "reforma"
+            alerta.accion = "pendientes"
+            alerta.id_remoto = 0
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
             }
-            reforma.firmaSolicitud = firmaRevisa
-            reforma.save(flush: true)
-        }
-        def alerta = new Alerta()
-        alerta.from = usu
-        alerta.persona = personaRevisa
-        alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-        alerta.controlador = "firma"
-        alerta.accion = "firmasPendientes"
-        alerta.id_remoto = 0
-        if (!alerta.save(flush: true)) {
-            println "error alerta: " + alerta.errors
+            try {
+                def mail = personaRevisa.mail
+                if (mail) {
+
+                    mailService.sendMail {
+                        to mail
+                        subject "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+                        body "Tiene una Solicitud de ${tipoStr} pendiente que requiere su revisión"
+                    }
+
+                } else {
+                    println "El usuario ${personaRevisa} no tiene email"
+                }
+            } catch (e) {
+                println "eror email " + e.printStackTrace()
+            }
+        } else {
+            println "no se manda: no se hace alerta ni se manda mail"
         }
 
         def errores = ""
@@ -1042,7 +1204,11 @@ class ReformaController extends Shield {
             }
         }
         if (errores == "") {
-            render "SUCCESS*Reforma solicitada exitosamente"
+            if (params.send == "S") {
+                render "SUCCESS*Reforma solicitada exitosamente"
+            } else {
+                render "SUCCESS*Reforma guardada exitosamente*" + reforma.id
+            }
         } else {
             render "ERROR*" + errores
         }
@@ -1068,7 +1234,10 @@ class ReformaController extends Shield {
 
         def anio = Anio.get(params.anio.toLong())
         def personaRevisa
-        def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estado = EstadoAval.findByCodigo("P01") //pendiente
+        if (params.send == "S") {
+            estado = EstadoAval.findByCodigo("R01") //por revisar
+        }
 
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -1079,7 +1248,7 @@ class ReformaController extends Shield {
             if (!reforma) {
                 reforma = new Reforma()
             }
-            personaRevisa = reforma.firmaSolicitud.usuario
+            personaRevisa = reforma.director
         } else {
             reforma = new Reforma()
             personaRevisa = Persona.get(params.firma.toLong())
@@ -1087,55 +1256,77 @@ class ReformaController extends Shield {
 
         reforma.anio = anio
         reforma.persona = usu
-        reforma.estado = solicitadoSinFirma
+        reforma.estado = estado
         reforma.concepto = params.concepto.trim()
         reforma.fecha = now
         reforma.tipo = "R"
         reforma.tipoSolicitud = "C"
+        reforma.director = personaRevisa
         if (!reforma.save(flush: true)) {
             println "error al crear la reforma: " + reforma.errors
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
-        if (params.id) {
-            def firmaRevisa = reforma.firmaSolicitud
-            firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.save(flush: true)
-        } else {
-            def firmaRevisa = new Firma()
-            firmaRevisa.usuario = personaRevisa
-            firmaRevisa.fecha = now
-            firmaRevisa.accion = "firmarReforma"
-            firmaRevisa.controlador = "reforma"
-            firmaRevisa.idAccion = reforma.id
-            firmaRevisa.accionVer = "incrementoActividad"
-            firmaRevisa.controladorVer = "reportesReforma"
-            firmaRevisa.idAccionVer = reforma.id
-            firmaRevisa.accionNegar = "devolverReforma"
-            firmaRevisa.controladorNegar = "reforma"
-            firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.tipoFirma = "RFRM"
-            if (!firmaRevisa.save(flush: true)) {
-                println "error al crear firma: " + firmaRevisa.errors
-                render "ERROR*" + renderErrors(bean: firmaRevisa)
-                return
+//        if (params.id) {
+//            def firmaRevisa = reforma.firmaSolicitud
+//            firmaRevisa.estado = "S"
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.save(flush: true)
+//        } else {
+//            def firmaRevisa = new Firma()
+//            firmaRevisa.usuario = personaRevisa
+//            firmaRevisa.fecha = now
+//            firmaRevisa.accion = "firmarReforma"
+//            firmaRevisa.controlador = "reforma"
+//            firmaRevisa.idAccion = reforma.id
+//            firmaRevisa.accionVer = "incrementoActividad"
+//            firmaRevisa.controladorVer = "reportesReforma"
+//            firmaRevisa.idAccionVer = reforma.id
+//            firmaRevisa.accionNegar = "devolverReforma"
+//            firmaRevisa.controladorNegar = "reforma"
+//            firmaRevisa.idAccionNegar = reforma.id
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.tipoFirma = "RFRM"
+//            if (!firmaRevisa.save(flush: true)) {
+//                println "error al crear firma: " + firmaRevisa.errors
+//                render "ERROR*" + renderErrors(bean: firmaRevisa)
+//                return
+//            }
+//            reforma.firmaSolicitud = firmaRevisa
+//            reforma.save(flush: true)
+//        }
+        if (params.send == "S") {
+            println "se va a mandar: se hace la alerta y se manda mail"
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = personaRevisa
+            alerta.fechaEnvio = now
+            alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta.controlador = "reforma"
+            alerta.accion = "pendientes"
+            alerta.id_remoto = 0
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
             }
-            reforma.firmaSolicitud = firmaRevisa
-            reforma.save(flush: true)
-        }
-        def alerta = new Alerta()
-        alerta.from = usu
-        alerta.persona = personaRevisa
-        alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-        alerta.controlador = "firma"
-        alerta.accion = "firmasPendientes"
-        alerta.id_remoto = 0
-        if (!alerta.save(flush: true)) {
-            println "error alerta: " + alerta.errors
+            try {
+                def mail = personaRevisa.mail
+                if (mail) {
+
+                    mailService.sendMail {
+                        to mail
+                        subject "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+                        body "Tiene una Solicitud de ${tipoStr} pendiente que requiere su revisión"
+                    }
+
+                } else {
+                    println "El usuario ${personaRevisa} no tiene email"
+                }
+            } catch (e) {
+                println "eror email " + e.printStackTrace()
+            }
+        } else {
+            println "no se manda: no se hace alerta ni se manda mail"
         }
 
         def errores = ""
@@ -1167,7 +1358,11 @@ class ReformaController extends Shield {
             }
         }
         if (errores == "") {
-            render "SUCCESS*Reforma solicitada exitosamente"
+            if (params.send == "S") {
+                render "SUCCESS*Reforma solicitada exitosamente"
+            } else {
+                render "SUCCESS*Reforma guardada exitosamente*" + reforma.id
+            }
         } else {
             render "ERROR*" + errores
         }
@@ -1182,7 +1377,10 @@ class ReformaController extends Shield {
 //        render "ERROR*Aun no"
         def anio = Anio.get(params.anio.toLong())
         def personaRevisa
-        def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estado = EstadoAval.findByCodigo("P01") //pendiente
+        if (params.send == "S") {
+            estado = EstadoAval.findByCodigo("R01") //por revisar
+        }
 
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -1193,7 +1391,7 @@ class ReformaController extends Shield {
             if (!reforma) {
                 reforma = new Reforma()
             }
-            personaRevisa = reforma.firmaSolicitud.usuario
+            personaRevisa = reforma.director
         } else {
             reforma = new Reforma()
             personaRevisa = Persona.get(params.firma.toLong())
@@ -1201,55 +1399,77 @@ class ReformaController extends Shield {
 
         reforma.anio = anio
         reforma.persona = usu
-        reforma.estado = solicitadoSinFirma
+        reforma.estado = estado
         reforma.concepto = params.concepto.trim()
         reforma.fecha = now
         reforma.tipo = "R"
         reforma.tipoSolicitud = "I"
+        reforma.director = personaRevisa
         if (!reforma.save(flush: true)) {
             println "error al crear la reforma: " + reforma.errors
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
-        if (params.id) {
-            def firmaRevisa = reforma.firmaSolicitud
-            firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.save(flush: true)
-        } else {
-            def firmaRevisa = new Firma()
-            firmaRevisa.usuario = personaRevisa
-            firmaRevisa.fecha = now
-            firmaRevisa.accion = "firmarReforma"
-            firmaRevisa.controlador = "reforma"
-            firmaRevisa.idAccion = reforma.id
-            firmaRevisa.accionVer = "incremento"
-            firmaRevisa.controladorVer = "reportesReforma"
-            firmaRevisa.idAccionVer = reforma.id
-            firmaRevisa.accionNegar = "devolverReforma"
-            firmaRevisa.controladorNegar = "reforma"
-            firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.tipoFirma = "RFRM"
-            if (!firmaRevisa.save(flush: true)) {
-                println "error al crear firma: " + firmaRevisa.errors
-                render "ERROR*" + renderErrors(bean: firmaRevisa)
-                return
+//        if (params.id) {
+//            def firmaRevisa = reforma.firmaSolicitud
+//            firmaRevisa.estado = "S"
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.save(flush: true)
+//        } else {
+//            def firmaRevisa = new Firma()
+//            firmaRevisa.usuario = personaRevisa
+//            firmaRevisa.fecha = now
+//            firmaRevisa.accion = "firmarReforma"
+//            firmaRevisa.controlador = "reforma"
+//            firmaRevisa.idAccion = reforma.id
+//            firmaRevisa.accionVer = "incremento"
+//            firmaRevisa.controladorVer = "reportesReforma"
+//            firmaRevisa.idAccionVer = reforma.id
+//            firmaRevisa.accionNegar = "devolverReforma"
+//            firmaRevisa.controladorNegar = "reforma"
+//            firmaRevisa.idAccionNegar = reforma.id
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.tipoFirma = "RFRM"
+//            if (!firmaRevisa.save(flush: true)) {
+//                println "error al crear firma: " + firmaRevisa.errors
+//                render "ERROR*" + renderErrors(bean: firmaRevisa)
+//                return
+//            }
+//            reforma.firmaSolicitud = firmaRevisa
+//            reforma.save(flush: true)
+//        }
+        if (params.send == "S") {
+            println "se va a mandar: se hace la alerta y se manda mail"
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = personaRevisa
+            alerta.fechaEnvio = now
+            alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta.controlador = "reforma"
+            alerta.accion = "pendientes"
+            alerta.id_remoto = 0
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
             }
-            reforma.firmaSolicitud = firmaRevisa
-            reforma.save(flush: true)
-        }
-        def alerta = new Alerta()
-        alerta.from = usu
-        alerta.persona = personaRevisa
-        alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-        alerta.controlador = "firma"
-        alerta.accion = "firmasPendientes"
-        alerta.id_remoto = 0
-        if (!alerta.save(flush: true)) {
-            println "error alerta: " + alerta.errors
+            try {
+                def mail = personaRevisa.mail
+                if (mail) {
+
+                    mailService.sendMail {
+                        to mail
+                        subject "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+                        body "Tiene una Solicitud de ${tipoStr} pendiente que requiere su revisión"
+                    }
+
+                } else {
+                    println "El usuario ${personaRevisa} no tiene email"
+                }
+            } catch (e) {
+                println "eror email " + e.printStackTrace()
+            }
+        } else {
+            println "no se manda: no se hace alerta ni se manda mail"
         }
 
         def errores = ""
@@ -1275,7 +1495,11 @@ class ReformaController extends Shield {
             }
         }
         if (errores == "") {
-            render "SUCCESS*Reforma solicitada exitosamente"
+            if (params.send == "S") {
+                render "SUCCESS*Reforma solicitada exitosamente"
+            } else {
+                render "SUCCESS*Reforma guardada exitosamente*" + reforma.id
+            }
         } else {
             render "ERROR*" + errores
         }
@@ -1301,7 +1525,10 @@ class ReformaController extends Shield {
 
         def anio = Anio.get(params.anio.toLong())
         def personaRevisa
-        def solicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estado = EstadoAval.findByCodigo("P01") //pendiente
+        if (params.send == "S") {
+            estado = EstadoAval.findByCodigo("R01") //por revisar
+        }
 
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -1312,7 +1539,7 @@ class ReformaController extends Shield {
             if (!reforma) {
                 reforma = new Reforma()
             }
-            personaRevisa = reforma.firmaSolicitud.usuario
+            personaRevisa = reforma.director
         } else {
             reforma = new Reforma()
             personaRevisa = Persona.get(params.firma.toLong())
@@ -1320,55 +1547,77 @@ class ReformaController extends Shield {
 
         reforma.anio = anio
         reforma.persona = usu
-        reforma.estado = solicitadoSinFirma
+        reforma.estado = estado
         reforma.concepto = params.concepto.trim()
         reforma.fecha = now
         reforma.tipo = "R"
         reforma.tipoSolicitud = "P"
+        reforma.director = personaRevisa
         if (!reforma.save(flush: true)) {
             println "error al crear la reforma: " + reforma.errors
             render "ERROR*" + renderErrors(bean: reforma)
             return
         }
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
-        if (params.id) {
-            def firmaRevisa = reforma.firmaSolicitud
-            firmaRevisa.estado = "S"
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.save(flush: true)
-        } else {
-            def firmaRevisa = new Firma()
-            firmaRevisa.usuario = personaRevisa
-            firmaRevisa.fecha = now
-            firmaRevisa.accion = "firmarReforma"
-            firmaRevisa.controlador = "reforma"
-            firmaRevisa.idAccion = reforma.id
-            firmaRevisa.accionVer = "partida"
-            firmaRevisa.controladorVer = "reportesReforma"
-            firmaRevisa.idAccionVer = reforma.id
-            firmaRevisa.accionNegar = "devolverReforma"
-            firmaRevisa.controladorNegar = "reforma"
-            firmaRevisa.idAccionNegar = reforma.id
-            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-            firmaRevisa.tipoFirma = "RFRM"
-            if (!firmaRevisa.save(flush: true)) {
-                println "error al crear firma: " + firmaRevisa.errors
-                render "ERROR*" + renderErrors(bean: firmaRevisa)
-                return
+//        if (params.id) {
+//            def firmaRevisa = reforma.firmaSolicitud
+//            firmaRevisa.estado = "S"
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.save(flush: true)
+//        } else {
+//            def firmaRevisa = new Firma()
+//            firmaRevisa.usuario = personaRevisa
+//            firmaRevisa.fecha = now
+//            firmaRevisa.accion = "firmarReforma"
+//            firmaRevisa.controlador = "reforma"
+//            firmaRevisa.idAccion = reforma.id
+//            firmaRevisa.accionVer = "partida"
+//            firmaRevisa.controladorVer = "reportesReforma"
+//            firmaRevisa.idAccionVer = reforma.id
+//            firmaRevisa.accionNegar = "devolverReforma"
+//            firmaRevisa.controladorNegar = "reforma"
+//            firmaRevisa.idAccionNegar = reforma.id
+//            firmaRevisa.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+//            firmaRevisa.tipoFirma = "RFRM"
+//            if (!firmaRevisa.save(flush: true)) {
+//                println "error al crear firma: " + firmaRevisa.errors
+//                render "ERROR*" + renderErrors(bean: firmaRevisa)
+//                return
+//            }
+//            reforma.firmaSolicitud = firmaRevisa
+//            reforma.save(flush: true)
+//        }
+        if (params.send == "S") {
+            println "se va a mandar: se hace la alerta y se manda mail"
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = personaRevisa
+            alerta.fechaEnvio = now
+            alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta.controlador = "reforma"
+            alerta.accion = "pendientes"
+            alerta.id_remoto = 0
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
             }
-            reforma.firmaSolicitud = firmaRevisa
-            reforma.save(flush: true)
-        }
-        def alerta = new Alerta()
-        alerta.from = usu
-        alerta.persona = personaRevisa
-        alerta.fechaEnvio = now
-        alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-        alerta.controlador = "firma"
-        alerta.accion = "firmasPendientes"
-        alerta.id_remoto = 0
-        if (!alerta.save(flush: true)) {
-            println "error alerta: " + alerta.errors
+            try {
+                def mail = personaRevisa.mail
+                if (mail) {
+
+                    mailService.sendMail {
+                        to mail
+                        subject "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+                        body "Tiene una Solicitud de ${tipoStr} pendiente que requiere su revisión"
+                    }
+
+                } else {
+                    println "El usuario ${personaRevisa} no tiene email"
+                }
+            } catch (e) {
+                println "eror email " + e.printStackTrace()
+            }
+        } else {
+            println "no se manda: no se hace alerta ni se manda mail"
         }
 //          [r1:[monto:500.00, origen:322, partida:218, fuente:9], r0:[origen:322, fuente:9, partida:223, monto:150.00]]
         def errores = ""
@@ -1392,7 +1641,11 @@ class ReformaController extends Shield {
             }
         }
         if (errores == "") {
-            render "SUCCESS*Reforma solicitada exitosamente"
+            if (params.send == "S") {
+                render "SUCCESS*Reforma solicitada exitosamente"
+            } else {
+                render "SUCCESS*Reforma guardada exitosamente*" + reforma.id
+            }
         } else {
             render "ERROR*" + errores
         }
@@ -1714,7 +1967,7 @@ class ReformaController extends Shield {
         def usu = Persona.get(session.usuario.id)
 
         def reforma = Reforma.get(params.id)
-        reforma.estado = EstadoAval.findByCodigo("D02") //devuelto al analista
+        reforma.estado = EstadoAval.findByCodigo("D03") //devuelto al analista
         reforma.save(flush: true)
 
         def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
@@ -1770,4 +2023,234 @@ class ReformaController extends Shield {
         render "OK"
     }
 
+    def revisionSolicitud() {
+        def reforma = Reforma.get(params.id)
+        def estadosOK = ["R01", "D02"] //por revisar o devuelto dal dir req
+        if (!reforma || !estadosOK.contains(reforma.estado.codigo)) {
+            redirect(action: "lista")
+        }
+
+        def rep = new ReportesReformaController()
+        def det = null
+
+        switch (reforma.tipoSolicitud) {
+            case "A":
+                det = rep.generaDetallesSolicitudActividad(reforma).det
+                break;
+            case "C":
+                det = rep.generaDetallesSolicitudIncrementoActividad(reforma).det2
+                break;
+            case "E":
+                det = rep.generaDetallesSolicitudExistente(reforma).det
+                break;
+            case "I":
+                det = rep.generaDetallesSolicitudIncremento(reforma).det2
+                break;
+            case "P":
+                det = rep.generaDetallesSolicitudPartida(reforma).det
+                break;
+        }
+
+        def gerentes = firmasService.listaGerentesUnidad(reforma.persona.unidad)
+
+        return [reforma: reforma, det: det, gerentes: gerentes]
+    }
+
+    def enviarAGerente_ajax() {
+        def solicitud = Reforma.get(params.id)
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: solicitud.tipoSolicitud)
+        def usu = Persona.get(session.usuario.id)
+        if (params.auth.toString().trim().encodeAsMD5() == usu.autorizacion) {
+            def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+            def personaFirma, firma = null
+            if (solicitud.estado.codigo == 'D02') {
+                firma = solicitud.firmaSolicitud
+                personaFirma = firma.usuario
+            } else {
+                personaFirma = Persona.get(params.firma.toLong())
+            }
+
+            if (personaFirma) {
+                def mail = personaFirma.mail
+                solicitud.estado = estadoSolicitadoSinFirma
+
+                if (!firma) {
+                    def accion
+                    switch (solicitud.tipoSolicitud) {
+                        case "E":
+                            accion = "existente"
+                            break;
+                        case "A":
+                            accion = "actividad"
+                            break;
+                        case "C":
+                            accion = "incrementoActividad"
+                            break;
+                        case "I":
+                            accion = "incremento"
+                            break;
+                        case "P":
+                            accion = "partida"
+                            break;
+                        case "T":
+                            accion = "techo"
+                            break;
+                    }
+                    firma = new Firma()
+                    firma.usuario = personaFirma
+
+                    firma.controlador = "reforma"
+                    firma.accion = "firmarReforma"
+                    firma.idAccion = solicitud.id
+
+                    firma.controladorNegar = "reforma"
+                    firma.accionNegar = "devolverADirectorRequirente"
+                    firma.idAccionNegar = solicitud.id
+
+                    firma.controladorVer = "reportesReforma"
+                    firma.accionVer = accion
+                    firma.idAccionVer = solicitud.id
+
+                    firma.tipoFirma = "RFRM"
+//                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
+                    firma.concepto = "Solicitud de ${tipoStr}: " + solicitud.concepto
+                    if (!firma.save(flush: true)) {
+                        println "error al guardar firma: " + firma.errors
+                    } else {
+                        solicitud.firmaSolicitud = firma
+                    }
+                } else {
+                    firma.estado = "S"
+                    firma.concepto = "Solicitud de ${tipoStr}: " + solicitud.concepto
+                    if (!firma.save(flush: true)) {
+                        println "error al guardar firma: " + firma.errors
+                    }
+                }
+                solicitud.save(flush: true)
+
+                def alerta1 = new Alerta()
+                alerta1.from = usu
+                alerta1.persona = personaFirma
+                alerta1.fechaEnvio = new Date()
+                alerta1.mensaje = "Solicitud de ${tipoStr}: " + solicitud.concepto
+                alerta1.controlador = "firma"
+                alerta1.accion = "firmasPendientes"
+                alerta1.parametros = "tab=RFRM"
+                println alerta1
+                if (!alerta1.save(flush: true)) {
+                    println "error alerta1: " + alerta1.errors
+                }
+                if (mail) {
+                    mailService.sendMail {
+                        to mail
+                        subject "Solicitud de ${tipoStr} requiere aprobación "
+                        body "La solicitud de ${tipoStr}: " + solicitud.concepto + " requiere su firma de aprobación"
+                    }
+                } else {
+                    println "no tiene mail..."
+                }
+                render "SUCCESS*Firma solicitada exitosamente"
+            } else {
+                render("ERROR*No se encontró la persona a la cual desea enviar la solicitud")
+            }
+        } else {
+            render("ERROR*Clave de autorización incorrecta")
+        }
+    }
+
+    def devolverADirectorRequirente() {
+        println "devolver a dir req: " + params
+        def now = new Date()
+        def usu = Persona.get(session.usuario.id)
+
+        def reforma = Reforma.get(params.id)
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
+        def estadoDevueltoDirReq = EstadoAval.findByCodigo("D02")
+        reforma.estado = estadoDevueltoDirReq
+        if (reforma.save(flush: true)) {
+            def mensaje = "Devolución de solicitud de ${tipoStr}: "
+
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = reforma.director
+            alerta.fechaEnvio = now
+            alerta.mensaje = mensaje + reforma.concepto
+            alerta.controlador = "reforma"
+            alerta.accion = "pendientes"
+            alerta.id_remoto = reforma.id
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
+            }
+            def mail = reforma.director.mail
+            if (mail) {
+                try {
+                    mailService.sendMail {
+                        to mail
+                        subject "Devolución de aval"
+                        body "Su solicitud de ${tipoStr}: " + reforma.concepto + " ha sido devuelta por " + usu
+                    }
+                } catch (e) {
+                    println "error al mandar mail"
+                    e.printStackTrace()
+                }
+            } else {
+                println "no tiene mail..."
+            }
+            render "SUCCESS*Devolución exitosa"
+        } else {
+            render "ERROR*" + renderErrors(bean: reforma)
+        }
+    }
+
+    def devolverARequirente_ajax() {
+        def solicitud = Reforma.get(params.id)
+        def usu = Persona.get(session.usuario.id)
+        if (params.auth.toString().trim().encodeAsMD5() == usu.autorizacion) {
+            def msg = "<strong>Devuelto por ${usu.nombre} ${usu.apellido}:</strong> " + params.obs.trim()
+            def estadoDevueltoReq = EstadoAval.findByCodigo("D01")
+            solicitud.estado = estadoDevueltoReq
+
+            def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: solicitud.tipoSolicitud)
+
+            if (solicitud.observacionesDirector && solicitud.observacionesDirector != "") {
+                solicitud.observacionesDirector = msg + "; " + solicitud.observacionesDirector
+            } else {
+                solicitud.observacionesDirector = msg
+            }
+            if (solicitud.save(flush: true)) {
+
+                def alerta1 = new Alerta()
+                alerta1.from = usu
+                alerta1.persona = solicitud.persona
+                alerta1.fechaEnvio = new Date()
+                alerta1.mensaje = "Devolución de solicitud de ${tipoStr}: " + solicitud.concepto
+                alerta1.controlador = "reforma"
+                alerta1.accion = "pendientes"
+                if (!alerta1.save(flush: true)) {
+                    println "error alerta1: " + alerta1.errors
+                }
+                try {
+                    def mail = solicitud.persona.mail
+                    if (mail) {
+
+                        mailService.sendMail {
+                            to mail
+                            subject "Solicitud de ${tipoStr} (${new Date().format('dd-MM-yyyy')}): " + solicitud.concepto
+                            body "Tiene una Solicitud de ${tipoStr} pendiente que requiere su revisión"
+                        }
+
+                    } else {
+                        println "El usuario ${solicitud.persona} no tiene email"
+                    }
+                } catch (e) {
+                    println "eror email " + e.printStackTrace()
+                }
+                render "SUCCESS*Devolución exitosa"
+            } else {
+                render "ERROR*" + renderErrors(bean: solicitud)
+            }
+        } else {
+            render("ERROR*Clave de autorización incorrecta")
+        }
+    }
 }

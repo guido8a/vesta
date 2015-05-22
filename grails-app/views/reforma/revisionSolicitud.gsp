@@ -1,152 +1,73 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 19/05/15
-  Time: 01:11 PM
+  Date: 22/05/15
+  Time: 10:21 AM
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Revisar aval</title>
+        <title>Revisar solicitud de reforma</title>
     </head>
 
     <body>
+        <h1>Revisar solicitud de reforma</h1>
 
-        <h1>Revisar aval</h1>
-
-        <g:if test="${solicitud.estado.codigo == 'D02' && solicitud.firma.observaciones && solicitud.firma.observaciones != '' && solicitud.firma.observaciones != 'S'}">
-            <elm:message tipo="warning"><strong>Devuelto por ${solicitud.firma.usuario}</strong>: ${solicitud.firma.observaciones}</elm:message>
+        <g:if test="${reforma.estado.codigo == 'D02' && reforma.firmaSolicitud.observaciones && reforma.firmaSolicitud.observaciones != '' && reforma.firmaSolicitud.observaciones != 'S'}">
+            <elm:message tipo="warning"><strong>Devuelto por ${reforma.firmaSolicitud.usuario}</strong>: ${reforma.firmaSolicitud.observaciones}</elm:message>
         </g:if>
 
-        <table class="table table-bordered table-condensed">
-            <tr>
-                <th style="width: 200px">
-                    UNIDAD REQUIRENTE
-                </th>
-                <td>
-                    ${solicitud.usuario.unidad}
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    PROYECTO
-                </th>
-                <td>
-                    ${solicitud.proceso.proyecto.nombre}
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    PROCESO
-                </th>
-                <td>
-                    ${solicitud.proceso.nombre}
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    FECHA DE INICIO
-                </th>
-                <td>
-                    ${solicitud?.proceso?.fechaInicio?.format("dd-MM-yyyy")}
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    FECHA DE FIN
-                </th>
-                <td>
-                    ${solicitud?.proceso?.fechaFin?.format("dd-MM-yyyy")}
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    MONTO TOTAL SOLICITADO
-                </th>
-                <td>
-                    <g:formatNumber number="${solicitud.monto + devengado}" type="currency" currencySymbol="USD "/>
-                </td>
-            </tr>
-        </table>
+        <div class="row">
+            <div class="col-md-2 show-label">
+                Solicitado por
+            </div>
 
-        <g:each in="${arr}" var="primero">
+            <div class="col-md-4">
+                ${reforma.persona}
+            </div>
 
-            <table class="table table-bordered table-condensed">
-                <tr>
-                    <td style="width:200px; font-weight: bold">COMPONENTE</td>
-                    <td>${primero?.key?.marcoLogico}</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold">ACTIVIDAD</td>
-                    <td>${anio} - ${primero?.key?.numero} - ${primero?.key?.objeto}</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold">CÓDIGO</td>
-                    <td>
-                        ${primero?.key?.marcoLogico?.proyecto?.codigoEsigef} ${primero?.key?.marcoLogico?.numeroComp} ${primero?.key.numero}
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold">SUBTOTAL</td>
-                    <td>
-                        <g:formatNumber number="${primero.value.total}" type="currency" currencySymbol="USD "/>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
-                    <td>
-                        <g:formatNumber number="${primero.value.devengado}" type="currency" currencySymbol="USD "/>
-                    </td>
-                </tr>
+            <div class="col-md-2 show-label">
+                Fecha
+            </div>
 
-                <g:set var="total" value="${0}"/>
+            <div class="col-md-4">
+                ${reforma.fecha.format("dd-MM-yyyy")}
+            </div>
+        </div>
 
-                <g:each in="${primero.value}" var="segundo">
-                    <g:if test="${segundo.key.size() == 4}">
-                        <g:set var="total2" value="${0}"/>
-                        <tr>
-                            <td style="font-weight: bold">
-                                MONTO DE AVAL ${segundo.key}
-                            </td>
-                            <td>
-                                <table class="tbl2">
-                                    <g:each in="${segundo.value.asignaciones}" var="tercero">
-                                        <tr>
-                                            <td>
-                                                <strong>
-                                                    Fuente ${tercero.asignacion?.fuente?.codigo},
-                                                    Partida ${tercero.asignacion.presupuesto.numero}
-                                                </strong>
-                                            </td>
-                                            <td style="text-align: right;">
-                                                <g:formatNumber number="${tercero.monto ?: 0}" type="currency" currencySymbol="USD "/>
-                                            </td>
-                                        </tr>
-                                    </g:each>
-                                    <tr>
-                                        <td><strong>Total</strong></td>
-                                        <td style="text-align: right; font-weight: bold">
-                                            <g:formatNumber number="${segundo.value.total}" type="currency" currencySymbol="USD "/>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </g:if>
-                </g:each>
-            </table>
-        </g:each>
+        <div class="row">
+            <div class="col-md-2 show-label">
+                Concepto
+            </div>
+
+            <div class="col-md-10">
+                ${reforma.concepto}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2 show-label">
+                Tipo de reforma
+            </div>
+
+            <div class="col-md-10">
+                <elm:tipoReforma reforma="${reforma}"/>
+            </div>
+        </div>
+
+        <g:render template="/reportesReformaTemplates/tablaSolicitud"
+                  model="[det: det, tipo: reforma.tipoSolicitud.toLowerCase()]"/>
 
         <form id="frmFirmas">
             <div class="row">
                 <div class="col-md-2 show-label">Autorización electrónica</div>
 
                 <div class="col-md-3 grupo">
-                    <g:if test="${solicitud.estado.codigo == 'D02'}">
+                    <g:if test="${reforma.estado.codigo == 'D02'}">
                         <p class="static-control">
-                            ${solicitud.firma.usuario}
+                            ${reforma.firmaSolicitud.usuario}
                         </p>
                     </g:if>
                     <g:else>
@@ -158,12 +79,11 @@
             </div>
         </form>
 
+
         <div class="row">
             <div class="col-md-5">
                 <div class="btn-group" role="group" aria-label="...">
-                    <a href="#" class="btn btn-default" id="btnPreview" title="Previsualizar">
-                        <i class="fa fa-search"></i> Previsualizar
-                    </a>
+                    <elm:linkPdfReforma reforma="${reforma}" class="btn-default" title="Previsualizar" label="true"/>
                     <a href="#" class="btn btn-danger" id="btnDevolver" title="Devolver al requirente con observaciones">
                         <i class="fa fa-thumbs-down"></i> Devolver al requirente
                     </a>
@@ -191,12 +111,6 @@
                         label.remove();
                     }
 
-                });
-
-                $("#btnPreview").click(function () {
-                    var url = "${g.createLink(controller: 'reporteSolicitud',action: 'imprimirSolicitudAval')}/${solicitud.id}";
-                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Solicitud.pdf"
-                    return false;
                 });
 
                 $("#btnSolicitar").click(function () {
@@ -249,7 +163,7 @@
                                                 type    : "POST",
                                                 url     : "${createLink(action: 'enviarAGerente_ajax')}",
                                                 data    : {
-                                                    id    : "${solicitud.id}",
+                                                    id    : "${reforma.id}",
                                                     firma : $("#firma").val(),
                                                     auth  : $auth.val()
                                                 },
@@ -340,7 +254,7 @@
                                             type    : "POST",
                                             url     : "${createLink(action: 'devolverARequirente_ajax')}",
                                             data    : {
-                                                id   : "${solicitud.id}",
+                                                id   : "${reforma.id}",
                                                 obs  : $obs.val(),
                                                 auth : $auth.val()
                                             },

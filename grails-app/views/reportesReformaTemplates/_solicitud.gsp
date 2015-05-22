@@ -47,7 +47,7 @@
         </ol>
 
         <div>
-            <strong>Elaborado por:</strong> ${reforma.persona.sigla}
+            <strong>Elaborado por:</strong> ${reforma.persona.sigla ?: reforma.persona.nombre + ' ' + reforma.persona.apellido}
         </div>
 
         <div class="fright">

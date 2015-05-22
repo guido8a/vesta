@@ -232,13 +232,13 @@
                 <div class="col-md-11 text-right">
                     <g:if test="${!readOnly}">
                         <div class="btn-group" role="group">
-                            <a href="#" id="btnPreview" class="btn btn-default ${solicitud ? '' : 'disabled'}">
+                            <a href="#" id="btnPreview" class="btn btn-default ${solicitud ? '' : 'disabled'}" title="Previsualizar">
                                 <i class="fa fa-search"></i> Previsualizar
                             </a>
-                            <a href="#" id="btnGuardar" class="btn btn-info">
+                            <a href="#" id="btnGuardar" class="btn btn-info" title="Guardar y seguir editando">
                                 <i class="fa fa-save"></i> Guardar
                             </a>
-                            <a href="#" id="btnEnviar" class="btn btn-success">
+                            <a href="#" id="btnEnviar" class="btn btn-success" title="Guardar y solicitar revisión">
                                 <i class="fa fa-save"></i> Guardar y Enviar <i class="fa fa-paper-plane-o"></i>
                             </a>
                         </div>

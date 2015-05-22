@@ -128,11 +128,9 @@ class ProyectosService {
             }
 
         }
-
         componentes2.each {
             componentes += MarcoLogico.get(it)
         }
-
 //        println("comp " + componentes)
         return componentes.unique().sort { it.objeto }
     }

@@ -11,6 +11,8 @@
     <head>
         <meta name="layout" content="main">
         <title>Reformas pendientes</title>
+
+        <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'avales.css')}" type="text/css"/>
     </head>
 
     <body>
@@ -54,52 +56,12 @@
                                         <td>${reforma.concepto}</td>
                                         <td>
                                             <elm:tipoReforma reforma="${reforma}"/>
-                                            %{--${reforma.tipo == 'R' ? 'Reforma' : reforma.tipo == 'A' ? 'Ajuste' : '??'}--}%
-                                            %{--${reforma.tipoSolicitud == 'E' ? ' a asignaciones existentes' :--}%
-                                            %{--reforma.tipoSolicitud == 'A' ? ' a nueva actividad' :--}%
-                                            %{--reforma.tipoSolicitud == 'C' ? ' de incremento a nueva actividad' :--}%
-                                            %{--reforma.tipoSolicitud == 'P' ? 'a nueva partida' :--}%
-                                            %{--reforma.tipoSolicitud == 'I' ? ' de incremento' : '??'}--}%
                                         </td>
-                                        <td>${reforma.estado.descripcion}</td>
+                                        <td class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
                                                 <elm:linkPdfReforma reforma="${reforma}"/>
-                                            %{--<g:if test="${reforma.estado.codigo == 'E02'}">--}%
-                                            %{--<g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existenteReforma' :--}%
-                                            %{--reforma.tipoSolicitud == 'A' ? 'actividadReforma' :--}%
-                                            %{--reforma.tipoSolicitud == 'C' ? 'incrementoActividadReforma' :--}%
-                                            %{--reforma.tipoSolicitud == 'P' ? 'partidaReforma' :--}%
-                                            %{--reforma.tipoSolicitud == 'I' ? 'incrementoReforma' : ''}"/>--}%
-                                            %{--<g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'reforma_existente' :--}%
-                                            %{--reforma.tipoSolicitud == 'A' ? 'reforma_actividad' :--}%
-                                            %{--reforma.tipoSolicitud == 'C' ? 'reforma_incremento_actividad' :--}%
-                                            %{--reforma.tipoSolicitud == 'P' ? 'reforma_partida' :--}%
-                                            %{--reforma.tipoSolicitud == 'I' ? 'reforma_incremento' : ''}.pdf"/>--}%
-                                            %{--<a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"--}%
-                                            %{--class="btn btn-sm btn-success btnVer" title="Reforma">--}%
-                                            %{--<i class="fa fa-search"></i>--}%
-                                            %{--</a>--}%
-                                            %{--</g:if>--}%
-                                            %{--<g:else>--}%
-                                            %{--<g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existente' :--}%
-                                            %{--reforma.tipoSolicitud == 'A' ? 'actividad' :--}%
-                                            %{--reforma.tipoSolicitud == 'C' ? 'incrementoActividad' :--}%
-                                            %{--reforma.tipoSolicitud == 'P' ? 'partida' :--}%
-                                            %{--reforma.tipoSolicitud == 'I' ? 'incremento' : ''}"/>--}%
-                                            %{--<g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'solicitud_existente' :--}%
-                                            %{--reforma.tipoSolicitud == 'A' ? 'solicitud_actividad' :--}%
-                                            %{--reforma.tipoSolicitud == 'C' ? 'solicitud_incremento_actividad' :--}%
-                                            %{--reforma.tipoSolicitud == 'P' ? 'solicitud_partida' :--}%
-                                            %{--reforma.tipoSolicitud == 'I' ? 'solicitud_incremento' : ''}.pdf"/>--}%
-                                            %{--<a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"--}%
-                                            %{--class="btn btn-sm btn-info btnVer" title="Solicitud">--}%
-                                            %{--<i class="fa fa-search"></i>--}%
-                                            %{--</a>--}%
-                                            %{--</g:else>--}%
-                                                <g:link action="procesar" id="${reforma.id}" class="btn btn-default" title="Procesar">
-                                                    <i class="fa fa-pencil-square-o"></i>
-                                                </g:link>
+                                                <elm:linkEditarReforma reforma="${reforma}" perfil="${session.perfil}"/>
                                             </div>
                                         </td>
                                     </tr>
@@ -113,34 +75,6 @@
                 </div>
 
                 <div role="tabpanel" class="tab-pane" id="historial" style="margin-top: 20px">
-                    %{--<div class="well">--}%
-                    %{--<form class="form-inline">--}%
-                    %{--<div class="form-group">--}%
-                    %{--<label for="anio">Año:</label>--}%
-                    %{--<g:select from="${Anio.list([sort: 'anio'])}" id="anio" name="anio"--}%
-                    %{--optionKey="id" optionValue="anio" value="${actual.id}" class="form-control input-sm"/>--}%
-                    %{--</div>--}%
-
-                    %{--<div class="form-group">--}%
-                    %{--<label for="numero">Número:</label>--}%
-                    %{--${actual.anio}-GP No.<input type="text" id="numero" class="form-control input-sm"/>--}%
-                    %{--</div>--}%
-
-                    %{--<div class="form-group">--}%
-                    %{--<label for="descProceso">Requirente:</label>--}%
-                    %{--<g:select name="requirente" from="${UnidadEjecutora.list([sort: 'nombre'])}" noSelection="['': '- Seleccione -']"--}%
-                    %{--class="form-control input-sm" style="width: 200px;" optionKey="id"/>--}%
-                    %{--</div>--}%
-
-                    %{--<div class="form-group">--}%
-                    %{--<label for="descProceso">Proceso:</label>--}%
-                    %{--<input type="text" id="descProceso" class="form-control input-sm" style="width: 200px;"/>--}%
-                    %{--</div>--}%
-                    %{--<a href="#" class="btn btn-info btn-sm" id="buscar">--}%
-                    %{--<i class="fa fa-search-plus"></i> Buscar--}%
-                    %{--</a>--}%
-                    %{--</form>--}%
-                    %{--</div>--}%
 
                     <div id="detalle">
 

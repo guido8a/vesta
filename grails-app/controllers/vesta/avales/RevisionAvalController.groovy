@@ -35,20 +35,23 @@ class RevisionAvalController extends Shield {
      * @Returns "ok" si se puede negar el aval, "no" en caso de que el usuario no pueda negar avales
      */
     def negarAval = {
-
         def band = false
         def usuario = Persona.get(session.usuario.id)
-        def sol = SolicitudAval.get(params.id)
-        /*todo aqui validar quien puede*/
-        band = true
-        if (band) {
-            sol.estado = EstadoAval.findByCodigo("E03")
-            sol.observaciones = params.obs
-            sol.fechaRevision = new Date()
-            sol.save(flush: true)
-            render "ok"
+        if (params.auth.toString().trim().encodeAsMD5() == usuario.autorizacion) {
+            def sol = SolicitudAval.get(params.id)
+            /*todo aqui validar quien puede*/
+            band = true
+            if (band) {
+                sol.estado = EstadoAval.findByCodigo("E03")
+                sol.observaciones = params.obs
+                sol.fechaRevision = new Date()
+                sol.save(flush: true)
+                render "SUCCES*Aval negado exitosamente"
+            } else {
+                render("ERROR*No puede negar avales")
+            }
         } else {
-            render("no")
+            render("ERROR*Clave de autorización incorrecta")
         }
     }
 
@@ -378,6 +381,10 @@ class RevisionAvalController extends Shield {
         def band = false
         def usuario = Persona.get(session.usuario.id)
         /*todo validar quien puede*/
+        def estadosOK = ["E01", "D03"]
+        if (!estadosOK.contains(solicitud.estado.codigo)) {
+            redirect(action: "pendientes")
+        }
         band = true
         if (!band) {
             response.sendError(403)
@@ -650,6 +657,21 @@ class RevisionAvalController extends Shield {
             alerta.accion = "pendientes"
             if (!alerta.save(flush: true)) {
                 println "error alerta: " + alerta.errors
+            }
+            def mail = a.mail
+            if (mail) {
+                try {
+                    mailService.sendMail {
+                        to mail
+                        subject "Devolución de aval"
+                        body "Su solicitud de aval: " + sol.concepto + " ha sido devuelta por " + usu
+                    }
+                } catch (e) {
+                    println "error al mandar mail"
+                    e.printStackTrace()
+                }
+            } else {
+                println "no tiene mail..."
             }
         }
         render "OK"
@@ -1052,7 +1074,6 @@ class RevisionAvalController extends Shield {
         def filtroDirector = null,
             filtroPersona = null
 
-        println perfil
         switch (perfil) {
             case "RQ":
                 estados = [estadoPendiente, estadoDevueltoReq]
@@ -1141,6 +1162,22 @@ class RevisionAvalController extends Shield {
                     println "error alerta1: " + alerta1.errors
                 }
 
+                def mail = solicitud.usuario.mail
+                if (mail) {
+                    try {
+                        mailService.sendMail {
+                            to mail
+                            subject "Devolución de aval"
+                            body "Su solicitud de aval: " + solicitud.concepto + " ha sido devuelta por " + usu
+                        }
+                    } catch (e) {
+                        println "error al mandar mail"
+                        e.printStackTrace()
+                    }
+                } else {
+                    println "no tiene mail..."
+                }
+
                 render "SUCCESS*Devolución exitosa"
             } else {
                 render "ERROR*" + renderErrors(bean: solicitud)
@@ -1166,6 +1203,21 @@ class RevisionAvalController extends Shield {
             alerta1.accion = "pendientes"
             if (!alerta1.save(flush: true)) {
                 println "error alerta1: " + alerta1.errors
+            }
+            def mail = solicitud.director.mail
+            if (mail) {
+                try {
+                    mailService.sendMail {
+                        to mail
+                        subject "Devolución de aval"
+                        body "Su solicitud de aval: " + solicitud.concepto + " ha sido devuelta por " + usu
+                    }
+                } catch (e) {
+                    println "error al mandar mail"
+                    e.printStackTrace()
+                }
+            } else {
+                println "no tiene mail..."
             }
             render "SUCCESS*Devolución exitosa"
         } else {
@@ -1215,7 +1267,8 @@ class RevisionAvalController extends Shield {
                         solicitud.firma = firma
                     }
                 } else {
-                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
+                    firma.estado = "S"
+//                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
                     firma.concepto = "Solicitud de aval: " + solicitud.concepto
                     if (!firma.save(flush: true)) {
                         println "error al guardar firma: " + firma.errors
@@ -1236,10 +1289,15 @@ class RevisionAvalController extends Shield {
                     println "error alerta1: " + alerta1.errors
                 }
                 if (mail) {
-                    mailService.sendMail {
-                        to mail
-                        subject "Un nuevo aval requiere aprobación"
-                        body "Tiene un aval pendiente que requiere su firma para aprobación "
+                    try {
+                        mailService.sendMail {
+                            to mail
+                            subject "Un nuevo aval requiere aprobación"
+                            body "Tiene un aval pendiente que requiere su firma para aprobación "
+                        }
+                    } catch (e) {
+                        println "error al mandar mail"
+                        e.printStackTrace()
                     }
                 } else {
                     println "no tiene mail..."

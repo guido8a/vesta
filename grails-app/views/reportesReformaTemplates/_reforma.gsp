@@ -20,7 +20,9 @@
         </div>
 
         <div>
-            <strong>Elaborado por:</strong> ${reforma.analista ? reforma.analista.sigla : reforma.persona.sigla}
+            <strong>Elaborado por:</strong> ${reforma.analista ?
+                (reforma.analista.sigla ?: reforma.analista.nombre + ' ' + reforma.analista.apellido) :
+                (reforma.persona.sigla ?: reforma.persona.nombre + ' ' + reforma.persona.apellido)}
         </div>
 
         <div class="fright">

@@ -173,7 +173,7 @@
             <g:if test="${!readOnly}">
                 <div class="row">
                     <div class="col-md-11 text-right">
-                        <g:link action="solicitudProceso" id="${proceso.id}" class="btn btn-success">
+                        <g:link action="solicitudProceso" id="${proceso.id}" class="btn btn-success" title="Guardar y pasar a la solicitud">
                             <i class="fa fa-save"></i> Guardar y Continuar <i class="fa fa-chevron-right"></i>
                         </g:link>
                     </div>

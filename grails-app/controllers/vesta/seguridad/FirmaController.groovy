@@ -98,7 +98,7 @@ class FirmaController extends Shield {
      * @param id es el identificador de la firma
      */
     def negar = {
-//        println "negar "+params
+        println "negar "+params
         def firma = Firma.get(params.id)
         firma.fecha = new Date()
         firma.estado = "N"

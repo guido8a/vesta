@@ -37,26 +37,20 @@
             </div>
         </div>
 
-        <g:if test="${reforma && reforma.estado.codigo == "D02"}">
+        <g:if test="${reforma && reforma.estado.codigo == "D03"}">
             <div class="alert alert-warning">
                 <g:if test="${reforma.firma1.observaciones && reforma.firma1.observaciones != '' && reforma.firma1.observaciones != 'S'}">
-                    <h4>Observaciones de ${reforma.firma1.usuario}</h4>
+                    <h4>Devuelto por ${reforma.firma1.usuario}</h4>
                     ${reforma.firma1.observaciones}
                 </g:if>
                 <g:if test="${reforma.firma2.observaciones && reforma.firma2.observaciones != '' && reforma.firma2.observaciones != 'S'}">
-                    <h4>Observaciones de ${reforma.firma2.usuario}</h4>
+                    <h4>Devuelto por ${reforma.firma2.usuario}</h4>
                     ${reforma.firma2.observaciones}
                 </g:if>
             </div>
         </g:if>
 
         <elm:container tipo="horizontal" titulo="Solicitud de reforma a procesar:  ${elm.tipoReforma(reforma: reforma)}">
-        %{--<elm:container tipo="horizontal" titulo="Solicitud de reforma a procesar:  ${reforma.tipo == 'R' ? 'Reforma' : reforma.tipo == 'A' ? 'Ajuste' : '??'}--}%
-        %{--${reforma.tipoSolicitud == 'E' ? ' a asignaciones existentes' :--}%
-        %{--reforma.tipoSolicitud == 'A' ? ' a nueva actividad' :--}%
-        %{--reforma.tipoSolicitud == 'C' ? ' de incremento a nueva actividad' :--}%
-        %{--reforma.tipoSolicitud == 'P' ? 'a nueva partida' :--}%
-        %{--reforma.tipoSolicitud == 'I' ? ' de incremento' : '??'}">--}%
             <div class="row">
                 <div class="col-md-1 show-label">
                     POA Año
@@ -90,6 +84,16 @@
 
                 <div class="col-md-2">
                     <g:formatDate date="${reforma.fecha}" format="dd-MM-yyyy"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1 show-label">
+                    Concepto
+                </div>
+
+                <div class="col-md-11">
+                    ${reforma.concepto}
                 </div>
             </div>
 
@@ -145,31 +149,15 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        %{--<a href="#" id="btnPreview" class="btn btn-info ${btnSelect && totalSaldo > 0 ? 'disabled' : ''}">--}%
-                        %{--<i class="fa fa-search"></i> Previsualizar--}%
-                        %{--</a>--}%
-
-                        <elm:linkPdfReforma reforma="${reforma}" preview="${true}"/>
-                        %{--<g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existentePreviewReforma' :--}%
-                        %{--reforma.tipoSolicitud == 'A' ? 'actividadPreviewReforma' :--}%
-                        %{--reforma.tipoSolicitud == 'C' ? 'incrementoActividadPreviewReforma' :--}%
-                        %{--reforma.tipoSolicitud == 'P' ? 'partidaPreviewReforma' :--}%
-                        %{--reforma.tipoSolicitud == 'I' ? 'incrementoPreviewReforma' : ''}"/>--}%
-                        %{--<g:set var="fileName" value="${reforma.tipoSolicitud == 'E' ? 'reforma_existente' :--}%
-                        %{--reforma.tipoSolicitud == 'A' ? 'reforma_actividad' :--}%
-                        %{--reforma.tipoSolicitud == 'C' ? 'reforma_incremento_actividad' :--}%
-                        %{--reforma.tipoSolicitud == 'P' ? 'reforma_partida' :--}%
-                        %{--reforma.tipoSolicitud == 'I' ? 'reforma_incremento' : ''}.pdf"/>--}%
-                        %{--<a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: "reportesReforma", action: accion, id: reforma.id)}&filename=${fileName}"--}%
-                        %{--class="btn btn-sm btn-info">--}%
-                        %{--<i class="fa fa-search"></i> Previsualizar--}%
-                        %{--</a>--}%
-                        <a href="#" id="btnAprobar" class="btn btn-success ${btnSelect && totalSaldo > 0 ? 'disabled' : ''}">
-                            <i class="fa fa-thumbs-up"></i> Aprobar
-                        </a>
-                        <a href="#" id="btnNegar" class="btn btn-danger">
-                            <i class="fa fa-thumbs-down"></i> Negar
-                        </a>
+                        <div class="btn-group" role="group" aria-label="...">
+                            <elm:linkPdfReforma reforma="${reforma}" preview="${true}" class="btn-default" title="Previsualizar" label="true"/>
+                            <a href="#" id="btnAprobar" class="btn btn-success ${btnSelect && totalSaldo > 0 ? 'disabled' : ''}" title="Aprobar y solicitar firmas">
+                                <i class="fa fa-pencil"></i> Solicitar firmas
+                            </a>
+                            <a href="#" id="btnNegar" class="btn btn-danger" title="Negar definitivamente la solicitud de reforma">
+                                <i class="fa fa-thumbs-down"></i> Negar
+                            </a>
+                        </div>
                     </div>
                 </div>
             </elm:container>
@@ -181,7 +169,9 @@
                 var url = "${createLink(action:'aprobar')}";
                 var str = "Aprobando";
                 var str2 = "aprobar";
+                var str3 = "Aprobar";
                 var clase = "success";
+                var ico = "pencil";
                 var data = {
                     id : "${reforma.id}"
                 };
@@ -189,35 +179,85 @@
                     url = "${createLink(action:'negar')}";
                     str = "Negando";
                     str2 = "negar";
+                    str3 = "Negar";
                     clase = "danger";
+                    ico = "thumbs-down";
                 } else {
                     data.firma1 = $("#firma1").val();
                     data.firma2 = $("#firma2").val();
                     data.observaciones = $("#richText").val();
-                    %{--var i = 0;--}%
-                    %{--<g:if test="${reforma.tipoSolicitud == 'I'}">--}%
-                    %{--$("#tb").children().each(function () {--}%
-                    %{--var $tr = $(this);--}%
-                    %{--if ($tr.hasClass("info")) {--}%
-                    %{--data["r" + i] = $tr.next().data("id") + "_" + $tr.data("aso");--}%
-                    %{--i++;--}%
-                    %{--}--}%
-                    %{--});--}%
-                    %{--</g:if>--}%
                 }
+
+                var $msg = $("<div>");
+                var $form = $("<form class='form-horizontal'>");
+
+                var $r2 = $("<div class='form-group'\"'>");
+                $r2.append("<label class='col-sm-4 control-label' for='obs'>Autorización</label>");
+                var $auth = $("<input type='password' class='form-control required'/>");
+                var auth = $("<div class='col-sm-8 grupo'>");
+                var authGrp = $("<div class='input-group'>");
+                authGrp.append($auth);
+                authGrp.append("<span class='input-group-addon'><i class='fa fa-unlock-alt'></i></span>");
+                auth.append(authGrp);
+                $r2.append(auth);
+                $form.append($r2);
+
+                $msg.append($form);
+
+                $form.validate({
+                    errorClass     : "help-block",
+                    errorPlacement : function (error, element) {
+                        if (element.parent().hasClass("input-group")) {
+                            error.insertAfter(element.parent());
+                        } else {
+                            error.insertAfter(element);
+                        }
+                        element.parents(".grupo").addClass('has-error');
+                    },
+                    success        : function (label) {
+                        label.parents(".grupo").removeClass('has-error');
+                        label.remove();
+                    }
+                });
+
                 bootbox.confirm("¿Está seguro de querer <strong class='text-" + clase + "'>" + str2 + "</strong> esta solicitud de reforma?<br/>Esta acción no puede revertirse.",
                         function (res) {
                             if (res) {
-                                openLoader(str);
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : url,
-                                    data    : data,
-                                    success : function (msg) {
-                                        var parts = msg.split("*");
-                                        log(parts[1], parts[0]);
-                                        if (parts[0] == "SUCCESS") {
-                                            location.href = "${createLink(action:'pendientes')}";
+                                bootbox.dialog({
+                                    title   : str3,
+                                    message : $msg,
+                                    class   : "modal-sm",
+                                    buttons : {
+                                        devolver : {
+                                            label     : "<i class='fa fa-" + ico + "'></i> " + str3,
+                                            className : "btn-" + clase,
+                                            callback  : function () {
+                                                if ($form.valid()) {
+                                                    data.auth = $auth.val();
+                                                    openLoader(str);
+                                                    $.ajax({
+                                                        type    : "POST",
+                                                        url     : url,
+                                                        data    : data,
+                                                        success : function (msg) {
+                                                            var parts = msg.split("*");
+                                                            log(parts[1], parts[0]);
+                                                            if (parts[0] == "SUCCESS") {
+                                                                location.href = "${createLink(action:'pendientes')}";
+                                                            } else {
+                                                                closeLoader();
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                                return false;
+                                            }
+                                        },
+                                        cancelar : {
+                                            label     : "Cancelar",
+                                            className : "btn-default",
+                                            callback  : function () {
+                                            }
                                         }
                                     }
                                 });

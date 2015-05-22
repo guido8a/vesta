@@ -67,6 +67,14 @@ class Reforma {
      * Analista de planificación que revisó la solicitud de reforma
      */
     Persona analista
+    /**
+     * Director que revisó la solicitud de reforma
+     */
+    Persona director
+    /**
+     * Observaciones del director al momento de devolver
+     */
+    String observacionesDirector
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -98,6 +106,9 @@ class Reforma {
             nota column: 'rfrmnota'
             numero column: 'rfrmnmro'
             analista column: 'rfrmpran'
+            director column: 'rfrmprdr'
+            observacionesDirector column: 'rfrmobdr'
+            observacionesDirector type: 'text'
         }
     }
 
@@ -112,5 +123,7 @@ class Reforma {
         textoPdf blank: true, nullable: true
         nota blank: true, nullable: true
         analista nullable: true
+        director nullable: true
+        observacionesDirector blank: true, nullable: true
     }
 }

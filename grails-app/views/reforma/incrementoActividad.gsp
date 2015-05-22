@@ -26,10 +26,9 @@
     <body>
         <g:if test="${reforma &&
                 reforma.estado.codigo == "D01" &&
-                reforma.firmaSolicitud.observaciones && reforma.firmaSolicitud.observaciones != '' && reforma.firmaSolicitud.observaciones != 'S'}">
+                reforma.observacionesDirector && reforma.observacionesDirector != ''}">
             <div class="alert alert-warning">
-                <h4>Observaciones de ${reforma.firmaSolicitud.usuario}</h4>
-                ${reforma.firmaSolicitud.observaciones}
+                ${reforma.observacionesDirector}
             </div>
         </g:if>
 
@@ -52,13 +51,8 @@
                 </div>
 
                 <div class="col-md-2">
-                    <g:if test="${editable}">
-                        <g:select from="${[actual]}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
-                                  class="form-control input-sm required requiredCombo"/>
-                    </g:if>
-                    <g:else>
-                        ${reforma.anio.anio}
-                    </g:else>
+                    <g:select from="${[actual]}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
+                              class="form-control input-sm required requiredCombo"/>
                 </div>
 
                 <div class="col-md-1">
@@ -72,114 +66,112 @@
                 </div>
             </div>
 
-            <g:if test="${editable}">
-                <form id="frmReforma" style="margin-bottom: 10px;">
+            <form id="frmReforma" style="margin-bottom: 10px;">
 
-                    <h3 class="text-info">Nueva actividad de destino</h3>
+                <h3 class="text-info">Nueva actividad de destino</h3>
 
-                    <div class="row">
-                        <div class="col-md-1">
-                            <label>Proyecto</label>
-                        </div>
-
-                        <div class="col-md-5 grupo">
-                            <g:select from="${proyectos2}" optionKey="id" optionValue="nombre" name="proyecto_dest" id="proyectoDest" style="width:100%"
-                                      class="form-control required requiredCombo input-sm" noSelection="['-1': 'Seleccione...']"/>
-                        </div>
-
-                        <div class="col-md-1">
-                            <label>Componente</label>
-                        </div>
-
-                        <div class="col-md-5 grupo" id="divComp_dest">
-
-                        </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Proyecto</label>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-1">
-                            <label for="actividad_dest">Actividad</label>
-                        </div>
-
-                        <div class="col-md-4 grupo">
-                            <g:textField name="actividad_dest" class="form-control input-sm required"/>
-                        </div>
-
-                        <div class="col-md-1">
-                            <label>Partida</label>
-                        </div>
-
-                        <div class="col-md-3">
-                            <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
-                                          titulo="Busque una partida" campos="${campos}" clase="required" style="width:100%"/>
-                        </div>
-
-                        <div class="col-md-1">
-                            <label>Fuente</label>
-                        </div>
-
-                        <div class="col-md-2">
-                            <g:select from="${vesta.parametros.poaPac.Fuente.list()}" optionKey="id" optionValue="descripcion"
-                                      name="fuente" class="form-control input-sm required requiredCmb"/>
-                        </div>
+                    <div class="col-md-5 grupo">
+                        <g:select from="${proyectos2}" optionKey="id" optionValue="nombre" name="proyecto_dest" id="proyectoDest" style="width:100%"
+                                  class="form-control required requiredCombo input-sm" noSelection="['-1': 'Seleccione...']"/>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-1">
-                            <label>Fecha Incio</label>
-                        </div>
+                    <div class="col-md-1">
+                        <label>Componente</label>
+                    </div>
 
-                        <div class="col-md-2 grupo">
-                            <elm:datepicker class="form-control input-sm fechaInicio required"
-                                            name="fechaInicio"
-                                            title="Fecha de inicio de la actividad"
-                                            id="inicio"/>
+                    <div class="col-md-5 grupo" id="divComp_dest">
 
-                        </div>
+                    </div>
+                </div>
 
-                        <div class="col-md-1">
-                            <label>Fecha Fin</label>
-                        </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label for="actividad_dest">Actividad</label>
+                    </div>
 
-                        <div class="col-md-2 grupo">
-                            <elm:datepicker class="form-control input-sm fechaFin required"
-                                            name="fechaFin"
-                                            title="Fecha fin de la actividad"
-                                            id="fin"
-                                            format="dd-MM-yyyy"/>
-                        </div>
+                    <div class="col-md-4 grupo">
+                        <g:textField name="actividad_dest" class="form-control input-sm required"/>
+                    </div>
 
-                        <div class="col-md-1">
-                            <label>Categoría</label>
-                        </div>
+                    <div class="col-md-1">
+                        <label>Partida</label>
+                    </div>
 
-                        <div class="col-md-2">
-                            <g:select from="${Categoria.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" name="categoria"
-                                      class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']"/>
-                        </div>
+                    <div class="col-md-3">
+                        <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
+                                      titulo="Busque una partida" campos="${campos}" clase="required" style="width:100%"/>
+                    </div>
 
-                        <div class="col-md-1">
-                            <label>Monto</label>
-                        </div>
+                    <div class="col-md-1">
+                        <label>Fuente</label>
+                    </div>
 
-                        <div class="col-md-2">
-                            <div class="input-group">
-                                <g:textField type="text" name="monto" class="form-control required input-sm number money"/>
-                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                            </div>
-                        </div>
+                    <div class="col-md-2">
+                        <g:select from="${Fuente.list()}" optionKey="id" optionValue="descripcion"
+                                  name="fuente" class="form-control input-sm required requiredCmb"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Fecha Incio</label>
+                    </div>
+
+                    <div class="col-md-2 grupo">
+                        <elm:datepicker class="form-control input-sm fechaInicio required"
+                                        name="fechaInicio"
+                                        title="Fecha de inicio de la actividad"
+                                        id="inicio"/>
 
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <a href="#" id="btnAddReforma" class="btn btn-success pull-right">
-                                <i class="fa fa-plus"></i> Agregar
-                            </a>
+                    <div class="col-md-1">
+                        <label>Fecha Fin</label>
+                    </div>
+
+                    <div class="col-md-2 grupo">
+                        <elm:datepicker class="form-control input-sm fechaFin required"
+                                        name="fechaFin"
+                                        title="Fecha fin de la actividad"
+                                        id="fin"
+                                        format="dd-MM-yyyy"/>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label>Categoría</label>
+                    </div>
+
+                    <div class="col-md-2">
+                        <g:select from="${Categoria.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" name="categoria"
+                                  class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']"/>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label>Monto</label>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="input-group">
+                            <g:textField type="text" name="monto" class="form-control required input-sm number money"/>
+                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                         </div>
                     </div>
-                </form>
-            </g:if>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" id="btnAddReforma" class="btn btn-success pull-right">
+                            <i class="fa fa-plus"></i> Agregar
+                        </a>
+                    </div>
+                </div>
+            </form>
 
             <div id="detallesExistentes">
                 <g:each in="${detalles}" var="detalle" status="i">
@@ -251,36 +243,35 @@
                 </div>
 
                 <div class="col-md-11 grupo">
-                    <g:if test="${editable}">
-                        <g:textArea name="concepto" class="form-control required" style="height: 100px;" value="${reforma?.concepto}"/>
-                    </g:if>
-                    <g:else>
-                        ${reforma.concepto}
-                    </g:else>
+                    <g:textArea name="concepto" class="form-control required" style="height: 100px;" value="${reforma?.concepto}"/>
                 </div>
             </div>
 
             <div class="row" style="margin-bottom: 100px">
                 <div class="col-md-1">
-                    <label>Firma</label>
+                    <label>Pedir revisión de</label>
                 </div>
 
                 <div class="col-md-3 grupo">
-                    <g:if test="${!reforma}">
-                        <g:select from="${Persona.findAllByUnidad(session.usuario.unidad, [sort: 'nombre'])}" optionKey="id" optionValue="" id="firma" name="firma"
-                                  class="form-control input-sm required" noSelection="['': '- Seleccione -']" value="${reforma ? reforma.firmaSolicitud.usuarioId : ''}"/>
+                    <g:if test="${reforma && reforma.estado.codigo == 'D01'}">
+                        ${reforma.director}
                     </g:if>
                     <g:else>
-                        ${reforma.firmaSolicitud.usuario}
+                        <g:select from="${personas}" optionKey="id" optionValue="" id="firma" name="firma"
+                                  class="form-control input-sm required" noSelection="['': '- Seleccione -']" value="${reforma ? reforma.directorId : ''}"/>
                     </g:else>
                 </div>
 
-                <div class="col-md-2 col-md-offset-6">
-                    <g:if test="${editable}">
-                        <a href="#" class="btn btn-success pull-right ${!reforma ? 'disabled' : ''}" id="btnSave">
-                            <i class="fa fa-floppy-o"></i> Guardar
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="btn-group pull-right" role="group">
+                        <elm:linkPdfReforma reforma="${reforma}" class="btn-default" title="Previsualizar" label="true" disabledIfNull="true"/>
+                        <a href="#" id="btnGuardar" class="btn btn-info" title="Guardar y seguir editando">
+                            <i class="fa fa-save"></i> Guardar
                         </a>
-                    </g:if>
+                        <a href="#" id="btnEnviar" class="btn btn-success ${detalles.size() == 0 ? 'disabled' : ''}" title="Guardar y solicitar revisión">
+                            <i class="fa fa-save"></i> Guardar y Enviar <i class="fa fa-paper-plane-o"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </form>
@@ -366,9 +357,9 @@
                     tot += parseFloat($(this).data().origen.monto);
                 });
                 if (tot > 0) {
-                    $("#btnSave").removeClass("disabled");
+                    $("#btnEnviar").removeClass("disabled");
                 } else {
-                    $("#btnSave").addClass("disabled");
+                    $("#btnEnviar").addClass("disabled");
                 }
                 $("#divTotal").data("valor", tot).text("$" + number_format(tot, 2, ".", ","));
             }
@@ -553,7 +544,7 @@
                     });
                 });
 
-                $("#btnSave").click(function () {
+                $("#btnGuardar").click(function () {
                     if ($(this).hasClass("disabled")) {
                         bootbox.alert("Por favor seleccione al menos una asignación de origen y una nueva actividad de destino para la modificación")
                     } else {
@@ -579,6 +570,7 @@
                             data.anio = $("#anio").val();
                             data.concepto = $("#concepto").val();
                             data.id = "${reforma?.id}";
+                            data.send = "N";
                             $.ajax({
                                 type    : "POST",
                                 url     : "${createLink(action:'saveIncrementoActividad_ajax')}",
@@ -588,7 +580,7 @@
                                     log(parts[1], parts[0]);
                                     if (parts[0] == "SUCCESS") {
                                         setTimeout(function () {
-                                            location.href = "${createLink(action:'lista')}";
+                                            location.href = "${createLink(action:'incrementoActividad')}/" + parts[2];
                                         }, 2000);
                                     } else {
                                         closeLoader();
@@ -599,6 +591,63 @@
                                     closeLoader();
                                 }
                             });
+                        }
+                    }
+                    return false;
+                });
+
+                $("#btnEnviar").click(function () {
+                    if ($(this).hasClass("disabled")) {
+                        bootbox.alert("Por favor seleccione al menos una asignación de origen y una nueva actividad de destino para la modificación")
+                    } else {
+                        if ($("#frmFirma").valid()) {
+                            bootbox.confirm("¿Está seguro de querer enviar esta solicitud de reforma?<br/>Ya no podrá modificar su contenido.",
+                                    function (res) {
+                                        if (res) {
+                                            openLoader();
+                                            var data = {};
+                                            var c = 0;
+                                            $(".tableReformaNueva").each(function () {
+                                                var d = $(this).data();
+                                                data["r" + c] = {};
+//                                data["r" + c].origen = d.origen.asignacion_id;
+                                                data["r" + c].monto = d.origen.monto;
+                                                data["r" + c].componente = d.destino.componente_id;
+                                                data["r" + c].actividad = d.destino.actividad_nombre;
+                                                data["r" + c].partida = d.destino.partida_id;
+                                                data["r" + c].inicio = d.destino.inicio;
+                                                data["r" + c].fin = d.destino.fin;
+                                                data["r" + c].categoria = d.destino.categoria_id;
+                                                data["r" + c].fuente = d.destino.fuente_id;
+                                                c++;
+                                            });
+                                            data.firma = $("#firma").val();
+                                            data.anio = $("#anio").val();
+                                            data.concepto = $("#concepto").val();
+                                            data.id = "${reforma?.id}";
+                                            data.send = "S";
+                                            $.ajax({
+                                                type    : "POST",
+                                                url     : "${createLink(action:'saveIncrementoActividad_ajax')}",
+                                                data    : data,
+                                                success : function (msg) {
+                                                    var parts = msg.split("*");
+                                                    log(parts[1], parts[0]);
+                                                    if (parts[0] == "SUCCESS") {
+                                                        setTimeout(function () {
+                                                            location.href = "${createLink(action:'lista')}";
+                                                        }, 2000);
+                                                    } else {
+                                                        closeLoader();
+                                                    }
+                                                },
+                                                error   : function () {
+                                                    log("Ha ocurrido un error interno", "error");
+                                                    closeLoader();
+                                                }
+                                            });
+                                        }
+                                    });
                         }
                     }
                     return false;
