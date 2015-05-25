@@ -9,7 +9,7 @@
 <table class="table table-condensed table-bordered table-striped table-hover">
     <thead>
     <tr>
-        <th>Actividad</th>
+        <th>Subactividad</th>
         <th>Aporte</th>
         <th>Inicio</th>
         <th>Fin</th>

@@ -38,8 +38,8 @@
                             Proyecto
                         </label>
 
-                        <div class="col-md-2">
-                            ${proceso?.proyecto}
+                        <div class="col-md-5">
+                            ${proceso?.proyecto.toStringCompleto()}
                         </div>
                     </div>
 

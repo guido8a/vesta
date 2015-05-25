@@ -127,6 +127,8 @@ class AvanceFisicoController extends vesta.seguridad.Shield {
 
     def agregarSubact () {
 
+        println("params " + params)
+
         def proceso = Proceso.get(params.id)
 
         return [proceso:proceso]

@@ -5,9 +5,7 @@
   Time: 12:32 PM
 --%>
 
-<script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
-
-<g:if test="${proceso}">
+%{--<g:if test="${proceso}">--}%
     <div class="fila">
 
         <div class="form-group keeptogether">
@@ -69,4 +67,4 @@
             </span>
         </div>
     </div>
-</g:if>
+%{--</g:if>--}%
