@@ -1120,4 +1120,84 @@ class ElementosTagLib {
             out << str
         }
     }
+
+    def wizardAvales = { attrs ->
+        def paso = attrs.paso ? attrs.paso.toInteger() : 1
+        def proceso = attrs.proceso ?: null
+        def monto = 0
+        def nombreProc = ""
+        def maxChars = 30
+        if (proceso && proceso.id) {
+            monto = proceso.getMonto()
+            nombreProc = proceso.nombre
+            if (nombreProc.size() > maxChars) {
+                nombreProc = nombreProc[0..maxChars - 1] + "…"
+            }
+            nombreProc = ": " + nombreProc
+        }
+
+        def clase1 = "", clase2 = "", clase3 = ""
+
+        if (paso == 1) {
+            clase1 = "wizard-current"
+            clase2 = "wizard-not-completed"
+            clase3 = "wizard-not-completed"
+            if (proceso && proceso.id) {
+                clase2 = "wizard-available"
+                if (monto > 0) {
+                    clase3 = "wizard-available"
+                }
+            }
+        } else if (paso == 2) {
+            clase1 = "wizard-completed"
+            clase2 = "wizard-current"
+            clase3 = "wizard-not-completed"
+            if (monto > 0) {
+                clase3 = "wizard-available"
+            }
+        } else if (paso == 3) {
+            clase1 = "wizard-completed"
+            clase2 = "wizard-completed"
+            clase3 = "wizard-current"
+        }
+
+        def html = '<div class="wizard-container row">'
+        html += '   <div class="col-md-4 wizard-step wizard-next-step corner-left ' + clase1 + '">\n' +
+                '       <span class="badge wizard-badge">1</span>\n'
+        if (proceso && proceso.id && paso > 1) {
+            html += g.link(action: "nuevaSolicitud", id: proceso.id, title: "Regresar sin guardar cambios") {
+                'Proceso de aval' + nombreProc
+            }
+        } else {
+            html += 'Proceso de aval' + nombreProc
+        }
+        html += '   </div>'
+
+        html += '   <div class="col-md-4 wizard-step wizard-next-step ' + clase2 + '">\n' +
+                '       <span class="badge wizard-badge">2</span>\n'
+        if (proceso && proceso.id && paso != 2) {
+            html += g.link(action: "solicitudAsignaciones", id: proceso.id, title: "Continuar sin guardar cambios") {
+                'Asignaciones' + nombreProc
+            }
+        } else {
+            html += 'Asignaciones' + nombreProc
+        }
+        html += '   </div>'
+
+        html += '   <div class="col-md-4 wizard-step corner-right ' + clase3 + '">\n' +
+                '       <span class="badge wizard-badge">3</span>\n'
+        if (monto > 0 && paso != 3) {
+            html += g.link(action: "solicitudProceso", id: proceso.id, title: "Continuar sin guardar cambios") {
+                'Solicitud' + nombreProc
+            }
+        } else {
+            html += 'Solicitud' + nombreProc
+        }
+        html += '   </div>'
+
+        html += '</div>'
+
+        out << html
+
+    }
 }

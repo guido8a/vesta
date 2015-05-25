@@ -13,6 +13,7 @@
     <thead>
         <tr>
             <th>Año</th>
+            <th>Proyecto</th>
             <th>Componente</th>
             <th>Actividad</th>
             <th>Partida</th>
@@ -32,6 +33,7 @@
             <g:set var="totalD" value="${totalD.toDouble() + asg.devengado}"/>
             <tr iden="${asg?.id}">
                 <td>${asg.asignacion.anio.anio}</td>
+                <td title="${asg.asignacion.marcoLogico.proyecto.toStringCompleto()}">${asg.asignacion.marcoLogico.proyecto}</td>
                 <td>${asg.asignacion.marcoLogico.marcoLogico}</td>
                 <td>${asg.asignacion.marcoLogico.numero} - ${asg.asignacion.marcoLogico}</td>
                 <td>${asg.asignacion.presupuesto.numero}</td>

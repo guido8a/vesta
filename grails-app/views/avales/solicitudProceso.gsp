@@ -44,21 +44,25 @@
             </div>
         </g:if>
 
-        <div class="wizard-container row">
-            <div class="col-md-4 wizard-step wizard-next-step corner-left wizard-completed">
-                <span class="badge wizard-badge">1</span>
-                <g:link action="nuevaSolicitud" id="${proceso.id}">Proceso de aval</g:link>
-            </div>
+    %{--****************************************************************************************************************************************--}%
+        <elm:wizardAvales paso="3" proceso="${proceso}"/>
+    %{--****************************************************************************************************************************************--}%
 
-            <div class="col-md-4 wizard-step wizard-next-step wizard-completed">
-                <span class="badge wizard-badge">2</span>
-                <g:link action="solicitudAsignaciones" id="${proceso.id}">Asignaciones</g:link>
-            </div>
+    %{--<div class="wizard-container row">--}%
+    %{--<div class="col-md-4 wizard-step wizard-next-step corner-left wizard-completed">--}%
+    %{--<span class="badge wizard-badge">1</span>--}%
+    %{--<g:link action="nuevaSolicitud" id="${proceso.id}">Proceso de aval</g:link>--}%
+    %{--</div>--}%
 
-            <div class="col-md-4 wizard-step corner-right wizard-current">
-                <span class="badge wizard-badge">3</span> Solicitud
-            </div>
-        </div>
+    %{--<div class="col-md-4 wizard-step wizard-next-step wizard-completed">--}%
+    %{--<span class="badge wizard-badge">2</span>--}%
+    %{--<g:link action="solicitudAsignaciones" id="${proceso.id}">Asignaciones</g:link>--}%
+    %{--</div>--}%
+
+    %{--<div class="col-md-4 wizard-step corner-right wizard-current">--}%
+    %{--<span class="badge wizard-badge">3</span> Solicitud--}%
+    %{--</div>--}%
+    %{--</div>--}%
 
         <g:uploadForm class="form-horizontal wizard-form corner-bottom frmAval" action="guardarSolicitud" controller="avales">
             <g:hiddenField name="proceso" value="${proceso.id}"/>

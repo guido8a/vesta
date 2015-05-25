@@ -43,30 +43,34 @@
 
         <input type="hidden" name="id" value="${proceso?.id}">
 
-        <div class="wizard-container row">
-            <div class="col-md-4 wizard-step wizard-next-step corner-left wizard-completed">
-                <span class="badge wizard-badge">1</span>
-                <g:link action="nuevaSolicitud" id="${proceso.id}">Proceso de aval</g:link>
-            </div>
+    %{--****************************************************************************************************************************************--}%
+        <elm:wizardAvales paso="2" proceso="${proceso}"/>
+    %{--****************************************************************************************************************************************--}%
 
-            <div class="col-md-4 wizard-step wizard-next-step wizard-current">
-                <span class="badge wizard-badge">2</span> Asignaciones
-            </div>
+    %{--<div class="wizard-container row">--}%
+    %{--<div class="col-md-4 wizard-step wizard-next-step corner-left wizard-completed">--}%
+    %{--<span class="badge wizard-badge">1</span>--}%
+    %{--<g:link action="nuevaSolicitud" id="${proceso.id}">Proceso de aval</g:link>--}%
+    %{--</div>--}%
 
-            <g:if test="${monto > 0}">
-                <div class="col-md-4 wizard-step corner-right wizard-available">
-                    <span class="badge wizard-badge">3</span>
-                    <g:link action="solicitudProceso" id="${proceso.id}" title="Continuar sin guardar cambios">
-                        Solicitud
-                    </g:link>
-                </div>
-            </g:if>
-            <g:else>
-                <div class="col-md-4 wizard-step corner-right wizard-not-completed">
-                    <span class="badge wizard-badge">3</span> Solicitud
-                </div>
-            </g:else>
-        </div>
+    %{--<div class="col-md-4 wizard-step wizard-next-step wizard-current">--}%
+    %{--<span class="badge wizard-badge">2</span> Asignaciones--}%
+    %{--</div>--}%
+
+    %{--<g:if test="${monto > 0}">--}%
+    %{--<div class="col-md-4 wizard-step corner-right wizard-available">--}%
+    %{--<span class="badge wizard-badge">3</span>--}%
+    %{--<g:link action="solicitudProceso" id="${proceso.id}" title="Continuar sin guardar cambios">--}%
+    %{--Solicitud--}%
+    %{--</g:link>--}%
+    %{--</div>--}%
+    %{--</g:if>--}%
+    %{--<g:else>--}%
+    %{--<div class="col-md-4 wizard-step corner-right wizard-not-completed">--}%
+    %{--<span class="badge wizard-badge">3</span> Solicitud--}%
+    %{--</div>--}%
+    %{--</g:else>--}%
+    %{--</div>--}%
 
         <g:form action="" class="form-horizontal wizard-form corner-bottom" name="frmProceso" role="form" method="POST">
             <g:if test="${!readOnly}">
