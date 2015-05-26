@@ -62,7 +62,7 @@ class FirmaController extends Shield {
  * @param anio es el anio para mostrar el historial de firmas
  */
     def historial = {
-        println "historial "+params
+//        println "historial " + params
         def anio = Anio.get(params.anio).anio
 
         def datos = []
@@ -80,12 +80,10 @@ class FirmaController extends Shield {
                 if (params.tipo && params.tipo != "") {
                     eq("tipoFirma", params.tipo)
                 }
+                order("fecha", "desc")
             }
-
-//            println "datos fecha "+datos
         }
-
-        [datos: datos.sort { it.fecha }]
+        return [datos: datos]
     }
 /**
  * Acción que muestra una el documento firmado

@@ -8,12 +8,12 @@
 <table class="table table-condensed table-bordered table-striped table-hover">
     <thead>
         <tr>
-            <th>Fecha</th>
-            <th>Tipo</th>
-            <th>Documento</th>
+            <th style="width: 90px;">Fecha</th>
+            <th style="width: 60px;">Tipo</th>
+            %{--<th>Documento</th>--}%
             <th>Concepto</th>
-            <th>Estado</th>
-            <th>Ver</th>
+            <th style="width: 80px;">Estado</th>
+            <th style="width: 80px;">Ver</th>
         </tr>
     </thead>
     <tbody>
@@ -31,7 +31,7 @@
                         Ajuste
                     </g:elseif>
                 </td>
-                <td style="text-align: center">${firma.documento}</td>
+                %{--<td style="text-align: center">${firma.documento}</td>--}%
                 <td>${firma.concepto}</td>
                 <td>
                     <g:if test="${firma.estado == 'F'}">
