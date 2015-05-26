@@ -33,22 +33,31 @@ class AjusteController extends Shield {
      */
     def lista() {
         def reformas
-        def perfil = session.perfil.codigo
-        def perfiles = ["GAF", "ASPL"]
-
-        if (perfiles.contains(perfil)) {
-            reformas = Reforma.withCriteria {
-                eq("tipo", "A")
-                persona {
-                    order("unidad", "asc")
-                }
-                order("fecha", "desc")
+        def perfil = session.perfil.codigo.toString()
+//        def perfiles = ["GAF", "ASPL"]
+//
+//        if (perfiles.contains(perfil)) {
+//            reformas = Reforma.withCriteria {
+//                eq("tipo", "A")
+//                persona {
+//                    order("unidad", "asc")
+//                }
+//                order("fecha", "desc")
+//            }
+//        } else {
+//            def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+//            def personas = Persona.findAllByUnidadInList(unidades)
+//
+//            reformas = Reforma.findAllByTipoAndPersonaInList('A', personas, [sort: "fecha", order: "desc"])
+//        }
+        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        reformas = Reforma.withCriteria {
+            eq("tipo", "A")
+            persona {
+                inList("unidad", unidades)
+                order("unidad", "asc")
             }
-        } else {
-            def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-            def personas = Persona.findAllByUnidadInList(unidades)
-
-            reformas = Reforma.findAllByTipoAndPersonaInList('A', personas, [sort: "fecha", order: "desc"])
+            order("fecha", "desc")
         }
         return [reformas: reformas]
     }
@@ -78,7 +87,7 @@ class AjusteController extends Shield {
 //
 //        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -134,7 +143,7 @@ class AjusteController extends Shield {
 //
 //        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -189,7 +198,7 @@ class AjusteController extends Shield {
 //        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 //
 //        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -253,7 +262,7 @@ class AjusteController extends Shield {
 //
 //        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos

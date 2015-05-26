@@ -67,23 +67,31 @@ class RevisionAvalController extends Shield {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
 
-        def perfil = session.perfil.codigo
-        def perfiles = ["GAF", "ASPL"]
+        def perfil = session.perfil.codigo.toString()
         def unidades
-
-        if (perfiles.contains(perfil)) {
-            unidades = Asignacion.withCriteria {
-                projections {
-                    distinct("unidad")
-                }
-            }
-        } else {
-            def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-            unidades = Asignacion.withCriteria {
-                inList("unidad", uns)
-                projections {
-                    distinct("unidad")
-                }
+//        def perfiles = ["GAF", "ASPL"]
+//        def unidades
+//
+//        if (perfiles.contains(perfil)) {
+//            unidades = Asignacion.withCriteria {
+//                projections {
+//                    distinct("unidad")
+//                }
+//            }
+//        } else {
+//            def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+//            unidades = Asignacion.withCriteria {
+//                inList("unidad", uns)
+//                projections {
+//                    distinct("unidad")
+//                }
+//            }
+//        }
+        def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        unidades = Asignacion.withCriteria {
+            inList("unidad", uns)
+            projections {
+                distinct("unidad")
             }
         }
 
@@ -116,6 +124,7 @@ class RevisionAvalController extends Shield {
      */
     def historialAvales = {
 //        println "historial aval " + params
+
         def now = new Date()
         def anio = Anio.get(params.anio).anio
         def numero = ""
@@ -128,19 +137,21 @@ class RevisionAvalController extends Shield {
         def externos = ["usuario", "proceso", "proyecto"]
         def band = true
 
-        def perfil = session.perfil.codigo
-        def perfiles = ["GAF", "ASPL"]
-
+        def perfil = session.perfil.codigo.toString()
         def unidades
-        if (params.requirente) {
-            unidades = [UnidadEjecutora.get(params.requirente.toLong())]
-        } else {
-            if (perfiles.contains(perfil)) {
-                unidades = UnidadEjecutora.list()
-            } else {
-                unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-            }
-        }
+//        def perfiles = ["GAF", "ASPL"]
+//
+//        def unidades
+//        if (params.requirente) {
+//            unidades = [UnidadEjecutora.get(params.requirente.toLong())]
+//        } else {
+//            if (perfiles.contains(perfil)) {
+//                unidades = UnidadEjecutora.list()
+//            } else {
+//                unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+//            }
+//        }
+        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
 
         def personasLista = Persona.findAllByUnidadInList(unidades)
 
@@ -188,7 +199,7 @@ class RevisionAvalController extends Shield {
 //            println "numero: " + params.numero
 //            println Aval.list().numero
 //            println Aval.withCriteria {
-//            eq("numero", "" + params.numero)
+//                eq("numero", "" + params.numero)
 //            }
 
             def avales = Aval.withCriteria {
@@ -292,19 +303,21 @@ class RevisionAvalController extends Shield {
         def fechaInicio
         def fechaFin
 
-        def perfil = session.perfil.codigo
-        def perfiles = ["GAF", "ASPL"]
-
+        def perfil = session.perfil.codigo.toString()
         def unidades
-        if (params.requirente) {
-            unidades = [UnidadEjecutora.get(params.requirente.toLong())]
-        } else {
-            if (perfiles.contains(perfil)) {
-                unidades = UnidadEjecutora.list()
-            } else {
-                unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-            }
-        }
+//        def perfiles = ["GAF", "ASPL"]
+//
+//        def unidades
+//        if (params.requirente) {
+//            unidades = [UnidadEjecutora.get(params.requirente.toLong())]
+//        } else {
+//            if (perfiles.contains(perfil)) {
+//                unidades = UnidadEjecutora.list()
+//            } else {
+//                unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+//            }
+//        }
+        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
 
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
@@ -682,24 +695,31 @@ class RevisionAvalController extends Shield {
      * @params id es el identificador del aval
      */
     def firmarAval = {
+        println "FIRMAR AVAL: " + params
         def firma = Firma.findByKey(params.key)
         def numero = 0
         if (!firma) {
             response.sendError(403)
         } else {
             def aval = Aval.findByFirma1OrFirma2(firma, firma)
+            println "AVAL ID: " + aval.id
             if (aval.firma1.estado == "F" && aval.firma2.estado == "F") {
+                println "AMBAS FIRMAS OK: PONE NUMERO"
                 aval.fechaAprobacion = new Date()
-                numero = Aval.list([sort: "numero", order: "desc", max: 1])
-                if (numero.size() > 0) {
-                    numero = numero?.pop()?.numero
-                }
-                if (!numero) {
-                    numero = 1
-                } else {
-                    numero = numero + 1
-                }
 
+                numero = aval.proceso.proyecto.siguienteNumeroAval
+                if (numero == 0) {
+                    numero = Aval.list([sort: "numero", order: "desc", max: 1])
+                    if (numero.size() > 0) {
+                        numero = numero?.pop()?.numero
+                    }
+                    if (!numero) {
+                        numero = 1
+                    } else {
+                        numero = numero + 1
+                    }
+                }
+                println "NUMERO: " + numero
                 aval.numero = numero
 
                 aval.estado = EstadoAval.findByCodigo("E02")
@@ -726,7 +746,7 @@ class RevisionAvalController extends Shield {
                                 mailService.sendMail {
                                     to mail
                                     subject "Nuevo aval emitido"
-                                    body "Se ha emitido el aval #" + aval.numero
+                                    body "Se ha emitido el aval #" + aval.numeroAval
                                 }
                             } else {
                                 println "El usuario ${usro.login} no tiene email"
@@ -842,7 +862,7 @@ class RevisionAvalController extends Shield {
                     aval.contrato = params.contrato
                     aval.certificacion = params.certificacion
                     aval.save(flush: true)
-                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numero + " Liberado"
+                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numeroAval + " Liberado"
                     redirect(action: 'listaAvales', controller: 'revisionAval')
                 } else {
                     flash.message = "Usted no tiene permisos para liberar avales"
@@ -954,7 +974,7 @@ class RevisionAvalController extends Shield {
      */
     def guardarAprobacion = {
         /*TODO enviar alertas*/
-        println "aprobar " + params
+        println "GUARDAR APROBACION  " + params
         def path = servletContext.getRealPath("/") + "avales/"
         new File(path).mkdirs()
         def f = request.getFile('archivo')
@@ -1013,7 +1033,7 @@ class RevisionAvalController extends Shield {
 
             } else {
                 def band = false
-                def usuario = Usro.get(session.usuario.id)
+                def usuario = Persona.get(session.usuario.id)
                 def sol = SolicitudAval.get(params.id)
                 /*Todo aqui validar quien puede*/
                 band = true
@@ -1033,7 +1053,7 @@ class RevisionAvalController extends Shield {
                     sol.aval = aval;
                     sol.estado = aval.estado
                     sol.save(flush: true)
-                    flash.message = "Solciitud aprobada"
+                    flash.message = "Solicitud aprobada"
                     redirect(action: 'pendientes', controller: 'revisionAval')
                 } else {
                     msn = "Usted no tiene permisos para aprobar esta solicitud"
@@ -1062,14 +1082,16 @@ class RevisionAvalController extends Shield {
         def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
 
         def estados = []
-        def perfil = session.perfil.codigo
-        def perfiles = ["GAF", "ASPL"]
+        def perfil = session.perfil.codigo.toString()
         def unidades
-        if (perfiles.contains(perfil)) {
-            unidades = UnidadEjecutora.list()
-        } else {
-            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-        }
+//        def perfiles = ["GAF", "ASPL"]
+//        def unidades
+//        if (perfiles.contains(perfil)) {
+//            unidades = UnidadEjecutora.list()
+//        } else {
+//            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+//        }
+        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
 
         def filtroDirector = null,
             filtroPersona = null
@@ -1116,19 +1138,26 @@ class RevisionAvalController extends Shield {
 
         def unidadesList
 
-        if (perfiles.contains(perfil)) {
-            unidadesList = Asignacion.withCriteria {
-                projections {
-                    distinct("unidad")
-                }
-            }
-        } else {
-            def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-            unidadesList = Asignacion.withCriteria {
-                inList("unidad", uns)
-                projections {
-                    distinct("unidad")
-                }
+//        if (perfiles.contains(perfil)) {
+//            unidadesList = Asignacion.withCriteria {
+//                projections {
+//                    distinct("unidad")
+//                }
+//            }
+//        } else {
+//            def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+//            unidadesList = Asignacion.withCriteria {
+//                inList("unidad", uns)
+//                projections {
+//                    distinct("unidad")
+//                }
+//            }
+//        }
+        def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        unidadesList = Asignacion.withCriteria {
+            inList("unidad", uns)
+            projections {
+                distinct("unidad")
             }
         }
 

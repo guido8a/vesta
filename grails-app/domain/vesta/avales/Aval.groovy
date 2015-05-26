@@ -129,59 +129,70 @@ class Aval {
         firma2(blank: true, nullable: true)
     }
 
-    def getColorSemaforo(){
+    def getColorSemaforo() {
         def dias = proceso.fechaFin - proceso.fechaInicio
         def fechaInicio = proceso.fechaInicio
         def fechaFin = proceso.fechaFin
 //        println "dias "+dias
         def esperado = 0
         def now = new Date()
-        if(now>fechaFin){
-            if(this.getAvanceFinanciero()<this.monto){
-                return [this.monto,this.getAvanceFinanciero(),"red",this.getUltimoAvance()]
-            }else{
-                return [this.monto,this.getAvanceFinanciero(),"green",this.getUltimoAvance()]
+        if (now > fechaFin) {
+            if (this.getAvanceFinanciero() < this.monto) {
+                return [this.monto, this.getAvanceFinanciero(), "red", this.getUltimoAvance()]
+            } else {
+                return [this.monto, this.getAvanceFinanciero(), "green", this.getUltimoAvance()]
             }
-        }else{
-            if(now<fechaInicio)
-                return [0,this.getAvanceFinanciero(),"green",this.getUltimoAvance()]
-            else{
-                esperado = this.monto*(now - fechaInicio)/dias
+        } else {
+            if (now < fechaInicio) {
+                return [0, this.getAvanceFinanciero(), "green", this.getUltimoAvance()]
+            } else {
+                esperado = this.monto * (now - fechaInicio) / dias
 //                esperado=esperado*this.monto
                 def verde = esperado * 0.75
                 def naranja = esperado * 0.25
                 def amarillo = esperado * 0.50
                 def avance = this.getAvanceFinanciero()
-                if(avance>=verde)
-                    return [esperado,this.getAvanceFinanciero(),"green",this.getUltimoAvance()]
-                if(avance>=amarillo)
-                    return [esperado,this.getAvanceFinanciero(),"yellow",this.getUltimoAvance()]
-                if(avance>=naranja)
-                    return [esperado,this.getAvanceFinanciero(),"orange",this.getUltimoAvance()]
-                else
-                    return [esperado,this.getAvanceFinanciero(),"red",this.getUltimoAvance()]
+                if (avance >= verde) {
+                    return [esperado, this.getAvanceFinanciero(), "green", this.getUltimoAvance()]
+                }
+                if (avance >= amarillo) {
+                    return [esperado, this.getAvanceFinanciero(), "yellow", this.getUltimoAvance()]
+                }
+                if (avance >= naranja) {
+                    return [esperado, this.getAvanceFinanciero(), "orange", this.getUltimoAvance()]
+                } else {
+                    return [esperado, this.getAvanceFinanciero(), "red", this.getUltimoAvance()]
+                }
             }
         }
 
     }
 
-    def getAvanceFinanciero(){
-        def avances = AvanceFinanciero.findAllByAval(this,[sort:"id"])
-        if(avances.size()==0)
+    def getAvanceFinanciero() {
+        def avances = AvanceFinanciero.findAllByAval(this, [sort: "id"])
+        if (avances.size() == 0) {
             return 0
-        else{
+        } else {
             return avances.pop().valor
         }
     }
 
-    def getUltimoAvance(){
-        def avances = AvanceFinanciero.findAllByAval(this,[sort:"id"])
-        if(avances.size()==0)
+    def getUltimoAvance() {
+        def avances = AvanceFinanciero.findAllByAval(this, [sort: "id"])
+        if (avances.size() == 0) {
             return null
-        else{
+        } else {
             return avances.pop()
         }
     }
 
+    def getNumeroAval() {
+        def n = this.numero ? this.numero.padLeft(3, '0') : '000'
+        if (this.proceso.proyecto.codigo == "P.19") {
+            return n + "A"
+        } else {
+            return n
+        }
+    }
 
 }

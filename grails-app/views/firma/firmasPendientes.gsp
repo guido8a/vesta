@@ -296,7 +296,17 @@
                         </div>
 
                         <div class="col-md-2">
-                            <g:select name="anioName" from="${Anio.list([sort: 'anio'])}" optionKey="id" optionValue="anio" id="anio" style="width:100px" class="form-control input-sm" value="${actual?.id}"/>
+                            <g:select name="anioName" from="${Anio.list([sort: 'anio'])}" optionKey="id" optionValue="anio" id="anio"
+                                      class="form-control input-sm" value="${actual?.id}"/>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label>Tipo:</label>
+                        </div>
+
+                        <div class="col-md-2">
+                            <g:select name="tipo" from="${['': 'Todos', 'AVAL': 'Avales', 'RFRM': 'Reformas', 'AJST': 'Ajustes']}" optionKey="key" optionValue="value"
+                                      class="form-control input-sm"/>
                         </div>
 
                     </div>
@@ -307,11 +317,12 @@
         </div>
 
         <script>
-            function cargarHistorial(anio) {
+            function cargarHistorial() {
                 $.ajax({
                     type    : "POST", url : "${createLink(action:'historial', controller: 'firma')}",
                     data    : {
-                        anio : anio
+                        anio : $("#anio").val(),
+                        tipo : $("#tipo").val()
                     },
                     success : function (msg) {
                         $("#detalle").html(msg)
@@ -321,9 +332,16 @@
             }
 
             $(function () {
+                var cookieName = 'saved_tab_firmas';
                 <g:if test="${params.tab}">
-                $.cookie('last_tab_firmas', "#${params.tab}");
+                $.cookie(cookieName, "#${params.tab}");
+                %{--console.log("params? ${params.tab} COOKIE:", $.cookie(cookieName));--}%
                 </g:if>
+                %{--<g:else>--}%
+//                $.removeCookie(cookieName);
+//                console.log("VACIAR COOKIE");
+                %{--</g:else>--}%
+//                console.log("load: COOKIE:", $.cookie(cookieName));
 
                 $(".btn-success, .btn-danger").addClass("disabled");
                 $(".btn-info").click(function () {
@@ -332,11 +350,13 @@
 
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                     //save the latest tab using a cookie:
-                    $.cookie('last_tab_firmas', $(e.target).attr('href'));
+                    $.cookie(cookieName, $(e.target).attr('href'));
+//                    console.log("show tab: COOKIE:", $.cookie(cookieName), $(e.target).attr('href'));
                 });
 
                 //activate latest tab, if it exists:
-                var lastTab = $.cookie('last_tab_firmas');
+                var lastTab = $.cookie(cookieName);
+//                console.log("to select: COOKIE:", $.cookie(cookieName));
                 if (lastTab) {
                     $('ul.nav-pills').children().removeClass('active');
                     $('a[href=' + lastTab + ']').parents('li:first').addClass('active');
@@ -344,9 +364,9 @@
                     $(lastTab).addClass('in active');
                 }
 
-                cargarHistorial($("#anio").val());
-                $("#anio").change(function () {
-                    cargarHistorial($("#anio").val())
+                cargarHistorial();
+                $("#anio, #tipo").change(function () {
+                    cargarHistorial()
                 });
 
                 $(".descRespaldo").click(function () {

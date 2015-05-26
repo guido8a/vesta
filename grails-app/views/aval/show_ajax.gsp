@@ -143,7 +143,7 @@
             </div>
             
             <div class="col-md-3">
-                <g:fieldValue bean="${avalInstance}" field="numero"/>
+                <g:fieldValue bean="${avalInstance}" field="numeroAval"/>
             </div>
             
         </div>

@@ -55,7 +55,7 @@
                                         <td>${p.proceso.nombre}</td>
                                         <td>${p.concepto}</td>
                                         <td style="text-align: center">${p.fechaAprobacion?.format("dd-MM-yyyy")}</td>
-                                        <td style="text-align: center">${p.numero}</td>
+                                        <td style="text-align: center">${p.numeroAval}</td>
                                         <td style="text-align: right">
                                             <g:formatNumber number="${p.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
                                         </td>

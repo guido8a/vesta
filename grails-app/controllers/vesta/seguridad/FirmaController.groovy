@@ -62,7 +62,7 @@ class FirmaController extends Shield {
  * @param anio es el anio para mostrar el historial de firmas
  */
     def historial = {
-//        println "historial "+params
+        println "historial "+params
         def anio = Anio.get(params.anio).anio
 
         def datos = []
@@ -72,7 +72,15 @@ class FirmaController extends Shield {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy hh:mm:ss", "31-12-" + anio + " 23:59:59")
 //            println "inicio "+fechaInicio+"  fin  "+fechaFin
-            datos += Firma.findAllByFechaBetweenAndUsuario(fechaInicio, fechaFin, session.usuario)
+//            datos += Firma.findAllByFechaBetweenAndUsuario(fechaInicio, fechaFin, session.usuario)
+            datos = Firma.withCriteria {
+                ge("fecha", fechaInicio)
+                le("fecha", fechaFin)
+                eq("usuario", session.usuario)
+                if (params.tipo && params.tipo != "") {
+                    eq("tipoFirma", params.tipo)
+                }
+            }
 
 //            println "datos fecha "+datos
         }
@@ -98,7 +106,7 @@ class FirmaController extends Shield {
      * @param id es el identificador de la firma
      */
     def negar = {
-        println "negar "+params
+        println "negar " + params
         def firma = Firma.get(params.id)
         firma.fecha = new Date()
         firma.estado = "N"

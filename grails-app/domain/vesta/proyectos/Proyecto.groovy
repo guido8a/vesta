@@ -169,6 +169,10 @@ class Proyecto {
      * Justificación
      */
     String justificacion
+    /**
+     * Numeración para los avales (por el momento solo sirve para el proyecto 19........)
+     */
+    Integer numeroAval = 0
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -231,6 +235,7 @@ class Proyecto {
             estrategia column: 'estr__id'
             justificacion column: 'proyjust'
 
+            numeroAval column: 'proynmav'
         }
     }
 
@@ -295,8 +300,9 @@ class Proyecto {
             def des = ""
             partes.each {
                 cont += it.size()
-                if (cont < 22)
+                if (cont < 22) {
                     des += " " + it
+                }
             }
             return des + "... "
 
@@ -317,8 +323,9 @@ class Proyecto {
             def des = ""
             partes.each {
                 cont += it.size()
-                if (cont < 40)
+                if (cont < 40) {
                     des += " " + it
+                }
             }
             return des + "... "
 
@@ -339,8 +346,9 @@ class Proyecto {
             def des = ""
             partes.each {
                 cont += it.size()
-                if (cont < 65)
+                if (cont < 65) {
                     des += " " + it
+                }
             }
             return des + "... "
 
@@ -436,4 +444,13 @@ class Proyecto {
         }
     }
 
+    def getSiguienteNumeroAval() {
+        if (this.codigo == "P.19") {
+            this.numeroAval = this.numeroAval + 1
+            this.save(flush: true)
+            return numeroAval
+        } else {
+            return 0
+        }
+    }
 }

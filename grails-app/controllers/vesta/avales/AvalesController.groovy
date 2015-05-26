@@ -218,7 +218,7 @@ class AvalesController extends vesta.seguridad.Shield {
     def cargarComponentes_ajax = {
         def proyecto = Proyecto.get(params.id)
         def anio = Anio.get(params.anio)
-        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto)
+        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
         return [comps: comps]
     }
 
@@ -231,7 +231,7 @@ class AvalesController extends vesta.seguridad.Shield {
         def comp = MarcoLogico.get(params.id)
         def unidad = UnidadEjecutora.get(params.unidad)
         def anio = Anio.get(params.anio)
-        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp)
+        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
         return [acts: acts]
     }
 
@@ -243,7 +243,7 @@ class AvalesController extends vesta.seguridad.Shield {
     def cargarActividades2_ajax = {
         def comp = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
-        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp)
+        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
         return [acts: acts]
     }
 
@@ -259,7 +259,7 @@ class AvalesController extends vesta.seguridad.Shield {
 //        }
 //        def acts = proyectosService.getActividadesUnidadComponente(session.asignaciones, comp)
         def anio = Anio.get(params.anio)
-        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp)
+        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
         return [acts: acts, div: params.div]
     }
 
@@ -275,7 +275,7 @@ class AvalesController extends vesta.seguridad.Shield {
 //        }
 //        def acts = proyectosService.getActividadesUnidadComponente(session.asignaciones, comp)
         def anio = Anio.get(params.anio)
-        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp)
+        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
         return [acts: acts, div: params.div]
     }
 
@@ -291,7 +291,7 @@ class AvalesController extends vesta.seguridad.Shield {
 //        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
 //        def asg = Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
 //        def asg = proyectosService.getAsignacionesUnidadActividad(session.asignaciones, act)
-        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act)
+        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act, session.perfil.codigo.toString())
         [asgs: asg]
     }
 
@@ -307,7 +307,7 @@ class AvalesController extends vesta.seguridad.Shield {
 //        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
 //        def asg = Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
 //        def asg = proyectosService.getAsignacionesUnidadActividad(session.asignaciones, act)
-        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act)
+        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act, session.perfil.codigo.toString())
         [asgs: asg]
     }
 
@@ -321,7 +321,7 @@ class AvalesController extends vesta.seguridad.Shield {
         def act = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
 //        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
-        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act)
+        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act, session.perfil.codigo.toString())
         [asgs: asg]
     }
 
@@ -365,14 +365,15 @@ class AvalesController extends vesta.seguridad.Shield {
     def listaProcesos = {
         def procesos = ProcesoAval.list([sort: "id"])
 
-        def perfil = session.perfil.codigo
-        def perfiles = ["GAF", "ASPL"]
-        def unidades
-        if (perfiles.contains(perfil)) {
-            unidades = UnidadEjecutora.list()
-        } else {
-            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-        }
+        def perfil = session.perfil.codigo.toString()
+//        def perfiles = ["GAF", "ASPL"]
+//        def unidades
+//        if (perfiles.contains(perfil)) {
+//            unidades = UnidadEjecutora.list()
+//        } else {
+//            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
+//        }
+        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
         def l = []
         procesos.each { p ->
             if (SolicitudAval.countByProcesoAndUnidadInList(p, unidades) > 0) {
@@ -436,7 +437,7 @@ class AvalesController extends vesta.seguridad.Shield {
             }
         }
 
-        proyectos = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual)
+        proyectos = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
 
         return [proyectos: proyectos, proceso: proceso, actual: actual, band: band, unidad: unidad, readOnly: readOnly, solicitud: solicitud]
     }
@@ -515,7 +516,7 @@ class AvalesController extends vesta.seguridad.Shield {
                 solicitud = solicitudes.first()
             }
 
-            def componentes = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), actual, proceso.proyecto)
+            def componentes = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), actual, proceso.proyecto, session.perfil.codigo.toString())
 
             return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual, componentes: componentes, solicitud: solicitud]
         } else {

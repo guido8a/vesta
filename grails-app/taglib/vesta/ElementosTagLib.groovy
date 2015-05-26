@@ -890,20 +890,26 @@ class ElementosTagLib {
         def num = null
         def output = ""
         if (aval) {
-            num = aval.numero
+            num = aval.numeroAval.toString()
+//            println "AVAL"
         }
         if (sol) {
             num = sol.numero.toString()
+//            println "SOL"
         }
 
 //        println("num " + num)
 
-        if (num) {
-            (3 - num.length()).times {
-                output += "0"
-            }
-            output += num
+//        if (num) {
+//            (3 - num.length()).times {
+//                output += "0"
+//            }
+        num = num.toString().padLeft(3, '0')
+        if (!num || num == "null") {
+            num = "000"
         }
+        output += num
+//        }
 
 //        println("out " + output)
 

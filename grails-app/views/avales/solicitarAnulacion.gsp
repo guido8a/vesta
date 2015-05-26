@@ -17,7 +17,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main"/>
-        <title>Solicitud de anulación del aval ${aval.fechaAprobacion.format("yyyy")}-GP No.${aval.numero}</title>
+        <title>Solicitud de anulación del aval ${aval.fechaAprobacion.format("yyyy")}-GP No.${aval.numeroAval}</title>
 
         <script type="text/javascript" src="${resource(dir: 'js/plugins/jquery-validation-1.13.1/dist', file: 'additional-methods.min.js')}"></script>
 
