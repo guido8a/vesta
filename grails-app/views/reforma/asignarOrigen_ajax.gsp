@@ -152,7 +152,8 @@
                 type    : "POST",
                 url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste_ajax')}",
                 data    : {
-                    id : $("#proyecto").val()
+                    id : $("#proyecto").val(),
+                    anio: "${anio}"
                 },
                 success : function (msg) {
                     $("#divComp").html(msg);

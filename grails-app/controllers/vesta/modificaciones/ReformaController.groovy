@@ -647,9 +647,10 @@ class ReformaController extends Shield {
     def asignarOrigen_ajax() {
         def reforma = Reforma.get(params.id)
         def detalle = DetalleReforma.get(params.det.toLong())
-        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+//        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
+        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), reforma.anio)
 
-        return [reforma: reforma, proyectos: proyectos3, detalle: detalle]
+        return [reforma: reforma, proyectos: proyectos3, detalle: detalle, anio: reforma.anio.id]
     }
 
     /**
