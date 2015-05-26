@@ -212,7 +212,10 @@
                 </p>
 
                 <p>
-                    <strong>Elaborado por:</strong> ${sol.analista.sigla ?: sol.analista.nombre + ' ' + sol.analista.apellido}
+                    <strong>Elaborado por:</strong> ${sol.analista ?
+                        (sol.analista.sigla ?: sol.analista.nombre + ' ' + sol.analista.apellido) :
+                        (sol.usuario.sigla ?: sol.usuario.nombre + ' ' + sol.usuario.apellido)
+                }
                 </p>
 
                 <p style="float: right">
