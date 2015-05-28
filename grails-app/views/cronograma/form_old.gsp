@@ -540,7 +540,7 @@
                     var msg = "<i class='fa fa-warning fa-5x pull-left text-danger text-shadow'></i><p>" +
                               "<p class='lead'>¿Está seguro que desea generar las asignaciones del P.A.I. del año señalado?</p>" +
                               "<p class='lead'>Las asignaciones generadas anteriormente serán <span class='text-danger'><strong>ELIMINADAS</strong></span> " +
-                              "así como su PAC y programación.</p>" +
+                              "así como su programación.</p>" +
                               "<p class='lead'>Los datos borrados no podrán ser recuperados.</p> " +
                               "<p class='lead text-warning'>Esta acción será registrada en log del sistema junto con su usuario</p>";
                     bootbox.confirm(msg, function (result) {

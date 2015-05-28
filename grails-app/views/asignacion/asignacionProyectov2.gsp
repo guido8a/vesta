@@ -20,9 +20,11 @@
         <g:link class="btn btn-default btn-sm " controller="asignacion" action="programacionAsignacionesInversion" params="[id: proyecto.id, anio: actual.id]">
             <i class="fa fa-calendar"></i> Programación
         </g:link>
+%{--
         <g:link class="btn btn-default btn-sm" controller="asignacion" action="agregarAsignacionInv" id="${proyecto?.id}">
             <i class="fa fa-plus"></i> Agregar Asignaciones
         </g:link>
+--}%
         <a class="btn btn-default btn-sm" id="reporte">
             <i class="fa fa-print"></i> Reporte Asignaciones
         </a>
@@ -267,7 +269,7 @@
                 </label>
 
                 <div class="col-md-7">
-                    <g:select from="${['Todos', 'Componente', 'Responsable']}" name="filtro" class="form-control input-sm" id="filtro"/>
+                    <g:select from="${['Seleccione...', 'Todos', 'Componente', 'Responsable']}" name="filtro" class="form-control input-sm" id="filtro"/>
                 </div>
             </div>
         </div>

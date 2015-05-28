@@ -141,10 +141,10 @@ class MarcoLogico {
      * @return el objeto limitado a 40 caracteres
      */
     String toString() {
-        if (this.objeto.length() < 40) {
+        if (this.objeto.length() < 80) {
             return this.objeto
         } else {
-            return this.objeto.substring(0, 40) + "..."
+            return this.objeto.substring(0, 80) + "..."
         }
     }
 

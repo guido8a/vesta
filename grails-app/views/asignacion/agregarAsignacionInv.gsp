@@ -302,7 +302,7 @@
             },
             text  : false
         }).click(function () {
-            if (confirm("Está seguro de querer eliminar esta asignación?\nSe eliminarán las asignaciones hijas, el PAC, y la programación asociadas.")) {
+            if (confirm("Está seguro de querer eliminar esta asignación?\nSe eliminarán las asignaciones hijas, y la programación asociadas.")) {
                 var id = $(this).attr("iden");
                 var btn = $(this);
                 $.ajax({

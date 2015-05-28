@@ -36,11 +36,11 @@ $(function () {
         show       : true
     });
 
-////para el context menu deshabilita el click derecho en las paginas
+//para el context menu deshabilita el click derecho en las paginas
 //$("html").contextMenu({
 //    items  : {
 //        header : {
-//            label  : "No click derecho!!",
+//            label  : "Sin acciones",
 //            header : true
 //        }
 //    }

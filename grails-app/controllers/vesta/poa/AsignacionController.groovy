@@ -173,7 +173,7 @@ class AsignacionController extends Shield {
     }
 
     def asignacionProyectov2() {
-        println "params " + params
+//        println "params asignacionProyectov2: " + params
         def proyecto = Proyecto.get(params.id)
         def asignaciones = []
         def actual
@@ -237,10 +237,13 @@ class AsignacionController extends Shield {
                 if (!maxInvR)
                     maxInvR = 0
 
-                return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: totalR, totalUnidad: totalUnidadR, maxInv: maxInvR]
+//                println "++++++++++++ actual: $actual"
+                return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: totalR, totalUnidad: totalUnidadR,
+                        maxInv: maxInvR, priorizado: getTotalPriorizadoProyectos(actual)]
 
             } else {
-                compon = MarcoLogico.findByObjeto(params.comp)
+                compon = MarcoLogico.findByProyectoAndObjeto(Proyecto.get(params.id), params.comp)
+//                println "--- marcolo lógico: $compon.id"
                 if (params.anio)
                     actual = Anio.get(params.anio)
                 else
@@ -264,9 +267,7 @@ class AsignacionController extends Shield {
                     eq("proyecto", proyecto)
                     eq("tipoElemento", TipoElemento.get(3))
                     eq("estado", 0)
-                    marcoLogico {
-                        order("numeroComp", "asc")
-                    }
+                    eq("marcoLogico", compon)
                     order("numero", "asc")
                 }.each { ml ->
                     def asig = Asignacion.withCriteria {
@@ -277,7 +278,8 @@ class AsignacionController extends Shield {
                     if (asig) {
                         asignaciones += asig
                         asig.each { asg ->
-                            total = totalR + asg.getValorReal()
+//                            total = totalR + asg.getValorReal()
+                            total += asg.getValorReal()
                         }
                     }
                 }
@@ -286,7 +288,10 @@ class AsignacionController extends Shield {
                 maxInv = PresupuestoUnidad.findByAnioAndUnidad(actual, unidad)?.maxInversion
                 if (!maxInv)
                     maxInv = 0
-                return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad, maxInv: maxInv]
+
+//                println "+++++++++++***+ actual: $actual"
+                return [asignaciones: asignaciones, actual: actual, proyecto: proyecto, total: total, totalUnidad: totalUnidad,
+                        maxInv: maxInv, priorizado: getTotalPriorizadoProyectos(actual)]
             }
         } else {
             if (params.anio) {
@@ -651,7 +656,7 @@ class AsignacionController extends Shield {
 
     def filtro = {
 
-//        println("params " + params)
+//        println("params filtro:" + params)
         def proyecto = Proyecto.get(params.id)
         def asignaciones = []
         def actual
@@ -685,6 +690,9 @@ class AsignacionController extends Shield {
             responsables += it.unidad
 
         }
+
+        componentes = componentes.unique()
+        responsables = responsables.unique()
 
 //        println("componentes " + componentes)
 //        println("responsables " + responsables)
