@@ -138,6 +138,9 @@ class RevisionAvalController extends Shield {
         def band = true
 
         def perfil = session.perfil.codigo.toString()
+
+        def codi = session.perfil.codigo
+
         def unidades
 //        def perfiles = ["GAF", "ASPL"]
 //
@@ -283,7 +286,7 @@ class RevisionAvalController extends Shield {
             }
 
         }
-        [datos: datos, estado: estado, sort: params.sort, order: params.order, now: now]
+        [datos: datos, estado: estado, sort: params.sort, order: params.order, now: now, perfil: codi]
     }
 
     /**

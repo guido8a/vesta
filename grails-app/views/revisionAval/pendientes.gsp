@@ -48,7 +48,7 @@
                         <table class="table table-condensed table-striped table-hover table-bordered" style="margin-top: 20px;">
                             <thead>
                                 <tr>
-                                    <th style="width: 100px;"># Sol.</th>
+                                    <th style="width: 100px;">Solicitud</th>
                                     <th>Requirente</th>
                                     <th style="width: 200px;">Proceso</th>
                                     <th>Tipo</th>

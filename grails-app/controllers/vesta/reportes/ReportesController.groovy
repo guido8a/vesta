@@ -214,9 +214,9 @@ class ReportesController {
         }
 
 
-        println("arr" + arr)
-
-        println("totalf " + dosDevengado)
+//        println("arr" + arr)
+//
+//        println("totalf " + dosDevengado)
 
         def devengado = 0
         def transf = NumberToLetterConverter.convertNumberToLetter(solicitud?.monto)
@@ -225,7 +225,7 @@ class ReportesController {
         println "\n\n\nMonto test"
         println NumberToLetterConverter.convertNumberToLetter(montoTest)
 
-        println("-->" + transf)
+//        println("-->" + transf)
 
         return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval, arr: arr, transf: transf, devengado: dosDevengado]
     }

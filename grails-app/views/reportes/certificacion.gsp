@@ -156,10 +156,13 @@
                                 <td style="font-weight: bold">SUBTOTAL</td>
                                 <td><g:formatNumber number="${primero.value.total}" type="currency" currencySymbol="USD "/></td>
                             </tr>
-                            <tr>
-                                <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
-                                <td><g:formatNumber number="${primero.value.devengado}" type="currency" currencySymbol="USD "/></td>
-                            </tr>
+                            <g:if test="${primero.value.devengado != 0 }">
+                                <tr>
+                                    <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
+                                    <td><g:formatNumber number="${primero.value.devengado}" type="currency" currencySymbol="USD "/></td>
+                                </tr>
+                            </g:if>
+
                             <g:set var="total" value="${0}"/>
 
                             <g:each in="${primero.value}" var="segundo">

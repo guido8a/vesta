@@ -24,7 +24,7 @@
         <tbody>
             <g:each in="${datos}" var="aval">
                 <g:set var="sol" value="${vesta.avales.SolicitudAval.findByAval(aval)}"/>
-                <tr estadoTr="${aval.estado.codigo}" data-id="${aval?.id}">
+                <tr estadoTr="${aval.estado.codigo}" data-id="${aval?.id}" usu="${perfil}">
                     <td>${aval.fechaAprobacion?.format("yyyy")}-GP No.<elm:imprimeNumero aval="${aval.id}"/></td>
                     <td style="text-align: center" title="${aval.proceso.proyecto.toStringCompleto()}">${aval.proceso.proyecto}</td>
                     <td>${aval.proceso.nombre}</td>
@@ -45,18 +45,7 @@
     </table>
 </div>
 
-%{--<div id="dlgCaducar">--}%
-%{--<g:form action="caducarAval" class="frmCaducar" enctype="multipart/form-data">--}%
-%{--<input type="hidden" name="id" id="idCaducar">--}%
-%{--</g:form>--}%
-%{--</div>--}%
-
 <script>
-
-    //    $(".caducar").button({icons:{ primary:"ui-icon-alert"},text:false}).click(function(){
-    //        $("#idCaducar").val($(this).attr("iden"))
-    //        $("#dlgCaducar").dialog("open")
-    //    })
 
     function submitForm() {
         var $form = $("#frmLiberar");
@@ -249,7 +238,7 @@
     function createContextMenu(node) {
         var $tr = $(node);
 
-        var items = {
+         var items = {
             header   : {
                 label  : "Acciones",
                 header : true
@@ -265,7 +254,7 @@
             }
         };
 
-        if ($tr.attr("estadoTr") == 'E02') {
+        if ($tr.attr("estadoTr") == 'E02' && $tr.attr("usu") == 'ASPL') {
             items.liberar = {
                 label  : "Liberar",
                 icon   : "fa fa-unlink",

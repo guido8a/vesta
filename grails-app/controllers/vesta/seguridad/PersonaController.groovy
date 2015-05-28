@@ -563,4 +563,50 @@ class PersonaController extends Shield {
             render "ERROR*La clave de autorización es incorrecta"
         }
     }
+
+
+    /**
+     * Acción llamada con ajax que valida que el valor ingresado corresponda con el valor almacenado del pass
+     * @render boolean que indica si se puede o no utilizar el valor recibido
+     */
+    def validar_pass_ajax() {
+        params.input2 = params.input2.trim()
+        def obj = Persona.get(params.id)
+        if (obj.password == params.input2.encodeAsMD5()) {
+            render true
+        } else {
+            render false
+        }
+    }
+
+    /**
+     * Acción que actualiza la clave de ingreso al sistema
+     */
+    def updatePass() {
+        def usu = Persona.get(session.usuario.id)
+
+        def input = params.input2.toString().trim()
+        if (input != "") {
+            input = input.encodeAsMD5()
+        }
+        def valida = usu.password
+        if (valida == null || valida.trim() == "") {
+            valida = ""
+        }
+
+        if (input == valida) {
+            if (params.nuevoPass.toString().trim() == params.passConfirm.toString().trim()) {
+                usu.password = params.nuevoPass.toString().trim().encodeAsMD5()
+                if (usu.save(flush: true)) {
+                    render "SUCCESS*Clave de ingreso al sistema modificada exitosamente"
+                } else {
+                    render "ERROR*" + renderErrors(bean: usu)
+                }
+            } else {
+                render "ERROR*Las claves no concuerdan"
+            }
+        } else {
+            render "ERROR*La clave de ingreso es incorrecta"
+        }
+    }
 }

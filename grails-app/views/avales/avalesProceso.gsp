@@ -93,7 +93,7 @@
                                 <tr>
                                     <th>Fecha</th>
                                     <th>Proceso</th>
-                                    <th>Tipo</th>
+                                    %{--<th>Tipo</th>--}%
                                     <th>Concepto</th>
                                     <th>Monto</th>
                                     <th>Estado</th>
@@ -107,7 +107,7 @@
                                     <tr>
                                         <td>${p.fecha.format("dd-MM-yyyy")}</td>
                                         <td>${p.proceso.nombre}</td>
-                                        <td class="${(p.tipo == 'A') ? 'E03' : 'E02'}">${(p.tipo == "A") ? 'Anulación' : 'Aprobación'}</td>
+                                        %{--<td class="${(p.tipo == 'A') ? 'E03' : 'E02'}">${(p.tipo == "A") ? 'Anulación' : 'Aprobación'}</td>--}%
                                         <td>${p.concepto}</td>
                                         <td style="text-align: right">
                                             <g:formatNumber number="${p.monto}" type="currency" currencySymbol=""/>

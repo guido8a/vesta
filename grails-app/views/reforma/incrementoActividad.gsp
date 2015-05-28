@@ -239,7 +239,7 @@
         <form id="frmFirma">
             <div class="row">
                 <div class="col-md-1">
-                    <label>Concepto</label>
+                    <label>Justificación de la reforma al POA solicitada</label>
                 </div>
 
                 <div class="col-md-11 grupo">

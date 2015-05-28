@@ -135,12 +135,15 @@
                             <g:formatNumber number="${primero.value.total}" type="currency" currencySymbol="USD "/>
                         </td>
                     </tr>
-                    <tr>
-                        <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
-                        <td>
-                            <g:formatNumber number="${primero.value.devengado}" type="currency" currencySymbol="USD "/>
-                        </td>
-                    </tr>
+                    <g:if test="${primero.value.devengado != 0}">
+                        <tr>
+                            <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
+                            <td>
+                                <g:formatNumber number="${primero.value.devengado}" type="currency" currencySymbol="USD "/>
+                            </td>
+                        </tr>
+                    </g:if>
+
 
                     <g:set var="total" value="${0}"/>
 
@@ -184,19 +187,34 @@
 
         <div class="texto">
             <p>
-                %{--<strong>Nota Técnica:</strong> El monto solicitado incluye el Impuesto al Valor Agegado IVA 12%.--}%
                 <strong>Nota Técnica:</strong> ${solicitud?.notaTecnica}
             </p>
 
             <p style="float: right">
                 <strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}
             </p>
+
+
+
         </div>
 
         <div class="no-break">
             <div class="texto">
                 <strong>Elaborado por:</strong>  ${solicitud?.usuario?.sigla ?: solicitud?.usuario?.nombre + ' ' + solicitud?.usuario?.apellido}
             </div>
+
+            <div class="texto">
+                <p>
+                <strong>Revisado por:</strong>  ${solicitud?.director?.sigla ?:
+                    solicitud?.director?.nombre && solicitud?.director?.apellido ? solicitud?.director?.nombre + ' ' + solicitud?.director?.apellido : ''}
+                </p>
+
+                <p style="float: right; margin-top: -20px">
+                    <strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}
+                </p>
+            </div>
+
+
             <g:if test="${solicitud.firma?.estado == 'F'}">
                 <table width="100%" style="margin-top: 1.5cm;">
                     <tr>
