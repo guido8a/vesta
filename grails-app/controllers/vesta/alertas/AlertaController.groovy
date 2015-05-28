@@ -85,4 +85,16 @@ class AlertaController extends Shield {
 //        redirect(controller: alerta.controlador, action: alerta.accion, params: params)
         redirect(controller: alerta.controlador, action: alerta.accion, id: alerta.id_remoto, params: params)
     }
+
+    /**
+     * Acción llamada con ajax que marca una lista de alertas como leidas para que ya no se muestren en la lista
+     */
+    def marcarLeidas_ajax() {
+        (params.ids.split(";")).each { id ->
+            def alerta = Alerta.get(id.toLong())
+            alerta.fechaRecibido = new Date()
+            alerta.save(flush: true)
+        }
+        render "SUCCES"
+    }
 }
