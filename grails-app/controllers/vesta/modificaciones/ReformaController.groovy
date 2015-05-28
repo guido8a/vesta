@@ -720,12 +720,23 @@ class ReformaController extends Shield {
 //        }
     }
 
+    def guardar() {
+        def usu = Persona.get(session.usuario.id)
+        def reforma = Reforma.get(params.id)
+        reforma.analista = usu
+        reforma.nota = params.observaciones.trim()
+        reforma.save(flush: true)
+        render "SUCCESS*Observaciones guardadas exitosamente"
+    }
+
     /**
      * Acción que marca una solicitud como aprobada y a la espera de las firmas de aprobación
      */
     def aprobar() {
         def usu = Persona.get(session.usuario.id)
-        if (params.auth.toString().trim().encodeAsMD5() == usu.autorizacion) {
+//        def ok = params.auth.toString().trim().encodeAsMD5() == usu.autorizacion
+        def ok = true
+        if (ok) {
             def now = new Date()
             def reforma = Reforma.get(params.id)
             def estadoAprobadoSinFirmas = EstadoAval.findByCodigo("EF1")
@@ -884,7 +895,9 @@ class ReformaController extends Shield {
     def negar() {
         def usu = Persona.get(session.usuario.id)
         def now = new Date()
-        if (params.auth.toString().trim().encodeAsMD5() == usu.autorizacion) {
+//        def ok = params.auth.toString().trim().encodeAsMD5() == usu.autorizacion
+        def ok = true
+        if (ok) {
             def reforma = Reforma.get(params.id)
             def estadoNegado = EstadoAval.findByCodigo("E03")
             reforma.estado = estadoNegado

@@ -120,6 +120,21 @@
                         <g:textArea name="richText" value="${reforma.nota}"/>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-1 show-label">&nbsp;</div>
+
+                    <div class="btn-toolbar toolbar" style="margin-top: 15px;">
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-success" id="btnGuardar">
+                                <i class="fa fa-save"></i> Guardar texto
+                            </a>
+                            %{--<a href="#" class="btn btn-default" id="descargaForm">--}%
+                            %{--<i class="fa fa-search-plus"></i> Previzualizar--}%
+                            %{--</a>--}%
+                        </div>
+                    </div>
+                </div>
             </elm:container>
 
             <elm:container tipo="horizontal" titulo="Autorizaciones electrónicas">
@@ -165,7 +180,7 @@
 
         <script type="text/javascript">
 
-            function procesar(aprobado) {
+            function procesar(aprobado, mandar) {
                 var url = "${createLink(action:'aprobar')}";
                 var str = "Aprobando";
                 var str2 = "aprobar";
@@ -183,6 +198,14 @@
                     clase = "danger";
                     ico = "thumbs-down";
                 } else {
+                    if (!mandar) {
+                        url = "${createLink(action:'guardar')}";
+                        str = "Guardando";
+                        str2 = "guardar";
+                        str3 = "Guardar";
+                        clase = "success";
+                        ico = "thumbs-save";
+                    }
                     data.firma1 = $("#firma1").val();
                     data.firma2 = $("#firma2").val();
                     data.observaciones = $("#richText").val();
@@ -220,49 +243,79 @@
                     }
                 });
 
-                bootbox.confirm("¿Está seguro de querer <strong class='text-" + clase + "'>" + str2 + "</strong> esta solicitud de reforma?<br/>Esta acción no puede revertirse.",
-                        function (res) {
-                            if (res) {
-                                bootbox.dialog({
-                                    title   : str3,
-                                    message : $msg,
-                                    class   : "modal-sm",
-                                    buttons : {
-                                        devolver : {
-                                            label     : "<i class='fa fa-" + ico + "'></i> " + str3,
-                                            className : "btn-" + clase,
-                                            callback  : function () {
-                                                if ($form.valid()) {
-                                                    data.auth = $auth.val();
-                                                    openLoader(str);
-                                                    $.ajax({
-                                                        type    : "POST",
-                                                        url     : url,
-                                                        data    : data,
-                                                        success : function (msg) {
-                                                            var parts = msg.split("*");
-                                                            log(parts[1], parts[0]);
-                                                            if (parts[0] == "SUCCESS") {
-                                                                location.href = "${createLink(action:'pendientes')}";
-                                                            } else {
-                                                                closeLoader();
-                                                            }
-                                                        }
-                                                    });
-                                                }
-                                                return false;
-                                            }
-                                        },
-                                        cancelar : {
-                                            label     : "Cancelar",
-                                            className : "btn-default",
-                                            callback  : function () {
-                                            }
-                                        }
-                                    }
-                                });
+                var dlg = function () {
+                    openLoader(str);
+                    $.ajax({
+                        type    : "POST",
+                        url     : url,
+                        data    : data,
+                        success : function (msg) {
+                            var parts = msg.split("*");
+                            log(parts[1], parts[0]);
+                            if (parts[0] == "SUCCESS") {
+                                if (mandar) {
+                                    location.href = "${createLink(action:'pendientes')}";
+                                } else {
+                                    location.reload(true);
+                                }
+                            } else {
+                                closeLoader();
                             }
-                        });
+                        }
+                    });
+                    %{--bootbox.dialog({--}%
+                    %{--title   : str3,--}%
+                    %{--message : $msg,--}%
+                    %{--class   : "modal-sm",--}%
+                    %{--buttons : {--}%
+                    %{--devolver : {--}%
+                    %{--label     : "<i class='fa fa-" + ico + "'></i> " + str3,--}%
+                    %{--className : "btn-" + clase,--}%
+                    %{--callback  : function () {--}%
+                    %{--if ($form.valid()) {--}%
+                    %{--data.auth = $auth.val();--}%
+                    %{--openLoader(str);--}%
+                    %{--$.ajax({--}%
+                    %{--type    : "POST",--}%
+                    %{--url     : url,--}%
+                    %{--data    : data,--}%
+                    %{--success : function (msg) {--}%
+                    %{--var parts = msg.split("*");--}%
+                    %{--log(parts[1], parts[0]);--}%
+                    %{--if (parts[0] == "SUCCESS") {--}%
+                    %{--if (mandar) {--}%
+                    %{--location.href = "${createLink(action:'pendientes')}";--}%
+                    %{--} else {--}%
+                    %{--location.reload(true);--}%
+                    %{--}--}%
+                    %{--} else {--}%
+                    %{--closeLoader();--}%
+                    %{--}--}%
+                    %{--}--}%
+                    %{--});--}%
+                    %{--}--}%
+                    %{--return false;--}%
+                    %{--}--}%
+                    %{--},--}%
+                    %{--cancelar : {--}%
+                    %{--label     : "Cancelar",--}%
+                    %{--className : "btn-default",--}%
+                    %{--callback  : function () {--}%
+                    %{--}--}%
+                    %{--}--}%
+                    %{--}--}%
+                    %{--});--}%
+                };
+                if (mandar) {
+                    bootbox.confirm("¿Está seguro de querer <strong class='text-" + clase + "'>" + str2 + "</strong> esta solicitud de reforma?<br/>Esta acción no puede revertirse.",
+                            function (res) {
+                                if (res) {
+                                    dlg();
+                                }
+                            });
+                } else {
+                    dlg();
+                }
             }
 
             $(function () {
@@ -288,7 +341,7 @@
                     }
                 });
                 $("#btnAprobar").click(function () {
-                    var ok = true;
+//                    var ok = true;
                     %{--<g:if test="${reforma.tipoSolicitud == 'I'}">--}%
                     %{--var ti = parseFloat(number_format($("#totalInicial").data("valor"), 2, ".", ""));--}%
                     %{--var tf = parseFloat(number_format($("#totalFinal").data("valor"), 2, ".", ""));--}%
@@ -297,15 +350,19 @@
                     %{--ok = false;--}%
                     %{--}--}%
                     %{--</g:if>--}%
-                    if (ok) {
-                        if ($("#frmFirmas").valid()) {
-                            procesar(true);
-                        }
+//                    if (ok) {
+                    if ($("#frmFirmas").valid()) {
+                        procesar(true, true);
                     }
+//                    }
+                    return false;
+                });
+                $("#btnGuardar").click(function () {
+                    procesar(true, false);
                     return false;
                 });
                 $("#btnNegar").click(function () {
-                    procesar(false);
+                    procesar(false, true);
                     return false;
                 });
 
