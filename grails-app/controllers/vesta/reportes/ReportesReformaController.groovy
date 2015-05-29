@@ -170,7 +170,7 @@ class ReportesReformaController {
 
                 det[key].hasta = []
             }
-            if(modificacion.detalleReforma.reforma.tipoSolicitud == "T") {
+            if (modificacion.detalleReforma.reforma.tipoSolicitud == "T") {
                 if (modificacion.valor < 0) {
                     det[key].desde.dism += modificacion.valor * -1
                     det[key].desde.final -= modificacion.valor * -1
@@ -216,6 +216,7 @@ class ReportesReformaController {
             if (!det[key]) {
                 det[key] = [:]
                 det[key].desde = [:]
+                det[key].desde.id = detalle.id
                 det[key].desde.proyecto = detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
@@ -239,6 +240,7 @@ class ReportesReformaController {
 
             def m = [:]
 
+            m.id = detalle.id
             m.proyecto = detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()
             m.componente = detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()
             m.no = detalle.asignacionDestino.marcoLogico.numero
@@ -270,6 +272,7 @@ class ReportesReformaController {
             if (!det[key]) {
                 det[key] = [:]
                 det[key].desde = [:]
+                det[key].desde.id = detalle.id
                 det[key].desde.proyecto = detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
@@ -293,6 +296,7 @@ class ReportesReformaController {
 
             def m = [:]
 
+            m.id = detalle.id
             m.proyecto = detalle.componente.proyecto.toStringCompleto()
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
@@ -367,6 +371,7 @@ class ReportesReformaController {
             if (!det[key]) {
                 det[key] = [:]
                 det[key].desde = [:]
+                det[key].desde.id = detalle.id
                 det[key].desde.proyecto = detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
@@ -449,6 +454,7 @@ class ReportesReformaController {
             if (!det[key]) {
                 det[key] = [:]
                 det[key].desde = [:]
+                det[key].desde.id = detalle.id
                 det[key].desde.proyecto = detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
@@ -472,6 +478,7 @@ class ReportesReformaController {
 
             def m = [:]
 
+            m.id = detalle.id
             m.proyecto = detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()
             m.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
             m.no = detalle.asignacionOrigen.marcoLogico.numero

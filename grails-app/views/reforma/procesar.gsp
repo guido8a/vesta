@@ -26,6 +26,7 @@
     </head>
 
     <g:set var="btnSelect" value="${tipo == 'I' || tipo == 'C'}"/>
+    <g:set var="editable" value="${tipo == 'A' || tipo == 'C'}"/>
 
     <body>
         <g:hiddenField name="anio" value="${reforma.anioId}"/>
@@ -99,15 +100,15 @@
 
             <g:if test="${btnSelect}">
                 <g:render template="/reportesReformaTemplates/tablaSolicitud"
-                          model="[det: det2, tipo: tipo, btnSelect: btnSelect, btnDelete: false]"/>
+                          model="[det: det2, tipo: tipo, btnSelect: btnSelect, btnDelete: false, editable: editable]"/>
                 <g:if test="${detallado.size() > 0}">
                     <g:render template="/reportesReformaTemplates/tablaSolicitud"
-                              model="[det: detallado, tipo: tipo, btnSelect: false, btnDelete: btnSelect]"/>
+                              model="[det: detallado, tipo: tipo, btnSelect: false, btnDelete: btnSelect, editable: editable]"/>
                 </g:if>
             </g:if>
             <g:else>
                 <g:render template="/reportesReformaTemplates/tablaSolicitud"
-                          model="[det: det, tipo: tipo, btnSelect: false, btnDelete: false]"/>
+                          model="[det: det, tipo: tipo, btnSelect: false, btnDelete: false, editable: editable]"/>
             </g:else>
         </elm:container>
 
@@ -365,6 +366,51 @@
                     procesar(false, true);
                     return false;
                 });
+
+                <g:if test="${editable}">
+                $(".txtActividad").blur(function () {
+                    var input = $(this).val();
+                    var original = $(this).data("val");
+                    var $td = $(this).parents("td");
+                    if (input == original) {
+                        $td.removeClass("danger");
+                    } else {
+                        $td.addClass("danger");
+                    }
+                });
+                $(".btnSaveActividad").click(function () {
+                    var $btn = $(this);
+                    var $input = $btn.parent().prev();
+                    var $td = $btn.parents("td");
+                    var input = $input.val();
+                    var original = $input.data("val");
+                    var id = $input.data("id");
+
+                    if (input != original) {
+                        var $button = $btn.button('loading');
+                        $input.prop("disabled", true);
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(action:'guardarNombreActividad_ajax')}",
+                            data    : {
+                                id  : id,
+                                act : input
+                            },
+                            success : function (msg) {
+                                var parts = msg.split("*");
+                                log(parts[1], parts[0]);
+                                if (parts[0] == "SUCCESS") {
+                                    $td.removeClass("danger");
+                                    $input.data("val", input);
+                                }
+                                $button.button('reset');
+                                $input.prop("disabled", false);
+                            }
+                        });
+                    }
+                    return false;
+                });
+                </g:if>
 
                 <g:if test="${btnSelect}">
                 function validarPar(dataOrigen, dataDestino) {

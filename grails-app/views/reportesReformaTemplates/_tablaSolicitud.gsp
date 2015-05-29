@@ -84,7 +84,21 @@
                     <td>${h.proyecto}</td>
                     <td>${h.componente}</td>
                     <td>${h.no}</td>
-                    <td>${h.actividad}</td>
+                    <td>
+                        <g:if test="${editable}">
+                            <div class="input-group">
+                                <g:textField name="actividad" class="form-control input-sm txtActividad" value="${h.actividad}" data-val="${h.actividad}" data-id="${h.id}"/>
+                                <span class="input-group-btn">
+                                    <a href="#" class="btn btn-success btnSaveActividad" data-loading-text="<i class='fa fa-spinner fa-pulse'></i>">
+                                        <i class="fa fa-floppy-o"></i>
+                                    </a>
+                                </span>
+                            </div>
+                        </g:if>
+                        <g:else>
+                            ${h.actividad}
+                        </g:else>
+                    </td>
                     <td>${h.partida}</td>
                     <td class="text-right"><g:formatNumber number="${h.inicial}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${h.dism}" type="currency" currencySymbol=""/></td>

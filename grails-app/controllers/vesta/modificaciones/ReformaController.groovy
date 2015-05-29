@@ -573,6 +573,19 @@ class ReformaController extends Shield {
     }
 
     /**
+     * Acción llamada con ajax que guarda el nombre de una actividad modificado por el analista de planificación
+     */
+    def guardarNombreActividad_ajax() {
+        def detalle = DetalleReforma.get(params.id)
+        detalle.descripcionNuevaActividad = params.act.trim()
+        if (detalle.save(flush: true)) {
+            render "SUCCESS*Descripción de la actividad cambiada exitosamente"
+        } else {
+            render "ERROR*" + renderErrors(bean: detalle)
+        }
+    }
+
+    /**
      * Acción para que el analista de planificación apruebe y pida firmas o niegue la solicitud
      */
     def procesar() {
