@@ -23,12 +23,12 @@
                 Partida <br/>
                 presupuestaria
             </th>
-            <th>Valor inicial</th>
-            <th>Disminución</th>
-            <th>Aumento</th>
-            <th>Valor final</th>
+            <th>Valor inicial<br/>USD</th>
+            <th>Disminución<br/>USD</th>
+            <th>Aumento<br/>USD</th>
+            <th>Valor final<br/>USD</th>
             <g:if test="${btnSelect}">
-                <th>Saldo</th>
+                <th>Saldo<br/>USD</th>
                 <th></th>
             </g:if>
             <g:elseif test="${btnDelete}">
@@ -56,7 +56,7 @@
                     <td>${d.desde.componente}</td>
                     <td>${d.desde.no}</td>
                     <td>${d.desde.actividad}</td>
-                    <td>${d.desde.partida}</td>
+                    <td class="text-center">${d.desde.partida}</td>
                     <td class="text-right"><g:formatNumber number="${d.desde.inicial}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${d.desde.dism}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${d.desde.aum}" type="currency" currencySymbol=""/></td>
@@ -99,7 +99,7 @@
                             ${h.actividad}
                         </g:else>
                     </td>
-                    <td>${h.partida}</td>
+                    <td class="text-center">${h.partida}</td>
                     <td class="text-right"><g:formatNumber number="${h.inicial}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${h.dism}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${h.aum}" type="currency" currencySymbol=""/></td>

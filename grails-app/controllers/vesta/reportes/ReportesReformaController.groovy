@@ -6,12 +6,14 @@ import vesta.proyectos.ModificacionAsignacion
 
 class ReportesReformaController {
 
+    def proyectosService
+
     /**
      * Acción que muestra el pdf de la solicitud de reforma existente
      */
     def existente() {
-        def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesSolicitudExistente(reforma).det]
+        def reforma = Reforma.get(params.id.toLong())
+        return [reforma: reforma, det: generaDetallesSolicitudExistente(reforma).det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -19,7 +21,7 @@ class ReportesReformaController {
      */
     def actividad() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesSolicitudActividad(reforma).det]
+        return [reforma: reforma, det: generaDetallesSolicitudActividad(reforma).det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -28,7 +30,7 @@ class ReportesReformaController {
     def incrementoActividad() {
         def reforma = Reforma.get(params.id)
         def d = generaDetallesSolicitudIncrementoActividad(reforma)
-        return [reforma: reforma, det: d.det2, det2: d.det]
+        return [reforma: reforma, det: d.det2, det2: d.det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -36,7 +38,7 @@ class ReportesReformaController {
      */
     def partida() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesSolicitudPartida(reforma).det]
+        return [reforma: reforma, det: generaDetallesSolicitudPartida(reforma).det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -45,7 +47,7 @@ class ReportesReformaController {
     def incremento() {
         def reforma = Reforma.get(params.id)
         def d = generaDetallesSolicitudIncremento(reforma)
-        return [reforma: reforma, det: d.det2, det2: d.det]
+        return [reforma: reforma, det: d.det2, det2: d.det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -53,7 +55,7 @@ class ReportesReformaController {
      */
     def techo() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesSolicitudTecho(reforma).det]
+        return [reforma: reforma, det: generaDetallesSolicitudTecho(reforma).det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -61,7 +63,10 @@ class ReportesReformaController {
      */
     def existentePreviewReforma() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesSolicitudExistente(reforma).det]
+//        println reforma.nota
+//        println reforma.nota.encodeAsHTML()
+//        println reforma.nota.decodeHTML()
+        return [reforma: reforma, det: generaDetallesSolicitudExistente(reforma).det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -69,7 +74,7 @@ class ReportesReformaController {
      */
     def actividadPreviewReforma() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesSolicitudActividad(reforma).det]
+        return [reforma: reforma, det: generaDetallesSolicitudActividad(reforma).det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -78,7 +83,7 @@ class ReportesReformaController {
     def incrementoActividadPreviewReforma() {
         def reforma = Reforma.get(params.id)
         def d = generaDetallesSolicitudIncrementoActividad(reforma)
-        return [reforma: reforma, det: d.det]
+        return [reforma: reforma, det: d.det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -86,7 +91,7 @@ class ReportesReformaController {
      */
     def partidaPreviewReforma() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesSolicitudPartida(reforma).det]
+        return [reforma: reforma, det: generaDetallesSolicitudPartida(reforma).det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -95,7 +100,7 @@ class ReportesReformaController {
     def incrementoPreviewReforma() {
         def reforma = Reforma.get(params.id)
         def d = generaDetallesSolicitudIncremento(reforma)
-        return [reforma: reforma, det: d.det]
+        return [reforma: reforma, det: d.det, unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -103,7 +108,7 @@ class ReportesReformaController {
      */
     def existenteReforma() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesReforma_function(reforma)]
+        return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -111,7 +116,7 @@ class ReportesReformaController {
      */
     def partidaReforma() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesReforma_function(reforma)]
+        return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -119,7 +124,7 @@ class ReportesReformaController {
      */
     def actividadReforma() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesReforma_function(reforma)]
+        return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -127,7 +132,7 @@ class ReportesReformaController {
      */
     def incrementoActividadReforma() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesReforma_function(reforma)]
+        return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -135,7 +140,7 @@ class ReportesReformaController {
      */
     def incrementoReforma() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesReforma_function(reforma)]
+        return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     /**
@@ -143,7 +148,7 @@ class ReportesReformaController {
      */
     def techoReforma() {
         def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesReforma_function(reforma)]
+        return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: proyectosService.getUnidadYGerencia(reforma.persona.unidad)]
     }
 
     public static Map generaDetallesReforma_function(Reforma reforma) {
@@ -161,8 +166,9 @@ class ReportesReformaController {
                 det[key].desde.no = modificacion.desde.marcoLogico.numero
                 det[key].desde.actividad = modificacion.desde.marcoLogico.toStringCompleto()
 //                det[key].desde.partida = modificacion.desde.toString()
-                det[key].desde.partida = "<strong>Priorizado:</strong> " + modificacion.desde.priorizado +
-                        " <strong>Partida:</strong> ${modificacion.desde.presupuesto.numero}"
+//                det[key].desde.partida = "<strong>Priorizado:</strong> " + modificacion.desde.priorizado +
+//                        " <strong>Partida:</strong> ${modificacion.desde.presupuesto.numero}"
+                det[key].desde.partida = modificacion.desde.presupuesto.numero
                 det[key].desde.inicial = modificacion.originalOrigen
                 det[key].desde.dism = 0
                 det[key].desde.aum = 0
@@ -191,8 +197,9 @@ class ReportesReformaController {
                 m.no = modificacion.recibe.marcoLogico.numero
                 m.actividad = modificacion.recibe.marcoLogico.toStringCompleto()
 //            m.partida = modificacion.recibe.toString()
-                m.partida = "<strong>Priorizado:</strong> " + modificacion.recibe.priorizado +
-                        " <strong>Partida:</strong> ${modificacion.recibe.presupuesto.numero}"
+//                m.partida = "<strong>Priorizado:</strong> " + modificacion.recibe.priorizado +
+//                        " <strong>Partida:</strong> ${modificacion.recibe.presupuesto.numero}"
+                m.partida = modificacion.recibe.presupuesto.numero
                 m.inicial = modificacion.originalDestino
                 m.dism = 0
                 m.aum = modificacion.valor
@@ -222,12 +229,15 @@ class ReportesReformaController {
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
-                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
-                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
-                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+//                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
+//                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+                det[key].desde.partida = detalle.asignacionOrigen.presupuesto.numero
+//                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+                det[key].desde.inicial = detalle.valorOrigenInicial
                 det[key].desde.dism = 0
                 det[key].desde.aum = 0
-                det[key].desde.final = detalle.asignacionOrigen.priorizado
+//                det[key].desde.final = detalle.asignacionOrigen.priorizado
+                det[key].desde.final = detalle.valorOrigenInicial
 
                 det[key].hasta = []
             }
@@ -235,7 +245,8 @@ class ReportesReformaController {
             det[key].desde.final -= detalle.valor
 
             if (!valorFinalDestino[keyDestino]) {
-                valorFinalDestino[keyDestino] = detalle.asignacionDestino.priorizado
+//                valorFinalDestino[keyDestino] = detalle.asignacionDestino.priorizado
+                valorFinalDestino[keyDestino] = detalle.valorDestinoInicial
             }
 
             def m = [:]
@@ -246,8 +257,9 @@ class ReportesReformaController {
             m.no = detalle.asignacionDestino.marcoLogico.numero
             m.actividad = detalle.asignacionDestino.marcoLogico.toStringCompleto()
 //            m.partida = detalle.asignacionDestino.toString()
-            m.partida = "<strong>Priorizado:</strong> " + detalle.asignacionDestino.priorizado +
-                    " <strong>Partida:</strong> ${detalle.asignacionDestino.presupuesto.numero}"
+//            m.partida = "<strong>Priorizado:</strong> " + detalle.asignacionDestino.priorizado +
+//                    " <strong>Partida:</strong> ${detalle.asignacionDestino.presupuesto.numero}"
+            m.partida = detalle.asignacionDestino.presupuesto.numero
             m.inicial = valorFinalDestino[keyDestino]
             m.dism = 0
             m.aum = detalle.valor
@@ -278,12 +290,15 @@ class ReportesReformaController {
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
-                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
-                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
-                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+//                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
+//                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+                det[key].desde.partida = detalle.asignacionOrigen.presupuesto.numero
+//                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+                det[key].desde.inicial = detalle.valorOrigenInicial
                 det[key].desde.dism = 0
                 det[key].desde.aum = 0
-                det[key].desde.final = detalle.asignacionOrigen.priorizado
+//                det[key].desde.final = detalle.asignacionOrigen.priorizado
+                det[key].desde.final = detalle.valorOrigenInicial
 
                 det[key].hasta = []
             }
@@ -301,8 +316,9 @@ class ReportesReformaController {
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
-            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}" +
-                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}"
+//            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}" +
+//                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}"
+            m.partida = detalle.presupuesto.numero
             m.inicial = 0
             m.dism = 0
             m.aum = detalle.valor
@@ -348,8 +364,9 @@ class ReportesReformaController {
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
-            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}\n" +
-                    " <strong>Partida:</strong> ${detalle.presupuesto}"
+//            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}\n" +
+//                    " <strong>Partida:</strong> ${detalle.presupuesto}"
+            m.partida = detalle.presupuesto
             m.inicial = 0
             m.dism = 0
             m.aum = detalle.valor
@@ -377,12 +394,15 @@ class ReportesReformaController {
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
-                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
-                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
-                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+//                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
+//                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+                det[key].desde.partida = detalle.asignacionOrigen.presupuesto.numero
+//                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+                det[key].desde.inicial = detalle.valorOrigenInicial
                 det[key].desde.dism = 0
                 det[key].desde.aum = 0
-                det[key].desde.final = detalle.asignacionOrigen.priorizado
+//                det[key].desde.final = detalle.asignacionOrigen.priorizado
+                det[key].desde.final = detalle.valorOrigenInicial
 
                 det[key].hasta = []
             }
@@ -390,7 +410,8 @@ class ReportesReformaController {
             det[key].desde.final -= detalle.valor
 
             if (!valorFinalOrigen[key]) {
-                valorFinalOrigen[key] = detalle.asignacionOrigen.priorizado
+//                valorFinalOrigen[key] = detalle.asignacionOrigen.priorizado
+                valorFinalOrigen[key] = detalle.valorOrigenInicial
             }
 
             if (!detallado[keyDetallado]) {
@@ -403,8 +424,9 @@ class ReportesReformaController {
                 detallado[keyDetallado].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 detallado[keyDetallado].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
 //                detallado[keyDetallado].desde.partida = detalle.asignacionOrigen.toString()
-                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
-                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+//                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
+//                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+                det[key].desde.partida = detalle.asignacionOrigen.presupuesto.numero
                 detallado[keyDetallado].desde.inicial = valorFinalOrigen[key]
                 valorFinalOrigen[key] -= detalle.valor
                 detallado[keyDetallado].desde.dism = detalle.valor
@@ -425,8 +447,9 @@ class ReportesReformaController {
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
-            m.partida = "<strong>Priorizado:</strong> " + detalle.valor +
-                    " <strong>Partida:</strong> ${detalle.presupuesto}\n"
+//            m.partida = "<strong>Priorizado:</strong> " + detalle.valor +
+//                    " <strong>Partida:</strong> ${detalle.presupuesto}\n"
+            m.partida = detalle.presupuesto.numero
             m.inicial = valorFinalDestino[keyDestino]
 
             m.dism = 0
@@ -460,12 +483,15 @@ class ReportesReformaController {
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
-                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
-                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
-                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+//                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
+//                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+                det[key].desde.partida = detalle.asignacionOrigen.presupuesto.numero
+//                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+                det[key].desde.inicial = detalle.valorOrigenInicial
                 det[key].desde.dism = 0
                 det[key].desde.aum = 0
-                det[key].desde.final = detalle.asignacionOrigen.priorizado
+//                det[key].desde.final = detalle.asignacionOrigen.priorizado
+                det[key].desde.final = detalle.valorOrigenInicial
 
                 det[key].hasta = []
             }
@@ -483,8 +509,9 @@ class ReportesReformaController {
             m.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
             m.no = detalle.asignacionOrigen.marcoLogico.numero
             m.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-            m.partida = "<strong>Priorizado:</strong> 0.00\n" +
-                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}\n"
+//            m.partida = "<strong>Priorizado:</strong> 0.00\n" +
+//                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}\n"
+            m.partida = detalle.presupuesto.numero
             m.inicial = valorFinalDestino[keyDestino]
             m.dism = 0
             m.aum = detalle.valor
@@ -521,7 +548,8 @@ class ReportesReformaController {
                 det2[key].hasta = []
             }
             if (!valorFinalDestino[keyDestino]) {
-                valorFinalDestino[keyDestino] = detalle.asignacionDestino.priorizado
+//                valorFinalDestino[keyDestino] = detalle.asignacionDestino.priorizado
+                valorFinalDestino[keyDestino] = detalle.valorDestinoInicial
             }
 
             def m = [:]
@@ -533,8 +561,9 @@ class ReportesReformaController {
             m.no = detalle.asignacionDestino.marcoLogico.numero
             m.actividad = detalle.asignacionDestino.marcoLogico.toStringCompleto()
 //            m.partida = detalle.asignacionDestino.toString()
-            m.partida = "<strong>Priorizado:</strong> " + detalle.asignacionDestino.priorizado +
-                    " <strong>Partida:</strong> ${detalle.asignacionDestino.presupuesto.numero}"
+//            m.partida = "<strong>Priorizado:</strong> " + detalle.asignacionDestino.priorizado +
+//                    " <strong>Partida:</strong> ${detalle.asignacionDestino.presupuesto.numero}"
+            m.partida = detalle.asignacionDestino.presupuesto.numero
             m.inicial = valorFinalDestino[keyDestino]
             m.dism = 0
             m.saldo = detalle.saldo
@@ -560,12 +589,15 @@ class ReportesReformaController {
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
-                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
-                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
-                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+//                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
+//                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+                det[key].desde.partida = detalle.asignacionOrigen.presupuesto.numero
+//                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+                det[key].desde.inicial = detalle.valorOrigenInicial
                 det[key].desde.dism = 0
                 det[key].desde.aum = 0
-                det[key].desde.final = detalle.asignacionOrigen.priorizado
+//                det[key].desde.final = detalle.asignacionOrigen.priorizado
+                det[key].desde.final = detalle.valorOrigenInicial
 
                 det[key].hasta = []
             }
@@ -573,7 +605,8 @@ class ReportesReformaController {
             det[key].desde.final -= detalle.valor
 
             if (!valorFinalOrigen[key]) {
-                valorFinalOrigen[key] = detalle.asignacionOrigen.priorizado
+//                valorFinalOrigen[key] = detalle.asignacionOrigen.priorizado
+                valorFinalOrigen[key] = detalle.valorOrigenInicial
             }
 
             if (!detallado[keyDetallado]) {
@@ -586,8 +619,9 @@ class ReportesReformaController {
                 detallado[keyDetallado].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 detallado[keyDetallado].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
 //                detallado[keyDetallado].desde.partida = detalle.asignacionOrigen.toString()
-                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
-                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+//                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
+//                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+                det[key].desde.partida = detalle.asignacionOrigen.presupuesto.numero
                 detallado[keyDetallado].desde.inicial = valorFinalOrigen[key]
                 valorFinalOrigen[key] -= detalle.valor
                 detallado[keyDetallado].desde.dism = detalle.valor
@@ -597,7 +631,8 @@ class ReportesReformaController {
             }
 
             if (!valorFinalDestino[keyDestino]) {
-                valorFinalDestino[keyDestino] = detalle.asignacionDestino.priorizado
+//                valorFinalDestino[keyDestino] = detalle.asignacionDestino.priorizado
+                valorFinalDestino[keyDestino] = detalle.valorDestinoInicial
             }
 
             def m = [:]
@@ -609,8 +644,9 @@ class ReportesReformaController {
             m.no = detalle.asignacionDestino.marcoLogico.numero
             m.actividad = detalle.asignacionDestino.marcoLogico.toStringCompleto()
 //            m.partida = detalle.asignacionDestino.toString()
-            m.partida = "<strong>Priorizado:</strong> " + detalle.asignacionDestino.priorizado +
-                    " <strong>Partida:</strong> ${detalle.asignacionDestino.presupuesto.numero}"
+//            m.partida = "<strong>Priorizado:</strong> " + detalle.asignacionDestino.priorizado +
+//                    " <strong>Partida:</strong> ${detalle.asignacionDestino.presupuesto.numero}"
+            m.partida = detalle.asignacionDestino.presupuesto.numero
             m.inicial = valorFinalDestino[keyDestino]
             m.dism = 0
             m.aum = detalle.valor
@@ -641,12 +677,15 @@ class ReportesReformaController {
                     det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                     det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
-                    det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
-                            " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
-                    det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+//                    det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
+//                            " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
+                    det[key].desde.partida = detalle.asignacionOrigen.presupuesto.numero
+//                    det[key].desde.inicial = detalle.asignacionOrigen.priorizado
+                    det[key].desde.inicial = detalle.valorOrigenInicial
                     det[key].desde.dism = 0
                     det[key].desde.aum = 0
-                    det[key].desde.final = detalle.asignacionOrigen.priorizado
+//                    det[key].desde.final = detalle.asignacionOrigen.priorizado
+                    det[key].desde.final = detalle.valorOrigenInicial
 
                     det[key].hasta = []
                 }
@@ -660,8 +699,9 @@ class ReportesReformaController {
                     det[key].desde.no = detalle.componente.numero
                     det[key].desde.actividad = detalle.componente.toStringCompleto()
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
-                    det[key].desde.partida = "<strong>Priorizado:</strong> 0.00" +
-                            " <strong>Partida:</strong> ${detalle.presupuesto.numero}"
+//                    det[key].desde.partida = "<strong>Priorizado:</strong> 0.00" +
+//                            " <strong>Partida:</strong> ${detalle.presupuesto.numero}"
+                    det[key].desde.partida = detalle.presupuesto.numero
                     det[key].desde.inicial = 0
                     det[key].desde.dism = 0
                     det[key].desde.aum = 0

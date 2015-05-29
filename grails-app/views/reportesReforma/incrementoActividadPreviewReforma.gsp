@@ -16,6 +16,6 @@
 
     <body>
         <g:render template="/reportesReformaTemplates/previewReforma"
-                  model="[reforma: reforma, det: det, tipo: 'c']"/>
+                  model="[reforma: reforma, det: det, tipo: 'c', unidades: unidades]"/>
     </body>
 </html>

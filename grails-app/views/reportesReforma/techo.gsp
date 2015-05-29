@@ -16,6 +16,6 @@
 
     <body>
         <g:render template="/reportesReformaTemplates/solicitud"
-                  model="[reforma: reforma, det: det, tipo: 't']"/>
+                  model="[reforma: reforma, det: det, tipo: 't', unidades: unidades]"/>
     </body>
 </html>

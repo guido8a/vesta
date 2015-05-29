@@ -1,11 +1,22 @@
-<rep:headerFooter title="REFORMA AL POA" unidad="${reforma.fecha.format('yyyy')}-GPE"
-                  numero="${reforma.numero}" estilo="right"/>
+<rep:headerFooter title="REFORMA AL POA"
+                  form="GPE-DPI-003"
+                  unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.codigo}"
+                  numero="${reforma.numeroReforma}" estilo="right"/>
 
 <div style="margin-left: 10px;">
     <div>
         <ol>
             <li>
-                <strong>Unidad responsable (Gerencia-Dirección):</strong> ${reforma.persona.unidad}
+                <strong>Unidad responsable (Gerencia - Dirección):</strong>
+                <g:if test="${unidades}">
+                    <g:if test="${unidades.gerencia.id != unidades.unidad.id}">
+                        ${unidades.gerencia} -
+                    </g:if>
+                    ${unidades.unidad}
+                </g:if>
+                <g:else>
+                    ${reforma.persona.unidad} (No está completo el código!)
+                </g:else>
             </li>
             <li>
                 <strong>Matriz de la reforma:</strong>
@@ -16,7 +27,7 @@
         </ol>
 
         <div class="no-break" style="margin-bottom: 10px">
-            <strong>Observación:</strong>  ${reforma.nota}
+            <strong>Observación:</strong>  ${reforma.nota.decodeHTML()}
         </div>
 
         <div>
@@ -62,18 +73,22 @@
                                 <img src="${resource(dir: 'firmas', file: reforma.firma1.path)}" style="width: 150px;"/><br/>
 
                                 <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px"></div>
-                                <b style="text-align: center">${reforma.firma1.usuario.nombre} ${reforma.firma1.usuario.apellido}<br/>
+                                <b style="text-align: center">
+                                    ${reforma.firma1.usuario.nombre} ${reforma.firma1.usuario.apellido}<br/>
                                 </b>
-                                <b style="text-align: center;">${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                <b style="text-align: center;">
+                                    ${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
                                 </b>
                             </g:if>
                             <g:else>
                                 <img src="${resource(dir: 'firmas', file: reforma.firma1.path)}" style="width: 150px;"/><br/>
 
                                 <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px; margin-top: 150px"></div>
-                                <b style="text-align: center">${reforma.firma1.usuario.nombre} ${reforma.firma1.usuario.apellido}<br/>
+                                <b style="text-align: center">
+                                    ${reforma.firma1.usuario.nombre} ${reforma.firma1.usuario.apellido}<br/>
                                 </b>
-                                <b style="text-align: center;">${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                <b style="text-align: center;">
+                                    ${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
                                 </b>
                             </g:else>
 
@@ -85,9 +100,11 @@
                                 <img src="${resource(dir: 'firmas', file: reforma.firma2.path)}" style="width: 150px;"/><br/>
 
                                 <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px;"></div>
-                                <b class="center">${reforma.firma2.usuario.nombre} ${reforma.firma2.usuario.apellido}<br/>
+                                <b style="text-align: center;">
+                                    ${reforma.firma2.usuario.nombre} ${reforma.firma2.usuario.apellido}<br/>
                                 </b>
-                                <b class="center">${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                <b style="text-align: center;">
+                                    ${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
                                 </b>
 
                             </g:if>
@@ -95,9 +112,11 @@
                                 <img src="${resource(dir: 'firmas', file: reforma.firma2.path)}" style="width: 150px;"/><br/>
 
                                 <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px; margin-top: 150px"></div>
-                                <b class="center">${reforma.firma2.usuario.nombre} ${reforma.firma2.usuario.apellido}<br/>
+                                <b style="text-align: center;">
+                                    ${reforma.firma2.usuario.nombre} ${reforma.firma2.usuario.apellido}<br/>
                                 </b>
-                                <b class="center">${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                <b style="text-align: center;">
+                                    ${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
                                 </b>
                             </g:else>
 

@@ -23,6 +23,16 @@ class ProyectosService {
 //        return unidades.unique().sort { it.nombre }
 //    }
 
+    def getUnidadYGerencia(UnidadEjecutora unidad) {
+        def ret = [unidad: unidad, gerencia: unidad]
+        def padre = unidad.padre
+        def codigosNo = ['343', '9999'] // yachay, Gerencia general, Gerencia tecnica
+        if (!codigosNo.contains(padre.codigo)) {
+            ret.gerencia = padre
+        }
+        return ret
+    }
+
     def getUnidadesUnidad(UnidadEjecutora unidad, String perfilCodigo) {
         def perfilesAll = ["GAF", "ASPL", "GP"]
         //gerencia administrativa financiera, Analista de Planificación, Gerencia de Planificación

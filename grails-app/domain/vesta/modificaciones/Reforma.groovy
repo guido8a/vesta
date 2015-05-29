@@ -60,9 +60,13 @@ class Reforma {
      */
     String nota
     /**
-     * Secuencial generado cuando se aprueba (2da firma de aprobacion)
+     * Secuencial (número solicitud, depende de la gerencia) generado cuando se aprueba (1ra firma: del gerente)
      */
     Integer numero = 0
+    /**
+     * Secuencial (número reforma, no depende de nada) generado cuando se aprueba (2da firma de aprobacion)
+     */
+    Integer numeroReforma = 0
     /**
      * Analista de planificación que revisó la solicitud de reforma
      */
@@ -105,6 +109,7 @@ class Reforma {
             textoPdf column: 'rfrm_pdf'
             nota column: 'rfrmnota'
             numero column: 'rfrmnmro'
+            numeroReforma column: 'rfrmnmrf'
             analista column: 'rfrmpran'
             director column: 'rfrmprdr'
             observacionesDirector column: 'rfrmobdr'

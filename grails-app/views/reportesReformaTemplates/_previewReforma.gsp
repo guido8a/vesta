@@ -1,12 +1,22 @@
 <rep:headerFooter title="${reforma.tipo == 'R' ? 'REFORMA' : 'AJUSTE'} AL POA"
-                  unidad="${reforma.fecha.format('yyyy')}-GPE"
-                  numero="${reforma.id}" estilo="right"/>
+                  form="GPE-DPI-003"
+                  unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.codigo}"
+                  numero="${reforma.numeroReforma}" estilo="right"/>
 
 <div style="margin-left: 10px;">
     <div>
         <ol>
             <li>
-                <strong>Unidad responsable (Gerencia - Dirección):</strong> ${reforma.persona.unidad}
+                <strong>Unidad responsable (Gerencia - Dirección):</strong>
+                <g:if test="${unidades}">
+                    <g:if test="${unidades.gerencia.id != unidades.unidad.id}">
+                        ${unidades.gerencia} -
+                    </g:if>
+                    ${unidades.unidad}
+                </g:if>
+                <g:else>
+                    ${reforma.persona.unidad} (No está completo el código!)
+                </g:else>
             </li>
             <li>
                 <strong>Matriz de la ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>
@@ -17,7 +27,7 @@
                 <strong>Observación:</strong>
 
                 <div class="justificacion">
-                    ${reforma.nota}
+                    ${reforma.nota.decodeHTML()}
                 </div>
             </li>
         </ol>

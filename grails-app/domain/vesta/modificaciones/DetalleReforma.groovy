@@ -60,6 +60,14 @@ class DetalleReforma {
      * Detalle original (para las modificaciones de incremento cuando ya se les asigna un origen)
      */
     DetalleReforma detalleOriginal
+    /**
+     * Valor de la asignación de origen al momento de realizar la solicitud
+     */
+    Double valorOrigenInicial
+    /**
+     * Valor de la asignación de destino al momento de realizar la solicitud
+     */
+    Double valorDestinoInicial
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -89,6 +97,8 @@ class DetalleReforma {
             saldo column: 'dtrfsldo'
             fuente column: 'fnte__id'
             detalleOriginal column: 'dtrfdtrf'
+            valorOrigenInicial column: 'dtrfvloi'
+            valorDestinoInicial column: 'dtrfvldi'
         }
     }
 

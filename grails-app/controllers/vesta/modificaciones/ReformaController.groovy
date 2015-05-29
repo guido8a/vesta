@@ -1091,6 +1091,8 @@ class ReformaController extends Shield {
                     detalle.asignacionOrigen = asignacionOrigen
                     detalle.asignacionDestino = asignacionDestino
                     detalle.valor = monto
+                    detalle.valorOrigenInicial = asignacionOrigen.priorizado
+                    detalle.valorDestinoInicial = asignacionDestino.priorizado
                     if (!detalle.save(flush: true)) {
                         println "error al guardar detalle: " + detalle.errors
                         errores += renderErrors(bean: detalle)
@@ -1241,6 +1243,10 @@ class ReformaController extends Shield {
             detalle.descripcionNuevaActividad = det.actividad.trim()
             detalle.fechaInicioNuevaActividad = new Date().parse("dd-MM-yyyy", det.inicio)
             detalle.fechaFinNuevaActividad = new Date().parse("dd-MM-yyyy", det.fin)
+
+            detalle.valorOrigenInicial = asignacionOrigen.priorizado
+            detalle.valorDestinoInicial = 0
+
             if (det.categoria) {
                 detalle.categoria = Categoria.get(det.categoria.toLong())
             }
@@ -1395,6 +1401,10 @@ class ReformaController extends Shield {
             detalle.fechaInicioNuevaActividad = new Date().parse("dd-MM-yyyy", det.inicio)
             detalle.fechaFinNuevaActividad = new Date().parse("dd-MM-yyyy", det.fin)
             detalle.fuente = Fuente.get(det.fuente.toLong())
+
+            detalle.valorOrigenInicial = 0
+            detalle.valorDestinoInicial = 0
+
             if (det.categoria) {
                 detalle.categoria = Categoria.get(det.categoria.toLong())
             }
@@ -1534,6 +1544,10 @@ class ReformaController extends Shield {
                     detalle.asignacionDestino = asignacionDestino
                     detalle.valor = monto
                     detalle.saldo = monto
+
+                    detalle.valorOrigenInicial = 0
+                    detalle.valorDestinoInicial = asignacionDestino.priorizado
+
                     if (!detalle.save(flush: true)) {
                         println "error al guardar detalle: " + detalle.errors
                         errores += renderErrors(bean: detalle)
@@ -1682,6 +1696,9 @@ class ReformaController extends Shield {
             detalle.presupuesto = presupuesto
             detalle.fuente = asignacionOrigen.fuente
 
+            detalle.valorOrigenInicial = asignacionOrigen.priorizado
+            detalle.valorDestinoInicial = 0
+
             if (!detalle.save(flush: true)) {
                 println "error al guardar detalle: " + detalle.errors
                 errores += renderErrors(bean: detalle)
@@ -1766,6 +1783,11 @@ class ReformaController extends Shield {
         } else {
             def reforma = Reforma.findByFirmaSolicitud(firma)
             def estadoSolicitado = EstadoAval.findByCodigo("E01")
+
+            def unidades = proyectosService.getUnidadYGerencia(reforma.persona.unidad)
+            def num = unidades.gerencia.siguienteNumeroSolicitudReforma
+
+            reforma.numero = num
             reforma.estado = estadoSolicitado
             reforma.save(flush: true)
 
@@ -1841,7 +1863,7 @@ class ReformaController extends Shield {
                 def ultimoNum = Reforma.withCriteria {
                     eq("tipo", "R")
                     projections {
-                        max "numero"
+                        max "numeroReforma"
                     }
                 }
 
@@ -1852,7 +1874,7 @@ class ReformaController extends Shield {
 
                 def estadoAprobado = EstadoAval.findByCodigo("E02")
                 reforma.estado = estadoAprobado
-                reforma.numero = num
+                reforma.numeroReforma = num
                 reforma.save(flush: true)
 //                println "Modificada la reforma al estado " + estadoAprobado.descripcion + " (" + estadoAprobado.id + ")"
                 def usu = Persona.get(session.usuario.id)

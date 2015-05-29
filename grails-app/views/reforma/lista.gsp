@@ -47,8 +47,8 @@
                         </td>
                         <td class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                         <td style="text-align: center">
-                            <div class="btn-group btn-group-sm" role="group">
-                                <elm:linkPdfReforma reforma="${reforma}"/>
+                            <div class="btn-group btn-group-xs" role="group">
+                                <elm:linkPdfReforma reforma="${reforma}" solicitud="s"/>
                             </div>
                         </td>
                     </tr>

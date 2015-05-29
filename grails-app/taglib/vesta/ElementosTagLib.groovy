@@ -953,18 +953,17 @@ class ElementosTagLib {
     def linkPdfReforma = { attrs ->
         Reforma reforma = attrs.reforma
 
+        def solicitud = attrs.solicitud?.toUpperCase() == "S"
+
         def disabledIfNull = attrs.disabledIfNull && (attrs.disabledIfNull == "true" || attrs.disabledIfNull == true)
 
         if (!reforma && !disabledIfNull) {
             out << "ERROR"
         } else {
-
             def preview = attrs.preview ?: false
-
             def label = attrs.label && (attrs.label == "true" || attrs.label == true)
-
-            def accion = ""
-            def fileName = ""
+            def accion = "", accion2 = ""
+            def fileName = "", fileName2 = ""
             if (reforma) {
                 switch (reforma.tipoSolicitud) {
                     case "E":
@@ -993,7 +992,7 @@ class ElementosTagLib {
                         break;
                 }
             }
-            def title, clase
+            def title, clase, title2 = "", clase2 = ""
             if (preview) {
                 accion += "PreviewReforma"
                 fileName += "_previsualizacion"
@@ -1001,19 +1000,18 @@ class ElementosTagLib {
                 clase = "btn-info"
             } else {
                 if (reforma?.estado?.codigo == 'E02') {
-                    accion += "Reforma"
-                    fileName += "_reforma"
-                    title = "Reforma"
-                    clase = "btn-success"
-                } else {
-                    if (reforma?.tipo == "A") {
-                        fileName = "ajuste_" + fileName + "_solicitud"
-                    } else {
-                        fileName = "reforma_" + fileName + "_solicitud"
-                    }
-                    title = "Solicitud"
-                    clase = "btn-info"
+                    accion2 = accion + "Reforma"
+                    fileName2 = fileName + "_reforma.pdf"
+                    title2 = "Reforma"
+                    clase2 = "btn-success"
                 }
+                if (reforma?.tipo == "A") {
+                    fileName = "ajuste_" + fileName + "_solicitud"
+                } else {
+                    fileName = "reforma_" + fileName + "_solicitud"
+                }
+                title = "Solicitud"
+                clase = "btn-info"
             }
 
             if (attrs.class) {
@@ -1021,6 +1019,13 @@ class ElementosTagLib {
             }
             if (attrs.title) {
                 title = attrs.title
+            }
+
+            if (attrs.class2) {
+                clase2 = attrs.class2
+            }
+            if (attrs.title2) {
+                title2 = attrs.title2
             }
 
             if (disabledIfNull && !reforma) {
@@ -1033,6 +1038,14 @@ class ElementosTagLib {
             str += "class='btn ${clase} btnVer' title='${title}'>"
             str += "<i class='fa fa-search'></i> ${label ? title : ''}"
             str += "</a>"
+
+            if (accion2 != "") {
+                str += "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: 'reportesReforma', action: accion2, id: reforma?.id)}&filename=${fileName2}\""
+                str += "class='btn ${clase2} btnVer' title='${title2}'>"
+                str += "<i class='fa fa-search'></i> ${label ? title2 : ''}"
+                str += "</a>"
+            }
+
             out << str
         }
     }

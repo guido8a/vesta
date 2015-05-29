@@ -77,6 +77,10 @@ class UnidadEjecutora {
      * Objetivo de la unidad
      */
     ObjetivoUnidad objetivoUnidad
+    /**
+     * Número de la última solicitud de reforma al poa
+     */
+    Integer numeroSolicitudReforma = 0
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -113,6 +117,8 @@ class UnidadEjecutora {
             orden column: 'unejordn'
 
             objetivoUnidad column: 'obun__id'
+
+            numeroSolicitudReforma column: 'unejnmsr'
         }
     }
 
@@ -145,5 +151,11 @@ class UnidadEjecutora {
      */
     String toString() {
         return this.nombre
+    }
+
+    def getSiguienteNumeroSolicitudReforma() {
+        this.numeroSolicitudReforma = this.numeroSolicitudReforma + 1
+        this.save(flush: true)
+        return this.numeroSolicitudReforma
     }
 }
