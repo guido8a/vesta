@@ -516,9 +516,17 @@ class AvalesController extends vesta.seguridad.Shield {
                 solicitud = solicitudes.first()
             }
 
+            def maxAnio = proceso.fechaFin.format("yyyy")
+            def actualAnio = actual.anio
+            def anios = Anio.withCriteria {
+                ge("anio", actualAnio)
+                le("anio", maxAnio)
+                order("anio", "asc")
+            }
+
             def componentes = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), actual, proceso.proyecto, session.perfil.codigo.toString())
 
-            return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual, componentes: componentes, solicitud: solicitud]
+            return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual, componentes: componentes, solicitud: solicitud, anios: anios]
         } else {
             redirect(action: "nuevaSolicitud")
         }

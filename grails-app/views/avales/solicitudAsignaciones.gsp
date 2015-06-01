@@ -81,7 +81,7 @@
                         </label>
 
                         <div class="col-md-2">
-                            <g:select name="anio" from="${Anio.findAllByEstado(1, [sort: 'anio'])}" value="${actual?.id}"
+                            <g:select name="anio" from="${anios}" value="${actual?.id}"
                                       class="form-control input-sm" id="anio" optionKey="id" optionValue="anio" style="width: 80px;"/>
                         </div>
                     </span>
