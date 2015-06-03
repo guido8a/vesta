@@ -14,6 +14,7 @@ import vesta.parametros.poaPac.Mes
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.proyectos.MarcoLogico
+import vesta.proyectos.ModificacionAsignacion
 import vesta.proyectos.Proyecto
 
 import org.apache.poi.ss.usermodel.CellStyle
@@ -686,6 +687,324 @@ class ReportesNuevosController {
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "reporte_avales.xlsx"
+            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", header)
+            wb.write(output)
+            output.flush()
+
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    def reporteReformasExcel () {
+
+        def fuente = Fuente.get(params.fnt)
+
+        def modificacion = ModificacionAsignacion.withCriteria {
+            desde{
+                eq("fuente", fuente)
+            }
+        }
+
+        def iniRow = 2
+        def iniCol = 1
+
+        def curRow = iniRow
+        def curCol = iniCol
+
+        try{
+
+            Workbook wb = new Workbook()
+            Sheet sheet = wb.createSheet("Reporte de reformas")
+
+            Font fontYachay = wb.createFont()
+            fontYachay.setFontHeightInPoints((short) 14)
+            fontYachay.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+            fontYachay.setBold(true)
+
+            Font fontTitulo = wb.createFont()
+            fontTitulo.setFontHeightInPoints((short) 24)
+            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+            fontTitulo.setBold(true)
+
+            Font fontSubtitulo = wb.createFont()
+            fontSubtitulo.setFontHeightInPoints((short) 18)
+            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+            fontSubtitulo.setBold(true)
+
+            Font fontHeader = wb.createFont()
+            fontHeader.setFontHeightInPoints((short) 12)
+            fontHeader.setColor(new XSSFColor(new java.awt.Color(255, 255, 255)))
+            fontHeader.setBold(true)
+
+            Font fontTabla = wb.createFont()
+            fontTabla.setFontHeightInPoints((short) 9)
+
+            Font fontFooter = wb.createFont()
+            fontHeader.setFontHeightInPoints((short) 9)
+            fontFooter.setBold(true)
+
+
+            CellStyle styleYachay = wb.createCellStyle()
+            styleYachay.setFont(fontYachay)
+            styleYachay.setAlignment(CellStyle.ALIGN_CENTER)
+            styleYachay.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+            CellStyle styleTitulo = wb.createCellStyle()
+            styleTitulo.setFont(fontTitulo)
+            styleTitulo.setAlignment(CellStyle.ALIGN_CENTER)
+            styleTitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+            CellStyle styleSubtitulo = wb.createCellStyle()
+            styleSubtitulo.setFont(fontSubtitulo)
+            styleSubtitulo.setAlignment(CellStyle.ALIGN_CENTER)
+            styleSubtitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+            CellStyle styleHeader = wb.createCellStyle()
+            styleHeader.setFont(fontHeader)
+            styleHeader.setAlignment(CellStyle.ALIGN_CENTER)
+            styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+            styleHeader.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 96, 144)));
+            styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND)
+            styleHeader.setWrapText(true);
+            styleHeader.setBorderBottom(CellStyle.BORDER_THIN);
+            styleHeader.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleHeader.setBorderLeft(CellStyle.BORDER_THIN);
+            styleHeader.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            styleHeader.setBorderRight(CellStyle.BORDER_THIN);
+            styleHeader.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            styleHeader.setBorderTop(CellStyle.BORDER_THIN);
+            styleHeader.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+            CellStyle styleTabla = wb.createCellStyle()
+            styleTabla.setFont(fontTabla)
+            styleTabla.setWrapText(true);
+            styleTabla.setBorderBottom(CellStyle.BORDER_THIN);
+            styleTabla.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleTabla.setBorderLeft(CellStyle.BORDER_THIN);
+            styleTabla.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            styleTabla.setBorderRight(CellStyle.BORDER_THIN);
+            styleTabla.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            styleTabla.setBorderTop(CellStyle.BORDER_THIN);
+            styleTabla.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+            CellStyle styleFooter = wb.createCellStyle()
+            styleFooter.setFont(fontFooter)
+            styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
+            styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
+            styleFooter.setBorderBottom(CellStyle.BORDER_THIN);
+            styleFooter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooter.setBorderTop(CellStyle.BORDER_THIN);
+            styleFooter.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooter.setBorderLeft(CellStyle.BORDER_THIN);
+            styleFooter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooter.setBorderRight(CellStyle.BORDER_THIN);
+            styleFooter.setRightBorderColor(IndexedColors.BLACK.getIndex());
+
+            CellStyle styleFooterCenter = wb.createCellStyle()
+            styleFooterCenter.setFont(fontFooter)
+            styleFooterCenter.setAlignment(CellStyle.ALIGN_CENTER)
+            styleFooterCenter.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+            styleFooterCenter.setBorderBottom(CellStyle.BORDER_THIN);
+            styleFooterCenter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooterCenter.setBorderTop(CellStyle.BORDER_MEDIUM_DASHED);
+            styleFooterCenter.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooterCenter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
+            styleFooterCenter.setFillPattern(CellStyle.SOLID_FOREGROUND)
+
+
+            Row rowYachay = sheet.createRow((short) curRow)
+            curRow++
+            Cell cellTitulo = rowYachay.createCell((short) 4)
+            cellTitulo.setCellValue("EMPRESA PÚBLICA YACHAY EP")
+            cellTitulo.setCellStyle(styleYachay)
+
+            Row rowSubtitulo = sheet.createRow((short) curRow)
+            curRow++
+            Cell cellSubtitulo = rowSubtitulo.createCell((short) 4)
+            cellSubtitulo.setCellValue("REPORTE DE REFORMAS Y AJUSTES")
+            cellSubtitulo.setCellStyle(styleSubtitulo)
+
+            Row rowFecha = sheet.createRow((short) curRow)
+            curRow++
+            Cell cellFecha = rowFecha.createCell((short) 1)
+            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
+
+            Row rowHeader = sheet.createRow((short) curRow)
+            rowSubtitulo.setHeightInPoints(30)
+            curRow++
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("C")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("P")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("N°")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ACTIVIDAD")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 20000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("VALOR INICIAL")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("INCREMENTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("REDUCCIÓN")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("VALOR CODIFICADO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+
+            def totalCols = curCol
+            def totalInicial = 0
+            def totalFinal = 0
+
+//            println("mod " + modificacion)
+
+            modificacion.each {
+                curCol = iniCol
+                Row tableRow = sheet.createRow((short) curRow)
+                Cell cellTabla = tableRow.createCell((short) curCol)
+
+                Row tableRow2 = sheet.createRow((short) curRow+1)
+                Cell cellTabla2 = tableRow2.createCell((short) curCol)
+
+                cellTabla.setCellValue(it?.desde?.programa?.descripcion)
+                cellTabla.setCellStyle(styleTabla)
+                cellTabla2.setCellValue(it?.recibe?.programa?.descripcion)
+                cellTabla2.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it?.desde?.componente?.descripcion)
+                cellTabla.setCellStyle(styleTabla)
+                cellTabla2 = tableRow2.createCell((short) curCol)
+                cellTabla2.setCellValue(it?.recibe?.componente?.descripcion)
+                cellTabla2.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it.desde.marcoLogico.numero)
+                cellTabla.setCellStyle(styleTabla)
+                cellTabla2 = tableRow2.createCell((short) curCol)
+                cellTabla2.setCellValue(it.recibe.marcoLogico.numero)
+                cellTabla2.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it.desde.marcoLogico.toStringCompleto())
+                cellTabla.setCellStyle(styleTabla)
+                cellTabla2 = tableRow2.createCell((short) curCol)
+                cellTabla2.setCellValue(it.recibe.marcoLogico.toStringCompleto())
+                cellTabla2.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it.originalOrigen)
+                cellTabla.setCellStyle(styleTabla)
+                cellTabla2 = tableRow2.createCell((short) curCol)
+                cellTabla2.setCellValue(it.originalDestino)
+                cellTabla2.setCellStyle(styleTabla)
+                totalInicial += (it.originalOrigen + it.originalDestino)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it.valor)
+                cellTabla.setCellStyle(styleTabla)
+                cellTabla2 = tableRow2.createCell((short) curCol)
+                cellTabla2.setCellValue('')
+                cellTabla2.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue('')
+                cellTabla.setCellStyle(styleTabla)
+                cellTabla2 = tableRow2.createCell((short) curCol)
+                cellTabla2.setCellValue(it.valor)
+                cellTabla2.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it.originalOrigen + it.valor)
+                cellTabla.setCellStyle(styleTabla)
+                cellTabla2 = tableRow2.createCell((short) curCol)
+                cellTabla2.setCellValue(it.originalDestino - it.valor)
+                cellTabla2.setCellStyle(styleTabla)
+                totalFinal += ((it.originalOrigen + it.valor) + (it.originalDestino - it.valor))
+                curCol++
+                curRow++
+
+            }
+
+
+            curCol = iniCol
+            Row totalRow = sheet.createRow((short) curRow+1)
+            Cell cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue('TOTAL')
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(totalInicial)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(totalFinal)
+            cellFooter.setCellStyle(styleFooter)
+
+
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "reporte_reformas.xlsx"
             response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response.setHeader("Content-Disposition", header)
             wb.write(output)

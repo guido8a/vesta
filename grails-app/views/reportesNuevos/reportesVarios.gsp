@@ -98,8 +98,51 @@
             }); //ajax
         });
 
-        $("reformas").click(function () {
+        $("#reformas").click(function () {
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(controller:'reportesNuevos', action:'form_avales_ajax')}",
+                data    : '',
+                success : function (msg) {
 
+                    var b = bootbox.dialog({
+                        id      : "dlgAvales",
+                        title   : "Reporte de Avales",
+                        message : msg,
+                        buttons : {
+                            pdf  : {
+                                id        : "btnPdf",
+                                label     : "<i class='fa fa-file-pdf-o'></i> Reporte Pdf",
+                                className : "btn-success",
+                                callback  : function () {
+                                    var fnt = $("#fuente").val();
+
+                                } //callback
+                            }, //guardar
+                            excel  : {
+                                id        : "btnExcel",
+                                label     : "<i class='fa fa-file-excel-o'></i> Reporte Excel",
+                                className : "btn-success",
+                                callback  : function () {
+                                    var fnt = $("#fuente").val();
+                                    location.href = "${createLink(controller: 'reportesNuevos', action: 'reporteReformasExcel')}?fnt=" + fnt;
+                                    return false;
+                                } //callback
+                            }, //guardar
+
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            }
+                        } //buttons
+                    }); //dialog
+                    setTimeout(function () {
+                        b.find(".form-control").first().focus()
+                    }, 500);
+                } //success
+            }); //ajax
         });
 
     });

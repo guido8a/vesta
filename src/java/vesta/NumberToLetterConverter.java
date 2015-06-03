@@ -128,14 +128,26 @@ public abstract class NumberToLetterConverter {
 //        System.out.println("pos 2:" + String.valueOf(getDigitAt(splitNumber[1], 2)));
 //        System.out.println("pos 1:" + String.valueOf(getDigitAt(splitNumber[1], 1)));
 //        System.out.println("pos 0:" + String.valueOf(getDigitAt(splitNumber[1], 0)));
-        if (centavos == 1) {
-            converted.append(" CON UN CENTAVO");
-        } else if (centavos > 1) {
-            converted.append(" CON " + convertNumber(String.valueOf(centavos))
-                    + "CENTAVOS");
-        } else {
-            converted.append(" CON 00 CENTAVOS");
+
+
+//        if (centavos == 1) {
+//            converted.append(" CON UN CENTAVO");
+//        } else if (centavos > 1) {
+//            converted.append(" CON " + convertNumber(String.valueOf(centavos))
+//                    + "CENTAVOS");
+//        } else {
+//            converted.append(" CON 00 CENTAVOS");
+//        }
+
+        String cent = "/100";
+
+        if(centavos == 0){
+            converted.append(" con 00/100");
+        }else{
+            converted.append(" con " + convertNumber(String.valueOf(centavos)) + cent);
         }
+
+
 
         return converted.toString();
     }
