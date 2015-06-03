@@ -124,7 +124,7 @@
 
                         <div class="col-md-2">
                             <div class="input-group">
-                                <g:textField class="form-control input-sm number money" name="montoName" style="text-align: right; margin-right: 10px" id="monto"/>
+                                <g:textField class="form-control input-sm number money" name="montoName" style="text-align: right; margin-right: 10px" id="monto" title="Colocar monto de la asignación"/>
                                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                             </div>
                         </div>
@@ -162,7 +162,7 @@
                     </span>
 
                     <div class="col-md-2 text-right">
-                        <a href="#" class="btn btn-success" id="agregar">
+                        <a href="#" class="btn btn-success" id="agregar" title="Agregar la asignación a la solicitud">
                             <i class="fa fa-plus"></i> Agregar asignación
                         </a>
                     </div>

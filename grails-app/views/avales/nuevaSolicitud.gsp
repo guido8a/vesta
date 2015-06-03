@@ -113,7 +113,7 @@
                     <div class="col-md-9">
                         <g:if test="${!readOnly}">
                             <g:textArea class="form-control input-sm required"
-                                        name="nombre" value="${proceso?.nombre}" id="nombre"/>
+                                        name="nombre" value="${proceso?.nombre}" id="nombre" title="Nombre del Proceso"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -175,7 +175,7 @@
                         <g:if test="${!readOnly}">
                             <div class="input-group" style="width: 60px">
                                 <g:textField class="form-control input-sm required digits"
-                                             name="informar" value="${proceso?.informar}" id="informar" style="width: 60px"/>
+                                             name="informar" value="${proceso?.informar}" id="informar" style="width: 60px" title="Cantidad de días"/>
                                 <span class="input-group-addon" id="basic-addon2">Días</span>
                             </div>
                         </g:if>

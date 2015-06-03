@@ -120,7 +120,7 @@
                     <div class="col-md-2">
                         <g:if test="${!readOnly}">
                             <g:textField name="memorando" class="form-control input-sm " maxlength="63" style="width: 250px"
-                                         value="${solicitud?.memo}"/>
+                                         value="${solicitud?.memo}" title="Documento de respaldo"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -171,7 +171,7 @@
                     <div class="col-md-9">
                         <g:if test="${!readOnly}">
                             <g:textArea name="concepto" maxlength="1024" required="" class="form-control input-sm required"
-                                        style="height: 80px;resize: none" value="${solicitud?.concepto}"/>
+                                        style="height: 80px;resize: none" value="${solicitud?.concepto}" title="Descripción del proceso"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -221,7 +221,7 @@
                     <div class="col-md-9">
                         <g:if test="${!readOnly}">
                             <g:textArea name="notaTecnica" style="resize: none" maxlength="350" class="form-control input-sm"
-                                        value="${solicitud?.notaTecnica}"/>
+                                        value="${solicitud?.notaTecnica}" title="Nota técnica"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
