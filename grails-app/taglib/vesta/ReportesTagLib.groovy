@@ -179,6 +179,18 @@ class ReportesTagLib {
         html += '<div id="header">' + "\n"
         html += "<img src='${logoPath}' style='height:${h}px;'/>" + "\n"
         html += '</div>' + "\n"
+
+        html += "<div class='tituloRprt'>"
+        html += "<div class='tituloReporte'>"
+        html += "Empresa pública YACHAY EP"
+        html += '</div>'
+        html += '</div>'
+
+        if (titulo) {
+            html += "<div class='tituloRprt'>"
+            html += titulo
+            html += '</div>'
+        }
         if (title) {
             if (subtitulo == "") {
                 html += "<div class='tituloReporte'>" + "\n"

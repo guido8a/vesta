@@ -8,9 +8,9 @@
 <%@ page import="vesta.poa.ProgramacionAsignacion; vesta.poa.Asignacion; vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico; vesta.parametros.poaPac.Mes" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-        <title>POA por Área de Gestión</title>
+        <title>POA por Unidad Ejecutora</title>
 
-        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Área de Gestión ${anio.anio}"/>
+        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Unidad Ejecutora ${anio.anio}"/>
 
         <style type="text/css">
         .table {
@@ -67,21 +67,21 @@
     </head>
 
     <body>
-        <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Área de Gestión"/>
+        <rep:headerFooter title="PLANIFICACIÓN OPERATIVA ANUAL - POA AÑO ${anio.anio}" subtitulo="RESUMEN POR UNIDAD EJECUTORA"/>
 
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
                 <tr>
-                    <th></th>
-                    <th>Unidad</th>
-                    <th>Sigla</th>
-                    <th>Arrastre ${anio.anio.toInteger() - 1}</th>
-                    <th>Requerimientos ${anio.anio}</th>
-                    <th>Total ${anio.anio}</th>
+                    <th>NÚMERO</th>
+                    <th>DESCRIPCIÓN</th>
+                    <th>SIGLAS</th>
+                    <th>ARRASTRE AÑO ${anio.anio.toInteger() - 1}</th>
+                    <th>REQUERIMIENTO AÑO ${anio.anio}</th>
+                    <th>PRESUPUESTO CODIFICADO AÑO ${anio.anio}</th>
                     <g:each in="${anios}" var="a">
-                        <th>${a}</th>
+                        <th>AÑO${a}</th>
                     </g:each>
-                    <th>Total Plurianual</th>
+                    <th>TOTAL PLURIANUAL</th>
                 </tr>
             </thead>
             <tbody>

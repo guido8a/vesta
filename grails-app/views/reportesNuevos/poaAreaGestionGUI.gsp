@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>POA Por Área de Gestión</title>
+        <title>POA Por Unidad Ejecutora</title>
         <style type="text/css">
         .actual {
             background : #c7daed;
@@ -41,18 +41,18 @@
 
         <g:set var="anio" value="${Anio.findByAnio(new Date().format('yyyy'))}"/>
 
-        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Área de Gestión">
+        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Unidad Ejecutora">
             <table class="table table-bordered table-hover table-condensed table-bordered">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Unidad</th>
+                        <th>Número</th>
+                        <th>Descripción</th>
                         <th>Siglas</th>
-                        <th>Arrastre ${anio.anio.toInteger() - 1}</th>
-                        <th>Requerimientos ${anio.anio}</th>
-                        <th>Total ${anio.anio}</th>
+                        <th>Arrastre año ${anio.anio.toInteger() - 1}</th>
+                        <th>Requerimiento año ${anio.anio}</th>
+                        <th>Presupuesto codificado año ${anio.anio}</th>
                         <g:each in="${anios}" var="a">
-                            <th>${a}</th>
+                            <th>Año ${a}</th>
                         </g:each>
                         <th>Total Plurianual</th>
                     </tr>
@@ -124,7 +124,7 @@
                 if (tipo == "pdf") {
                     url = "${createLink(action: 'poaAreaGestionPdf')}";
                     url += "?anio=" + $("#anio").val();
-                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_Area_gestion.pdf";
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=poa_unidad_ejecutora.pdf";
                 } else if (tipo == "xls") {
                     url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaAreaGestionXls')}";
                     url += "?anio=" + $("#anio").val();

@@ -239,18 +239,18 @@ class ReportesNuevosExcelController {
             Sheet sheet = wb.createSheet("POA por unidad ejecutora")
             // Create a new font and alter it.
             Font fontYachay = wb.createFont()
-            fontYachay.setFontHeightInPoints((short) 14)
-            fontYachay.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+            fontYachay.setFontHeightInPoints((short) 12)
+//            fontYachay.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
             fontYachay.setBold(true)
 
             Font fontTitulo = wb.createFont()
-            fontTitulo.setFontHeightInPoints((short) 14)
-            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+            fontTitulo.setFontHeightInPoints((short) 12)
+//            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
             fontTitulo.setBold(true)
 
             Font fontSubtitulo = wb.createFont()
-            fontSubtitulo.setFontHeightInPoints((short) 14)
-            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+            fontSubtitulo.setFontHeightInPoints((short) 12)
+//            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
             fontSubtitulo.setBold(true)
 
             Font fontHeader = wb.createFont()
@@ -305,19 +305,36 @@ class ReportesNuevosExcelController {
             styleTabla.setLeftBorderColor(IndexedColors.BLACK.getIndex());
             styleTabla.setBorderRight(CellStyle.BORDER_THIN);
             styleTabla.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderTop(CellStyle.BORDER_MEDIUM_DASHED);
+            styleTabla.setBorderTop(CellStyle.BORDER_THIN);
             styleTabla.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
             CellStyle styleFooter = wb.createCellStyle()
             styleFooter.setFont(fontFooter)
             styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
             styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
+            styleFooter.setBorderBottom(CellStyle.BORDER_THIN);
+            styleFooter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooter.setBorderLeft(CellStyle.BORDER_THIN);
+            styleFooter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooter.setBorderRight(CellStyle.BORDER_THIN);
+            styleFooter.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooter.setBorderTop(CellStyle.BORDER_THIN);
+            styleFooter.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
             CellStyle styleFooterCenter = wb.createCellStyle()
             styleFooterCenter.setFont(fontFooter)
             styleFooterCenter.setAlignment(CellStyle.ALIGN_CENTER)
             styleFooterCenter.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
             styleFooterCenter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
             styleFooterCenter.setFillPattern(CellStyle.SOLID_FOREGROUND)
+            styleFooterCenter.setBorderBottom(CellStyle.BORDER_THIN);
+            styleFooterCenter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooterCenter.setBorderLeft(CellStyle.BORDER_THIN);
+            styleFooterCenter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooterCenter.setBorderRight(CellStyle.BORDER_THIN);
+            styleFooterCenter.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooterCenter.setBorderTop(CellStyle.BORDER_THIN);
+            styleFooterCenter.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
             // Create a row and put some cells in it. Rows are 0 based.
 
@@ -332,14 +349,14 @@ class ReportesNuevosExcelController {
 //            rowTitulo.setHeightInPoints(24)
             curRow++
             Cell cellTitulo = rowTitulo.createCell((short) iniCol)
-            cellTitulo.setCellValue("PLAN OPERATIVO ANUAL POA " + anio.anio)
+            cellTitulo.setCellValue("PLANIFICACIÓN OPERATIVA ANUAL - POA AÑO " + anio.anio)
             cellTitulo.setCellStyle(styleTitulo)
 
             Row rowSubtitulo = sheet.createRow((short) curRow)
 //            rowSubtitulo.setHeightInPoints(24)
             curRow++
             Cell cellSubtitulo = rowSubtitulo.createCell((short) iniCol)
-            cellSubtitulo.setCellValue("RESUMEN POR ÁREA DE GESTIÓN")
+            cellSubtitulo.setCellValue("RESUMEN POR UNIDAD EJECUTORA")
             cellSubtitulo.setCellStyle(styleSubtitulo)
 
             Row rowFecha = sheet.createRow((short) curRow)
@@ -422,39 +439,55 @@ class ReportesNuevosExcelController {
             data.data.eachWithIndex { v, k ->
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
-                tableRow.createCell(curCol).setCellValue("" + (k + 1))
+                def tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue("" + (k + 1))
+                tableCell.setCellStyle(styleTabla)
                 curCol++
-                tableRow.createCell(curCol).setCellValue("" + v.unidad.nombre)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue("" + v.unidad.nombre)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
-                tableRow.createCell(curCol).setCellValue(v.unidad.codigo)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.unidad.codigo)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 def str = ""
                 if (v.valores["" + (anio.anio.toInteger() - 1)] > 0) {
                     str = v.valores["" + (anio.anio.toInteger() - 1)]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 str = ""
                 if (v.valores[anio.anio] > 0) {
                     str = v.valores[anio.anio]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 str = ""
                 if (v.valores["T" + anio.anio] > 0) {
                     str = v.valores["T" + anio.anio]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 data.anios.each { a ->
                     str = ""
                     if (v.valores[a] > 0) {
                         str = v.valores[a]
                     }
-                    tableRow.createCell(curCol).setCellValue(str)
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(str)
+                    tableCell.setCellStyle(styleTabla)
                     curCol++
                 }
-                tableRow.createCell(curCol).setCellValue(v.valores["T"])
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.valores["T"])
+                tableCell.setCellStyle(styleTabla)
                 curRow++
             }
 
@@ -512,7 +545,7 @@ class ReportesNuevosExcelController {
 //                sheet.autoSizeColumn(i) //adjust width of the first column
 //            }
             def output = response.getOutputStream()
-            def header = "attachment; filename=" + "poa_area_gestion.xlsx"
+            def header = "attachment; filename=" + "poa_unidad_ejecutora.xlsx"
             response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response.setHeader("Content-Disposition", header)
             wb.write(output)
