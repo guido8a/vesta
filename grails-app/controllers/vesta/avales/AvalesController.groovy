@@ -1171,7 +1171,8 @@ class AvalesController extends vesta.seguridad.Shield {
                 alerta.from = session.usuario
                 alerta.persona = usuFirma
                 alerta.fechaEnvio = new Date()
-                alerta.mensaje = "Nueva solicitud de aval: " + sol.concepto
+//                alerta.mensaje = "Nueva solicitud de aval: " + sol.concepto
+                alerta.mensaje = "Nueva solicitud de aval: " + sol.proceso.nombre
                 alerta.controlador = "revisionAval"
                 alerta.accion = "pendientes"
                 alerta.id_remoto = sol.id
@@ -1309,7 +1310,8 @@ class AvalesController extends vesta.seguridad.Shield {
                     alerta.from = persona
                     alerta.persona = usro
                     alerta.fechaEnvio = now
-                    alerta.mensaje = "Solicitud de aval: " + sol.concepto
+//                    alerta.mensaje = "Solicitud de aval: " + sol.concepto
+                    alerta.mensaje = "Solicitud de aval: " + sol.proceso.nombre
                     alerta.controlador = "revisionAval"
                     alerta.accion = "pendientes"
                     alerta.id_remoto = sol.id

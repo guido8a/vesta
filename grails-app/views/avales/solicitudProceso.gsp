@@ -271,14 +271,19 @@
 
                 $("#btnEnviar").click(function () {
                     $("#preview").val("");
-                    if ($(".frmAval").valid()) {
-                        bootbox.confirm("<strong>¿Está seguro de querer enviar la solicitud?</strong><br/><br/>" +
-                                        "Una vez enviada ya no se podrá modificar los datos de la Solicitud", function (res) {
-                            if (res) {
-                                openLoader("Por favor espere");
-                                $(".frmAval").submit();
-                            }
-                        });
+                    if (parseFloat("${disponible}") > 0) {
+                        if ($(".frmAval").valid()) {
+                            bootbox.confirm("<strong>¿Está seguro de querer enviar la solicitud?</strong><br/><br/>" +
+                                            "Una vez enviada ya no se podrá modificar los datos de la Solicitud", function (res) {
+                                if (res) {
+                                    openLoader("Por favor espere");
+                                    $(".frmAval").submit();
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        bootbox.alert("No ha seleccionado asignaciones, por lo que no puede enviar esta solicitud.");
                     }
                 });
 

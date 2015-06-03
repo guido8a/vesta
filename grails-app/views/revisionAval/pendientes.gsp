@@ -44,7 +44,7 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="pendientes">
-                    <g:if test="${solicitudes.size() > 0}">
+                    <g:if test="${solicitudes.size() > 0 || procesosSinSolicitud.size() > 0}">
                         <table class="table table-condensed table-striped table-hover table-bordered" style="margin-top: 20px;">
                             <thead>
                                 <tr>
@@ -61,6 +61,26 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <g:each in="${procesosSinSolicitud}" var="p">
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>${p.nombre}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Solicitud pendiente</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-xs" role="group">
+                                                <a href="${g.createLink(controller: 'avales', action: 'nuevaSolicitud', id: p.id)}" class="aprobar btn btn-info" title="Editar">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </g:each>
                                 <g:each in="${solicitudes}" var="p">
                                     <g:set var="title"/>
                                     <g:if test="${p.estado.codigo == 'D01'}">

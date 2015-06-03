@@ -672,7 +672,8 @@ class RevisionAvalController extends Shield {
             alerta.from = usu
             alerta.persona = a
             alerta.fechaEnvio = now
-            alerta.mensaje = "Devolución de aval: " + sol.concepto
+//            alerta.mensaje = "Devolución de aval: " + sol.concepto
+            alerta.mensaje = "Devolución de aval: " + sol.proceso.nombre
             alerta.controlador = "revisionAval"
             alerta.accion = "pendientes"
             if (!alerta.save(flush: true)) {
@@ -684,7 +685,8 @@ class RevisionAvalController extends Shield {
                     mailService.sendMail {
                         to mail
                         subject "Devolución de aval"
-                        body "Su solicitud de aval: " + sol.concepto + " ha sido devuelta por " + usu
+//                        body "Su solicitud de aval: " + sol.concepto + " ha sido devuelta por " + usu
+                        body "Su solicitud de aval: " + sol.proceso.nombre + " ha sido devuelta por " + usu
                     }
                 } catch (e) {
                     println "error al mandar mail"
@@ -1170,7 +1172,16 @@ class RevisionAvalController extends Shield {
 
         unidadesList = unidadesList.sort { it.nombre }
 
-        return [solicitudes: solicitudes, actual: actual, unidades: unidadesList]
+        def unidades2 = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        def p = []
+        def procesosSinSolicitud = ProcesoAval.list([sort: "id"])
+        procesosSinSolicitud.each { pss ->
+            if (SolicitudAval.countByProcesoAndUnidadInList(pss, unidades2) == 0) {
+                p += pss
+            }
+        }
+
+        return [solicitudes: solicitudes, actual: actual, unidades: unidadesList, procesosSinSolicitud: p]
     }
 
     def devolverARequirente_ajax() {
@@ -1191,7 +1202,8 @@ class RevisionAvalController extends Shield {
                 alerta1.from = usu
                 alerta1.persona = solicitud.usuario
                 alerta1.fechaEnvio = new Date()
-                alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.concepto
+//                alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.concepto
+                alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.proceso.nombre
                 alerta1.controlador = "revisionAval"
                 alerta1.accion = "pendientes"
                 if (!alerta1.save(flush: true)) {
@@ -1204,7 +1216,8 @@ class RevisionAvalController extends Shield {
                         mailService.sendMail {
                             to mail
                             subject "Devolución de aval"
-                            body "Su solicitud de aval: " + solicitud.concepto + " ha sido devuelta por " + usu
+//                            body "Su solicitud de aval: " + solicitud.concepto + " ha sido devuelta por " + usu
+                            body "Su solicitud de aval: " + solicitud.proceso.nombre + " ha sido devuelta por " + usu
                         }
                     } catch (e) {
                         println "error al mandar mail"
@@ -1234,7 +1247,8 @@ class RevisionAvalController extends Shield {
             alerta1.from = usu
             alerta1.persona = solicitud.director
             alerta1.fechaEnvio = new Date()
-            alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.concepto
+//            alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.concepto
+            alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.proceso.nombre
             alerta1.controlador = "revisionAval"
             alerta1.accion = "pendientes"
             if (!alerta1.save(flush: true)) {
@@ -1246,7 +1260,8 @@ class RevisionAvalController extends Shield {
                     mailService.sendMail {
                         to mail
                         subject "Devolución de aval"
-                        body "Su solicitud de aval: " + solicitud.concepto + " ha sido devuelta por " + usu
+//                        body "Su solicitud de aval: " + solicitud.concepto + " ha sido devuelta por " + usu
+                        body "Su solicitud de aval: " + solicitud.proceso.nombre + " ha sido devuelta por " + usu
                     }
                 } catch (e) {
                     println "error al mandar mail"
@@ -1295,8 +1310,8 @@ class RevisionAvalController extends Shield {
                     firma.idAccionVer = solicitud.id
 
                     firma.tipoFirma = "AVAL"
-//                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
-                    firma.concepto = "Solicitud de aval: " + solicitud.concepto
+                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
+//                    firma.concepto = "Solicitud de aval: " + solicitud.concepto
                     if (!firma.save(flush: true)) {
                         println "error al guardar firma: " + firma.errors
                     } else {
@@ -1304,8 +1319,8 @@ class RevisionAvalController extends Shield {
                     }
                 } else {
                     firma.estado = "S"
-//                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
-                    firma.concepto = "Solicitud de aval: " + solicitud.concepto
+                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
+//                    firma.concepto = "Solicitud de aval: " + solicitud.concepto
                     if (!firma.save(flush: true)) {
                         println "error al guardar firma: " + firma.errors
                     }
@@ -1316,7 +1331,8 @@ class RevisionAvalController extends Shield {
                 alerta1.from = usu
                 alerta1.persona = personaFirma
                 alerta1.fechaEnvio = new Date()
-                alerta1.mensaje = "Solicitud de aval: " + solicitud.concepto
+//                alerta1.mensaje = "Solicitud de aval: " + solicitud.concepto
+                alerta1.mensaje = "Solicitud de aval: " + solicitud.proceso.nombre
                 alerta1.controlador = "firma"
                 alerta1.accion = "firmasPendientes"
                 alerta1.parametros = "tab=AVAL"

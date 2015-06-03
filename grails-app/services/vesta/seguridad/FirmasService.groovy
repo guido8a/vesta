@@ -13,6 +13,7 @@ class FirmasService {
     String path = "firmas/"
 //    def qrCodeService
     def QRCodeService
+    def proyectosService
 
     def servletContext
     static transactional = true
@@ -40,8 +41,17 @@ class FirmasService {
     }
 
     def listaDirectoresUnidad(UnidadEjecutora unidad) {
+        //quitado el 03-06-2015, cambiado por lo de mas abajo....
+//        def directores = Persona.withCriteria {
+//            eq("unidad", unidad)
+//            cargoPersonal {
+//                ilike("descripcion", "%director%")
+//            }
+//        }
+//        return directores
+        def unidades = proyectosService.getUnidadesUnidad(unidad)
         def directores = Persona.withCriteria {
-            eq("unidad", unidad)
+            inList("unidad", unidades)
             cargoPersonal {
                 ilike("descripcion", "%director%")
             }
