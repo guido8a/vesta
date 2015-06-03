@@ -46,13 +46,13 @@
             <table class="table table-bordered table-hover table-condensed table-bordered">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th></th>
-                        <th>Arrastre ${anio.anio.toInteger() - 1}</th>
-                        <th>Requerimientos ${anio.anio}</th>
-                        <th>Total ${anio.anio}</th>
+                        <th>Grupo de gasto</th>
+                        <th>Descripción</th>
+                        <th>Arrastre año ${anio.anio.toInteger() - 1}</th>
+                        <th>Requerimiento año ${anio.anio}</th>
+                        <th>Presupuesto codificado año ${anio.anio}</th>
                         <g:each in="${anios}" var="a">
-                            <th>${a}</th>
+                            <th>Año${a}</th>
                         </g:each>
                         <th>Total Plurianual</th>
                     </tr>
@@ -60,8 +60,8 @@
                 <tbody>
                     <g:each in="${data}" var="v">
                         <tr>
-                            <td>${v.partida.descripcion}</td>
                             <td class="text-center">${v.partida.numero.replaceAll("0", "")}</td>
+                            <td>${v.partida.descripcion}</td>
                             <td class="text-right actual">
                                 <g:if test="${v.valores["" + (anio.anio.toInteger() - 1)] > 0}">
                                     <g:formatNumber number="${v.valores["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/>
