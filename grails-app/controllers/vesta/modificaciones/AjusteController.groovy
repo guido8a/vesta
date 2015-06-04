@@ -50,7 +50,8 @@ class AjusteController extends Shield {
 //
 //            reformas = Reforma.findAllByTipoAndPersonaInList('A', personas, [sort: "fecha", order: "desc"])
 //        }
-        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
         reformas = Reforma.withCriteria {
             eq("tipo", "A")
             persona {
@@ -87,7 +88,8 @@ class AjusteController extends Shield {
 //
 //        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -143,7 +145,8 @@ class AjusteController extends Shield {
 //
 //        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -198,7 +201,8 @@ class AjusteController extends Shield {
 //        def proyectos2 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 //
 //        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -262,7 +266,8 @@ class AjusteController extends Shield {
 //
 //        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
 
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
 //        println "pro "+proyectos
@@ -424,6 +429,8 @@ class AjusteController extends Shield {
                     detalle.asignacionOrigen = asignacionOrigen
                     detalle.asignacionDestino = asignacionDestino
                     detalle.valor = monto
+                    detalle.valorOrigenInicial = asignacionOrigen.priorizado
+                    detalle.valorDestinoInicial = asignacionDestino.priorizado
                     if (!detalle.save(flush: true)) {
                         println "error al guardar detalle: " + detalle.errors
                         errores += renderErrors(bean: detalle)
@@ -580,6 +587,8 @@ class AjusteController extends Shield {
             detalle.reforma = reforma
             detalle.asignacionOrigen = asignacionOrigen
             detalle.valor = monto
+            detalle.valorOrigenInicial = asignacionOrigen.priorizado
+            detalle.valorDestinoInicial = 0
             detalle.presupuesto = presupuesto
             detalle.componente = componente
             detalle.descripcionNuevaActividad = det.actividad.trim()
@@ -737,6 +746,8 @@ class AjusteController extends Shield {
             detalle.reforma = reforma
             detalle.asignacionOrigen = asignacionOrigen
             detalle.valor = monto
+            detalle.valorOrigenInicial = asignacionOrigen.priorizado
+            detalle.valorDestinoInicial = 0
             detalle.presupuesto = presupuesto
             detalle.fuente = asignacionOrigen.fuente
 
@@ -904,11 +915,14 @@ class AjusteController extends Shield {
             def detalle = new DetalleReforma()
             detalle.reforma = reforma
             detalle.valor = monto
+            detalle.valorOrigenInicial = 0
+            detalle.valorDestinoInicial = 0
 
             if (det.asignacion) {
                 def asignacionOrigen = Asignacion.get(det.asignacion.toLong())
 
                 detalle.asignacionOrigen = asignacionOrigen
+                detalle.valorOrigenInicial = asignacionOrigen.priorizado
             } else if (det.actividad) {
                 def presupuesto = Presupuesto.get(det.partida.toLong())
                 def actividad = MarcoLogico.get(det.actividad.toLong())

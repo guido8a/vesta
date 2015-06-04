@@ -89,7 +89,8 @@ class RevisionAvalController extends Shield {
 //                }
 //            }
 //        }
-        def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        def uns = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
         unidades = Asignacion.withCriteria {
             inList("unidad", uns)
             projections {
@@ -156,7 +157,8 @@ class RevisionAvalController extends Shield {
 //                unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
 //            }
 //        }
-        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
 
         def personasLista = Persona.findAllByUnidadInList(unidades)
 
@@ -322,7 +324,8 @@ class RevisionAvalController extends Shield {
 //                unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
 //            }
 //        }
-        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
 
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
@@ -1100,7 +1103,8 @@ class RevisionAvalController extends Shield {
 //        } else {
 //            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
 //        }
-        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
 
         def filtroDirector = null,
             filtroPersona = null
@@ -1162,7 +1166,8 @@ class RevisionAvalController extends Shield {
 //                }
 //            }
 //        }
-        def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        def uns = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
         unidadesList = Asignacion.withCriteria {
             inList("unidad", uns)
             projections {
@@ -1172,7 +1177,8 @@ class RevisionAvalController extends Shield {
 
         unidadesList = unidadesList.sort { it.nombre }
 
-        def unidades2 = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        def unidades2 = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        def unidades2 = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
         def p = []
         def procesosSinSolicitud = ProcesoAval.list([sort: "id"])
         procesosSinSolicitud.each { pss ->

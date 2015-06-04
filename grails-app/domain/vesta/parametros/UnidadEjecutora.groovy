@@ -1,7 +1,11 @@
 package vesta.parametros
 
 import vesta.parametros.geografia.Provincia
+import vesta.parametros.poaPac.Anio
 import vesta.parametros.proyectos.ObjetivoUnidad
+import vesta.poa.Asignacion
+import vesta.proyectos.MarcoLogico
+import vesta.proyectos.Proyecto
 
 /*Unidades ejecutoras de los proyectos, generalmente adscritas a los ministerios*/
 /**
@@ -157,5 +161,126 @@ class UnidadEjecutora {
         this.numeroSolicitudReforma = this.numeroSolicitudReforma + 1
         this.save(flush: true)
         return this.numeroSolicitudReforma
+    }
+
+    UnidadEjecutora getGerencia() {
+        def gerencia = this
+        def padre = this.padre
+        def codigosNo = ['343', '9999'] // yachay, Gerencia general, Gerencia tecnica
+        if (!codigosNo.contains(padre.codigo)) {
+            gerencia = padre
+        }
+        return gerencia
+    }
+
+    def getUnidadYGerencia() {
+        def ret = [unidad: this, gerencia: this.gerencia]
+        return ret
+    }
+
+    def getUnidades() {
+        def padre = this.padre
+        def unidades = [this]
+        def codigosNo = ['343', '9999', 'GT'] // yachay, Gerencia general, Gerencia tecnica
+        if (!codigosNo.contains(padre.codigo)) {
+            unidades += padre
+            unidades += UnidadEjecutora.findAllByPadre(padre)
+        } else {
+            unidades += UnidadEjecutora.findAllByPadre(this)
+        }
+
+        return unidades.unique().sort { it.nombre }
+    }
+
+    def getUnidadesPorPerfil(String perfilCodigo) {
+        def perfilesAll = ["GAF", "ASPL", "GP"]
+        //gerencia administrativa financiera, Analista de Planificación, Gerencia de Planificación
+        def unidades = []
+        if (perfilesAll.contains(perfilCodigo)) {
+            unidades = UnidadEjecutora.list()
+        } else {
+            def padre = this.padre
+            unidades = [this]
+            def codigosNo = ['343', '9999', 'GT'] // yachay, Gerencia general, Gerencia tecnica
+            if (!codigosNo.contains(padre.codigo)) {
+                unidades += padre
+                unidades += UnidadEjecutora.findAllByPadre(padre)
+            } else {
+                unidades += UnidadEjecutora.findAllByPadre(this)
+            }
+        }
+        return unidades.unique().sort { it.nombre }
+    }
+
+    def getAsignacionesUnidad(Anio anio, String perfilCodigo) {
+        def unidades = this.getUnidadesPorPerfil(perfilCodigo)
+        def asignaciones = Asignacion.findAllByAnioAndUnidadInList(anio, unidades)
+        return asignaciones.unique()
+    }
+
+    def getProyectosUnidad(Anio anio, String perfilCodigo) {
+        def asignaciones = this.getAsignacionesUnidad(anio, perfilCodigo)
+        def proyectos = []
+        def proyectos2 = []
+        def i
+
+        asignaciones.each { e ->
+            i = e.marcoLogico.proyecto.id
+            if (!proyectos2.contains(i)) {
+                proyectos2.add(i)
+            }
+        }
+        proyectos2.each {
+            proyectos += Proyecto.get(it)
+        }
+        return proyectos.unique().sort { it.nombre }
+    }
+
+    def getComponentesUnidadProyecto(Anio anio, Proyecto proyecto, String perfilCodigo) {
+        def asignaciones = this.getAsignacionesUnidad(anio, perfilCodigo)
+        def componentes = []
+        def componentes2 = []
+
+        asignaciones.each { f ->
+            def p2 = f.marcoLogico.proyecto
+            def c2 = f.marcoLogico.marcoLogico.id
+            if (p2.id == proyecto.id && !componentes2.contains(c2)) {
+                componentes2.add(c2)
+            }
+
+        }
+        componentes2.each {
+            componentes += MarcoLogico.get(it)
+        }
+        return componentes.unique().sort { it.objeto }
+    }
+
+    def getActividadesUnidadComponente(Anio anio, MarcoLogico componente, String perfilCodigo) {
+        def asignaciones = this.getAsignacionesUnidad(anio, perfilCodigo)
+        def actividades = []
+        def actividades2 = []
+        asignaciones.each { b ->
+            def c3 = b.marcoLogico.marcoLogico
+            def act2 = b.marcoLogico.id
+            if (c3.id == componente.id && !actividades2.contains(act2)) {
+                actividades2.add(act2)
+            }
+        }
+        actividades2.each {
+            actividades += MarcoLogico.get(it)
+        }
+        return actividades.unique().sort { it.numero }
+    }
+
+    def getAsignacionesUnidadActividad(Anio anio, MarcoLogico actividad, String perfilCodigo) {
+        def asignaciones = this.getAsignacionesUnidad(anio, perfilCodigo)
+        def asg = []
+        asignaciones.each { a ->
+            def act = a.marcoLogico
+            if (act.id == actividad.id && !asg.contains(act)) {
+                asg.add(a)
+            }
+        }
+        return asg.unique()
     }
 }

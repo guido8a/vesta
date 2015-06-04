@@ -19,6 +19,7 @@
             <th>Componente</th>
             <th>No</th>
             <th>Nombre de la actividad</th>
+            <th>Responsable</th>
             <th>
                 Partida <br/>
                 presupuestaria
@@ -56,6 +57,7 @@
                     <td>${d.desde.componente}</td>
                     <td>${d.desde.no}</td>
                     <td>${d.desde.actividad}</td>
+                    <td>${d.desde.responsable}</td>
                     <td class="text-center">${d.desde.partida}</td>
                     <td class="text-right"><g:formatNumber number="${d.desde.inicial}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${d.desde.dism}" type="currency" currencySymbol=""/></td>
@@ -99,6 +101,7 @@
                             ${h.actividad}
                         </g:else>
                     </td>
+                    <td>${h.responsable}</td>
                     <td class="text-center">${h.partida}</td>
                     <td class="text-right"><g:formatNumber number="${h.inicial}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${h.dism}" type="currency" currencySymbol=""/></td>
@@ -120,7 +123,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="5" class="text-right formato">TOTAL</th>
+            <th colspan="6" class="text-right formato">TOTAL</th>
             <th class="text-right formato"><g:formatNumber number="${tInicial}" type="currency" currencySymbol=""/></th>
             <th class="text-right formato"><g:formatNumber number="${tDism}" type="currency" currencySymbol=""/></th>
             <th class="text-right formato"><g:formatNumber number="${tAum}" type="currency" currencySymbol=""/></th>

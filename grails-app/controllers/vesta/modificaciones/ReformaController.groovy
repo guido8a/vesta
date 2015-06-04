@@ -48,7 +48,8 @@ class ReformaController extends Shield {
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
 //        def proyectos = []
 //        Asignacion.list().each {
@@ -114,7 +115,8 @@ class ReformaController extends Shield {
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
 //        def proyectos = []
 //        def actual
@@ -182,7 +184,8 @@ class ReformaController extends Shield {
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 //        def proyectos = []
 //        def actual
 //        Asignacion.list().each {
@@ -247,7 +250,8 @@ class ReformaController extends Shield {
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 //        def proyectos = []
 //        def actual
 //        Asignacion.list().each {
@@ -312,7 +316,8 @@ class ReformaController extends Shield {
         } else {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 //        def proyectos = []
 //        def actual
 //        Asignacion.list().each {
@@ -391,7 +396,8 @@ class ReformaController extends Shield {
 //            reformas = Reforma.findAllByTipoAndPersonaInList('R', personas, [sort: "fecha", order: "desc"])
 //        }
 
-        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
         reformas = Reforma.withCriteria {
             eq("tipo", "R")
             persona {
@@ -448,7 +454,8 @@ class ReformaController extends Shield {
 //        } else {
 //            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
 //        }
-        unidades = unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        unidades = unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
 
         def filtroDirector = null,
             filtroPersona = null
@@ -508,7 +515,8 @@ class ReformaController extends Shield {
 //            }
 //        }
 
-        def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        def uns = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
         unidadesList = Asignacion.withCriteria {
             inList("unidad", uns)
             projections {
@@ -541,7 +549,8 @@ class ReformaController extends Shield {
 //        } else {
 //            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
 //        }
-        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
         reformas = Reforma.withCriteria {
             eq("tipo", tipo)
             inList("estado", estados)
@@ -661,7 +670,8 @@ class ReformaController extends Shield {
         def reforma = Reforma.get(params.id)
         def detalle = DetalleReforma.get(params.det.toLong())
 //        def proyectos3 = Proyecto.findAllByAprobadoPoa('S', [sort: 'nombre'])
-        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), reforma.anio)
+//        def proyectos3 = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), reforma.anio)
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(reforma.anio, session.perfil.codigo.toString())
 
         return [reforma: reforma, proyectos: proyectos3, detalle: detalle, anio: reforma.anio.id]
     }
@@ -1784,8 +1794,8 @@ class ReformaController extends Shield {
             def reforma = Reforma.findByFirmaSolicitud(firma)
             def estadoSolicitado = EstadoAval.findByCodigo("E01")
 
-            def unidades = proyectosService.getUnidadYGerencia(reforma.persona.unidad)
-            def num = unidades.gerencia.siguienteNumeroSolicitudReforma
+//            def unidades = proyectosService.getUnidadYGerencia(reforma.persona.unidad)
+            def num = reforma.persona.unidad.gerencia.siguienteNumeroSolicitudReforma
 
             reforma.numero = num
             reforma.estado = estadoSolicitado

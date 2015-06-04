@@ -49,7 +49,7 @@ class FirmasService {
 //            }
 //        }
 //        return directores
-        def unidades = proyectosService.getUnidadesUnidad(unidad)
+        def unidades = unidad.unidades
         def directores = Persona.withCriteria {
             inList("unidad", unidades)
             cargoPersonal {

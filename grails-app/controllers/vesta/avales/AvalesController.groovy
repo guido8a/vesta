@@ -218,7 +218,8 @@ class AvalesController extends vesta.seguridad.Shield {
     def cargarComponentes_ajax = {
         def proyecto = Proyecto.get(params.id)
         def anio = Anio.get(params.anio)
-        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
+//        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
+        def comps = UnidadEjecutora.get(session.unidad.id).getComponentesUnidadProyecto(anio, proyecto, session.perfil.codigo.toString())
         return [comps: comps]
     }
 
@@ -231,7 +232,8 @@ class AvalesController extends vesta.seguridad.Shield {
         def comp = MarcoLogico.get(params.id)
         def unidad = UnidadEjecutora.get(params.unidad)
         def anio = Anio.get(params.anio)
-        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
+//        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
+        def acts = UnidadEjecutora.get(session.unidad.id).getActividadesUnidadComponente(anio, comp, session.perfil.codigo.toString())
         return [acts: acts]
     }
 
@@ -243,7 +245,8 @@ class AvalesController extends vesta.seguridad.Shield {
     def cargarActividades2_ajax = {
         def comp = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
-        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
+//        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
+        def acts = UnidadEjecutora.get(session.unidad.id).getActividadesUnidadComponente(anio, comp, session.perfil.codigo.toString())
         return [acts: acts]
     }
 
@@ -259,7 +262,8 @@ class AvalesController extends vesta.seguridad.Shield {
 //        }
 //        def acts = proyectosService.getActividadesUnidadComponente(session.asignaciones, comp)
         def anio = Anio.get(params.anio)
-        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
+//        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
+        def acts = UnidadEjecutora.get(session.unidad.id).getActividadesUnidadComponente(anio, comp, session.perfil.codigo.toString())
         return [acts: acts, div: params.div]
     }
 
@@ -275,7 +279,8 @@ class AvalesController extends vesta.seguridad.Shield {
 //        }
 //        def acts = proyectosService.getActividadesUnidadComponente(session.asignaciones, comp)
         def anio = Anio.get(params.anio)
-        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
+//        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
+        def acts = UnidadEjecutora.get(session.unidad.id).getActividadesUnidadComponente(anio, comp, session.perfil.codigo.toString())
         return [acts: acts, div: params.div]
     }
 
@@ -291,7 +296,8 @@ class AvalesController extends vesta.seguridad.Shield {
 //        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
 //        def asg = Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
 //        def asg = proyectosService.getAsignacionesUnidadActividad(session.asignaciones, act)
-        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act, session.perfil.codigo.toString())
+//        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act, session.perfil.codigo.toString())
+        def asg = UnidadEjecutora.get(session.unidad.id).getAsignacionesUnidadActividad(anio, act, session.perfil.codigo.toString())
         [asgs: asg]
     }
 
@@ -307,7 +313,8 @@ class AvalesController extends vesta.seguridad.Shield {
 //        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
 //        def asg = Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
 //        def asg = proyectosService.getAsignacionesUnidadActividad(session.asignaciones, act)
-        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act, session.perfil.codigo.toString())
+//        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act, session.perfil.codigo.toString())
+        def asg = UnidadEjecutora.get(session.unidad.id).getAsignacionesUnidadActividad(anio, act, session.perfil.codigo.toString())
         [asgs: asg]
     }
 
@@ -321,7 +328,8 @@ class AvalesController extends vesta.seguridad.Shield {
         def act = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
 //        println "asgs "+ Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
-        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act, session.perfil.codigo.toString())
+//        def asg = proyectosService.getAsignacionesUnidadActividad(UnidadEjecutora.get(session.unidad.id), anio, act, session.perfil.codigo.toString())
+        def asg = UnidadEjecutora.get(session.unidad.id).getAsignacionesUnidadActividad(anio, act, session.perfil.codigo.toString())
         [asgs: asg]
     }
 
@@ -373,7 +381,8 @@ class AvalesController extends vesta.seguridad.Shield {
 //        } else {
 //            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
 //        }
-        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+//        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+        def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
         def l = []
         procesos.each { p ->
             if (SolicitudAval.countByProcesoAndUnidadInList(p, unidades) > 0) {
@@ -437,7 +446,8 @@ class AvalesController extends vesta.seguridad.Shield {
             }
         }
 
-        proyectos = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+//        proyectos = proyectosService.getProyectosUnidad(UnidadEjecutora.get(session.unidad.id), actual, session.perfil.codigo.toString())
+        proyectos = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
         return [proyectos: proyectos, proceso: proceso, actual: actual, band: band, unidad: unidad, readOnly: readOnly, solicitud: solicitud]
     }
@@ -524,7 +534,8 @@ class AvalesController extends vesta.seguridad.Shield {
                 order("anio", "asc")
             }
 
-            def componentes = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), actual, proceso.proyecto, session.perfil.codigo.toString())
+//            def componentes = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), actual, proceso.proyecto, session.perfil.codigo.toString())
+            def componentes = UnidadEjecutora.get(session.unidad.id).getComponentesUnidadProyecto(actual, proceso.proyecto, session.perfil.codigo.toString())
 
             return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual, componentes: componentes, solicitud: solicitud, anios: anios]
         } else {

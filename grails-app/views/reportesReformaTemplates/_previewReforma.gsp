@@ -1,6 +1,6 @@
 <rep:headerFooter title="${reforma.tipo == 'R' ? 'REFORMA' : 'AJUSTE'} AL POA"
                   form="GPE-DPI-003"
-                  unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.codigo}"
+                  unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.gerencia.codigo}"
                   numero="${reforma.numeroReforma}" estilo="right"/>
 
 <div style="margin-left: 10px;">

@@ -171,7 +171,8 @@ class ModificacionesPoaController extends Shield {
         def proyecto = Proyecto.get(params.id)
 //        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
         def anio = Anio.get(params.anio)
-        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
+//        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
+        def comps = UnidadEjecutora.get(session.unidad.id).getComponentesUnidadProyecto(anio, proyecto, session.perfil.codigo.toString())
         [comps: comps, idCombo: params.idCombo, div: params.div]
     }
 
@@ -181,7 +182,8 @@ class ModificacionesPoaController extends Shield {
         def proyecto = Proyecto.get(params.id)
 //        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
         def anio = Anio.get(params.anio)
-        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
+//        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
+        def comps = UnidadEjecutora.get(session.unidad.id).getComponentesUnidadProyecto(anio, proyecto, session.perfil.codigo.toString())
         [comps: comps, idCombo: params.idCombo, div: params.div]
     }
 
