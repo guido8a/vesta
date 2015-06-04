@@ -69,16 +69,20 @@
     <body>
         <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Grupo de Gasto"/>
 
+    <p>
+        Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}
+    </p>
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th>Arrastre ${anio.anio.toInteger() - 1}</th>
-                    <th>Requerimientos ${anio.anio}</th>
-                    <th>Total ${anio.anio}</th>
+
+                    <th>Grupo de gasto</th>
+                    <th>Descripción</th>
+                    <th>Arrastre Año ${anio.anio.toInteger() - 1}</th>
+                    <th>Requerimiento Año ${anio.anio}</th>
+                    <th>Presupuesto codificado Año ${anio.anio}</th>
                     <g:each in="${anios}" var="a">
-                        <th>${a}</th>
+                        <th>Año ${a}</th>
                     </g:each>
                     <th>Total Plurianual</th>
                 </tr>
@@ -86,8 +90,9 @@
             <tbody>
                 <g:each in="${data}" var="v">
                     <tr>
-                        <td>${v.partida.descripcion}</td>
+
                         <td class="text-center">${v.partida.numero.replaceAll("0", "")}</td>
+                        <td>${v.partida.descripcion}</td>
                         <td class="text-right actual">
                             <g:if test="${v.valores["" + (anio.anio.toInteger() - 1)] > 0}">
                                 <g:formatNumber number="${v.valores["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/>

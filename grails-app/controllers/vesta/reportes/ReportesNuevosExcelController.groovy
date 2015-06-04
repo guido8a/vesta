@@ -52,7 +52,7 @@ class ReportesNuevosExcelController {
             curRow++
             row.setHeightInPoints(30)
             Row row2 = sheet.createRow((short) curRow)
-            curRow += 2
+            curRow += 3
             row2.setHeightInPoints(24)
             Row row3 = sheet.createRow((short) curRow)
             curRow++
@@ -77,6 +77,8 @@ class ReportesNuevosExcelController {
             CellStyle styleFooter = wb.createCellStyle()
             styleFooter.setFont(fontFooter)
 
+
+
             Cell cellTitulo = row.createCell((short) iniCol)
             cellTitulo.setCellValue("PLAN OPERATIVO ANUAL POA " + anio.anio)
             cellTitulo.setCellStyle(styleTitulo)
@@ -84,34 +86,39 @@ class ReportesNuevosExcelController {
             cellSubtitulo.setCellValue("RESUMEN POR GRUPO DE GASTO")
             cellSubtitulo.setCellStyle(styleSubtitulo)
 
+
+            Row rowFecha = sheet.createRow((short) 3)
+            Cell cellFecha = rowFecha.createCell((short) curCol)
+            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
+
             Cell cellHeader = row3.createCell((short) curCol)
             curCol++
-            cellHeader.setCellValue("")
+            cellHeader.setCellValue("Grupo de gasto")
             cellHeader.setCellStyle(styleHeader)
 
             cellHeader = row3.createCell((short) curCol)
             curCol++
-            cellHeader.setCellValue("")
+            cellHeader.setCellValue("Descripción")
             cellHeader.setCellStyle(styleHeader)
 
             cellHeader = row3.createCell((short) curCol)
             curCol++
-            cellHeader.setCellValue("Arrastre ${anio.anio.toInteger() - 1}")
+            cellHeader.setCellValue("Arrastre Año ${anio.anio.toInteger() - 1}")
             cellHeader.setCellStyle(styleHeader)
 
             cellHeader = row3.createCell((short) curCol)
             curCol++
-            cellHeader.setCellValue("Requerimientos ${anio.anio}")
+            cellHeader.setCellValue("Requerimiento Año ${anio.anio}")
             cellHeader.setCellStyle(styleHeader)
 
             cellHeader = row3.createCell((short) curCol)
             curCol++
-            cellHeader.setCellValue("Total ${anio.anio}")
+            cellHeader.setCellValue("Presupuesto codificado Año ${anio.anio}")
             cellHeader.setCellStyle(styleHeader)
 
             data.anios.each { a ->
                 cellHeader = row3.createCell((short) curCol)
-                cellHeader.setCellValue("${a}")
+                cellHeader.setCellValue("Año ${a}")
                 cellHeader.setCellStyle(styleHeader)
                 curCol++
             }
@@ -136,9 +143,10 @@ class ReportesNuevosExcelController {
             data.data.each { v ->
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
-                tableRow.createCell(curCol).setCellValue("" + v.partida.descripcion)
-                curCol++
+
                 tableRow.createCell(curCol).setCellValue(v.partida.numero.replaceAll("0", ""))
+                curCol++
+                tableRow.createCell(curCol).setCellValue("" + v.partida.descripcion)
                 curCol++
                 def str = ""
                 if (v.valores["" + (anio.anio.toInteger() - 1)] > 0) {
@@ -363,7 +371,7 @@ class ReportesNuevosExcelController {
 //            rowSubtitulo.setHeightInPoints(24)
             curRow++
             Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
-            cellFecha.setCellValue(new Date().format("dd-MM-yyyy HH:mm"))
+            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
 
             Row rowHeader = sheet.createRow((short) curRow)
             rowSubtitulo.setHeightInPoints(30)
@@ -594,7 +602,7 @@ class ReportesNuevosExcelController {
             curRow++
             row.setHeightInPoints(30)
             Row row2 = sheet.createRow((short) curRow)
-            curRow += 2
+            curRow += 3
             row2.setHeightInPoints(24)
             Row row3 = sheet.createRow((short) curRow)
             curRow++
@@ -626,9 +634,14 @@ class ReportesNuevosExcelController {
             cellSubtitulo.setCellValue("RESUMEN POR PROYECTO")
             cellSubtitulo.setCellStyle(styleSubtitulo)
 
+            Row rowFecha = sheet.createRow((short) 3)
+            Cell cellFecha = rowFecha.createCell((short) curCol)
+            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
+
+
             Cell cellHeader = row3.createCell((short) curCol)
             curCol++
-            cellHeader.setCellValue("")
+            cellHeader.setCellValue("Número")
             cellHeader.setCellStyle(styleHeader)
 
             cellHeader = row3.createCell((short) curCol)
@@ -638,22 +651,22 @@ class ReportesNuevosExcelController {
 
             cellHeader = row3.createCell((short) curCol)
             curCol++
-            cellHeader.setCellValue("Arrastre ${anio.anio.toInteger() - 1}")
+            cellHeader.setCellValue("Arrastre Año${anio.anio.toInteger() - 1}")
             cellHeader.setCellStyle(styleHeader)
 
             cellHeader = row3.createCell((short) curCol)
             curCol++
-            cellHeader.setCellValue("Requerimientos ${anio.anio}")
+            cellHeader.setCellValue("Requerimiento Año ${anio.anio}")
             cellHeader.setCellStyle(styleHeader)
 
             cellHeader = row3.createCell((short) curCol)
             curCol++
-            cellHeader.setCellValue("Total ${anio.anio}")
+            cellHeader.setCellValue("Presupuesto codificado Año ${anio.anio}")
             cellHeader.setCellStyle(styleHeader)
 
             data.anios.each { a ->
                 cellHeader = row3.createCell((short) curCol)
-                cellHeader.setCellValue("${a}")
+                cellHeader.setCellValue("Año ${a}")
                 cellHeader.setCellStyle(styleHeader)
                 curCol++
             }

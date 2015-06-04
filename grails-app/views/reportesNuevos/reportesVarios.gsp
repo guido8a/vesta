@@ -69,6 +69,8 @@
                             className : "btn-success",
                             callback  : function () {
                                 var fnt = $("#fuente").val();
+                                    var url = "${g.createLink(controller: 'reportesNuevos',action: 'reportePdfAvales')}/?fnt=" + fnt;
+                                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=avales.pdf"
 
                             } //callback
                         }, //guardar

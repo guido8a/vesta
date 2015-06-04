@@ -69,16 +69,20 @@
     <body>
         <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Proyecto"/>
 
+    <p>
+        Fecha del reporte: ${new Date().format("dd-MM-yyyy HH:mm")}
+    </p>
+
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>Número</th>
                     <th>Proyecto</th>
-                    <th>Arrastre ${anio.anio.toInteger() - 1}</th>
-                    <th>Requerimientos ${anio.anio}</th>
-                    <th>Total ${anio.anio}</th>
+                    <th>Arrastre Año ${anio.anio.toInteger() - 1}</th>
+                    <th>Requerimiento Año ${anio.anio}</th>
+                    <th>Presupuesto codificado Año ${anio.anio}</th>
                     <g:each in="${anios}" var="a">
-                        <th>${a}</th>
+                        <th>Año ${a}</th>
                     </g:each>
                     <th>Total Plurianual</th>
                 </tr>

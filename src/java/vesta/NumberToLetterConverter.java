@@ -139,12 +139,16 @@ public abstract class NumberToLetterConverter {
 //            converted.append(" CON 00 CENTAVOS");
 //        }
 
+//        System.out.print("-->" + centavos);
+
         String cent = "/100";
+
+               
 
         if(centavos == 0){
             converted.append(" con 00/100");
         }else{
-            converted.append(" con " + convertNumber(String.valueOf(centavos)) + cent);
+            converted.append(" con " + centavos + cent);
         }
 
 

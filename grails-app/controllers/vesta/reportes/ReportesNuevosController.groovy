@@ -596,19 +596,19 @@ class ReportesNuevosController {
             rowSubtitulo.setHeightInPoints(30)
             curRow++
             Cell cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("N°")
+            cellHeader.setCellValue("N° AVAL")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 2000)
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("FECHA")
+            cellHeader.setCellValue("FECHA EMISIÓN AVAL")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 2000)
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("ACTIVIDAD")
+            cellHeader.setCellValue("NOMBRE DEL PROCESO")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 20000)
             curCol++
@@ -1013,6 +1013,20 @@ class ReportesNuevosController {
         }catch (Exception ex) {
             ex.printStackTrace();
         }
+
+    }
+
+    def reportePdfAvales () {
+
+        def fuente = Fuente.get(params.fnt)
+        def proceso = ProcesoAsignacion.withCriteria {
+            asignacion {
+                eq('fuente', fuente)
+                groupProperty('marcoLogico')
+            }
+        }
+
+         return [proceso: proceso]
 
     }
 }

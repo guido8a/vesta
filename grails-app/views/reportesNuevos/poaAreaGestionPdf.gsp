@@ -69,6 +69,9 @@
     <body>
         <rep:headerFooter title="PLANIFICACIÓN OPERATIVA ANUAL - POA AÑO ${anio.anio}" subtitulo="RESUMEN POR UNIDAD EJECUTORA"/>
 
+    <p>
+        Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}
+    </p>
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
                 <tr>
