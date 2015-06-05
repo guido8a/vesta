@@ -28,6 +28,12 @@
                     <ul class="fa-ul">
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="proformaEgresos">
+                                Proforma de egresos no permanentes
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="egresos">
                                 Proforma de egresos no permanentes - Grupo de gastos
                             </a>
@@ -83,6 +89,37 @@
         <script type="text/javascript">
 
             function dialogXlsPdfFuente(title, urlExcel, urlPdf, pdfFileName) {
+                var buttons = {};
+                if (urlPdf) {
+                    buttons.pdf = {
+                        id        : "btnPdf",
+                        label     : "<i class='fa fa-file-pdf-o'></i> Reporte Pdf",
+                        className : "btn-success",
+                        callback  : function () {
+                            var fnt = $("#fuente").val();
+                            var url = urlPdf + "?fnt=" + fnt;
+                            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=" + pdfFileName;
+                        } //callback
+                    };
+                }
+                if (urlExcel) {
+                    buttons.excel = {
+                        id        : "btnExcel",
+                        label     : "<i class='fa fa-file-excel-o'></i> Reporte Excel",
+                        className : "btn-success",
+                        callback  : function () {
+                            var fnt = $("#fuente").val();
+                            location.href = urlExcel + "?fnt=" + fnt;
+                            return false;
+                        } //callback
+                    };
+                }
+                buttons.cancelar = {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                };
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(controller:'reportesNuevos', action:'form_avales_ajax')}",
@@ -92,35 +129,7 @@
                             id      : "dlgAvales",
                             title   : title ? title : "Reporte",
                             message : msg,
-                            buttons : {
-                                pdf   : {
-                                    id        : "btnPdf",
-                                    label     : "<i class='fa fa-file-pdf-o'></i> Reporte Pdf",
-                                    className : "btn-success",
-                                    callback  : function () {
-                                        var fnt = $("#fuente").val();
-                                        var url = urlPdf + "?fnt=" + fnt;
-                                        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=" + pdfFileName;
-                                    } //callback
-                                }, //guardar
-                                excel : {
-                                    id        : "btnExcel",
-                                    label     : "<i class='fa fa-file-excel-o'></i> Reporte Excel",
-                                    className : "btn-success",
-                                    callback  : function () {
-                                        var fnt = $("#fuente").val();
-                                        location.href = urlExcel + "?fnt=" + fnt;
-                                        return false;
-                                    } //callback
-                                }, //guardar
-
-                                cancelar : {
-                                    label     : "Cancelar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                }
-                            } //buttons
+                            buttons : buttons
                         }); //dialog
                         setTimeout(function () {
                             b.find(".form-control").first().focus()
@@ -217,7 +226,14 @@
                     var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteRecursosPdf')}";
                     var pdfFileName = "POA_fuente.pdf";
                     dialogXlsPdf("Proforma presupuestaria de recursos no permanentes", "Proforma presupuestaria de recursos no permanentes", urlExcel, urlPdf, pdfFileName);
-                })
+                });
+
+                $("#proformaEgresos").click(function () {
+                    var urlExcel = "${createLink(controller: 'reportes4', action: 'proformaEgresosNoPermanentesXlsx')}";
+                    var urlPdf = null;
+                    var pdfFileName = null;
+                    dialogXlsPdfFuente("Reporte POA por grupo de gasto", urlExcel, urlPdf, pdfFileName);
+                });
 
             });
         </script>
