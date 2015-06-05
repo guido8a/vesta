@@ -240,6 +240,66 @@ class ReportesNuevosController {
         return [anio: anio, data: data, anios: anios, totales: totales]
     }
 
+    def poaFuente_funcion() {
+        def strAnio = new Date().format('yyyy')
+        def anio = Anio.findByAnio(strAnio)
+
+        def keyArrastre = "" + (strAnio.toInteger() - 1)
+        def keyActual = strAnio
+        def keyTotalActual = "T" + strAnio
+        def keyTotal = "T"
+
+        def data = []
+        def anios = []
+
+        def totales = [:]
+        totales[keyArrastre] = 0
+        totales[keyActual] = 0
+        totales[keyTotalActual] = 0
+        totales[keyTotal] = 0
+
+        def fuentes = Fuente.list()
+        fuentes.each { fuente ->
+            def m = [:]
+            m.fuente = fuente
+            m.valores = [:]
+            m.valores[keyArrastre] = 0
+            m.valores[keyActual] = 0
+            m.valores[keyTotalActual] = 0
+            m.valores[keyTotal] = 0
+
+            def asignaciones = Asignacion.findAllByFuente(fuente)
+            asignaciones.each { asg ->
+                def anioAsg = asg.anio
+                if (anioAsg.id == anio.id) {
+                    m.valores[keyTotal] += asg.priorizado
+                    totales[keyTotal] += asg.priorizado
+                    m.valores[keyTotalActual] += asg.priorizado
+                    totales[keyTotalActual] += asg.priorizado
+                    m.valores[keyActual] += asg.priorizado
+                    totales[keyActual] += asg.priorizado
+                } else {
+                    m.valores[keyTotal] += asg.planificado
+                    totales[keyTotal] += asg.planificado
+                    if (!m.valores[anioAsg.anio]) {
+                        m.valores[anioAsg.anio] = 0
+                        if (!anios.contains(anioAsg.anio)) {
+                            anios += anioAsg.anio
+                            totales[anioAsg.anio] = 0
+                        }
+                    }
+                    m.valores[anioAsg.anio] += asg.planificado
+                    totales[anioAsg.anio] += asg.planificado
+                }
+            }
+            if (m.valores[keyTotal] > 0) {
+                data += m
+            }
+        }
+        anios = anios.sort()
+        return [anio: anio, data: data, anios: anios, totales: totales]
+    }
+
     def poaAreaGestionGUI() {
         def data = poaAreaGestion_funcion()
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
@@ -255,6 +315,11 @@ class ReportesNuevosController {
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
     }
 
+    def poaFuenteGUI() {
+        def data = poaFuente_funcion()
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
+    }
+
     def poaAreaGestionPdf() {
         def data = poaAreaGestion_funcion()
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
@@ -267,6 +332,11 @@ class ReportesNuevosController {
 
     def poaProyectoPdf() {
         def data = poaProyecto_funcion()
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
+    }
+
+    def poaFuentePdf() {
+        def data = poaFuente_funcion()
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
     }
 
@@ -432,16 +502,15 @@ class ReportesNuevosController {
         return [fuentes: fuentes, anios: anios, proyectos: proyectos]
     }
 
-
-    def reportesVarios () {
-
-    }
-
-    def form_avales_ajax () {
+    def reportesVarios() {
 
     }
 
-    def reporteAvalesExcel (){
+    def form_avales_ajax() {
+
+    }
+
+    def reporteAvalesExcel() {
 
 //        println("params " + params)
         def fuente = Fuente.get(params.fnt)
@@ -455,7 +524,7 @@ class ReportesNuevosController {
         def avales = []
 
         proceso.each {
-           procesosAval += it.proceso
+            procesosAval += it.proceso
         }
 
 
@@ -473,7 +542,7 @@ class ReportesNuevosController {
         def curRow = iniRow
         def curCol = iniCol
 
-        try{
+        try {
 
             Workbook wb = new Workbook()
             Sheet sheet = wb.createSheet("Reporte de Avales")
@@ -576,7 +645,7 @@ class ReportesNuevosController {
 
 
             Row rowYachay = sheet.createRow((short) curRow)
-           curRow++
+            curRow++
             Cell cellTitulo = rowYachay.createCell((short) 3)
             cellTitulo.setCellValue("EMPRESA PÚBLICA YACHAY EP")
             cellTitulo.setCellStyle(styleYachay)
@@ -692,18 +761,18 @@ class ReportesNuevosController {
             wb.write(output)
             output.flush()
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
     }
 
-    def reporteReformasExcel () {
+    def reporteReformasExcel() {
 
         def fuente = Fuente.get(params.fnt)
 
         def modificacion = ModificacionAsignacion.withCriteria {
-            desde{
+            desde {
                 eq("fuente", fuente)
             }
         }
@@ -714,7 +783,7 @@ class ReportesNuevosController {
         def curRow = iniRow
         def curCol = iniCol
 
-        try{
+        try {
 
             Workbook wb = new Workbook()
             Sheet sheet = wb.createSheet("Reporte de reformas")
@@ -896,7 +965,7 @@ class ReportesNuevosController {
                 Row tableRow = sheet.createRow((short) curRow)
                 Cell cellTabla = tableRow.createCell((short) curCol)
 
-                Row tableRow2 = sheet.createRow((short) curRow+1)
+                Row tableRow2 = sheet.createRow((short) curRow + 1)
                 Cell cellTabla2 = tableRow2.createCell((short) curCol)
 
                 cellTabla.setCellValue(it?.desde?.programa?.descripcion)
@@ -961,7 +1030,7 @@ class ReportesNuevosController {
 
 
             curCol = iniCol
-            Row totalRow = sheet.createRow((short) curRow+1)
+            Row totalRow = sheet.createRow((short) curRow + 1)
             Cell cellFooter = totalRow.createCell((short) curCol)
             curCol++
             cellFooter.setCellValue("")
@@ -1010,7 +1079,7 @@ class ReportesNuevosController {
             wb.write(output)
             output.flush()
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 

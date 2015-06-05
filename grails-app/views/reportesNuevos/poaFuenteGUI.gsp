@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 10/04/15
-  Time: 03:25 PM
+  Date: 04/06/15
+  Time: 03:16 PM
 --%>
 
 <%@ page import="vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>POA Por Grupo de Gasto</title>
+        <title>POA Por Fuente de financiamiento</title>
         <style type="text/css">
         .actual {
             background : #c7daed;
@@ -34,43 +34,33 @@
             </div>
 
             <div class="btn-group" role="group">
-                <g:link action="poaAreaGestionGUI" class="btn btn-default">POA por unidad ejecutora</g:link>
                 <g:link action="poaProyectoGUI" class="btn btn-default">POA por proyecto</g:link>
-                <g:link action="poaFuenteGUI" class="btn btn-default">POA por fuente de financiamiento</g:link>
+                <g:link action="poaAreaGestionGUI" class="btn btn-default">POA por unidad ejecutora</g:link>
+                <g:link action="poaGrupoGastoGUI" class="btn btn-default">POA por grupo de gasto</g:link>
             </div>
         </div>
 
         <g:set var="anio" value="${Anio.findByAnio(new Date().format('yyyy'))}"/>
 
-        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Grupo de Gasto">
-
+        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Fuente de financiamiento">
             <table class="table table-bordered table-hover table-condensed table-bordered">
                 <thead>
                     <tr>
-                        <th>Grupo de gasto</th>
+                        <th>Fuente de financiamiento</th>
                         <th>Descripción</th>
-                        <th>Arrastre año ${anio.anio.toInteger() - 1}</th>
                         <th>Requerimiento año ${anio.anio}</th>
                         <th>Presupuesto codificado año ${anio.anio}</th>
                         <g:each in="${anios}" var="a">
-                            <th>Año${a}</th>
+                            <th>${a}</th>
                         </g:each>
                         <th>Total Plurianual</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <g:each in="${data}" var="v">
+                    <g:each in="${data}" var="v" status="i">
                         <tr>
-                            <td class="text-center">${v.partida.numero.replaceAll("0", "")}</td>
-                            <td>${v.partida.descripcion}</td>
-                            <td class="text-right actual">
-                                <g:if test="${v.valores["" + (anio.anio.toInteger() - 1)] > 0}">
-                                    <g:formatNumber number="${v.valores["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/>
-                                </g:if>
-                                <g:else>
-                                    -&nbsp;&nbsp;&nbsp;&nbsp;
-                                </g:else>
-                            </td>
+                            <td>${v.fuente.codigo}</td>
+                            <td>${v.fuente.descripcion}</td>
                             <td class="text-right actual">
                                 <g:if test="${v.valores[anio.anio] > 0}">
                                     <g:formatNumber number="${v.valores[anio.anio]}" type="currency" currencySymbol=""/>
@@ -105,10 +95,8 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th></th>
-                        <th class="text-right">TOTAL</th>
-                        <th class="text-right"><g:formatNumber number="${totales["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/></th>
-                        <th class="text-right"><g:formatNumber number="${totales["" + anio.anio]}" type="currency" currencySymbol=""/></th>
+                        <th class="text-right" colspan="2">TOTAL</th>
+                        <th class="text-right"><g:formatNumber number="${totales[anio.anio]}" type="currency" currencySymbol=""/></th>
                         <th class="text-right"><g:formatNumber number="${totales['T' + anio.anio]}" type="currency" currencySymbol=""/></th>
                         <g:each in="${anios}" var="a">
                             <th class="text-right"><g:formatNumber number="${totales[a] ?: 0}" type="currency" currencySymbol=""/></th>
@@ -123,11 +111,11 @@
             function reporte(tipo) {
                 var url;
                 if (tipo == "pdf") {
-                    url = "${createLink(action: 'poaGrupoGastoPdf')}";
+                    url = "${createLink(action: 'poaFuentePdf')}";
                     url += "?anio=" + $("#anio").val();
-                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_grupo_gasto.pdf";
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_fuentes.pdf";
                 } else if (tipo == "xls") {
-                    url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaGrupoGastoXls')}";
+                    url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaFuenteXls')}";
                     url += "?anio=" + $("#anio").val();
                     location.href = url;
                 }
@@ -142,5 +130,6 @@
                 });
             });
         </script>
+
     </body>
 </html>

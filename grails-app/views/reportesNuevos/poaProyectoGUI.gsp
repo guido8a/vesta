@@ -34,8 +34,9 @@
             </div>
 
             <div class="btn-group" role="group">
-                <g:link action="poaAreaGestionGUI" class="btn btn-default">POA por área de gestión</g:link>
+                <g:link action="poaAreaGestionGUI" class="btn btn-default">POA por unidad ejecutora</g:link>
                 <g:link action="poaGrupoGastoGUI" class="btn btn-default">POA por grupo de gasto</g:link>
+                <g:link action="poaFuenteGUI" class="btn btn-default">POA por fuente de financiamiento</g:link>
             </div>
         </div>
 
@@ -104,9 +105,9 @@
                 <tfoot>
                     <tr>
                         <th class="text-right" colspan="2">TOTAL</th>
-                        <th class="text-right"><g:formatNumber number="${totales['2014']}" type="currency" currencySymbol=""/></th>
-                        <th class="text-right"><g:formatNumber number="${totales['2015']}" type="currency" currencySymbol=""/></th>
-                        <th class="text-right"><g:formatNumber number="${totales['T2015']}" type="currency" currencySymbol=""/></th>
+                        <th class="text-right"><g:formatNumber number="${totales["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/></th>
+                        <th class="text-right"><g:formatNumber number="${totales["" + anio.anio]}" type="currency" currencySymbol=""/></th>
+                        <th class="text-right"><g:formatNumber number="${totales['T' + anio.anio]}" type="currency" currencySymbol=""/></th>
                         <g:each in="${anios}" var="a">
                             <th class="text-right"><g:formatNumber number="${totales[a] ?: 0}" type="currency" currencySymbol=""/></th>
                         </g:each>

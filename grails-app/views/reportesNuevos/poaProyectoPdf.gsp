@@ -69,9 +69,9 @@
     <body>
         <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Proyecto"/>
 
-    <p>
-        Fecha del reporte: ${new Date().format("dd-MM-yyyy HH:mm")}
-    </p>
+        <p>
+            Fecha del reporte: ${new Date().format("dd-MM-yyyy HH:mm")}
+        </p>
 
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
@@ -135,9 +135,9 @@
             <tfoot>
                 <tr>
                     <th class="text-right" colspan="2">TOTAL</th>
-                    <th class="text-right"><g:formatNumber number="${totales['2014']}" type="currency" currencySymbol=""/></th>
-                    <th class="text-right"><g:formatNumber number="${totales['2015']}" type="currency" currencySymbol=""/></th>
-                    <th class="text-right"><g:formatNumber number="${totales['T2015']}" type="currency" currencySymbol=""/></th>
+                    <th class="text-right"><g:formatNumber number="${totales["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/></th>
+                    <th class="text-right"><g:formatNumber number="${totales["" + anio.anio]}" type="currency" currencySymbol=""/></th>
+                    <th class="text-right"><g:formatNumber number="${totales['T' + anio.anio]}" type="currency" currencySymbol=""/></th>
                     <g:each in="${anios}" var="a">
                         <th class="text-right"><g:formatNumber number="${totales[a] ?: 0}" type="currency" currencySymbol=""/></th>
                     </g:each>

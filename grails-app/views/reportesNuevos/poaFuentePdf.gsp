@@ -1,16 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: luz
-  Date: 14/04/15
-  Time: 10:50 AM
+  Date: 04/06/15
+  Time: 03:47 PM
 --%>
 
 <%@ page import="vesta.poa.ProgramacionAsignacion; vesta.poa.Asignacion; vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico; vesta.parametros.poaPac.Mes" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-        <title>POA por Unidad Ejecutora</title>
+        <title>POA por Fuente de financiamiento</title>
 
-        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Unidad Ejecutora ${anio.anio}"/>
+        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Fuente de financiamiento ${anio.anio}"/>
 
         <style type="text/css">
         .table {
@@ -67,40 +67,30 @@
     </head>
 
     <body>
-        <rep:headerFooter title="PLANIFICACIÓN OPERATIVA ANUAL - POA AÑO ${anio.anio}" subtitulo="RESUMEN POR UNIDAD EJECUTORA"/>
+        <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Fuente de financiamiento"/>
 
         <p>
-            Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}
+            Fecha del reporte: ${new Date().format("dd-MM-yyyy HH:mm")}
         </p>
+
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
                 <tr>
-                    <th>NÚMERO</th>
-                    <th>DESCRIPCIÓN</th>
-                    <th>SIGLAS</th>
-                    <th>ARRASTRE AÑO ${anio.anio.toInteger() - 1}</th>
-                    <th>REQUERIMIENTO AÑO ${anio.anio}</th>
-                    <th>PRESUPUESTO CODIFICADO AÑO ${anio.anio}</th>
+                    <th>Fuente de financiamiento</th>
+                    <th>Descripción</th>
+                    <th>Requerimiento año ${anio.anio}</th>
+                    <th>Presupuesto codificado año ${anio.anio}</th>
                     <g:each in="${anios}" var="a">
-                        <th>AÑO${a}</th>
+                        <th>${a}</th>
                     </g:each>
-                    <th>TOTAL PLURIANUAL</th>
+                    <th>Total Plurianual</th>
                 </tr>
             </thead>
             <tbody>
                 <g:each in="${data}" var="v" status="i">
                     <tr>
-                        <td>${i + 1}</td>
-                        <td>${v.unidad}</td>
-                        <td class="text-center">${v.unidad.codigo}</td>
-                        <td class="text-right actual">
-                            <g:if test="${v.valores["" + (anio.anio.toInteger() - 1)] > 0}">
-                                <g:formatNumber number="${v.valores["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/>
-                            </g:if>
-                            <g:else>
-                                -
-                            </g:else>
-                        </td>
+                        <td>${v.fuente.codigo}</td>
+                        <td>${v.fuente.descripcion}</td>
                         <td class="text-right actual">
                             <g:if test="${v.valores[anio.anio] > 0}">
                                 <g:formatNumber number="${v.valores[anio.anio]}" type="currency" currencySymbol=""/>
@@ -135,9 +125,8 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-right" colspan="3">TOTAL</th>
-                    <th class="text-right"><g:formatNumber number="${totales["" + (anio.anio.toInteger() - 1)]}" type="currency" currencySymbol=""/></th>
-                    <th class="text-right"><g:formatNumber number="${totales["" + anio.anio]}" type="currency" currencySymbol=""/></th>
+                    <th class="text-right" colspan="2">TOTAL</th>
+                    <th class="text-right"><g:formatNumber number="${totales[anio.anio]}" type="currency" currencySymbol=""/></th>
                     <th class="text-right"><g:formatNumber number="${totales['T' + anio.anio]}" type="currency" currencySymbol=""/></th>
                     <g:each in="${anios}" var="a">
                         <th class="text-right"><g:formatNumber number="${totales[a] ?: 0}" type="currency" currencySymbol=""/></th>
