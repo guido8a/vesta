@@ -28,6 +28,14 @@
                     <li>
                         <i class="fa-li fa fa-print text-info"></i>
 
+                        <a href="#" id="egresos1">
+                            Proforma de egresos no permanentes - Grupo de gastos
+                        </a>
+
+                    </li>
+                    <li>
+                        <i class="fa-li fa fa-print text-info"></i>
+
                         <a href="#" id="avales">
                             Reporte Avales
                         </a>
@@ -145,6 +153,10 @@
                     }, 500);
                 } //success
             }); //ajax
+        });
+
+        $("#egresos1").click(function () {
+           location.href="${createLink(controller: 'reportesNuevos', action: 'reporteEgresosGastosExcel')}";
         });
 
     });

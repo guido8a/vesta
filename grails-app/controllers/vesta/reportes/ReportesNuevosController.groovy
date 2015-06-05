@@ -100,6 +100,80 @@ class ReportesNuevosController {
         return [anio: anio, data: data, anios: anios, totales: totales]
     }
 
+    //con planificado
+
+    def poaGrupoGastosPlanificado_funcion() {
+        def strAnio = new Date().format('yyyy')
+        def anio = Anio.findByAnio(strAnio)
+
+        def keyArrastre = "" + (strAnio.toInteger() - 1)
+        def keyActual = strAnio
+        def keyTotalActual = "T" + strAnio
+        def keyTotal = "T"
+
+        def data = []
+        def anios = []
+        def partidas = Presupuesto.findAllByNumeroLike('%0000', [sort: 'numero'])
+
+        def totales = [:]
+        totales[keyArrastre] = 0
+        totales[keyActual] = 0
+        totales[keyTotalActual] = 0
+        totales[keyTotal] = 0
+
+        partidas.each { partida ->
+            def numero = partida.numero?.replaceAll("0", "")
+            def m = [:]
+            m.partida = partida
+            m.valores = [:]
+            m.valores[keyArrastre] = 0
+            m.valores[keyActual] = 0
+            m.valores[keyTotalActual] = 0
+            m.valores[keyTotal] = 0
+
+//            def presupuestos = getPresupuestosHijos(partida)
+//            def asignaciones = Asignacion.findAllByPresupuestoInList(presupuestos)
+            def asignaciones = Asignacion.withCriteria {
+                presupuesto {
+                    like("numero", numero + "%")
+                }
+            }
+            asignaciones.each { asg ->
+                def anioAsg = asg.anio
+//                if (anioAsg.id == anio.id) {
+//                    m.valores[keyTotal] += asg.priorizado
+//                    totales[keyTotal] += asg.priorizado
+//                    m.valores[keyTotalActual] += asg.priorizado
+//                    totales[keyTotalActual] += asg.priorizado
+//                    if (asg.fuente.codigo == "998") {
+//                        m.valores[keyArrastre] += asg.priorizado
+//                        totales[keyArrastre] += asg.priorizado
+//                    } else {
+//                        m.valores[keyActual] += asg.priorizado
+//                        totales[keyActual] += asg.priorizado
+//                    }
+//                } else {
+                    m.valores[keyTotal] += asg.planificado
+                    totales[keyTotal] += asg.planificado
+                    if (!m.valores[anioAsg.anio]) {
+                        m.valores[anioAsg.anio] = 0
+                        if (!anios.contains(anioAsg.anio)) {
+                            anios += anioAsg.anio
+                            totales[anioAsg.anio] = 0
+                        }
+                    }
+                    m.valores[anioAsg.anio] += asg.planificado
+                    totales[anioAsg.anio] += asg.planificado
+//                }
+            }
+            if (m.valores[keyTotal] > 0) {
+                data += m
+            }
+        }
+        anios = anios.sort()
+        return [anio: anio, data: data, anios: anios, totales: totales]
+    }
+
     def poaProyecto_funcion() {
         def strAnio = new Date().format('yyyy')
         def anio = Anio.findByAnio(strAnio)
@@ -1098,5 +1172,295 @@ class ReportesNuevosController {
 
         return [proceso: proceso]
 
+    }
+
+    def reporteEgresosGastosExcel () {
+
+
+        def reportes = new ReportesNuevosController()
+        def data = poaGrupoGastosPlanificado_funcion()
+        def anio = data.anio
+        def totales = data.totales
+
+        def iniRow = 2
+        def iniCol = 1
+
+        def curRow = iniRow
+        def curCol = iniCol
+
+        try{
+
+            Workbook wb = new Workbook()
+            Sheet sheet = wb.createSheet("Reporte de egresos no permanentes")
+
+            Font fontYachay = wb.createFont()
+            fontYachay.setFontHeightInPoints((short) 14)
+            fontYachay.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+            fontYachay.setBold(true)
+
+            Font fontTitulo = wb.createFont()
+            fontTitulo.setFontHeightInPoints((short) 24)
+            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+            fontTitulo.setBold(true)
+
+            Font fontSubtitulo = wb.createFont()
+            fontSubtitulo.setFontHeightInPoints((short) 18)
+            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+            fontSubtitulo.setBold(true)
+
+            Font fontHeader = wb.createFont()
+            fontHeader.setFontHeightInPoints((short) 12)
+            fontHeader.setColor(new XSSFColor(new java.awt.Color(255, 255, 255)))
+            fontHeader.setBold(true)
+
+            Font fontTabla = wb.createFont()
+            fontTabla.setFontHeightInPoints((short) 9)
+
+            Font fontFooter = wb.createFont()
+            fontHeader.setFontHeightInPoints((short) 9)
+            fontFooter.setBold(true)
+
+
+            CellStyle styleYachay = wb.createCellStyle()
+            styleYachay.setFont(fontYachay)
+            styleYachay.setAlignment(CellStyle.ALIGN_CENTER)
+            styleYachay.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+            CellStyle styleTitulo = wb.createCellStyle()
+            styleTitulo.setFont(fontTitulo)
+            styleTitulo.setAlignment(CellStyle.ALIGN_CENTER)
+            styleTitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+            CellStyle styleSubtitulo = wb.createCellStyle()
+            styleSubtitulo.setFont(fontSubtitulo)
+            styleSubtitulo.setAlignment(CellStyle.ALIGN_CENTER)
+            styleSubtitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+            CellStyle styleHeader = wb.createCellStyle()
+            styleHeader.setFont(fontHeader)
+            styleHeader.setAlignment(CellStyle.ALIGN_CENTER)
+            styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+            styleHeader.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 96, 144)));
+            styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND)
+            styleHeader.setWrapText(true);
+            styleHeader.setBorderBottom(CellStyle.BORDER_THIN);
+            styleHeader.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleHeader.setBorderLeft(CellStyle.BORDER_THIN);
+            styleHeader.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            styleHeader.setBorderRight(CellStyle.BORDER_THIN);
+            styleHeader.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            styleHeader.setBorderTop(CellStyle.BORDER_THIN);
+            styleHeader.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+            CellStyle styleTabla = wb.createCellStyle()
+            styleTabla.setFont(fontTabla)
+            styleTabla.setWrapText(true);
+            styleTabla.setBorderBottom(CellStyle.BORDER_THIN);
+            styleTabla.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleTabla.setBorderLeft(CellStyle.BORDER_THIN);
+            styleTabla.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            styleTabla.setBorderRight(CellStyle.BORDER_THIN);
+            styleTabla.setRightBorderColor(IndexedColors.BLACK.getIndex());
+            styleTabla.setBorderTop(CellStyle.BORDER_THIN);
+            styleTabla.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+            CellStyle styleFooter = wb.createCellStyle()
+            styleFooter.setFont(fontFooter)
+            styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
+            styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
+            styleFooter.setBorderBottom(CellStyle.BORDER_THIN);
+            styleFooter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooter.setBorderTop(CellStyle.BORDER_THIN);
+            styleFooter.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooter.setBorderLeft(CellStyle.BORDER_THIN);
+            styleFooter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooter.setBorderRight(CellStyle.BORDER_THIN);
+            styleFooter.setRightBorderColor(IndexedColors.BLACK.getIndex());
+
+            CellStyle styleFooterCenter = wb.createCellStyle()
+            styleFooterCenter.setFont(fontFooter)
+            styleFooterCenter.setAlignment(CellStyle.ALIGN_CENTER)
+            styleFooterCenter.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+            styleFooterCenter.setBorderBottom(CellStyle.BORDER_THIN);
+            styleFooterCenter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooterCenter.setBorderTop(CellStyle.BORDER_MEDIUM_DASHED);
+            styleFooterCenter.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            styleFooterCenter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
+            styleFooterCenter.setFillPattern(CellStyle.SOLID_FOREGROUND)
+
+
+            Row rowYachay = sheet.createRow((short) curRow)
+            curRow++
+            Cell cellTitulo = rowYachay.createCell((short) 3)
+            cellTitulo.setCellValue("EMPRESA PÚBLICA YACHAY EP")
+            cellTitulo.setCellStyle(styleYachay)
+
+            Row rowSubtitulo = sheet.createRow((short) curRow)
+            curRow++
+            Cell cellSubtitulo = rowSubtitulo.createCell((short) 3)
+            cellSubtitulo.setCellValue("REPORTE DE EGRESOS NO PERMANENTES - GRUPO DE GASTO")
+            cellSubtitulo.setCellStyle(styleSubtitulo)
+
+            Row rowSubtitulo2 = sheet.createRow((short) curRow)
+            curRow++
+            Cell cellSubtitulo2 = rowSubtitulo2.createCell((short) 3)
+            cellSubtitulo2.setCellValue("Año")
+            cellSubtitulo2.setCellStyle(styleSubtitulo)
+
+            Row rowSubtitulo3 = sheet.createRow((short) curRow)
+            curRow++
+            Cell cellSubtitulo3 = rowSubtitulo3.createCell((short) 3)
+            cellSubtitulo3.setCellValue("En dólares")
+            cellSubtitulo3.setCellStyle(styleSubtitulo)
+
+
+            Row rowFecha = sheet.createRow((short) curRow)
+            curRow++
+            Cell cellFecha = rowFecha.createCell((short) 1)
+            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
+
+            Row rowHeader = sheet.createRow((short) curRow)
+            rowSubtitulo.setHeightInPoints(30)
+            curRow++
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("GRUPO PRESUPUESTARIO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("GRUPO DE GASTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 9000)
+            curCol++
+
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("AÑO")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 4000)
+//            curCol++
+
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("AÑO")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 4000)
+//            curCol++
+//
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("AÑO")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 4000)
+//            curCol++
+//
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("AÑO")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 4000)
+//            curCol++
+
+            data.anios.each { a ->
+                cellHeader = rowHeader.createCell((short) curCol)
+                cellHeader.setCellValue("AÑO ${a}")
+                cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 4000)
+                curCol++
+            }
+
+
+            def totalCols = curCol
+            def total = 0
+            def arregloTotal = []
+
+
+            data.data.each { v ->
+                curCol = iniCol
+                Row tableRow = sheet.createRow((short) curRow)
+
+                tableRow.createCell(curCol).setCellValue(v.partida.numero.replaceAll("0", ""))
+                curCol++
+                tableRow.createCell(curCol).setCellValue("" + v.partida.descripcion)
+                curCol++
+                def str = ""
+                str = ""
+
+                data.anios.each { a ->
+                    str = ""
+                    if (v.valores[a] > 0) {
+                        str = v.valores[a]
+                    }
+                    tableRow.createCell(curCol).setCellValue(str)
+                    println("-->" + str + "\n")
+                    arregloTotal += str
+                    println("arreglo " + arregloTotal)
+                    curCol++
+                }
+                curRow++
+            }
+
+            def tamaño = data.anios.size()
+            println("--->" + tamaño)
+
+            def pos = 0
+
+            arregloTotal.each {
+
+                println("posicion " + pos)
+
+                if(pos >= (tamaño-1)){
+                    pos = 0
+                }else{
+                    pos ++
+                }
+
+
+
+
+
+            }
+
+            curCol = iniCol
+            Row totalRow = sheet.createRow((short) curRow)
+            Cell cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooter)
+
+            data.anios.each { b ->
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue("")
+                cellFooter.setCellStyle(styleFooter)
+            }
+
+
+
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue('')
+//            cellFooter.setCellStyle(styleFooter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue('')
+//            cellFooter.setCellStyle(styleFooter)
+
+
+
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "reporte_egresos_gastos.xlsx"
+            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", header)
+            wb.write(output)
+            output.flush()
+
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
