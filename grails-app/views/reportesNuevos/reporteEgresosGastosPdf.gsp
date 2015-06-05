@@ -20,63 +20,55 @@
     <rep:estilos orientacion="p" pagTitle="REPORTE PROFORMA DE EGRESOS NO PERMANENTES - GRUPO DE GASTO"/>
 
     <style type="text/css">
-
-    .tbl {
+    .table {
+        margin-top      : 0.5cm;
+        width           : 100%;
         border-collapse : collapse;
     }
 
-    .tbl, .tbl th, .tbl td {
-        border : solid 1px #555;
+    .table, .table td, .table th {
+        border : solid 1px #444;
     }
 
-    .tbl th {
-        /*background  : #bbb;*/
-        font-weight : bold;
-        text-align  : left;
-        width       : 5cm;
+    .table td, .table th {
+        padding : 3px;
     }
 
-    .tbl td, .tbl th {
-        padding-left  : 5px;
-        padding-right : 5px;
+    .text-right {
+        text-align : right;
     }
 
-    .bold {
-        font-weight : bold;
+    h1.break {
+        page-break-before : always;
     }
 
-    .tbl2 {
-        width           : 50%;
-        border-collapse : collapse;
+    small {
+        font-size : 70%;
+        color     : #777;
     }
 
-    .tbl2, .tbl2 th, .tbl2 td {
-        border : solid 1px transparent;
+    .table th {
+        background     : #326090;
+        color          : #fff;
+        text-align     : center;
+        text-transform : uppercase;
     }
 
-    .pequena {
-        /*font-size: 8px !important;*/
-        font-size : 8pt !important;
+    .actual {
+        background : #c7daed;
     }
 
-    .observaciones {
-        border            : 1px solid black;
-        padding           : 5px;
-        text-align        : justify;
-        page-break-inside : avoid;
-        font-size         : 8pt;
+    .info {
+        background : #6fa9ed;
     }
 
-    .observaciones p {
-        font-size : 8pt;
+    .text-right {
+        text-align : right !important;
     }
 
-    .observaciones .ttl {
-        font-size       : 9pt;
-        font-weight     : bold;
-        text-decoration : underline;
+    .text-center {
+        text-align : center;
     }
-
     </style>
 
 </head>
@@ -86,39 +78,50 @@
     <rep:headerFooter title="Egresos permanentes - grupo de gastos" estilo="right"/>
 
     <p>
-    Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}
+        Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}
     </p>
-    <div style="text-align: justify;float: left;font-size: 10pt;">
 
-        <div class="tabla" style="margin-top: 10px">
 
-            <table width="100%" border="1" class="tbl">
-                <thead>
-                <tr>
-                    <th>
-                        GRUPO PRESUPUESTARIO
-                    </th>
-                    <th>
-                        GRUPO DE GASTOS
-                    </th>
-                    <g:each in="${anios}" var="a">
-                        <th>Año${a}</th>
-                    </g:each>
-                </tr>
-                </thead>
-                <tbody>
-                    <g:each in="${data}" var="v">
-                        <td class="text-center">${v.partida.numero.replaceAll("0", "")}</td>
-                    </g:each>
-                </tbody>
-            </table>
-
-        </div>
-
-    </div>
-
+    <table class="table table-bordered table-hover table-condensed table-bordered">
+        <thead>
+        <tr>
+            <th class="text-center">
+                GRUPO PRESUPUESTARIO
+            </th>
+            <th class="text-center">
+                GRUPO DE GASTOS
+            </th>
+            <g:each in="${anios}" var="a">
+                <th>Año${a}</th>
+            </g:each>
+        </tr>
+        </thead>
+        <tbody>
+        <g:each in="${data}" var="v">
+            <tr>
+                <td class="text-center">${v.partida.numero.replaceAll("0", "")}</td>
+                <td>${v.partida.descripcion}</td>
+                <g:each in="${anios}" var="a">
+                    <td>
+                        <g:formatNumber number="${v.valores[a] ?: 0}" type="currency" currencySymbol=""/>
+                    </td>
+                </g:each>
+            </tr>
+        </g:each>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th></th>
+            <th class="text-right">TOTAL</th>
+            <g:each in="${anios}" var="a">
+                <th class="text-right"><g:formatNumber number="${totales[a] ?: 0}" type="currency" currencySymbol=""/></th>
+            </g:each>
+        </tr>
+        </tfoot>
+    </table>
 
 </div>
+
 
 </body>
 </html>

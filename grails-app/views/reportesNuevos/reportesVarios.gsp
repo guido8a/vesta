@@ -34,6 +34,12 @@
                         </li>
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="recursos">
+                                Proforma presupuestaria de recursos no permanentes
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="avales">
                                 Reporte Avales
                             </a>
@@ -205,6 +211,13 @@
                     var pdfFileName = "POA_fuente.pdf";
                     dialogXlsPdf("Reporte POA por fuente de financiamiento", "Reporte POA por fuente de financiamiento", urlExcel, urlPdf, pdfFileName);
                 });
+
+                $("#recursos").click(function () {
+                    var urlExcel = "${createLink(controller: 'reportes5', action: 'reporteRecursosExcel')}";
+                    var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteRecursosPdf')}";
+                    var pdfFileName = "POA_fuente.pdf";
+                    dialogXlsPdf("Proforma presupuestaria de recursos no permanentes", "Proforma presupuestaria de recursos no permanentes", urlExcel, urlPdf, pdfFileName);
+                })
 
             });
         </script>
