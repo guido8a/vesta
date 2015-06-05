@@ -60,18 +60,21 @@ class FirmasService {
     }
 
     def listaGerentesUnidad(UnidadEjecutora unidad) {
+//        def codigosNo = ['343', '9999', 'GT'] // yachay, Gerencia general, Gerencia tecnica
         def gerentes = []
-        def padre = unidad.padre
-        if (padre.codigo == '9999') {
-            gerentes = listaDirectoresUnidad(unidad)
-        } else {
+//        def padre = unidad.padre
+        def unidades = unidad.unidades
+//        println padre.codigo +"   "+codigosNo.contains(padre.codigo)
+//        if (codigosNo.contains(padre.codigo)) {
+//            gerentes = listaDirectoresUnidad(unidad)
+//        } else {
             gerentes = Persona.withCriteria {
-                eq("unidad", padre)
+                inList("unidad", unidades)
                 cargoPersonal {
                     ilike("descripcion", "%gerente%")
                 }
             }
-        }
+//        }
         return gerentes
     }
 
