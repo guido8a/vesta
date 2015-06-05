@@ -156,7 +156,38 @@
         });
 
         $("#egresos1").click(function () {
-           location.href="${createLink(controller: 'reportesNuevos', action: 'reporteEgresosGastosExcel')}";
+            var b = bootbox.dialog({
+                id      : "dlgEgresos1",
+                title   : "Reportes",
+                message : 'Reporte de Egresos permanentes - grupo de gastos',
+                buttons : {
+                    pdf  : {
+                        id        : "btnPdf",
+                        label     : "<i class='fa fa-file-pdf-o'></i> Reporte Pdf",
+                        className : "btn-success",
+                        callback  : function () {
+                            var url = "${createLink(action: 'reporteEgresosGastosPdf')}";
+                            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=egresos_gastos.pdf";
+                        } //callback
+                    }, //guardar
+                    excel  : {
+                        id        : "btnExcel",
+                        label     : "<i class='fa fa-file-excel-o'></i> Reporte Excel",
+                        className : "btn-success",
+                        callback  : function () {
+                            location.href="${createLink(controller: 'reportesNuevos', action: 'reporteEgresosGastosExcel')}";
+//                            return false;
+                        } //callback
+                    }, //guardar
+                    cancelar : {
+                        label     : "Cancelar",
+                        className : "btn-primary",
+                        callback  : function () {
+                        }
+                    }
+                } //buttons
+            }); //dialog
+
         });
 
     });

@@ -1174,6 +1174,14 @@ class ReportesNuevosController {
 
     }
 
+    def reporteEgresosGastosPdf () {
+
+        def data = poaGrupoGastosPlanificado_funcion()
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
+
+
+    }
+
     def reporteEgresosGastosExcel () {
 
 
@@ -1302,17 +1310,17 @@ class ReportesNuevosController {
             cellSubtitulo.setCellValue("REPORTE DE EGRESOS NO PERMANENTES - GRUPO DE GASTO")
             cellSubtitulo.setCellStyle(styleSubtitulo)
 
-            Row rowSubtitulo2 = sheet.createRow((short) curRow)
-            curRow++
-            Cell cellSubtitulo2 = rowSubtitulo2.createCell((short) 3)
-            cellSubtitulo2.setCellValue("Año")
-            cellSubtitulo2.setCellStyle(styleSubtitulo)
-
-            Row rowSubtitulo3 = sheet.createRow((short) curRow)
-            curRow++
-            Cell cellSubtitulo3 = rowSubtitulo3.createCell((short) 3)
-            cellSubtitulo3.setCellValue("En dólares")
-            cellSubtitulo3.setCellStyle(styleSubtitulo)
+//            Row rowSubtitulo2 = sheet.createRow((short) curRow)
+//            curRow++
+//            Cell cellSubtitulo2 = rowSubtitulo2.createCell((short) 3)
+//            cellSubtitulo2.setCellValue("Año")
+//            cellSubtitulo2.setCellStyle(styleSubtitulo)
+//
+//            Row rowSubtitulo3 = sheet.createRow((short) curRow)
+//            curRow++
+//            Cell cellSubtitulo3 = rowSubtitulo3.createCell((short) 3)
+//            cellSubtitulo3.setCellValue("En dólares")
+//            cellSubtitulo3.setCellStyle(styleSubtitulo)
 
 
             Row rowFecha = sheet.createRow((short) curRow)
@@ -1335,30 +1343,6 @@ class ReportesNuevosController {
             sheet.setColumnWidth(curCol, 9000)
             curCol++
 
-//            cellHeader = rowHeader.createCell((short) curCol)
-//            cellHeader.setCellValue("AÑO")
-//            cellHeader.setCellStyle(styleHeader)
-//            sheet.setColumnWidth(curCol, 4000)
-//            curCol++
-
-//            cellHeader = rowHeader.createCell((short) curCol)
-//            cellHeader.setCellValue("AÑO")
-//            cellHeader.setCellStyle(styleHeader)
-//            sheet.setColumnWidth(curCol, 4000)
-//            curCol++
-//
-//            cellHeader = rowHeader.createCell((short) curCol)
-//            cellHeader.setCellValue("AÑO")
-//            cellHeader.setCellStyle(styleHeader)
-//            sheet.setColumnWidth(curCol, 4000)
-//            curCol++
-//
-//            cellHeader = rowHeader.createCell((short) curCol)
-//            cellHeader.setCellValue("AÑO")
-//            cellHeader.setCellStyle(styleHeader)
-//            sheet.setColumnWidth(curCol, 4000)
-//            curCol++
-
             data.anios.each { a ->
                 cellHeader = rowHeader.createCell((short) curCol)
                 cellHeader.setCellValue("AÑO ${a}")
@@ -1367,11 +1351,8 @@ class ReportesNuevosController {
                 curCol++
             }
 
-
             def totalCols = curCol
             def total = 0
-            def arregloTotal = []
-
 
             data.data.each { v ->
                 curCol = iniCol
@@ -1390,34 +1371,11 @@ class ReportesNuevosController {
                         str = v.valores[a]
                     }
                     tableRow.createCell(curCol).setCellValue(str)
-                    println("-->" + str + "\n")
-                    arregloTotal += str
-                    println("arreglo " + arregloTotal)
                     curCol++
                 }
                 curRow++
             }
 
-            def tamaño = data.anios.size()
-            println("--->" + tamaño)
-
-            def pos = 0
-
-            arregloTotal.each {
-
-                println("posicion " + pos)
-
-                if(pos >= (tamaño-1)){
-                    pos = 0
-                }else{
-                    pos ++
-                }
-
-
-
-
-
-            }
 
             curCol = iniCol
             Row totalRow = sheet.createRow((short) curRow)
@@ -1434,22 +1392,9 @@ class ReportesNuevosController {
             data.anios.each { b ->
                 cellFooter = totalRow.createCell((short) curCol)
                 curCol++
-                cellFooter.setCellValue("")
+                cellFooter.setCellValue(totales[b] ?: 0)
                 cellFooter.setCellStyle(styleFooter)
             }
-
-
-
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue('')
-//            cellFooter.setCellStyle(styleFooter)
-//
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue('')
-//            cellFooter.setCellStyle(styleFooter)
-
 
 
             def output = response.getOutputStream()
