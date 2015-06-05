@@ -49,6 +49,6 @@ class ObjetivoEstrategicoProyecto   {
      * @return la descripción
      */
     String toString() {
-        return this.descripcion
+        return "${this.orden}. ${this.descripcion}"
     }
 }

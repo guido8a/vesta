@@ -26,7 +26,7 @@
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group" role="group">
                 <g:link controller="avales" action="listaProcesos" class="btn btn-default">
-                    <i class="fa fa-bars"></i> Lista de Procesos
+                    <i class="fa fa-bars"></i> Regresar a lista de procesos de avales
                 </g:link>
                 <g:if test="${proceso}">
                     <g:link controller="avales" action="avalesProceso" id="${proceso?.id}" class="btn btn-default">

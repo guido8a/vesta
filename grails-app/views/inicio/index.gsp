@@ -46,7 +46,10 @@
                 </div>
             </g:link>
 
-            <g:link controller="entidad" action="arbol_asg">
+            <g:if test="${session.perfil.codigo == 'GP'}">
+                <a href="${createLink(controller: 'entidad', action: 'arbol_asg')}">
+                %{--<g:link controller="entidad" action="arbol_asg">--}%
+            </g:if>
                 <div class="row color2 no-margin-top">
                     <div class="col-xs-9">
                         <h3>Gestión de Planificación</h3>
@@ -58,7 +61,10 @@
                         <img class="img-responsive pull-right" src="${resource(dir: 'images/inicio', file: 'gestion_planificacion.png')}"/>
                     </div>
                 </div>
-            </g:link>
+            <g:if test="${session.perfil.codigo == 'GP'}">
+                %{--</g:link>--}%
+                </a>
+            </g:if>
 
             <g:link controller="avales" action="listaProcesos">
                 <div class="row color1 no-margin-top">

@@ -272,7 +272,8 @@ class ProyectoController extends Shield {
             estrategias = Estrategia.findAllByObjetivoEstrategico(obj, [sort: 'descripcion'])
         }
         def select = g.select(id: "estrategia", name: "estrategia.id", from: estrategias,
-                optionKey: "id", optionValue: "descripcion", value: estr?.id,
+//                optionKey: "id", optionValue: "descripcion", value: estr?.id,
+                optionKey: "id", value: estr?.id,
                 class: "estrategia many-to-one form-control input-sm")
 
         render select.toString()

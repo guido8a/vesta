@@ -47,4 +47,8 @@ class Estrategia {
         descripcion(blank: false, nullable: false, maxSize: 511)
         objetivoEstrategico(blank: false, nullable: false)
     }
+
+    String toString() {
+        return "${objetivoEstrategico.orden}.${this.orden}. ${this.descripcion}"
+    }
 }

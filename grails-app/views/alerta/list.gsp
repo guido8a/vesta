@@ -44,7 +44,7 @@
         <p>
             <a href="#" class="btn btn-default" id="btnRead">
                 <i class="fa fa-check"></i>
-                Marcar como leídas las alertas marcadas
+                Marcar como leídas las alertas seleccionadas
             </a>
         </p>
 

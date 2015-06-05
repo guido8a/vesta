@@ -932,13 +932,13 @@ class ElementosTagLib {
                 str += "a asignaciones existentes"
                 break;
             case "A":
-                str += "Nuevas actividades financiadas con recursos del Area"
+                str += "nuevas actividades financiadas con recursos del área"
                 break;
             case "C":
-                str += "Nuevas actividades sin financiamiento de recursos del Area"
+                str += "nuevas actividades sin financiamiento de recursos del área"
                 break;
             case "I":
-                str += "Incremento de recursos"
+                str += "incremento de recursos"
                 break;
             case "P":
                 str += "partidas presupuestarias"

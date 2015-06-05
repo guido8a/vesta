@@ -550,7 +550,7 @@
                                 location.href = "${createLink(controller: 'asignacion', action:'asignacionProyectov2')}/" + id
                             }
                         }
-                        <g:if test="${usu.esDirector || usu.esGerente}">
+                        <g:if test="${session.perfil.codigo == 'GP'}">
                         ,
                         eliminar    : {
                             label            : "Eliminar",

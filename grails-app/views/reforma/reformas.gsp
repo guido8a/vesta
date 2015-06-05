@@ -16,8 +16,8 @@
     <body>
         <elm:container tipo="horizontal" titulo="Reformas">
             <p>
-                Existen 4 tipos de Reformas posibles:
-                asignaciones existentes, actividad nueva, partida nueva, incremento
+                Existen 5 tipos de reformas:
+                asignaciones existentes, partida nueva, actividad nueva financiada con recursos del área, actividad nueva sin financiamiento de recursos del área e incrementos
             </p>
 
             <div class="list-group">
@@ -27,7 +27,7 @@
                     </h4>
 
                     <p class="list-group-item-text">
-                        se selecciona asignación o asignaciones de origen, asignación o asignaciones de destino y valor
+                        se selecciona asignación o asignaciones de origen, asignación o asignaciones de destino y el valor
                     </p>
                 </g:link>
                 <g:link action="partida" class="list-group-item bgPartidas">
