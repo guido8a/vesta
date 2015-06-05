@@ -22,7 +22,7 @@ class ReportesNuevosExcelController {
         def totales = data.totales
 
         def iniRow = 0
-        def iniCol = 0
+        def iniCol = 1
 
         def curRow = iniRow
         def curCol = iniCol
@@ -87,7 +87,7 @@ class ReportesNuevosExcelController {
             cellSubtitulo.setCellStyle(styleSubtitulo)
 
             Row rowFecha = sheet.createRow((short) 3)
-            Cell cellFecha = rowFecha.createCell((short) curCol)
+            Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
             cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
 
             Cell cellHeader = row3.createCell((short) curCol)
@@ -569,7 +569,7 @@ class ReportesNuevosExcelController {
         def totales = data.totales
 
         def iniRow = 0
-        def iniCol = 0
+        def iniCol = 1
 
         def curRow = iniRow
         def curCol = iniCol
@@ -634,7 +634,7 @@ class ReportesNuevosExcelController {
             cellSubtitulo.setCellStyle(styleSubtitulo)
 
             Row rowFecha = sheet.createRow((short) 3)
-            Cell cellFecha = rowFecha.createCell((short) curCol)
+            Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
             cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
 
 
@@ -783,7 +783,7 @@ class ReportesNuevosExcelController {
         def totales = data.totales
 
         def iniRow = 0
-        def iniCol = 0
+        def iniCol = 1
 
         def curRow = iniRow
         def curCol = iniCol
@@ -848,7 +848,7 @@ class ReportesNuevosExcelController {
             cellSubtitulo.setCellStyle(styleSubtitulo)
 
             Row rowFecha = sheet.createRow((short) 3)
-            Cell cellFecha = rowFecha.createCell((short) curCol)
+            Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
             cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
 
 
