@@ -236,6 +236,7 @@ class ReportesNuevosController {
                 data += m
             }
         }
+        data = data.sort { -it.valores[keyActual] }
         anios = anios.sort()
         return [anio: anio, data: data, anios: anios, totales: totales]
     }
@@ -1085,7 +1086,7 @@ class ReportesNuevosController {
 
     }
 
-    def reportePdfAvales () {
+    def reportePdfAvales() {
 
         def fuente = Fuente.get(params.fnt)
         def proceso = ProcesoAsignacion.withCriteria {
@@ -1095,7 +1096,7 @@ class ReportesNuevosController {
             }
         }
 
-         return [proceso: proceso]
+        return [proceso: proceso]
 
     }
 }
