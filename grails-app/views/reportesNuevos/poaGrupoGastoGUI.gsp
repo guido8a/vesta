@@ -140,11 +140,11 @@
             function reporte(tipo) {
                 var url;
                 if (tipo == "pdf") {
-                    url = "${createLink(action: 'poaGrupoGastoPdf')}/" + $("#fuente").val();
+                    url = "${createLink(action: 'poaGrupoGastoPdf')}?fnt=" + $("#fuente").val();
                     url += "?anio=" + $("#anio").val();
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_grupo_gasto.pdf";
                 } else if (tipo == "xls") {
-                    url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaGrupoGastoXls')}/" + $("#fuente").val();
+                    url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaGrupoGastoXls')}?fnt" + $("#fuente").val();
                     url += "?anio=" + $("#anio").val();
                     location.href = url;
                 }

@@ -405,7 +405,7 @@ class ReportesNuevosController {
     }
 
     def poaGrupoGastoPdf() {
-        def fuente = Fuente.get(params.id)
+        def fuente = Fuente.get(params.fnt)
         def data = poaGrupoGastos_funcion(fuente)
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales, fuente: fuente]
     }
@@ -1179,7 +1179,7 @@ class ReportesNuevosController {
 
     }
 
-    def reporteEgresosGastosPdf () {
+    def reporteEgresosGastosPdf() {
 
         def data = poaGrupoGastosPlanificado_funcion()
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
@@ -1187,7 +1187,7 @@ class ReportesNuevosController {
 
     }
 
-    def reporteEgresosGastosExcel () {
+    def reporteEgresosGastosExcel() {
 
 
         def reportes = new ReportesNuevosController()
@@ -1201,7 +1201,7 @@ class ReportesNuevosController {
         def curRow = iniRow
         def curCol = iniCol
 
-        try{
+        try {
 
             Workbook wb = new Workbook()
             Sheet sheet = wb.createSheet("Reporte de egresos no permanentes")
@@ -1409,7 +1409,7 @@ class ReportesNuevosController {
             wb.write(output)
             output.flush()
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

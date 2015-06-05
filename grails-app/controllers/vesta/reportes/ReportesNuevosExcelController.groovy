@@ -15,7 +15,7 @@ import vesta.parametros.poaPac.Fuente
 class ReportesNuevosExcelController {
 
     def poaGrupoGastoXls() {
-        def fuente = Fuente.get(params.id)
+        def fuente = Fuente.get(params.fnt)
         def reportes = new ReportesNuevosController()
         def data = reportes.poaGrupoGastos_funcion(fuente)
         def anio = data.anio
