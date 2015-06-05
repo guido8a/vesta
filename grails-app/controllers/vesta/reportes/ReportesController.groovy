@@ -213,7 +213,6 @@ class ReportesController {
             dosDevengado += it.devengado
         }
 
-
 //        println("arr" + arr)
 //
 //        println("totalf " + dosDevengado)
@@ -2332,44 +2331,45 @@ class ReportesController {
 
         ids.each { id ->
             def unidad = UnidadEjecutora.get(id)
-            tabla += "<h1>" + unidad.nombre + "</h1>"
-
-            tabla += "<table border='1' width='100%'>"
-            tabla += "<thead>"
-            tabla += "<tr>"
-            tabla += "<th rowspan='2'>Proyecto</th>"
-            tabla += "<th rowspan='2'>Actividad</th>"
-            tabla += "<th rowspan='2'>Asignación</th>"
-            tabla += "<th colspan='12'>Meses</th>"
-            tabla += "</tr>"
-            tabla += "<tr>"
-            meses.each { mes ->
-                tabla += "<th>" + mes.descripcion[0..2] + "." + "</th>"
-            }
-            tabla += "</tr>"
-            tabla += "</thead>"
-
-            tabla += "<tbody>"
-
-            def filas = []
-            def contProy = 0
 
             def proyectos = Proyecto.findAllByUnidadEjecutora(unidad)
-            println unidad.nombre
-            println proyectos
+//            println unidad.nombre
+//            println proyectos
+            if (proyectos.size() > 0) {
+                tabla += "<h1>" + unidad.nombre + "</h1>"
 
-            proyectos.each { proy ->
-                def fila = []
-                def c = MarcoLogico.createCriteria()
-                def actividades = c.list {
-                    and {
-                        eq("proyecto", proy)
-                        tipoElemento {
-                            eq("id", 3.toLong())
+                tabla += "<table border='1' width='100%'>"
+                tabla += "<thead>"
+                tabla += "<tr>"
+                tabla += "<th rowspan='2'>Proyecto</th>"
+                tabla += "<th rowspan='2'>Actividad</th>"
+                tabla += "<th rowspan='2'>Asignación</th>"
+                tabla += "<th colspan='12'>Meses</th>"
+                tabla += "</tr>"
+                tabla += "<tr>"
+                meses.each { mes ->
+                    tabla += "<th>" + mes.descripcion[0..2] + "." + "</th>"
+                }
+                tabla += "</tr>"
+                tabla += "</thead>"
+
+                tabla += "<tbody>"
+
+                def filas = []
+                def contProy = 0
+
+                proyectos.each { proy ->
+                    def fila = []
+                    def c = MarcoLogico.createCriteria()
+                    def actividades = c.list {
+                        and {
+                            eq("proyecto", proy)
+                            tipoElemento {
+                                eq("id", 3.toLong())
+                            }
+                            eq("estado", 0)
                         }
-                        eq("estado", 0)
-                    }
-                } //ml criteria
+                    } //ml criteria
 
 //                def tdCup = [:]
 //                tdCup.valor = proy.codigoProyecto
@@ -2377,53 +2377,53 @@ class ReportesController {
 //                tdCup.tipo = "text"
 //                tdCup.style = ""
 
-                def tdNombre = [:]
-                tdNombre.valor = proy.nombre + (proy.codigoProyecto ? "<br/><b>CUP: " + proy.codigoProyecto + "</b>" : "")
-                tdNombre.rowSpan = 0
-                tdNombre.tipo = "text"
-                tdNombre.style = ""
-                tdNombre.extras = "class='tdNombre'"
+                    def tdNombre = [:]
+                    tdNombre.valor = proy.nombre + (proy.codigoProyecto ? "<br/><b>CUP: " + proy.codigoProyecto + "</b>" : "")
+                    tdNombre.rowSpan = 0
+                    tdNombre.tipo = "text"
+                    tdNombre.style = ""
+                    tdNombre.extras = "class='tdNombre'"
 
-                def contAct = 0
+                    def contAct = 0
 
 //                println proy
 //                println actividades.size()
 
-                if (actividades.size() == 0) {
-                    def tdNoDatos = [:]
-                    tdNoDatos.valor = "No se encontraron datos"
-                    tdNoDatos.rowSpan = 1
-                    tdNoDatos.colSpan = 14
-                    tdNoDatos.tipo = "text"
-                    tdNoDatos.style = ""
-                    tdNoDatos.extras = "class='tdNoDatos'"
+                    if (actividades.size() == 0) {
+                        def tdNoDatos = [:]
+                        tdNoDatos.valor = "No se encontraron datos"
+                        tdNoDatos.rowSpan = 1
+                        tdNoDatos.colSpan = 14
+                        tdNoDatos.tipo = "text"
+                        tdNoDatos.style = ""
+                        tdNoDatos.extras = "class='tdNoDatos'"
 
 //                    tdCup.rowSpan = 1
-                    tdNombre.rowSpan = 1
+                        tdNombre.rowSpan = 1
 
 //                    fila.add(tdCup)
-                    fila.add(tdNombre)
-                    fila.add(tdNoDatos)
+                        fila.add(tdNombre)
+                        fila.add(tdNoDatos)
 
-                    filas.add(fila)
+                        filas.add(fila)
 
-                    contAct++
-                } else {
-                    actividades.each { act ->
-                        def asignaciones = Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
+                        contAct++
+                    } else {
+                        actividades.each { act ->
+                            def asignaciones = Asignacion.findAllByMarcoLogicoAndAnio(act, anio)
 
-                        def tdActividad = [:]
-                        tdActividad.valor = act.objeto
-                        tdActividad.rowSpan = asignaciones.size()
-                        tdActividad.tipo = "text"
-                        tdActividad.style = ""
-                        tdActividad.extras = "class='tdActividad'"
+                            def tdActividad = [:]
+                            tdActividad.valor = act.objeto
+                            tdActividad.rowSpan = asignaciones.size()
+                            tdActividad.tipo = "text"
+                            tdActividad.style = ""
+                            tdActividad.extras = "class='tdActividad'"
 
 //                        tdCup.rowSpan += asignaciones.size()
-                        tdNombre.rowSpan += asignaciones.size()
+                            tdNombre.rowSpan += asignaciones.size()
 
-                        def contAsg = 0
-                        if (asignaciones.size() == 0) {
+                            def contAsg = 0
+                            if (asignaciones.size() == 0) {
 //                            tdCup.rowSpan++
 //                            tdNombre.rowSpan++
 //                            tdActividad.rowSpan++
@@ -2460,55 +2460,55 @@ class ReportesController {
 //                            if (programacion.size() > 0) {
 //                                contAsg++
 //                            }
-                        } else {
-                            asignaciones.each { asgn ->
-                                def tdAsignacion = [:]
-                                tdAsignacion.valor = g.formatNumber(number: asgn.planificado, format: "###,##0", minFractionDigits: "2", maxFractionDigits: "2")
-                                tdAsignacion.rowSpan = 1
-                                tdAsignacion.tipo = "text"
-                                tdAsignacion.style = "text-align:right;"
-                                tdAsignacion.extras = "class='tdAsignacion'"
+                            } else {
+                                asignaciones.each { asgn ->
+                                    def tdAsignacion = [:]
+                                    tdAsignacion.valor = g.formatNumber(number: asgn.planificado, format: "###,##0", minFractionDigits: "2", maxFractionDigits: "2")
+                                    tdAsignacion.rowSpan = 1
+                                    tdAsignacion.tipo = "text"
+                                    tdAsignacion.style = "text-align:right;"
+                                    tdAsignacion.extras = "class='tdAsignacion'"
 
 //                                def programacion = ProgramacionAsignacion.findAllByAsignacionAndEstado(asgn, 0, [sort: 'mes'])
-                                if (contAct == 0 && contAsg == 0) {
+                                    if (contAct == 0 && contAsg == 0) {
 //                                    fila.add(tdCup)
-                                    fila.add(tdNombre)
-                                } else {
-                                    fila = []
-                                }
-                                if (contAsg == 0) {
-                                    fila.add(tdActividad)
-                                } else {
-                                    fila = []
-                                }
-                                fila.add(tdAsignacion)
-
-                                meses.each { mes ->
-                                    def prc = ProgramacionAsignacion.createCriteria()
-                                    def programacion = prc.list {
-                                        and {
-                                            eq("asignacion", asgn)
-                                            eq("estado", 0)
-                                            eq("mes", mes)
-                                        }
-                                    }
-                                    def prgr, valor = "?"
-                                    if (programacion.size() == 1) {
-                                        valor = g.formatNumber(number: programacion[0].valor, format: "###,##0", minFractionDigits: "2", maxFractionDigits: "2")
-                                    } else if (programacion.size() == 0) {
-                                        valor = g.formatNumber(number: 0, format: "###,##0", minFractionDigits: "2", maxFractionDigits: "2")
+                                        fila.add(tdNombre)
                                     } else {
-                                        valor = "ERROR: mas de 1 valor para este mes"
+                                        fila = []
                                     }
-                                    def tdProgramacion = [:]
-                                    tdProgramacion.valor = valor
-                                    tdProgramacion.colSpan = 1
-                                    tdProgramacion.tipo = "text"
-                                    tdProgramacion.style = "text-align:right;"
+                                    if (contAsg == 0) {
+                                        fila.add(tdActividad)
+                                    } else {
+                                        fila = []
+                                    }
+                                    fila.add(tdAsignacion)
+
+                                    meses.each { mes ->
+                                        def prc = ProgramacionAsignacion.createCriteria()
+                                        def programacion = prc.list {
+                                            and {
+                                                eq("asignacion", asgn)
+                                                eq("estado", 0)
+                                                eq("mes", mes)
+                                            }
+                                        }
+                                        def prgr, valor = "?"
+                                        if (programacion.size() == 1) {
+                                            valor = g.formatNumber(number: programacion[0].valor, format: "###,##0", minFractionDigits: "2", maxFractionDigits: "2")
+                                        } else if (programacion.size() == 0) {
+                                            valor = g.formatNumber(number: 0, format: "###,##0", minFractionDigits: "2", maxFractionDigits: "2")
+                                        } else {
+                                            valor = "ERROR: mas de 1 valor para este mes"
+                                        }
+                                        def tdProgramacion = [:]
+                                        tdProgramacion.valor = valor
+                                        tdProgramacion.colSpan = 1
+                                        tdProgramacion.tipo = "text"
+                                        tdProgramacion.style = "text-align:right;"
 //                                    tdProgramacion.extras = "class='tdProgramacion_act-" + act.id + "_asg-" + asgn.id + "_prgr-" + prgr.id + "_" + prgr.mes.descripcion + "'"
 
-                                    fila.add(tdProgramacion)
-                                }
+                                        fila.add(tdProgramacion)
+                                    }
 
 //                                programacion.each { prgr ->
 //                                    def tdProgramacion = [:]
@@ -2520,31 +2520,32 @@ class ReportesController {
 //
 //                                    fila.add(tdProgramacion)
 //                                }
-                                filas.add(fila)
+                                    filas.add(fila)
 //                                if (programacion.size() > 0) {
-                                contAsg++
+                                    contAsg++
 //                                }
-                            } //asignaciones.each
-                        }//if asignaciones.size > 0
-                        if (asignaciones.size() > 0) {
-                            contAct++
-                        }
-                    } //actividades.each
-                } //if actividades.size > 0
-                if (actividades.size() > 0) {
-                    contProy++
-                }
-            } //proyectos.each
+                                } //asignaciones.each
+                            }//if asignaciones.size > 0
+                            if (asignaciones.size() > 0) {
+                                contAct++
+                            }
+                        } //actividades.each
+                    } //if actividades.size > 0
+                    if (actividades.size() > 0) {
+                        contProy++
+                    }
+                } //proyectos.each
 
 
-            filas.each { fila ->
+                filas.each { fila ->
 //                println fila + "\n"
-                tabla += filaTablaReporte(fila, "")
+                    tabla += filaTablaReporte(fila, "")
+                }
+
+                tabla += "</tbody>"
+
+                tabla += "</table>"
             }
-
-            tabla += "</tbody>"
-
-            tabla += "</table>"
         }
 
         return tabla

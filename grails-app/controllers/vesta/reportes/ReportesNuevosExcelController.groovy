@@ -9,13 +9,15 @@ import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFRow as Row
 import org.apache.poi.xssf.usermodel.XSSFSheet as Sheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
+import vesta.parametros.poaPac.Fuente
 
 
 class ReportesNuevosExcelController {
 
     def poaGrupoGastoXls() {
+        def fuente = Fuente.get(params.id)
         def reportes = new ReportesNuevosController()
-        def data = reportes.poaGrupoGastos_funcion()
+        def data = reportes.poaGrupoGastos_funcion(fuente)
         def anio = data.anio
         def totales = data.totales
 
@@ -77,15 +79,12 @@ class ReportesNuevosExcelController {
             CellStyle styleFooter = wb.createCellStyle()
             styleFooter.setFont(fontFooter)
 
-
-
             Cell cellTitulo = row.createCell((short) iniCol)
             cellTitulo.setCellValue("PLAN OPERATIVO ANUAL POA " + anio.anio)
             cellTitulo.setCellStyle(styleTitulo)
             Cell cellSubtitulo = row2.createCell((short) iniCol)
-            cellSubtitulo.setCellValue("RESUMEN POR GRUPO DE GASTO")
+            cellSubtitulo.setCellValue("RESUMEN POR GRUPO DE GASTO" + (fuente ? " - FUENTE " + fuente.toString() : ""))
             cellSubtitulo.setCellStyle(styleSubtitulo)
-
 
             Row rowFecha = sheet.createRow((short) 3)
             Cell cellFecha = rowFecha.createCell((short) curCol)

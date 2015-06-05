@@ -67,7 +67,7 @@
     </head>
 
     <body>
-        <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Grupo de Gasto"/>
+        <rep:headerFooter title="PLAN OPERATIVO ANUAL POA ${anio.anio}" subtitulo="Resumen por Grupo de Gasto${ (fuente ? " - FUENTE " + fuente.toString() : "")}"/>
 
     <p>
         Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}

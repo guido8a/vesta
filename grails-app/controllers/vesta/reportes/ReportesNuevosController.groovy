@@ -28,7 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
 
 class ReportesNuevosController {
 
-    def poaGrupoGastos_funcion() {
+    def poaGrupoGastos_funcion(Fuente fuente) {
         def strAnio = new Date().format('yyyy')
         def anio = Anio.findByAnio(strAnio)
 
@@ -62,6 +62,9 @@ class ReportesNuevosController {
             def asignaciones = Asignacion.withCriteria {
                 presupuesto {
                     like("numero", numero + "%")
+                }
+                if (fuente) {
+                    eq("fuente", fuente)
                 }
             }
             asignaciones.each { asg ->
@@ -153,17 +156,17 @@ class ReportesNuevosController {
 //                        totales[keyActual] += asg.priorizado
 //                    }
 //                } else {
-                    m.valores[keyTotal] += asg.planificado
-                    totales[keyTotal] += asg.planificado
-                    if (!m.valores[anioAsg.anio]) {
-                        m.valores[anioAsg.anio] = 0
-                        if (!anios.contains(anioAsg.anio)) {
-                            anios += anioAsg.anio
-                            totales[anioAsg.anio] = 0
-                        }
+                m.valores[keyTotal] += asg.planificado
+                totales[keyTotal] += asg.planificado
+                if (!m.valores[anioAsg.anio]) {
+                    m.valores[anioAsg.anio] = 0
+                    if (!anios.contains(anioAsg.anio)) {
+                        anios += anioAsg.anio
+                        totales[anioAsg.anio] = 0
                     }
-                    m.valores[anioAsg.anio] += asg.planificado
-                    totales[anioAsg.anio] += asg.planificado
+                }
+                m.valores[anioAsg.anio] += asg.planificado
+                totales[anioAsg.anio] += asg.planificado
 //                }
             }
             if (m.valores[keyTotal] > 0) {
@@ -381,8 +384,9 @@ class ReportesNuevosController {
     }
 
     def poaGrupoGastoGUI() {
-        def data = poaGrupoGastos_funcion()
-        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
+        def fuente = Fuente.get(params.id)
+        def data = poaGrupoGastos_funcion(fuente)
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales, fuente: fuente]
     }
 
     def poaProyectoGUI() {
@@ -401,8 +405,9 @@ class ReportesNuevosController {
     }
 
     def poaGrupoGastoPdf() {
-        def data = poaGrupoGastos_funcion()
-        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
+        def fuente = Fuente.get(params.id)
+        def data = poaGrupoGastos_funcion(fuente)
+        return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales, fuente: fuente]
     }
 
     def poaProyectoPdf() {

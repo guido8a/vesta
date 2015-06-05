@@ -5,7 +5,7 @@
   Time: 03:25 PM
 --%>
 
-<%@ page import="vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.parametros.poaPac.Fuente; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
@@ -43,6 +43,23 @@
         <g:set var="anio" value="${Anio.findByAnio(new Date().format('yyyy'))}"/>
 
         <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Grupo de Gasto">
+
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-1">
+                    <label>Fuente</label>
+                </div>
+
+                <div class="col-md-3">
+                    <g:select name="fuente" from="${Fuente.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"
+                              class="form-control" noSelection="['': 'Todas las fuentes']" value="${fuente?.id}"/>
+                </div>
+
+                <div class="col-md-2">
+                    <a href="#" id="btnCambiarFuente" class="btn btn-info">
+                        <i class="fa fa-refresh"></i> Cambiar
+                    </a>
+                </div>
+            </div>
 
             <table class="table table-bordered table-hover table-condensed table-bordered">
                 <thead>
@@ -123,17 +140,21 @@
             function reporte(tipo) {
                 var url;
                 if (tipo == "pdf") {
-                    url = "${createLink(action: 'poaGrupoGastoPdf')}";
+                    url = "${createLink(action: 'poaGrupoGastoPdf')}/" + $("#fuente").val();
                     url += "?anio=" + $("#anio").val();
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_grupo_gasto.pdf";
                 } else if (tipo == "xls") {
-                    url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaGrupoGastoXls')}";
+                    url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaGrupoGastoXls')}/" + $("#fuente").val();
                     url += "?anio=" + $("#anio").val();
                     location.href = url;
                 }
             }
 
             $(function () {
+                $("#btnCambiarFuente").click(function () {
+                    location.href = "${createLink(action:'poaGrupoGastoGUI')}/" + $("#fuente").val();
+                });
+
                 $("#btnXls").click(function () {
                     reporte("xls");
                 });
