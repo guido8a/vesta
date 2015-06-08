@@ -1234,107 +1234,24 @@ class ReportesNuevosController {
             fontFooter.setBold(true)
 
 
-            CellStyle styleYachay = wb.createCellStyle()
-            styleYachay.setFont(fontYachay)
-            styleYachay.setAlignment(CellStyle.ALIGN_CENTER)
-            styleYachay.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
 
-            CellStyle styleTitulo = wb.createCellStyle()
-            styleTitulo.setFont(fontTitulo)
-            styleTitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleTitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+            // Create a row and put some cells in it. Rows are 0 based.
+            def titulo = "REPORTE DE EGRESOS NO PERMANENTES"
+            def subtitulo = "GRUPO DE GASTO - EN DÓLARES"
+            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
 
-            CellStyle styleSubtitulo = wb.createCellStyle()
-            styleSubtitulo.setFont(fontSubtitulo)
-            styleSubtitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleSubtitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleHeader = wb.createCellStyle()
-            styleHeader.setFont(fontHeader)
-            styleHeader.setAlignment(CellStyle.ALIGN_CENTER)
-            styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-            styleHeader.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 96, 144)));
-            styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND)
-            styleHeader.setWrapText(true);
-            styleHeader.setBorderBottom(CellStyle.BORDER_THIN);
-            styleHeader.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleHeader.setBorderLeft(CellStyle.BORDER_THIN);
-            styleHeader.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleHeader.setBorderRight(CellStyle.BORDER_THIN);
-            styleHeader.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            styleHeader.setBorderTop(CellStyle.BORDER_THIN);
-            styleHeader.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-            CellStyle styleTabla = wb.createCellStyle()
-            styleTabla.setFont(fontTabla)
-            styleTabla.setWrapText(true);
-            styleTabla.setBorderBottom(CellStyle.BORDER_THIN);
-            styleTabla.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderLeft(CellStyle.BORDER_THIN);
-            styleTabla.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderRight(CellStyle.BORDER_THIN);
-            styleTabla.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderTop(CellStyle.BORDER_THIN);
-            styleTabla.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-            CellStyle styleFooter = wb.createCellStyle()
-            styleFooter.setFont(fontFooter)
-            styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
-            styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
-            styleFooter.setBorderBottom(CellStyle.BORDER_THIN);
-            styleFooter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooter.setBorderTop(CellStyle.BORDER_THIN);
-            styleFooter.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooter.setBorderLeft(CellStyle.BORDER_THIN);
-            styleFooter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooter.setBorderRight(CellStyle.BORDER_THIN);
-            styleFooter.setRightBorderColor(IndexedColors.BLACK.getIndex());
-
-            CellStyle styleFooterCenter = wb.createCellStyle()
-            styleFooterCenter.setFont(fontFooter)
-            styleFooterCenter.setAlignment(CellStyle.ALIGN_CENTER)
-            styleFooterCenter.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            styleFooterCenter.setBorderBottom(CellStyle.BORDER_THIN);
-            styleFooterCenter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooterCenter.setBorderTop(CellStyle.BORDER_MEDIUM_DASHED);
-            styleFooterCenter.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooterCenter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
-            styleFooterCenter.setFillPattern(CellStyle.SOLID_FOREGROUND)
-
-
-            Row rowYachay = sheet.createRow((short) curRow)
-            curRow++
-            Cell cellTitulo = rowYachay.createCell((short) 3)
-            cellTitulo.setCellValue("EMPRESA PÚBLICA YACHAY EP")
-            cellTitulo.setCellStyle(styleYachay)
-
-            Row rowSubtitulo = sheet.createRow((short) curRow)
-            curRow++
-            Cell cellSubtitulo = rowSubtitulo.createCell((short) 3)
-            cellSubtitulo.setCellValue("REPORTE DE EGRESOS NO PERMANENTES - GRUPO DE GASTO")
-            cellSubtitulo.setCellStyle(styleSubtitulo)
-
-//            Row rowSubtitulo2 = sheet.createRow((short) curRow)
+//            Row rowFecha = sheet.createRow((short) curRow)
 //            curRow++
-//            Cell cellSubtitulo2 = rowSubtitulo2.createCell((short) 3)
-//            cellSubtitulo2.setCellValue("Año")
-//            cellSubtitulo2.setCellStyle(styleSubtitulo)
+//            Cell cellFecha = rowFecha.createCell((short) 1)
+//            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
 //
-//            Row rowSubtitulo3 = sheet.createRow((short) curRow)
-//            curRow++
-//            Cell cellSubtitulo3 = rowSubtitulo3.createCell((short) 3)
-//            cellSubtitulo3.setCellValue("En dólares")
-//            cellSubtitulo3.setCellStyle(styleSubtitulo)
-
-
-            Row rowFecha = sheet.createRow((short) curRow)
-            curRow++
-            Cell cellFecha = rowFecha.createCell((short) 1)
-            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
-
             Row rowHeader = sheet.createRow((short) curRow)
-            rowSubtitulo.setHeightInPoints(30)
+//            rowSubtitulo.setHeightInPoints(30)
             curRow++
             Cell cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("GRUPO PRESUPUESTARIO")
@@ -1357,6 +1274,8 @@ class ReportesNuevosController {
             }
 
             def totalCols = curCol
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols)
+
             def total = 0
 
             data.data.each { v ->
