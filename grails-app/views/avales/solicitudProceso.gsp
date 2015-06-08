@@ -165,7 +165,7 @@
             <div class="row">
                 <span class="grupo">
                     <label for="memorando" class="col-md-2 control-label">
-                        Descripción del proceso
+                        Descripción del proceso (justificación)
                     </label>
 
                     <div class="col-md-9">

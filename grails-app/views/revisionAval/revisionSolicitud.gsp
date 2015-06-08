@@ -47,7 +47,7 @@
             </tr>
             <tr>
                 <th>
-                    DESCRIPCION PROCESO
+                    JUSTIFICACIÓN
                 </th>
                 <td>
                     ${solicitud.concepto}
