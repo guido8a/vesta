@@ -14,8 +14,165 @@ import vesta.parametros.poaPac.Fuente
 
 class ReportesNuevosExcelController {
 
+    public static getEstilos(Workbook wb) {
+        Font fontYachay = wb.createFont()
+        fontYachay.setFontHeightInPoints((short) 12)
+//            fontYachay.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+        fontYachay.setBold(true)
+
+        Font fontTitulo = wb.createFont()
+        fontTitulo.setFontHeightInPoints((short) 12)
+//            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+        fontTitulo.setBold(true)
+
+        Font fontSubtitulo = wb.createFont()
+        fontSubtitulo.setFontHeightInPoints((short) 12)
+//            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
+        fontSubtitulo.setBold(true)
+
+        Font fontHeader = wb.createFont()
+        fontHeader.setFontHeightInPoints((short) 9)
+        fontHeader.setColor(new XSSFColor(new java.awt.Color(255, 255, 255)))
+        fontHeader.setBold(true)
+
+        Font fontTabla = wb.createFont()
+        fontTabla.setFontHeightInPoints((short) 9)
+
+        Font fontFooter = wb.createFont()
+        fontHeader.setFontHeightInPoints((short) 9)
+        fontFooter.setBold(true)
+
+        CellStyle styleYachay = wb.createCellStyle()
+        styleYachay.setFont(fontYachay)
+        styleYachay.setAlignment(CellStyle.ALIGN_CENTER)
+        styleYachay.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+        CellStyle styleTitulo = wb.createCellStyle()
+        styleTitulo.setFont(fontTitulo)
+        styleTitulo.setAlignment(CellStyle.ALIGN_CENTER)
+        styleTitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+        CellStyle styleSubtitulo = wb.createCellStyle()
+        styleSubtitulo.setFont(fontSubtitulo)
+        styleSubtitulo.setAlignment(CellStyle.ALIGN_CENTER)
+        styleSubtitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+
+        CellStyle styleHeader = wb.createCellStyle()
+        styleHeader.setFont(fontHeader)
+        styleHeader.setAlignment(CellStyle.ALIGN_CENTER)
+        styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+        styleHeader.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 96, 144)));
+        styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND)
+        styleHeader.setWrapText(true);
+        styleHeader.setBorderBottom(CellStyle.BORDER_THIN);
+        styleHeader.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styleHeader.setBorderLeft(CellStyle.BORDER_THIN);
+        styleHeader.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        styleHeader.setBorderRight(CellStyle.BORDER_THIN);
+        styleHeader.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        styleHeader.setBorderTop(CellStyle.BORDER_THIN);
+        styleHeader.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+        CellStyle styleTabla = wb.createCellStyle()
+        styleTabla.setFont(fontTabla)
+        styleTabla.setWrapText(true);
+        styleTabla.setBorderBottom(CellStyle.BORDER_THIN);
+        styleTabla.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styleTabla.setBorderLeft(CellStyle.BORDER_THIN);
+        styleTabla.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        styleTabla.setBorderRight(CellStyle.BORDER_THIN);
+        styleTabla.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        styleTabla.setBorderTop(CellStyle.BORDER_THIN);
+        styleTabla.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+        CellStyle styleFooter = wb.createCellStyle()
+        styleFooter.setFont(fontFooter)
+        styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
+        styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
+        styleFooter.setBorderBottom(CellStyle.BORDER_THIN);
+        styleFooter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooter.setBorderLeft(CellStyle.BORDER_THIN);
+        styleFooter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooter.setBorderRight(CellStyle.BORDER_THIN);
+        styleFooter.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooter.setBorderTop(CellStyle.BORDER_THIN);
+        styleFooter.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+        CellStyle styleFooterCenter = wb.createCellStyle()
+        styleFooterCenter.setFont(fontFooter)
+        styleFooterCenter.setAlignment(CellStyle.ALIGN_CENTER)
+        styleFooterCenter.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
+        styleFooterCenter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
+        styleFooterCenter.setFillPattern(CellStyle.SOLID_FOREGROUND)
+        styleFooterCenter.setBorderBottom(CellStyle.BORDER_THIN);
+        styleFooterCenter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooterCenter.setBorderLeft(CellStyle.BORDER_THIN);
+        styleFooterCenter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooterCenter.setBorderRight(CellStyle.BORDER_THIN);
+        styleFooterCenter.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooterCenter.setBorderTop(CellStyle.BORDER_THIN);
+        styleFooterCenter.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+        return [styleYachay: styleYachay, styleTitulo: styleTitulo, styleSubtitulo: styleSubtitulo, styleHeader: styleHeader,
+                styleTabla : styleTabla, styleFooter: styleFooter, styleFooterCenter: styleFooterCenter]
+    }
+
+    public static setTitulos(Sheet sheet, estilos, int iniRow, int iniCol, String titulo, String subtitulo) {
+        CellStyle styleYachay = estilos.styleYachay
+        CellStyle styleTitulo = estilos.styleTitulo
+        CellStyle styleSubtitulo = estilos.styleSubtitulo
+
+        def curRow = iniRow
+
+        Row rowYachay = sheet.createRow((short) curRow)
+        Cell cellYachay = rowYachay.createCell((short) iniCol)
+        cellYachay.setCellValue("EMPRESA PÚBLICA YACHAY EP")
+        cellYachay.setCellStyle(styleYachay)
+        curRow++
+
+        Row rowTitulo = sheet.createRow((short) curRow)
+        Cell cellTitulo = rowTitulo.createCell((short) iniCol)
+        cellTitulo.setCellValue(titulo)
+        cellTitulo.setCellStyle(styleTitulo)
+        curRow++
+
+        Row rowSubtitulo = sheet.createRow((short) curRow)
+        Cell cellSubtitulo = rowSubtitulo.createCell((short) iniCol)
+        cellSubtitulo.setCellValue(subtitulo)
+        cellSubtitulo.setCellStyle(styleSubtitulo)
+        curRow++
+
+        Row rowFecha = sheet.createRow((short) curRow)
+        Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
+        cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
+        curRow++
+
+        return curRow
+    }
+
+    public static joinTitulos(Sheet sheet, int iniRow, int iniCol, int totalCols) {
+        sheet.addMergedRegion(new CellRangeAddress(
+                iniRow, //first row (0-based)
+                iniRow, //last row  (0-based)
+                iniCol, //first column (0-based)
+                totalCols  //last column  (0-based)
+        ))
+        sheet.addMergedRegion(new CellRangeAddress(
+                iniRow + 1, //first row (0-based)
+                iniRow + 1, //last row  (0-based)
+                iniCol, //first column (0-based)
+                totalCols   //last column  (0-based)
+        ))
+        sheet.addMergedRegion(new CellRangeAddress(
+                iniRow + 2, //first row (0-based)
+                iniRow + 2, //last row  (0-based)
+                iniCol, //first column (0-based)
+                totalCols   //last column  (0-based)
+        ))
+    }
+
     def poaGrupoGastoXls() {
-        def fuente = Fuente.get(params.fnt)
+        def fuente = Fuente.get(params.fnt.toLong())
         def reportes = new ReportesNuevosController()
         def data = reportes.poaGrupoGastos_funcion(fuente)
         def anio = data.anio
@@ -31,163 +188,134 @@ class ReportesNuevosExcelController {
             Workbook wb = new Workbook()
             Sheet sheet = wb.createSheet("POA por grupo de gastos")
             // Create a new font and alter it.
-            Font fontTitulo = wb.createFont()
-            fontTitulo.setFontHeightInPoints((short) 24)
-            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontTitulo.setBold(true)
-
-            Font fontSubtitulo = wb.createFont()
-            fontSubtitulo.setFontHeightInPoints((short) 18)
-            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontSubtitulo.setBold(true)
-
-            Font fontHeader = wb.createFont()
-            fontHeader.setFontHeightInPoints((short) 12)
-            fontHeader.setColor(new XSSFColor(new java.awt.Color(255, 255, 255)))
-            fontHeader.setBold(true)
-
-            Font fontFooter = wb.createFont()
-            fontFooter.setBold(true)
+            def estilos = getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
 
             // Create a row and put some cells in it. Rows are 0 based.
-            Row row = sheet.createRow((short) curRow)
+            def titulo = "PLAN OPERATIVO ANUAL POA " + anio.anio
+            def subtitulo = "RESUMEN POR GRUPO DE GASTO" + (fuente ? " - FUENTE " + fuente.toString() : "")
+            curRow = setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
+
+            Row rowHeader = sheet.createRow((short) curRow)
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("GRUPO DE GASTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("DESCRIPCIÓN")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 12500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ARRASTRE AÑO ${anio.anio.toInteger() - 1}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("REQUERIMIENTO AÑO ${anio.anio}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PRESUPUESTO CODIFICADO AÑO ${anio.anio}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
             curRow++
-            row.setHeightInPoints(30)
-            Row row2 = sheet.createRow((short) curRow)
-            curRow += 3
-            row2.setHeightInPoints(24)
-            Row row3 = sheet.createRow((short) curRow)
-            curRow++
-
-            CellStyle styleTitulo = wb.createCellStyle()
-            styleTitulo.setFont(fontTitulo)
-            styleTitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleTitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleSubtitulo = wb.createCellStyle()
-            styleSubtitulo.setFont(fontSubtitulo)
-            styleSubtitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleSubtitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleHeader = wb.createCellStyle()
-            styleHeader.setFont(fontHeader)
-            styleHeader.setAlignment(CellStyle.ALIGN_CENTER)
-            styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-            styleHeader.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 96, 144)));
-            styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND)
-
-            CellStyle styleFooter = wb.createCellStyle()
-            styleFooter.setFont(fontFooter)
-
-            Cell cellTitulo = row.createCell((short) iniCol)
-            cellTitulo.setCellValue("PLAN OPERATIVO ANUAL POA " + anio.anio)
-            cellTitulo.setCellStyle(styleTitulo)
-            Cell cellSubtitulo = row2.createCell((short) iniCol)
-            cellSubtitulo.setCellValue("RESUMEN POR GRUPO DE GASTO" + (fuente ? " - FUENTE " + fuente.toString() : ""))
-            cellSubtitulo.setCellStyle(styleSubtitulo)
-
-            Row rowFecha = sheet.createRow((short) 3)
-            Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
-            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
-
-            Cell cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Grupo de gasto")
-            cellHeader.setCellStyle(styleHeader)
-
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Descripción")
-            cellHeader.setCellStyle(styleHeader)
-
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Arrastre Año ${anio.anio.toInteger() - 1}")
-            cellHeader.setCellStyle(styleHeader)
-
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Requerimiento Año ${anio.anio}")
-            cellHeader.setCellStyle(styleHeader)
-
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Presupuesto codificado Año ${anio.anio}")
-            cellHeader.setCellStyle(styleHeader)
 
             data.anios.each { a ->
-                cellHeader = row3.createCell((short) curCol)
-                cellHeader.setCellValue("Año ${a}")
+                cellHeader = rowHeader.createCell((short) curCol)
+                cellHeader.setCellValue("AÑO ${a}")
                 cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 4000)
                 curCol++
             }
             def totalCols = curCol
-            cellHeader = row3.createCell((short) curCol)
-            cellHeader.setCellValue("Total Plurianual")
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("TOTAL PLURIANUAL")
             cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
 
-            sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow, //first row (0-based)
-                    iniRow, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    totalCols  //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow + 1, //first row (0-based)
-                    iniRow + 1, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    totalCols   //last column  (0-based)
-            ))
+            joinTitulos(sheet, iniRow, iniCol, totalCols)
 
             data.data.each { v ->
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
-
-                tableRow.createCell(curCol).setCellValue(v.partida.numero.replaceAll("0", ""))
+                def tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.partida.numero.replaceAll("0", ""))
+                tableCell.setCellStyle(styleTabla)
                 curCol++
-                tableRow.createCell(curCol).setCellValue("" + v.partida.descripcion)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue("" + v.partida.descripcion)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 def str = ""
                 if (v.valores["" + (anio.anio.toInteger() - 1)] > 0) {
                     str = v.valores["" + (anio.anio.toInteger() - 1)]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 str = ""
                 if (v.valores[anio.anio] > 0) {
                     str = v.valores[anio.anio]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 str = ""
                 if (v.valores["T" + anio.anio] > 0) {
                     str = v.valores["T" + anio.anio]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 data.anios.each { a ->
                     str = ""
                     if (v.valores[a] > 0) {
                         str = v.valores[a]
                     }
-                    tableRow.createCell(curCol).setCellValue(str)
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(str)
+                    tableCell.setCellStyle(styleTabla)
                     curCol++
                 }
-                tableRow.createCell(curCol).setCellValue(v.valores["T"])
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.valores["T"])
+                tableCell.setCellStyle(styleTabla)
                 curRow++
             }
 
+            sheet.addMergedRegion(new CellRangeAddress(
+                    curRow, //first row (0-based)
+                    curRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 1 //last column  (0-based)
+            ))
+
             curCol = iniCol
             Row totalRow = sheet.createRow((short) curRow)
+
             Cell cellFooter = totalRow.createCell((short) curCol)
             curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
-            cellFooter.setCellValue("TOTAL")
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
@@ -215,9 +343,6 @@ class ReportesNuevosExcelController {
             cellFooter.setCellValue(totales["T"])
             cellFooter.setCellStyle(styleFooter)
 
-            (iniCol..totalCols).each { i ->
-                sheet.autoSizeColumn(i) //adjust width of the first column
-            }
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "poa_grupo_gastos.xlsx"
             response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -245,140 +370,23 @@ class ReportesNuevosExcelController {
             Workbook wb = new Workbook()
             Sheet sheet = wb.createSheet("POA por unidad ejecutora")
             // Create a new font and alter it.
-            Font fontYachay = wb.createFont()
-            fontYachay.setFontHeightInPoints((short) 12)
-//            fontYachay.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontYachay.setBold(true)
-
-            Font fontTitulo = wb.createFont()
-            fontTitulo.setFontHeightInPoints((short) 12)
-//            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontTitulo.setBold(true)
-
-            Font fontSubtitulo = wb.createFont()
-            fontSubtitulo.setFontHeightInPoints((short) 12)
-//            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontSubtitulo.setBold(true)
-
-            Font fontHeader = wb.createFont()
-            fontHeader.setFontHeightInPoints((short) 9)
-            fontHeader.setColor(new XSSFColor(new java.awt.Color(255, 255, 255)))
-            fontHeader.setBold(true)
-
-            Font fontTabla = wb.createFont()
-            fontTabla.setFontHeightInPoints((short) 9)
-
-            Font fontFooter = wb.createFont()
-            fontHeader.setFontHeightInPoints((short) 9)
-            fontFooter.setBold(true)
-
-            CellStyle styleYachay = wb.createCellStyle()
-            styleYachay.setFont(fontYachay)
-            styleYachay.setAlignment(CellStyle.ALIGN_CENTER)
-            styleYachay.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleTitulo = wb.createCellStyle()
-            styleTitulo.setFont(fontTitulo)
-            styleTitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleTitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleSubtitulo = wb.createCellStyle()
-            styleSubtitulo.setFont(fontSubtitulo)
-            styleSubtitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleSubtitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleHeader = wb.createCellStyle()
-            styleHeader.setFont(fontHeader)
-            styleHeader.setAlignment(CellStyle.ALIGN_CENTER)
-            styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-            styleHeader.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 96, 144)));
-            styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND)
-            styleHeader.setWrapText(true);
-            styleHeader.setBorderBottom(CellStyle.BORDER_THIN);
-            styleHeader.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleHeader.setBorderLeft(CellStyle.BORDER_THIN);
-            styleHeader.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleHeader.setBorderRight(CellStyle.BORDER_THIN);
-            styleHeader.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            styleHeader.setBorderTop(CellStyle.BORDER_THIN);
-            styleHeader.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-            CellStyle styleTabla = wb.createCellStyle()
-            styleTabla.setFont(fontTabla)
-            styleTabla.setWrapText(true);
-            styleTabla.setBorderBottom(CellStyle.BORDER_THIN);
-            styleTabla.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderLeft(CellStyle.BORDER_THIN);
-            styleTabla.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderRight(CellStyle.BORDER_THIN);
-            styleTabla.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderTop(CellStyle.BORDER_THIN);
-            styleTabla.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-            CellStyle styleFooter = wb.createCellStyle()
-            styleFooter.setFont(fontFooter)
-            styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
-            styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
-            styleFooter.setBorderBottom(CellStyle.BORDER_THIN);
-            styleFooter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooter.setBorderLeft(CellStyle.BORDER_THIN);
-            styleFooter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooter.setBorderRight(CellStyle.BORDER_THIN);
-            styleFooter.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooter.setBorderTop(CellStyle.BORDER_THIN);
-            styleFooter.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-            CellStyle styleFooterCenter = wb.createCellStyle()
-            styleFooterCenter.setFont(fontFooter)
-            styleFooterCenter.setAlignment(CellStyle.ALIGN_CENTER)
-            styleFooterCenter.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-            styleFooterCenter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
-            styleFooterCenter.setFillPattern(CellStyle.SOLID_FOREGROUND)
-            styleFooterCenter.setBorderBottom(CellStyle.BORDER_THIN);
-            styleFooterCenter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooterCenter.setBorderLeft(CellStyle.BORDER_THIN);
-            styleFooterCenter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooterCenter.setBorderRight(CellStyle.BORDER_THIN);
-            styleFooterCenter.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooterCenter.setBorderTop(CellStyle.BORDER_THIN);
-            styleFooterCenter.setTopBorderColor(IndexedColors.BLACK.getIndex());
+            def estilos = getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
 
             // Create a row and put some cells in it. Rows are 0 based.
-
-            Row rowYachay = sheet.createRow((short) curRow)
-//            rowYachay.setHeightInPoints(30)
-            curRow++
-            Cell cellYachay = rowYachay.createCell((short) iniCol)
-            cellYachay.setCellValue("EMPRESA PÚBLICA YACHAY EP")
-            cellYachay.setCellStyle(styleYachay)
-
-            Row rowTitulo = sheet.createRow((short) curRow)
-//            rowTitulo.setHeightInPoints(24)
-            curRow++
-            Cell cellTitulo = rowTitulo.createCell((short) iniCol)
-            cellTitulo.setCellValue("PLANIFICACIÓN OPERATIVA ANUAL - POA AÑO " + anio.anio)
-            cellTitulo.setCellStyle(styleTitulo)
-
-            Row rowSubtitulo = sheet.createRow((short) curRow)
-//            rowSubtitulo.setHeightInPoints(24)
-            curRow++
-            Cell cellSubtitulo = rowSubtitulo.createCell((short) iniCol)
-            cellSubtitulo.setCellValue("RESUMEN POR UNIDAD EJECUTORA")
-            cellSubtitulo.setCellStyle(styleSubtitulo)
-
-            Row rowFecha = sheet.createRow((short) curRow)
-//            rowSubtitulo.setHeightInPoints(24)
-            curRow++
-            Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
-            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
+            def titulo = "PLANIFICACIÓN OPERATIVA ANUAL - POA AÑO " + anio.anio
+            def subtitulo = "RESUMEN POR UNIDAD EJECUTORA"
+            curRow = setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
 
             Row rowHeader = sheet.createRow((short) curRow)
-            rowSubtitulo.setHeightInPoints(30)
-            curRow++
             Cell cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("NÚMERO")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 2000)
+            curRow++
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
@@ -424,24 +432,7 @@ class ReportesNuevosExcelController {
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 4000)
 
-            sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow, //first row (0-based)
-                    iniRow, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    totalCols  //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow + 1, //first row (0-based)
-                    iniRow + 1, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    totalCols   //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow + 2, //first row (0-based)
-                    iniRow + 2, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    totalCols   //last column  (0-based)
-            ))
+            joinTitulos(sheet, iniRow, iniCol, totalCols)
 
             data.data.eachWithIndex { v, k ->
                 curCol = iniCol
@@ -515,7 +506,7 @@ class ReportesNuevosExcelController {
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
             cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellStyle(styleFooterCenter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
@@ -578,163 +569,132 @@ class ReportesNuevosExcelController {
             Workbook wb = new Workbook()
             Sheet sheet = wb.createSheet("POA por proyecto")
             // Create a new font and alter it.
-            Font fontTitulo = wb.createFont()
-            fontTitulo.setFontHeightInPoints((short) 24)
-            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontTitulo.setBold(true)
+            def estilos = getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
 
-            Font fontSubtitulo = wb.createFont()
-            fontSubtitulo.setFontHeightInPoints((short) 18)
-            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontSubtitulo.setBold(true)
+            def titulo = "PLAN OPERATIVO ANUAL POA " + anio.anio
+            def subtitulo = "RESUMEN POR PROYECTO"
+            curRow = setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
 
-            Font fontHeader = wb.createFont()
-            fontHeader.setFontHeightInPoints((short) 12)
-            fontHeader.setColor(new XSSFColor(new java.awt.Color(255, 255, 255)))
-            fontHeader.setBold(true)
+            Row rowHeader = sheet.createRow((short) curRow)
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("NÚMERO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
 
-            Font fontFooter = wb.createFont()
-            fontFooter.setBold(true)
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROYECTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 12500)
+            curCol++
 
-            // Create a row and put some cells in it. Rows are 0 based.
-            Row row = sheet.createRow((short) curRow)
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ARRASTRE AÑO ${anio.anio.toInteger() - 1}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("REQUERIMIENTO AÑO ${anio.anio}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PRESUPUESTO CODIFICADO AÑO ${anio.anio}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
             curRow++
-            row.setHeightInPoints(30)
-            Row row2 = sheet.createRow((short) curRow)
-            curRow += 3
-            row2.setHeightInPoints(24)
-            Row row3 = sheet.createRow((short) curRow)
-            curRow++
-
-            CellStyle styleTitulo = wb.createCellStyle()
-            styleTitulo.setFont(fontTitulo)
-            styleTitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleTitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleSubtitulo = wb.createCellStyle()
-            styleSubtitulo.setFont(fontSubtitulo)
-            styleSubtitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleSubtitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleHeader = wb.createCellStyle()
-            styleHeader.setFont(fontHeader)
-            styleHeader.setAlignment(CellStyle.ALIGN_CENTER)
-            styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-            styleHeader.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 96, 144)));
-            styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND)
-
-            CellStyle styleFooter = wb.createCellStyle()
-            styleFooter.setFont(fontFooter)
-
-            Cell cellTitulo = row.createCell((short) iniCol)
-            cellTitulo.setCellValue("PLAN OPERATIVO ANUAL POA " + anio.anio)
-            cellTitulo.setCellStyle(styleTitulo)
-            Cell cellSubtitulo = row2.createCell((short) iniCol)
-            cellSubtitulo.setCellValue("RESUMEN POR PROYECTO")
-            cellSubtitulo.setCellStyle(styleSubtitulo)
-
-            Row rowFecha = sheet.createRow((short) 3)
-            Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
-            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
-
-
-            Cell cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Número")
-            cellHeader.setCellStyle(styleHeader)
-
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Proyecto")
-            cellHeader.setCellStyle(styleHeader)
-
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Arrastre Año${anio.anio.toInteger() - 1}")
-            cellHeader.setCellStyle(styleHeader)
-
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Requerimiento Año ${anio.anio}")
-            cellHeader.setCellStyle(styleHeader)
-
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Presupuesto codificado Año ${anio.anio}")
-            cellHeader.setCellStyle(styleHeader)
 
             data.anios.each { a ->
-                cellHeader = row3.createCell((short) curCol)
-                cellHeader.setCellValue("Año ${a}")
+                cellHeader = rowHeader.createCell((short) curCol)
+                cellHeader.setCellValue("AÑO ${a}")
                 cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 4000)
                 curCol++
             }
             def totalCols = curCol
-            cellHeader = row3.createCell((short) curCol)
-            cellHeader.setCellValue("Total Plurianual")
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("TOTAL PLURIANUAL")
             cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
 
-            sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow, //first row (0-based)
-                    iniRow, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    totalCols  //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow + 1, //first row (0-based)
-                    iniRow + 1, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    totalCols   //last column  (0-based)
-            ))
+            joinTitulos(sheet, iniRow, iniCol, totalCols)
 
             data.data.eachWithIndex { v, k ->
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
-                tableRow.createCell(curCol).setCellValue("" + (k + 1))
+                def tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue("" + (k + 1))
+                tableCell.setCellStyle(styleTabla)
                 curCol++
-                tableRow.createCell(curCol).setCellValue("" + v.proyecto.toStringCompleto())
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue("" + v.proyecto.toStringCompleto())
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 def str = ""
                 if (v.valores["" + (anio.anio.toInteger() - 1)] > 0) {
                     str = v.valores["" + (anio.anio.toInteger() - 1)]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 str = ""
                 if (v.valores[anio.anio] > 0) {
                     str = v.valores[anio.anio]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 str = ""
                 if (v.valores["T" + anio.anio] > 0) {
                     str = v.valores["T" + anio.anio]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 data.anios.each { a ->
                     str = ""
                     if (v.valores[a] > 0) {
                         str = v.valores[a]
                     }
-                    tableRow.createCell(curCol).setCellValue(str)
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(str)
+                    tableCell.setCellStyle(styleTabla)
                     curCol++
                 }
-                tableRow.createCell(curCol).setCellValue(v.valores["T"])
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.valores["T"])
+                tableCell.setCellStyle(styleTabla)
                 curRow++
             }
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    curRow, //first row (0-based)
+                    curRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 1 //last column  (0-based)
+            ))
 
             curCol = iniCol
             Row totalRow = sheet.createRow((short) curRow)
             Cell cellFooter = totalRow.createCell((short) curCol)
             curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
-            cellFooter.setCellValue("TOTAL")
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
@@ -762,9 +722,6 @@ class ReportesNuevosExcelController {
             cellFooter.setCellValue(totales["T"])
             cellFooter.setCellStyle(styleFooter)
 
-            (iniCol..totalCols).each { i ->
-                sheet.autoSizeColumn(i) //adjust width of the first column
-            }
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "poa_proyecto.xlsx"
             response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -792,152 +749,119 @@ class ReportesNuevosExcelController {
             Workbook wb = new Workbook()
             Sheet sheet = wb.createSheet("POA por fuente de financiamiento")
             // Create a new font and alter it.
-            Font fontTitulo = wb.createFont()
-            fontTitulo.setFontHeightInPoints((short) 24)
-            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontTitulo.setBold(true)
-
-            Font fontSubtitulo = wb.createFont()
-            fontSubtitulo.setFontHeightInPoints((short) 18)
-            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontSubtitulo.setBold(true)
-
-            Font fontHeader = wb.createFont()
-            fontHeader.setFontHeightInPoints((short) 12)
-            fontHeader.setColor(new XSSFColor(new java.awt.Color(255, 255, 255)))
-            fontHeader.setBold(true)
-
-            Font fontFooter = wb.createFont()
-            fontFooter.setBold(true)
+            def estilos = getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
 
             // Create a row and put some cells in it. Rows are 0 based.
-            Row row = sheet.createRow((short) curRow)
-            curRow++
-            row.setHeightInPoints(30)
-            Row row2 = sheet.createRow((short) curRow)
-            curRow += 3
-            row2.setHeightInPoints(24)
-            Row row3 = sheet.createRow((short) curRow)
-            curRow++
+            def titulo = "PLAN OPERATIVO ANUAL POA " + anio.anio
+            def subtitulo = "RESUMEN POR FUENTE DE FINANCIAMIENTO"
+            curRow = setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
 
-            CellStyle styleTitulo = wb.createCellStyle()
-            styleTitulo.setFont(fontTitulo)
-            styleTitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleTitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleSubtitulo = wb.createCellStyle()
-            styleSubtitulo.setFont(fontSubtitulo)
-            styleSubtitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleSubtitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleHeader = wb.createCellStyle()
-            styleHeader.setFont(fontHeader)
-            styleHeader.setAlignment(CellStyle.ALIGN_CENTER)
-            styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-            styleHeader.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 96, 144)));
-            styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND)
-
-            CellStyle styleFooter = wb.createCellStyle()
-            styleFooter.setFont(fontFooter)
-
-            Cell cellTitulo = row.createCell((short) iniCol)
-            cellTitulo.setCellValue("PLAN OPERATIVO ANUAL POA " + anio.anio)
-            cellTitulo.setCellStyle(styleTitulo)
-            Cell cellSubtitulo = row2.createCell((short) iniCol)
-            cellSubtitulo.setCellValue("RESUMEN POR FUENTE DE FINANCIAMIENTO")
-            cellSubtitulo.setCellStyle(styleSubtitulo)
-
-            Row rowFecha = sheet.createRow((short) 3)
-            Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
-            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
-
-
-            Cell cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Fuente de financiamiento")
+            Row rowHeader = sheet.createRow((short) curRow)
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("FUENTE DE FINANCIAMIENTO")
             cellHeader.setCellStyle(styleHeader)
-
-            cellHeader = row3.createCell((short) curCol)
+            sheet.setColumnWidth(curCol, 4000)
             curCol++
-            cellHeader.setCellValue("Descripción")
-            cellHeader.setCellStyle(styleHeader)
 
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Requerimiento Año ${anio.anio}")
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("DESCRIPCIÓN")
             cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 12500)
+            curCol++
 
-            cellHeader = row3.createCell((short) curCol)
-            curCol++
-            cellHeader.setCellValue("Presupuesto codificado Año ${anio.anio}")
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("REQUERIMIENTO AÑO ${anio.anio}")
             cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PRESUPUESTO CODIFICADO AÑO ${anio.anio}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
 
             data.anios.each { a ->
-                cellHeader = row3.createCell((short) curCol)
-                cellHeader.setCellValue("Año ${a}")
+                cellHeader = rowHeader.createCell((short) curCol)
+                cellHeader.setCellValue("AÑO ${a}")
                 cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 4000)
                 curCol++
             }
             def totalCols = curCol
-            cellHeader = row3.createCell((short) curCol)
-            cellHeader.setCellValue("Total Plurianual")
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("TOTAL PLURIANUAL")
             cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curRow++
 
-            sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow, //first row (0-based)
-                    iniRow, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    totalCols  //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow + 1, //first row (0-based)
-                    iniRow + 1, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    totalCols   //last column  (0-based)
-            ))
+            joinTitulos(sheet, iniRow, iniCol, totalCols)
 
             data.data.eachWithIndex { v, k ->
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
-                tableRow.createCell(curCol).setCellValue(v.fuente.codigo)
+                def tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.fuente.codigo)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
-                tableRow.createCell(curCol).setCellValue("" + v.fuente.descripcion)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue("" + v.fuente.descripcion)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 def str = ""
                 if (v.valores[anio.anio] > 0) {
                     str = v.valores[anio.anio]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 str = ""
                 if (v.valores["T" + anio.anio] > 0) {
                     str = v.valores["T" + anio.anio]
                 }
-                tableRow.createCell(curCol).setCellValue(str)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(str)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
                 data.anios.each { a ->
                     str = ""
                     if (v.valores[a] > 0) {
                         str = v.valores[a]
                     }
-                    tableRow.createCell(curCol).setCellValue(str)
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(str)
+                    tableCell.setCellStyle(styleTabla)
                     curCol++
                 }
-                tableRow.createCell(curCol).setCellValue(v.valores["T"])
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.valores["T"])
+                tableCell.setCellStyle(styleTabla)
                 curRow++
             }
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    curRow, //first row (0-based)
+                    curRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 1 //last column  (0-based)
+            ))
 
             curCol = iniCol
             Row totalRow = sheet.createRow((short) curRow)
             Cell cellFooter = totalRow.createCell((short) curCol)
             curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
-            cellFooter.setCellValue("TOTAL")
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
@@ -960,9 +884,6 @@ class ReportesNuevosExcelController {
             cellFooter.setCellValue(totales["T"])
             cellFooter.setCellStyle(styleFooter)
 
-            (iniCol..totalCols).each { i ->
-                sheet.autoSizeColumn(i) //adjust width of the first column
-            }
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "poa_fuente_financiamiento.xlsx"
             response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")

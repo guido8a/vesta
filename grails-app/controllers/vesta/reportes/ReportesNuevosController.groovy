@@ -405,7 +405,7 @@ class ReportesNuevosController {
     }
 
     def poaGrupoGastoPdf() {
-        def fuente = Fuente.get(params.fnt)
+        def fuente = Fuente.get(params.fnt.toLong())
         def data = poaGrupoGastos_funcion(fuente)
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales, fuente: fuente]
     }
@@ -593,7 +593,7 @@ class ReportesNuevosController {
     def reporteAvalesExcel() {
 
 //        println("params " + params)
-        def fuente = Fuente.get(params.fnt)
+        def fuente = Fuente.get(params.fnt.toLong())
         def proceso = ProcesoAsignacion.withCriteria {
             asignacion {
                 eq('fuente', fuente)
@@ -849,7 +849,7 @@ class ReportesNuevosController {
 
     def reporteReformasExcel() {
 
-        def fuente = Fuente.get(params.fnt)
+        def fuente = Fuente.get(params.fnt.toLong())
 
         def modificacion = ModificacionAsignacion.withCriteria {
             desde {
@@ -1167,7 +1167,7 @@ class ReportesNuevosController {
 
     def reportePdfAvales() {
 
-        def fuente = Fuente.get(params.fnt)
+        def fuente = Fuente.get(params.fnt.toLong())
         def proceso = ProcesoAsignacion.withCriteria {
             asignacion {
                 eq('fuente', fuente)
