@@ -1317,6 +1317,7 @@ class RevisionAvalController extends Shield {
 
                     firma.tipoFirma = "AVAL"
                     firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
+                    firma.concepto = "Solicitud de aval: " + solicitud.proceso.nombre
 //                    firma.concepto = "Solicitud de aval: " + solicitud.concepto
                     if (!firma.save(flush: true)) {
                         println "error al guardar firma: " + firma.errors
@@ -1326,6 +1327,7 @@ class RevisionAvalController extends Shield {
                 } else {
                     firma.estado = "S"
                     firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
+                    firma.concepto = "Solicitud de aval: " + solicitud.proceso.nombre
 //                    firma.concepto = "Solicitud de aval: " + solicitud.concepto
                     if (!firma.save(flush: true)) {
                         println "error al guardar firma: " + firma.errors

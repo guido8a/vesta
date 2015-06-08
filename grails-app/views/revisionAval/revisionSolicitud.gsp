@@ -39,10 +39,18 @@
             </tr>
             <tr>
                 <th>
-                    PROCESO
+                    NOMBRE PROCESO
                 </th>
                 <td>
                     ${solicitud.proceso.nombre}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    DESCRIPCION PROCESO
+                </th>
+                <td>
+                    ${solicitud.concepto}
                 </td>
             </tr>
             <tr>
