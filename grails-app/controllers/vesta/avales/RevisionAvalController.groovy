@@ -1105,6 +1105,8 @@ class RevisionAvalController extends Shield {
 //        }
 //        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
         unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+        def p = []
+
 
         def filtroDirector = null,
             filtroPersona = null
@@ -1113,6 +1115,14 @@ class RevisionAvalController extends Shield {
             case "RQ":
                 estados = [estadoPendiente, estadoDevueltoReq]
                 filtroPersona = Persona.get(session.usuario.id)
+
+                def procesosSinSolicitud = ProcesoAval.list([sort: "id"])
+                procesosSinSolicitud.each { pss ->
+                    if (SolicitudAval.countByProcesoAndUnidadInList(pss, unidades) == 0) {
+                        p += pss
+                    }
+                }
+
                 break;
             case "DRRQ":
                 estados = [estadoPorRevisar, estadoDevueltoDirReq]
@@ -1176,16 +1186,6 @@ class RevisionAvalController extends Shield {
         }
 
         unidadesList = unidadesList.sort { it.nombre }
-
-//        def unidades2 = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
-        def unidades2 = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
-        def p = []
-        def procesosSinSolicitud = ProcesoAval.list([sort: "id"])
-        procesosSinSolicitud.each { pss ->
-            if (SolicitudAval.countByProcesoAndUnidadInList(pss, unidades2) == 0) {
-                p += pss
-            }
-        }
 
         return [solicitudes: solicitudes, actual: actual, unidades: unidadesList, procesosSinSolicitud: p]
     }
