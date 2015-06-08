@@ -1,8 +1,309 @@
 package vesta.reportes
 
+import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
+import vesta.parametros.poaPac.Mes
+import vesta.parametros.poaPac.Presupuesto
+import vesta.poa.Asignacion
+import vesta.poa.ProgramacionAsignacion
+
+import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.Font
+import org.apache.poi.ss.usermodel.IndexedColors
+import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.xssf.usermodel.XSSFCell as Cell
+import org.apache.poi.xssf.usermodel.XSSFColor
+import org.apache.poi.xssf.usermodel.XSSFRow as Row
+import org.apache.poi.xssf.usermodel.XSSFSheet as Sheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
+
 class Reportes4Controller {
 
     def proformaEgresosNoPermanentesXlsx() {
+        def fuente = Fuente.get(params.fnt.toLong())
+        def datos = proformaEgresosNoPermanentes_funcion(fuente)
 
+        def anio = datos.anio
+        def data = datos.data
+        def anios = datos.anios
+        def meses = datos.meses
+        def totales = datos.totales
+
+        def iniRow = 0
+        def iniCol = 1
+
+        def curRow = iniRow
+        def curCol = iniCol
+
+        try {
+            Workbook wb = new Workbook()
+            Sheet sheet = wb.createSheet("Proforma de egresos no permanentes")
+            // Create a new font and alter it.
+            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
+
+            // Create a row and put some cells in it. Rows are 0 based.
+            def titulo = "PROFORMA DE EGRESOS NO PERMANENTES"
+            def subtitulo = "AÑO ${anio.anio} - ${fuente ? 'FUENTE ' + fuente.descripcion : 'TODAS LAS FUENTES'} - EN DÓLARES"
+            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
+
+            Row rowHeader = sheet.createRow((short) curRow)
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("GRUPO PRESUPUESTARIO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("GRUPO DE GASTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 12500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROGRAMACIÓN AÑO " + anio.anio)
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            meses.eachWithIndex { m, i ->
+                if (i > 0) {
+                    cellHeader = rowHeader.createCell((short) curCol)
+                    cellHeader.setCellValue("")
+                    cellHeader.setCellStyle(styleHeader)
+                    sheet.setColumnWidth(curCol, 3000)
+                    curCol++
+                }
+            }
+
+            anios.each { a ->
+                cellHeader = rowHeader.createCell((short) curCol)
+                cellHeader.setCellValue("AÑO ${a}")
+                cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 4000)
+                curCol++
+            }
+
+            def totalCols = curCol
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("TOTAL PLURIANUAL")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+
+            def rowHeader1o = curRow
+            curRow++
+            def rowHeader2o = curRow
+
+            Row rowHeader2 = sheet.createRow((short) curRow)
+            def colMes = iniCol + 2
+            def colFinMes = colMes + meses.size() - 1
+            curCol = colMes
+            meses.eachWithIndex { m, i ->
+                cellHeader = rowHeader2.createCell((short) curCol)
+                cellHeader.setCellValue(m.descripcion)
+                cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 3000)
+                curCol++
+            }
+
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols)
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader2o, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol //last column  (0-based)
+            ))
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader2o, //last row  (0-based)
+                    iniCol + 1, //first column (0-based)
+                    iniCol + 1 //last column  (0-based)
+            ))
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader1o, //last row  (0-based)
+                    colMes, //first column (0-based)
+                    colFinMes //last column  (0-based)
+            ))
+            anios.eachWithIndex { a, i ->
+                sheet.addMergedRegion(new CellRangeAddress(
+                        rowHeader1o, //first row (0-based)
+                        rowHeader2o, //last row  (0-based)
+                        colFinMes + 1 + i, //first column (0-based)
+                        colFinMes + 1 + i //last column  (0-based)
+                ))
+            }
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader2o, //last row  (0-based)
+                    colFinMes + 1 + anios.size(), //first column (0-based)
+                    colFinMes + 1 + anios.size() //last column  (0-based)
+            ))
+
+            curRow++
+            data.each { v ->
+                curCol = iniCol
+                Row tableRow = sheet.createRow((short) curRow)
+                def tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.partida.numero.replaceAll("0", ""))
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.partida.descripcion)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+                meses.each { mes ->
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(v.valores[mes.numero + "_" + anio.anio] ?: 0)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+                }
+                anios.each { a ->
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(v.valores[a] ?: 0)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+                }
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.valores["T"] ?: 0)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+                curRow++
+            }
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    curRow, //first row (0-based)
+                    curRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 1 //last column  (0-based)
+            ))
+
+            curCol = iniCol
+            Row totalRow = sheet.createRow((short) curRow)
+
+            Cell cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            meses.each { m ->
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue(totales[m.numero + "_" + anio.anio] ?: 0)
+                cellFooter.setCellStyle(styleFooter)
+            }
+            anios.each { a ->
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue(totales[a] ?: 0)
+                cellFooter.setCellStyle(styleFooter)
+            }
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(totales["T"] ?: 0)
+            cellFooter.setCellStyle(styleFooter)
+
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "proforma_egresos_no_permanentes.xlsx"
+            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", header)
+            wb.write(output)
+            output.flush()
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+
+    def proformaEgresosNoPermanentes_funcion(Fuente fuente) {
+        def strAnio = new Date().format('yyyy')
+        def anio = Anio.findByAnio(strAnio)
+
+        def keyTotalActual = strAnio
+        def keyTotal = "T"
+
+        def data = []
+        def anios = []
+        def meses = Mes.list([sort: "numero"])
+        def partidas = Presupuesto.findAllByNumeroLike('%0000', [sort: 'numero'])
+
+        def totales = [:]
+        totales[keyTotalActual] = 0
+        totales[keyTotal] = 0
+
+        partidas.each { partida ->
+            def numero = partida.numero?.replaceAll("0", "")
+            def m = [:]
+            m.partida = partida
+            m.valores = [:]
+            m.valores[keyTotalActual] = 0
+            m.valores[keyTotal] = 0
+
+            def asignaciones = Asignacion.withCriteria {
+                presupuesto {
+                    like("numero", numero + "%")
+                }
+                if (fuente) {
+                    eq("fuente", fuente)
+                }
+            }
+            asignaciones.each { asg ->
+                def anioAsg = asg.anio
+                if (anioAsg.id == anio.id) {
+                    //es el anio n: saca la programacion
+                    meses.each { mes ->
+                        def keyMes = mes.numero + "_" + anio.anio
+                        def programacion = ProgramacionAsignacion.findAllByAsignacionAndMes(asg, mes)
+                        if (!m.valores[keyMes]) {
+                            m.valores[keyMes] = 0
+                        }
+                        if (!totales[keyMes]) {
+                            totales[keyMes] = 0
+                        }
+                        if (programacion.size() == 1) {
+                            def v = programacion.first().valor
+                            m.valores[keyMes] = v
+                            totales[keyMes] += v
+                        } else if (programacion.size() > 1) {
+                            def v = programacion.first().valor
+                            m.valores[keyMes] = v
+                            totales[keyMes] += v
+                            println "existe ${programacion.size()} programaciones para asignacion ${asg.id} mes ${mes.id} (${mes.descripcion}):" +
+                                    " ${programacion.id}, se utilizo ${programacion.first().id}"
+                        } else {
+                            m.valores[keyMes] = 0
+                        }
+                    }
+                } else {
+                    //es anio futuro: saca solo el total
+                    m.valores[keyTotal] += asg.planificado
+                    totales[keyTotal] += asg.planificado
+                    if (!m.valores[anioAsg.anio]) {
+                        m.valores[anioAsg.anio] = 0
+                        if (!anios.contains(anioAsg.anio)) {
+                            anios += anioAsg.anio
+                            totales[anioAsg.anio] = 0
+                        }
+                    }
+                    m.valores[anioAsg.anio] += asg.planificado
+                    totales[anioAsg.anio] += asg.planificado
+                }
+            }
+//            if (m.valores[keyTotal] > 0) {
+            data += m
+//            }
+        }
+        anios = anios.sort()
+        return [anio: anio, data: data, anios: anios, meses: meses, totales: totales]
     }
 }

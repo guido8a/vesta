@@ -29,19 +29,67 @@
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="proformaEgresos">
-                                Proforma de egresos no permanentes
+                                1. Proforma de egresos no permanentes
                             </a>
                         </li>
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="egresos">
-                                Proforma de egresos no permanentes - Grupo de gastos
+                                1.1. Proforma de egresos no permanentes - Grupo de gastos
                             </a>
                         </li>
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="recursos">
-                                Proforma presupuestaria de recursos no permanentes
+                                1.2. Proforma presupuestaria de recursos no permanentes - Grupo de gastos
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="subproyectos">
+                                ** 1.3. Proforma presupuestaria de recursos no permanentes - Subproyectos
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="poa">
+                                ** 2. Planificación operativa anual - POA
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="poaGrupoGasto">
+                                2.1. POA: resumen por grupo de gasto
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="poaUnidadEjecutora">
+                                2.2. POA: resumen por unidad ejecutora
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="poaProyecto">
+                                2.3. POA: resumen por proyecto
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="poaFuente">
+                                2.4. POA: resumen por fuente de financiamiento
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="disponibilidadFuente">
+                                ** 3. Disponibilidad de recursos - Por fuente de financiamiento
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="programacion">
+                                ** 4. Programación plurianual
                             </a>
                         </li>
                         <li>
@@ -54,31 +102,6 @@
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="reformas">
                                 Reporte de reformas y ajustes
-                            </a>
-                        </li>
-                        <li>
-                            <i class="fa-li fa fa-print text-info"></i>
-
-                            <a href="#" id="poaGrupoGasto">
-                                POA: resumen por grupo de gasto
-                            </a>
-                        </li>
-                        <li>
-                            <i class="fa-li fa fa-print text-info"></i>
-                            <a href="#" id="poaUnidadEjecutora">
-                                POA: resumen por unidad ejecutora
-                            </a>
-                        </li>
-                        <li>
-                            <i class="fa-li fa fa-print text-info"></i>
-                            <a href="#" id="poaProyecto">
-                                POA: resumen por proyecto
-                            </a>
-                        </li>
-                        <li>
-                            <i class="fa-li fa fa-print text-info"></i>
-                            <a href="#" id="poaFuente">
-                                POA: resumen por fuente de financiamiento
                             </a>
                         </li>
                     </ul>

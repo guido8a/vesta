@@ -169,6 +169,12 @@ class ReportesNuevosExcelController {
                 iniCol, //first column (0-based)
                 totalCols   //last column  (0-based)
         ))
+        sheet.addMergedRegion(new CellRangeAddress(
+                iniRow + 3, //first row (0-based)
+                iniRow + 3, //last row  (0-based)
+                iniCol + 1, //first column (0-based)
+                iniCol + 2   //last column  (0-based)
+        ))
     }
 
     def poaGrupoGastoXls() {
