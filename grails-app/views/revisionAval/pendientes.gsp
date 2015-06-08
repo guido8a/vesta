@@ -52,7 +52,7 @@
                                     <th>Requirente</th>
                                     <th style="width: 200px;">Proceso</th>
                                     <th>Tipo</th>
-                                    <th style="width: 200px;">Concepto</th>
+                                    <th style="width: 200px;">Justificación</th>
                                     <th>Monto</th>
                                     <th>Estado</th>
                                     <th>Doc. Respaldo</th>
