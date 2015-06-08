@@ -218,7 +218,7 @@ class UnidadEjecutora {
         return asignaciones.unique()
     }
 
-    def getProyectosUnidad(Anio anio, String perfilCodigo) {
+    List<Proyecto> getProyectosUnidad(Anio anio, String perfilCodigo) {
         def asignaciones = this.getAsignacionesUnidad(anio, perfilCodigo)
         def proyectos = []
         def proyectos2 = []

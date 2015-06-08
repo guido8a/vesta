@@ -1,4 +1,4 @@
-<%@ page import="vesta.avales.Aval" %>
+<%@ page import="vesta.avales.SolicitudAval; vesta.avales.Aval" %>
 <%--
   Created by IntelliJ IDEA.
   User: fabricio
@@ -23,8 +23,8 @@
         </thead>
         <tbody>
             <g:each in="${datos}" var="aval">
-                <g:set var="sol" value="${vesta.avales.SolicitudAval.findByAval(aval)}"/>
-                <tr estadoTr="${aval.estado.codigo}" data-id="${aval?.id}" usu="${perfil}">
+                <g:set var="sol" value="${SolicitudAval.findByAval(aval)}"/>
+                <tr estadoTr="${aval.estado.codigo}" data-sol="${sol.id}" data-id="${aval?.id}" usu="${perfil}">
                     <td>${aval.fechaAprobacion?.format("yyyy")}-GP No.<elm:imprimeNumero aval="${aval.id}"/></td>
                     <td style="text-align: center" title="${aval.proceso.proyecto.toStringCompleto()}">${aval.proceso.proyecto}</td>
                     <td>${aval.proceso.nombre}</td>
@@ -218,27 +218,27 @@
         //location.href = "${createLink(controller:'avales',action:'descargaAval')}/"+$(this).attr("iden")
         var url = "${g.createLink(controller: 'reportes',action: 'certificacion')}/?id=" + $(this).attr("iden")
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval.pdf"
-    })
+    });
     $(".imprimiSolicitud").button({icons : {primary : "ui-icon-print"}, text : false}).click(function () {
         var url = "${g.createLink(controller: 'reporteSolicitud',action: 'imprimirSolicitudAval')}/?id=" + $(this).attr("iden")
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud.pdf"
-    })
+    });
     $(".sort").click(function () {
-        var header = $(this)
-        var sort = header.attr("sort")
-        var order = ""
+        var header = $(this);
+        var sort = header.attr("sort");
+        var order = "";
         if (header.hasClass("asc")) {
             order = "desc"
         } else {
             order = "asc"
         }
         cargarHistorialSort($("#anio").val(), $("#numero").val(), $("#descProceso").val(), sort, order)
-    }).css({"cursor" : "pointer"})
+    }).css({"cursor" : "pointer"});
 
     function createContextMenu(node) {
         var $tr = $(node);
 
-         var items = {
+        var items = {
             header   : {
                 label  : "Acciones",
                 header : true
@@ -247,7 +247,7 @@
                 label  : "Imprimir Aval",
                 icon   : "fa fa-print",
                 action : function ($element) {
-                    var id = $element.data("id");
+                    var id = $element.data("sol");
                     var url = "${g.createLink(controller: 'reportes',action: 'certificacion')}/?id=" + id;
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval.pdf"
                 }

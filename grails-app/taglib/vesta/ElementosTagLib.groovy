@@ -911,8 +911,7 @@ class ElementosTagLib {
         output += num
 //        }
 
-//        println("out " + output)
-
+//        println("\tout " + output)
         out << output
     }
 

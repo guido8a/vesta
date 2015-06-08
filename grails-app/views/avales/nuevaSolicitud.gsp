@@ -93,7 +93,9 @@
                     <div class="col-md-9">
                         <g:if test="${!readOnly}">
                             <g:select name="proyecto.id" from="${proyectos}" class="form-control input-sm required"
-                                      optionKey="id" optionValue="nombre" id="proyecto" value="${proceso?.proyecto?.id}"/>
+                                      optionKey="id" optionValue="${{
+                                it.codigo + " - " + it.nombre
+                            }}" id="proyecto" value="${proceso?.proyecto?.id}"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -218,7 +220,7 @@
 //                });
 
                 var validator = $("#frmProceso").validate({
-                    errorClass     : "help-block",
+                    errorClass : "help-block",
                     errorPlacement : function (error, element) {
                         if (element.parent().hasClass("input-group")) {
                             error.insertAfter(element.parent());
@@ -227,7 +229,7 @@
                         }
                         element.parents(".grupo").addClass('has-error');
                     },
-                    success        : function (label) {
+                    success : function (label) {
                         label.parents(".grupo").removeClass('has-error');
                         label.remove();
                     }
