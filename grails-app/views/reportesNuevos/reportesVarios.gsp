@@ -53,7 +53,7 @@
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="poa">
-                                2. Planificación operativa anual - POA
+                                ** 2. Planificación operativa anual - POA
                             </a>
                         </li>
                         <li>
@@ -89,7 +89,7 @@
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="programacion">
-                                ** 4. Programación plurianual
+                                4. Programación plurianual
                             </a>
                         </li>
                         <li>
@@ -264,6 +264,13 @@
                     var urlPdf = null;
                     var pdfFileName = null;
                     dialogXlsPdfFuente("Reporte Planificación Operativa Anual", urlExcel, urlPdf, pdfFileName);
+                });
+
+                $("#programacion").click(function () {
+                    var urlExcel = "${createLink(controller: 'reportes4', action: 'programacionPlurianualXlsx')}";
+                    var urlPdf = null;
+                    var pdfFileName = null;
+                    dialogXlsPdfFuente("Reporte Programación plurianual", urlExcel, urlPdf, pdfFileName);
                 });
 
             });

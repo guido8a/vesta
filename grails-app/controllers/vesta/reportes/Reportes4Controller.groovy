@@ -8,14 +8,14 @@ import vesta.poa.Asignacion
 import vesta.poa.ProgramacionAsignacion
 
 import org.apache.poi.ss.usermodel.CellStyle
-import org.apache.poi.ss.usermodel.Font
-import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFCell as Cell
-import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFRow as Row
 import org.apache.poi.xssf.usermodel.XSSFSheet as Sheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
+import vesta.proyectos.MarcoLogico
+import vesta.proyectos.MetaBuenVivirProyecto
+import vesta.proyectos.Proyecto
 
 class Reportes4Controller {
     def proformaEgresosNoPermanentesXlsx() {
@@ -449,9 +449,15 @@ class Reportes4Controller {
             sheet.setColumnWidth(curCol, 4000)
             curCol++
 
-            curCol = colMes - 3
+            curCol = colMes - 4
             cellHeader = rowHeader2.createCell((short) curCol)
             cellHeader.setCellValue("ARRASTRE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("NUEVO")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 4000)
             curCol++
@@ -473,15 +479,337 @@ class Reportes4Controller {
             ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols)
 
             sheet.addMergedRegion(new CellRangeAddress(
-                    iniRow, //first row (0-based)
-                    iniRow, //last row  (0-based)
+                    rowHeader1o, //first row (0-based)
+                    rowHeader1o, //last row  (0-based)
                     iniCol, //first column (0-based)
-                    iniCol + 3  //last column  (0-based)
+                    iniCol + 2  //last column  (0-based)
             ))
+            (1..16).each { n ->
+                sheet.addMergedRegion(new CellRangeAddress(
+                        rowHeader1o, //first row (0-based)
+                        rowHeader2o, //last row  (0-based)
+                        iniCol + 2 + n, //first column (0-based)
+                        iniCol + 2 + n  //last column  (0-based)
+                ))
+            }
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader1o, //last row  (0-based)
+                    colMes - 4, //first column (0-based)
+                    colMes - 2  //last column  (0-based)
+            ))
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader1o, //last row  (0-based)
+                    colMes - 1, //first column (0-based)
+                    colFinMes - 1  //last column  (0-based)
+            ))
+            (1..4).each { n ->
+                sheet.addMergedRegion(new CellRangeAddress(
+                        rowHeader1o, //first row (0-based)
+                        rowHeader2o, //last row  (0-based)
+                        colFinMes - 1 + n, //first column (0-based)
+                        colFinMes - 1 + n  //last column  (0-based)
+                ))
+            }
 
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "poa.xlsx"
+            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", header)
+            wb.write(output)
+            output.flush()
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    def programacionPlurianualXlsx() {
+        def fuente = Fuente.get(params.fnt.toLong())
+        def datos = programacionPlurianual_funcion(fuente)
+
+        def anio = datos.anio
+        def data = datos.data
+        def anios = datos.anios
+        def meses = datos.meses
+        def totales = datos.totales
+
+        def iniRow = 0
+        def iniCol = 1
+
+        def curRow = iniRow
+        def curCol = iniCol
+
+        try {
+            Workbook wb = new Workbook()
+            Sheet sheet = wb.createSheet("Programación plurianual")
+            // Create a new font and alter it.
+            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleNumber = estilos.styleNumber
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
+
+            // Create a row and put some cells in it. Rows are 0 based.
+            def titulo = "PROGRAMACIÓN PLURIANUAL - ${fuente ? 'FUENTE ' + fuente.descripcion : 'TODAS LAS FUENTES'} - EN DÓLARES"
+            def subtitulo = null
+            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
+
+            Row rowHeader = sheet.createRow((short) curRow)
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PLAN NACIONAL DE DESARROLLO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("OBJETIVO ESTRATÉGICO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ESTRATEGIA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PORTAFOLIO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROGRAMA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("COD.")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROYECTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 10000)
+            curCol++
+
+            def colProg = curCol
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROGRAMACIÓN")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            (1..anios.size() - 1).each { a ->
+                cellHeader = rowHeader.createCell((short) curCol)
+                cellHeader.setCellValue("")
+                cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 4000)
+                curCol++
+            }
+
+            def totalCols = curCol
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("TOTAL PLURIANUAL")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+
+            def rowHeader1o = curRow
+            curRow++
+            def rowHeader2o = curRow
+
+            curCol = iniCol
+
+            Row rowHeader2 = sheet.createRow((short) curRow)
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("OBJETIVO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("POLÍTICA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("META")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            curCol = colProg
+            anios.each { a ->
+                cellHeader = rowHeader2.createCell((short) curCol)
+                cellHeader.setCellValue(a)
+                cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 4000)
+                curCol++
+            }
+
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols)
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader1o, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 2  //last column  (0-based)
+            ))
+            (1..6).each { n ->
+                sheet.addMergedRegion(new CellRangeAddress(
+                        rowHeader1o, //first row (0-based)
+                        rowHeader2o, //last row  (0-based)
+                        iniCol + 2 + n, //first column (0-based)
+                        iniCol + 2 + n  //last column  (0-based)
+                ))
+            }
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader1o, //last row  (0-based)
+                    colProg, //first column (0-based)
+                    colProg + anios.size() - 1//last column  (0-based)
+            ))
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader2o, //last row  (0-based)
+                    colProg + anios.size(), //first column (0-based)
+                    colProg + anios.size() //last column  (0-based)
+            ))
+
+            curRow++
+            data.each { v ->
+                curCol = iniCol
+
+                Proyecto proyecto = v.proyecto
+                def meta = MetaBuenVivirProyecto.withCriteria {
+                    eq("proyecto", proyecto)
+                    metaBuenVivir {
+                        politica {
+                            objetivo {
+                                order("codigo", "asc")
+                            }
+                            order("codigo", "asc")
+                        }
+                        order("codigo", "asc")
+                    }
+                }
+                meta = meta.size() > 0 ? meta.first() : null
+
+                Row tableRow = sheet.createRow((short) curRow)
+                def tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(meta?.metaBuenVivir?.politica?.objetivo?.descripcion)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(meta?.metaBuenVivir?.politica?.descripcion)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(meta?.metaBuenVivir?.descripcion)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(proyecto.objetivoEstrategico?.descripcion)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(proyecto.estrategia?.descripcion)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(proyecto.portafolio?.descripcion)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(proyecto.programa?.descripcion)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(proyecto.codigo)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(proyecto.nombre)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                anios.each { a ->
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(v.valores[a])
+                    tableCell.setCellStyle(styleNumber)
+                    curCol++
+                }
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.valores["T"])
+                tableCell.setCellStyle(styleNumber)
+                curCol++
+
+                curRow++
+            }
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    curRow, //first row (0-based)
+                    curRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 8 //last column  (0-based)
+            ))
+
+            curCol = iniCol
+            Row totalRow = sheet.createRow((short) curRow)
+
+            Cell cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            (1..8).each {
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue("")
+                cellFooter.setCellStyle(styleFooterCenter)
+            }
+
+            anios.each { a ->
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue(totales[a])
+                cellFooter.setCellStyle(styleFooter)
+            }
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(totales["T"])
+            cellFooter.setCellStyle(styleFooter)
+
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "programacion_plurianual.xlsx"
             response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response.setHeader("Content-Disposition", header)
             wb.write(output)
@@ -575,6 +903,109 @@ class Reportes4Controller {
     }
 
     def poa_funcion(Fuente fuente) {
+        def strAnio = new Date().format('yyyy')
+        def anio = Anio.findByAnio(strAnio)
 
+        def keyTotalActual = strAnio
+        def keyTotal = "T"
+
+        def data = []
+        def anios = []
+        def meses = Mes.list([sort: "numero"])
+        def proyectos = Proyecto.list([sort: "codigo"])
+
+        def totales = [:]
+        totales[keyTotalActual] = 0
+        totales[keyTotal] = 0
+
+        proyectos.each { proy ->
+            def actividades = MarcoLogico.findAllByProyecto(proy)
+            def asignaciones = Asignacion.withCriteria {
+                inList("marcoLogico", actividades)
+                if (fuente) {
+                    eq("fuente", fuente)
+                }
+            }
+            asignaciones.each { asg ->
+                def m = [:]
+                m.proyecto = proy
+                m.asignacion = asg
+                m.valores = [:]
+                m.valores[keyTotalActual] = 0
+                m.valores[keyTotal] = 0
+            }
+        }
+
+    }
+
+    def programacionPlurianual_funcion(Fuente fuente) {
+        def strAnio = new Date().format('yyyy')
+        def anio = Anio.findByAnio(strAnio)
+
+        def keyArrastre = "" + (strAnio.toInteger() - 1)
+        def keyActual = strAnio
+        def keyTotal = "T"
+
+        def data = []
+        def anios = []
+        anios += keyArrastre
+        anios += keyActual
+        def proyectos = Proyecto.list([sort: "codigo"])
+
+        def totales = [:]
+        totales[keyArrastre] = 0
+        totales[keyActual] = 0
+        totales[keyTotal] = 0
+
+        proyectos.each { proy ->
+            def m = [:]
+            m.proyecto = proy
+            m.valores = [:]
+            m.valores[keyArrastre] = 0
+            m.valores[keyActual] = 0
+            m.valores[keyTotal] = 0
+
+            def actividades = MarcoLogico.findAllByProyecto(proy)
+            def asignaciones = []
+            if (actividades.size() > 0) {
+                asignaciones = Asignacion.withCriteria {
+                    inList("marcoLogico", actividades)
+                    if (fuente) {
+                        eq("fuente", fuente)
+                    }
+                }
+            }
+            asignaciones.each { asg ->
+                def anioAsg = asg.anio
+                if (anioAsg.id == anio.id) {
+                    m.valores[keyTotal] += asg.priorizado
+                    totales[keyTotal] += asg.priorizado
+                    if (asg.fuente.codigo == "998") {
+                        m.valores[keyArrastre] += asg.priorizado
+                        totales[keyArrastre] += asg.priorizado
+                    } else {
+                        m.valores[keyActual] += asg.priorizado
+                        totales[keyActual] += asg.priorizado
+                    }
+                } else {
+                    m.valores[keyTotal] += asg.planificado
+                    totales[keyTotal] += asg.planificado
+                    if (!m.valores[anioAsg.anio]) {
+                        m.valores[anioAsg.anio] = 0
+                        if (!anios.contains(anioAsg.anio)) {
+                            anios += anioAsg.anio
+                            totales[anioAsg.anio] = 0
+                        }
+                    }
+                    m.valores[anioAsg.anio] += asg.planificado
+                    totales[anioAsg.anio] += asg.planificado
+                }
+            }
+            if (m.valores[keyTotal] > 0) {
+                data += m
+            }
+        }
+        anios = anios.sort()
+        return [anio: anio, data: data, anios: anios, totales: totales]
     }
 }

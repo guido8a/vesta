@@ -79,12 +79,14 @@ class ReportesNuevosExcelController {
         styleHeader.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         CellStyle styleFecha = wb.createCellStyle()
+        styleFecha.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
         styleFecha.setFont(fontFecha)
         styleFecha.setWrapText(true);
 
         XSSFCreationHelper createHelper = wb.getCreationHelper();
         CellStyle styleDate = wb.createCellStyle();
         styleDate.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy"));
+        styleDate.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
         styleDate.setFont(fontTabla)
         styleDate.setWrapText(true);
         styleDate.setBorderBottom(CellStyle.BORDER_THIN);
@@ -98,6 +100,7 @@ class ReportesNuevosExcelController {
 
         CellStyle styleNumber = wb.createCellStyle();
         styleNumber.setDataFormat(createHelper.createDataFormat().getFormat('#,##0.00'));
+        styleNumber.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
         styleNumber.setFont(fontTabla)
         styleNumber.setWrapText(true);
         styleNumber.setBorderBottom(CellStyle.BORDER_THIN);
@@ -110,6 +113,7 @@ class ReportesNuevosExcelController {
         styleNumber.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         CellStyle styleTabla = wb.createCellStyle()
+        styleTabla.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
         styleTabla.setFont(fontTabla)
         styleTabla.setWrapText(true);
         styleTabla.setBorderBottom(CellStyle.BORDER_THIN);
@@ -122,6 +126,7 @@ class ReportesNuevosExcelController {
         styleTabla.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         CellStyle styleFooterText = wb.createCellStyle()
+        styleFooterText.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
         styleFooterText.setFont(fontFooter)
         styleFooterText.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
         styleFooterText.setFillPattern(CellStyle.SOLID_FOREGROUND)
@@ -136,7 +141,7 @@ class ReportesNuevosExcelController {
 
         CellStyle styleFooterCenter = wb.createCellStyle()
         styleFooterCenter.setFont(fontFooter)
-        styleFooterCenter.setAlignment(CellStyle.ALIGN_CENTER)
+        styleFooterCenter.setAlignment(CellStyle.ALIGN_RIGHT)
         styleFooterCenter.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
         styleFooterCenter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
         styleFooterCenter.setFillPattern(CellStyle.SOLID_FOREGROUND)
@@ -151,6 +156,7 @@ class ReportesNuevosExcelController {
 
         CellStyle styleFooter = wb.createCellStyle();
         styleFooter.setDataFormat(createHelper.createDataFormat().getFormat('#,##0.00'));
+        styleFooter.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
         styleFooter.setFont(fontFooter)
         styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
         styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
