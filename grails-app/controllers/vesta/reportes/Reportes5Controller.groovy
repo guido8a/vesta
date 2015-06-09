@@ -80,12 +80,11 @@ class Reportes5Controller {
     }
 
     def reporteRecursosExcel() {
-        def reportes = new ReportesNuevosController()
         def data = recursosNoPermanentes_funcion()
         def anio = data.anio
         def totales = data.totales
 
-        def iniRow = 2
+        def iniRow = 1
         def iniCol = 1
 
         def curRow = iniRow
@@ -98,6 +97,7 @@ class Reportes5Controller {
 
             def estilos = ReportesNuevosExcelController.getEstilos(wb)
             CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleNumber = estilos.styleNumber
             CellStyle styleTabla = estilos.styleTabla
             CellStyle styleFooter = estilos.styleFooter
             CellStyle styleFooterCenter = estilos.styleFooterCenter
@@ -106,6 +106,8 @@ class Reportes5Controller {
             def subtitulo = "GRUPO DE GASTO - EN DÓLARES"
             curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
 
+            def nrowHeader1 = curRow
+            def nrowHeader2 = curRow + 1
             XSSFRow rowHeader = sheet.createRow((short) curRow)
             curRow++
             XSSFCell cellHeader = rowHeader.createCell((short) curCol)
@@ -204,48 +206,19 @@ class Reportes5Controller {
             def totalCols = curCol
             ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols)
 
-
+            (0..5).each { n ->
+                sheet.addMergedRegion(new CellRangeAddress(
+                        nrowHeader1, //first row (0-based)
+                        nrowHeader2, //last row  (0-based)
+                        iniCol + n, //first column (0-based)
+                        iniCol + n   //last column  (0-based)
+                ))
+            }
             sheet.addMergedRegion(new CellRangeAddress(
-                   7, //first row (0-based)
-                   8, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    iniCol   //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    7, //first row (0-based)
-                    8, //last row  (0-based)
-                    iniCol+1, //first column (0-based)
-                    iniCol+1   //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    7, //first row (0-based)
-                    8, //last row  (0-based)
-                    iniCol+2, //first column (0-based)
-                    iniCol+2   //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    7, //first row (0-based)
-                    8, //last row  (0-based)
-                    iniCol+3, //first column (0-based)
-                    iniCol+3   //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    7, //first row (0-based)
-                    8, //last row  (0-based)
-                    iniCol+4, //first column (0-based)
-                    iniCol+4   //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    7, //first row (0-based)
-                    8, //last row  (0-based)
-                    iniCol+5, //first column (0-based)
-                    iniCol+5   //last column  (0-based)
-            ))
-            sheet.addMergedRegion(new CellRangeAddress(
-                    curRow-2, //first row (0-based)
-                    curRow-2, //last row  (0-based)
-                    7, //first column (0-based)
-                    8 //last column  (0-based)
+                    nrowHeader1, //first row (0-based)
+                    nrowHeader1, //last row  (0-based)
+                    iniCol + 6, //first column (0-based)
+                    iniCol + 7   //last column  (0-based)
             ))
 
             def total = 0
@@ -253,35 +226,51 @@ class Reportes5Controller {
 
             data.data.each { v ->
 
-                def anterior = v.valores["" + (anio.anio.toInteger() -1)]?:0
-                def actual = v.valores[anio.anio]?:0
+                def anterior = v.valores["" + (anio.anio.toInteger() - 1)] ?: 0
+                def actual = v.valores[anio.anio] ?: 0
 
-                def totalActual = totales[anio.anio]?:0
+                def totalActual = totales[anio.anio] ?: 0
                 def totalResta = totales.resta
 
-                def porcentaje1 = (actual * 100)/totalActual
+                def porcentaje1 = (actual * 100) / totalActual
                 def resta = actual - anterior
-                def porcentaje2 = (resta * 100)/totalResta
+                def porcentaje2 = (resta * 100) / totalResta
 
 
                 curCol = iniCol
                 XSSFRow tableRow = sheet.createRow((short) curRow)
 
-                tableRow.createCell(curCol).setCellValue(v.partida.numero.replaceAll("0", ""))
+                def tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.partida.numero.replaceAll("0", ""))
+                tableCell.setCellStyle(styleTabla)
                 curCol++
-                tableRow.createCell(curCol).setCellValue(v.partida.descripcion)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.partida.descripcion)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
-                tableRow.createCell(curCol).setCellValue(v.fuente.descripcion)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(v.fuente.descripcion)
+                tableCell.setCellStyle(styleTabla)
                 curCol++
-                tableRow.createCell(curCol).setCellValue(anterior)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(anterior)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                tableRow.createCell(curCol).setCellValue(actual)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(actual)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                tableRow.createCell(curCol).setCellValue(porcentaje1)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(porcentaje1)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                tableRow.createCell(curCol).setCellValue(resta)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(resta)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                tableRow.createCell(curCol).setCellValue(porcentaje2)
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(porcentaje2)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
 
                 curRow++
@@ -307,7 +296,7 @@ class Reportes5Controller {
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
-            cellFooter.setCellValue(totales["" + (anio.anio.toInteger() -1)] ?: 0)
+            cellFooter.setCellValue(totales["" + (anio.anio.toInteger() - 1)] ?: 0)
             cellFooter.setCellStyle(styleFooter)
 
             cellFooter = totalRow.createCell((short) curCol)
@@ -333,8 +322,8 @@ class Reportes5Controller {
             sheet.addMergedRegion(new CellRangeAddress(
                     curRow, //first row (0-based)
                     curRow, //last row  (0-based)
-                    1, //first column (0-based)
-                    3 //last column  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 2 //last column  (0-based)
             ))
 
             def output = response.getOutputStream()

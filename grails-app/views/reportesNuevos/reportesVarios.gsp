@@ -95,13 +95,13 @@
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="avales">
-                                Reporte Avales
+                                5. Reporte Avales
                             </a>
                         </li>
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="reformas">
-                                Reporte de reformas y ajustes
+                                6. Reporte de reformas y ajustes
                             </a>
                         </li>
                     </ul>
@@ -214,7 +214,7 @@
                     var urlExcel = "${createLink(controller: 'reportesNuevos', action: 'reporteReformasExcel')}";
                     var urlPdf = "";
                     var pdfFileName = "";
-                    dialogXlsPdfFuente("Reporte de Avales", urlExcel, urlPdf, pdfFileName);
+                    dialogXlsPdfFuente("Reporte de Reformas y Ajustes", urlExcel, urlPdf, pdfFileName);
                 });
 
                 $("#poaGrupoGasto").click(function () {

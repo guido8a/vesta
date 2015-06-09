@@ -212,6 +212,10 @@ class ReportesNuevosExcelController {
     }
 
     public static joinTitulos(Sheet sheet, int iniRow, int iniCol, int totalCols) {
+        joinTitulos(sheet, iniRow, iniCol, totalCols, true)
+    }
+
+    public static joinTitulos(Sheet sheet, int iniRow, int iniCol, int totalCols, boolean subtitulo) {
         sheet.addMergedRegion(new CellRangeAddress(
                 iniRow, //first row (0-based)
                 iniRow, //last row  (0-based)
@@ -224,18 +228,27 @@ class ReportesNuevosExcelController {
                 iniCol, //first column (0-based)
                 totalCols   //last column  (0-based)
         ))
-        sheet.addMergedRegion(new CellRangeAddress(
-                iniRow + 2, //first row (0-based)
-                iniRow + 2, //last row  (0-based)
-                iniCol, //first column (0-based)
-                totalCols   //last column  (0-based)
-        ))
-        sheet.addMergedRegion(new CellRangeAddress(
-                iniRow + 3, //first row (0-based)
-                iniRow + 3, //last row  (0-based)
-                iniCol + 1, //first column (0-based)
-                iniCol + 2   //last column  (0-based)
-        ))
+        if (subtitulo) {
+            sheet.addMergedRegion(new CellRangeAddress(
+                    iniRow + 2, //first row (0-based)
+                    iniRow + 2, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    totalCols   //last column  (0-based)
+            ))
+            sheet.addMergedRegion(new CellRangeAddress(
+                    iniRow + 3, //first row (0-based)
+                    iniRow + 3, //last row  (0-based)
+                    iniCol + 1, //first column (0-based)
+                    iniCol + 2   //last column  (0-based)
+            ))
+        } else {
+            sheet.addMergedRegion(new CellRangeAddress(
+                    iniRow + 2, //first row (0-based)
+                    iniRow + 2, //last row  (0-based)
+                    iniCol + 1, //first column (0-based)
+                    iniCol + 2   //last column  (0-based)
+            ))
+        }
     }
 
     def poaGrupoGastoXls() {
@@ -258,6 +271,7 @@ class ReportesNuevosExcelController {
             def estilos = getEstilos(wb)
             CellStyle styleHeader = estilos.styleHeader
             CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleNumber = estilos.styleNumber
             CellStyle styleFooter = estilos.styleFooter
             CellStyle styleFooterCenter = estilos.styleFooterCenter
 
@@ -324,43 +338,31 @@ class ReportesNuevosExcelController {
                 tableCell.setCellValue("" + v.partida.descripcion)
                 tableCell.setCellStyle(styleTabla)
                 curCol++
-                def str = ""
-                if (v.valores["" + (anio.anio.toInteger() - 1)] > 0) {
-                    str = v.valores["" + (anio.anio.toInteger() - 1)]
-                }
+                def str = v.valores["" + (anio.anio.toInteger() - 1)] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                str = ""
-                if (v.valores[anio.anio] > 0) {
-                    str = v.valores[anio.anio]
-                }
+                str = v.valores[anio.anio] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                str = ""
-                if (v.valores["T" + anio.anio] > 0) {
-                    str = v.valores["T" + anio.anio]
-                }
+                str = v.valores["T" + anio.anio] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
                 data.anios.each { a ->
-                    str = ""
-                    if (v.valores[a] > 0) {
-                        str = v.valores[a]
-                    }
+                    str = v.valores[a] ?: 0
                     tableCell = tableRow.createCell(curCol)
                     tableCell.setCellValue(str)
-                    tableCell.setCellStyle(styleTabla)
+                    tableCell.setCellStyle(styleNumber)
                     curCol++
                 }
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.valores["T"])
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellValue(v.valores["T"] ?: 0)
+                tableCell.setCellStyle(styleNumber)
                 curRow++
             }
 
@@ -440,6 +442,7 @@ class ReportesNuevosExcelController {
             def estilos = getEstilos(wb)
             CellStyle styleHeader = estilos.styleHeader
             CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleNumber = estilos.styleNumber
             CellStyle styleFooter = estilos.styleFooter
             CellStyle styleFooterCenter = estilos.styleFooterCenter
 
@@ -516,43 +519,31 @@ class ReportesNuevosExcelController {
                 tableCell.setCellValue(v.unidad.codigo)
                 tableCell.setCellStyle(styleTabla)
                 curCol++
-                def str = ""
-                if (v.valores["" + (anio.anio.toInteger() - 1)] > 0) {
-                    str = v.valores["" + (anio.anio.toInteger() - 1)]
-                }
+                def str = v.valores["" + (anio.anio.toInteger() - 1)] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                str = ""
-                if (v.valores[anio.anio] > 0) {
-                    str = v.valores[anio.anio]
-                }
+                str = v.valores[anio.anio] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                str = ""
-                if (v.valores["T" + anio.anio] > 0) {
-                    str = v.valores["T" + anio.anio]
-                }
+                str = v.valores["T" + anio.anio] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
                 data.anios.each { a ->
-                    str = ""
-                    if (v.valores[a] > 0) {
-                        str = v.valores[a]
-                    }
+                    str = v.valores[a] ?: 0
                     tableCell = tableRow.createCell(curCol)
                     tableCell.setCellValue(str)
-                    tableCell.setCellStyle(styleTabla)
+                    tableCell.setCellStyle(styleNumber)
                     curCol++
                 }
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.valores["T"])
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellValue(v.valores["T"] ?: 0)
+                tableCell.setCellStyle(styleNumber)
                 curRow++
             }
 
@@ -639,6 +630,7 @@ class ReportesNuevosExcelController {
             def estilos = getEstilos(wb)
             CellStyle styleHeader = estilos.styleHeader
             CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleNumber = estilos.styleNumber
             CellStyle styleFooter = estilos.styleFooter
             CellStyle styleFooterCenter = estilos.styleFooterCenter
 
@@ -704,43 +696,31 @@ class ReportesNuevosExcelController {
                 tableCell.setCellValue("" + v.proyecto.toStringCompleto())
                 tableCell.setCellStyle(styleTabla)
                 curCol++
-                def str = ""
-                if (v.valores["" + (anio.anio.toInteger() - 1)] > 0) {
-                    str = v.valores["" + (anio.anio.toInteger() - 1)]
-                }
+                def str = v.valores["" + (anio.anio.toInteger() - 1)] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                str = ""
-                if (v.valores[anio.anio] > 0) {
-                    str = v.valores[anio.anio]
-                }
+                str = v.valores[anio.anio] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                str = ""
-                if (v.valores["T" + anio.anio] > 0) {
-                    str = v.valores["T" + anio.anio]
-                }
+                str = v.valores["T" + anio.anio] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
                 data.anios.each { a ->
-                    str = ""
-                    if (v.valores[a] > 0) {
-                        str = v.valores[a]
-                    }
+                    str = v.valores[a] ?: 0
                     tableCell = tableRow.createCell(curCol)
                     tableCell.setCellValue(str)
-                    tableCell.setCellStyle(styleTabla)
+                    tableCell.setCellStyle(styleNumber)
                     curCol++
                 }
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.valores["T"])
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellValue(v.valores["T"] ?: 0)
+                tableCell.setCellStyle(styleNumber)
                 curRow++
             }
 
@@ -819,6 +799,7 @@ class ReportesNuevosExcelController {
             def estilos = getEstilos(wb)
             CellStyle styleHeader = estilos.styleHeader
             CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleNumber = estilos.styleNumber
             CellStyle styleFooter = estilos.styleFooter
             CellStyle styleFooterCenter = estilos.styleFooterCenter
 
@@ -879,35 +860,26 @@ class ReportesNuevosExcelController {
                 tableCell.setCellValue("" + v.fuente.descripcion)
                 tableCell.setCellStyle(styleTabla)
                 curCol++
-                def str = ""
-                if (v.valores[anio.anio] > 0) {
-                    str = v.valores[anio.anio]
-                }
+                def str = v.valores[anio.anio] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
-                str = ""
-                if (v.valores["T" + anio.anio] > 0) {
-                    str = v.valores["T" + anio.anio]
-                }
+                str = v.valores["T" + anio.anio] ?: 0
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(str)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
                 data.anios.each { a ->
-                    str = ""
-                    if (v.valores[a] > 0) {
-                        str = v.valores[a]
-                    }
+                    str = v.valores[a] ?: 0
                     tableCell = tableRow.createCell(curCol)
                     tableCell.setCellValue(str)
-                    tableCell.setCellStyle(styleTabla)
+                    tableCell.setCellStyle(styleNumber)
                     curCol++
                 }
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.valores["T"])
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellValue(v.valores["T"] ?: 0)
+                tableCell.setCellStyle(styleNumber)
                 curRow++
             }
 

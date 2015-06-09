@@ -665,7 +665,7 @@ class Reportes4Controller {
                 curCol++
             }
 
-            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols)
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols, false)
 
             sheet.addMergedRegion(new CellRangeAddress(
                     rowHeader1o, //first row (0-based)
@@ -761,13 +761,13 @@ class Reportes4Controller {
 
                 anios.each { a ->
                     tableCell = tableRow.createCell(curCol)
-                    tableCell.setCellValue(v.valores[a])
+                    tableCell.setCellValue(v.valores[a] ?: 0)
                     tableCell.setCellStyle(styleNumber)
                     curCol++
                 }
 
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.valores["T"])
+                tableCell.setCellValue(v.valores["T"] ?: 0)
                 tableCell.setCellStyle(styleNumber)
                 curCol++
 
@@ -799,13 +799,13 @@ class Reportes4Controller {
             anios.each { a ->
                 cellFooter = totalRow.createCell((short) curCol)
                 curCol++
-                cellFooter.setCellValue(totales[a])
+                cellFooter.setCellValue(totales[a] ?: 0)
                 cellFooter.setCellStyle(styleFooter)
             }
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
-            cellFooter.setCellValue(totales["T"])
+            cellFooter.setCellValue(totales["T"] ?: 0)
             cellFooter.setCellStyle(styleFooter)
 
             def output = response.getOutputStream()
