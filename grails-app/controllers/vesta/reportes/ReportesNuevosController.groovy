@@ -27,6 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet as Sheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
 
 class ReportesNuevosController {
+    def dbConnectionService
 
     def poaGrupoGastos_funcion(Fuente fuente) {
         def strAnio = new Date().format('yyyy')
@@ -591,8 +592,22 @@ class ReportesNuevosController {
     }
 
     def reporteAvalesExcel() {
+        def cn = dbConnectionService.getConnection()
+        def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
+                "from prco, slav, unej, aval, poas, asgn " +
+                "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
+                "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
+                "asgn.asgn__id = poas.asgn__id " +
+                "group by avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
+                "order by avalnmro, fnte__id;"
 
 //        println("params " + params)
+        cn.eachRow(tx.toString()) {d ->
+           println d.unejnmbr
+        }
+        cn.close()
+
+
         def fuente = Fuente.get(params.fnt.toLong())
         def proceso = ProcesoAsignacion.withCriteria {
             asignacion {
