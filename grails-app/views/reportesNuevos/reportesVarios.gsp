@@ -206,7 +206,8 @@
                     var urlExcel = "${createLink(controller: 'reportesNuevos', action: 'reporteAvalesExcel')}";
                     var urlPdf = "${g.createLink(controller: 'reportesNuevos',action: 'reportePdfAvales')}";
                     var pdfFileName = "avales.pdf";
-                    dialogXlsPdfFuente("Reporte de Avales", urlExcel, urlPdf, pdfFileName);
+                    dialogXlsPdf("Reporte de Avales", "Reporte de Avales", urlExcel, urlPdf, pdfFileName);
+//                    dialogXlsPdfFuente("Reporte de Avales", urlExcel, urlPdf, pdfFileName);
                 });
 
                 $("#reformas").click(function () {
@@ -247,7 +248,7 @@
                 $("#recursos").click(function () {
                     var urlExcel = "${createLink(controller: 'reportes5', action: 'reporteRecursosExcel')}";
                     var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteRecursosPdf')}";
-                    var pdfFileName = "POA_fuente.pdf";
+                    var pdfFileName = "recursos_noPermanentes.pdf";
                     dialogXlsPdf("Proforma presupuestaria de recursos no permanentes", "Proforma presupuestaria de recursos no permanentes", urlExcel, urlPdf, pdfFileName);
                 });
 

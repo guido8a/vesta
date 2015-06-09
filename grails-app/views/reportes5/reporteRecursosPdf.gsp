@@ -24,7 +24,7 @@
 <head>
     <title>PROFORMA PRESUPUESTARIA DE RECURSOS NO PERMANENTES </title>
 
-    <rep:estilos orientacion="p" pagTitle="PROFORMA PRESUPUESTARIA DE RECURSOS NO PERMANENTES"/>
+    <rep:estilos orientacion="l" pagTitle="PROFORMA PRESUPUESTARIA DE RECURSOS NO PERMANENTES"/>
 
     <style type="text/css">
     .table {
@@ -121,20 +121,36 @@
         </thead>
         <tbody>
         <g:each in="${data}" var="v">
+            <g:set var="anterior" value="${v.valores["" + (anio.anio.toInteger() -1)]?:0}"/>
+            <g:set var="actual" value="${v.valores[anio.anio]?:0}"/>
+            <g:set var="totalActual" value="${totales[anio.anio]?:0}"/>
+            <g:set var="totalResta" value="${totales.resta}"/>
+            <g:set var="porcentaje1" value="${(actual*100)/totalActual}"/>
+            <g:set var="resta" value="${actual -anterior}"/>
+            <g:set var="porcentaje2" value="${(resta*100)/totalResta}"/>
             <tr>
                 <td class="text-center">${v.partida.numero.replaceAll("0", "")}</td>
                 <td>${v.partida.descripcion}</td>
                 <td>${v.fuente.descripcion}</td>
+                <td>${anterior}</td>
+                <td>${actual}</td>
+                <td>${porcentaje1}</td>
+                <td>${resta}</td>
+                <td>${porcentaje2}</td>
             </tr>
         </g:each>
         </tbody>
         <tfoot>
         <tr>
+            <th>TOTAL</th>
             <th></th>
-            <th class="text-right">TOTAL</th>
-            <g:each in="${anios}" var="a">
-                <th class="text-right"><g:formatNumber number="${totales[a] ?: 0}" type="currency" currencySymbol=""/></th>
-            </g:each>
+            <th></th>
+            <th>${totales["" + (anio.anio.toInteger() -1)] ?: 0}</th>
+            <th>${totales[anio.anio] ?: 0}</th>
+            <th>${100}</th>
+            <th>${totales.resta}</th>
+            <th>${100}</th>
+
         </tr>
         </tfoot>
     </table>

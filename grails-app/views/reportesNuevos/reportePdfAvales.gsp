@@ -88,53 +88,39 @@
 
     <div style="text-align: justify;float: left;font-size: 10pt;">
 
-
         <p>
             Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}
         </p>
 
         %{--<div class="tabla" style="margin-top: 10px">--}%
 
-            %{--<table width="100%" border="1" class="tbl">--}%
-                %{--<tr>--}%
-                    %{--<th style="width: 100px">--}%
-                        %{--N°--}%
-                    %{--</th>--}%
-                    %{--<td>--}%
-                        %{--<g:if test="${sol.usuario.unidad.padre.nombre}">--}%
-                            %{--${sol.usuario.unidad.padre.nombre}--}%
-                        %{--</g:if>--}%
-                        %{--<g:else>--}%
-                            %{--${sol.usuario.unidad.nombre}--}%
-                        %{--</g:else>--}%
-                    %{--</td>--}%
-                %{--</tr>--}%
+            <table width="100%" border="1" class="tbl">
 
-                %{--<tr>--}%
-                    %{--<th>--}%
-                        %{--PROYECTO--}%
-                    %{--</th>--}%
-                    %{--<td>--}%
-                        %{--${sol.proceso.proyecto.nombre}--}%
-                    %{--</td>--}%
-                %{--</tr>--}%
-                %{--<tr>--}%
-                    %{--<th>--}%
-                        %{--MONTO TOTAL PARA PROCESO--}%
-                    %{--</th>--}%
-                    %{--<td>--}%
-                        %{--<g:formatNumber number="${sol?.monto + devengado}" type="currency" currencySymbol="USD "/>--}%
-                    %{--</td>--}%
-                %{--</tr>--}%
-                %{--<tr>--}%
-                    %{--<th>--}%
-                        %{--MONTO TOTAL DEL AVAL--}%
-                    %{--</th>--}%
-                    %{--<td>--}%
-                        %{--<g:formatNumber number="${sol?.monto}" type="currency" currencySymbol="USD "/>--}%
-                    %{--</td>--}%
-                %{--</tr>--}%
-            %{--</table>--}%
+                    <th style="width: 100px">
+                        N° AVAL
+                    </th>
+
+                    <th>
+                        FUENTE
+                    </th>
+
+                    <th>
+                        FECHA EMISIÓN AVAL
+                    </th>
+
+                    <th>
+                       NOMBRE DEL PROCESO
+                    </th>
+
+                    <th>
+                       VALOR
+                    </th>
+
+                    <th>
+                        RESPONSABLE
+                    </th>
+
+            </table>
 
 
 

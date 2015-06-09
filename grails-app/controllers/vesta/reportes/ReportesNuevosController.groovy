@@ -2,6 +2,7 @@ package vesta.reportes
 
 import jxl.Workbook
 import org.apache.poi.ss.usermodel.IndexedColors
+import org.apache.poi.xssf.usermodel.XSSFCreationHelper
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import vesta.avales.Aval
 import vesta.avales.ProcesoAsignacion
@@ -592,6 +593,7 @@ class ReportesNuevosController {
     }
 
     def reporteAvalesExcel() {
+
         def cn = dbConnectionService.getConnection()
         def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
                 "from prco, slav, unej, aval, poas, asgn " +
@@ -601,31 +603,15 @@ class ReportesNuevosController {
                 "group by avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
                 "order by avalnmro, fnte__id;"
 
-//        println("params " + params)
-        cn.eachRow(tx.toString()) {d ->
-           println d.unejnmbr
-        }
-        cn.close()
+//        println("sql " + tx)
 
-
-        def fuente = Fuente.get(params.fnt.toLong())
-        def proceso = ProcesoAsignacion.withCriteria {
-            asignacion {
-                eq('fuente', fuente)
-                groupProperty('marcoLogico')
-            }
-        }
-        def procesosAval = []
-        def avales = []
-
-        proceso.each {
-            procesosAval += it.proceso
-        }
-
-
-        procesosAval.each {
-            avales += Aval.findAllByProceso(it)
-        }
+//        def fuente = Fuente.get(params.fnt.toLong())
+//        def proceso = ProcesoAsignacion.withCriteria {
+//            asignacion {
+//                eq('fuente', fuente)
+//                groupProperty('marcoLogico')
+//            }
+//        }
 
 //        println("proceso " + proceso)
 //        println("proceso aval " + procesosAval)
@@ -642,122 +628,20 @@ class ReportesNuevosController {
             Workbook wb = new Workbook()
             Sheet sheet = wb.createSheet("Reporte de Avales")
 
-            Font fontYachay = wb.createFont()
-            fontYachay.setFontHeightInPoints((short) 14)
-            fontYachay.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontYachay.setBold(true)
-
-            Font fontTitulo = wb.createFont()
-            fontTitulo.setFontHeightInPoints((short) 24)
-            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontTitulo.setBold(true)
-
-            Font fontSubtitulo = wb.createFont()
-            fontSubtitulo.setFontHeightInPoints((short) 18)
-            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
-            fontSubtitulo.setBold(true)
-
-            Font fontHeader = wb.createFont()
-            fontHeader.setFontHeightInPoints((short) 12)
-            fontHeader.setColor(new XSSFColor(new java.awt.Color(255, 255, 255)))
-            fontHeader.setBold(true)
-
-            Font fontTabla = wb.createFont()
-            fontTabla.setFontHeightInPoints((short) 9)
-
-            Font fontFooter = wb.createFont()
-            fontHeader.setFontHeightInPoints((short) 9)
-            fontFooter.setBold(true)
+            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
+            CellStyle styleNumber = estilos.styleNumber
+            CellStyle styleDate = estilos.styleDate
 
 
-            CellStyle styleYachay = wb.createCellStyle()
-            styleYachay.setFont(fontYachay)
-            styleYachay.setAlignment(CellStyle.ALIGN_CENTER)
-            styleYachay.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleTitulo = wb.createCellStyle()
-            styleTitulo.setFont(fontTitulo)
-            styleTitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleTitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleSubtitulo = wb.createCellStyle()
-            styleSubtitulo.setFont(fontSubtitulo)
-            styleSubtitulo.setAlignment(CellStyle.ALIGN_CENTER)
-            styleSubtitulo.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            CellStyle styleHeader = wb.createCellStyle()
-            styleHeader.setFont(fontHeader)
-            styleHeader.setAlignment(CellStyle.ALIGN_CENTER)
-            styleHeader.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-            styleHeader.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 96, 144)));
-            styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND)
-            styleHeader.setWrapText(true);
-            styleHeader.setBorderBottom(CellStyle.BORDER_THIN);
-            styleHeader.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleHeader.setBorderLeft(CellStyle.BORDER_THIN);
-            styleHeader.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleHeader.setBorderRight(CellStyle.BORDER_THIN);
-            styleHeader.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            styleHeader.setBorderTop(CellStyle.BORDER_THIN);
-            styleHeader.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-            CellStyle styleTabla = wb.createCellStyle()
-            styleTabla.setFont(fontTabla)
-            styleTabla.setWrapText(true);
-            styleTabla.setBorderBottom(CellStyle.BORDER_THIN);
-            styleTabla.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderLeft(CellStyle.BORDER_THIN);
-            styleTabla.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderRight(CellStyle.BORDER_THIN);
-            styleTabla.setRightBorderColor(IndexedColors.BLACK.getIndex());
-            styleTabla.setBorderTop(CellStyle.BORDER_THIN);
-            styleTabla.setTopBorderColor(IndexedColors.BLACK.getIndex());
-
-            CellStyle styleFooter = wb.createCellStyle()
-            styleFooter.setFont(fontFooter)
-            styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
-            styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
-            styleFooter.setBorderBottom(CellStyle.BORDER_THIN);
-            styleFooter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooter.setBorderTop(CellStyle.BORDER_THIN);
-            styleFooter.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooter.setBorderLeft(CellStyle.BORDER_THIN);
-            styleFooter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooter.setBorderRight(CellStyle.BORDER_THIN);
-            styleFooter.setRightBorderColor(IndexedColors.BLACK.getIndex());
-
-            CellStyle styleFooterCenter = wb.createCellStyle()
-            styleFooterCenter.setFont(fontFooter)
-            styleFooterCenter.setAlignment(CellStyle.ALIGN_CENTER)
-            styleFooterCenter.setVerticalAlignment(CellStyle.VERTICAL_CENTER)
-
-            styleFooterCenter.setBorderBottom(CellStyle.BORDER_THIN);
-            styleFooterCenter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooterCenter.setBorderTop(CellStyle.BORDER_MEDIUM_DASHED);
-            styleFooterCenter.setTopBorderColor(IndexedColors.BLACK.getIndex());
-            styleFooterCenter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
-            styleFooterCenter.setFillPattern(CellStyle.SOLID_FOREGROUND)
-
-
-            Row rowYachay = sheet.createRow((short) curRow)
-            curRow++
-            Cell cellTitulo = rowYachay.createCell((short) 3)
-            cellTitulo.setCellValue("EMPRESA PÚBLICA YACHAY EP")
-            cellTitulo.setCellStyle(styleYachay)
-
-            Row rowSubtitulo = sheet.createRow((short) curRow)
-            curRow++
-            Cell cellSubtitulo = rowSubtitulo.createCell((short) 3)
-            cellSubtitulo.setCellValue("REPORTE DE AVALES")
-            cellSubtitulo.setCellStyle(styleSubtitulo)
-
-            Row rowFecha = sheet.createRow((short) curRow)
-            curRow++
-            Cell cellFecha = rowFecha.createCell((short) 1)
-            cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
+            def titulo = "REPORTE DE AVALES"
+            def subtitulo = ""
+            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
 
             Row rowHeader = sheet.createRow((short) curRow)
-            rowSubtitulo.setHeightInPoints(30)
             curRow++
             Cell cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("N° AVAL")
@@ -766,9 +650,15 @@ class ReportesNuevosController {
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("FECHA EMISIÓN AVAL")
+            cellHeader.setCellValue("FUENTE")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("FECHA EMISIÓN AVAL")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4500)
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
@@ -790,64 +680,79 @@ class ReportesNuevosController {
             curCol++
 
             def totalCols = curCol
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols)
             def totalPriorizado = 0
 
-            proceso.each {
+            cn.eachRow(tx.toString()) {d ->
+//                println d.unejnmbr
+
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
                 Cell cellTabla = tableRow.createCell((short) curCol)
 
-                cellTabla.setCellValue(it.asignacion.marcoLogico.numero)
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d.avalnmro)
                 cellTabla.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it.asignacion.anio.anio)
+                cellTabla.setCellValue(Fuente.get(d.fnte__id).codigo)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d.avalfcap)
+                cellTabla.setCellStyle(styleDate)
+//                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d.prconmbr)
                 cellTabla.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it.asignacion.marcoLogico.toStringCompleto())
-                cellTabla.setCellStyle(styleTabla)
+                cellTabla.setCellValue(d.sum)
+                cellTabla.setCellStyle(styleNumber)
+                totalPriorizado += d.sum
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it.asignacion.priorizado)
-                cellTabla.setCellStyle(styleTabla)
-                totalPriorizado += it.asignacion.priorizado
-                curCol++
-                cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it.asignacion.marcoLogico.responsable.nombre)
+                cellTabla.setCellValue(d.unejnmbr)
                 cellTabla.setCellStyle(styleTabla)
                 curCol++
                 curRow++
+
             }
+            cn.close()
 
             curCol = iniCol
             Row totalRow = sheet.createRow((short) curRow)
             Cell cellFooter = totalRow.createCell((short) curCol)
             curCol++
             cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellStyle(styleFooterCenter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
             cellFooter.setCellValue("TOTAL")
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
             cellFooter.setCellValue(totalPriorizado)
             cellFooter.setCellStyle(styleFooter)
 
-
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
             cellFooter.setCellValue("")
             cellFooter.setCellStyle(styleFooter)
-
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "reporte_avales.xlsx"
@@ -1182,15 +1087,20 @@ class ReportesNuevosController {
 
     def reportePdfAvales() {
 
-        def fuente = Fuente.get(params.fnt.toLong())
-        def proceso = ProcesoAsignacion.withCriteria {
-            asignacion {
-                eq('fuente', fuente)
-                groupProperty('marcoLogico')
-            }
-        }
+        def cn = dbConnectionService.getConnection()
+        def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
+                "from prco, slav, unej, aval, poas, asgn " +
+                "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
+                "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
+                "asgn.asgn__id = poas.asgn__id " +
+                "group by avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
+                "order by avalnmro, fnte__id;"
 
-        return [proceso: proceso]
+        cn.eachRow(tx.toString()) {d ->
+        }
+        cn.close()
+
+        return [proceso: cn]
 
     }
 

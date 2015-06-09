@@ -188,11 +188,13 @@ class ReportesNuevosExcelController {
         cellTitulo.setCellStyle(styleTitulo)
         curRow++
 
-        Row rowSubtitulo = sheet.createRow((short) curRow)
-        Cell cellSubtitulo = rowSubtitulo.createCell((short) iniCol)
-        cellSubtitulo.setCellValue(subtitulo)
-        cellSubtitulo.setCellStyle(styleSubtitulo)
-        curRow++
+        if(subtitulo != "") {
+            Row rowSubtitulo = sheet.createRow((short) curRow)
+            Cell cellSubtitulo = rowSubtitulo.createCell((short) iniCol)
+            cellSubtitulo.setCellValue(subtitulo)
+            cellSubtitulo.setCellStyle(styleSubtitulo)
+            curRow++
+        }
 
         Row rowFecha = sheet.createRow((short) curRow)
         Cell cellFecha = rowFecha.createCell((short) iniCol + 1)

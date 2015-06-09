@@ -102,7 +102,6 @@ class Reportes5Controller {
             CellStyle styleFooter = estilos.styleFooter
             CellStyle styleFooterCenter = estilos.styleFooterCenter
 
-            // Create a row and put some cells in it. Rows are 0 based.
             def titulo = "PROFORMA PRESUPUESTARIA DE RECURSOS NO PERMANENTES"
             def subtitulo = "GRUPO DE GASTO - EN DÓLARES"
             curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
