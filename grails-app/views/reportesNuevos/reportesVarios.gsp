@@ -53,7 +53,7 @@
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="poa">
-                                ** 2. Planificación operativa anual - POA
+                                2. Planificación operativa anual - POA
                             </a>
                         </li>
                         <li>
@@ -263,7 +263,7 @@
                     var urlExcel = "${createLink(controller: 'reportes4', action: 'poaXlsx')}";
                     var urlPdf = null;
                     var pdfFileName = null;
-                    dialogXlsPdfFuente("Reporte Planificación Operativa Anual", urlExcel, urlPdf, pdfFileName);
+                    dialogXlsPdf("Reporte Planificación Operativa Anual", urlExcel, urlPdf, pdfFileName);
                 });
 
                 $("#programacion").click(function () {
