@@ -53,7 +53,7 @@
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="poa">
-                                ** 2. Planificación operativa anual - POA
+                                2. Planificación operativa anual - POA
                             </a>
                         </li>
                         <li>
@@ -256,6 +256,13 @@
                     var urlPdf = null;
                     var pdfFileName = null;
                     dialogXlsPdfFuente("Reporte POA por grupo de gasto", urlExcel, urlPdf, pdfFileName);
+                });
+
+                $("#poa").click(function () {
+                    var urlExcel = "${createLink(controller: 'reportes4', action: 'poaXlsx')}";
+                    var urlPdf = null;
+                    var pdfFileName = null;
+                    dialogXlsPdfFuente("Reporte Planificación Operativa Anual", urlExcel, urlPdf, pdfFileName);
                 });
 
             });

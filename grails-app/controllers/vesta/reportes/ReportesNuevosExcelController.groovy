@@ -1,11 +1,13 @@
 package vesta.reportes
 
 import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.DataFormat
 import org.apache.poi.ss.usermodel.Font
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFCell as Cell
 import org.apache.poi.xssf.usermodel.XSSFColor
+import org.apache.poi.xssf.usermodel.XSSFCreationHelper
 import org.apache.poi.xssf.usermodel.XSSFRow as Row
 import org.apache.poi.xssf.usermodel.XSSFSheet as Sheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
@@ -38,8 +40,11 @@ class ReportesNuevosExcelController {
         Font fontTabla = wb.createFont()
         fontTabla.setFontHeightInPoints((short) 9)
 
+        Font fontFecha = wb.createFont()
+        fontFecha.setFontHeightInPoints((short) 9)
+
         Font fontFooter = wb.createFont()
-        fontHeader.setFontHeightInPoints((short) 9)
+        fontFooter.setFontHeightInPoints((short) 9)
         fontFooter.setBold(true)
 
         CellStyle styleYachay = wb.createCellStyle()
@@ -72,6 +77,37 @@ class ReportesNuevosExcelController {
         styleHeader.setRightBorderColor(IndexedColors.BLACK.getIndex());
         styleHeader.setBorderTop(CellStyle.BORDER_THIN);
         styleHeader.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+        CellStyle styleFecha = wb.createCellStyle()
+        styleFecha.setFont(fontFecha)
+        styleFecha.setWrapText(true);
+
+        XSSFCreationHelper createHelper = wb.getCreationHelper();
+        CellStyle styleDate = wb.createCellStyle();
+        styleDate.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy"));
+        styleDate.setFont(fontTabla)
+        styleDate.setWrapText(true);
+        styleDate.setBorderBottom(CellStyle.BORDER_THIN);
+        styleDate.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styleDate.setBorderLeft(CellStyle.BORDER_THIN);
+        styleDate.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        styleDate.setBorderRight(CellStyle.BORDER_THIN);
+        styleDate.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        styleDate.setBorderTop(CellStyle.BORDER_THIN);
+        styleDate.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+        CellStyle styleNumber = wb.createCellStyle();
+        styleNumber.setDataFormat(createHelper.createDataFormat().getFormat('#,##0.00'));
+        styleNumber.setFont(fontTabla)
+        styleNumber.setWrapText(true);
+        styleNumber.setBorderBottom(CellStyle.BORDER_THIN);
+        styleNumber.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styleNumber.setBorderLeft(CellStyle.BORDER_THIN);
+        styleNumber.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        styleNumber.setBorderRight(CellStyle.BORDER_THIN);
+        styleNumber.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        styleNumber.setBorderTop(CellStyle.BORDER_THIN);
+        styleNumber.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         CellStyle styleTabla = wb.createCellStyle()
         styleTabla.setFont(fontTabla)
@@ -113,14 +149,30 @@ class ReportesNuevosExcelController {
         styleFooterCenter.setBorderTop(CellStyle.BORDER_THIN);
         styleFooterCenter.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
+        CellStyle styleFooterNumber = wb.createCellStyle();
+        styleFooterNumber.setDataFormat(createHelper.createDataFormat().getFormat('#,##0.00'));
+        styleFooterNumber.setFont(fontFooter)
+        styleFooterNumber.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
+        styleFooterNumber.setFillPattern(CellStyle.SOLID_FOREGROUND)
+        styleFooterNumber.setBorderBottom(CellStyle.BORDER_THIN);
+        styleFooterNumber.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooterNumber.setBorderLeft(CellStyle.BORDER_THIN);
+        styleFooterNumber.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooterNumber.setBorderRight(CellStyle.BORDER_THIN);
+        styleFooterNumber.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooterNumber.setBorderTop(CellStyle.BORDER_THIN);
+        styleFooterNumber.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
         return [styleYachay: styleYachay, styleTitulo: styleTitulo, styleSubtitulo: styleSubtitulo, styleHeader: styleHeader,
-                styleTabla : styleTabla, styleFooter: styleFooter, styleFooterCenter: styleFooterCenter]
+                styleNumber: styleNumber, styleFooterNumber: styleFooterNumber, styleDate: styleDate,
+                styleTabla : styleTabla, styleFooter: styleFooter, styleFooterCenter: styleFooterCenter, styleFecha: styleFecha]
     }
 
     public static setTitulos(Sheet sheet, estilos, int iniRow, int iniCol, String titulo, String subtitulo) {
         CellStyle styleYachay = estilos.styleYachay
         CellStyle styleTitulo = estilos.styleTitulo
         CellStyle styleSubtitulo = estilos.styleSubtitulo
+        CellStyle styleFecha = estilos.styleFecha
 
         def curRow = iniRow
 
@@ -145,6 +197,7 @@ class ReportesNuevosExcelController {
         Row rowFecha = sheet.createRow((short) curRow)
         Cell cellFecha = rowFecha.createCell((short) iniCol + 1)
         cellFecha.setCellValue("Fecha del reporte: " + new Date().format("dd-MM-yyyy HH:mm"))
+        cellFecha.setCellStyle(styleFecha)
         curRow++
 
         return curRow

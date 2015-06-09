@@ -18,7 +18,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet as Sheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
 
 class Reportes4Controller {
-
     def proformaEgresosNoPermanentesXlsx() {
         def fuente = Fuente.get(params.fnt.toLong())
         def datos = proformaEgresosNoPermanentes_funcion(fuente)
@@ -44,6 +43,8 @@ class Reportes4Controller {
             CellStyle styleTabla = estilos.styleTabla
             CellStyle styleFooter = estilos.styleFooter
             CellStyle styleFooterCenter = estilos.styleFooterCenter
+            CellStyle styleNumber = estilos.styleNumber
+            CellStyle styleFooterNumber = estilos.styleFooterNumber
 
             // Create a row and put some cells in it. Rows are 0 based.
             def titulo = "PROFORMA DE EGRESOS NO PERMANENTES"
@@ -159,18 +160,18 @@ class Reportes4Controller {
                 meses.each { mes ->
                     tableCell = tableRow.createCell(curCol)
                     tableCell.setCellValue(v.valores[mes.numero + "_" + anio.anio] ?: 0)
-                    tableCell.setCellStyle(styleTabla)
+                    tableCell.setCellStyle(styleNumber)
                     curCol++
                 }
                 anios.each { a ->
                     tableCell = tableRow.createCell(curCol)
                     tableCell.setCellValue(v.valores[a] ?: 0)
-                    tableCell.setCellStyle(styleTabla)
+                    tableCell.setCellStyle(styleNumber)
                     curCol++
                 }
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(v.valores["T"] ?: 0)
-                tableCell.setCellStyle(styleTabla)
+                tableCell.setCellStyle(styleNumber)
                 curCol++
                 curRow++
             }
@@ -199,18 +200,18 @@ class Reportes4Controller {
                 cellFooter = totalRow.createCell((short) curCol)
                 curCol++
                 cellFooter.setCellValue(totales[m.numero + "_" + anio.anio] ?: 0)
-                cellFooter.setCellStyle(styleFooter)
+                cellFooter.setCellStyle(styleFooterNumber)
             }
             anios.each { a ->
                 cellFooter = totalRow.createCell((short) curCol)
                 curCol++
                 cellFooter.setCellValue(totales[a] ?: 0)
-                cellFooter.setCellStyle(styleFooter)
+                cellFooter.setCellStyle(styleFooterNumber)
             }
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
             cellFooter.setCellValue(totales["T"] ?: 0)
-            cellFooter.setCellStyle(styleFooter)
+            cellFooter.setCellStyle(styleFooterNumber)
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "proforma_egresos_no_permanentes.xlsx"
@@ -221,9 +222,274 @@ class Reportes4Controller {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
+    def poaXlsx() {
+        def fuente = Fuente.get(params.fnt.toLong())
+        def datos = proformaEgresosNoPermanentes_funcion(fuente)
+
+        def anio = datos.anio
+        def data = datos.data
+        def anios = datos.anios
+        def meses = datos.meses
+        def totales = datos.totales
+
+        def iniRow = 0
+        def iniCol = 1
+
+        def curRow = iniRow
+        def curCol = iniCol
+
+        try {
+            Workbook wb = new Workbook()
+            Sheet sheet = wb.createSheet("Planificación operativa anual")
+            // Create a new font and alter it.
+            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
+
+            // Create a row and put some cells in it. Rows are 0 based.
+            def titulo = "PLANIFICACIÓN OPERATIVA ANUAL"
+            def subtitulo = "POA AÑO ${anio.anio} - ${fuente ? 'FUENTE ' + fuente.descripcion : 'TODAS LAS FUENTES'} - EN DÓLARES"
+            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
+
+            Row rowHeader = sheet.createRow((short) curRow)
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PLAN NACIONAL DE DESARROLLO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 12500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 12500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("OBJETIVO ESTRATÉGICO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 12500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ESTRATEGIA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PORTAFOLIO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROGRAMA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("COD.")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROYECTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("COMPONENTE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("GG")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("P")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("C")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PARTIDA PRESUPUESTARIA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("#")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ACTIVIDAD")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("RESPONSABLE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("FECHA DE INICIO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("FECHA DE FIN")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PRESUPUESTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROGRAMACIÓN MENSUAL AÑO " + anio.anio)
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            def colMes = curCol
+            def colFinMes = colMes + meses.size() - 1
+            meses.eachWithIndex { m, i ->
+                if (i > 0) {
+                    cellHeader = rowHeader.createCell((short) curCol)
+                    cellHeader.setCellValue("")
+                    cellHeader.setCellStyle(styleHeader)
+                    sheet.setColumnWidth(curCol, 3000)
+                    curCol++
+                }
+            }
+
+            anios.each { a ->
+                def str = "AÑO ${a}"
+                if (a == anio.anio) {
+                    str = "TOTAL"
+                }
+                cellHeader = rowHeader.createCell((short) curCol)
+                cellHeader.setCellValue(str)
+                cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 4000)
+                curCol++
+            }
+
+            def totalCols = curCol
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("TOTAL PLURIANUAL")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+
+            def rowHeader1o = curRow
+            curRow++
+            def rowHeader2o = curRow
+
+            curCol = iniCol
+
+            Row rowHeader2 = sheet.createRow((short) curRow)
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("OBJETIVO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("POLÍTICA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("META")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            curCol = colMes - 3
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("ARRASTRE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("PRESUPUESTO CODIFICADO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            meses.eachWithIndex { m, i ->
+                cellHeader = rowHeader2.createCell((short) curCol)
+                cellHeader.setCellValue(m.descripcion)
+                cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 3000)
+                curCol++
+            }
+
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols)
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    iniRow, //first row (0-based)
+                    iniRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 3  //last column  (0-based)
+            ))
+
+
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "poa.xlsx"
+            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", header)
+            wb.write(output)
+            output.flush()
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     def proformaEgresosNoPermanentes_funcion(Fuente fuente) {
         def strAnio = new Date().format('yyyy')
@@ -259,6 +525,12 @@ class Reportes4Controller {
             }
             asignaciones.each { asg ->
                 def anioAsg = asg.anio
+
+                if (!anios.contains(anioAsg.anio)) {
+                    anios += anioAsg.anio
+                    totales[anioAsg.anio] = 0
+                }
+
                 if (anioAsg.id == anio.id) {
                     //es el anio n: saca la programacion
                     meses.each { mes ->
@@ -270,30 +542,25 @@ class Reportes4Controller {
                         if (!totales[keyMes]) {
                             totales[keyMes] = 0
                         }
+                        def v = 0
                         if (programacion.size() == 1) {
-                            def v = programacion.first().valor
-                            m.valores[keyMes] = v
-                            totales[keyMes] += v
+                            v = programacion.first().valor
                         } else if (programacion.size() > 1) {
-                            def v = programacion.first().valor
-                            m.valores[keyMes] = v
-                            totales[keyMes] += v
+                            v = programacion.first().valor
                             println "existe ${programacion.size()} programaciones para asignacion ${asg.id} mes ${mes.id} (${mes.descripcion}):" +
                                     " ${programacion.id}, se utilizo ${programacion.first().id}"
-                        } else {
-                            m.valores[keyMes] = 0
                         }
+                        m.valores[keyMes] += v
+                        m.valores[keyTotalActual] += v
+                        totales[keyMes] += v
+                        totales[anioAsg.anio] += v
                     }
                 } else {
-                    //es anio futuro: saca solo el total
+                    //es anio futuro: saca el total
                     m.valores[keyTotal] += asg.planificado
                     totales[keyTotal] += asg.planificado
                     if (!m.valores[anioAsg.anio]) {
                         m.valores[anioAsg.anio] = 0
-                        if (!anios.contains(anioAsg.anio)) {
-                            anios += anioAsg.anio
-                            totales[anioAsg.anio] = 0
-                        }
                     }
                     m.valores[anioAsg.anio] += asg.planificado
                     totales[anioAsg.anio] += asg.planificado
@@ -305,5 +572,9 @@ class Reportes4Controller {
         }
         anios = anios.sort()
         return [anio: anio, data: data, anios: anios, meses: meses, totales: totales]
+    }
+
+    def poa_funcion(Fuente fuente) {
+
     }
 }
