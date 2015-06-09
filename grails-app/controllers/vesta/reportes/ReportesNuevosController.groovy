@@ -603,20 +603,6 @@ class ReportesNuevosController {
                 "group by avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
                 "order by avalnmro, fnte__id;"
 
-//        println("sql " + tx)
-
-//        def fuente = Fuente.get(params.fnt.toLong())
-//        def proceso = ProcesoAsignacion.withCriteria {
-//            asignacion {
-//                eq('fuente', fuente)
-//                groupProperty('marcoLogico')
-//            }
-//        }
-
-//        println("proceso " + proceso)
-//        println("proceso aval " + procesosAval)
-//        println("avales " + avales)
-
         def iniRow = 2
         def iniCol = 1
 
@@ -684,7 +670,6 @@ class ReportesNuevosController {
             def totalPriorizado = 0
 
             cn.eachRow(tx.toString()) {d ->
-//                println d.unejnmbr
 
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
@@ -698,11 +683,9 @@ class ReportesNuevosController {
                 cellTabla.setCellValue(Fuente.get(d.fnte__id).codigo)
                 cellTabla.setCellStyle(styleTabla)
                 curCol++
-
                 cellTabla = tableRow.createCell((short) curCol)
                 cellTabla.setCellValue(d.avalfcap)
                 cellTabla.setCellStyle(styleDate)
-//                cellTabla.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
                 cellTabla.setCellValue(d.prconmbr)
@@ -1096,11 +1079,10 @@ class ReportesNuevosController {
                 "group by avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
                 "order by avalnmro, fnte__id;"
 
-        cn.eachRow(tx.toString()) {d ->
-        }
+        def res = cn.rows(tx.toString())
         cn.close()
 
-        return [proceso: cn]
+        return [cn: res]
 
     }
 
