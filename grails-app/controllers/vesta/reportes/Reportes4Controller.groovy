@@ -44,7 +44,7 @@ class Reportes4Controller {
             CellStyle styleFooter = estilos.styleFooter
             CellStyle styleFooterCenter = estilos.styleFooterCenter
             CellStyle styleNumber = estilos.styleNumber
-            CellStyle styleFooterNumber = estilos.styleFooterNumber
+//            CellStyle styleFooterNumber = estilos.styleFooterNumber
 
             // Create a row and put some cells in it. Rows are 0 based.
             def titulo = "PROFORMA DE EGRESOS NO PERMANENTES"
@@ -200,18 +200,18 @@ class Reportes4Controller {
                 cellFooter = totalRow.createCell((short) curCol)
                 curCol++
                 cellFooter.setCellValue(totales[m.numero + "_" + anio.anio] ?: 0)
-                cellFooter.setCellStyle(styleFooterNumber)
+                cellFooter.setCellStyle(styleFooter)
             }
             anios.each { a ->
                 cellFooter = totalRow.createCell((short) curCol)
                 curCol++
                 cellFooter.setCellValue(totales[a] ?: 0)
-                cellFooter.setCellStyle(styleFooterNumber)
+                cellFooter.setCellStyle(styleFooter)
             }
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
             cellFooter.setCellValue(totales["T"] ?: 0)
-            cellFooter.setCellStyle(styleFooterNumber)
+            cellFooter.setCellStyle(styleFooter)
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "proforma_egresos_no_permanentes.xlsx"

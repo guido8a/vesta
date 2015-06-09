@@ -121,18 +121,18 @@ class ReportesNuevosExcelController {
         styleTabla.setBorderTop(CellStyle.BORDER_THIN);
         styleTabla.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
-        CellStyle styleFooter = wb.createCellStyle()
-        styleFooter.setFont(fontFooter)
-        styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
-        styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
-        styleFooter.setBorderBottom(CellStyle.BORDER_THIN);
-        styleFooter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-        styleFooter.setBorderLeft(CellStyle.BORDER_THIN);
-        styleFooter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-        styleFooter.setBorderRight(CellStyle.BORDER_THIN);
-        styleFooter.setRightBorderColor(IndexedColors.BLACK.getIndex());
-        styleFooter.setBorderTop(CellStyle.BORDER_THIN);
-        styleFooter.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        CellStyle styleFooterText = wb.createCellStyle()
+        styleFooterText.setFont(fontFooter)
+        styleFooterText.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
+        styleFooterText.setFillPattern(CellStyle.SOLID_FOREGROUND)
+        styleFooterText.setBorderBottom(CellStyle.BORDER_THIN);
+        styleFooterText.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooterText.setBorderLeft(CellStyle.BORDER_THIN);
+        styleFooterText.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooterText.setBorderRight(CellStyle.BORDER_THIN);
+        styleFooterText.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooterText.setBorderTop(CellStyle.BORDER_THIN);
+        styleFooterText.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         CellStyle styleFooterCenter = wb.createCellStyle()
         styleFooterCenter.setFont(fontFooter)
@@ -149,23 +149,23 @@ class ReportesNuevosExcelController {
         styleFooterCenter.setBorderTop(CellStyle.BORDER_THIN);
         styleFooterCenter.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
-        CellStyle styleFooterNumber = wb.createCellStyle();
-        styleFooterNumber.setDataFormat(createHelper.createDataFormat().getFormat('#,##0.00'));
-        styleFooterNumber.setFont(fontFooter)
-        styleFooterNumber.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
-        styleFooterNumber.setFillPattern(CellStyle.SOLID_FOREGROUND)
-        styleFooterNumber.setBorderBottom(CellStyle.BORDER_THIN);
-        styleFooterNumber.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-        styleFooterNumber.setBorderLeft(CellStyle.BORDER_THIN);
-        styleFooterNumber.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-        styleFooterNumber.setBorderRight(CellStyle.BORDER_THIN);
-        styleFooterNumber.setRightBorderColor(IndexedColors.BLACK.getIndex());
-        styleFooterNumber.setBorderTop(CellStyle.BORDER_THIN);
-        styleFooterNumber.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        CellStyle styleFooter = wb.createCellStyle();
+        styleFooter.setDataFormat(createHelper.createDataFormat().getFormat('#,##0.00'));
+        styleFooter.setFont(fontFooter)
+        styleFooter.setFillForegroundColor(new XSSFColor(new java.awt.Color(200, 200, 200)));
+        styleFooter.setFillPattern(CellStyle.SOLID_FOREGROUND)
+        styleFooter.setBorderBottom(CellStyle.BORDER_THIN);
+        styleFooter.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooter.setBorderLeft(CellStyle.BORDER_THIN);
+        styleFooter.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooter.setBorderRight(CellStyle.BORDER_THIN);
+        styleFooter.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        styleFooter.setBorderTop(CellStyle.BORDER_THIN);
+        styleFooter.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         return [styleYachay: styleYachay, styleTitulo: styleTitulo, styleSubtitulo: styleSubtitulo, styleHeader: styleHeader,
-                styleNumber: styleNumber, styleFooterNumber: styleFooterNumber, styleDate: styleDate,
-                styleTabla : styleTabla, styleFooter: styleFooter, styleFooterCenter: styleFooterCenter, styleFecha: styleFecha]
+                styleNumber: styleNumber, styleFooter: styleFooter, styleDate: styleDate,
+                styleTabla : styleTabla, styleFooterText: styleFooterText, styleFooterCenter: styleFooterCenter, styleFecha: styleFecha]
     }
 
     public static setTitulos(Sheet sheet, estilos, int iniRow, int iniCol, String titulo, String subtitulo) {
