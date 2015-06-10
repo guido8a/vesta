@@ -47,7 +47,7 @@
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="subproyectos">
-                                ** 1.3. Proforma presupuestaria de recursos no permanentes - Subproyectos
+                                1.3. Proforma presupuestaria de recursos no permanentes - Subproyectos
                             </a>
                         </li>
                         <li>
@@ -216,9 +216,16 @@
 
                 $("#reformas").click(function () {
                     var urlExcel = "${createLink(controller: 'reportesNuevos', action: 'reporteReformasExcel')}";
-                    var urlPdf = "";
+                    var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteReformasPdf')}";
                     var pdfFileName = "";
                     dialogXlsPdfFuente("Reporte de Reformas y Ajustes", urlExcel, urlPdf, pdfFileName);
+                });
+
+                $("#subproyectos").click(function () {
+                    var urlExcel = "${createLink(controller: 'reportes5', action: 'reporteRecursosSubproyectosExcel')}";
+                    var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteRecursosSubproyectosPdf')}";
+                    var pdfFileName = "";
+                    dialogXlsPdf("Proforma presupuestaria de recursos no permanentes - subproyectos", "Proforma presupuestaria de recursos no permanentes - subproyectos", urlExcel, urlPdf, pdfFileName);
                 });
 
                 $("#poaGrupoGasto").click(function () {

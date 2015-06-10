@@ -842,6 +842,7 @@ class ReportesNuevosController {
 
             def totalCols = curCol
             ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols, false)
+
             def totalInicial = 0
             def totalFinal = 0
 
@@ -979,6 +980,8 @@ class ReportesNuevosController {
 
     def reportePdfAvales() {
 
+        def total = 0
+
         def cn = dbConnectionService.getConnection()
         def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
                 "from prco, slav, unej, aval, poas, asgn " +
@@ -989,9 +992,14 @@ class ReportesNuevosController {
                 "order by avalnmro, fnte__id;"
 
         def res = cn.rows(tx.toString())
+
+        cn.eachRow(tx.toString()) { d ->
+            total += d.sum
+        }
+
         cn.close()
 
-        return [cn: res]
+        return [cn: res, total: total]
 
     }
 
