@@ -53,8 +53,9 @@
                 <div class="row color2 no-margin-top">
                     <div class="col-xs-9">
                         <h3>Gestión de Planificación</h3>
-                        Marco lógico, metas, indicadores,
-                        cronograma de inversión, fuentes de financiamiento, programación de inversiones plurianual.
+                        Administración del POA <br>Solicitud y emisión de avales<br>
+                        Solicitud y emisión de reformas al POA.<br>
+                        Administración de ajustes
                     </div>
 
                     <div class="col-xs-3">
@@ -66,12 +67,12 @@
                 </a>
             </g:if>
 
-            <g:link controller="avales" action="listaProcesos">
+            <g:link controller="avales" action="procesos">
                 <div class="row color1 no-margin-top">
                     <div class="col-xs-9">
                         <h3>Gestión de Seguimiento y Evaluación</h3>
-                        Marco lógico, metas, indicadores,
-                        cronograma de inversión, fuentes de financiamiento, programación de inversiones plurianual.
+                        Seguimiento a los procesos de ejecución del POA<br>
+                        Registro de la ejecución física de procesos
                     </div>
 
                     <div class="col-xs-3">

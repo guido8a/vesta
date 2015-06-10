@@ -23,11 +23,13 @@
         %{--<a href="#" class="btn btn-default btnCrear">--}%
         %{--<i class="fa fa-file-o"></i>  Crear nuevo Proceso de contratación--}%
         %{--</a>--}%
+            <g:if test="${params.aval != 'no'}">
 
             <g:link controller="avales" action="nuevaSolicitud" class="btn btn-default">
                 <i class="fa fa-file-o"></i> Nuevo proceso para solicitud de aval
             </g:link>
 
+            </g:if>
         </div>
 
         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 25px">

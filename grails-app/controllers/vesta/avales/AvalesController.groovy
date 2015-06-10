@@ -397,6 +397,11 @@ class AvalesController extends vesta.seguridad.Shield {
         return [procesos: l, estados: estados]
     }
 
+    def procesos () {
+        params.aval = 'no'
+        redirect (action: listaProcesos, params: params )
+    }
+
     /**
      * Acción que muestra la pantalla de creación de solicitud de aval
      */
@@ -653,18 +658,18 @@ class AvalesController extends vesta.seguridad.Shield {
 
         def disponible = proceso.getMonto()
 
-
+//        println "........ disponible: $disponible, estados edit: $estadosEdit, solicitud: $solicitudAval"
         if (avales.size() > 0) {
             disponible -= (avales.sum { it.monto })
             message = "Este proceso tiene un aval vigente"
         }
-        if (!estadosEdit.contains(solicitudAval.estado.codigo)) {
+        if (!estadosEdit.contains(solicitudAval?.estado?.codigo)) {
             if (message == "") {
                 message = "Este proceso tiene "
             } else {
                 message += " y "
             }
-            message += "${solicitudes.size() == 1 ? 'una' : solicitudes.size()} solicitud${solicitudes.size() == 1 ? '' : 'es'} <strong>${solicitudes.estado.descripcion.join(', ')}</strong>"
+            message += "${solicitudes.size() == 1 ? 'una' : solicitudes.size()} solicitud ${solicitudes.size() == 1 ? '' : 'es'} <strong>${solicitudes.estado.descripcion.join(', ')}</strong>"
         }
         if (solicitudes.size() > 0) {
             disponible -= (solicitudes.sum { it.monto })

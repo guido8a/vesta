@@ -15,7 +15,7 @@ class ObjetivoBuenVivirController extends Shield {
      * Acción que redirecciona a la lista (acción "list")
      */
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action:"list", params: params)
     }
 
     /**
@@ -28,18 +28,18 @@ class ObjetivoBuenVivirController extends Shield {
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
         params.offset = params.offset ?: 0
-        if (all) {
+        if(all) {
             params.remove("max")
             params.remove("offset")
         }
         def list
-        if (params.search) {
+        if(params.search) {
             def c = ObjetivoBuenVivir.createCriteria()
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-
-                    ilike("descripcion", "%" + params.search + "%")
+                    
+                    ilike("descripcion", "%" + params.search + "%")  
                 }
             }
         } else {
@@ -68,9 +68,9 @@ class ObjetivoBuenVivirController extends Shield {
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def show_ajax() {
-        if (params.id) {
+        if(params.id) {
             def objetivoBuenVivirInstance = ObjetivoBuenVivir.get(params.id)
-            if (!objetivoBuenVivirInstance) {
+            if(!objetivoBuenVivirInstance) {
                 render "ERROR*No se encontró ObjetivoBuenVivir."
                 return
             }
@@ -81,15 +81,15 @@ class ObjetivoBuenVivirController extends Shield {
     } //show para cargar con ajax en un dialog
 
     /**
-     * Acción llamada con ajax que muestra un formulario para crear o modificar un elemento
+     * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
      * @return objetivoBuenVivirInstance el objeto a modificar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def form_ajax() {
         def objetivoBuenVivirInstance = new ObjetivoBuenVivir()
-        if (params.id) {
+        if(params.id) {
             objetivoBuenVivirInstance = ObjetivoBuenVivir.get(params.id)
-            if (!objetivoBuenVivirInstance) {
+            if(!objetivoBuenVivirInstance) {
                 render "ERROR*No se encontró ObjetivoBuenVivir."
                 return
             }
@@ -104,15 +104,15 @@ class ObjetivoBuenVivirController extends Shield {
      */
     def save_ajax() {
         def objetivoBuenVivirInstance = new ObjetivoBuenVivir()
-        if (params.id) {
+        if(params.id) {
             objetivoBuenVivirInstance = ObjetivoBuenVivir.get(params.id)
-            if (!objetivoBuenVivirInstance) {
+            if(!objetivoBuenVivirInstance) {
                 render "ERROR*No se encontró ObjetivoBuenVivir."
                 return
             }
         }
         objetivoBuenVivirInstance.properties = params
-        if (!objetivoBuenVivirInstance.save(flush: true)) {
+        if(!objetivoBuenVivirInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar ObjetivoBuenVivir: " + renderErrors(bean: objetivoBuenVivirInstance)
             return
         }
@@ -125,7 +125,7 @@ class ObjetivoBuenVivirController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
      */
     def delete_ajax() {
-        if (params.id) {
+        if(params.id) {
             def objetivoBuenVivirInstance = ObjetivoBuenVivir.get(params.id)
             if (!objetivoBuenVivirInstance) {
                 render "ERROR*No se encontró ObjetivoBuenVivir."
@@ -144,7 +144,7 @@ class ObjetivoBuenVivirController extends Shield {
             return
         }
     } //delete para eliminar via ajax
-
+    
     /**
      * Acción llamada con ajax que valida que no se duplique la propiedad codigo
      * @render boolean que indica si se puede o no utilizar el valor recibido
@@ -165,5 +165,5 @@ class ObjetivoBuenVivirController extends Shield {
             return
         }
     }
-
+        
 }

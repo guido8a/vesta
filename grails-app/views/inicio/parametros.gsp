@@ -121,6 +121,51 @@
                                     Es similar al período contable o año fiscal.</p>
                                 </div>
                             </li>
+
+                            <li>
+                                <i class="fa-li fa fa-calendar text-info"></i>
+                                <g:link class="over" controller="objetivoBuenVivir" action="list">
+                                    Objetivo del Buen Vivir
+                                </g:link> Políticas del Buen vivir fijado en el Plan Nacional de Desarrollo
+
+                                <div class="descripcion hidden">
+                                    <h4>Objetivo del Buen Vivir</h4>
+
+                                    <p>Plan nacional de desarrollo.<br/>
+
+                                        Objetivo del Buen vivir fijado en el Plan Nacional de Desarrollo</p>
+                                </div>
+                            </li>
+
+                            <li>
+                                <i class="fa-li fa fa-calendar text-info"></i>
+                                <g:link class="over" controller="politicaBuenVivir" action="list">
+                                    Políticas del Buen Vivir
+                                </g:link> Políticas del Buen vivir fijado en el Plan Nacional de Desarrollo
+
+                                <div class="descripcion hidden">
+                                    <h4>Políticas del Buen Vivir</h4>
+
+                                    <p>Plan nacional de desarrollo.<br/>
+
+                                        Políticas del Buen vivir fijado en el Plan Nacional de Desarrollo</p>
+                                </div>
+                            </li>
+
+                            <li>
+                                <i class="fa-li fa fa-calendar text-info"></i>
+                                <g:link class="over" controller="metaBuenVivir" action="list">
+                                    Metas del Buen Vivir
+                                </g:link> Meta del Buen vivir fijado en el Plan Nacional de Desarrollo
+
+                                <div class="descripcion hidden">
+                                    <h4>Metas del Buen Vivir</h4>
+
+                                    <p>Plan nacional de desarrollo.<br/>
+
+                                        Metas del Buen vivir fijado en el Plan Nacional de Desarrollo</p>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>

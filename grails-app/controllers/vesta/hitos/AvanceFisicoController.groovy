@@ -129,9 +129,9 @@ class AvanceFisicoController extends vesta.seguridad.Shield {
 
         println("params " + params)
 
-        def proceso = Proceso.get(params.id)
-
-        return [proceso:proceso]
+        def proceso = ProcesoAval.get(params.id)
+        println "proceso: $proceso"
+        return [proceso: proceso]
 
     }
 
