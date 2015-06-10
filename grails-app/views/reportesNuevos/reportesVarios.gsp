@@ -162,35 +162,39 @@
             }
 
             function dialogXlsPdf(title, message, urlExcel, urlPdf, pdfFileName) {
+                var buttons = {};
+                if (urlPdf) {
+                    buttons.pdf = {
+                        id        : "btnPdf",
+                        label     : "<i class='fa fa-file-pdf-o'></i> Reporte Pdf",
+                        className : "btn-success",
+                        callback  : function () {
+                            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + urlPdf + "&filename=" + pdfFileName;
+                        } //callback
+                    };
+                }
+                if (urlExcel) {
+                    buttons.excel = {
+                        id        : "btnExcel",
+                        label     : "<i class='fa fa-file-excel-o'></i> Reporte Excel",
+                        className : "btn-success",
+                        callback  : function () {
+                            location.href = urlExcel;
+//                            return false;
+                        } //callback
+                    };
+                }
+                buttons.cancelar = {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                };
                 bootbox.dialog({
                     id      : "dlgEgresos1",
                     title   : title ? title : "Reporte",
                     message : message ? message : "Reporte",
-                    buttons : {
-                        pdf      : {
-                            id        : "btnPdf",
-                            label     : "<i class='fa fa-file-pdf-o'></i> Reporte Pdf",
-                            className : "btn-success",
-                            callback  : function () {
-                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + urlPdf + "&filename=" + pdfFileName;
-                            } //callback
-                        }, //guardar
-                        excel    : {
-                            id        : "btnExcel",
-                            label     : "<i class='fa fa-file-excel-o'></i> Reporte Excel",
-                            className : "btn-success",
-                            callback  : function () {
-                                location.href = urlExcel;
-//                            return false;
-                            } //callback
-                        }, //guardar
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    } //buttons
+                    buttons : buttons
                 }); //dialog
             }
 
@@ -263,7 +267,7 @@
                     var urlExcel = "${createLink(controller: 'reportes4', action: 'poaXlsx')}";
                     var urlPdf = null;
                     var pdfFileName = null;
-                    dialogXlsPdf("Reporte Planificación Operativa Anual", urlExcel, urlPdf, pdfFileName);
+                    dialogXlsPdf("Reporte Planificación Operativa Anual", "Reporte Planificación Operativa Anual", urlExcel, urlPdf, pdfFileName);
                 });
 
                 $("#programacion").click(function () {
