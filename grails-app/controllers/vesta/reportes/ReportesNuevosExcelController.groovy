@@ -24,17 +24,14 @@ class ReportesNuevosExcelController {
 
         Font fontYachay = wb.createFont()
         fontYachay.setFontHeightInPoints((short) 12)
-//            fontYachay.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
         fontYachay.setBold(true)
 
         Font fontTitulo = wb.createFont()
         fontTitulo.setFontHeightInPoints((short) 12)
-//            fontTitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
         fontTitulo.setBold(true)
 
         Font fontSubtitulo = wb.createFont()
         fontSubtitulo.setFontHeightInPoints((short) 12)
-//            fontSubtitulo.setColor(new XSSFColor(new java.awt.Color(23, 54, 93)))
         fontSubtitulo.setBold(true)
 
         Font fontHeader = wb.createFont()
