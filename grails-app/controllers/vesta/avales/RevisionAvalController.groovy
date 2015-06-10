@@ -1114,9 +1114,11 @@ class RevisionAvalController extends Shield {
         switch (perfil) {
             case "RQ":
                 estados = [estadoPendiente, estadoDevueltoReq]
-                filtroPersona = Persona.get(session.usuario.id)
+                Persona pers = Persona.get(session.usuario.id)
+                filtroPersona = pers
+                def proyectos = pers.unidad.getProyectosUnidad(Anio.findByAnio(new Date().format("yyyy")), session.perfil.codigo)
 
-                def procesosSinSolicitud = ProcesoAval.list([sort: "id"])
+                def procesosSinSolicitud = ProcesoAval.findAllByProyectoInList(proyectos, [sort: "id"])
                 procesosSinSolicitud.each { pss ->
                     if (SolicitudAval.countByProcesoAndUnidadInList(pss, unidades) == 0) {
                         p += pss
