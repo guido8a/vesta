@@ -563,6 +563,23 @@ class AvalesController extends vesta.seguridad.Shield {
                 referencial = referencial.round(2)
                 println "referencial " + referencial
             }
+
+            def estadoDevuelto = EstadoAval.findByCodigo("D01")
+            def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+            def estadoPendiente = EstadoAval.findByCodigo("P01")
+
+            def estadoPorRevisar = EstadoAval.findByCodigo("R01")
+            def estadoSolicitado = EstadoAval.findByCodigo("E01")
+//        def estadoDevueltoReq = EstadoAval.findByCodigo("D01")
+            def estadoDevueltoDirReq = EstadoAval.findByCodigo("D02")
+
+            def estados = [estadoDevuelto, estadoSolicitadoSinFirma, estadoPendiente, estadoPorRevisar, estadoSolicitado, estadoDevueltoDirReq]
+            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, estados)
+            def solicitud = null
+            if (solicitudes.size() == 1) {
+                solicitud = solicitudes.first()
+            }
+
 //            def numero
 //            numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
 //            if (numero.size() > 0) {
@@ -574,7 +591,7 @@ class AvalesController extends vesta.seguridad.Shield {
 //                numero = numero + 1
 //            }
 //            numero = 0
-            def r = verificarProceso(proceso)
+            def r = verificarProceso(proceso, solicitud)
             flash.message = r.message
             if (flash.message != "") {
                 readOnly = true
@@ -582,17 +599,6 @@ class AvalesController extends vesta.seguridad.Shield {
             def disponible = r.disponible
 
 //            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
-
-            def estadoDevuelto = EstadoAval.findByCodigo("D01")
-            def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-            def estadoPendiente = EstadoAval.findByCodigo("P01")
-            def estados = [estadoDevuelto, estadoSolicitadoSinFirma, estadoPendiente]
-
-            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, estados)
-            def solicitud = null
-            if (solicitudes.size() == 1) {
-                solicitud = solicitudes.first()
-            }
 
 //            println "Aqui:   " + proceso + "    " + solicitud
 
@@ -604,7 +610,11 @@ class AvalesController extends vesta.seguridad.Shield {
         }
     }
 
-    def verificarProceso(ProcesoAval proceso) {
+    private verificarProceso(ProcesoAval proceso) {
+        return verificarProceso(proceso, null)
+    }
+
+    private verificarProceso(ProcesoAval proceso, SolicitudAval solicitudAval) {
 //        def band = true
         def message = ""
         def now = new Date()
@@ -626,13 +636,35 @@ class AvalesController extends vesta.seguridad.Shield {
 //        def estadoDevueltoReq = EstadoAval.findByCodigo("D01")
         def estadoDevueltoDirReq = EstadoAval.findByCodigo("D02")
 
+        def estadosEdit = ["D01", "EF4", "P01"]
+
         def avales = Aval.findAllByProcesoAndEstadoInList(proceso, [estadoAprobado, estadoAnulado, estadoAprobadoSinFirma])
-        def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [estadoPorRevisar, estadoSolicitadoSinFirma, estadoSolicitado, estadoDevueltoDirReq])
+
+        def solicitudes
+        if (solicitudAval) {
+            solicitudes = SolicitudAval.withCriteria {
+                ne("id", solicitudAval.id)
+                eq("proceso", proceso)
+                inList("estado", [estadoPorRevisar, estadoSolicitadoSinFirma, estadoSolicitado, estadoDevueltoDirReq])
+            }
+        } else {
+            solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [estadoPorRevisar, estadoSolicitadoSinFirma, estadoSolicitado, estadoDevueltoDirReq])
+        }
+
         def disponible = proceso.getMonto()
+
 
         if (avales.size() > 0) {
             disponible -= (avales.sum { it.monto })
             message = "Este proceso tiene un aval vigente"
+        }
+        if (!estadosEdit.contains(solicitudAval.estado.codigo)) {
+            if (message == "") {
+                message = "Este proceso tiene "
+            } else {
+                message += " y "
+            }
+            message += "${solicitudes.size() == 1 ? 'una' : solicitudes.size()} solicitud${solicitudes.size() == 1 ? '' : 'es'} <strong>${solicitudes.estado.descripcion.join(', ')}</strong>"
         }
         if (solicitudes.size() > 0) {
             disponible -= (solicitudes.sum { it.monto })
