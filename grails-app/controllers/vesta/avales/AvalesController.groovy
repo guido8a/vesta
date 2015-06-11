@@ -397,9 +397,9 @@ class AvalesController extends vesta.seguridad.Shield {
         return [procesos: l, estados: estados]
     }
 
-    def procesos () {
+    def procesos() {
         params.aval = 'no'
-        redirect (action: listaProcesos, params: params )
+        redirect(action: listaProcesos, params: params)
     }
 
     /**
@@ -790,7 +790,20 @@ class AvalesController extends vesta.seguridad.Shield {
      * Acción que muestra una pantalla que permite solicitar la anulación de un aval
      */
     def solicitarAnulacion = {
-        def aval = Aval.get(params.id)
+        def aval = null, solicitud = null
+        if (params.id) {
+            aval = Aval.get(params.id)
+        }
+        if (params.sol) {
+            solicitud = SolicitudAval.get(params.sol.toLong())
+            aval = Aval.findAllByProceso(solicitud.proceso)
+            if (aval.size() == 1) {
+                aval = aval.first()
+            } else {
+                aval = null
+                println "HAY ${aval.size()} avales!!!! ${aval.id}"
+            }
+        }
         def numero = null
         def band = true
         numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
@@ -803,8 +816,8 @@ class AvalesController extends vesta.seguridad.Shield {
             numero = numero + 1
         }
         def unidad = UnidadEjecutora.get(session.unidad.id)
-        def personasFirma = Persona.findAllByUnidad(unidad)
-        return [aval: aval, numero: numero, personas: personasFirma]
+        def personasFirma = firmasService.listaDirectoresUnidad(unidad)
+        return [aval: aval, sol: solicitud, numero: numero, personas: personasFirma]
     }
 
     /**
@@ -1080,6 +1093,8 @@ class AvalesController extends vesta.seguridad.Shield {
 
         def preview = params.preview == "S"
 
+        def strSolicitud = params.tipo == "A" ? "solicitud de anulación" : "solicitud"
+
         def path = servletContext.getRealPath("/") + "pdf/solicitudAval/"
         new File(path).mkdirs()
         def f = request.getFile('file')
@@ -1220,7 +1235,7 @@ class AvalesController extends vesta.seguridad.Shield {
                 alerta.persona = usuFirma
                 alerta.fechaEnvio = new Date()
 //                alerta.mensaje = "Nueva solicitud de aval: " + sol.concepto
-                alerta.mensaje = "Nueva solicitud de aval: " + sol.proceso.nombre
+                alerta.mensaje = "Nueva ${strSolicitud} de aval: " + sol.proceso.nombre
                 alerta.controlador = "revisionAval"
                 alerta.accion = "pendientes"
                 alerta.id_remoto = sol.id
@@ -1233,8 +1248,8 @@ class AvalesController extends vesta.seguridad.Shield {
 
                         mailService.sendMail {
                             to mail
-                            subject "Nueva solicitud de aval"
-                            body "Tiene una solicitud de aval pendiente que requiere su revisión para aprobación "
+                            subject "Nueva ${strSolicitud} de aval"
+                            body "Tiene una ${strSolicitud} de aval pendiente que requiere su revisión para aprobación "
                         }
 
                     } else {
@@ -1248,11 +1263,11 @@ class AvalesController extends vesta.seguridad.Shield {
             }
         }
         if (preview) {
-            flash.message = "Solicitud guardada"
+            flash.message = "${strSolicitud.capitalize()} guardada"
             redirect(action: 'solicitudProceso', params: [id: params.proceso])
             return
         } else {
-            flash.message = "Solicitud enviada"
+            flash.message = "${strSolicitud.capitalize()} enviada"
             redirect(action: 'avalesProceso', params: [id: params.proceso])
             return
         }
@@ -1323,6 +1338,9 @@ class AvalesController extends vesta.seguridad.Shield {
         } else {
             def sol = SolicitudAval.findByFirma(firma)
             sol.estado = EstadoAval.findByCodigo("E01")
+
+            def strSolicitud = sol.tipo == "A" ? "solicitud de anulación" : "solicitud"
+
             def numero
             numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
             if (numero.size() > 0) {
@@ -1359,7 +1377,7 @@ class AvalesController extends vesta.seguridad.Shield {
                     alerta.persona = usro
                     alerta.fechaEnvio = now
 //                    alerta.mensaje = "Solicitud de aval: " + sol.concepto
-                    alerta.mensaje = "Solicitud de aval: " + sol.proceso.nombre
+                    alerta.mensaje = "${strSolicitud.capitalize()} de aval: " + sol.proceso.nombre
                     alerta.controlador = "revisionAval"
                     alerta.accion = "pendientes"
                     alerta.id_remoto = sol.id
@@ -1372,8 +1390,8 @@ class AvalesController extends vesta.seguridad.Shield {
                         try {
                             mailService.sendMail {
                                 to mail
-                                subject "Nueva solicitud de aval"
-                                body "Ha recibido una nueva solicitud de aval de la unidad " + sol.unidad
+                                subject "Nueva ${strSolicitud} de aval"
+                                body "Ha recibido una nueva ${strSolicitud} de aval de la unidad " + sol.unidad
                             }
                         } catch (e) {
                             println "Error al enviar mail: ${e.printStackTrace()}"

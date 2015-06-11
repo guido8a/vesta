@@ -1,4 +1,3 @@
-
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 
 <table class="table table-bordered table-condensed table-hover table-striped">
@@ -8,7 +7,7 @@
             <th>Fecha</th>
             <th>Proyecto</th>
             <th>Proceso</th>
-            %{--<th>Tipo</th>--}%
+            <th>Tipo</th>
             <th>Requirente</th>
             <th>Concepto</th>
             <th>Monto</th>
@@ -26,7 +25,7 @@
                 <td style="text-align: center">${sol.fecha.format("dd-MM-yyyy")}</td>
                 <td style="text-align: center" title="${sol.proceso.proyecto.toStringCompleto()}">${sol.proceso.proyecto}</td>
                 <td>${sol.proceso.nombre}</td>
-                %{--<td style="text-align: center" class="${(sol.tipo == 'A') ? 'E03' : 'E02'}">${(sol.tipo == "A") ? 'Anulación' : 'Aprobación'}</td>--}%
+                <td style="text-align: center" class="${(sol.tipo == 'A') ? 'E03' : 'E02'}">${(sol.tipo == "A") ? 'Anulación' : 'Aprobación'}</td>
                 <td>${sol.unidad}</td>
                 <td>${sol.concepto}</td>
                 <td style="text-align: right">

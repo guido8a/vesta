@@ -77,6 +77,14 @@ class Aval {
      * Firma del gerente
      */
     Firma firma2
+    /**
+     * Firma del director para la anulacion
+     */
+    Firma firmaAnulacion1
+    /**
+     * Firma del gerente para la anulacion
+     */
+    Firma firmaAnulacion2
 
     /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
@@ -106,6 +114,8 @@ class Aval {
             certificacion column: 'avalcert'
             firma1 column: 'frmadire'
             firma2 column: 'frmagert'
+            firmaAnulacion1 column: 'frmaanl1'
+            firmaAnulacion2 column: 'frmaanl2'
         }
     }
     /**
@@ -127,6 +137,8 @@ class Aval {
         certificacion(blank: true, nullable: true, size: 1..50)
         firma1(blank: true, nullable: true)
         firma2(blank: true, nullable: true)
+        firmaAnulacion1(blank: true, nullable: true)
+        firmaAnulacion2(blank: true, nullable: true)
     }
 
     def getColorSemaforo() {

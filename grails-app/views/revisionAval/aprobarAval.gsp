@@ -41,7 +41,6 @@
             </div>
         </g:if>
         <g:else>
-
             <g:if test="${solicitud.estado.codigo == "D03"}">
                 <div class="alert alert-warning">
                     <g:if test="${solicitud.aval.firma1.observaciones && solicitud.aval.firma1.observaciones != '' && solicitud.aval.firma1.observaciones != 'S'}">
@@ -134,7 +133,6 @@
             </elm:container>
 
             <elm:container tipo="horizontal" titulo="Autorizaciones electrónicas">
-
                 <form id="frmFirmas">
                     <div class="row">
                         <div class="col-md-3 grupo">

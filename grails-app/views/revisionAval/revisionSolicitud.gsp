@@ -9,12 +9,12 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Revisar aval</title>
+        <title>Revisar solicitud de${solicitud.tipo == "A" ? " anulación de" : ""} aval</title>
     </head>
 
     <body>
 
-        <h1>Revisar aval</h1>
+        <h1>Revisar solicitud de${solicitud.tipo == "A" ? " anulación de" : ""}  aval</h1>
 
         <g:if test="${solicitud.estado.codigo == 'D02' && solicitud.firma.observaciones && solicitud.firma.observaciones != '' && solicitud.firma.observaciones != 'S'}">
             <elm:message tipo="warning"><strong>Devuelto por ${solicitud.firma.usuario}</strong>: ${solicitud.firma.observaciones}</elm:message>

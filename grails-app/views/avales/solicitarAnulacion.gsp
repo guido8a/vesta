@@ -35,6 +35,13 @@
             </div>
         </div>
 
+        <g:if test="${sol && sol.estado.codigo == 'D01' && sol.observaciones}">
+            <div class="row">
+                <div class="col-md-12">
+                    <elm:message tipo="warning" close="false">${sol?.observaciones}</elm:message>
+                </div>
+            </div>
+        </g:if>
 
         <elm:container tipo="horizontal" titulo="Solicitud de anulación de aval">
             <g:uploadForm class="form-horizontal frmUpload" action="guardarSolicitud" controller="avales">
@@ -43,6 +50,7 @@
                 <input type="hidden" name="monto" value="${aval.monto}">
                 <input type="hidden" name="proceso" value="${aval.proceso.id}">
                 <input type="hidden" name="numero" value="${numero}">
+                <input type="hidden" name="solicitud" value="${sol?.id}">
 
                 <div class="form-group keeptogether required">
                     <span class="grupo">
@@ -72,14 +80,14 @@
                     </span>
                 </div>
 
-                <div class="form-group keeptogether required">
+                <div class="form-group keeptogether ">
                     <span class="grupo">
-                        <label for="montoText" class="col-md-2 control-label">
+                        <label for="memorando" class="col-md-2 control-label">
                             Doc. de soporte
                         </label>
 
                         <div class="col-md-2">
-                            <g:textField name="montoText" class="form-control input-sm required" required=""/>
+                            <g:textField name="memorando" class="form-control input-sm required" required="" value="${sol?.memo}"/>
                         </div>
                     </span>
                     <span class="grupo">
@@ -88,7 +96,12 @@
                         </label>
 
                         <div class="col-md-3">
-                            <input type="file" name="file" id="file" class="form-control input-sm required" required=""/>
+                            <input type="file" name="file" id="file" class="form-control input-sm"/>
+                            <g:if test="${sol?.path}">
+                                <g:link controller="avales" action="descargaSolicitud" id="${sol.id}">
+                                    <i class="fa fa-download"></i> ${sol.path}
+                                </g:link>
+                            </g:if>
                         </div>
                     </span>
                 </div>
@@ -101,7 +114,7 @@
 
                         <div class="col-md-7">
                             <g:textArea name="concepto" maxlength="1024" style="height: 80px;" class="form-control required"
-                                        required=""/>
+                                        required="" value="${sol.concepto}"/>
                         </div>
                     </span>
                 </div>
@@ -109,13 +122,22 @@
                 <div class="form-group keeptogether required">
                     <span class="grupo">
                         <label for="firma1" class="col-md-2 control-label">
-                            Aut. electrónica
+                            Pedir revisión de
                         </label>
 
-                        <div class="col-md-2">
-                            <g:select from="${personas}" optionKey="id" class="form-control input-sm required" optionValue="${{
-                                it.nombre + ' ' + it.apellido
-                            }}" name="firma1"/>
+                        <div class="col-md-3">
+                            <g:if test="${sol?.estado?.codigo == 'D01'}">
+                                <p class="form-control-static">
+                                    ${sol?.director}
+                                </p>
+                            </g:if>
+                            <g:else>
+                            %{--*${solicitud?.directorId}*--}%
+                                <g:select from="${personas}" optionKey="id" class="form-control input-sm required"
+                                          optionValue="${{
+                                              it.nombre + ' ' + it.apellido
+                                          }}" name="firma1" value="${sol?.directorId}" noSelection="['': '.. Seleccione ..']"/>
+                            </g:else>
                         </div>
                     </span>
                 </div>
@@ -140,7 +162,6 @@
                 var validator = $(".frmUpload").validate({
                     rules          : {
                         file : {
-                            required  : true,
                             accept    : "application/pdf",
                             extension : "pdf"
                         }

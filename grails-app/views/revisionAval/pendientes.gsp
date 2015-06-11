@@ -119,19 +119,24 @@
                                             </g:if>
                                         </td>
                                         <td class="text-center">
-                                            <g:if test="${p.tipo != 'A'}">
-                                                <a href="#" class="btn btn-default btn-xs imprimirSolicitud" iden="${p.id}" title="Ver">
-                                                    <i class="fa fa-search"></i>
-                                                </a>
-                                            </g:if>
+                                            <a href="#" class="btn btn-default btn-xs imprimirSolicitud" iden="${p.id}" data-tipo="${p.tipo}" title="Ver">
+                                                <i class="fa fa-search"></i>
+                                            </a>
                                         </td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-xs" role="group">
                                                 <g:if test="${p.estado.codigo == 'P01' || p.estado.codigo == 'D01'}">
                                                     <g:if test="${session.usuario.id == p.usuarioId}">
-                                                        <a href="${g.createLink(controller: 'avales', action: 'nuevaSolicitud', id: p.proceso.id)}" class="aprobar btn btn-info" title="Editar">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
+                                                        <g:if test="${p.tipo == 'A'}">
+                                                            <a href="${g.createLink(controller: 'avales', action: 'solicitarAnulacion', params: [sol: p.id])}" class="aprobar btn btn-info" title="Editar">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                        </g:if>
+                                                        <g:else>
+                                                            <a href="${g.createLink(controller: 'avales', action: 'nuevaSolicitud', id: p.proceso.id)}" class="aprobar btn btn-info" title="Editar">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                        </g:else>
                                                     </g:if>
                                                 </g:if>
                                                 <g:elseif test="${p.estado.codigo == 'R01' || p.estado.codigo == 'D02'}">
@@ -149,12 +154,15 @@
                                                             </a>
                                                         </g:if>
                                                         <g:else>
-                                                            <a href="${g.createLink(action: 'aprobarAnulacion', id: p.id)}" class="aprobarAnulacion btn btn-success" title="Aprobar">
+                                                            <a href="${g.createLink(action: 'aprobarAnulacion', id: p.id)}" class="aprobar btn btn-success" title="Revisar">
                                                                 <i class="fa fa-check"></i>
                                                             </a>
-                                                            <a href="#" class="negar btn btn-warning " iden="${p.id}" title="Negar">
-                                                                <i class="fa fa-times-circle"></i>
-                                                            </a>
+                                                        %{--<a href="${g.createLink(action: 'aprobarAnulacion', id: p.id)}" class="aprobarAnulacion btn btn-success" title="Aprobar">--}%
+                                                        %{--<i class="fa fa-check"></i>--}%
+                                                        %{--</a>--}%
+                                                        %{--<a href="#" class="negar btn btn-warning " iden="${p.id}" title="Negar">--}%
+                                                        %{--<i class="fa fa-times-circle"></i>--}%
+                                                        %{--</a>--}%
                                                         </g:else>
                                                     </g:if>
                                                 </g:elseif>
@@ -233,8 +241,16 @@
 
                 });
                 $(".imprimirSolicitud").click(function () {
-                    var url = "${g.createLink(controller: 'reporteSolicitud',action: 'imprimirSolicitudAval')}/" + $(this).attr("iden");
-                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Solicitud.pdf"
+                    var url, fn;
+                    var tipo = $(this).data("tipo");
+                    if (tipo == "A") {
+                        url = "${g.createLink(controller: 'reporteSolicitud',action: 'imprimirSolicitudAnulacionAval')}/" + $(this).attr("iden");
+                        fn = "solicitud_anulacion_aval.pdf";
+                    } else {
+                        url = "${g.createLink(controller: 'reporteSolicitud',action: 'imprimirSolicitudAval')}/" + $(this).attr("iden");
+                        fn = "solicitud_aval.pdf";
+                    }
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=" + fn;
                 });
 
                 $("#buscar").click(function () {

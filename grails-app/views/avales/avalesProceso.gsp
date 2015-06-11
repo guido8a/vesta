@@ -4,6 +4,21 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main"/>
         <title>Avales</title>
+
+        <style type="text/css">
+        .aprobacion {
+            font-weight : bold;
+            background  : #5faf56;
+            color       : whitesmoke;
+        }
+
+        .anulacion {
+            font-weight : bold;
+            background  : #ad5656;
+            color       : whitesmoke;
+        }
+        </style>
+
     </head>
 
     <body>
@@ -91,9 +106,9 @@
                         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
                                 <tr>
-                                    <th>Fecha</th>
+                                    <th style="width: 85px;">Fecha</th>
                                     <th>Proceso</th>
-                                    %{--<th>Tipo</th>--}%
+                                    <th>Tipo</th>
                                     <th>Concepto</th>
                                     <th>Monto</th>
                                     <th>Estado</th>
@@ -107,7 +122,7 @@
                                     <tr>
                                         <td>${p.fecha.format("dd-MM-yyyy")}</td>
                                         <td>${p.proceso.nombre}</td>
-                                        %{--<td class="${(p.tipo == 'A') ? 'E03' : 'E02'}">${(p.tipo == "A") ? 'Anulación' : 'Aprobación'}</td>--}%
+                                        <td class="${(p.tipo == 'A') ? 'anulacion' : 'aprobacion'}">${(p.tipo == "A") ? 'Anulación' : 'Aprobación'}</td>
                                         <td>${p.concepto}</td>
                                         <td style="text-align: right">
                                             <g:formatNumber number="${p.monto}" type="currency" currencySymbol=""/>

@@ -194,19 +194,17 @@
                 <strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}
             </p>
 
-
-
         </div>
 
         <div class="no-break">
             <div class="texto">
-                <strong>Elaborado por:</strong>  ${solicitud?.usuario?.sigla ?: solicitud?.usuario?.nombre + ' ' + solicitud?.usuario?.apellido}
+                <strong>Elaborado por:</strong> ${solicitud?.usuario?.sigla ?: solicitud?.usuario?.nombre + ' ' + solicitud?.usuario?.apellido}
             </div>
 
             <div class="texto">
                 <p>
-                <strong>Revisado por:</strong>  ${solicitud?.director?.sigla ?:
-                    solicitud?.director?.nombre && solicitud?.director?.apellido ? solicitud?.director?.nombre + ' ' + solicitud?.director?.apellido : ''}
+                    <strong>Revisado por:</strong>  ${solicitud?.director?.sigla ?:
+                        solicitud?.director?.nombre && solicitud?.director?.apellido ? solicitud?.director?.nombre + ' ' + solicitud?.director?.apellido : ''}
                 </p>
 
                 <p style="float: right; margin-top: -20px">

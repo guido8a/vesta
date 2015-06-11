@@ -52,7 +52,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>Fecha</th>
+                    <th style="width: 85px;">Fecha</th>
                     <th>Mensaje</th>
                     <th>Originador</th>
                     <th>Link</th>

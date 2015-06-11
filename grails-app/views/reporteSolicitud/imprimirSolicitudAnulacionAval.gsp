@@ -9,76 +9,15 @@
 <html>
     <head>
         <title>Imprimir acta</title>
+        <rep:estilos orientacion="p" pagTitle="Solicitud de Aval de POA"/>
         <style type="text/css">
-        @page {
-            size   : 21cm 29.7cm;  /*width height */
-            margin : 2cm;
-        }
-
-        .hoja {
-            width     : 15cm;
-            font-size : 12pt;
-        }
-
-        .titulo {
-            width : 15.5cm;
-        }
-
-        .hoja {
-            /*background  : #fedcba;*/
-            height      : 24.7cm; /*29.7-(1.5*2)*/
-            font-family : arial;
-            font-size   : 10pt;
-        }
-
-        .titulo {
-            height        : 130px;
-            font-size     : 12pt;
-            /*font-weight   : bold;*/
-            text-align    : center;
-            margin-bottom : 5px;
-            width         : 95%;
-        }
-
-        .totales {
-            font-weight : bold;
-        }
-
-        .num {
-            text-align : right;
-        }
-
-        .header {
-            background : #333333 !important;
-            color      : #AAAAAA;
-        }
-
-        .total {
-            background : #000000 !important;
-            color      : #FFFFFF !important;
-        }
-
-        .label {
-            font-weight : bold;
-        }
-
-        .ui-widget-header {
-            font-weight : bold;
-        }
-
-        .ttl {
-            text-align  : center;
-            font-weight : bold;
-        }
-
-        .numeracion {
-            float   : right;
-            /*background : #bbb;*/
-            padding : 7px;
-        }
 
         .tbl {
             border-collapse : collapse;
+        }
+
+        .tbl, .tbl th, .tbl td {
+            border : solid 1px #555;
         }
 
         .tbl th {
@@ -96,18 +35,25 @@
         .bold {
             font-weight : bold;
         }
+
+        .tbl2 {
+            border-collapse : collapse;
+        }
+
+        .tbl2, .tbl2 th, .tbl2 td {
+            border : solid 1px transparent;
+        }
+
+        .noBold {
+            font-weight : normal !important;
+        }
         </style>
     </head>
 
     <body>
         <div class="hoja">
-            <rep:headerReporte  title="Solicitud de Anulación de Aval de POA"/>
-
-            <div style="width: 100%; height: 1.5cm;">
-                <div class="numeracion">
-                    Numeración: ${solicitud.unidad?.codigo}-${solicitud.numero}
-                </div>
-            </div>
+            <rep:headerFooter title="Solicitud de Anulación de Aval de POA" unidad="${solicitud.fecha.format('yyyy')}-${solicitud.unidad?.codigo}"
+                              numero="${elm.imprimeNumero(solicitud: solicitud.id)}" estilo="right"/>
 
             <div class="texto">
                 Con el propósito de ejecutar las actividades programadas en la planificación operativa institucional
@@ -227,7 +173,7 @@
             </div>
 
             <div class="texto">
-                Elaborado por: ${solicitud?.usuario?.sigla}
+                Elaborado por: ${solicitud?.usuario?.sigla ?: solicitud?.usuario?.nombre + ' ' + solicitud?.usuario?.apellido}
             </div>
             <g:if test="${solicitud.firma && solicitud.firma.estado == 'F'}">
                 <table width="100%" style="margin-top: 1.5cm;">

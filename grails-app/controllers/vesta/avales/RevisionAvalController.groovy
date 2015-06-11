@@ -41,6 +41,9 @@ class RevisionAvalController extends Shield {
         def ok = true
         if (ok) {
             def sol = SolicitudAval.get(params.id)
+
+            def strSolicitud = sol.tipo == "A" ? "solicitud de anulación" : "solicitud"
+
             /*todo aqui validar quien puede*/
             band = true
             if (band) {
@@ -48,9 +51,9 @@ class RevisionAvalController extends Shield {
                 sol.observaciones = params.obs
                 sol.fechaRevision = new Date()
                 sol.save(flush: true)
-                render "SUCCES*Aval negado exitosamente"
+                render "SUCCES*${strSolicitud.capitalize()} de aval negado exitosamente"
             } else {
-                render("ERROR*No puede negar avales")
+                render("ERROR*No puede negar solicitudes")
             }
         } else {
             render("ERROR*Clave de autorización incorrecta")
@@ -426,7 +429,9 @@ class RevisionAvalController extends Shield {
         if (!band) {
             response.sendError(403)
         }
-        [solicitud: solicitud]
+
+        def firmas = firmasService.listaFirmasCombos()
+        return [solicitud: solicitud, personas: firmas.directores, personasGerente: firmas.gerentes]
     }
 
     /**
@@ -443,6 +448,9 @@ class RevisionAvalController extends Shield {
         def errores = ""
 //        println "guardar datos doc " + params
         def sol = SolicitudAval.get(params.id)
+
+        def strSolicitud = sol.tipo == "A" ? "solicitud de anulación" : "solicitud"
+
         def obs = params.obs
         def usuario = Persona.get(session.usuario.id)
         if (obs) {
@@ -656,12 +664,198 @@ class RevisionAvalController extends Shield {
         }
     }
 
+    def guarAnulacionDoc = {
+        def msg = ""
+        def errores = ""
+//        println "guardar datos doc " + params
+        def sol = SolicitudAval.get(params.id)
+
+        def usuario = Persona.get(session.usuario.id)
+
+        sol.analista = Persona.get(session.usuario.id)
+//        println "ANALISTA: " + sol.analista
+//        sol.firma2 = Usro.get(params.firma2)
+//        sol.firma3 = Usro.get(params.firma3)
+        if (!sol.save(flush: true)) {
+            errores += renderErrors(bean: sol)
+        }
+        if (params.enviar) {
+            println "si env"
+            if (params.enviar == "true") {
+//                def ok = params.auth.toString().trim().encodeAsMD5() == usuario.autorizacion
+                def ok = true
+                if (ok) {
+                    println "enviar =true"
+                    def band = false
+                    /*Todo aqui validar quien puede*/
+                    band = true
+                    if (band) {
+                        def firma1, firma2
+                        def aval = sol.aval
+                        aval.estado = EstadoAval.findByCodigo("EF3")  //anulado sin firma
+                        aval.save(flush: true)
+                        if (!sol.aval.firmaAnulacion1) {
+                            firma1 = new Firma()
+                            firma1.usuario = Persona.get(params.firma2)
+
+                            firma1.controladorVer = "reporteSolicitud"
+                            firma1.accionVer = "imprimirSolicitudAnulacionAval"
+                            firma1.idAccionVer = sol.id
+
+                            firma1.controlador = "revisionAval"
+                            firma1.accion = "firmarAnulacionAval"
+
+                            firma1.controladorNegar = "revisionAval"
+                            firma1.accionNegar = "devolverAvalAPlanificacion"
+                            firma1.idAccionNegar = sol.id
+
+                            firma1.tipoFirma = "AVAL"
+
+                            firma1.concepto = "Aprobación de anulación del aval ${aval.concepto}"
+                            firma1.esPdf = "S"
+                            if (!firma1.save(flush: true)) {
+                                println "error firma1 " + firma1.errors
+                                errores += renderErrors(bean: firma1)
+                            }
+                            firma2 = new Firma()
+                            firma2.usuario = Persona.get(params.firma3)
+
+                            firma2.controladorVer = firma1.controladorVer
+                            firma2.accionVer = firma1.accionVer
+                            firma2.idAccionVer = firma1.idAccionVer
+
+                            firma2.controlador = firma1.controlador
+                            firma2.accion = firma1.accion
+
+                            firma2.controladorNegar = firma1.controladorNegar
+                            firma2.accionNegar = firma1.accionNegar
+                            firma2.idAccionNegar = firma1.idAccionNegar
+
+                            firma2.tipoFirma = firma1.tipoFirma
+
+                            firma2.concepto = firma1.concepto
+                            firma2.esPdf = firma1.esPdf
+                            if (!firma2.save(flush: true)) {
+                                println "error firma2 " + firma2.errors
+                                errores += renderErrors(bean: firma2)
+                            }
+                            aval.firmaAnulacion1 = firma1
+                            aval.firmaAnulacion2 = firma2
+                        } else {
+                            firma1 = aval.firmaAnulacion1
+                            firma2 = aval.firmaAnulacion2
+
+                            firma1.estado = "S"
+                            firma2.estado = "S"
+                        }
+                        if (!aval.save(flush: true)) {
+                            println "error save aval 2"
+                        }
+                        firma1.idAccion = aval.id
+                        firma2.idAccion = aval.id
+                        firma1.save()
+                        firma2.save()
+
+                        sol.estado = aval.estado //anulado sin firma
+                        if (!aval.save(flush: true)) {
+                            println "ERROR AVAL!!!!! " + aval.errors
+                        }
+                        sol.save(flush: true)
+
+                        def alerta1 = new Alerta()
+                        alerta1.from = usuario
+                        alerta1.persona = firma1.usuario
+                        alerta1.fechaEnvio = new Date()
+                        alerta1.mensaje = "Anulación de Aval pendiente de firma para aprobación: " + aval.concepto
+                        alerta1.controlador = "firma"
+                        alerta1.accion = "firmasPendientes"
+                        alerta1.parametros = "tab=AVAL"
+                        if (!alerta1.save(flush: true)) {
+                            println "error alerta1: " + alerta1.errors
+                        }
+                        def alerta2 = new Alerta()
+                        alerta2.from = usuario
+                        alerta2.persona = firma2.usuario
+                        alerta2.fechaEnvio = new Date()
+                        alerta2.mensaje = "Anulación de Aval pendiente de firma para aprobación: " + aval.concepto
+                        alerta2.controlador = "firma"
+                        alerta2.accion = "firmasPendientes"
+                        alerta1.parametros = "tab=AVAL"
+                        if (!alerta2.save(flush: true)) {
+                            println "error alerta2: " + alerta2.errors
+                        }
+
+                        try {
+                            def mail = aval.firma1.usuario.mail
+                            if (mail) {
+                                mailService.sendMail {
+                                    to mail
+                                    subject "Una nueva anulación de aval requiere aprobación"
+                                    body "Tiene una anulación de aval pendiente que requiere su firma para aprobación "
+                                }
+                            } else {
+                                println "El usuario ${aval.firma1.usuario.login} no tiene email"
+                                msg += "<li>El usuario ${aval.firma1.usuario.login} no tiene email</li>"
+                            }
+                            mail = aval.firma2.usuario.mail
+                            if (mail) {
+                                mailService.sendMail {
+                                    to mail
+                                    subject "Una nueva anulación de aval requiere aprobación"
+                                    body "Tiene una anulación de aval pendiente que requiere su firma para aprobación "
+                                }
+                            } else {
+                                println "El usuario ${aval.firma2.usuario.login} no tiene email"
+                                msg += "<li>El usuario ${aval.firma2.usuario.login} no tiene email</li>"
+                            }
+                        } catch (e) {
+                            println "error email " + e.printStackTrace()
+                            msg += "Ha ocurrido un error al enviar los emails."
+                        }
+                        //flash.message = "Solciitud de firmas enviada para aprobación"
+                    } else {
+                        def msn = "Usted no tiene permisos para aprobar esta solicitud de anulación"
+                        if (params.tipo) {
+                            println "CER????"
+//                            redirect(action: "listaCertificados", params: [cer: cer, id: cer.asignacion.unidad.id])
+                        } else {
+                            redirect(action: 'listaSolicitudes', params: [msn: msn])
+                        }
+                    }
+                } else {
+                    render("ERROR*Clave de autorización incorrecta")
+                    return
+                }
+            }
+        }
+        if (errores != "") {
+            def rend = errores
+            if (msg != "") {
+                rend += "<ul>" + msg + "</ul>"
+            }
+            render "ERROR*" + rend
+        } else {
+            def rend = ""
+            if (msg != "") {
+                rend += "<ul>" + msg + "</ul>"
+            }
+            if (params.enviar == "true") {
+                rend = "Datos guardados. Solicitud de firmas enviada para aprobación. " + rend
+            } else {
+                rend = "Datos guardados. " + rend
+            }
+            render "SUCCESS*" + rend
+        }
+    }
+
     /**
      * Acción que permite devolver un aval al analista de planificacion
      */
     def devolverAvalAPlanificacion() {
         def sol = SolicitudAval.get(params.id)
         sol.estado = EstadoAval.findByCodigo("D03") //devuelto al analista
+
+        def strAnulacion = sol.tipo == "A" ? "anulación de " : ""
 
         def now = new Date()
         def usu = Persona.get(session.usuario.id)
@@ -676,7 +870,7 @@ class RevisionAvalController extends Shield {
             alerta.persona = a
             alerta.fechaEnvio = now
 //            alerta.mensaje = "Devolución de aval: " + sol.concepto
-            alerta.mensaje = "Devolución de aval: " + sol.proceso.nombre
+            alerta.mensaje = "Devolución de ${strAnulacion}aval: " + sol.proceso.nombre
             alerta.controlador = "revisionAval"
             alerta.accion = "pendientes"
             if (!alerta.save(flush: true)) {
@@ -687,9 +881,9 @@ class RevisionAvalController extends Shield {
                 try {
                     mailService.sendMail {
                         to mail
-                        subject "Devolución de aval"
+                        subject "Devolución de ${strAnulacion}aval"
 //                        body "Su solicitud de aval: " + sol.concepto + " ha sido devuelta por " + usu
-                        body "Su solicitud de aval: " + sol.proceso.nombre + " ha sido devuelta por " + usu
+                        body "Su solicitud de ${strAnulacion}aval: " + sol.proceso.nombre + " ha sido devuelta por " + usu
                     }
                 } catch (e) {
                     println "error al mandar mail"
@@ -759,6 +953,65 @@ class RevisionAvalController extends Shield {
                                     to mail
                                     subject "Nuevo aval emitido"
                                     body "Se ha emitido el aval #" + aval.numeroAval
+                                }
+                            } else {
+                                println "El usuario ${usro.login} no tiene email"
+                            }
+                        }
+                    } else {
+                        println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
+                    }
+                } catch (e) {
+                    println "Error al enviar mail: ${e.printStackTrace()}"
+                }
+//            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
+            }
+            def url = g.createLink(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
+            render "${url}"
+        }
+    }
+
+    /**
+     * Acción que permite firmar electrónicamente una anulacion de Aval
+     * @params id es el identificador del aval
+     */
+    def firmarAnulacionAval = {
+        println "FIRMAR ANULACION AVAL: " + params
+        def firma = Firma.findByKey(params.key)
+        if (!firma) {
+            response.sendError(403)
+        } else {
+            def aval = Aval.findByFirmaAnulacion1OrFirmaAnulacion2(firma, firma)
+            println "AVAL ID: " + aval.id
+            if (aval.firmaAnulacion1.estado == "F" && aval.firmaAnulacion2.estado == "F") {
+                println "AMBAS FIRMAS OK: ANULA"
+                aval.fechaAnulacion = new Date()
+
+                aval.estado = EstadoAval.findByCodigo("E04") //estado anulado
+                aval.save(flush: true)
+                def sol = SolicitudAval.findByAval(aval)
+                sol.estado = aval.estado
+                sol.save(flush: true)
+                try {
+                    def perDir = Prfl.findByCodigo("DRRQ")
+                    def sesiones = []
+                    /*drrq*/
+                    Persona.findAllByUnidad(sol.unidad).each {
+                        def ses = Sesn.findAllByPerfilAndUsuario(perDir, it)
+                        if (ses.size() > 0) {
+                            sesiones += ses
+                        }
+                    }
+                    if (sesiones.size() > 0) {
+                        println "Se enviaran ${sesiones.size()} mails"
+                        sesiones.each { sesn ->
+                            Persona usro = sesn.usuario
+                            def mail = usro.mail
+                            if (mail) {
+                                mailService.sendMail {
+                                    to mail
+                                    subject "Nueva anulación de aval"
+                                    body "Se ha anulado el aval #" + aval.numeroAval
                                 }
                             } else {
                                 println "El usuario ${usro.login} no tiene email"
@@ -1194,6 +1447,9 @@ class RevisionAvalController extends Shield {
 
     def devolverARequirente_ajax() {
         def solicitud = SolicitudAval.get(params.id)
+
+        def strSolicitud = solicitud.tipo == "A" ? "solicitud de anulación" : "solicitud"
+
         def usu = Persona.get(session.usuario.id)
         if (params.auth.toString().trim().encodeAsMD5() == usu.autorizacion) {
             def msg = "<strong>Devuelto por ${usu.nombre} ${usu.apellido}:</strong> " + params.obs.trim()
@@ -1211,7 +1467,7 @@ class RevisionAvalController extends Shield {
                 alerta1.persona = solicitud.usuario
                 alerta1.fechaEnvio = new Date()
 //                alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.concepto
-                alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.proceso.nombre
+                alerta1.mensaje = "Devolución de ${solicitud} de aval: " + solicitud.proceso.nombre
                 alerta1.controlador = "revisionAval"
                 alerta1.accion = "pendientes"
                 if (!alerta1.save(flush: true)) {
@@ -1223,9 +1479,9 @@ class RevisionAvalController extends Shield {
                     try {
                         mailService.sendMail {
                             to mail
-                            subject "Devolución de aval"
+                            subject "Devolución de ${solicitud} de aval"
 //                            body "Su solicitud de aval: " + solicitud.concepto + " ha sido devuelta por " + usu
-                            body "Su solicitud de aval: " + solicitud.proceso.nombre + " ha sido devuelta por " + usu
+                            body "Su ${solicitud} de aval: " + solicitud.proceso.nombre + " ha sido devuelta por " + usu
                         }
                     } catch (e) {
                         println "error al mandar mail"
@@ -1246,6 +1502,9 @@ class RevisionAvalController extends Shield {
 
     def devolverADirectorRequirente() {
         def solicitud = SolicitudAval.get(params.id)
+
+        def strSolicitud = solicitud.tipo == "A" ? "solicitud de anulación" : "solicitud"
+
         def usu = Persona.get(session.usuario.id)
         def estadoDevueltoDirReq = EstadoAval.findByCodigo("D02")
         solicitud.estado = estadoDevueltoDirReq
@@ -1256,7 +1515,7 @@ class RevisionAvalController extends Shield {
             alerta1.persona = solicitud.director
             alerta1.fechaEnvio = new Date()
 //            alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.concepto
-            alerta1.mensaje = "Devolución de solicitud de aval: " + solicitud.proceso.nombre
+            alerta1.mensaje = "Devolución de ${strSolicitud} de aval: " + solicitud.proceso.nombre
             alerta1.controlador = "revisionAval"
             alerta1.accion = "pendientes"
             if (!alerta1.save(flush: true)) {
@@ -1267,9 +1526,9 @@ class RevisionAvalController extends Shield {
                 try {
                     mailService.sendMail {
                         to mail
-                        subject "Devolución de aval"
+                        subject "Devolución de ${strSolicitud} de aval"
 //                        body "Su solicitud de aval: " + solicitud.concepto + " ha sido devuelta por " + usu
-                        body "Su solicitud de aval: " + solicitud.proceso.nombre + " ha sido devuelta por " + usu
+                        body "Su solicitud de ${strSolicitud} de aval: " + solicitud.proceso.nombre + " ha sido devuelta por " + usu
                     }
                 } catch (e) {
                     println "error al mandar mail"
@@ -1286,6 +1545,9 @@ class RevisionAvalController extends Shield {
 
     def enviarAGerente_ajax() {
         def solicitud = SolicitudAval.get(params.id)
+
+        def strSolicitud = solicitud.tipo == "A" ? "solicitud de anulación" : "solicitud"
+
         def usu = Persona.get(session.usuario.id)
         if (params.auth.toString().trim().encodeAsMD5() == usu.autorizacion) {
             def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
@@ -1314,12 +1576,16 @@ class RevisionAvalController extends Shield {
                     firma.idAccionNegar = solicitud.id
 
                     firma.controladorVer = "reporteSolicitud"
-                    firma.accionVer = "imprimirSolicitudAval"
+                    if (solicitud.tipo == 'A') {
+                        firma.accionVer = "imprimirSolicitudAnulacionAval"
+                    } else {
+                        firma.accionVer = "imprimirSolicitudAval"
+                    }
                     firma.idAccionVer = solicitud.id
 
                     firma.tipoFirma = "AVAL"
-                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
-                    firma.concepto = "Solicitud de aval: " + solicitud.proceso.nombre
+//                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
+                    firma.concepto = "${strSolicitud.capitalize()} de aval: " + solicitud.proceso.nombre
 //                    firma.concepto = "Solicitud de aval: " + solicitud.concepto
                     if (!firma.save(flush: true)) {
                         println "error al guardar firma: " + firma.errors
@@ -1328,7 +1594,7 @@ class RevisionAvalController extends Shield {
                     }
                 } else {
                     firma.estado = "S"
-                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
+//                    firma.documento = "SolicitudDeAval_" + solicitud.proceso.nombre
                     firma.concepto = "Solicitud de aval: " + solicitud.proceso.nombre
 //                    firma.concepto = "Solicitud de aval: " + solicitud.concepto
                     if (!firma.save(flush: true)) {
@@ -1342,7 +1608,7 @@ class RevisionAvalController extends Shield {
                 alerta1.persona = personaFirma
                 alerta1.fechaEnvio = new Date()
 //                alerta1.mensaje = "Solicitud de aval: " + solicitud.concepto
-                alerta1.mensaje = "Solicitud de aval: " + solicitud.proceso.nombre
+                alerta1.mensaje = "${strSolicitud.capitalize()} de aval: " + solicitud.proceso.nombre
                 alerta1.controlador = "firma"
                 alerta1.accion = "firmasPendientes"
                 alerta1.parametros = "tab=AVAL"
@@ -1354,8 +1620,8 @@ class RevisionAvalController extends Shield {
                     try {
                         mailService.sendMail {
                             to mail
-                            subject "Un nuevo aval requiere aprobación"
-                            body "Tiene un aval pendiente que requiere su firma para aprobación "
+                            subject "Una nueva ${strSolicitud} de aval requiere aprobación"
+                            body "Tiene una ${strSolicitud} de aval pendiente que requiere su firma para aprobación "
                         }
                     } catch (e) {
                         println "error al mandar mail"
@@ -1375,6 +1641,13 @@ class RevisionAvalController extends Shield {
 
     def revisionSolicitud() {
         def solicitud = SolicitudAval.get(params.id)
+
+        def estadosOK = ["R01", "D02"]
+
+        if (!estadosOK.contains(solicitud.estado.codigo)) {
+            redirect(action: 'pendientes')
+            return
+        }
 
         def anio = Anio.findByAnio(new Date().format("yyyy"))
         def devengado = 0

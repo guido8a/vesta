@@ -535,9 +535,9 @@ class ReporteSolicitudController {
      * Acción que genera un archivo PDF de la solicitud de aval
      */
     def imprimirSolicitudAval = {
-        println "impr sol " + params
+//        println "impr sol " + params
         def solicitud = SolicitudAval.get(params.id)
-        println "solcitud " + solicitud
+//        println "solcitud " + solicitud
 
         def anio = Anio.findByAnio(new Date().format("yyyy"))
         def devengado = 0
@@ -594,9 +594,9 @@ class ReporteSolicitudController {
      * Acción que genera un archivo PDF de la negacion de la solicitud de aval
      */
     def imprimirSolicitudAnulacionAval = {
-        println "impr sol " + params
+//        println "impr sol " + params
         def solicitud = SolicitudAval.get(params.id)
-        println "solcitud " + solicitud
+//        println "solcitud " + solicitud
         return [solicitud: solicitud]
     }
 
