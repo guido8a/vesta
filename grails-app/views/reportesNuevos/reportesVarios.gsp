@@ -83,7 +83,7 @@
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="disponibilidadFuente">
-                                ** 3. Disponibilidad de recursos - Por fuente de financiamiento
+                                3. Disponibilidad de recursos - Por fuente de financiamiento
                             </a>
                         </li>
                         <li>
@@ -282,6 +282,13 @@
                     var urlPdf = null;
                     var pdfFileName = null;
                     dialogXlsPdfFuente("Reporte Programación plurianual", urlExcel, urlPdf, pdfFileName);
+                });
+
+                $("#disponibilidadFuente").click(function () {
+                    var urlExcel = "${createLink(controller: 'reportes6', action: 'disponibilidadFuenteXlsx')}";
+                    var urlPdf = "${createLink(controller: 'reportes6', action:'disponibilidadFuentePdf')}";
+                    var pdfFileName = "disponibilidad_recursos.pdf";
+                    dialogXlsPdfFuente("Reporte Disponibilidad de recursos", urlExcel, urlPdf, pdfFileName);
                 });
 
             });

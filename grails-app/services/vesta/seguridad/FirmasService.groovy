@@ -68,12 +68,16 @@ class FirmasService {
 //        if (codigosNo.contains(padre.codigo)) {
 //            gerentes = listaDirectoresUnidad(unidad)
 //        } else {
+        if (unidad.padre.codigo == '9999') {
+            gerentes = listaDirectoresUnidad(unidad)
+        } else {
             gerentes = Persona.withCriteria {
                 inList("unidad", unidades)
                 cargoPersonal {
                     ilike("descripcion", "%gerente%")
                 }
             }
+        }
 //        }
         return gerentes
     }
