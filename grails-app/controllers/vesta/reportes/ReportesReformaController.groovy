@@ -701,6 +701,7 @@ class ReportesReformaController {
                 if (!det[key]) {
                     det[key] = [:]
                     det[key].desde = [:]
+                    det[key].desde.id = detalle.id
                     det[key].desde.proyecto = detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()
                     det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                     det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
@@ -725,6 +726,7 @@ class ReportesReformaController {
                 if (!det[key]) {
                     det[key] = [:]
                     det[key].desde = [:]
+                    det[key].desde.id = detalle.id
                     det[key].desde.proyecto = detalle.componente.proyecto.toStringCompleto()
                     det[key].desde.componente = detalle.componente.marcoLogico.toStringCompleto()
                     det[key].desde.no = detalle.componente.numero

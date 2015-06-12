@@ -38,6 +38,15 @@
             </div>
         </g:if>
 
+    <!-- botones -->
+        <div class="btn-toolbar toolbar">
+            <div class="btn-group">
+                <g:link action="ajustes" class="btn btn-default btnCrear">
+                    <i class="fa fa-file-o"></i> Solicitar nuevo
+                </g:link>
+            </div>
+        </div>
+
 
         <elm:container tipo="horizontal" titulo="${elm.tipoReformaStr(tipo: "Ajuste", tipoSolicitud: "T")}">
             <div class="row">
@@ -48,13 +57,8 @@
                 </div>
 
                 <div class="col-md-2">
-                    <g:if test="${editable}">
-                        <g:select from="${[actual]}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
-                                  class="form-control input-sm required requiredCombo"/>
-                    </g:if>
-                    <g:else>
-                        ${reforma.anio.anio}
-                    </g:else>
+                    <g:select from="${[actual]}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
+                              class="form-control input-sm required requiredCombo"/>
                 </div>
 
                 <div class="col-md-1">
@@ -68,144 +72,181 @@
                 </div>
             </div>
 
-            <g:if test="${editable}">
-                <form id="frmReforma" style="margin-bottom: 10px;">
-                    <h3 class="text-info">Asignación existente</h3>
-                    <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
+            <form id="frmReforma" style="margin-bottom: 10px;">
+                <h3 class="text-info">Asignación existente</h3>
+                <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th style="width:234px;">Proyecto</th>
+                            <th style="width:234px;">Componente</th>
+                            <th style="width:234px;">Actividad</th>
+                            <th style="width:234px;">Asignación</th>
+                            <th style="width:135px;">Tipo</th>
+                            <th style="width:195px;">Monto</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="grupo">
+                                <g:select from="${proyectos}" optionKey="id" optionValue="nombre" name="proyecto" class="form-control input-sm required requiredCombo"
+                                          noSelection="['-1': 'Seleccione...']"/>
+                            </td>
+                            <td class="grupo" id="divComp">
+                            </td>
+                            <td class="grupo" id="divAct">
+                            </td>
+                            <td class="grupo" id="divAsg">
+                            </td>
+                            <td>
+                                <p>
+                                    <label for="inc">
+                                        <input id="inc" class="tipo" data-max="#maxAumento" data-lbl="Incremento" type="radio" name="tipo" value="+" checked/>
+                                        Incremento <span id="maxAumento"></span>
+                                    </label>
+                                </p>
+
+                                <p>
+                                    <label for="dec">
+                                        <input id="dec" class="tipo" data-max="#max" data-lbl="Decremento" type="radio" name="tipo" value="-"/>
+                                        Decremento <span id="max"></span>
+                                    </label>
+                                </p>
+                            </td>
+                            <td class="grupo">
+                                <div class="input-group">
+                                    <g:textField type="text" name="monto"
+                                                 class="form-control required input-sm number money"/>
+                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="#" id="btnAdd" class="btn btn-success pull-right">
+                                    <i class="fa fa-plus"></i> Agregar
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+
+            <form id="frmReforma2">
+                <h3 class="text-info">Nueva asignación</h3>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Proyecto</label>
+                    </div>
+
+                    <div class="col-md-5 grupo">
+                        <g:select from="${proyectos2}" optionKey="id" optionValue="nombre" name="proyecto_dest" id="proyectoDest" style="width:100%"
+                                  class="form-control required requiredCombo input-sm" noSelection="['-1': 'Seleccione...']"/>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label>Componente</label>
+                    </div>
+
+                    <div class="col-md-5 grupo" id="divComp_dest">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <label for="actividad_dest">Actividad</label>
+                    </div>
+
+                    <div class="col-md-5 grupo" id="divAct_dest">
+
+                    </div>
+
+                    <div class="col-md-1">
+                        <label>Partida</label>
+                    </div>
+
+                    <div class="col-md-3">
+                        <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
+                                      titulo="Busque una partida" campos="${campos}" clase="required"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Fuente</label>
+                    </div>
+
+                    <div class="col-md-2 grupo">
+                        <g:select name="fuente" from="${Fuente.list([sort: 'descripcion'])}" optionKey="id"
+                                  class="form-control required requiredCmb"/>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label>Monto a aumentar</label>
+                    </div>
+
+                    <div class="col-md-2 grupo">
+                        <div class="input-group">
+                            <g:textField type="text" name="monto_dest"
+                                         class="form-control required input-sm number money"/>
+                            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label>Máximo</label>
+                    </div>
+
+                    <div class="col-md-2" id="maxAumento2">
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <a href="#" id="btnAdd2" class="btn btn-success pull-right">
+                            <i class="fa fa-plus"></i> Agregar
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            <div id="detallesExistentes">
+                <g:each in="${detalles}" var="detalle" status="i">
+                    <g:set var="det" value="${detalle.value}"/>
+                    <g:set var="monto" value="${det.desde.dism > 0 ? det.desde.dism * -1 : det.desde.aum}"/>
+                    <table class='table table-bordered table-hover table-condensed tableReforma tableReformaExistente'>
                         <thead>
                             <tr>
-                                <th style="width:234px;">Proyecto</th>
-                                <th style="width:234px;">Componente</th>
-                                <th style="width:234px;">Actividad</th>
-                                <th style="width:234px;">Asignación</th>
-                                <th style="width:135px;">Tipo</th>
-                                <th style="width:195px;">Monto</th>
-                                <th></th>
+                                <th colspan="6">
+                                    Detalle existente ${i + 1}
+                                    <a href='' class='btn btn-danger btn-xs pull-right btnDeleteDetalle' data-id="${det.desde.id}">
+                                        <i class='fa fa-trash-o'></i>
+                                    </a>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th style="width: 200px;">Proyecto</th>
+                                <th style="width: 150px;">Componente</th>
+                                <th>Actividad</th>
+                                <th style="width: 150px;">Asignación</th>
+                                <th style="width: 100px;">Tipo</th>
+                                <th style="width: 150px;">Monto</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="grupo">
-                                    <g:select from="${proyectos}" optionKey="id" optionValue="nombre" name="proyecto" class="form-control input-sm required requiredCombo"
-                                              noSelection="['-1': 'Seleccione...']"/>
-                                </td>
-                                <td class="grupo" id="divComp">
-                                </td>
-                                <td class="grupo" id="divAct">
-                                </td>
-                                <td class="grupo" id="divAsg">
-                                </td>
-                                <td>
-                                    <p>
-                                        <label for="inc">
-                                            <input id="inc" class="tipo" data-max="#maxAumento" data-lbl="Incremento" type="radio" name="tipo" value="+" checked/>
-                                            Incremento <span id="maxAumento"></span>
-                                        </label>
-                                    </p>
-
-                                    <p>
-                                        <label for="dec">
-                                            <input id="dec" class="tipo" data-max="#max" data-lbl="Decremento" type="radio" name="tipo" value="-"/>
-                                            Decremento <span id="max"></span>
-                                        </label>
-                                    </p>
-                                </td>
-                                <td class="grupo">
-                                    <div class="input-group">
-                                        <g:textField type="text" name="monto"
-                                                     class="form-control required input-sm number money"/>
-                                        <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="#" id="btnAdd" class="btn btn-success pull-right">
-                                        <i class="fa fa-plus"></i> Agregar
-                                    </a>
-                                </td>
+                            <tr
+                                    data-monto="${monto}">
+                                <td>${det.desde.proyecto}</td>
+                                <td>${det.desde.componente}</td>
+                                <td>${det.desde.actividad}</td>
+                                <td>Monto: ${g.formatNumber(number: det.desde.inicial, type: 'currency', currencySymbol: '')}, Partida: ${det.desde.partida}</td>
+                                <td>${det.desde.dism > 0 ? "Disminución" : "Aumento"}</td>
+                                <td class="text-right"><g:formatNumber number="${Math.abs(monto)}" type="currency" currencySymbol=""/></td>
                             </tr>
                         </tbody>
                     </table>
-                </form>
 
-                <form id="frmReforma2">
-                    <h3 class="text-info">Nueva asignación</h3>
-
-                    <div class="row">
-                        <div class="col-md-1">
-                            <label>Proyecto</label>
-                        </div>
-
-                        <div class="col-md-5 grupo">
-                            <g:select from="${proyectos2}" optionKey="id" optionValue="nombre" name="proyecto_dest" id="proyectoDest" style="width:100%"
-                                      class="form-control required requiredCombo input-sm" noSelection="['-1': 'Seleccione...']"/>
-                        </div>
-
-                        <div class="col-md-1">
-                            <label>Componente</label>
-                        </div>
-
-                        <div class="col-md-5 grupo" id="divComp_dest">
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-1">
-                            <label for="actividad_dest">Actividad</label>
-                        </div>
-
-                        <div class="col-md-5 grupo" id="divAct_dest">
-
-                        </div>
-
-                        <div class="col-md-1">
-                            <label>Partida</label>
-                        </div>
-
-                        <div class="col-md-3">
-                            <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
-                                          titulo="Busque una partida" campos="${campos}" clase="required"/>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-1">
-                            <label>Fuente</label>
-                        </div>
-
-                        <div class="col-md-2 grupo">
-                            <g:select name="fuente" from="${Fuente.list([sort: 'descripcion'])}" optionKey="id"
-                                      class="form-control required requiredCmb"/>
-                        </div>
-
-                        <div class="col-md-1">
-                            <label>Monto a aumentar</label>
-                        </div>
-
-                        <div class="col-md-2 grupo">
-                            <div class="input-group">
-                                <g:textField type="text" name="monto_dest"
-                                             class="form-control required input-sm number money"/>
-                                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-1">
-                            <label>Máximo</label>
-                        </div>
-
-                        <div class="col-md-2" id="maxAumento2">
-
-                        </div>
-
-                        <div class="col-md-2">
-                            <a href="#" id="btnAdd2" class="btn btn-success pull-right">
-                                <i class="fa fa-plus"></i> Agregar
-                            </a>
-                        </div>
-                    </div>
-                </form>
-            </g:if>
+                </g:each>
+            </div>
 
             <div style="margin-top: 15px;">
                 <table class="table table-bordered table-hover table-condensed">
@@ -234,12 +275,7 @@
                 </div>
 
                 <div class="col-md-11 grupo">
-                    <g:if test="${editable}">
-                        <g:textArea name="concepto" class="form-control required" style="height: 100px;" value="${reforma?.concepto}"/>
-                    </g:if>
-                    <g:else>
-                        ${reforma.concepto}
-                    </g:else>
+                    <g:textArea name="concepto" class="form-control required" style="height: 100px;" value="${reforma?.concepto}"/>
                 </div>
             </div>
 
@@ -249,35 +285,39 @@
                 </div>
 
                 <div class="col-md-3 grupo">
-                    <g:if test="${reforma}">
+                    <g:if test="${reforma && reforma.estado.codigo == 'D03'}">
                         ${reforma.firma1.usuario}
                     </g:if>
                     <g:else>
                         <g:select from="${personas}" optionKey="id" optionValue="${{
                             it.nombre + ' ' + it.apellido
-                        }}" noSelection="['': '- Seleccione -']" name="firma1" class="form-control required input-sm"/>
+                        }}" noSelection="['': '- Seleccione -']" name="firma1" class="form-control required input-sm"
+                                  value="${reforma ? reforma.firma1?.usuarioId : ''}"/>
                     </g:else>
                 </div>
 
                 <div class="col-md-3 grupo">
-                    <g:if test="${reforma}">
+                    <g:if test="${reforma && reforma.estado.codigo == 'D03'}">
                         ${reforma.firma2.usuario}
                     </g:if>
                     <g:else>
                         <g:select from="${gerentes}" optionKey="id" optionValue="${{
                             it.nombre + ' ' + it.apellido
-                        }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"/>
+                        }}" noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"
+                                  value="${reforma ? reforma.firma2?.usuarioId : ''}"/>
                     </g:else>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <g:if test="${editable}">
-                        <a href="#" class="btn btn-success pull-right ${!reforma ? 'disabled' : ''}" id="btnSave">
-                            <i class="fa fa-floppy-o"></i> Guardar
+                <div class="col-md-4 col-md-offset-1">
+                    <div class="btn-group pull-right" role="group">
+                        <elm:linkPdfReforma reforma="${reforma}" class="btn-default" title="Previsualizar" label="true" disabledIfNull="true"/>
+                        <a href="#" id="btnGuardar" class="btn btn-info" title="Guardar y seguir editando">
+                            <i class="fa fa-save"></i> Guardar
                         </a>
-                    </g:if>
+                        <a href="#" id="btnEnviar" class="btn btn-success ${detalles.size() == 0 ? 'disabled' : ''}" title="Guardar y solicitar revisión">
+                            <i class="fa fa-save"></i> Guardar y Enviar <i class="fa fa-paper-plane-o"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </form>
@@ -287,15 +327,9 @@
 
             function addData() {
                 $(".tableReformaExistente").each(function () {
-                    var d = $(this).data();
                     var data = {
-                        origen  : {
-                            monto         : d.monto,
-                            asignacion_id : d.asignacion
-                        },
-                        destino : {
-                            fuente_id      : d.fuente,
-                            presupuesto_id : d.presupuesto
+                        origen : {
+                            monto : $(this).data("monto")
                         }
                     };
                     $(this).data(data);
@@ -532,7 +566,7 @@
                         if (res) {
                             $.ajax({
                                 type    : "POST",
-                                url     : "${createLink(action:'deleteDetalle_ajax')}",
+                                url     : "${createLink(controller:'reforma',action:'deleteDetalle_ajax')}",
                                 data    : {
                                     id : id
                                 },
@@ -690,52 +724,102 @@
                     });
                 });
 
-                $("#btnSave").click(function () {
+                $("#btnGuardar").click(function () {
+                    openLoader();
+                    var data = {};
+                    var c = 0;
+                    $(".tableReformaNueva").each(function () {
+                        var d = $(this).data();
+                        data["r" + c] = {};
+                        data["r" + c].asignacion = d.origen.asignacion_id;
+                        data["r" + c].monto = d.origen.monto;
+                        data["r" + c].tipo = d.origen.tipo_id;
+                        data["r" + c].actividad = d.origen.actividad_id;
+                        data["r" + c].partida = d.origen.partida_id;
+                        data["r" + c].fuente = d.origen.fuente_id;
+
+                        c++;
+                    });
+                    data.firma1 = $("#firma1").val();
+                    data.firma2 = $("#firma2").val();
+                    data.anio = $("#anio").val();
+                    data.concepto = $("#concepto").val();
+                    data.id = "${reforma?.id}";
+                    data.send = "N";
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(action:'saveTecho_ajax')}",
+                        data    : data,
+                        success : function (msg) {
+                            var parts = msg.split("*");
+                            log(parts[1], parts[0]);
+                            if (parts[0] == "SUCCESS") {
+                                setTimeout(function () {
+                                    location.href = "${createLink(action:'techo')}/" + parts[2];
+                                }, 2000);
+                            } else {
+                                closeLoader();
+                            }
+                        },
+                        error   : function () {
+                            log("Ha ocurrido un error interno", "error");
+                            closeLoader();
+                        }
+                    });
+                    return false;
+                });
+
+                $("#btnEnviar").click(function () {
                     if ($(this).hasClass("disabled")) {
                         bootbox.alert("Por favor seleccione al menos un grupo de asignaciones para la modificación")
                     } else {
                         if ($("#frmFirma").valid()) {
-                            openLoader();
-                            var data = {};
-                            var c = 0;
-                            $(".tableReformaNueva").each(function () {
-                                var d = $(this).data();
-                                data["r" + c] = {};
-                                data["r" + c].asignacion = d.origen.asignacion_id;
-                                data["r" + c].monto = d.origen.monto;
-                                data["r" + c].tipo = d.origen.tipo_id;
-                                data["r" + c].actividad = d.origen.actividad_id;
-                                data["r" + c].partida = d.origen.partida_id;
-                                data["r" + c].fuente = d.origen.fuente_id;
+                            bootbox.confirm("¿Está seguro de querer enviar esta solicitud de reforma?<br/>Ya no podrá modificar su contenido.",
+                                    function (res) {
+                                        if (res) {
+                                            openLoader();
+                                            var data = {};
+                                            var c = 0;
+                                            $(".tableReformaNueva").each(function () {
+                                                var d = $(this).data();
+                                                data["r" + c] = {};
+                                                data["r" + c].asignacion = d.origen.asignacion_id;
+                                                data["r" + c].monto = d.origen.monto;
+                                                data["r" + c].tipo = d.origen.tipo_id;
+                                                data["r" + c].actividad = d.origen.actividad_id;
+                                                data["r" + c].partida = d.origen.partida_id;
+                                                data["r" + c].fuente = d.origen.fuente_id;
 
-                                c++;
-                            });
-                            data.firma1 = $("#firma1").val();
-                            data.firma2 = $("#firma2").val();
-                            data.anio = $("#anio").val();
-                            data.concepto = $("#concepto").val();
-                            data.id = "${reforma?.id}";
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action:'saveTecho_ajax')}",
-                                data    : data,
-                                success : function (msg) {
-                                    var parts = msg.split("*");
-                                    log(parts[1], parts[0]);
-                                    if (parts[0] == "SUCCESS") {
-                                        setTimeout(function () {
-                                            location.href = "${createLink(action:'lista')}";
-                                        }, 2000);
-                                    } else {
-                                        closeLoader();
-                                    }
-                                },
-                                error   : function () {
-                                    log("Ha ocurrido un error interno", "error");
-                                    closeLoader();
-                                }
-                            });
-
+                                                c++;
+                                            });
+                                            data.firma1 = $("#firma1").val();
+                                            data.firma2 = $("#firma2").val();
+                                            data.anio = $("#anio").val();
+                                            data.concepto = $("#concepto").val();
+                                            data.id = "${reforma?.id}";
+                                            data.send = "S";
+                                            $.ajax({
+                                                type    : "POST",
+                                                url     : "${createLink(action:'saveTecho_ajax')}",
+                                                data    : data,
+                                                success : function (msg) {
+                                                    var parts = msg.split("*");
+                                                    log(parts[1], parts[0]);
+                                                    if (parts[0] == "SUCCESS") {
+                                                        setTimeout(function () {
+                                                            location.href = "${createLink(action:'lista')}";
+                                                        }, 2000);
+                                                    } else {
+                                                        closeLoader();
+                                                    }
+                                                },
+                                                error   : function () {
+                                                    log("Ha ocurrido un error interno", "error");
+                                                    closeLoader();
+                                                }
+                                            });
+                                        }
+                                    });
                         }
                     }
                     return false;
