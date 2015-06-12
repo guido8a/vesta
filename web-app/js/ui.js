@@ -12,39 +12,40 @@ $(function () {
 
     //hace q todos los elementos con un atributo title tengan el title bonito de qtip2
     $('[title!=""]').qtip({
-        style   : {
-            classes: 'qtip-tipsy'
+        style    : {
+            classes : 'qtip-tipsy'
         },
-        position: {
-            my: "bottom center",
-            at: "top center"
+        position : {
+            my : "bottom center",
+            at : "top center"
         }
     });
 
     //hace q los inputs q tienen maxlenght muestren la cantidad de caracteres utilizados/caracterres premitidos
     $('[maxlength]').maxlength({
-        alwaysShow       : true,
-        warningClass     : "label label-success",
-        limitReachedClass: "label label-important",
-        placement        : 'top'
+        alwaysShow        : true,
+        warningClass      : "label label-success",
+        limitReachedClass : "label label-important",
+        placement         : 'top'
     });
 
     //para los dialogs, setea los defaults
     bootbox.setDefaults({
-        locale     : "es",
-        closeButton: false,
-        show       : true
+        locale      : "es",
+        closeButton : false,
+        show        : true
     });
 
-////para el context menu deshabilita el click derecho en las paginas
-//$("html").not(".jstree").contextMenu({
-//    items  : {
-//        header : {
-//            label  : "Sin acciones",
-//            header : true
+//////para el context menu deshabilita el click derecho en las paginas
+//    $("html").contextMenu({
+//        ignore : $(".jstree"),
+//        items  : {
+//            header : {
+//                label  : "Sin acciones",
+//                header : true
+//            }
 //        }
-//    }
-//});
+//    });
 
     $(".digits").keydown(function (ev) {
         return validarInt(ev);
@@ -59,12 +60,12 @@ $(function () {
     });
 
     $(".money").inputmask({
-        alias         : 'numeric',
-        placeholder   : '0',
-        digitsOptional: false,
-        digits        : 2,
-        autoGroup     : true,
-        groupSeparator: ','
+        alias          : 'numeric',
+        placeholder    : '0',
+        digitsOptional : false,
+        digits         : 2,
+        autoGroup      : true,
+        groupSeparator : ','
     });
 
     function doSearch($btn) {

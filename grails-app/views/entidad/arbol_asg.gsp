@@ -390,6 +390,8 @@
             }
 
             function createContextMenu(node) {
+                $(".lzm-dropdown-menu").hide();
+
                 var nodeStrId = node.id;
                 var $node = $("#" + nodeStrId);
                 var nodeId = nodeStrId.split("_")[1];

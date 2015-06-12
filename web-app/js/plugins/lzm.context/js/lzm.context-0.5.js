@@ -29,6 +29,7 @@
              * Defaults to 'false', otherwise the menu is show on the top-left corner of the element.
              */
             show_at_element : false,
+            ignore          : false,
             /**
              * an object of actions, or a function that accepts a node and returns the items.
              *
@@ -103,24 +104,43 @@
         //Go through each object in the selector and create a ratings control.
         return this.each(function () {
             var element = this, $element = $(element);
+            var ignore = settings.ignore;
+            //var $ignore = $(ignore);
+            //console.log(ignore, $ignore, element, $element, $.inArray(element, ignore), $.inArray($element, $ignore));
 //            console.log($element);
             // Open context menu
             $element.on("contextmenu", function (e) {
-                if ($.isFunction(settings.onHide)) {
-                    settings.onHide.call(this, $element);
+                var elm = e.toElement;
+                var prn = $(elm).parents();
+                //console.log(elm, prn, $.inArray(elm, ignore), $.inArray(prn, ignore));
+                var ok = true;
+                if ($.inArray(elm, ignore) > 0) {
+                    ok = false;
                 }
-                $(".lzm-dropdown-menu").remove();
-                e.preventDefault();
-                e.stopPropagation();
-                var cont = true;
-                if ($.isFunction(settings.onShow)) {
-                    cont = settings.onShow.call(this, $element);
+                if (ok) {
+                    for (var ii = 0; ii < prn.length; ii++) {
+                        if ($.inArray(prn[ii], ignore) > -1) {
+                            ok = false;
+                        }
+                    }
                 }
-                if (cont || cont === undefined) {
-                    showContextMenu(e.currentTarget, e.pageX, e.pageY, e);
+                if (ok) {
+                    if ($.isFunction(settings.onHide)) {
+                        settings.onHide.call(this, $element);
+                    }
+                    $(".lzm-dropdown-menu").remove();
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var cont = true;
+                    if ($.isFunction(settings.onShow)) {
+                        cont = settings.onShow.call(this, $element);
+                    }
+                    if (cont || cont === undefined) {
+                        showContextMenu(e.currentTarget, e.pageX, e.pageY, e);
 
-                    if ($.isFunction(settings.afterShow)) {
-                        settings.afterShow.call(this, $element);
+                        if ($.isFunction(settings.afterShow)) {
+                            settings.afterShow.call(this, $element);
+                        }
                     }
                 }
                 return false;
@@ -138,7 +158,7 @@
 
         function createContextMenu(items, $element, submenu) {
             var $menu = $("<ul class='lzm-dropdown-menu dropdown-menu'>");
-            if(submenu) {
+            if (submenu) {
                 $menu.addClass("lzm-dropdown-submenu-content");
             }
             $.each(items, function (i, obj) {
