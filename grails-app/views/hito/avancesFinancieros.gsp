@@ -238,7 +238,8 @@
                                 label     : "<i class='fa fa-arrow-up'></i> Subir",
                                 className : "btn-success",
                                 callback  : function () {
-                                    return submitForm();
+//                                    return submitForm();
+                                    $("#frmUpload").submit();
                                 } //callback
                             } //guardar
                         } //buttons
