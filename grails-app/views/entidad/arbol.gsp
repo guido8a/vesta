@@ -735,6 +735,7 @@
             $(function () {
 
                 $treeContainer.on("loaded.jstree", function () {
+//                    $treeContainer.jstree('open_all');
                     $("#loading").hide();
                     $("#tree").removeClass("hidden");
                 }).on("select_node.jstree", function (node, selected, event) {
@@ -822,6 +823,8 @@
                     $treeContainer.jstree("open_all");
                     scrollToRoot();
                     return false;
+
+
                 });
 
                 $("#btnCollapseAll").click(function () {

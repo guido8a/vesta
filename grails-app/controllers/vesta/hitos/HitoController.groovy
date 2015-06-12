@@ -232,7 +232,7 @@ class HitoController {
     }
 
     def avancesFinancieros = {
-        println "params "+params
+//        println "params "+params
         def proceso = ProcesoAval.get(params.id)
         def aval = Aval.findByProceso(proceso)
         def avances=[]
