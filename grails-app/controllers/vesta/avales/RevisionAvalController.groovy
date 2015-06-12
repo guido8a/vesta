@@ -930,34 +930,35 @@ class RevisionAvalController extends Shield {
 
                 aval.estado = EstadoAval.findByCodigo("E02")
                 aval.save(flush: true)
-                def sol = SolicitudAval.findByAval(aval)
+                def sol = SolicitudAval.findByAvalAndTipoNotEqual(aval, "A")
                 sol.estado = aval.estado
                 sol.save(flush: true)
                 try {
-                    def perDir = Prfl.findByCodigo("DRRQ")
-                    def sesiones = []
-                    /*drrq*/
-                    Persona.findAllByUnidad(sol.unidad).each {
-                        def ses = Sesn.findAllByPerfilAndUsuario(perDir, it)
-                        if (ses.size() > 0) {
-                            sesiones += ses
-                        }
-                    }
-                    if (sesiones.size() > 0) {
-                        println "Se enviaran ${sesiones.size()} mails"
-                        sesiones.each { sesn ->
-                            Persona usro = sesn.usuario
-                            def mail = usro.mail
-                            if (mail) {
-                                mailService.sendMail {
-                                    to mail
-                                    subject "Nuevo aval emitido"
-                                    body "Se ha emitido el aval #" + aval.numeroAval
-                                }
-                            } else {
-                                println "El usuario ${usro.login} no tiene email"
+                    def personaMail = sol.firma.usuario
+//                    def perDir = Prfl.findByCodigo("DRRQ")
+//                    def sesiones = []
+//                    /*drrq*/
+//                    Persona.findAllByUnidad(sol.unidad).each {
+//                        def ses = Sesn.findAllByPerfilAndUsuario(perDir, it)
+//                        if (ses.size() > 0) {
+//                            sesiones += ses
+//                        }
+//                    }
+                    if (personaMail) {
+//                        println "Se enviaran ${sesiones.size()} mails"
+//                        sesiones.each { sesn ->
+//                            Persona usro = sesn.usuario
+                        def mail = personaMail.mail
+                        if (mail) {
+                            mailService.sendMail {
+                                to mail
+                                subject "Nuevo aval emitido"
+                                body "Se ha emitido el aval #" + aval.numeroAval
                             }
+                        } else {
+                            println "El usuario ${usro.login} no tiene email"
                         }
+//                        }
                     } else {
                         println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
                     }
@@ -989,34 +990,35 @@ class RevisionAvalController extends Shield {
 
                 aval.estado = EstadoAval.findByCodigo("E04") //estado anulado
                 aval.save(flush: true)
-                def sol = SolicitudAval.findByAval(aval)
+                def sol = SolicitudAval.findByAvalAndTipo(aval, "A")
                 sol.estado = aval.estado
                 sol.save(flush: true)
                 try {
-                    def perDir = Prfl.findByCodigo("DRRQ")
-                    def sesiones = []
-                    /*drrq*/
-                    Persona.findAllByUnidad(sol.unidad).each {
-                        def ses = Sesn.findAllByPerfilAndUsuario(perDir, it)
-                        if (ses.size() > 0) {
-                            sesiones += ses
-                        }
-                    }
-                    if (sesiones.size() > 0) {
-                        println "Se enviaran ${sesiones.size()} mails"
-                        sesiones.each { sesn ->
-                            Persona usro = sesn.usuario
-                            def mail = usro.mail
-                            if (mail) {
-                                mailService.sendMail {
-                                    to mail
-                                    subject "Nueva anulación de aval"
-                                    body "Se ha anulado el aval #" + aval.numeroAval
-                                }
-                            } else {
-                                println "El usuario ${usro.login} no tiene email"
+                    def personaMail = sol.firma.usuario
+//                    def perDir = Prfl.findByCodigo("DRRQ")
+//                    def sesiones = []
+//                    /*drrq*/
+//                    Persona.findAllByUnidad(sol.unidad).each {
+//                        def ses = Sesn.findAllByPerfilAndUsuario(perDir, it)
+//                        if (ses.size() > 0) {
+//                            sesiones += ses
+//                        }
+//                    }
+                    if (personaMail) {
+//                        println "Se enviaran ${sesiones.size()} mails"
+//                        sesiones.each { sesn ->
+//                            Persona usro = sesn.usuario
+                        def mail = personaMail.mail
+                        if (mail) {
+                            mailService.sendMail {
+                                to mail
+                                subject "Nueva anulación de aval"
+                                body "Se ha anulado el aval #" + aval.numeroAval
                             }
+                        } else {
+                            println "El usuario ${usro.login} no tiene email"
                         }
+//                        }
                     } else {
                         println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
                     }
