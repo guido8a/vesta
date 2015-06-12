@@ -114,7 +114,7 @@
 
                         <div class="col-md-7">
                             <g:textArea name="concepto" maxlength="1024" style="height: 80px;" class="form-control required"
-                                        required="" value="${sol.concepto}"/>
+                                        required="" value="${sol?.concepto}"/>
                         </div>
                     </span>
                 </div>

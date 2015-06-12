@@ -1383,7 +1383,7 @@ class RevisionAvalController extends Shield {
                 estados = [estadoPorRevisar, estadoDevueltoDirReq]
                 filtroDirector = Persona.get(session.usuario.id)
                 break;
-            case "ASPL":
+            case ["ASPL", "GP", "DP"]:
                 estados = [estadoSolicitado, estadoDevueltoAnPlan]
                 break;
         }

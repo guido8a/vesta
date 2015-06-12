@@ -455,14 +455,14 @@
                     bootbox.confirm("¿Está seguro de querer devolver este documento? Esta acción no puede revertirse", function (res) {
                         if (res) {
 
-                            var msg = $("<div>Ingrese su clave de autorización y las observaciones para devolver</div>");
+                            var msg = $("<div>Ingrese su clave de autorización</div>");
                             var $txt = $("<input type='password' class='form-control input-sm'/>");
 
                             var $group = $('<div class="input-group">');
                             var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
                             $group.append($txt).append($span);
 
-                            var $ta = $("<textarea class='form-control required' style='margin-top: 10px; height:100px;'>");
+                            var $ta = $("<div>Observaciones:</div><textarea class='form-control required' style='margin-top: 10px; height:100px;'>");
 
                             msg.append($group).append($ta);
 

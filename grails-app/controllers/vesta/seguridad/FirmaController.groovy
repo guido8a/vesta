@@ -210,5 +210,14 @@ class FirmaController extends Shield {
         }
     }
 
+    def firmarAvales = {
+        params.tab = 'AVAL'
+        redirect(action: 'firmasPendientes', params: params)
+    }
+
+    def firmarReformas = {
+        params.tab = 'RFRM'
+        redirect(action: 'firmasPendientes', params: params)
+    }
 
 }
