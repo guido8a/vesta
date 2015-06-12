@@ -64,6 +64,22 @@
                     }
                 });
 
+//                console.log($("html"))
+//                console.log($(".jstree"))
+//                console.log($("html").not(".jstree"))
+
+                //para el context menu deshabilita el click derecho en las paginas
+//                $("html :not(.jstree)").contextMenu({
+//                $("html").contextMenu({
+//                    items  : {
+//                        _disabled: true,
+//                            header : {
+//                            label  : "Sin acciones",
+//                            header : true
+//                        }
+//                    }
+//                });
+
             });
         </script>
 

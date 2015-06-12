@@ -645,6 +645,8 @@ class Reportes5Controller {
 
     def reporteReformasPdf () {
         def fuente = Fuente.get(params.fnt.toLong())
+        def totalInicial = 0
+        def totalFinal = 0
 
         def modificacion = ModificacionAsignacion.withCriteria {
             desde {
@@ -652,7 +654,14 @@ class Reportes5Controller {
             }
         }
 
-        return [modificacion : modificacion]
+        modificacion.each{mod->
+
+            totalInicial += (mod?.originalDestino + mod?.originalOrigen)
+            totalFinal += ((mod?.originalOrigen + mod.valor) + (mod?.originalDestino - mod?.valor))
+
+        }
+
+        return [modificacion : modificacion, totalInicial: totalInicial, totalFinal: totalFinal]
 
     }
 

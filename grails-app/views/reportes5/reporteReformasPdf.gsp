@@ -139,20 +139,31 @@
                 <td></td>
                 <td>${m?.originalOrigen+m?.valor}</td>
             </tr>
+            <tr>
+                <td>${m?.recibe?.componente?.descripcion}</td>
+                <td>${m?.recibe?.programa?.descripcion}</td>
+                <td>${m?.recibe?.marcoLogico?.numero}</td>
+                <td>${m?.recibe?.marcoLogico?.toStringCompleto()}</td>
+                <td>${m?.originalDestino}</td>
+                <td></td>
+                <td>${m?.valor}</td>
+                <td>${m?.originalDestino - m?.valor}</td>
+            </tr>
+
         </g:each>
         </tbody>
-        %{--<tfoot>--}%
-        %{--<tr>--}%
-            %{--<th>TOTAL</th>--}%
-            %{--<th></th>--}%
-            %{--<th>${totales["" + (anio.anio.toInteger() -1)] ?: 0}</th>--}%
-            %{--<th>${totales[anio.anio] ?: 0}</th>--}%
-            %{--<th>${100}</th>--}%
-            %{--<th>${totales.resta}</th>--}%
-            %{--<th>${100}</th>--}%
-
-        %{--</tr>--}%
-        %{--</tfoot>--}%
+        <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>TOTAL</th>
+            <th><g:formatNumber number="${totalInicial}" maxFractionDigits="2" minFractionDigits="2"/></th>
+            <th></th>
+            <th></th>
+            <th><g:formatNumber number="${totalFinal}" maxFractionDigits="2" minFractionDigits="2"/></th>
+        </tr>
+        </tfoot>
     </table>
 </div>
 </body>

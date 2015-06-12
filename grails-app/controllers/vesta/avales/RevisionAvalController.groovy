@@ -1100,7 +1100,8 @@ class RevisionAvalController extends Shield {
 
             } else {
                 def band = false
-                def usuario = Usro.get(session.usuario.id)
+//                def usuario = Usro.get(session.usuario.id)
+                def usuario = Persona.get(session.usuario.id)
                 def aval = Aval.get(params.id)
                 /*Todo aqui validar quien puede*/
                 band = true
@@ -1111,27 +1112,31 @@ class RevisionAvalController extends Shield {
                         println "data " + data
                         if (data.size() == 2) {
                             def det = ProcesoAsignacion.get(data[0])
-                            det.monto = data[1].toDouble()
+//                            det.monto = data[1].toDouble()
+                            det.monto = params.montoAvalado
                             det.save(flush: true)
                         }
                     }
-
-
                 }
                 if (band) {
                     f.transferTo(new File(pathFile))
                     aval.pathLiberacion = fileName
                     aval.liberacion = aval.monto
-                    aval.monto = params.monto.toDouble()
+//                    aval.monto = params.monto.toDouble()
+                    aval.monto = params.montoAvalado.toDouble()
                     aval.estado = EstadoAval.findByCodigo("E05")
                     aval.contrato = params.contrato
                     aval.certificacion = params.certificacion
                     aval.save(flush: true)
-                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numeroAval + " Liberado"
-                    redirect(action: 'listaAvales', controller: 'revisionAval')
+//                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numeroAval + " Liberado"
+//                    redirect(action: 'listaAvales', controller: 'revisionAval')
+                    render "SUCCESS*Aval liberado."
+                    return
                 } else {
-                    flash.message = "Usted no tiene permisos para liberar avales"
-                    redirect(controller: 'listaAvales', action: 'revisionAval')
+//                    flash.message = "Usted no tiene permisos para liberar avales"
+//                    redirect(controller: 'listaAvales', action: 'revisionAval')
+                    render "No*Ocurrio un error al liberar el aval."
+                    return
                 }
             }
         }

@@ -36,8 +36,8 @@ $(function () {
         show       : true
     });
 
-//para el context menu deshabilita el click derecho en las paginas
-//$("html").contextMenu({
+////para el context menu deshabilita el click derecho en las paginas
+//$("html").not(".jstree").contextMenu({
 //    items  : {
 //        header : {
 //            label  : "Sin acciones",

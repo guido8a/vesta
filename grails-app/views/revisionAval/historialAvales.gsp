@@ -68,9 +68,12 @@
                     setTimeout(function () {
                         if (parts[0] == "SUCCESS") {
                             location.reload(true);
+                            closeLoader();
                         } else {
+                            closeLoader();
                             spinner.replaceWith($btn);
                             return false;
+
                         }
                     }, 1000);
                 }
@@ -108,6 +111,7 @@
                             className : "btn-success",
                             callback  : function () {
                                 return submitForm();
+                                closeLoader();
 
                             } //callback
                         } //guardar

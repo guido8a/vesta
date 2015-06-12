@@ -83,7 +83,7 @@
                         <g:formatNumber number="${asg.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
                     </td>
                     <td style="text-align: right">
-                        <input type="text" class="form-control input-sm required det_${asg.id} detalle decimal" iden="${asg.id}"
+                        <input type="text" class="form-control input-sm required det_${asg.id} detalle decimal" iden="${asg.id}" name="montoAvalado"
                                value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}"
                                style="width: 100px;text-align: right" max="${asg.monto}">
                     </td>
@@ -171,7 +171,7 @@
         $("#datos").val("");
         $(".detalle").each(function () {
             var monto = $(this).val();
-            console.log("monto " + monto)
+//            console.log("monto " + monto)
             monto = monto.replace(new RegExp(",", 'g'), ".");
             var max = $(this).attr("max");
             if (monto == "")
