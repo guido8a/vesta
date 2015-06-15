@@ -57,7 +57,7 @@
 <script type="text/javascript">
 
     $("#tblPermisos").fixedHeaderTable({
-        height    : 263,
+        height    : 460,
         autoResize: true,
         footer    : true
     });
