@@ -30,12 +30,6 @@
                     <i class="fa fa-close"></i> Borrar búsqueda
                 </g:link>
             </div><!-- /input-group -->
-
-            <div class="btn-group">
-                <g:link controller="reportes6" action="aprobarProyectoXlsx" class="btn btn-sm btn-default">
-                    <i class="fa fa-file-excel-o text-success"></i> Exportar a Excel
-                </g:link>
-            </div>
         </div>
 
         <table class="table table-bordered table-condensed table-hover table-striped">

@@ -205,14 +205,18 @@ class Reportes6Controller {
     }
 
     def aprobarProyectoXlsx() {
-        def anio = Anio.findByAnio(new Date().format("yyyy"))
-
+        def anioId = params.id
+        def anio
+        if (anioId) {
+            anio = Anio.get(anioId.toLong())
+        } else {
+            anio = Anio.findByAnio(new Date().format("yyyy"))
+        }
         def datos = aprobarProyecto_funcion(anio)
         def data = datos.data
         def anios = datos.anios
         def meses = datos.meses
         def totales = datos.totales
-
 
         def iniRow = 0
         def iniCol = 1
@@ -676,7 +680,7 @@ class Reportes6Controller {
             cellFooter.setCellStyle(styleFooter)
 
             def output = response.getOutputStream()
-            def header = "attachment; filename=" + "asignaciones_proyecto.xlsx"
+            def header = "attachment; filename=" + "asignaciones_proyecto_${anio.anio}.xlsx"
             response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response.setHeader("Content-Disposition", header)
             wb.write(output)
