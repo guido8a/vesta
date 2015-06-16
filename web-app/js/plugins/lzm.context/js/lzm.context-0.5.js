@@ -110,20 +110,29 @@
 //            console.log($element);
             // Open context menu
             $element.on("contextmenu", function (e) {
-                var elm = e.toElement;
+                var elm = e.target;
                 var prn = $(elm).parents();
-                //console.log(elm, prn, $.inArray(elm, ignore), $.inArray(prn, ignore));
+                //console.log(e);
+                //console.log(e.target);
+                //console.log("elm", elm);
+                //console.log("prn", prn);
+                //console.log("elm,ignore", $.inArray(elm, ignore));
+                //console.log("prn,ignore", $.inArray(prn, ignore));
                 var ok = true;
                 if ($.inArray(elm, ignore) > 0) {
                     ok = false;
                 }
+                //console.log("OK?", ok);
                 if (ok) {
                     for (var ii = 0; ii < prn.length; ii++) {
+                        //console.log("prn[ii],ignore", $.inArray(prn[ii], ignore));
                         if ($.inArray(prn[ii], ignore) > -1) {
                             ok = false;
                         }
                     }
                 }
+                //console.log("OK?", ok);
+                //console.log("*********************************************************************");
                 if (ok) {
                     if ($.isFunction(settings.onHide)) {
                         settings.onHide.call(this, $element);
