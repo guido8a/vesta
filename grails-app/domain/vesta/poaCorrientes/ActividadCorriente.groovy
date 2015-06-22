@@ -1,24 +1,31 @@
 package vesta.poaCorrientes
 
-class Actividad {
+import vesta.parametros.poaPac.Anio
+
+class ActividadCorriente {
 
     MacroActividad macroActividad
+    Anio anio
     String descripcion
+    String meta
 
     static mapping = {
-        table 'actv'
+        table 'accr'
         cache usage: 'read-write', include: 'non-lazy'
-        id column: 'actv__id'
+        id column: 'accr__id'
         id generator: 'identity'
         version false
         columns {
             macroActividad column: 'mcac__id'
-            descripcion column: 'actvdscr'
+            anio column: "anio__id"
+            descripcion column: 'accrdscr'
+            meta column: "accrmeta"
         }
     }
 
     static constraints = {
-        descripcion maxSize: 511
+        descripcion maxSize: 255
+        meta maxSize: 255
     }
 
     String toString() {

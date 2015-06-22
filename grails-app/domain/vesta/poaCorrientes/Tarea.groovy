@@ -2,7 +2,7 @@ package vesta.poaCorrientes
 
 class Tarea {
 
-    Actividad Actividad
+    ActividadCorriente actividad
     String descripcion
 
     static mapping = {
@@ -12,7 +12,7 @@ class Tarea {
         id generator: 'identity'
         version false
         columns {
-            actividad column: 'actv__id'
+            actividad column: 'accr__id'
             descripcion column: 'treadscr'
         }
     }
