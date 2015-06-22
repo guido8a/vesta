@@ -8,6 +8,7 @@ import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.parametros.poaPac.ProgramaPresupuestario
+import vesta.poaCorrientes.Tarea
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.ModificacionAsignacion
 
@@ -85,6 +86,11 @@ class Asignacion {
     Double priorizadoOriginal = 0
 
     /**
+     * Tarea para el poa corrientes
+     */
+    Tarea tarea
+
+    /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
     static auditable = [ignore: []]
@@ -117,6 +123,8 @@ class Asignacion {
             indicador column: 'asgnindi'
             priorizado column: 'asgnprio'
             priorizadoOriginal column: 'asgnpror'
+
+            tarea column: 'trea__id'
         }
     }
 
@@ -138,6 +146,8 @@ class Asignacion {
         programa(nullable: true, blank: true)
         meta(nullable: true, blank: true, size: 1..255)
         indicador(nullable: true, blank: true, size: 1..255)
+
+        tarea(nullable: true, blank: true)
     }
 
     /**
