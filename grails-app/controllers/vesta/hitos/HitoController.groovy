@@ -134,6 +134,7 @@ class HitoController {
 //        new File(path).mkdirs()
         def f = request.getFile('file')
 
+        println("file " + f.getOriginalFilename())
 
         WorkbookSettings ws = new WorkbookSettings();
         ws.setEncoding("ISO-8859-1");
@@ -160,6 +161,8 @@ class HitoController {
                     ext = obj
                 }
             }
+
+            println("ext " + ext)
 
             if(ext == 'xls'){
 
@@ -211,16 +214,18 @@ class HitoController {
                 return
 
             }else{
+                println("entro en error")
                 flash.message = 'El archivo a cargar debe ser del tipo EXCEL con extensión XLS.'
                 flash.estado = "error"
                 flash.icon = "alert"
-                redirect(action: 'cargarExcelHitos')
+
+                redirect(action: 'cargarExcelHitos', params: [msg: "Error"])
                 return
             }
 
 
         }else{
-            flash.message = 'No se ha seleccionado ningun archivo para cargar'
+             flash.message = 'No se ha seleccionado ningun archivo para cargar'
             flash.estado = "error"
             flash.icon = "alert"
             redirect(action: 'cargarExcelHitos')

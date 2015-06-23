@@ -107,7 +107,7 @@ class Aval {
             memo column: 'avalmemo'
             path column: 'avalpath'
             pathLiberacion column: 'avalphlb'
-            pathLiberacion column: 'avalphan'
+            pathAnulacion column: 'avalphan'
             contrato column: 'avalcntr'
             numero column: 'avalnmro'
             concepto column: 'avalcpto'

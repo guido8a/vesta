@@ -267,7 +267,7 @@
                     var urlExcel = "${createLink(controller: 'reportes4', action: 'proformaEgresosNoPermanentesXlsx')}";
                     var urlPdf = null;
                     var pdfFileName = null;
-                    dialogXlsPdfFuente("Reporte POA por grupo de gasto", urlExcel, urlPdf, pdfFileName);
+                    dialogXlsPdfFuente("Reporte proforma de egresos no permanentes", urlExcel, urlPdf, pdfFileName);
                 });
 
                 $("#poa").click(function () {

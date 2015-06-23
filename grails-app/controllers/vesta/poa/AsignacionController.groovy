@@ -9,6 +9,11 @@ import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Mes
 import vesta.parametros.poaPac.Presupuesto
+import vesta.parametros.poaPac.ProgramaPresupuestario
+import vesta.poaCorrientes.ActividadCorriente
+import vesta.poaCorrientes.MacroActividad
+import vesta.poaCorrientes.ObjetivoGastoCorriente
+import vesta.poaCorrientes.Tarea
 import vesta.proyectos.Cronograma
 import vesta.proyectos.Financiamiento
 import vesta.proyectos.MarcoLogico
@@ -1113,5 +1118,161 @@ class AsignacionController extends Shield {
         }
     }
 
+    def asignacionesCorrientesv2 = {
+
+        println("params ac " + params)
+
+        def band = true
+
+        if (!session.unidad) {
+            redirect(controller: 'login', action: 'logout')
+        }
+
+//        if (params.id.toLong() != session.unidad.id.toLong()) {
+//            band = false
+//        }
+        if (session.perfil.id.toLong() == 1.toLong()) {
+            band = true
+        }
+        if (!band) {
+            response.sendError(404)
+        } else {
+
+            def unidad = UnidadEjecutora.get(params.id)
+            def fuentes = Fuente.list([sort: 'descripcion'])
+            def programas = ProgramaPresupuestario.list()
+            programas = programas.sort { it.codigo.toInteger() }
+            def actual, programa
+            def componentes = Componente.list([sort: 'descripcion'])
+//            def componente
+            if (params.anio) {
+                actual = Anio.get(params.anio)
+            } else {
+                actual = Anio.findByAnio(new Date().format("yyyy"))
+            }
+
+
+            if (params.programa) {
+                programa = ProgramaPresupuestario.get(params.programa)
+            }
+            if (params.componente)
+                componente = Componente.get(params.componente)
+
+            if (!actual) {
+                actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+            }
+            if (!programa) {
+                programa = programas[0]
+            }
+//        def asignaciones = Asignacion.findAll("from Asignacion where anio=${actual.id} and unidad=${unidad.id} and marcoLogico is null and actividad is not null order by id")
+
+            def c = Asignacion.createCriteria()
+
+            def asignaciones = c.list {
+                and {
+                    eq("anio", actual)
+                    eq("unidad", unidad)
+                    eq("programa", programa)
+                    isNull("marcoLogico")
+                }
+                order("id", "asc")
+            }
+
+            c = Asignacion.createCriteria()
+            def asgs = c.list {
+                and {
+                    eq("anio", actual)
+                    eq("unidad", unidad)
+                    isNull("marcoLogico")
+                }
+                order("id", "asc")
+            }
+
+            if (params.todo == "1") {
+                asignaciones = asgs
+            }
+
+            def total = 0
+            asgs.each { asg ->
+//                total += ((asg.redistribucion == 0) ? asg.planificado.toDouble() : asg.redistribucion.toDouble())
+                total += 0
+            }
+
+            def maxUnidad
+            def max
+            if (PresupuestoUnidad.findByUnidadAndAnio(unidad, actual)) {
+                max = PresupuestoUnidad.findByUnidadAndAnio(unidad, actual)
+                maxUnidad = max.maxCorrientes
+            } else {
+                maxUnidad = 0
+            }
+
+
+//            def anio = Anio.get(params.anio)
+//
+//            def actividades = ActividadCorriente.findAllByAnio(anio)
+//
+//            List<ObjetivoGastoCorriente> objetivos = []
+//
+//            actividades.each {
+//                objetivos += it.macroActividad.objetivoGastoCorriente
+//            }
+//
+//
+//            println("objetivos " + objetivos)
+
+            def objetivos = ObjetivoGastoCorriente.list()
+
+
+            //cargar los detalles para el anio 'actual'
+            def detalles
+
+            return  [unidad: unidad, actual: actual, asignaciones: asignaciones, fuentes: fuentes, programas: programas, detalles:detalles,
+                     programa: programa, totalUnidad: total, maxUnidad: maxUnidad, componentes: componentes, max: max, objetivos: objetivos]
+        }
+    }
+
+    def macro_ajax () {
+
+        println("paranms ma " + params)
+
+        def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+
+        def macroActividades = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+
+        println("ma " + macroActividades)
+
+        return [macro: macroActividades]
+
+    }
+
+    def actividad_ajax () {
+
+        def anio = Anio.get(params.anio)
+
+        def macro = MacroActividad.get(params.id)
+
+        def actividades = ActividadCorriente.findAllByAnioAndMacroActividad(anio, macro)
+
+        return [actividades: actividades]
+    }
+
+    def tarea_ajax () {
+
+        def actvidad = ActividadCorriente.get(params.id)
+
+        def tareas = Tarea.findAllByActividad(actvidad)
+
+        return [tareas : tareas]
+    }
+
+    def asignacion_ajax () {
+
+        def tarea = Tarea.get(params.id)
+
+        def asignaciones = Asignacion.findAllByTarea(tarea)
+
+        return [asignaciones : asignaciones]
+    }
 
 }
