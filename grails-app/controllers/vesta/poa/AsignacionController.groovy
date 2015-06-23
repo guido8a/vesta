@@ -1233,6 +1233,9 @@ class AsignacionController extends Shield {
     }
 
     def macro_ajax () {
+        if(!params.mod) {
+            params.mod = ""
+        }
 
         println("paranms ma " + params)
 
@@ -1242,37 +1245,45 @@ class AsignacionController extends Shield {
 
         println("ma " + macroActividades)
 
-        return [macro: macroActividades]
+        return [macro: macroActividades, params:params]
 
     }
 
     def actividad_ajax () {
-
+        if(!params.mod) {
+            params.mod = ""
+        }
         def anio = Anio.get(params.anio)
 
         def macro = MacroActividad.get(params.id)
 
         def actividades = ActividadCorriente.findAllByAnioAndMacroActividad(anio, macro)
 
-        return [actividades: actividades]
+        return [actividades: actividades, params: params]
     }
 
     def tarea_ajax () {
+        if(!params.mod) {
+            params.mod = ""
+        }
 
         def actvidad = ActividadCorriente.get(params.id)
 
         def tareas = Tarea.findAllByActividad(actvidad)
 
-        return [tareas : tareas]
+        return [tareas : tareas, params: params]
     }
 
     def asignacion_ajax () {
+        if(!params.mod) {
+            params.mod = ""
+        }
 
         def tarea = Tarea.get(params.id)
 
         def asignaciones = Asignacion.findAllByTarea(tarea)
 
-        return [asignaciones : asignaciones]
+        return [asignaciones : asignaciones, params: params]
     }
 
 }

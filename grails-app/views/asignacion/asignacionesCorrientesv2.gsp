@@ -40,7 +40,8 @@
             <tr>
                 <th>Objetivo gasto corriente</th>
                 <th>Macro Actividad</th>
-                %{--<th>Actividad gasto corriente</th>--}%
+                <th>Actividad gasto corriente</th>
+                <th>Tarea</th>
             </tr>
 
             <tr>
@@ -371,6 +372,9 @@
             },
             success : function (msg) {
                 $("#tdMacro").html(msg);
+                $("#tdActividad").html("");
+                $("#tdTarea").html("");
+
             }
         });
     });

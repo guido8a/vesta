@@ -5,22 +5,23 @@
   Time: 03:30 PM
 --%>
 
-<g:select from="${macro}" optionValue="descripcion" optionKey="id" id="mac" name="mac_name" noSelection="['-1': 'Seleccione...']"
+<g:select from="${macro}" optionValue="descripcion" optionKey="id" id="mac${params.mod}" name="mac_name${params.mod}" noSelection="['-1': 'Seleccione...']"
           style="width: 100%" class="form-control input-sm"/>
 
 <script>
-    $("#mac").change(function () {
-        $("#tdActividad").html(spinner);
+    $("#mac${params.mod}").change(function () {
+        $("#tdActividad${params.mod}").html(spinner);
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'actividad_ajax',controller: 'asignacion')}",
             data    : {
                 id   : $(this).val(),
-                anio : $("#anio").val()
+                anio : $("#anio").val(),
+                mod: "${params.mod}"
             },
             success : function (msg) {
-                $("#tdActividad").html(msg);
-                $("#tdTarea").html("");
+                $("#tdActividad${params.mod}").html(msg);
+                $("#tdTarea${params.mod}").html("");
             }
         });
     })

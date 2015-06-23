@@ -8,7 +8,7 @@ class Tarea {
     static mapping = {
         table 'trea'
         cache usage: 'read-write', include: 'non-lazy'
-        id column: 'actv__id'
+        id column: 'trea__id'
         id generator: 'identity'
         version false
         columns {
