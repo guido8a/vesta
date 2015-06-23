@@ -5,7 +5,7 @@
   Time: 12:03 PM
 --%>
 
-<g:select from="${actividades}" optionValue="descripcion" optionKey="id" id="act${params.mod}" name="act_name${params.mod}" noSelection="['-1': 'Seleccione...']"
+<g:select from="${actividades}" optionValue="descripcion" optionKey="id" name="act${params.mod}" noSelection="['-1': 'Seleccione...']"
           style="width: 100%" class="form-control input-sm"/>
 
 <script>
@@ -21,6 +21,7 @@
             success : function (msg) {
                 $("#tdTarea${params.mod}").html(msg);
                 $("#tdAsignacion${params.mod}").html("");
+                $("#max${params.mod}").html("");
             }
         });
     })

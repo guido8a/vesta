@@ -5,7 +5,7 @@
   Time: 12:06 PM
 --%>
 
-<g:select from="${tareas}" optionValue="descripcion" optionKey="id" id="tar${params.mod}" name="tar_name${params.mod}" noSelection="['-1': 'Seleccione...']"
+<g:select from="${tareas}" optionValue="descripcion" optionKey="id" name="tar${params.mod}" noSelection="['-1': 'Seleccione...']"
           style="width: 100%" class="form-control input-sm"/>
 
 <script>
@@ -15,11 +15,12 @@
             type    : "POST",
             url     : "${createLink(action:'asignacion_ajax',controller: 'asignacion')}",
             data    : {
-                id   : $(this).val(),
-                mod:"${params.mod}"
+                id  : $(this).val(),
+                mod : "${params.mod}"
             },
             success : function (msg) {
                 $("#tdAsignacion${params.mod}").html(msg);
+                $("#max${params.mod}").html("");
             }
         });
     })

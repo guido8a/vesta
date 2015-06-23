@@ -5,7 +5,7 @@
   Time: 03:30 PM
 --%>
 
-<g:select from="${macro}" optionValue="descripcion" optionKey="id" id="mac${params.mod}" name="mac_name${params.mod}" noSelection="['-1': 'Seleccione...']"
+<g:select from="${macro}" optionValue="descripcion" optionKey="id" name="mac${params.mod}" noSelection="['-1': 'Seleccione...']"
           style="width: 100%" class="form-control input-sm"/>
 
 <script>
@@ -22,6 +22,8 @@
             success : function (msg) {
                 $("#tdActividad${params.mod}").html(msg);
                 $("#tdTarea${params.mod}").html("");
+                $("#tdAsignacion${params.mod}").html("");
+                $("#max${params.mod}").html("");
             }
         });
     })

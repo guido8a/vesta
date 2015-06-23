@@ -10,7 +10,7 @@
     <head>
         <meta name="layout" content="reportesReformaSolicitud"/>
         <title>
-            ${reforma.tipo == 'R' ? 'Solicitud de reforma' : 'Ajuste'} al POA
+            ${reforma.tituloSolicitud}
         </title>
     </head>
 

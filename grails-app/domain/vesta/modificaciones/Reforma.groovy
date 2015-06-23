@@ -44,7 +44,7 @@ class Reforma {
      */
     Date fechaRevision
     /**
-     * Tipo de reforma: A:ajuste, R:reforma. No existe Ajuste por incremento
+     * Tipo de reforma: A:ajuste, R:reforma, C:ajuste corriente
      */
     String tipo
     /**
@@ -131,4 +131,13 @@ class Reforma {
         director nullable: true
         observacionesDirector blank: true, nullable: true
     }
+
+    String getTituloSolicitud() {
+        return (this.tipo == 'R' ? 'Solicitud de reforma' : 'Ajuste') + " al POA" + (this.tipo == 'C' ? ' corriente' : '')
+    }
+
+    String getTituloReforma() {
+        return (this.tipo == 'R' ? 'Reforma' : 'Ajuste') + " al POA" + (this.tipo == 'C' ? ' corriente' : '')
+    }
+
 }

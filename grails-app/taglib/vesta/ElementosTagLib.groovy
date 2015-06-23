@@ -920,7 +920,7 @@ class ElementosTagLib {
         if (!reforma) {
             out << "ERROR"
         } else {
-            out << tipoReformaStr(tipo: reforma.tipo == 'R' ? 'Reforma' : 'Ajuste', tipoSolicitud: reforma.tipoSolicitud)
+            out << tipoReformaStr(tipo: reforma.tituloReforma, tipoSolicitud: reforma.tipoSolicitud)
         }
     }
 
@@ -1004,10 +1004,14 @@ class ElementosTagLib {
                     title2 = "Reforma"
                     clase2 = "btn-success"
                 }
-                if (reforma?.tipo == "A") {
-                    fileName = "ajuste_" + fileName + "_solicitud"
-                } else {
+                if (reforma?.tipo == "R") {
                     fileName = "reforma_" + fileName + "_solicitud"
+                } else {
+                    if (reforma?.tipo == "C") {
+                        fileName = "ajuste_" + fileName + "_solicitud_corriente"
+                    } else {
+                        fileName = "ajuste_" + fileName + "_solicitud"
+                    }
                 }
                 title = "Solicitud"
                 clase = "btn-info"
@@ -1107,6 +1111,8 @@ class ElementosTagLib {
                     }
                     if (reforma.tipo == "A") {
                         controlador = "ajuste"
+                    } else if (reforma.tipo == "C") {
+                        controlador = "ajusteCorriente"
                     } else if (reforma.tipo == "R") {
                         controlador = "reforma"
                     }

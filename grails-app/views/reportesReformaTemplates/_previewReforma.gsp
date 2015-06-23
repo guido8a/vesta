@@ -1,4 +1,4 @@
-<rep:headerFooter title="${reforma.tipo == 'R' ? 'REFORMA' : 'AJUSTE'} AL POA"
+<rep:headerFooter title="${reforma.tituloReforma.toUpperCase()}"
                   form="GPE-DPI-003"
                   unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.gerencia.codigo}"
                   numero="${reforma.numeroReforma}" estilo="right"/>
@@ -19,7 +19,7 @@
                 </g:else>
             </li>
             <li>
-                <strong>Matriz de la ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>
+                <strong>Matriz de la ${reforma.tituloReforma.toLowerCase()}:</strong>
                 <g:render template="/reportesReformaTemplates/tablaSolicitud"
                           model="[det: det, tipo: tipo]"/>
             </li>
