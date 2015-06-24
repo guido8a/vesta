@@ -65,6 +65,87 @@ class AjusteController extends Shield {
     }
 
     /**
+     * Acción que muestra la lista de las reformas solicitadas para q un analista de planificación apruebe y pida firmas o niegue
+     */
+    def pendientes() {
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estadoDevueltoAnPlan = EstadoAval.findByCodigo("D03")
+
+        def estados = []
+        def perfil = session.perfil.codigo.toString()
+        def unidades
+        unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+
+        def filtroDirector = null,
+            filtroPersona = null
+
+        switch (perfil) {
+            case "ASPL":
+                estados = [estadoPendiente, estadoDevueltoAnPlan]
+                break;
+        }
+
+        def reformas = Reforma.withCriteria {
+            eq("tipo", "A")
+            if (estados.size() > 0) {
+                inList("estado", estados)
+            }
+            if (unidades.size() > 0) {
+                persona {
+                    inList("unidad", unidades)
+                }
+            }
+            if (filtroPersona) {
+                eq("persona", filtroPersona)
+            }
+            if (filtroDirector) {
+                eq("director", filtroDirector)
+            }
+        }
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def unidadesList
+
+        def uns = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+        unidadesList = Asignacion.withCriteria {
+            inList("unidad", uns)
+            projections {
+                distinct("unidad")
+            }
+        }
+
+        unidadesList = unidadesList.sort { it.nombre }
+
+        return [reformas: reformas, actual: actual, unidades: unidadesList]
+    }
+
+    /**
+     * Acción llamada con ajax que muestra un historial de reformas solicitadas
+     */
+    def historial_ajax() {
+        def tipo = 'A'
+        def estados = EstadoAval.list()
+        def reformas
+        def perfil = session.perfil.codigo.toString()
+        def unidades
+        unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+        reformas = Reforma.withCriteria {
+            eq("tipo", tipo)
+            inList("estado", estados)
+            persona {
+                inList("unidad", unidades)
+            }
+            order("fecha", "desc")
+        }
+        return [reformas: reformas]
+    }
+
+    /**
      * Acción que permite realizar una solicitud de reforma a asignaciones existentes
      */
     def existente() {
@@ -1232,7 +1313,7 @@ class AjusteController extends Shield {
         def usu = Persona.get(session.usuario.id)
 
         def reforma = Reforma.get(params.id)
-        reforma.estado = EstadoAval.findByCodigo("D02") //devuelto al analista
+        reforma.estado = EstadoAval.findByCodigo("D03") //devuelto al analista
         reforma.save(flush: true)
 
         reforma.firma1.estado = "N"

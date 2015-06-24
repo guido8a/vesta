@@ -475,6 +475,7 @@ class ReformaController extends Shield {
         }
 
         def reformas = Reforma.withCriteria {
+            eq("tipo", "R")
             if (estados.size() > 0) {
                 inList("estado", estados)
             }

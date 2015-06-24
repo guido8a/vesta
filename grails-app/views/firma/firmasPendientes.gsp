@@ -48,81 +48,14 @@
                     <a href="#AJST" class="" role="tab" data-toggle="tab">Firmas solicitud de ajuste</a>
                 </li>
                 <li role="presentation">
+                    <a href="#AJSC" class="" role="tab" data-toggle="tab">Firmas solicitud de ajuste corriente</a>
+                </li>
+                <li role="presentation">
                     <a href="#HIST" class="" role="tab" data-toggle="tab">Historial</a>
                 </li>
             </ul>
 
             <div class="tab-content">
-                %{--<div role="tabpanel" class="tab-pane fade in active" id="NULL">--}%
-                %{--<g:if test="${firmas.size() > 0}">--}%
-                %{--<table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">--}%
-                %{--<thead>--}%
-                %{--<tr>--}%
-                %{--<th>Concepto</th>--}%
-                %{--<th>Documento</th>--}%
-                %{--<th style="width: 250px;">Acciones</th>--}%
-                %{--<th>Firmar</th>--}%
-                %{--</tr>--}%
-                %{--</thead>--}%
-                %{--<tbody>--}%
-                %{--<g:each in="${firmas}" var="f">--}%
-                %{--<tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">--}%
-                %{--<td>${f.concepto}</td>--}%
-                %{--<td>${f.documento}</td>--}%
-
-                %{--<td style="text-align: center">--}%
-                %{--<div class="btn-group btn-group-sm" role="group">--}%
-                %{--<g:if test="${f.accionVer}">--}%
-                %{--<g:if test="${f.esPdf != 'N'}">--}%
-                %{--<g:if test="${f.esPdf == 'S'}">--}%
-                %{--<a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"--}%
-                %{--target="_blank" class="btn btn-info" title="Ver">--}%
-                %{--<i class="fa fa-search"></i>--}%
-                %{--</a>--}%
-                %{--</g:if>--}%
-                %{--<g:else>--}%
-                %{--<a href="${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"--}%
-                %{--class="btn btn-info" title="Ver">--}%
-                %{--<i class="fa fa-search"></i>--}%
-                %{--</a>--}%
-                %{--</g:else>--}%
-                %{--</g:if>--}%
-                %{--<a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">--}%
-                %{--${imgFirma}--}%
-                %{--</a>--}%
-                %{--<a href="#" class="negar btn btn-danger" title="Negar">--}%
-                %{--<i class="fa fa-thumbs-down"></i>--}%
-                %{--</a>--}%
-                %{--<g:if test="${f.tipoFirma == 'RFRM' || f.tipoFirma == 'AJST'}">--}%
-                %{--<g:if test="${f.tipoFirma && f.tipoFirma != ''}">--}%
-                %{--<a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">--}%
-                %{--<i class="fa fa-thumbs-down"></i>--}%
-                %{--</a>--}%
-                %{--</g:if>--}%
-                %{--<g:else>--}%
-                %{--<a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">--}%
-                %{--<i class="fa fa-thumbs-down"></i>--}%
-                %{--</a>--}%
-                %{--</g:else>--}%
-                %{--</div>--}%
-                %{--</g:else>--}%
-                %{--</g:if>--}%
-                %{--<a href="#" iden="${f.id}" class="aprobar btn btn-success" style="margin: 5px">--}%
-                %{--<i class="fa fa-pencil"></i> Firmar--}%
-                %{--</a>--}%
-                %{--<a href="#" iden="${f.id}" class="devolver btn btn-danger">--}%
-                %{--<i class="fa fa-thumbs-down"></i> Devolver--}%
-                %{--</a>--}%
-                %{--</td>--}%
-                %{--</tr>--}%
-                %{--</g:each>--}%
-                %{--</tbody>--}%
-                %{--</table>--}%
-                %{--</g:if>--}%
-                %{--<g:else>--}%
-                %{--<div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen firmas pendientes</div>--}%
-                %{--</g:else>--}%
-                %{--</div>--}%
 
                 <div role="tabpanel" class="tab-pane fade" id="AVAL">
                     <g:if test="${firmasAvales.size() > 0}">
@@ -245,6 +178,61 @@
                             </thead>
                             <tbody>
                                 <g:each in="${firmasAjustes}" var="f">
+                                    <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
+                                        <td>${f.concepto}</td>
+                                        <td style="text-align: center">
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <g:if test="${f.accionVer}">
+                                                %{--<g:if test="${f.esPdf != 'N'}">--}%
+                                                    <g:if test="${f.esPdf == 'S'}">
+                                                        <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
+                                                           target="_blank" class="btn btn-info" title="Ver">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </g:if>
+                                                    <g:else>
+                                                        <a href="${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
+                                                           class="btn btn-info" title="Ver">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </g:else>
+                                                </g:if>
+                                                <a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">
+                                                    ${imgFirma}
+                                                </a>
+                                                <g:if test="${f.tipoFirma && f.tipoFirma != ''}">
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
+                                                        <i class="fa fa-thumbs-down"></i>
+                                                    </a>
+                                                </g:if>
+                                                <g:else>
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
+                                                        <i class="fa fa-thumbs-down"></i>
+                                                    </a>
+                                                </g:else>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </g:each>
+                            </tbody>
+                        </table>
+                    </g:if>
+                    <g:else>
+                        <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen firmas de ajustes pendientes</div>
+                    </g:else>
+                </div>
+
+                <div role="tabpanel" class="tab-pane fade" id="AJSC">
+                    <g:if test="${firmasAjustesCorrientes.size() > 0}">
+                        <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th style="width: 250px;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <g:each in="${firmasAjustesCorrientes}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         <td>${f.concepto}</td>
                                         <td style="text-align: center">
@@ -462,9 +450,10 @@
                             var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
                             $group.append($txt).append($span);
 
-                            var $ta = $("<div>Observaciones:</div><textarea class='form-control required' style='margin-top: 10px; height:100px;'>");
+                            var msg2 = $("<div>Observaciones:</div>");
+                            var $ta = $("<textarea class='form-control required' style='margin-top: 10px; height:100px;'>");
 
-                            msg.append($group).append($ta);
+                            msg.append($group).append(msg2).append($ta);
 
                             var bAuth = bootbox.dialog({
                                 title   : "Autorización electrónica",
@@ -481,6 +470,7 @@
                                         label     : "<i class='fa fa-thumbs-down'></i> Devolver",
                                         className : "btn-danger",
                                         callback  : function () {
+                                            console.log("???? ", $txt, $txt.val(), $ta, $ta.val());
                                             if ($.trim($txt.val()) != "" && $.trim($ta.val()) != "") {
                                                 openLoader("Devolviendo");
                                                 $.ajax({

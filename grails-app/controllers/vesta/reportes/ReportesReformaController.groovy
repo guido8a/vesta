@@ -6,21 +6,25 @@ import vesta.proyectos.ModificacionAsignacion
 
 class ReportesReformaController {
 
-    def proyectosService
-
     /**
      * Acción que muestra el pdf de la solicitud de reforma existente
      */
     def existente() {
-        def reforma = Reforma.get(params.id.toLong())
-        return [reforma: reforma, det: generaDetallesSolicitudExistente(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia]
+        Reforma reforma = Reforma.get(params.id.toString().toLong())
+        def det
+        if (reforma.tipo == "C") {
+            det = ReportesReformaCorrientesController.generaDetallesSolicitudExistente(reforma).det
+        } else {
+            det = generaDetallesSolicitudExistente(reforma).det
+        }
+        return [reforma: reforma, det: det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
     /**
      * Acción que muestra el pdf de la solicitud de reforma a nueva actividad
      */
     def actividad() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         return [reforma: reforma, det: generaDetallesSolicitudActividad(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
@@ -28,7 +32,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de la solicitud de reforma de incremento a nueva actividad
      */
     def incrementoActividad() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         def d = generaDetallesSolicitudIncrementoActividad(reforma)
         return [reforma: reforma, det: d.det2, det2: d.det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
@@ -37,15 +41,21 @@ class ReportesReformaController {
      * Acción que muestra el pdf de la solicitud de reforma a nuevas partidas
      */
     def partida() {
-        def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesSolicitudPartida(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia]
+        def reforma = Reforma.get(params.id.toString().toLong())
+        def det
+        if (reforma.tipo == "C") {
+            det = ReportesReformaCorrientesController.generaDetallesSolicitudPartida(reforma).det
+        } else {
+            det = generaDetallesSolicitudPartida(reforma).det
+        }
+        return [reforma: reforma, det: det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
     /**
      * Acción que muestra el pdf de la solicitud de reforma de incremento
      */
     def incremento() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         def d = generaDetallesSolicitudIncremento(reforma)
         return [reforma: reforma, det: d.det2, det2: d.det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
@@ -54,7 +64,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de la solicitud de reforma de modificacion de techos
      */
     def techo() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         return [reforma: reforma, det: generaDetallesSolicitudTecho(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
@@ -62,7 +72,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de previsualización de reforma existente
      */
     def existentePreviewReforma() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
 //        println reforma.nota
 //        println reforma.nota.encodeAsHTML()
 //        println reforma.nota.decodeHTML()
@@ -73,7 +83,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de previsualización de reforma de a nueva actividad
      */
     def actividadPreviewReforma() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         return [reforma: reforma, det: generaDetallesSolicitudActividad(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
@@ -81,7 +91,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de previsualización de reforma de incremento a nuevas actividades
      */
     def incrementoActividadPreviewReforma() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         def d = generaDetallesSolicitudIncrementoActividad(reforma)
         return [reforma: reforma, det: d.det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
@@ -90,7 +100,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de previsualización de reforma a nuevas partidas
      */
     def partidaPreviewReforma() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         return [reforma: reforma, det: generaDetallesSolicitudPartida(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
@@ -98,7 +108,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de previsualización de reforma de incremento
      */
     def incrementoPreviewReforma() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         def d = generaDetallesSolicitudIncremento(reforma)
         return [reforma: reforma, det: d.det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
@@ -107,23 +117,35 @@ class ReportesReformaController {
      * Acción que muestra el pdf de reforma existente
      */
     def existenteReforma() {
-        def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: reforma.persona.unidad.unidadYGerencia]
+        def reforma = Reforma.get(params.id.toString().toLong())
+        def det
+        if (reforma.tipo == "C") {
+            det = ReportesReformaCorrientesController.generaDetallesReforma_function(reforma)
+        } else {
+            det = generaDetallesReforma_function(reforma)
+        }
+        return [reforma: reforma, det: det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
     /**
      * Acción que muestra el pdf de reforma a nuevas partidas
      */
     def partidaReforma() {
-        def reforma = Reforma.get(params.id)
-        return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: reforma.persona.unidad.unidadYGerencia]
+        def reforma = Reforma.get(params.id.toString().toLong())
+        def det
+        if (reforma.tipo == "C") {
+            det = ReportesReformaCorrientesController.generaDetallesReforma_function(reforma)
+        } else {
+            det = generaDetallesReforma_function(reforma)
+        }
+        return [reforma: reforma, det: det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
     /**
      * Acción que muestra el pdf de reforma a nuevas actividades
      */
     def actividadReforma() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
@@ -131,7 +153,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de reforma de incremento a nuevas actividades
      */
     def incrementoActividadReforma() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
@@ -139,7 +161,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de reforma de incremento
      */
     def incrementoReforma() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
@@ -147,7 +169,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de reforma de modificación de techos
      */
     def techoReforma() {
-        def reforma = Reforma.get(params.id)
+        def reforma = Reforma.get(params.id.toString().toLong())
         return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: reforma.persona.unidad.unidadYGerencia]
     }
 

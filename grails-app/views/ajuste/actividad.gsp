@@ -25,7 +25,7 @@
 
     <body>
 
-        <g:if test="${reforma && reforma.estado.codigo == "D02"}">
+        <g:if test="${reforma && reforma.estado.codigo == "D03"}">
             <div class="alert alert-warning">
                 <g:if test="${reforma.firma1.observaciones && reforma.firma1.observaciones != '' && reforma.firma1.observaciones != 'S'}">
                     <h4>Observaciones de ${reforma.firma1.usuario}</h4>

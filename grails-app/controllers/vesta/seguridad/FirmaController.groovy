@@ -38,6 +38,13 @@ class FirmaController extends Shield {
             order("fecha", "desc")
         }
 
+        def firmasAjustesCorrientes = Firma.withCriteria {
+            eq("usuario", session.usuario)
+            eq("estado", "S")
+            eq("tipoFirma", "AJSC")
+            order("fecha", "desc")
+        }
+
         def firmasAvales = Firma.withCriteria {
             eq("usuario", session.usuario)
             eq("estado", "S")
@@ -54,7 +61,8 @@ class FirmaController extends Shield {
         def imgFirma = "<i class='fa fa-pencil'></i>";
 //        def imgFirma = "<img src='${resource(dir: 'images/ico', file: 'feather.png')}' alt='Firmar'/>"
 
-        return [firmas: firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, firmasAvales: firmasAvales, actual: actual, imgFirma: imgFirma, params: params]
+        return [firmas      : firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, firmasAjustesCorrientes: firmasAjustesCorrientes,
+                firmasAvales: firmasAvales, actual: actual, imgFirma: imgFirma, params: params]
 
     }
 /**

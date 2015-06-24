@@ -961,7 +961,7 @@ class ElementosTagLib {
         } else {
             def preview = attrs.preview ?: false
             def label = attrs.label && (attrs.label == "true" || attrs.label == true)
-            def accion = "", accion2 = ""
+            def accion = "", accion2 = "", controlador = "reportesReforma"
             def fileName = "", fileName2 = ""
             if (reforma) {
                 switch (reforma.tipoSolicitud) {
@@ -1000,6 +1000,9 @@ class ElementosTagLib {
             } else {
                 if (reforma?.estado?.codigo == 'E02') {
                     accion2 = accion + "Reforma"
+                    if (reforma?.tipo == 'C') {
+                        fileName += "_corriente"
+                    }
                     fileName2 = fileName + "_reforma.pdf"
                     title2 = "Reforma"
                     clase2 = "btn-success"
@@ -1037,13 +1040,19 @@ class ElementosTagLib {
 
             fileName += ".pdf"
 
-            def str = "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: 'reportesReforma', action: accion, id: reforma?.id)}&filename=${fileName}\""
+//            if (reforma.tipo == "C") {
+//                controlador = "reportesReformaCorrientes"
+//            } else {
+//                controlador = "reportesReforma"
+//            }
+
+            def str = "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: controlador, action: accion, id: reforma?.id)}&filename=${fileName}\""
             str += "class='btn ${clase} btnVer' title='${title}'>"
             str += "<i class='fa fa-search'></i> ${label ? title : ''}"
             str += "</a>"
 
             if (accion2 != "") {
-                str += "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: 'reportesReforma', action: accion2, id: reforma?.id)}&filename=${fileName2}\""
+                str += "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: controlador, action: accion2, id: reforma?.id)}&filename=${fileName2}\""
                 str += "class='btn ${clase2} btnVer' title='${title2}'>"
                 str += "<i class='fa fa-search'></i> ${label ? title2 : ''}"
                 str += "</a>"
@@ -1059,14 +1068,6 @@ class ElementosTagLib {
             out << "ERROR"
         } else {
             Prfl perfil = attrs.perfil
-//            def estadoPendiente = EstadoAval.findByCodigo("P01")
-//            def estadoDevueltoReq = EstadoAval.findByCodigo("D01")
-//
-//            def estadoRevisar = EstadoAval.findByCodigo("R01")
-//            def estadoDevueltoDirReq = EstadoAval.findByCodigo("D02")
-//
-//            def estadoSolicitado = EstadoAval.findByCodigo("E01")
-//            def estadoDevueltoAnPlan = EstadoAval.findByCodigo("D03")
 
             def estadoPendiente = "P01"
             def estadoDevueltoReq = "D01"
@@ -1079,43 +1080,64 @@ class ElementosTagLib {
 
             def str = ""
 
-            def estadosEditables = [estadoPendiente, estadoDevueltoReq]
+            def estadosEditables = []
             def estadosRevisar = [estadoRevisar, estadoDevueltoDirReq]
             def estadosAprobar = [estadoSolicitado, estadoDevueltoAnPlan]
 
-            def accion = "", controlador = "", title = "", clase = "default", icono = "question"
-            if (estadosEditables.contains(reforma.estado.codigo)) {
-                if (perfil.codigo == "RQ") {
-                    title = "Editar"
-                    clase = "info"
-                    icono = "pencil"
-                    switch (reforma.tipoSolicitud) {
-                        case "E":
-                            accion = "existente"
-                            break;
-                        case "A":
-                            accion = "actividad"
-                            break;
-                        case "C":
-                            accion = "incrementoActividad"
-                            break;
-                        case "I":
-                            accion = "incremento"
-                            break;
-                        case "P":
-                            accion = "partida"
-                            break;
-                        case "T":
-                            accion = "techo"
-                            break;
+            switch (perfil.codigo) {
+                case "RQ":
+                    if (reforma.tipo == "R") {
+                        estadosEditables = [estadoPendiente, estadoDevueltoReq]
                     }
+                    break;
+                case "ASPL":
                     if (reforma.tipo == "A") {
-                        controlador = "ajuste"
-                    } else if (reforma.tipo == "C") {
-                        controlador = "ajusteCorriente"
-                    } else if (reforma.tipo == "R") {
-                        controlador = "reforma"
+                        estadosEditables = [estadoPendiente]
                     }
+                    break;
+                case "ASAF":
+                    if (reforma.tipo == "C") {
+                        estadosEditables = [estadoPendiente, estadoDevueltoAnPlan]
+                    }
+                    break;
+            }
+
+            println "estados editables: " + estadosEditables
+
+            def accion = "", controlador = "", title = "", clase = "default", icono = "question"
+//            println "Estados editables: " + estadosEditables
+//            println "Estado reforma: " + reforma.estado.codigo
+//            println "perfil: " + perfil.codigo
+            if (estadosEditables.contains(reforma.estado.codigo)) {
+                title = "Editar"
+                clase = "info"
+                icono = "pencil"
+                switch (reforma.tipoSolicitud) {
+                    case "E":
+                        accion = "existente"
+                        break;
+                    case "A":
+                        accion = "actividad"
+                        break;
+                    case "C":
+                        accion = "incrementoActividad"
+                        break;
+                    case "I":
+                        accion = "incremento"
+                        break;
+                    case "P":
+                        accion = "partida"
+                        break;
+                    case "T":
+                        accion = "techo"
+                        break;
+                }
+                if (reforma.tipo == "A") {
+                    controlador = "ajuste"
+                } else if (reforma.tipo == "C") {
+                    controlador = "ajusteCorriente"
+                } else if (reforma.tipo == "R") {
+                    controlador = "reforma"
                 }
             } else if (estadosRevisar.contains(reforma.estado.codigo)) {
                 title = "Revisar"

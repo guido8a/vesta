@@ -24,7 +24,7 @@
     </head>
 
     <body>
-        <g:if test="${reforma && reforma.estado.codigo == "D02"}">
+        <g:if test="${reforma && reforma.estado.codigo == "D03"}">
             <div class="alert alert-warning">
                 <g:if test="${reforma.firma1.observaciones && reforma.firma1.observaciones != '' && reforma.firma1.observaciones != 'S'}">
                     <h4>Observaciones de ${reforma.firma1.usuario}</h4>
@@ -151,16 +151,19 @@
                            data-aso="${detalle.asignacionOrigenId}"
                            data-asd="${detalle.asignacionDestinoId}">
                         <thead>
-                            <th colspan='5'>
-                                Detalle existente ${i + 1}
-                                <a href='' class='btn btn-danger btn-xs pull-right btnDeleteDetalle' data-id="${detalle.id}">
-                                    <i class='fa fa-trash-o'></i>
-                                </a>
-                            </th>
                             <tr>
-                                <th style='width:234px;'>Proyecto</th>
-                                <th style='width:234px;'>Componente</th>
+                                <th colspan='6'>
+                                    Detalle existente ${i + 1}
+                                    <a href='' class='btn btn-danger btn-xs pull-right btnDeleteDetalle' data-id="${detalle.id}">
+                                        <i class='fa fa-trash-o'></i>
+                                    </a>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th style='width:234px;'>Objetivo gasto corriente</th>
+                                <th style='width:234px;'>MacroActividad</th>
                                 <th style='width:234px;'>Actividad</th>
+                                <th style='width:234px;'>Tarea</th>
                                 <th>Asignación</th>
                                 <th style='width:195px;'>Monto</th>
                             </tr>
@@ -168,13 +171,16 @@
                         <tbody>
                             <tr class="info">
                                 <td>
-                                    ${detalle.asignacionOrigen.marcoLogico.proyecto.toStringCompleto()}
+                                    ${detalle.asignacionOrigen.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()}
+                                    ${detalle.asignacionOrigen.tarea.actividad.macroActividad.descripcion}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionOrigen.marcoLogico.numero} - ${detalle.asignacionOrigen.marcoLogico.toStringCompleto()}
+                                    ${detalle.asignacionOrigen.tarea.actividad.descripcion}
+                                </td>
+                                <td>
+                                    ${detalle.asignacionOrigen.tarea.descripcion}
                                 </td>
                                 <td>
                                     ${detalle.asignacionOrigen}
@@ -185,13 +191,16 @@
                             </tr>
                             <tr class="success">
                                 <td>
-                                    ${detalle.asignacionDestino.marcoLogico.proyecto.toStringCompleto()}
+                                    ${detalle.asignacionDestino.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()}
+                                    ${detalle.asignacionDestino.tarea.actividad.macroActividad.descripcion}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino.marcoLogico.numero} - ${detalle.asignacionDestino.marcoLogico.toStringCompleto()}
+                                    ${detalle.asignacionDestino.tarea.actividad.descripcion}
+                                </td>
+                                <td>
+                                    ${detalle.asignacionDestino.tarea.descripcion}
                                 </td>
                                 <td>
                                     ${detalle.asignacionDestino}
@@ -351,9 +360,9 @@
                     tot += parseFloat($(this).data().origen.monto);
                 });
                 if (tot > 0) {
-                    $("#btnSave").removeClass("disabled");
+                    $("#btnEnviar").removeClass("disabled");
                 } else {
-                    $("#btnSave").addClass("disabled");
+                    $("#btnEnviar").addClass("disabled");
                 }
                 $("#divTotal").data("valor", tot).text("$" + number_format(tot, 2, ".", ","));
             }

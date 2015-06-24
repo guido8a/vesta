@@ -25,7 +25,7 @@
 
     <body>
 
-        <g:if test="${reforma && reforma.estado.codigo == "D02"}">
+        <g:if test="${reforma && reforma.estado.codigo == "D03"}">
             <div class="alert alert-warning">
                 <g:if test="${reforma.firma1.observaciones && reforma.firma1.observaciones != '' && reforma.firma1.observaciones != 'S'}">
                     <h4>Observaciones de ${reforma.firma1.usuario}</h4>
@@ -351,9 +351,9 @@
                     tot += parseFloat($(this).data().origen.monto);
                 });
                 if (tot > 0) {
-                    $("#btnSave").removeClass("disabled");
+                    $("#btnEnviar").removeClass("disabled");
                 } else {
-                    $("#btnSave").addClass("disabled");
+                    $("#btnEnviar").addClass("disabled");
                 }
                 $("#divTotal").data("valor", tot).text("$" + number_format(tot, 2, ".", ","));
             }
@@ -460,7 +460,7 @@
 //                        dataOrigen.componente_nombre = $("#comp").find("option:selected").text();
 //                        dataOrigen.actividad_nombre = $("#actividad").find("option:selected").text();
 //                        dataOrigen.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                        dataOrigen.asignacion_id = $("#asignacion").val();
+                        dataOrigen.asignacion_id = $("#asg").val();
                         dataOrigen.monto = $("#monto").val();
 
                         var dataDestino = {};

@@ -1,4 +1,4 @@
-<rep:headerFooter title="REFORMA AL POA"
+<rep:headerFooter title="REFORMA AL POA${reforma.tipo == 'C' ? ' CORRIENTE' : ''}"
                   form="GPE-DPI-003"
                   unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.gerencia.codigo}"
                   numero="${reforma.numeroReforma}" estilo="right"/>
@@ -20,9 +20,14 @@
             </li>
             <li>
                 <strong>Matriz de la reforma:</strong>
-
-                <g:render template="/reportesReformaTemplates/tablaReforma"
-                          model="[det: det, tipo: tipo]"/>
+                <g:if test="${reforma.tipo == 'C'}">
+                    <g:render template="/reportesReformaTemplates/tablaReformaCorriente"
+                              model="[det: det, tipo: tipo]"/>
+                </g:if>
+                <g:else>
+                    <g:render template="/reportesReformaTemplates/tablaReforma"
+                              model="[det: det, tipo: tipo]"/>
+                </g:else>
             </li>
         </ol>
 

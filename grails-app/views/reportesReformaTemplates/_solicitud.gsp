@@ -1,5 +1,5 @@
-<rep:headerFooter title="${reforma.tipo == 'R' ? 'SOLICITUD DE REFORMA' : 'AJUSTE'} AL POA"
-                  form="GPE-DPI-003"
+<rep:headerFooter title="${reforma.tituloSolicitud.toUpperCase()}"
+                  form=" GPE-DPI-003"
                   unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.gerencia.codigo}"
                   numero="${reforma.numero}" estilo="right"/>
 
@@ -23,16 +23,22 @@
                 <elm:tipoReforma reforma="${reforma}"/>
             </li>
             <li>
-                <strong>Matriz de la ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>
-                <g:render template="/reportesReformaTemplates/tablaSolicitud"
-                          model="[det: det, tipo: tipo]"/>
-                <g:if test="${det2}">
-                    <g:render template="/reportesReformaTemplates/tablaSolicitud"
-                              model="[det: det2, tipo: tipo, analista: reforma.analista]"/>
+                <strong>Matriz de la ${reforma.tipoString}:</strong>
+                <g:if test="${reforma.tipo == 'C'}">
+                    <g:render template="/reportesReformaTemplates/tablaSolicitudCorriente"
+                              model="[det: det, tipo: tipo]"/>
                 </g:if>
+                <g:else>
+                    <g:render template="/reportesReformaTemplates/tablaSolicitud"
+                              model="[det: det, tipo: tipo]"/>
+                    <g:if test="${det2}">
+                        <g:render template="/reportesReformaTemplates/tablaSolicitud"
+                                  model="[det: det2, tipo: tipo, analista: reforma.analista]"/>
+                    </g:if>
+                </g:else>
             </li>
             <li class="no-break" style="margin-top: 15px">
-                <strong>Justificación ${reforma.tipo == 'R' ? 'de la reforma' : 'del ajuste'} al POA solicitada:</strong>
+                <strong>Justificación ${reforma.tipo == 'R' ? 'de la reforma' : ('del ajuste' + reforma.tipo == 'C' ? ' corriente' : '')} al POA solicitada:</strong>
 
                 <div class="justificacion">
                     ${reforma.concepto.decodeHTML()}

@@ -140,4 +140,13 @@ class Reforma {
         return (this.tipo == 'R' ? 'Reforma' : 'Ajuste') + " al POA" + (this.tipo == 'C' ? ' corriente' : '')
     }
 
+    String getTipoString() {
+        switch (this.tipo) {
+            case "R": return "Reforma"
+            case "A": return "Ajuste"
+            case "C": return "Ajuste corriente"
+            default: return "Tipo no reconocido"
+        }
+    }
+
 }
