@@ -22,7 +22,7 @@
 
                 <div class="col-md-2">
                     <g:link controller="reportes6" action="aprobarProyectoXlsx" class="btn btn-sm btn-default btnExcel">
-                        <i class="fa fa-file-excel-o text-success"></i> Exportar a Excel
+                        <i class="fa fa-file-excel-o text-success"></i> Exportar proforma a Excel
                     </g:link>
                 </div>
             </div>
