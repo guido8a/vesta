@@ -141,6 +141,58 @@ class AsignacionController extends Shield {
         return
     } //save para grabar desde ajax
 
+
+
+    /**
+     * Acción llamada con ajax que guarda una asignación de gasto corriente
+     * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
+     */
+    def guardarAsignacion () {
+        println("params guardar asg " + params)
+        params.valor = params.valor.toDouble();
+
+        def unidad = UnidadEjecutora.get(params.responsable)
+        def anio = Anio.get(params.anio)
+        def tarea = Tarea.get(params.tarea)
+        def fuente = Fuente.get(params.fuente)
+        def partida = Presupuesto.get(params.partida)
+
+        def asignacionInstance = new Asignacion()
+
+        if (params.id) {
+            asignacionInstance = Asignacion.get(params.id)
+
+            asignacionInstance.unidad = unidad
+            asignacionInstance.actividad = params.asignacion
+            asignacionInstance.presupuesto = partida
+            asignacionInstance.fuente = fuente
+            asignacionInstance.planificado = params.valor.toDouble()
+
+            if (!asignacionInstance) {
+                render "ERROR*No se encontró Asignacion."
+                return
+            }
+        }else{
+
+            asignacionInstance.planificado = params.valor
+            asignacionInstance.unidad = unidad
+            asignacionInstance.anio = anio
+            asignacionInstance.tarea = tarea
+            asignacionInstance.fuente = fuente
+            asignacionInstance.actividad = params.asignacion
+            asignacionInstance.presupuesto = partida
+
+            if (!asignacionInstance.save(flush: true)) {
+                render "ERROR*Ha ocurrido un error al guardar la Asignación: " + renderErrors(bean: asignacionInstance)
+                return
+            }
+        }
+
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Asignación exitosa."
+        return
+    }
+
+
     /**
      * Acción llamada con ajax que permite eliminar un elemento
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
@@ -154,10 +206,10 @@ class AsignacionController extends Shield {
             }
             try {
                 asignacionInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Asignacion exitosa."
+                render "SUCCESS*Asignacion borrada exitosamente."
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Asignacion"
+                render "ERROR*Ha ocurrido un error al eliminar la Asignacion"
                 return
             }
         } else {
@@ -406,6 +458,8 @@ class AsignacionController extends Shield {
             redirect(controller: "reportesBuscador", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
         }
     }
+
+
 
     def buscarPresupuesto_ajax() {
 
@@ -1227,8 +1281,12 @@ class AsignacionController extends Shield {
             //cargar los detalles para el anio 'actual'
             def detalles
 
+
+            def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+
+
             return  [unidad: unidad, actual: actual, asignaciones: asignaciones, fuentes: fuentes, programas: programas, detalles:detalles,
-                     programa: programa, totalUnidad: total, maxUnidad: maxUnidad, componentes: componentes, max: max, objetivos: objetivos]
+                     programa: programa, totalUnidad: total, maxUnidad: maxUnidad, componentes: componentes, max: max, objetivos: objetivos, campos: campos]
         }
     }
 
@@ -1284,6 +1342,64 @@ class AsignacionController extends Shield {
         def asignaciones = Asignacion.findAllByTarea(tarea)
 
         return [asignaciones : asignaciones, params: params]
+    }
+
+
+    def tablaDetalles_ajax () {
+
+        def anio = Anio.get(params.anio)
+
+        def asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio)
+
+        return [asignaciones: asignaciones]
+    }
+
+    def editarAsignacion_ajax() {
+
+
+        println("params eda " + params)
+
+        def asignacion = Asignacion.get(params.id)
+
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+        def fuentes = Fuente.list([sort: 'descripcion'])
+
+        return [campos: campos, fuentes: fuentes, asignacion: asignacion]
+    }
+
+    def buscarPresupuesto2() {
+
+        def listaTitulos = ["Número", "Descripción"]
+        def listaCampos = ["numero", "descripcion"]
+        def funciones = [null, null]
+        def url = g.createLink(action: "buscarPresupuesto2", controller: "asignacion")
+        def funcionJs = null
+        def numRegistros = 20
+        def extras = ""
+
+        if (!params.reporte) {
+            if (params.excel) {
+                session.dominio = Presupuesto
+                session.funciones = funciones
+                def anchos = [30, 70]
+                /*anchos para el set column view en excel (no son porcentajes)*/
+                redirect(controller: "reportesBuscador", action: "reporteBuscadorExcel", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Partidas presupuestarias", anchos: anchos, extras: extras, landscape: true])
+            } else {
+                def lista = buscadorService.buscar(Presupuesto, "Presupuesto", "excluyente", params, true, extras)
+                /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
+                lista.pop()
+                render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: lista, funciones: funciones, url: url, controller: "asignacion", numRegistros: numRegistros, funcionJs: funcionJs, paginas: 10])
+            }
+
+        } else {
+//            println "entro reporte"
+            /*De esto solo cambiar el dominio, el parametro tabla, el paramtero titulo y el tamaño de las columnas (anchos)*/
+            session.dominio = Presupuesto
+            session.funciones = funciones
+            def anchos = [30, 70]
+            /*el ancho de las columnas en porcentajes... solo enteros*/
+            redirect(controller: "reportesBuscador", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
+        }
     }
 
 }
