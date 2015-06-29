@@ -29,8 +29,9 @@ class CronogramaController extends Shield {
         println "show cronograma " + params
         def proyecto = Proyecto.get(params.id)
         def act = null
-        if (params.act && params.act != "")
+        if (params.act && params.act != "") {
             act = MarcoLogico.get(params.act)
+        }
         def componentes = MarcoLogico.withCriteria {
             eq("proyecto", proyecto)
             eq("tipoElemento", TipoElemento.get(2))
@@ -39,12 +40,14 @@ class CronogramaController extends Shield {
         }
         def fuentes = Financiamiento.findAllByProyecto(proyecto).fuente
         def anio
-        if (!params.anio)
+        if (!params.anio) {
             anio = Anio.findByAnio(new Date().format("yyyy").toString())
-        else
+        } else {
             anio = Anio.get(params.anio)
-        if (!anio)
+        }
+        if (!anio) {
             anio = Anio.list([sort: 'anio']).pop()
+        }
         println "anio " + anio
 
         return [proyecto: proyecto, componentes: componentes, anio: anio, actSel: act, fuentes: fuentes, params: params]
@@ -57,8 +60,9 @@ class CronogramaController extends Shield {
         println "form cronograma " + params
         def proyecto = Proyecto.get(params.id.toLong())
         def act = null
-        if (params.act && params.act != "")
+        if (params.act && params.act != "") {
             act = MarcoLogico.get(params.act)
+        }
         def componentes = MarcoLogico.withCriteria {
             eq("proyecto", proyecto)
             eq("tipoElemento", TipoElemento.get(2))
@@ -66,12 +70,14 @@ class CronogramaController extends Shield {
             order("numeroComp", "asc")
         }
         def anio
-        if (!params.anio)
+        if (!params.anio) {
             anio = Anio.findByAnio(new Date().format("yyyy").toString())
-        else
+        } else {
             anio = Anio.get(params.anio)
-        if (!anio)
+        }
+        if (!anio) {
             anio = Anio.findAll("from Anio order by anio").pop()
+        }
 
         def editable = anio.estado == 0 && proyecto.aprobado != 'a'
 
@@ -101,8 +107,9 @@ class CronogramaController extends Shield {
         def valor = 0
         if (params.id) {
             Cronograma.findAllByMarcoLogicoAndCronogramaIsNull(actividad).each {
-                if (it.id.toLong() != params.id.toLong())
+                if (it.id.toLong() != params.id.toLong()) {
                     valor += (it.valor + it.valor2)
+                }
             }
         }
         if (!params.presupuesto2) {
@@ -155,8 +162,20 @@ class CronogramaController extends Shield {
     def deleteCrono_ajax() {
         try {
             def crono = Cronograma.get(params.id)
+
+            ProgramacionAsignacion.findAllByCronograma(crono).each { p ->
+                try {
+                    def asg = p.asignacion
+                    p.delete(flush: true)
+                    asg.delete(flush:true)
+                } catch (e) {
+                    println "error al eliminar p: "
+                    e.printStackTrace()
+                }
+            }
+
             crono.delete(flush: true)
-            render "SUCCESS*Se ha eliminado los valores correctamente"
+            render "SUCCESS*Se han eliminado los valores correctamente"
         } catch (e) {
             println e.printStackTrace()
             render "ERROR*Ha ocurrido un error, no se pudo eliminar"
@@ -179,8 +198,9 @@ class CronogramaController extends Shield {
             eq("estado", 0)
         }.each { comp ->
 //            println "comp "+comp.responsable
-            if (!comp.responsable)
+            if (!comp.responsable) {
                 bandUnidad = false
+            }
             Asignacion.withCriteria {
                 eq("marcoLogico", comp)
                 eq("anio", anio)
@@ -286,16 +306,18 @@ class CronogramaController extends Shield {
         hijas.each {
             println "verificando hija " + it.id
             res = verificarHijas(it)
-            if (!res)
+            if (!res) {
                 return false
+            }
             if (DistribucionAsignacion.findAllByAsignacion(it).size() > 0) {
                 return false
             }
             if (ModificacionAsignacion.findAllByDesdeOrRecibe(it, it).size() > 0) {
                 return false
             }
-            if (Certificacion.findAllByAsignacion(it).size() > 0)
+            if (Certificacion.findAllByAsignacion(it).size() > 0) {
                 return false
+            }
         }
         if (DistribucionAsignacion.findAllByAsignacion(asgn).size() > 0) {
             return false
@@ -303,8 +325,9 @@ class CronogramaController extends Shield {
         if (ModificacionAsignacion.findAllByDesdeOrRecibe(asgn, asgn).size() > 0) {
             return false
         }
-        if (Certificacion.findAllByAsignacion(asgn).size() > 0)
+        if (Certificacion.findAllByAsignacion(asgn).size() > 0) {
             return false
+        }
 
         println "paso... true"
         return true

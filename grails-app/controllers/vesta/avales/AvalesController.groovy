@@ -663,13 +663,15 @@ class AvalesController extends vesta.seguridad.Shield {
             disponible -= (avales.sum { it.monto })
             message = "Este proceso tiene un aval vigente"
         }
-        if (!estadosEdit.contains(solicitudAval?.estado?.codigo)) {
-            if (message == "") {
-                message = "Este proceso tiene "
-            } else {
-                message += " y "
+        if (solicitudAval) {
+            if (!estadosEdit.contains(solicitudAval?.estado?.codigo)) {
+                if (message == "") {
+                    message = "Este proceso tiene "
+                } else {
+                    message += " y "
+                }
+                message += "${solicitudes.size() == 1 ? 'una' : solicitudes.size()} solicitud ${solicitudes.size() == 1 ? '' : 'es'} <strong>${solicitudes.estado.descripcion.join(', ')}</strong>"
             }
-            message += "${solicitudes.size() == 1 ? 'una' : solicitudes.size()} solicitud ${solicitudes.size() == 1 ? '' : 'es'} <strong>${solicitudes.estado.descripcion.join(', ')}</strong>"
         }
         if (solicitudes.size() > 0) {
             disponible -= (solicitudes.sum { it.monto })

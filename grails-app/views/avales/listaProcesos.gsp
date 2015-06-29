@@ -25,9 +25,9 @@
         %{--</a>--}%
             <g:if test="${params.aval != 'no'}">
 
-            <g:link controller="avales" action="nuevaSolicitud" class="btn btn-default">
-                <i class="fa fa-file-o"></i> Nuevo proceso para solicitud de aval
-            </g:link>
+                <g:link controller="avales" action="nuevaSolicitud" class="btn btn-default">
+                    <i class="fa fa-file-o"></i> Nuevo proceso para solicitud de aval
+                </g:link>
 
             </g:if>
         </div>
@@ -78,17 +78,9 @@
             </tbody>
         </table>
         <script>
-            $(".btn").button()
-            $(".editar").button({
-                text  : false,
-                icons : {
-                    primary : "ui-icon-pencil"
-                }
-            });
-
             function createContextMenu(node) {
                 var $tr = $(node);
-                var idPro = $tr.data("id")
+                var idPro = $tr.data("id");
 
                 var items = {
                     header : {

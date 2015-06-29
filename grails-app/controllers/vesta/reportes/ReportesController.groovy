@@ -220,9 +220,9 @@ class ReportesController {
         def devengado = 0
         def transf = NumberToLetterConverter.convertNumberToLetter(solicitud?.monto)
 
-        def montoTest = solicitud.monto + 0.56
-        println "\n\n\nMonto test"
-        println NumberToLetterConverter.convertNumberToLetter(montoTest)
+//        def montoTest = solicitud.monto + 0.56
+//        println "\n\n\nMonto test"
+//        println NumberToLetterConverter.convertNumberToLetter(montoTest)
 
 //        println("-->" + transf)
 

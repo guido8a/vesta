@@ -26,10 +26,12 @@
         </tr>
     </thead>
     <tbody>
-        <g:set var="total" value="${0}"/>
+        <g:set var="totalPrio" value="${0}"/>
+        <g:set var="totalMonto" value="${0}"/>
         <g:set var="totalD" value="${0}"/>
         <g:each in="${detalle}" var="asg">
-            <g:set var="total" value="${total.toDouble() + asg.monto}"/>
+            <g:set var="totalPrio" value="${asg.asignacion.priorizado}"/>
+            <g:set var="totalMonto" value="${totalMonto.toDouble() + asg.monto}"/>
             <g:set var="totalD" value="${totalD.toDouble() + asg.devengado}"/>
             <tr iden="${asg?.id}">
                 <td>${asg.asignacion.anio.anio}</td>
@@ -72,7 +74,10 @@
         <tr>
             <td colspan="5" style="font-weight: bold">TOTAL PROCESO</td>
             <td style="font-weight: bold;text-align: right">
-                <g:formatNumber number="${total}" type="currency" currencySymbol=""/>
+                <g:formatNumber number="${totalPrio}" type="currency" currencySymbol=""/>
+            </td>
+            <td style="font-weight: bold;text-align: right">
+                <g:formatNumber number="${totalMonto}" type="currency" currencySymbol=""/>
             </td>
             <td style="font-weight: bold;text-align: right">
                 <g:formatNumber number="${totalD}" type="currency" currencySymbol=""/>

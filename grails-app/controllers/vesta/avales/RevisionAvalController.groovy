@@ -596,7 +596,7 @@ class RevisionAvalController extends Shield {
                         alerta2.mensaje = "Aval pendiente de firma para aprobación: " + aval.concepto
                         alerta2.controlador = "firma"
                         alerta2.accion = "firmasPendientes"
-                        alerta1.parametros = "tab=AVAL"
+                        alerta2.parametros = "tab=AVAL"
                         if (!alerta2.save(flush: true)) {
                             println "error alerta2: " + alerta2.errors
                         }

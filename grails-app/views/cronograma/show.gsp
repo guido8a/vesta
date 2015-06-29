@@ -30,7 +30,7 @@
         }
 
         .divTabla {
-            max-height : 450px;
+            max-height : 550px;
             overflow-y : auto;
             overflow-x : auto;
         }

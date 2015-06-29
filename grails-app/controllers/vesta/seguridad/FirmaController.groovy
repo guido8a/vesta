@@ -49,6 +49,14 @@ class FirmaController extends Shield {
             eq("usuario", session.usuario)
             eq("estado", "S")
             eq("tipoFirma", "AVAL")
+            order("fecha", "desc")
+        }
+
+        def firmasAvalesCorrientes = Firma.withCriteria {
+            eq("usuario", session.usuario)
+            eq("estado", "S")
+            eq("tipoFirma", "AVCR")
+            order("fecha", "desc")
         }
 
         def actual
@@ -62,7 +70,7 @@ class FirmaController extends Shield {
 //        def imgFirma = "<img src='${resource(dir: 'images/ico', file: 'feather.png')}' alt='Firmar'/>"
 
         return [firmas      : firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, firmasAjustesCorrientes: firmasAjustesCorrientes,
-                firmasAvales: firmasAvales, actual: actual, imgFirma: imgFirma, params: params]
+                firmasAvales: firmasAvales, firmasAvalesCorrientes: firmasAvalesCorrientes, actual: actual, imgFirma: imgFirma, params: params]
 
     }
 /**

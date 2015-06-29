@@ -5,6 +5,9 @@ import jxl.WorkbookSettings
 import jxl.write.Label
 import jxl.write.WritableSheet
 import jxl.write.WritableWorkbook
+import vesta.NumberToLetterConverter
+import vesta.avales.AvalCorriente
+import vesta.avales.AvalCorrienteController
 import vesta.avales.ProcesoAsignacion
 import vesta.avales.SolicitudAval
 import vesta.contratacion.Aprobacion
@@ -231,13 +234,13 @@ class ReporteSolicitudController {
                 nombreProceso = nombreProceso.replaceAll("&Uacute;", "Ú")
                 nombreProceso = nombreProceso.replaceAll("&uacute;", "ú")
                 nombreProceso = nombreProceso.replaceAll("&ntilde;", "ñ")
-                nombreProceso= nombreProceso.replaceAll("&Ntilde;", "Ñ")
+                nombreProceso = nombreProceso.replaceAll("&Ntilde;", "Ñ")
                 nombreProceso = nombreProceso.replaceAll("&ldquo;", '"')
                 nombreProceso = nombreProceso.replaceAll("&rdquo;", '"')
                 nombreProceso = nombreProceso.replaceAll("&lquo;", "'")
                 nombreProceso = nombreProceso.replaceAll("&rquo;", "'")
 
-            }else{
+            } else {
 
                 nombreProceso = ""
             }
@@ -546,31 +549,31 @@ class ReporteSolicitudController {
         def total
 
         ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
-            if(it.asignacion.anio.anio.toInteger() >= anio.anio.toInteger()){
-                if(arr[it.asignacion.marcoLogico]){
-                    arr[it.asignacion.marcoLogico]["total"]+=it.monto
-                    arr[it.asignacion.marcoLogico]["devengado"]+=it.devengado
-                    if(arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]){
+            if (it.asignacion.anio.anio.toInteger() >= anio.anio.toInteger()) {
+                if (arr[it.asignacion.marcoLogico]) {
+                    arr[it.asignacion.marcoLogico]["total"] += it.monto
+                    arr[it.asignacion.marcoLogico]["devengado"] += it.devengado
+                    if (arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]) {
                         arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["asignaciones"].add(it)
-                        arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["total"]+=it.monto
+                        arr[it.asignacion.marcoLogico][it.asignacion.anio.anio]["total"] += it.monto
 
 
-                    }else{
-                        def mp=[:]
-                        mp.put("asignaciones",[it])
-                        mp.put("total",it.monto)
-                        arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio,mp)
+                    } else {
+                        def mp = [:]
+                        mp.put("asignaciones", [it])
+                        mp.put("total", it.monto)
+                        arr[it.asignacion.marcoLogico].put(it.asignacion.anio.anio, mp)
                     }
 
-                }else{
+                } else {
                     def tmp = [:]
-                    def mp=[:]
-                    mp.put("asignaciones",[it])
-                    mp.put("total",it.monto)
+                    def mp = [:]
+                    mp.put("asignaciones", [it])
+                    mp.put("total", it.monto)
 
-                    tmp.put(it.asignacion.anio.anio,mp)
-                    tmp.put("total",it.monto)
-                    tmp.put("devengado",it.devengado)
+                    tmp.put(it.asignacion.anio.anio, mp)
+                    tmp.put("total", it.monto)
+                    tmp.put("devengado", it.devengado)
                     arr.put(it.asignacion.marcoLogico, tmp)
                 }
             }
@@ -584,10 +587,9 @@ class ReporteSolicitudController {
 
 //        println("arr " + arr)
 
-
 //        println("--><<<<>>" + arr)
 
-        return [solicitud: solicitud, anios: anios, arr: arr, devengado:dosDevengado, anio: anio]
+        return [solicitud: solicitud, anios: anios, arr: arr, devengado: dosDevengado, anio: anio]
     }
 
     /**
@@ -690,5 +692,14 @@ class ReporteSolicitudController {
         return [fecha: fecha, numero: nmroMemo, para: para, cargo: cargo, asunto: asunto, nombreFirma: nombreFirma, cargoFirma: cargofirma]
     }
 
+    def solicitudAvalCorriente() {
+        def proceso = AvalCorriente.get(params.id)
+        return [proceso: proceso, detalles: AvalCorrienteController.arreglarDetalles(proceso)]
+    }
 
+    def avalCorriente() {
+        def proceso = AvalCorriente.get(params.id)
+        def transf = NumberToLetterConverter.convertNumberToLetter(solicitud?.monto)
+        return [proceso: proceso, detalles: AvalCorrienteController.arreglarDetalles(proceso), transf: transf]
+    }
 }

@@ -78,7 +78,7 @@
     <body>
         <div class="hoja">
             <rep:headerFooter title="Aval de POA" unidad="${anio}-GPE"
-                              numero="${elm.imprimeNumero(aval: aval.id)}" estilo="right"/>
+                              numero="${elm.imprimeNumero(aval: aval?.id)}" estilo="right"/>
 
             <div style="text-align: justify;float: left;font-size: 10pt;">
                 <p>

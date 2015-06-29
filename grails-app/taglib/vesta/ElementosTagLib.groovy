@@ -5,6 +5,7 @@ import org.springframework.beans.SimpleTypeConverter
 import org.springframework.context.MessageSourceResolvable
 import org.springframework.web.servlet.support.RequestContextUtils
 import vesta.avales.Aval
+import vesta.avales.AvalCorriente
 import vesta.avales.EstadoAval
 import vesta.avales.SolicitudAval
 import vesta.modificaciones.Reforma
@@ -1244,6 +1245,62 @@ class ElementosTagLib {
         html += '</div>'
 
         out << html
+    }
 
+    def wizardAvalesCorrientes = { attrs ->
+        def paso = attrs.paso ? attrs.paso.toInteger() : 1
+        AvalCorriente proceso = attrs.proceso ?: null
+        def monto = 0
+        def nombreProc = ""
+        def maxChars = 30
+        if (proceso && proceso.id) {
+            monto = proceso.monto
+            nombreProc = proceso.nombreProceso
+            if (nombreProc.size() > maxChars) {
+                nombreProc = nombreProc[0..maxChars - 1] + "…"
+            }
+            nombreProc = ": " + nombreProc
+        }
+
+        def clase1 = "", clase2 = ""
+
+        if (paso == 1) {
+            clase1 = "wizard-current"
+            clase2 = "wizard-not-completed"
+            if (proceso && proceso.id) {
+                clase2 = "wizard-available"
+            }
+        } else if (paso == 2) {
+            clase1 = "wizard-completed"
+            clase2 = "wizard-current"
+        }
+
+        def html = '<div class="wizard-container row">'
+        html += '   <div class="col-md-6 wizard-step wizard-next-step corner-left ' + clase1 + '">\n' +
+                '       <span class="badge wizard-badge">1</span>\n'
+        if (proceso && proceso.id && paso > 1) {
+            html += g.link(action: "nuevaSolicitud", id: proceso.id, title: "Regresar sin guardar cambios") {
+                'Proceso de aval' + nombreProc
+            }
+        } else {
+            html += 'Proceso de aval' + nombreProc
+        }
+        html += '   </div>'
+
+
+        html += '   <div class="col-md-6 wizard-step corner-right ' + clase2 + '">\n' +
+                '       <span class="badge wizard-badge">2</span>\n'
+        if (proceso && proceso.id && paso != 2) {
+            html += g.link(action: "solicitudAsignaciones", id: proceso.id, title: "Continuar sin guardar cambios") {
+                'Asignaciones' + nombreProc
+            }
+        } else {
+            html += 'Asignaciones' + nombreProc
+        }
+        html += '   </div>'
+
+        html += '</div>'
+
+        out << html
     }
 }

@@ -164,6 +164,15 @@ class Asignacion {
         }
     }
 
+    String getString() {
+        if (this.marcoLogico) {
+//            "<b>Responsable:</b> ${this.unidad}<b>  Priorizado: </b>${this.planificado}  <b> Partida Presupuestaria: </b>${this.presupuesto}<b> Año</b>: ${this.anio}"
+            "<b>Priorizado: </b>${this.priorizado}  <b> Partida Presupuestaria: </b>${this.presupuesto}"
+        } else {
+            "<b> Priorizado:</b> ${this.priorizado}  <b> Partida Presupuestaria: </b>${this.presupuesto}<b> Año</b>: ${this.anio}"
+        }
+    }
+
     /**
      * Calcula el valor real de la asignación teniendo en cuenta la reubicación
      * @return el valor real calculado

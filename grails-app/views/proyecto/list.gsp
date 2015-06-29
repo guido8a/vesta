@@ -138,15 +138,18 @@
 
                                 <g:each in="${anios}" var="anio">
                                     <td>
+                                        %{--*--}%
                                         <g:formatNumber number="${proyectoInstance.getValorPlanificadoAnio(anio)}" type="currency" currencySymbol=""/>
                                     </td>
                                 </g:each>
 
                                 <td class="text-right">
+                                    %{--/--}%
                                     <g:formatNumber number="${proyectoInstance.valorPlanificado}" type="currency" currencySymbol=""/>
                                 </td>
 
                                 <td class="text-right">
+                                    %{--+--}%
                                     <g:formatNumber number="${proyectoInstance.valorPriorizado}" type="currency" currencySymbol=""/>
                                 </td>
                             </tr>

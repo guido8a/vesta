@@ -16,9 +16,9 @@
                     ${mes.descripcion[0..2]}.
                 </th>
             </g:each>
-            <th>Tot. Asignado</th>
-            <th>Sin asignar</th>
-            <th>Total</th>
+            <th>Total<br/>Año</th>
+            <th>Sin<br/>asignar</th>
+            <th>Total<br/>Asignado</th>
         </tr>
     </thead>
     <tbody>
@@ -47,14 +47,15 @@
             <g:each in="${MarcoLogico.findAllByMarcoLogicoAndEstado(comp, 0, [sort: 'id'])}" var="act" status="i">
                 <g:if test="${!actSel || (actSel && actSel.id == act.id)}">
                     <g:set var="asignadoAct" value="${act.getTotalCronograma()}"/> %{-- / --}%
+                    <g:set var="asignadoActAnio" value="${act.getTotalCronogramaAnio(anio)}"/> %{-- / --}%
                     <g:set var="totalAct" value="${act.monto}"/> %{-- - --}%
                     <g:set var="sinAsignarAct" value="${totalAct - asignadoAct}"/> %{-- * --}%
 
-                    <g:set var="asignadoComp" value="${asignadoComp + asignadoAct}"/> %{-- // --}%
+                    <g:set var="asignadoComp" value="${asignadoComp + asignadoActAnio}"/> %{-- // --}%
                     <g:set var="totalComp" value="${totalComp + totalAct}"/> %{-- -- --}%
                     <g:set var="sinAsignarComp" value="${sinAsignarComp + sinAsignarAct}"/> %{-- ** --}%
 
-                    <g:set var="asignadoTotal" value="${asignadoTotal + asignadoAct}"/> %{-- /// --}%
+                    <g:set var="asignadoTotal" value="${asignadoTotal + asignadoActAnio}"/> %{-- /// --}%
                     <g:set var="totalTotal" value="${totalTotal + totalAct}"/> %{-- --- --}%
                     <g:set var="sinAsignarTotal" value="${sinAsignarTotal + sinAsignarAct}"/> %{-- *** --}%
                     <tr data-id="${act.id}" class="act comp${comp.id}">
@@ -94,6 +95,7 @@
                                 data-presupuesto2="${crg?.valor2}" data-bsc-desc-partida2="${crg?.presupuesto2?.toString()}"
                                 data-partida2="${crg?.presupuesto2?.id}"
                                 data-fuente2="${crg?.fuente2?.id}" data-desc-fuente2="${crg?.fuente2?.descripcion}">
+                                %{--id: ${crg?.id}*${crg?.valor}*${crg?.valor2}--}%
                                 <g:formatNumber number="${valor}" type="currency" currencySymbol=""/>
                             </td>
                             <g:if test="${crg}">
@@ -101,15 +103,16 @@
                             </g:if>
                         </g:each>
                         <th class="disabled text-right asignado nop" data-val="${asignadoAct}">
-                            %{-- / --}%
-                            <g:formatNumber number="${asignadoAct}" type="currency" currencySymbol=""/>
+                            %{--1/--}%
+                            <g:formatNumber number="${asignadoActAnio}" type="currency" currencySymbol=""/>
                         </th>
                         <th class="disabled text-right sinAsignar nop" data-val="${sinAsignarAct}">
-                            %{-- * --}%
+                            %{--1*--}%
                             <g:formatNumber number="${sinAsignarAct}" type="currency" currencySymbol=""/>
                         </th>
                         <th class="disabled text-right total nop" data-val="${totalAct}">
-                            %{-- - --}%
+                            %{--1---}%
+                            %{--${act.id}*${act.monto}--}%
                             <g:formatNumber number="${totalAct}" type="currency" currencySymbol=""/>
                         </th>
                     </tr>

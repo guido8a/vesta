@@ -41,7 +41,7 @@ class ProyectoController extends Shield {
      * @param all boolean que indica si saca todos los resultados, ignorando el parámetro max (true) o no (false)
      * @return lista de los elementos encontrados
      */
-    def getList(params, all) {
+    List<Proyecto> getList(params, all) {
 //        println "GET LIST: " + params + "   " + all
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
