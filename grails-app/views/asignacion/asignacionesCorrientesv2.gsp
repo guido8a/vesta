@@ -42,7 +42,7 @@
         </thead>
 
         <tr>
-            <td><g:select from="${objetivos}" id="objetivo" name="objetivo_name" optionKey="id" optionValue="descripcion" class="many-to-one form-control input-sm" noSelection="['-1':'Seleccione...']"/></td>
+            <td><g:select from="${objetivos}" id="objetivo" name="objetivo_name" optionKey="id" optionValue="descripcion" class="many-to-one form-control input-sm" noSelection="['-1':'Seleccione...']"  /></td>
 
             <td id="tdMacro"></td>
 
@@ -95,9 +95,13 @@
                 <g:textField name="valor_name" id="valor" class="form-control input-sm number money" style="width: 90px" value=""/>
 
             </td>
-            <td style="width: 50px">
+            <td>
                 <a href="#" id="btnGuardar" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Agregar</a>
-                <a href="#" id="guardarEditar" class="btn btn-sm btn-success hide" ><i class="fa fa-save"></i> Editar</a>
+                <div class="btn-group btn-group-xs" role="group" style="width: 80px;">
+                    <a href="#" id="guardarEditar" class="btn btn-success hide" title="Guardar"><i class="fa fa-save"></i></a>
+                    <a href="#" id="cancelarEditar" class="btn btn-danger hide" title="Cancelar edición">%{--<i class="fa fa-remove"></i>--}%Cancelar</a>
+                </div>
+
             </td>
         </tr>
 
@@ -266,6 +270,11 @@
                     log("Ingrese el nombre de la asignación", "error")
                 }
 
+        });
+
+        $("#cancelarEditar").click(function () {
+            $(this).replaceWith(spinner);
+            location.href="${createLink(controller: "asignacion", action: "asignacionesCorrientesv2")}";
         });
 
     });
