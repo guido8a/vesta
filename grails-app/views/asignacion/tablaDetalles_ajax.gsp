@@ -49,7 +49,9 @@ l<%--
     $(".editar_ajax").click(function () {
         var idEditar = $(this).attr("iden");
         $("#guardarEditar").addClass('show');
+        $("#cancelarEditar").addClass('show');
         $("#btnGuardar").addClass('hide');
+        $("#objetivo").addClass('hide');
 
         var responsableEditar = $(this).parents("tr").attr("data-res");
         var asignacionEditar = $(this).parents("tr").attr("data-asi");
