@@ -36,6 +36,7 @@ class AvalCorrienteController extends Shield {
                 filtroDirector = Persona.get(session.usuario.id)
                 break;
             case "ASAF":
+                unidades = []
                 break;
         }
 
