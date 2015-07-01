@@ -186,23 +186,23 @@ class AvalCorriente {
      * Define las restricciones de cada uno de los campos
      */
     static constraints = {
-        path nullable: true
-        pathLiberacion nullable: true
-        pathAnulacion nullable: true
-        concepto nullable: true
-        contrato nullable: true
-        contratoLiberacion nullable: true
-        memo nullable: true
+        path nullable: true, maxSize: 350
+        pathLiberacion nullable: true, maxSize: 350
+        pathAnulacion nullable: true, maxSize: 350
+        concepto nullable: true, maxSize: 500
+        contrato nullable: true, maxSize: 30
+        contratoLiberacion nullable: true, maxSize: 30
+        memo nullable: true, maxSize: 63
         fechaRevision nullable: true
         observaciones nullable: true
         observacionesPdf nullable: true
         firmaGerente nullable: true
         director nullable: true
         analista nullable: true
-        notaTecnica nullable: true
+        notaTecnica nullable: true, maxSize: 350
         fechaAprobacion nullable: true
         fechaAnulacion nullable: true
-        certificacion nullable: true
+        certificacion nullable: true, maxSize: 50
         firma1 nullable: true
         firma2 nullable: true
         firmaAnulacion1 nullable: true

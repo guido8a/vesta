@@ -635,16 +635,23 @@ class AvalCorrienteController extends Shield {
             def strSolicitud = "solicitud"
 
             def numero
-            def usuarios = Persona.findAllByUnidad(session.usuario.unidad)
+//            println "UNIDAD: " + session.usuario.unidad
+            def usuarios = Persona.findAllByUnidad(sol.usuario.unidad)
+//            println "USUARIOS: " + usuarios
             numero = AvalCorriente.findAllByUsuarioInList(usuarios, [sort: "numeroSolicitud", order: "desc", max: 1])
+//            println "NUMERO: " + numero
             if (numero.size() > 0) {
+//                println "1"
                 numero = numero?.pop()?.numeroSolicitud
             }
             if (!numero) {
+//                println "2"
                 numero = 1
             } else {
+//                println "3"
                 numero = numero + 1
             }
+//            println "numero asignado a la solicitud: " + numero
             sol.numeroSolicitud = numero
             sol.save(flush: true)
             def perfilDireccionPlanificacion = Prfl.findByCodigo("ASAF") //analista administracion
@@ -907,7 +914,29 @@ class AvalCorrienteController extends Shield {
      * Acción que permite al analista negar definativamente un aval
      */
     def negarAval_ajax() {
+        def band = false
+        def usuario = Persona.get(session.usuario.id)
+//        def ok = params.auth.toString().trim().encodeAsMD5() == usuario.autorizacion
+        def ok = true
+        if (ok) {
+            def sol = AvalCorriente.get(params.id)
 
+            def strSolicitud = "solicitud"
+
+            /*todo aqui validar quien puede*/
+            band = true
+            if (band) {
+                sol.estado = EstadoAval.findByCodigo("E03")
+                sol.observaciones = params.obs
+                sol.fechaRevision = new Date()
+                sol.save(flush: true)
+                render "SUCCESS*${strSolicitud.capitalize()} de aval corriente negado exitosamente"
+            } else {
+                render("ERROR*No puede negar solicitudes")
+            }
+        } else {
+            render("ERROR*Clave de autorización incorrecta")
+        }
     }
 
     /**
@@ -926,10 +955,139 @@ class AvalCorrienteController extends Shield {
     }
 
     /**
+     * Acción que permite devolver un aval al analista de administracion
+     */
+    def devolverAvalAPlanificacion() {
+        def sol = AvalCorriente.get(params.id)
+        sol.estado = EstadoAval.findByCodigo("D03") //devuelto al analista
+
+        if (sol.firma1) {
+            sol.firma1.estado = "N"
+            sol.firma1.save(flush: true)
+        }
+        if (sol.firma2) {
+            sol.firma2.estado = "N"
+            sol.firma2.save(flush: true)
+        }
+
+        def strAnulacion = ""
+
+        def now = new Date()
+        def usu = Persona.get(session.usuario.id)
+
+//        def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
+//        def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
+        def analistas = [sol.analista]
+
+        analistas.each { a ->
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = a
+            alerta.fechaEnvio = now
+//            alerta.mensaje = "Devolución de aval: " + sol.concepto
+            alerta.mensaje = "Devolución de ${strAnulacion}aval corriente: " + sol.nombreProceso
+            alerta.controlador = "avalCorriente"
+            alerta.accion = "pendientes"
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
+            }
+            def mail = a.mail
+            if (mail) {
+                try {
+                    mailService.sendMail {
+                        to mail
+                        subject "Devolución de ${strAnulacion}aval corriente"
+//                        body "Su solicitud de aval: " + sol.concepto + " ha sido devuelta por " + usu
+                        body "Su solicitud de ${strAnulacion}aval corriente: " + sol.nombreProceso + " ha sido devuelta por " + usu
+                    }
+                } catch (e) {
+                    println "error al mandar mail"
+                    e.printStackTrace()
+                }
+            } else {
+                println "no tiene mail..."
+            }
+        }
+        render "OK"
+    }
+
+    /**
+     * Acción que permite firmar electrónicamente un Aval corriente
+     */
+    def firmarAval() {
+        println "FIRMAR AVAL: " + params
+        def firma = Firma.findByKey(params.key)
+        if (!firma) {
+            response.sendError(403)
+        } else {
+            def aval = AvalCorriente.findByFirma1OrFirma2(firma, firma)
+            if (aval) {
+                if (aval.firma1.estado == "F" && aval.firma2.estado == "F") {
+                    println "AMBAS FIRMAS OK: PONE NUMERO"
+                    aval.fechaAprobacion = new Date()
+
+                    def numero = AvalCorriente.list([sort: "numeroAval", order: "desc", max: 1])
+                    if (numero.size() > 0) {
+                        numero = numero?.pop()?.numeroAval
+                    }
+                    if (!numero) {
+                        numero = 1
+                    } else {
+                        numero = numero + 1
+                    }
+                    println "NUMERO: " + numero
+                    aval.numeroAval = numero
+
+                    aval.estado = EstadoAval.findByCodigo("E02")
+                    aval.save(flush: true)
+                    try {
+                        def personaMail = aval.firmaGerente.usuario
+//                    def perDir = Prfl.findByCodigo("DRRQ")
+//                    def sesiones = []
+//                    /*drrq*/
+//                    Persona.findAllByUnidad(sol.unidad).each {
+//                        def ses = Sesn.findAllByPerfilAndUsuario(perDir, it)
+//                        if (ses.size() > 0) {
+//                            sesiones += ses
+//                        }
+//                    }
+                        if (personaMail) {
+//                        println "Se enviaran ${sesiones.size()} mails"
+//                        sesiones.each { sesn ->
+//                            Persona usro = sesn.usuario
+                            def mail = personaMail.mail
+                            if (mail) {
+                                mailService.sendMail {
+                                    to mail
+                                    subject "Nuevo aval corriente emitido"
+                                    body "Se ha emitido el aval corriente #" + aval.numeroAval
+                                }
+                            } else {
+                                println "El usuario ${personaMail.login} no tiene email"
+                            }
+//                        }
+                        } else {
+                            println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
+                        }
+                    } catch (e) {
+                        println "Error al enviar mail: ${e.printStackTrace()}"
+                    }
+//            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
+                }
+                def url = g.createLink(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
+                render "${url}"
+            } else {
+                println "error.......no se encontro aval con la firma id ${firma.id}"
+                render "ERROR"
+            }
+        }
+    }
+
+    /**
      * Acción que permite descargar el archivo de la solicitud
      * @param id el id de la solicitud
      */
-    def descargaSolicitud = {
+    def descargaSolicitud() {
         def sol = AvalCorriente.get(params.id)
         def path = servletContext.getRealPath("/") + "pdf/solicitudAvalCorriente/" + sol.path
 

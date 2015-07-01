@@ -37,7 +37,6 @@
                     <th style="width: 85px">Inicio</th>
                     <th style="width: 85px">Fin</th>
                     <th>Monto</th>
-                    <th>Observaciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,7 +51,6 @@
                             <td>${proc.fechaInicioProceso.format("dd-MM-yyyy")}</td>
                             <td>${proc.fechaFinProceso.format("dd-MM-yyyy")}</td>
                             <td class="text-right"><g:formatNumber number="${proc.monto}" type="currency" currencySymbol=""/></td>
-                            <td>${proc.observaciones}</td>
                         </tr>
                     </g:each>
                 </g:if>

@@ -660,7 +660,6 @@ class ReporteSolicitudController {
         return [reunion: reunion, solicitudes: solicitudes, firmas: firmas, anios: anios]
     }
 
-
     def solicitudReformaPdf = {
         def sol = SolicitudModPoa.get(params.id)
         def fecha = sol.fecha.format("dd-MM-yyyy")
@@ -699,7 +698,7 @@ class ReporteSolicitudController {
 
     def avalCorriente() {
         def proceso = AvalCorriente.get(params.id)
-        def transf = NumberToLetterConverter.convertNumberToLetter(solicitud?.monto)
+        def transf = NumberToLetterConverter.convertNumberToLetter(proceso?.monto)
         return [proceso: proceso, detalles: AvalCorrienteController.arreglarDetalles(proceso), transf: transf]
     }
 }

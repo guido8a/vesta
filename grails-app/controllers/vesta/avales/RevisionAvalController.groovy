@@ -51,7 +51,7 @@ class RevisionAvalController extends Shield {
                 sol.observaciones = params.obs
                 sol.fechaRevision = new Date()
                 sol.save(flush: true)
-                render "SUCCES*${strSolicitud.capitalize()} de aval negado exitosamente"
+                render "SUCCESS*${strSolicitud.capitalize()} de aval negado exitosamente"
             } else {
                 render("ERROR*No puede negar solicitudes")
             }

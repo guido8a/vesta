@@ -137,6 +137,8 @@
         </g:form>
 
         <script type="text/javascript">
+            var total = ${total};
+
             function getMaximo(asg) {
                 if ($("#asignacion").val() != "-1") {
                     $.ajax({
@@ -262,6 +264,7 @@
                                 log(parts[1], parts[0]);
                                 vaciar();
                                 getDetalle();
+                                total += monto;
                             }
                         });
                     } else {
@@ -281,7 +284,7 @@
                 });
 
                 $("#btnEnviar").click(function () {
-                    if (parseFloat("${total}") > 0) {
+                    if (total > 0) {
                         bootbox.confirm("<strong>¿Está seguro de querer enviar la solicitud?</strong><br/><br/>" +
                                         "Una vez enviada ya no se podrá modificar los datos de la Solicitud", function (res) {
                             if (res) {
