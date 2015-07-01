@@ -173,6 +173,15 @@ class Asignacion {
         }
     }
 
+    String getStringCorriente() {
+        if (this.marcoLogico) {
+//            "<b>Responsable:</b> ${this.unidad}<b>  Priorizado: </b>${this.planificado}  <b> Partida Presupuestaria: </b>${this.presupuesto}<b> Año</b>: ${this.anio}"
+            return (this.actividad ? "<b>Asignación: </b>${this.actividad}" : "") + "<b>Priorizado: </b>${this.priorizado}  <b> Partida Presupuestaria: </b>${this.presupuesto}"
+        } else {
+            return (this.actividad ? "<b>Asignación: </b>${this.actividad}" : "") + "<b> Priorizado:</b> ${this.priorizado}  <b> Partida Presupuestaria: </b>${this.presupuesto}"
+        }
+    }
+
     /**
      * Calcula el valor real de la asignación teniendo en cuenta la reubicación
      * @return el valor real calculado

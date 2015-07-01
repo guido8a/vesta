@@ -17,13 +17,6 @@ class FirmaController extends Shield {
 
 //        def firmas = Firma.findAllByUsuarioAndEstado(session.usuario, "S", [sort: "id"])
 
-        def firmas = Firma.withCriteria {
-            eq("usuario", session.usuario)
-            eq("estado", "S")
-            isNull("tipoFirma")
-            order("fecha", "desc")
-        }
-
         def firmasReformas = Firma.withCriteria {
             eq("usuario", session.usuario)
             eq("estado", "S")
@@ -38,24 +31,10 @@ class FirmaController extends Shield {
             order("fecha", "desc")
         }
 
-        def firmasAjustesCorrientes = Firma.withCriteria {
-            eq("usuario", session.usuario)
-            eq("estado", "S")
-            eq("tipoFirma", "AJSC")
-            order("fecha", "desc")
-        }
-
         def firmasAvales = Firma.withCriteria {
             eq("usuario", session.usuario)
             eq("estado", "S")
             eq("tipoFirma", "AVAL")
-            order("fecha", "desc")
-        }
-
-        def firmasAvalesCorrientes = Firma.withCriteria {
-            eq("usuario", session.usuario)
-            eq("estado", "S")
-            eq("tipoFirma", "AVCR")
             order("fecha", "desc")
         }
 
@@ -69,8 +48,8 @@ class FirmaController extends Shield {
         def imgFirma = "<i class='fa fa-pencil'></i>";
 //        def imgFirma = "<img src='${resource(dir: 'images/ico', file: 'feather.png')}' alt='Firmar'/>"
 
-        return [firmas      : firmas, firmasReformas: firmasReformas, firmasAjustes: firmasAjustes, firmasAjustesCorrientes: firmasAjustesCorrientes,
-                firmasAvales: firmasAvales, firmasAvalesCorrientes: firmasAvalesCorrientes, actual: actual, imgFirma: imgFirma, params: params]
+        return [firmasReformas: firmasReformas, firmasAjustes: firmasAjustes,
+                firmasAvales  : firmasAvales, actual: actual, imgFirma: imgFirma, params: params]
 
     }
 /**
@@ -93,8 +72,81 @@ class FirmaController extends Shield {
                 ge("fecha", fechaInicio)
                 le("fecha", fechaFin)
                 eq("usuario", session.usuario)
-                if (params.tipo && params.tipo != "") {
-                    eq("tipoFirma", params.tipo)
+                and {
+                    if (params.tipo && params.tipo != "") {
+                        eq("tipoFirma", params.tipo)
+                    }
+                    not {
+                        inList("tipoFirma", ["AVCR", "AJSC"])
+                    }
+                }
+                order("fecha", "desc")
+            }
+        }
+        return [datos: datos]
+    }
+    /**
+     * Acción que muestra una lista de las solicitudes de firma pendientes
+     * @param anio es el anio para mostrar el historial de firmas
+     */
+    def firmasCorrientesPendientes = {
+
+//        def firmas = Firma.findAllByUsuarioAndEstado(session.usuario, "S", [sort: "id"])
+
+        def firmasAjustesCorrientes = Firma.withCriteria {
+            eq("usuario", session.usuario)
+            eq("estado", "S")
+            eq("tipoFirma", "AJSC")
+            order("fecha", "desc")
+        }
+
+        def firmasAvalesCorrientes = Firma.withCriteria {
+            eq("usuario", session.usuario)
+            eq("estado", "S")
+            eq("tipoFirma", "AVCR")
+            order("fecha", "desc")
+        }
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def imgFirma = "<i class='fa fa-pencil'></i>";
+//        def imgFirma = "<img src='${resource(dir: 'images/ico', file: 'feather.png')}' alt='Firmar'/>"
+
+        return [firmasAjustesCorrientes: firmasAjustesCorrientes, firmasAvalesCorrientes: firmasAvalesCorrientes, actual: actual, imgFirma: imgFirma, params: params]
+
+    }
+/**
+ * Acción que muestra una lista con el hisotrial del firmas
+ * @param anio es el anio para mostrar el historial de firmas
+ */
+    def historialCorrientes = {
+//        println "historial " + params
+        def anio = Anio.get(params.anio).anio
+
+        def datos = []
+        def fechaInicio
+        def fechaFin
+        if (anio && anio != "") {
+            fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
+            fechaFin = new Date().parse("dd-MM-yyyy hh:mm:ss", "31-12-" + anio + " 23:59:59")
+//            println "inicio "+fechaInicio+"  fin  "+fechaFin
+//            datos += Firma.findAllByFechaBetweenAndUsuario(fechaInicio, fechaFin, session.usuario)
+            datos = Firma.withCriteria {
+                ge("fecha", fechaInicio)
+                le("fecha", fechaFin)
+                eq("usuario", session.usuario)
+                and {
+                    if (params.tipo && params.tipo != "") {
+                        eq("tipoFirma", params.tipo)
+                    }
+                    not {
+                        inList("tipoFirma", ["AVAL", "RFRM", "AJST"])
+                    }
                 }
                 order("fecha", "desc")
             }

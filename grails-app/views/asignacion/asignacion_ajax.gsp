@@ -7,7 +7,7 @@
 
 <g:select from="${asignaciones}" optionKey="id" name="asg${params.mod}" noSelection="['-1': 'Seleccione...']"
           optionValue='${{
-              "Monto: " + g.formatNumber(number: it.priorizado, type: "currency", currencySymbol: " ") + ", Partida: " + it.presupuesto.numero + ", Fuente: " + it.fuente.codigo
+              (it.actividad ? ("Asignación: " + it.actividad + ", ") : "") + "Monto: " + g.formatNumber(number: it.priorizado, type: "currency", currencySymbol: " ") + ", Partida: " + it.presupuesto.numero + ", Fuente: " + it.fuente.codigo
           }}'
           style="width: 100%" class="form-control input-sm"/>
 

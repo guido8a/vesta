@@ -32,7 +32,7 @@
                 <td>${det.asignacion.tarea.actividad.macroActividad.descripcion}</td>
                 <td>${det.asignacion.tarea.actividad.descripcion}</td>
                 <td>${det.asignacion.tarea.descripcion}</td>
-                <td>${det.asignacion.string}</td>
+                <td>${det.asignacion.stringCorriente}</td>
                 <td class="text-right"><g:formatNumber number="${det.monto}" type="currency" currencySymbol=""/></td>
                 <td>
                     <a href="#" class="btn btn-danger btn-xs btnDelete" data-id="${det.id}" title="Eliminar">

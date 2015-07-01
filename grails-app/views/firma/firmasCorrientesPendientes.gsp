@@ -38,14 +38,12 @@
                 %{--<li role="presentation" class="active">--}%
                 %{--<a href="#NULL" class="active" role="tab" data-toggle="tab">Firmas Pendientes</a>--}%
                 %{--</li>--}%
+
                 <li role="presentation">
-                    <a href="#AVAL" class="" role="tab" data-toggle="tab">Firmas solicitud de aval</a>
+                    <a href="#AVCR" class="" role="tab" data-toggle="tab">Firmas solicitud de aval corrientes</a>
                 </li>
                 <li role="presentation">
-                    <a href="#RFRM" class="" role="tab" data-toggle="tab">Firmas solicitud de reforma</a>
-                </li>
-                <li role="presentation">
-                    <a href="#AJST" class="" role="tab" data-toggle="tab">Firmas solicitud de ajuste</a>
+                    <a href="#AJSC" class="" role="tab" data-toggle="tab">Firmas solicitud de ajuste corriente</a>
                 </li>
                 <li role="presentation">
                     <a href="#HIST" class="" role="tab" data-toggle="tab">Historial</a>
@@ -54,8 +52,8 @@
 
             <div class="tab-content">
 
-                <div role="tabpanel" class="tab-pane fade" id="AVAL">
-                    <g:if test="${firmasAvales.size() > 0}">
+                <div role="tabpanel" class="tab-pane fade" id="AVCR">
+                    <g:if test="${firmasAvalesCorrientes.size() > 0}">
                         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
                                 <tr>
@@ -64,7 +62,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <g:each in="${firmasAvales}" var="f">
+                                <g:each in="${firmasAvalesCorrientes}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         <td>${f.concepto}</td>
                                         <td style="text-align: center">
@@ -109,8 +107,8 @@
                     </g:else>
                 </div>
 
-                <div role="tabpanel" class="tab-pane fade" id="RFRM">
-                    <g:if test="${firmasReformas.size() > 0}">
+                <div role="tabpanel" class="tab-pane fade" id="AJSC">
+                    <g:if test="${firmasAjustesCorrientes.size() > 0}">
                         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
                                 <tr>
@@ -119,62 +117,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <g:each in="${firmasReformas}" var="f">
-                                    <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
-                                        <td>${f.concepto}</td>
-                                        <td style="text-align: center">
-                                            <div class="btn-group btn-group-sm" role="group">
-                                                <g:if test="${f.accionVer}">
-                                                %{--<g:if test="${f.esPdf != 'N'}">--}%
-                                                    <g:if test="${f.esPdf == 'S'}">
-                                                        <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
-                                                           target="_blank" class="btn btn-info" title="Ver">
-                                                            <i class="fa fa-search"></i>
-                                                        </a>
-                                                    </g:if>
-                                                    <g:else>
-                                                        <a href="${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
-                                                           class="btn btn-info" title="Ver">
-                                                            <i class="fa fa-search"></i>
-                                                        </a>
-                                                    </g:else>
-                                                </g:if>
-                                                <a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">
-                                                    ${imgFirma}
-                                                </a>
-                                                <g:if test="${f.tipoFirma && f.tipoFirma != ''}">
-                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
-                                                        <i class="fa fa-thumbs-down"></i>
-                                                    </a>
-                                                </g:if>
-                                                <g:else>
-                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
-                                                        <i class="fa fa-thumbs-down"></i>
-                                                    </a>
-                                                </g:else>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </g:each>
-                            </tbody>
-                        </table>
-                    </g:if>
-                    <g:else>
-                        <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen firmas de reformas pendientes</div>
-                    </g:else>
-                </div>
-
-                <div role="tabpanel" class="tab-pane fade" id="AJST">
-                    <g:if test="${firmasAjustes.size() > 0}">
-                        <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
-                            <thead>
-                                <tr>
-                                    <th>Concepto</th>
-                                    <th style="width: 250px;">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <g:each in="${firmasAjustes}" var="f">
+                                <g:each in="${firmasAjustesCorrientes}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         <td>${f.concepto}</td>
                                         <td style="text-align: center">
@@ -249,7 +192,7 @@
         <script>
             function cargarHistorial() {
                 $.ajax({
-                    type    : "POST", url : "${createLink(action:'historial', controller: 'firma')}",
+                    type    : "POST", url : "${createLink(action:'historialCorrientes', controller: 'firma')}",
                     data    : {
                         anio : $("#anio").val(),
                         tipo : $("#tipo").val()

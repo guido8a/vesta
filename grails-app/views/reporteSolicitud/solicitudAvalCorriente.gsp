@@ -127,7 +127,7 @@
                                 <g:each in="${det.asignaciones}" var="a">
                                     <g:set var="total" value="${total + a.monto}"/>
                                     <tr>
-                                        <td>${a.asg.presupuesto}</td>
+                                        <td>${a.asg.actividad ? a.asg.actividad + " - " : ""}${a.asg.presupuesto}</td>
                                         <td>${a.asg.fuente}</td>
                                         <td class="text-right"><g:formatNumber number="${a.monto}" type="currency" currencySymbol=""/></td>
                                     </tr>
