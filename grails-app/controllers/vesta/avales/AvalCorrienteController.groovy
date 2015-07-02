@@ -547,7 +547,7 @@ class AvalCorrienteController extends Shield {
                 alerta1.fechaEnvio = new Date()
                 alerta1.mensaje = "${strSolicitud.capitalize()} de aval corriente: " + solicitud.nombreProceso
                 alerta1.controlador = "firma"
-                alerta1.accion = "firmasPendientes"
+                alerta1.accion = "firmasCorrientesPendientes"
                 alerta1.parametros = "tab=AVCR"
                 println alerta1
                 if (!alerta1.save(flush: true)) {
@@ -771,7 +771,7 @@ class AvalCorrienteController extends Shield {
 
                             firma1.tipoFirma = "AVCR"
 
-                            firma1.concepto = "Aprobación del aval corriente ${sol.concepto}"
+                            firma1.concepto = "Aprobación del aval corriente: ${sol.concepto}"
                             firma1.esPdf = "S"
                             if (!firma1.save(flush: true)) {
                                 println "error firma1 " + firma1.errors
@@ -831,7 +831,7 @@ class AvalCorrienteController extends Shield {
                         alerta1.fechaEnvio = new Date()
                         alerta1.mensaje = "Aval corriente pendiente de firma para aprobación: " + sol.concepto
                         alerta1.controlador = "firma"
-                        alerta1.accion = "firmasPendientes"
+                        alerta1.accion = "firmasCorrientesPendientes"
                         alerta1.parametros = "tab=AVCR"
                         if (!alerta1.save(flush: true)) {
                             println "error alerta1: " + alerta1.errors

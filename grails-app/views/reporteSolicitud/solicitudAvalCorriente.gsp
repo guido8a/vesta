@@ -30,6 +30,10 @@
         .tbl-small td, .tbl-small th {
             border : solid 1px #AAA;
         }
+
+        .tbl-small th {
+            text-align : center;
+        }
         </style>
     </head>
 
@@ -118,6 +122,8 @@
                             <thead>
                                 <tr>
                                     <th>Asignación</th>
+                                    <th># partida</th>
+                                    <th>Partida</th>
                                     <th>Fuente</th>
                                     <th>Monto</th>
                                 </tr>
@@ -127,7 +133,9 @@
                                 <g:each in="${det.asignaciones}" var="a">
                                     <g:set var="total" value="${total + a.monto}"/>
                                     <tr>
-                                        <td>${a.asg.actividad ? a.asg.actividad + " - " : ""}${a.asg.presupuesto}</td>
+                                        <td>${a.asg.actividad ?: ""}</td>
+                                        <td>${a.asg.presupuesto.numero}</td>
+                                        <td>${a.asg.presupuesto.descripcion}</td>
                                         <td>${a.asg.fuente}</td>
                                         <td class="text-right"><g:formatNumber number="${a.monto}" type="currency" currencySymbol=""/></td>
                                     </tr>
@@ -135,7 +143,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="2">TOTAL</th>
+                                    <th colspan="4">TOTAL</th>
                                     <td class="text-right"><g:formatNumber number="${total}" type="currency" currencySymbol=""/></td>
                                 </tr>
                             </tfoot>
@@ -144,5 +152,11 @@
                 </tr>
             </table>
         </g:each>
+
+        <div class="texto">
+            <p>
+                <strong>Nota Técnica:</strong> ${proceso.notaTecnica}
+            </p>
+        </div>
     </body>
 </html>
