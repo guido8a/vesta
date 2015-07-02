@@ -42,7 +42,7 @@
             <tbody>
                 <g:if test="${procesos.size() > 0}">
                     <g:each in="${procesos}" var="proc">
-                        <tr>
+                        <tr data-id="${proc.id}" data-estado="${proc.estado.codigo}">
                             <td>${proc.usuario.unidad} - ${proc.usuario}</td>
                             <td>${proc.nombreProceso}</td>
                             <td>${proc.concepto}</td>
@@ -63,6 +63,55 @@
                 </g:else>
             </tbody>
         </table>
+
+        <script type="text/javascript">
+            function createContextMenu(node) {
+                var $tr = $(node);
+
+                var id = $tr.data("id");
+                var estado = $tr.data("estado");
+                var estaAprobado = estado == "E02";
+
+                var items = {
+                    header    : {
+                        label  : "Acciones",
+                        header : true
+                    },
+                    solicitud : {
+                        label  : "Solicitud",
+                        icon   : "fa fa-print",
+                        action : function ($element) {
+                            var url = "${g.createLink(controller: 'reporteSolicitud',action: 'solicitudAvalCorriente')}/" + id;
+                            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud_aval_corriente.pdf";
+                        }
+                    }
+                };
+
+                if (estaAprobado) {
+                    items.aval = {
+                        label  : "Aval",
+                        icon   : "fa fa-print",
+                        action : function ($element) {
+                            var url = "${g.createLink(controller: 'reporteSolicitud',action: 'avalCorriente')}/" + id;
+                            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval_corriente.pdf";
+                        }
+                    };
+                }
+
+                return items;
+            }
+            $(function () {
+                $("tbody>tr").contextMenu({
+                    items  : createContextMenu,
+                    onShow : function ($element) {
+                        $element.addClass("success");
+                    },
+                    onHide : function ($element) {
+                        $(".success").removeClass("success");
+                    }
+                });
+            });
+        </script>
 
     </body>
 </html>
