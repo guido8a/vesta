@@ -157,11 +157,13 @@ class AsignacionController extends Shield {
         def fuente = Fuente.get(params.fuente)
         def partida = Presupuesto.get(params.partida)
 
+
         def asignacionInstance = new Asignacion()
 
         if (params.id) {
             asignacionInstance = Asignacion.get(params.id)
 
+            asignacionInstance.tarea = tarea
             asignacionInstance.unidad = unidad
             asignacionInstance.actividad = params.asignacion
             asignacionInstance.presupuesto = partida
@@ -1294,16 +1296,12 @@ class AsignacionController extends Shield {
         if(!params.mod) {
             params.mod = ""
         }
-
-        println("paranms ma " + params)
-
         def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
 
         def macroActividades = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
 
-        println("ma " + macroActividades)
 
-        return [macro: macroActividades, params:params]
+        return [macro: macroActividades, params:params, valor: params.mac ?: '']
 
     }
 
@@ -1317,7 +1315,7 @@ class AsignacionController extends Shield {
 
         def actividades = ActividadCorriente.findAllByAnioAndMacroActividad(anio, macro)
 
-        return [actividades: actividades, params: params]
+        return [actividades: actividades, params: params, valor: params.act ?: '']
     }
 
     def tarea_ajax () {
@@ -1329,7 +1327,7 @@ class AsignacionController extends Shield {
 
         def tareas = Tarea.findAllByActividad(actvidad)
 
-        return [tareas : tareas, params: params]
+        return [tareas : tareas, params: params, valor: params.tar ?: '']
     }
 
     def asignacion_ajax () {
@@ -1346,10 +1344,21 @@ class AsignacionController extends Shield {
 
 
     def tablaDetalles_ajax () {
-
         def anio = Anio.get(params.anio)
+        def asignaciones
 
-        def asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio)
+        if(params.objetivo != -1 &&  params.objetivo != 'T'){
+
+            def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+            def macros = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+            def actividades = ActividadCorriente.findAllByMacroActividadInList(macros)
+            def tareas = Tarea.findAllByActividadInList(actividades)
+            asignaciones = Asignacion.findAllByTareaInListAndAnio(tareas, anio)
+
+        }
+        if(params.objetivo == 'T'){
+        asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio)
+        }
 
         return [asignaciones: asignaciones]
     }
@@ -1400,6 +1409,144 @@ class AsignacionController extends Shield {
             /*el ancho de las columnas en porcentajes... solo enteros*/
             redirect(controller: "reportesBuscador", action: "reporteBuscador", params: [listaCampos: listaCampos, listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado, criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras", anchos: anchos, extras: extras, landscape: true])
         }
+    }
+
+
+    def macroCreacion_ajax () {
+        if(!params.mod) {
+            params.mod = ""
+        }
+
+        println("paranms MC " + params)
+
+        def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+
+        def macroActividades = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+
+        println("ma " + macroActividades)
+
+        return [macro: macroActividades, params:params]
+
+    }
+
+
+    def asignacionCreacion_ajax(){
+
+        def fuentes = Fuente.list([sort: 'descripcion'])
+        def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
+
+        return [fuentes: fuentes, campos: campos]
+
+    }
+
+
+    def tareaCreacion_ajax() {
+        def objetivo = ObjetivoGastoCorriente.get(params.objetivo);
+        def macro = MacroActividad.get(params.macro)
+        def actividad = ActividadCorriente.get(params.acti);
+
+        return [objetivo: objetivo, macro: macro, actividad: actividad]
+    }
+
+
+    def actividadCreacion_ajax() {
+
+        def objetivo = ObjetivoGastoCorriente.get(params.objetivo);
+        def macro = MacroActividad.get(params.macro)
+
+        return [objetivo: objetivo, macro: macro]
+
+    }
+
+    def guardarActividad_ajax () {
+        println("params ga " + params )
+        def macro = MacroActividad.get(params.macro)
+        def anio = Anio.get(params.anio)
+
+        def actividadCorrienteInstance = new ActividadCorriente()
+
+        if(params.id){
+            if(!actividadCorrienteInstance){
+                render "ERROR*No se encontró ninguna actividad"
+                return
+            }
+        }else{
+
+            actividadCorrienteInstance.macroActividad =  macro
+            actividadCorrienteInstance.descripcion = params.desc
+            actividadCorrienteInstance.anio = anio
+            actividadCorrienteInstance.meta = params.meta
+
+            if(!actividadCorrienteInstance.save(flush: true)){
+                println(actividadCorrienteInstance.errors)
+                render "ERROR*Ha ocurrido un error al grabar la actividad"
+                return
+            }
+        }
+
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de actividad exitosa."
+        return
+    }
+
+    def guardarTarea_ajax () {
+        println("params gtarea " + params )
+        def actividad = ActividadCorriente.get(params.actividad)
+        def tareaInstance = new Tarea()
+
+        if(params.id){
+            if(!tareaInstance){
+                render "ERROR*No se encontró ninguna tarea"
+                return
+            }
+        }else{
+            tareaInstance.descripcion = params.desc
+            tareaInstance.actividad = actividad
+
+            if(!tareaInstance.save(flush: true)){
+                println(tareaInstance.errors)
+                render "ERROR*Ha ocurrido un error al grabar la tarea"
+                return
+            }
+        }
+
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de tarea exitosa."
+        return
+    }
+
+
+    def actividadesTareas_ajax () {
+
+        def macro = MacroActividad.get(params.macro)
+
+        return [macro: macro]
+    }
+
+    def totalObjetivo_ajax() {
+
+        def anio = Anio.get(params.anio)
+
+        def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+
+        def macro = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+
+        def actividad = ActividadCorriente.findAllByMacroActividadInList(macro)
+
+        def tarea = Tarea.findAllByActividadInList(actividad)
+
+        def asignacion = Asignacion.findAllByTareaInListAndAnio(tarea,anio)
+
+        def totalObjetivo = 0
+
+        asignacion.each {
+            totalObjetivo += it?.planificado
+        }
+
+        def presupuesto = PresupuestoUnidad.findByAnio(anio)
+
+        def restante = (presupuesto?.maxCorrientes) - (totalObjetivo)
+
+        return [totalObjetivo: totalObjetivo, maximo: presupuesto, restante: restante]
+
     }
 
 }

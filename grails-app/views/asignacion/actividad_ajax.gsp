@@ -6,10 +6,12 @@
 --%>
 
 <g:select from="${actividades}" optionValue="descripcion" optionKey="id" name="act${params.mod}" noSelection="['-1': 'Seleccione...']"
-          style="width: 100%" class="form-control input-sm"/>
+          style="width: 100%" class="form-control input-sm" value="${valor}"/>
 
 <script>
     $("#act${params.mod}").change(function () {
+        $("#crearTarea").addClass('show');
+        $("#crearActividad").addClass('show');
         $("#tdTarea${params.mod}").html(spinner);
         $.ajax({
             type    : "POST",
@@ -19,6 +21,7 @@
                 mod: "${params.mod}"
             },
             success : function (msg) {
+
                 $("#tdTarea${params.mod}").html(msg);
                 $("#tdAsignacion${params.mod}").html("");
                 $("#max${params.mod}").html("");

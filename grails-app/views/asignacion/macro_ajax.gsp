@@ -6,10 +6,12 @@
 --%>
 
 <g:select from="${macro}" optionValue="descripcion" optionKey="id" name="mac${params.mod}" noSelection="['-1': 'Seleccione...']"
-          style="width: 100%" class="form-control input-sm"/>
+          style="width: 100%" class="form-control input-sm" value="${valor}"/>
 
 <script>
     $("#mac${params.mod}").change(function () {
+
+        cargarActividadesTareas($(".mac").val());
         $("#tdActividad${params.mod}").html(spinner);
         <g:if test="${params.copiar == 'S'}">
         cargarActividadesAnio();
@@ -29,6 +31,8 @@
                 $("#tdTarea${params.mod}").html("");
                 $("#tdAsignacion${params.mod}").html("");
                 $("#max${params.mod}").html("");
+                $("#crearTarea").removeClass('show').addClass('hide');
+                $("#divColor1").removeClass("show").addClass("hide");
             }
         });
         </g:else>

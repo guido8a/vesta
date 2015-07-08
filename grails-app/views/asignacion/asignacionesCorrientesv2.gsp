@@ -11,75 +11,91 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main"/>
     <title>Asignaciones gastos corrientes</title>
-
-    <style type="text/css">
-
-    </style>
-
 </head>
 
 <body>
 
-<h1>
-    <form class="form-inline">
-        <div class="form-group">
-            <label>Año</label>
-            <g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" name="anio" optionKey="id" optionValue="anio" class="many-to-one form-control input-sm" value="${actual.id}" />
-        </div>
-    </form>
-</h1>
+<div class="btn-group btn-group-sm" role="group" style="width: 300px;">
+    <a href="#" id="btnProgramacion" class="btn btn-success" title="Programación"><i class="fa fa-gear"></i> Programación</a>
+    <a href="#" id="btnVerTodos" class="btn btn-success" title="Ver todas"><i class="fa fa-search"></i> Ver todas</a>
+    <a href="#" id="btnReporte" class="btn btn-success" title="Reporte"><i class="fa fa-print"></i> Reporte</a>
+</div>
+
+%{--<h1>--}%
+    %{--<form class="form-inline">--}%
+        %{--<div class="form-group">--}%
+            %{--<label>Año</label>--}%
+            %{--<g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" name="anio" optionKey="id" optionValue="anio" class="many-to-one form-control input-sm" value="${actual.id}" />--}%
+        %{--</div>--}%
+    %{--</form>--}%
+%{--</h1>--}%
 
 <div style="margin-top: 15px;">
 
-    <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
-        <thead>
-        <tr>
-            <th style="width: 250px">Objetivo gasto corriente</th>
-            <th style="width: 250px;">Macro Actividad</th>
-            <th style="width: 250px">Actividad gasto corriente</th>
-            <th style="width: 250px">Tarea</th>
-        </tr>
-        </thead>
 
-        <tr>
-            <td><g:select from="${objetivos}" id="objetivo" name="objetivo_name" optionKey="id" optionValue="descripcion" class="many-to-one form-control input-sm" noSelection="['-1':'Seleccione...']"  /></td>
 
-            <td id="tdMacro"></td>
+            <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
+                <thead>
+                <tr>
+                    <th style="width: 150px;">Año</th>
+                    <th style="width: 380px">Objetivo gasto corriente</th>
+                    <th style="width: 380px;">Macro Actividad</th>
+                </tr>
+                </thead>
 
-            <td id="tdActividad"></td>
+                <tr>
+                    <td style="width: 150px"><g:select from="${vesta.parametros.poaPac.Anio.list([sort:'anio'])}" name="anio" optionKey="id" optionValue="anio" class="many-to-one form-control input-sm" value="${actual.id}" /></td>
 
-            <td id="tdTarea"></td>
+                    <td style="width: 400px"><g:select from="${objetivos}" id="objetivo" name="objetivo_name" optionKey="id" optionValue="descripcion" class="many-to-one form-control input-sm " noSelection="['-1':'Seleccione...']" /></td>
 
-        </tr>
-    </table>
+                    <td id="tdMacro" style="width: 400px"></td>
+
+                </tr>
+            </table>
+
+    <div id="divTotales">
+
+    </div>
+
+
 </div>
+
+<div id="divActividadesTareas"></div>
+
 
 
 <fieldset class="ui-corner-all" style="min-height: 110px;font-size: 11px;">
-    <legend>
+    <legend id="titulo2">
         Ingreso de datos
+        <div class="hide" style="color: #5cb74c" id="divColor2">
+        Editando...
+        </div>
     </legend>
+   <div id="divIngreso">
+
+   </div>
     %{--<g:if test="${max}">--}%
     %{--<g:if test="${max?.aprobadoCorrientes==0}">--}%
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
         <thead>
-        <th style="width: 200px">Responsable</th>
-        <th style="width: 220px">Asignación</th>
+        <th style="width: 250px">Responsable</th>
+        <th style="width: 270px">Asignación</th>
         <th style="width: 210px;">Partida</th>
         <th style="width: 150px;">Fuente</th>
-        <th style="width: 90px;">Presupuesto</th>
-        <th style="width: 50px;"></th>
+        <th style="width: 100px;">Presupuesto</th>
+        <th style="width: 100px;"></th>
         </thead>
         <tbody>
 
         <tr class="odd">
             <g:hiddenField name="asignacionId" value=""/>
             <td>
-                <g:select name="responsable" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" optionValue="nombre" style="width: 200px" class="many-to-one form-control input-sm"/>
+                <g:select name="responsable" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" optionValue="nombre" style="width: 250px" class="many-to-one form-control input-sm"/>
             </td>
             <td class="actividad">
-                %{--<textarea style="width: 220px;height: 40px;resize: none;" id="asignacion_txt" maxlength="100" class="form-control input-sm"></textarea>--}%
-                <g:textField name="asignacion_name" style="width: 220px; height: 40px" id="asignacion_txt" maxlength="100" class="form-control input-sm"/>
+                %{--<g:textField name="asignacion_name" style="width: 220px; height: 40px" id="asignacion_txt" maxlength="100" class="form-control input-sm"/>--}%
+
+                <g:textArea name="asignacion_name" style="width: 270px;height: 60px; resize: none" id="asignacion_txt" maxlength="150" class="form-control input-sm"/>
 
             </td>
 
@@ -92,14 +108,14 @@
             </td>
 
             <td class="valor">
-                <g:textField name="valor_name" id="valor" class="form-control input-sm number money" style="width: 90px" value=""/>
+                <g:textField name="valor_name" id="valor" class="form-control input-sm number" style="width: 100px" value=""/>
 
             </td>
             <td>
                 <a href="#" id="btnGuardar" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Agregar</a>
-                <div class="btn-group btn-group-xs" role="group" style="width: 80px;">
+                <div class="btn-group btn-group-xs" role="group" style="width: 100px;">
                     <a href="#" id="guardarEditar" class="btn btn-success hide" title="Guardar"><i class="fa fa-save"></i></a>
-                    <a href="#" id="cancelarEditar" class="btn btn-danger hide" title="Cancelar edición">%{--<i class="fa fa-remove"></i>--}%Cancelar</a>
+                    <a href="#" id="cancelarEditar" class="btn btn-danger hide" title="Cancelar edición"><i class="fa fa-remove"></i>Cancelar</a>
                 </div>
 
             </td>
@@ -126,11 +142,13 @@
     <g:set var="total" value="0"/>
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
         <thead>
-        <th style="width: 300px">Asignación</th>
-        <th style="width: 300px;">Partida</th>
-        <th style="width: 200px">Fuente</th>
-        <th style="width: 150px">Presupuesto</th>
-        <th>Acciones</th>
+        <th style="width: 250px">Objetivo</th>
+        <th style="width: 250px">Macro Actividad</th>
+        <th style="width: 250px">Asignación</th>
+        <th style="width: 250px;">Partida</th>
+        <th style="width: 80px">Fuente</th>
+        <th style="width: 100px">Presupuesto</th>
+        <th style="width: 100px">Acciones</th>
         </thead>
         <tbody id="tdDetalles">
 
@@ -140,16 +158,14 @@
 
 <script type="text/javascript">
 
-    cargarDetalles();
-
-
-    function cargarDetalles () {
+    function cargarDetalles (objetivo) {
 
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'asignacion', action:'tablaDetalles_ajax')}",
             data    : {
-                anio : $("#anio").val()
+                anio : $("#anio").val(),
+                objetivo: objetivo
             },
             success : function (msg) {
                 $("#tdDetalles").html(msg);
@@ -157,28 +173,86 @@
         });
     }
 
-    $("#objetivo").change(function () {
-//        console.log("entro " + $("#anio_asg").val())
-        $("#tdMacro").html(spinner);
+    function cargarActividadesTareas (macro) {
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
+            url     : "${createLink(controller: 'asignacion', action:'actividadesTareas_ajax')}",
             data    : {
-                objetivo : $("#objetivo").val()
+                anio : $("#anio").val(),
+                macro: macro
             },
             success : function (msg) {
-                $("#tdMacro").html(msg);
-                $("#tdActividad").html("");
-                $("#tdTarea").html("");
+                $("#divActividadesTareas").html(msg);
             }
         });
-    });
+    }
 
-    $("#anio").change(function () {
-        location.href = "${createLink(action: 'asignacionesCorrientesv2')}?anio="+$(this).val();
-    });
+    function estadoAnterior () {
+        //estado anterior
+        $("#btnVerTodos").addClass('show');
+        $("#divColor1").removeClass("show").addClass("hide");
+        $("#divColor2").removeClass("show").addClass("hide");
+        $("#guardarEditar").removeClass("show").addClass('hide');
+        $("#cancelarEditar").removeClass("show").addClass('hide');
+        $("#btnGuardar").addClass('show');
+        $("#anio").prop('disabled', false);
+        $("#mac").prop('disabled',false);
+        $("#objetivo").prop('disabled',false);
+        $("#crearActividad").removeClass('hide').addClass('show');
+        $("#crearTarea").removeClass('hide').addClass('show');
+        $("#asignacion_txt").val('');
+        $("#valor").val('');
+    }
 
     $(function () {
+
+        $("#objetivo").change(function () {
+            $("#tdMacro").html(spinner);
+            var idObjetivo = $("#objetivo").val();
+            cargarDetalles(idObjetivo);
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
+                data    : {
+                    objetivo : $("#objetivo").val()
+                },
+                success : function (msg) {
+                    $("#tdMacro").html(msg);
+                    $("#tdActividad").html("");
+                    $("#tdTarea").html("");
+                    $("#crearActividad").removeClass('show').addClass('hide');
+                    $("#crearTarea").removeClass('show').addClass('hide');
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(controller: 'asignacion', action:'totalObjetivo_ajax')}",
+                        data    : {
+                            objetivo : $("#objetivo").val(),
+                            anio : $("#anio").val()
+
+                        },
+                        success : function (msg) {
+                            $("#divTotales").html(msg);
+
+                        }
+                    });
+                }
+            });
+        });
+
+
+        $("#btnVerTodos").click(function () {
+            $("#objetivo").val(-1);
+            $("#tdMacro").html("");
+            $("#tdActividad").html("");
+            $("#tdTarea").html("");
+            $("#crearActividad").removeClass('show').addClass('hide');
+            $("#crearTarea").removeClass('show').addClass('hide');
+            cargarDetalles("T");
+        });
+
+        $("#anio").change(function () {
+            location.href = "${createLink(action: 'asignacionesCorrientesv2')}?anio="+$(this).val();
+        });
 
         $("#btnGuardar").click(function () {
 
@@ -207,9 +281,12 @@
                                         var parts = msg.split("*");
                                         log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
                                         if (parts[0] == "SUCCESS") {
-                                            setTimeout(function() {
-                                                location.reload(true);
-                                            }, 1500);
+//                                            setTimeout(function() {
+//                                                location.reload(true);
+//                                            }, 1500);
+                                            $("#asignacion_txt").val('');
+                                            $("#valor").val('');
+                                            cargarDetalles(objetivo);
                                         }
                                     }
                                 });
@@ -232,50 +309,68 @@
 
         $("#guardarEditar").click (function () {
 
+
+
+        //guardar
             var responsable = $("#responsable").val();
             var asignacion = $("#asignacion_txt").val();
             var parti = $("#prsp_id").val();
             var fuente = $("#fuente").val();
             var valor = $("#valor").val();
             var asigId = $("#asignacionId").val();
+            var actId = $("#act").val();
+            var tarId = $("#tar").val();
+            var objetivo = $("#objetivo").val();
 
-                if(asignacion != ''){
-                    if(parti != null && parti != 'null'){
-                        if(fuente != null){
-                            if(valor != ''){
-                                $.ajax({
-                                    type:"POST",
-                                    url:"${createLink(action:'guardarAsignacion',controller:'asignacion')}",
-                                    data:"&responsable=" + responsable +"&asignacion=" + asignacion + "&partida=" + parti + "&fuente=" + fuente + "&valor=" + valor + "&id=" + asigId,
-                                    success:function (msg) {
-                                        var parts = msg.split("*");
-                                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
-                                        if (parts[0] == "SUCCESS") {
-                                            setTimeout(function() {
-                                                location.reload(true);
-                                            }, 1500);
+            if(actId && actId != -1) {
+                if (tarId && tarId != -1) {
+                    if (asignacion != '') {
+                        if (parti != null && parti != 'null') {
+                            if (fuente != null) {
+                                if (valor != '') {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "${createLink(action:'guardarAsignacion',controller:'asignacion')}",
+                                        data: "&responsable=" + responsable + "&asignacion=" + asignacion + "&partida=" + parti + "&fuente=" + fuente + "&valor=" + valor + "&id=" + asigId
+                                        + "&actividad=" + actId + "&tarea=" + tarId,
+                                        success: function (msg) {
+                                            var parts = msg.split("*");
+                                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
+                                            if (parts[0] == "SUCCESS") {
+                                                estadoAnterior();
+                                                cargarDetalles(objetivo);
+//                                                setTimeout(function () {
+//                                                    location.reload(true);
+//                                                }, 1500);
+                                            }
                                         }
-                                    }
-                                });
-                            }else{
-                                log("Debe ingresar un valor", "error")
+                                    });
+                                } else {
+                                    log("Debe ingresar un valor", "error")
+                                }
+                            } else {
+                                log("Debe seleccionar una fuente", "error")
                             }
-                        }else{
-                            log("Debe seleccionar una fuente", "error")
+                        } else {
+                            log("Debe seleccionar una partida", "error")
                         }
-                    }else{
-                        log("Debe seleccionar una partida", "error")
+                    } else {
+                        log("Ingrese el nombre de la asignación", "error")
                     }
-                }else{
-                    log("Ingrese el nombre de la asignación", "error")
+                } else {
+                    log("Debe seleccionar una tarea", "error")
                 }
-
+            }else {
+                log("Debe seleccionar una actividad", "error")
+            }
         });
 
         $("#cancelarEditar").click(function () {
-            $(this).replaceWith(spinner);
-            location.href="${createLink(controller: "asignacion", action: "asignacionesCorrientesv2")}";
+            estadoAnterior();
+
         });
+
+
 
     });
 </script>
