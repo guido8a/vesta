@@ -14,7 +14,8 @@
             type    : "POST",
             url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
             data    : {
-                objetivo : $(this).val()
+                objetivo : $(this).val(),
+                copiar   : "${params.copiar}"
             },
             success : function (msg) {
                 $("#tdMacro").html(msg);
@@ -22,6 +23,9 @@
                 $("#tdTarea").html("");
                 $("#tdAsignacion").html("");
                 $("#max").html("");
+
+                $("#actividadesDisponibles").html("");
+                $("#actividadesActuales").html("");
             }
         });
     });

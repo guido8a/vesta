@@ -97,7 +97,7 @@
                         <th>Descripción</th>
                         <th>Programa</th>
                         <g:each in="${anios}" var="anio">
-                            <th>${anio.anio}</th>
+                            <th>${anio?.anio}</th>
                         </g:each>
                         <th>Total Planificado</th>
                         <th>Total Priorizado</th>

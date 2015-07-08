@@ -96,6 +96,7 @@ class ProyectoController extends Shield {
         def proyectoInstanceCount = getList(params, true).size()
 
         def anios = Asignacion.withCriteria {
+            isNotNull("marcoLogico")
             projections {
                 distinct "anio"
             }

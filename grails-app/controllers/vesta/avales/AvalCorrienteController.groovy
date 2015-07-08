@@ -1117,7 +1117,7 @@ class AvalCorrienteController extends Shield {
             }
         }
         objetivos = objetivos.unique().sort { it.descripcion }
-        return [objetivos: objetivos]
+        return [objetivos: objetivos, copiar: params.copiar]
     }
 
     /**

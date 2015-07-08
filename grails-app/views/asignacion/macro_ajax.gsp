@@ -11,13 +11,18 @@
 <script>
     $("#mac${params.mod}").change(function () {
         $("#tdActividad${params.mod}").html(spinner);
+        <g:if test="${params.copiar == 'S'}">
+        cargarActividadesAnio();
+        cargarActividadesCopiadas();
+        </g:if>
+        <g:else>
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'actividad_ajax',controller: 'asignacion')}",
             data    : {
                 id   : $(this).val(),
                 anio : $("#anio").val(),
-                mod: "${params.mod}"
+                mod  : "${params.mod}"
             },
             success : function (msg) {
                 $("#tdActividad${params.mod}").html(msg);
@@ -26,6 +31,7 @@
                 $("#max${params.mod}").html("");
             }
         });
+        </g:else>
     })
 
 </script>
