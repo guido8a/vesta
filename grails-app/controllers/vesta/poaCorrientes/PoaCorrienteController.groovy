@@ -38,8 +38,8 @@ class PoaCorrienteController extends Shield {
         def select = g.select(name: "anioHasta", from: anios, "class": "form-control input-sm", optionKey: "id", optionValue: "anio")
         def js = "<script type='text/javascript'>" +
                 "\$(\"#anioHasta\").change(function () {\n" +
-                "                    \$(\"#spAnioHasta\").text(\$(\"#anioHasta\").find(\"option:selected\").text());\n" +
-                "                });" +
+                "    \$(\"#spAnioHasta\").text(\$(\"#anioHasta\").find(\"option:selected\").text());\n" +
+                "});" +
                 "</script>"
         render select + js
     }
