@@ -172,11 +172,11 @@
                     <a href="#" class="btn btn-default" id="btnPreview" title="Previsualizar">
                         <i class="fa fa-search"></i> Previsualizar
                     </a>
-                    <a href="#" class="btn btn-danger" id="btnDevolver" title="Devolver al requirente con observaciones">
-                        <i class="fa fa-thumbs-down"></i> Devolver al requirente
-                    </a>
                     <a href="#" class="btn btn-success" id="btnSolicitar" title="Solicitar firma del gerente">
                         <i class="fa fa-pencil"></i> Solicitar firma
+                    </a>
+                    <a href="#" class="btn btn-danger" id="btnDevolver" title="Devolver al requirente con observaciones">
+                        <i class="fa fa-thumbs-down"></i> Devolver al requirente
                     </a>
                 </div>
             </div>

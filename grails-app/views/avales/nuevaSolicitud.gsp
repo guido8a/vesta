@@ -109,7 +109,7 @@
             <div class="row">
                 <span class="grupo">
                     <label for="nombre" class="col-md-2 control-label">
-                        Nombre del proceso
+                        Nombre del proceso precontractual
                     </label>
 
                     <div class="col-md-9">
