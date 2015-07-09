@@ -44,11 +44,8 @@ l<%--
                         var parts = msg.split("*");
                         log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "SUCCESS") {
-//                            setTimeout(function() {
-//                                location.reload(true);
-//                            }, 1500);
-
                             cargarDetalles(objetivo);
+                            totales(objetivo);
                         }
                     }
                 });
@@ -125,6 +122,19 @@ l<%--
                                 },
                                 success : function (msg) {
                                     $("#tdTarea").html(msg);
+                                    $.ajax({
+                                        type    : "POST",
+                                        url     : "${createLink(controller: 'asignacion', action:'totalObjetivo_ajax')}",
+                                        data    : {
+                                            objetivo : $("#objetivo").val(),
+                                            anio : $("#anio").val()
+
+                                        },
+                                        success : function (msg) {
+                                            $("#divTotales").html(msg);
+
+                                        }
+                                    });
                                 }
                             });
                         }
