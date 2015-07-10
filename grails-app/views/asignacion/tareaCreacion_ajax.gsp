@@ -6,14 +6,14 @@
 --%>
 
 <div class="alert alert-info">
-    <p><strong> * La siguiente tarea se creará en:</strong></p>
+    %{--<p><strong> * La siguiente tarea se creará en:</strong></p>--}%
     <p><strong>Objetivo:</strong> ${objetivo?.descripcion}</p>
     <p><strong>Macro Actividad:</strong> ${macro?.descripcion}</p>
     <p><strong>Actividad:</strong> ${actividad?.descripcion}</p>
 </div>
 
 
-<table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
+<table class="table table-condensed table-bordered table-striped table-hover" style="width: 600px;">
     <thead>
     <th>Tarea</th>
 
@@ -22,7 +22,7 @@
 
     <tr class="odd">
         <td class="tarea">
-            <g:textArea name="tarea_name" style="width: 450px; height: 80px; resize: none" id="creacionTarea" maxlength="200" class="form-control input-sm"/>
+            <g:textArea name="tarea_name" style="width: 550px; height: 80px; resize: none" id="creacionTarea" maxlength="200" class="form-control input-sm" value="${tarea?.descripcion}"/>
         </td>
     </tr>
 

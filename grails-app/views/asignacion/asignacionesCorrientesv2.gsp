@@ -76,7 +76,7 @@
         <tr class="odd">
             <g:hiddenField name="asignacionId" value=""/>
             <td>
-                <g:select name="responsable" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" optionValue="nombre" style="width: 250px" class="many-to-one form-control input-sm"/>
+                <g:select name="responsable" id="idResponsable" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" optionValue="nombre" style="width: 250px" class="many-to-one form-control input-sm"/>
             </td>
             <td class="actividad">
                 <g:textArea name="asignacion_name" style="width: 270px;height: 60px; resize: none" id="asignacion_txt" maxlength="150" class="form-control input-sm"/>
@@ -115,6 +115,7 @@
     <g:set var="total" value="0"/>
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
         <thead>
+        <th style="width: 200px">Responsable</th>
         <th style="width: 250px">Objetivo</th>
         <th style="width: 250px">Macro Actividad</th>
         <th style="width: 250px">Asignación</th>
@@ -130,6 +131,8 @@
 </fieldset>
 
 <script type="text/javascript">
+
+    totales($("#objetivo").val(),$("#idResponsable").val());
 
     function cargarDetalles (objetivo) {
 
@@ -160,13 +163,14 @@
         });
     }
 
-    function totales (objetivo) {
+    function totales (objetivo, unidad) {
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'asignacion', action:'totalObjetivo_ajax')}",
             data    : {
                 objetivo : objetivo,
-                anio : $("#anio").val()
+                anio : $("#anio").val(),
+                unidad: unidad
 
             },
             success : function (msg) {
@@ -193,13 +197,24 @@
         $("#crearTarea").removeClass('hide').addClass('show');
         $("#asignacion_txt").val('');
         $("#valor").val('');
+        $("#editarActividad").removeClass('show').addClass('hide')
+        $("#editarTarea").removeClass('show').addClass('hide')
     }
 
     $(function () {
 
+
+
+        $("#idResponsable").change(function () {
+            var unidad = $(this).val();
+            var idObjetivo = $("#objetivo").val();
+            totales(idObjetivo, unidad);
+        });
+
         $("#objetivo").change(function () {
             $("#tdMacro").html(spinner);
             var idObjetivo = $("#objetivo").val();
+            var idUnidad = $("#idResponsable").val();
             cargarDetalles(idObjetivo);
             $.ajax({
                 type    : "POST",
@@ -213,9 +228,11 @@
                     $("#tdTarea").html("");
                     $("#crearActividad").removeClass('show').addClass('hide');
                     $("#crearTarea").removeClass('show').addClass('hide');
+                    $("#editarActividad").removeClass('show').addClass('hide');
+                    $("#editarTarea").removeClass('show').addClass('hide');
                 }
             });
-            totales(idObjetivo);
+            totales(idObjetivo, idUnidad);
         });
 
 
@@ -227,6 +244,9 @@
             $("#crearActividad").removeClass('show').addClass('hide');
             $("#crearTarea").removeClass('show').addClass('hide');
             cargarDetalles("T");
+            var idObjetivo = $("#objetivo").val();
+            var idUnidad = $("#idResponsable").val();
+            totales(idObjetivo, idUnidad);
         });
 
         $("#anio").change(function () {
@@ -241,7 +261,7 @@
             var actividad = $("#act").val();
             var tarea = $("#tar").val();
             var anio = $("#anio").val();
-            var responsable = $("#responsable").val();
+            var responsable = $("#idResponsable").val();
             var asignacion = $("#asignacion_txt").val();
             var parti = $("#prsp_id").val();
             var fuente = $("#fuente").val();
@@ -267,7 +287,7 @@
                                                 $("#asignacion_txt").val('');
                                                 $("#valor").val('');
                                                 cargarDetalles(objetivo);
-                                                totales(objetivo);
+                                                totales(objetivo, responsable);
                                             }
                                         }
                                     });
@@ -295,7 +315,7 @@
             var rest = $("#divRestante").data("res")
 
             //guardar
-            var responsable = $("#responsable").val();
+            var responsable = $("#idResponsable").val();
             var asignacion = $("#asignacion_txt").val();
             var parti = $("#prsp_id").val();
             var fuente = $("#fuente").val();
@@ -326,7 +346,7 @@
                                                 if (parts[0] == "SUCCESS") {
                                                     estadoAnterior();
                                                     cargarDetalles(objetivo);
-                                                    totales(objetivo);
+                                                    totales(objetivo, responsable);
                                                 }
                                             }
                                         });

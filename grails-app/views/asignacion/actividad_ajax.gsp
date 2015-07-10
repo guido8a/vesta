@@ -10,8 +10,15 @@
 
 <script>
     $("#act${params.mod}").change(function () {
+        if($("#act").val() != -1){
+            $("#editarActividad").removeClass('hide').addClass('show');
+            $("#crearActividad").removeClass('show').addClass('hide');
+        }else{
+            $("#crearActividad").removeClass('hide').addClass('show');
+            $("#editarActividad").removeClass('show').addClass('hide');
+        }
         $("#crearTarea").addClass('show');
-        $("#crearActividad").addClass('show');
+
         $("#tdTarea${params.mod}").html(spinner);
         $.ajax({
             type    : "POST",
@@ -25,7 +32,8 @@
                 $("#tdTarea${params.mod}").html(msg);
                 $("#tdAsignacion${params.mod}").html("");
                 $("#max${params.mod}").html("");
-            }
+                $("#editarTarea").removeClass('show').addClass('hide');
+             }
         });
     })
 

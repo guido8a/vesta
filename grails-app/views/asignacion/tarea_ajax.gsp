@@ -13,6 +13,15 @@
     $("#tar${params.mod}").change(function () {
        $("#tdAsignacion${params.mod}").html(spinner);
 
+
+        if($("#tar").val() != -1){
+            $("#editarTarea").removeClass('hide').addClass('show');
+            $("#crearTarea").removeClass('show').addClass('hide');
+        }else{
+            $("#crearTarea").removeClass('hide').addClass('show');
+            $("#editarTarea").removeClass('show').addClass('hide');
+        }
+
         var tareaValor = $(".tar").val();
 
         console.log(tareaValor)
@@ -27,6 +36,7 @@
             success : function (msg) {
                 $("#tdAsignacion${params.mod}").html(msg);
                 $("#max${params.mod}").html("");
+
             }
         });
     })

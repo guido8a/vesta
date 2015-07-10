@@ -12,9 +12,7 @@
 
     <div style="position: absolute;top:65px;right:10px;font-size: 15px;">
         <b>Total Unidad:</b>
-        %{--<g:formatNumber number="${totalUnidad}"--}%
-        %{--format="###,##0"--}%
-        %{--minFractionDigits="2" maxFractionDigits="2"/>--}%
+        <g:formatNumber number="${totalUnidad}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
     </div>
 
     <div style="position: absolute;top:85px;right:10px;font-size: 15px;">

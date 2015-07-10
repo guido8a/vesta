@@ -9,6 +9,7 @@ l<%--
     <tr data-res="${asg?.unidad?.id}" data-asi="${asg?.actividad}" data-par="${asg?.presupuesto?.descripcion}"
         data-parId="${asg?.presupuesto?.id}"  data-fue="${asg?.fuente?.id}" data-val="${asg?.planificado}" data-id="${asg?.id}" data-obj="${asg?.tarea?.actividad?.macroActividad?.objetivoGastoCorriente?.id}"
     data-mac="${asg?.tarea?.actividad?.macroActividad?.id}" data-act="${asg?.tarea?.actividad?.id}" data-tar="${asg?.tarea?.id}">
+        <td style="width: 250px">${asg?.unidad?.nombre}</td>
         <td style="width: 250px">${asg?.tarea?.actividad?.macroActividad?.objetivoGastoCorriente?.descripcion}</td>
         <td style="width: 250px">${asg?.tarea?.actividad?.macroActividad?.descripcion}</td>
         <td style="width: 250px">${asg?.actividad}</td>
@@ -33,6 +34,7 @@ l<%--
         var idBorrar = $(this).attr("iden");
         var nombreBorrar = $(this).attr("nom");
         var objetivo = $("#objetivo").val();
+        var unidad = $("#idResponsable").val();
         bootbox.confirm("<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i>Está seguro que desea borrar la asignación: " + nombreBorrar + " ?" , function(result){
             if (result) {
                 openLoader();
@@ -45,7 +47,7 @@ l<%--
                         log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "SUCCESS") {
                             cargarDetalles(objetivo);
-                            totales(objetivo);
+                            totales(objetivo, unidad);
                         }
                     }
                 });
@@ -81,7 +83,7 @@ l<%--
         var actiId = $(this).parents("tr").attr("data-act");
         var tareaId = $(this).parents("tr").attr("data-tar");
 
-        $("#responsable").val(responsableEditar);
+        $("#idResponsable").val(responsableEditar);
         $("#asignacion_txt").val(asignacionEditar);
         $("#prsp_id").val(partidaId);
         $("#bsc-desc-prsp_id").val(partidaEditar);

@@ -1336,15 +1336,11 @@ class AsignacionController extends Shield {
             def macros = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
             def actividades = ActividadCorriente.findAllByMacroActividadInList(macros)
             def tareas = Tarea.findAllByActividadInList(actividades)
-            asignaciones = Asignacion.findAllByTareaInListAndAnio(tareas, anio)
+            asignaciones = Asignacion.findAllByTareaInListAndAnio(tareas, anio, [sort: 'unidad', order: 'unidad'])
 
         }
         if(params.objetivo == 'T'){
-        asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio)
-        }
-
-        asignaciones.each{
-            println("asg " + it?.id)
+        asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', order: 'unidad'])
         }
 
         return [asignaciones: asignaciones]
@@ -1431,8 +1427,9 @@ class AsignacionController extends Shield {
         def objetivo = ObjetivoGastoCorriente.get(params.objetivo);
         def macro = MacroActividad.get(params.macro)
         def actividad = ActividadCorriente.get(params.acti);
+        def tarea = Tarea.get(params.id)
 
-        return [objetivo: objetivo, macro: macro, actividad: actividad]
+        return [objetivo: objetivo, macro: macro, actividad: actividad, tarea: tarea]
     }
 
 
@@ -1440,19 +1437,25 @@ class AsignacionController extends Shield {
 
         def objetivo = ObjetivoGastoCorriente.get(params.objetivo);
         def macro = MacroActividad.get(params.macro)
+        def actividad = ActividadCorriente.get(params.actividad)
 
-        return [objetivo: objetivo, macro: macro]
+        return [objetivo: objetivo, macro: macro, actividad: actividad]
 
     }
 
     def guardarActividad_ajax () {
-        println("params ga " + params )
+        println("params guardar act " + params )
         def macro = MacroActividad.get(params.macro)
         def anio = Anio.get(params.anio)
 
         def actividadCorrienteInstance = new ActividadCorriente()
 
         if(params.id){
+
+            actividadCorrienteInstance = ActividadCorriente.get(params.id)
+            actividadCorrienteInstance.descripcion = params.desc
+            actividadCorrienteInstance.meta = params.meta
+
             if(!actividadCorrienteInstance){
                 render "ERROR*No se encontró ninguna actividad"
                 return
@@ -1481,7 +1484,12 @@ class AsignacionController extends Shield {
         def tareaInstance = new Tarea()
 
         if(params.id){
+
+            tareaInstance = Tarea.get(params.id)
+            tareaInstance.descripcion = params.desc
+
             if(!tareaInstance){
+
                 render "ERROR*No se encontró ninguna tarea"
                 return
             }
@@ -1510,6 +1518,8 @@ class AsignacionController extends Shield {
 
     def totalObjetivo_ajax() {
 
+        println("params total" + params )
+
         def anio = Anio.get(params.anio)
 
         def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
@@ -1530,9 +1540,33 @@ class AsignacionController extends Shield {
 
         def presupuesto = PresupuestoUnidad.findByAnio(anio)
 
-        def restante = (presupuesto?.maxCorrientes) - (totalObjetivo)
+        def restante = 0
 
-        return [totalObjetivo: totalObjetivo, maximo: presupuesto, restante: restante]
+        //por unidad
+
+        def totalUnidad = 0
+
+        def unidadEjecutora = UnidadEjecutora.get(params.unidad)
+
+        def asignacionUnidad = Asignacion.findAllByUnidadAndAnio(unidadEjecutora, anio)
+
+        asignacionUnidad.each {
+            totalUnidad += it?.planificado
+        }
+
+        //restante
+
+        def todasAsignaciones = Asignacion.findAllByAnioAndMarcoLogicoIsNull(anio)
+        def totalTodas = 0
+
+        todasAsignaciones.each {
+            totalTodas += it?.planificado
+        }
+
+        restante = (presupuesto?.maxCorrientes - totalTodas)
+
+
+        return [totalObjetivo: totalObjetivo, maximo: presupuesto, restante: restante, totalUnidad: totalUnidad]
 
     }
 
