@@ -1559,11 +1559,18 @@ class AsignacionController extends Shield {
         def todasAsignaciones = Asignacion.findAllByAnioAndMarcoLogicoIsNull(anio)
         def totalTodas = 0
 
-        todasAsignaciones.each {
-            totalTodas += it?.planificado
+        if(todasAsignaciones.size() > 0){
+            todasAsignaciones.each {
+                totalTodas += it?.planificado
+            }
         }
 
-        restante = (presupuesto?.maxCorrientes - totalTodas)
+        if(presupuesto){
+            restante = (presupuesto?.maxCorrientes - totalTodas)
+        }else{
+            restante = 0
+        }
+
 
 
         return [totalObjetivo: totalObjetivo, maximo: presupuesto, restante: restante, totalUnidad: totalUnidad]

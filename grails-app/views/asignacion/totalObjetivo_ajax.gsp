@@ -17,7 +17,7 @@
 
     <div style="position: absolute;top:85px;right:10px;font-size: 15px;">
         <b>Máximo Corrientes:</b>
-        <g:formatNumber number="${maximo?.maxCorrientes}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
+        <g:formatNumber number="${maximo?.maxCorrientes ?: 0}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
     </div>
 
     <div style="position: absolute;top:105px;right:10px;font-size: 17px;" data-res="${restante}" id="divRestante">
