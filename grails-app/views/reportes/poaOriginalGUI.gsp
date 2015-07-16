@@ -157,7 +157,7 @@
                         location.href = "${createLink(action:'poaOriginalReporteCsv')}?anio=" + $("#anio").val() + "&id=" + elems + "&mes=true";
                     }
                 } else {
-                    $("#spnAlert").html("Escoja al menos una unidad ejecutora para generar el reporte.");
+                    $("#spnAlert").html("Escoja al menos una Área de gestión para generar el reporte.");
                     $("#dlgAlert").dialog("open");
                     return false;
                 }

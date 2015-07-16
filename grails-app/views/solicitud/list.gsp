@@ -48,7 +48,7 @@
             <thead>
                 <tr>
                     <th style="width: 20px"></th>
-                    <g:sortableColumn property="unidadEjecutora" title="Unidad Ejecutora"/>
+                    <g:sortableColumn property="unidadEjecutora" title="Área de gestión"/>
                     <g:sortableColumn property="actividad" title="Actividad"/>
                     <g:sortableColumn property="fecha" title="Fecha"/>
                     <g:sortableColumn property="montoSolicitado" title="Monto Solicitado"/>

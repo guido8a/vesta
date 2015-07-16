@@ -104,37 +104,37 @@ class Reportes6Controller {
 
                 Row tableRow = sheet.createRow((short) curRow)
                 def tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.partida.numero[0..1])
+                tableCell.setCellValue(v?.partida?.numero[0..1])
                 tableCell.setCellStyle(styleTabla)
                 curCol++
 
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.actividad.numero)
+                tableCell.setCellValue(v?.actividad?.numero)
                 tableCell.setCellStyle(styleTabla)
                 curCol++
 
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.actividad.toStringCompleto())
+                tableCell.setCellValue(v?.actividad?.toStringCompleto())
                 tableCell.setCellStyle(styleTabla)
                 curCol++
 
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.actividad.responsable.gerencia.nombre)
+                tableCell.setCellValue(v?.actividad?.responsable?.gerencia?.nombre)
                 tableCell.setCellStyle(styleTabla)
                 curCol++
 
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.valores.priorizado)
+                tableCell.setCellValue(v?.valores?.priorizado)
                 tableCell.setCellStyle(styleNumber)
                 curCol++
 
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.valores.avales)
+                tableCell.setCellValue(v?.valores?.avales)
                 tableCell.setCellStyle(styleNumber)
                 curCol++
 
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v.valores.disponible)
+                tableCell.setCellValue(v?.valores?.disponible)
                 tableCell.setCellStyle(styleNumber)
                 curCol++
 
@@ -714,7 +714,7 @@ class Reportes6Controller {
             asignaciones.each { asg ->
                 def actividad = asg.marcoLogico
 
-                def key = numero + "_" + actividad.id
+                def key = numero + "_" + actividad?.id
 
                 if (!data[key]) {
                     data[key] = [:]

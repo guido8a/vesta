@@ -34,7 +34,7 @@
             </div>
 
             <div class="btn-group" role="group">
-                <g:link action="poaAreaGestionGUI" class="btn btn-default">POA por unidad ejecutora</g:link>
+                <g:link action="poaAreaGestionGUI" class="btn btn-default">POA por Área de gestión</g:link>
                 <g:link action="poaProyectoGUI" class="btn btn-default">POA por proyecto</g:link>
                 <g:link action="poaFuenteGUI" class="btn btn-default">POA por fuente de financiamiento</g:link>
             </div>

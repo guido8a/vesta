@@ -6,7 +6,7 @@
             <th colspan="3">Proyectos</th>
         </tr>
         <tr>
-            <th>Unidad ejecutora</th>
+            <th>Área de gestión</th>
             <th>Asignaciones</th>
             <th>Total</th>
         </tr>

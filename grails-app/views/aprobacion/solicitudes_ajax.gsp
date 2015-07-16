@@ -22,7 +22,7 @@
     <table class="table table-condensed table-bordered table-striped table-hover">
         <thead>
         <th>N.</th>
-        <th>Unidad Ejecutora</th>
+        <th>Área de gestión</th>
         <th>Monto solicitado</th>
         <th>Nombre del proceso</th>
         </thead>

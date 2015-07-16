@@ -77,7 +77,7 @@
                     <tr>
                         <th>Ejercicio</th>
                         <th>Entidad</th>
-                        <th>Unidad Ejecutora</th>
+                        <th>Área de gestión</th>
                         %{--<th>Unidad desconcentrada</th>--}%
                         <th>Programa</th>
                         %{--<th>Subprograma</th>--}%

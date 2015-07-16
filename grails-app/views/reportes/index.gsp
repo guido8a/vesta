@@ -17,7 +17,7 @@
 
         <table style="width: 960px;">
             <tr>
-                <td colspan="3" style="text-align: center; font-size: 16px;">Techos presupuestarios por Unidad Ejecutora</td>
+                <td colspan="3" style="text-align: center; font-size: 16px;">Techos presupuestarios por Área de gestión</td>
             </tr>
             <tr>
                 <td>

@@ -151,7 +151,7 @@
                         location.href = "${createLink(action:'pacCsv')}?anio=" + $("#anio").val() + "&id=" + elems;
                     }
                 } else {
-                    $("#spnAlert").html("Escoja al menos una unidad ejecutora para generar el reporte.");
+                    $("#spnAlert").html("Escoja al menos una Área de gestión para generar el reporte.");
                     $("#dlgAlert").dialog("open");
                     return false;
                 }

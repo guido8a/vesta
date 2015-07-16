@@ -146,7 +146,7 @@
                         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url
                     }
                 } else {
-                    $("#spnAlert").html("Escoja al menos una unidad ejecutora para generar el reporte.");
+                    $("#spnAlert").html("Escoja al menos una Área de gestión para generar el reporte.");
                     $("#dlgAlert").dialog("open");
                     return false;
                 }

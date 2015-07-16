@@ -22,7 +22,7 @@
     <g:if test="${distribucionAsignacionInstance?.unidadEjecutora}">
         <div class="row">
             <div class="col-md-2 show-label">
-                Unidad Ejecutora
+                Área de gestión
             </div>
             
             <div class="col-md-3">

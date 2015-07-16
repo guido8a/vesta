@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>POA Por Unidad Ejecutora</title>
+        <title>POA Por Área de gestión</title>
         <style type="text/css">
         .actual {
             background : #c7daed;
@@ -42,7 +42,7 @@
 
         <g:set var="anio" value="${Anio.findByAnio(new Date().format('yyyy'))}"/>
 
-        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Unidad Ejecutora">
+        <elm:container tipo="horizontal" titulo="Reporte de POA Resumen por Área de gestión">
             <table class="table table-bordered table-hover table-condensed table-bordered">
                 <thead>
                     <tr>

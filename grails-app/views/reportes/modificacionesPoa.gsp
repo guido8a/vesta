@@ -155,7 +155,7 @@
                     </g:if>
                     <g:else>
                         <g:if test="${mod.unidad}">
-                            <td colspan="6">Unidad ejecutora: ${mod.unidad}</td>
+                            <td colspan="6">Área de gestión: ${mod.unidad}</td>
                         </g:if>
                         <g:else>
                             <td colspan="6">

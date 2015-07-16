@@ -34,7 +34,7 @@
             <table border="1" class="table table-condensed table-bordered table-striped table-hover">
                 <thead>
                 <tr>
-                    <g:sortableColumn property="unidadEjecutora" title="Unidad Ejecutora"/>
+                    <g:sortableColumn property="unidadEjecutora" title="Área de gestión"/>
                     <g:sortableColumn property="actividad" title="Actividad"/>
                     <g:sortableColumn property="fecha" title="Fecha"/>
                     <g:sortableColumn property="montoSolicitado" title="Monto Solicitado"/>

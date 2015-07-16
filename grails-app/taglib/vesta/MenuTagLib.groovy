@@ -43,7 +43,7 @@ class MenuTagLib {
         html += "<div class='banner-top ${large}'>"
         html += "<div class='banner-esquina'>"
         html += "</div>"
-        html += "<div class='banner-title'>SISTEMA DE PLANIFICACIÓN INSTITUCIONAL</div>"
+        html += "<div class='banner-title' style='margin-top:10px; margin-left: 20px; font-size: 22px'>SISTEMA DE GESTIÓN DE PLANIFICACIÓN INSTITUCIONAL</div>"
         html += "<div class='banner-page-title' style='margin-top:10px'>${attrs.title ?: '' }</div>"
         if (large != "") {
             html += "<div class='banner-logo hidden-xs hidden-sm'>"
@@ -83,12 +83,14 @@ class MenuTagLib {
             def acciones = Prms.findAllByPerfil(perfil).accion.sort { it.modulo.orden }
 
             acciones.each { ac ->
-                if (ac.tipo.id == 1) {
-                    if (!items[ac.modulo.nombre]) {
-                        items.put(ac.modulo.nombre, [ac.descripcion, g.createLink(controller: ac.control.nombre, action: ac.nombre)])
-                    } else {
-                        items[ac.modulo.nombre].add(ac.descripcion)
-                        items[ac.modulo.nombre].add(g.createLink(controller: ac.control.nombre, action: ac.nombre))
+                if(ac.modulo.nombre != "noAsignado"){
+                    if (ac.tipo.id == 1) {
+                        if (!items[ac.modulo.nombre]) {
+                            items.put(ac.modulo.nombre, [ac.descripcion, g.createLink(controller: ac.control.nombre, action: ac.nombre)])
+                        } else {
+                            items[ac.modulo.nombre].add(ac.descripcion)
+                            items[ac.modulo.nombre].add(g.createLink(controller: ac.control.nombre, action: ac.nombre))
+                        }
                     }
                 }
             }

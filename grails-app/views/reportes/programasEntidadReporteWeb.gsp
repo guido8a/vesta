@@ -11,7 +11,7 @@
     <head>
         <meta name="layout" content="main"/>
         <title>
-            Programas por unidad ejecutora
+            Programas por Área de gestión
         </title>
 
         <style type="text/css">

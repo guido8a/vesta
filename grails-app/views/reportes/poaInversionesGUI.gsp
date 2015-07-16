@@ -42,7 +42,7 @@
 
         <elm:container tipo="horizontal" titulo="Reporte">
             <div class="alert alert-info">
-                Seleccione el año y al menos una unidad ejecutora (haciendo clic sobre su nombre) para generar el reporte
+                Seleccione el año y al menos una Área de gestión (haciendo clic sobre su nombre) para generar el reporte
             </div>
 
             <form class="form-inline">
@@ -98,7 +98,7 @@
                         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url
                     }
                 } else {
-                    bootbox.alert("Escoja al menos una unidad ejecutora para generar el reporte.");
+                    bootbox.alert("Escoja al menos una Área de gestión para generar el reporte.");
                     return false;
                 }
             }

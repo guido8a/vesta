@@ -163,7 +163,7 @@
                         location.href = "${createLink(action:'poaReporteDisc')}?anio=" + $("#anio").val() + "&id=" + elems + "&mes=false";
                     }
                 } else {
-                    $("#spnAlert").html("Escoja al menos una unidad ejecutora para generar el reporte.");
+                    $("#spnAlert").html("Escoja al menos una Área de gestión para generar el reporte.");
                     $("#dlgAlert").dialog("open");
                     return false;
                 }

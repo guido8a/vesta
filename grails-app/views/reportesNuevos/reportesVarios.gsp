@@ -65,7 +65,7 @@
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="poaUnidadEjecutora">
-                                2.2. POA: resumen por unidad ejecutora
+                                2.2. POA: resumen por Área de gestión
                             </a>
                         </li>
                         <li>
@@ -239,7 +239,7 @@
                     var urlExcel = "${createLink(controller: 'reportesNuevosExcel', action: 'poaAreaGestionXls')}";
                     var urlPdf = "${createLink(controller: 'reportesNuevos', action: 'poaAreaGestionPdf')}";
                     var pdfFileName = "POA_unidad_ejecutora.pdf";
-                    dialogXlsPdf("Reporte POA por unidad ejecutora", "Reporte POA por unidad ejecutora", urlExcel, urlPdf, pdfFileName);
+                    dialogXlsPdf("Reporte POA por Área de gestión", "Reporte POA por Área de gestión", urlExcel, urlPdf, pdfFileName);
                 });
 
                 $("#poaProyecto").click(function () {

@@ -35,7 +35,7 @@
                     
                     <th>Asignacion</th>
                     
-                    <th>Unidad Ejecutora</th>
+                    <th>Área de gestión</th>
                     
                     <g:sortableColumn property="valor" title="Valor" />
                     

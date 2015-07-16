@@ -479,7 +479,7 @@
         <div class="form-group keeptogether ${hasErrors(bean: solicitudInstance, field: 'unidadEjecutora', 'error')} required">
             <span class="grupo">
                 <label for="unidadEjecutora" class="col-md-2 control-label">
-                    Unidad Ejecutora
+                    Área de gestión
                 </label>
                 <div class="col-md-7">
                     <g:select id="unidadEjecutora" name="unidadEjecutora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" required="" value="${solicitudInstance?.unidadEjecutora?.id}" class="many-to-one form-control input-sm"/>

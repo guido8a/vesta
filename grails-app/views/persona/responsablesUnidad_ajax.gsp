@@ -52,7 +52,7 @@
                     <i class="fa fa-warning fa-3x text-shadow pull-left"></i> <h4>Atención</h4>
 
                     <p>
-                        No existen usuarios en esta unidad ejecutora. Agregue usuarios para poder asignar responsables.
+                        No existen usuarios en esta Área de gestión. Agregue usuarios para poder asignar responsables.
                     </p>
                 </div>
             </g:else>
@@ -100,7 +100,7 @@
                             <td colspan="6">
                                 <h4>
                                     <a class="fa icon-ghost fa-2x"></a>
-                                    No se encontraron responsables para esta unidad ejecutora
+                                    No se encontraron responsables para esta Área de gestión
                                 </h4>
                             </td>
                         </tr>

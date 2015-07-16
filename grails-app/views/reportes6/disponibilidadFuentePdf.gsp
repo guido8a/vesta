@@ -9,7 +9,7 @@
 <%@ page import="vesta.poa.ProgramacionAsignacion; vesta.poa.Asignacion; vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico; vesta.parametros.poaPac.Mes" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-        <title>POA por Unidad Ejecutora</title>
+        <title>POA por Área de gestión</title>
 
         <rep:estilos orientacion="l" pagTitle="${titulo}"/>
 
@@ -91,25 +91,25 @@
                     <g:set var="v" value="${val.value}"/>
                     <tr>
                         <td>
-                            ${v.partida.numero[0..1]}
+                            ${v?.partida?.numero[0..1]}
                         </td>
                         <td>
-                            ${v.actividad.numero}
+                            ${v?.actividad?.numero}
                         </td>
                         <td>
-                            ${v.actividad.toStringCompleto()}
+                            ${v?.actividad?.toStringCompleto()}
                         </td>
                         <td>
-                            ${v.actividad.responsable.gerencia.nombre}
+                            ${v?.actividad?.responsable?.gerencia?.nombre}
                         </td>
                         <td class="text-right">
-                            <g:formatNumber number="${v.valores['priorizado']}" type="currency" currencySymbol=""/>
+                            <g:formatNumber number="${v?.valores['priorizado']}" type="currency" currencySymbol=""/>
                         </td>
                         <td class="text-right">
-                            <g:formatNumber number="${v.valores['avales']}" type="currency" currencySymbol=""/>
+                            <g:formatNumber number="${v?.valores['avales']}" type="currency" currencySymbol=""/>
                         </td>
                         <td class="text-right">
-                            <g:formatNumber number="${v.valores['disponible']}" type="currency" currencySymbol=""/>
+                            <g:formatNumber number="${v?.valores['disponible']}" type="currency" currencySymbol=""/>
                         </td>
                     </tr>
                 </g:each>

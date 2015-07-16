@@ -8,9 +8,9 @@
 <%@ page import="vesta.poa.ProgramacionAsignacion; vesta.poa.Asignacion; vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico; vesta.parametros.poaPac.Mes" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-        <title>POA por Unidad Ejecutora</title>
+        <title>POA por Área de gestión</title>
 
-        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Unidad Ejecutora ${anio.anio}"/>
+        <rep:estilos orientacion="l" pagTitle="POA: Resumen por Área de gestión ${anio.anio}"/>
 
         <style type="text/css">
         .table {
@@ -67,7 +67,7 @@
     </head>
 
     <body>
-        <rep:headerFooter title="PLANIFICACIÓN OPERATIVA ANUAL - POA AÑO ${anio.anio}" subtitulo="RESUMEN POR UNIDAD EJECUTORA"/>
+        <rep:headerFooter title="PLANIFICACIÓN OPERATIVA ANUAL - POA AÑO ${anio.anio}" subtitulo="RESUMEN POR ÁREA DE GESTIÖN"/>
 
         <p>
             Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}

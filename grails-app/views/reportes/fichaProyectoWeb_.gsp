@@ -119,7 +119,7 @@
                         <td class="cont">${proy.fechaFin}</td>
                     </tr>
                     <tr>
-                        <th class="etiqueta">Unidad Ejecutora</th>
+                        <th class="etiqueta">Área de gestión</th>
                         <td class="cont">${proy.unidadEjecutora}</td>
                     </tr>
 

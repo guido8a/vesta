@@ -1,7 +1,7 @@
 <table border="1" width="100%">
     <thead>
         <tr>
-            <th>Unidad ejecutora</th>
+            <th>Área de gestión</th>
             <th>Año</th>
             <th>Objetivo estratégico</th>
             <th>Objetivo GPR</th>

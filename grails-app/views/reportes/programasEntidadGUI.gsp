@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Programas por unidad ejecutora</title>
+        <title>Programas por Área de gestión</title>
 
         <script type="text/javascript"
                 src="${resource(dir: 'js/jquery/plugins', file: 'jquery.highlight-3.js')}"></script>
@@ -140,7 +140,7 @@
                         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url
                     }
                 } else {
-                    $("#spnAlert").html("Escoja al menos una unidad ejecutora para generar el reporte.");
+                    $("#spnAlert").html("Escoja al menos una Área de gestión para generar el reporte.");
                     $("#dlgAlert").dialog("open");
                     return false;
                 }

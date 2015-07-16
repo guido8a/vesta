@@ -71,7 +71,7 @@ class ReportesNuevosController {
             }
             asignaciones.each { asg ->
                 def anioAsg = asg.anio
-                if (anioAsg.id == anio.id) {
+                if (anioAsg?.id == anio?.id) {
                     m.valores[keyTotal] += asg.priorizado
                     totales[keyTotal] += asg.priorizado
                     m.valores[keyTotalActual] += asg.priorizado
@@ -86,15 +86,15 @@ class ReportesNuevosController {
                 } else {
                     m.valores[keyTotal] += asg.planificado
                     totales[keyTotal] += asg.planificado
-                    if (!m.valores[anioAsg.anio]) {
-                        m.valores[anioAsg.anio] = 0
-                        if (!anios.contains(anioAsg.anio)) {
-                            anios += anioAsg.anio
-                            totales[anioAsg.anio] = 0
+                    if (!m?.valores[anioAsg?.anio]) {
+                        m?.valores[anioAsg?.anio] = 0
+                        if (!anios?.contains(anioAsg?.anio)) {
+                            anios += anioAsg?.anio
+                            totales[anioAsg?.anio] = 0
                         }
                     }
-                    m.valores[anioAsg.anio] += asg.planificado
-                    totales[anioAsg.anio] += asg.planificado
+                    m.valores[anioAsg?.anio] += asg?.planificado
+                    totales[anioAsg?.anio] += asg?.planificado
                 }
             }
             if (m.valores[keyTotal] > 0) {
@@ -421,6 +421,9 @@ class ReportesNuevosController {
         def data = poaFuente_funcion()
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales]
     }
+
+
+
 
     // HACIA ABAJO REPORTES ANTIGUOS
 
@@ -869,17 +872,17 @@ class ReportesNuevosController {
                 cellTabla2.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it.desde.marcoLogico.numero)
+                cellTabla.setCellValue(it?.desde?.marcoLogico?.numero)
                 cellTabla.setCellStyle(styleTabla)
                 cellTabla2 = tableRow2.createCell((short) curCol)
-                cellTabla2.setCellValue(it.recibe.marcoLogico.numero)
+                cellTabla2.setCellValue(it?.recibe?.marcoLogico?.numero)
                 cellTabla2.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it.desde.marcoLogico.toStringCompleto())
+                cellTabla.setCellValue(it?.desde?.marcoLogico?.toStringCompleto())
                 cellTabla.setCellStyle(styleTabla)
                 cellTabla2 = tableRow2.createCell((short) curCol)
-                cellTabla2.setCellValue(it.recibe.marcoLogico.toStringCompleto())
+                cellTabla2.setCellValue(it?.recibe?.marcoLogico?.toStringCompleto())
                 cellTabla2.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
@@ -975,6 +978,18 @@ class ReportesNuevosController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+    }
+
+    def poaAvalesGUI() {
+
+    }
+
+    def poaReformasGUI() {
+
+    }
+
+    def disponibilidadGUI () {
 
     }
 

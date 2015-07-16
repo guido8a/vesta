@@ -26,7 +26,7 @@
         <div class="form-group keeptogether ${hasErrors(bean: distribucionAsignacionInstance, field: 'unidadEjecutora', 'error')} required">
             <span class="grupo">
                 <label for="unidadEjecutora" class="col-md-2 control-label">
-                    Unidad Ejecutora
+                    Área de gestión
                 </label>
                 <div class="col-md-6">
                     <g:select id="unidadEjecutora" name="unidadEjecutora.id" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" required="" value="${distribucionAsignacionInstance?.unidadEjecutora?.id}" class="many-to-one form-control input-sm"/>

@@ -88,7 +88,7 @@
         <g:if test="${documentoInstance?.unidadEjecutora}">
             <div class="row">
                 <div class="col-md-3 show-label">
-                    Unidad Ejecutora
+                    Área de gestión
                 </div>
                 
                 <div class="col-md-4">
