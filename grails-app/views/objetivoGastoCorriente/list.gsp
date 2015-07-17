@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de ObjetivoGastoCorriente</title>
+        <title>Lista de Objetivos de Gasto Corriente</title>
     </head>
 
     <body>

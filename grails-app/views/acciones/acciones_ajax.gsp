@@ -23,6 +23,7 @@
         </tr>
     </thead>
     <tbody>
+        <g:set var="acSize" value="${acciones.size()}"/>
         <g:each in="${acciones}" var="accion" status="i">
             <g:set var="esMenu" value="${accion.tipo.codigo == 'M'}"/>
             <tr class="${esMenu ? 'success' : 'info'}">
@@ -37,9 +38,15 @@
                     ${accion.control.nombre}
                 </td>
                 <td>
+%{--
                     <g:select name="modulo" from="${Modulo.list([sort: 'nombre'])}" optionKey="id" optionValue="nombre" data-id="${accion.id}"
                               value="${accion.modulo.id}" class="form-control input-sm input-sm select-mod" data-original="${accion.modulo.id}"
                               tabindex="${i + 1 + acciones.size()}"/>
+--}%
+                    <g:select name="modulo" from="${modulo}" optionKey="id" optionValue="nombre" data-id="${accion.id}"
+                              value="${accion.modulo.id}" class="form-control input-sm input-sm select-mod" data-original="${accion.modulo.id}"
+                              tabindex="${i + 1 + acSize}"/>
+                              %{--tabindex="${i + 1 + acciones.size()}"/>--}%
                 </td>
                 <td>
                     <a href="#" class="btn btn-switch btn-xs ${esMenu ? 'btn-info' : 'btn-success'}" data-id="${accion.id}"
@@ -58,7 +65,7 @@
 <script type="text/javascript">
 
     $("#tblAcciones").fixedHeaderTable({
-        height    : 320,
+        height    : 500,
         autoResize: true,
         footer    : true
     });

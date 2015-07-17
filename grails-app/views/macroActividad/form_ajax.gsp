@@ -12,11 +12,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: macroActividadInstance, field: 'objetivoGastoCorriente', 'error')} required">
                 <span class="grupo">
-                    <label for="objetivoGastoCorriente" class="col-md-5 control-label">
+                    <label for="objetivoGastoCorriente" class="col-md-3 control-label">
                         Objetivo de Gasto Corriente
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <g:select id="objetivoGastoCorriente" name="objetivoGastoCorriente.id" from="${vesta.poaCorrientes.ObjetivoGastoCorriente.list()}" optionKey="id" required="" value="${macroActividadInstance?.objetivoGastoCorriente?.id}" class="many-to-one form-control input-sm"/>
                     </div>
                     *
@@ -25,11 +25,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: macroActividadInstance, field: 'descripcion', 'error')} required">
                 <span class="grupo">
-                    <label for="descripcion" class="col-md-5 control-label">
-                        Descripción
+                    <label for="descripcion" class="col-md-3 control-label">
+                        Macroactividad
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <g:textArea name="descripcion" cols="40" rows="5" maxlength="511" required="" class="form-control input-sm required" value="${macroActividadInstance?.descripcion}"/>
                     </div>
                     *

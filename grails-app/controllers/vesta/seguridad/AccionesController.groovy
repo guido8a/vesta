@@ -1,5 +1,7 @@
 package vesta.seguridad
 
+import groovy.time.TimeCategory
+
 class AccionesController extends Shield {
 
     /**
@@ -21,6 +23,10 @@ class AccionesController extends Shield {
      * Acción que muestra una lista de acciones filtrando por módulo y tipo para editar las acciones
      */
     def acciones_ajax() {
+
+        def pruebasInicio = new Date()
+        def pruebasFin
+
         def acciones = Accn.withCriteria {
             eq("modulo", Modulo.get(params.id))
             not {
@@ -33,7 +39,11 @@ class AccionesController extends Shield {
             }
             order("nombre", "asc")
         }
-        return [acciones: acciones]
+        def modulo = Modulo.list([sort: 'nombre'])
+
+        pruebasFin = new Date()
+        println "tiempo ejecución executeRecibir: ${TimeCategory.minus(pruebasFin, pruebasInicio)}"
+        return [acciones: acciones, modulo: modulo]
     }
 
     /**

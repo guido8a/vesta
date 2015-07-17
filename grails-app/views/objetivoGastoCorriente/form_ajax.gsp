@@ -14,10 +14,10 @@
         <div class="form-group keeptogether ${hasErrors(bean: objetivoGastoCorrienteInstance, field: 'descripcion', 'error')} required">
             <span class="grupo">
                 <label for="descripcion" class="col-md-2 control-label">
-                    Descripción
+                    Objetivo de Gasto Corriente
                 </label>
-                <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="511" required="" class="form-control input-sm required" value="${objetivoGastoCorrienteInstance?.descripcion}"/>
+                <div class="col-md-10">
+                    <g:textArea name="descripcion" cols="80" rows="3" maxlength="511" required="" class="form-control input-sm required" value="${objetivoGastoCorrienteInstance?.descripcion}"/>
                 </div>
                  *
             </span>

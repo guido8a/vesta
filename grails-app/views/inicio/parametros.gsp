@@ -51,7 +51,7 @@
                             </li>
 
                             <li>
-                                <i class="fa-li fa fa-money text-success"></i>
+                                <i class="fa-li fa fa-money text-info"></i>
                                 <g:link class="over" controller="presupuesto" action="arbol">
                                     Plan de cuentas Presupuestario
                                 </g:link> o partidas presupuestarias para la asignación de gasto corriente y de inversión
@@ -123,7 +123,7 @@
                             </li>
 
                             <li>
-                                <i class="fa-li fa fa-calendar text-info"></i>
+                                <i class="fa-li fa fa-dot-circle-o text-info"></i>
                                 <g:link class="over" controller="objetivoBuenVivir" action="list">
                                     Objetivo del Buen Vivir
                                 </g:link> Políticas del Buen vivir fijado en el Plan Nacional de Desarrollo
@@ -138,7 +138,7 @@
                             </li>
 
                             <li>
-                                <i class="fa-li fa fa-calendar text-info"></i>
+                                <i class="fa-li fa fa-suitcase text-info"></i>
                                 <g:link class="over" controller="politicaBuenVivir" action="list">
                                     Políticas del Buen Vivir
                                 </g:link> Políticas del Buen vivir fijado en el Plan Nacional de Desarrollo
@@ -153,7 +153,7 @@
                             </li>
 
                             <li>
-                                <i class="fa-li fa fa-calendar text-info"></i>
+                                <i class="fa-li fa fa-bookmark-o text-info"></i>
                                 <g:link class="over" controller="metaBuenVivir" action="list">
                                     Metas del Buen Vivir
                                 </g:link> Meta del Buen vivir fijado en el Plan Nacional de Desarrollo
@@ -164,6 +164,31 @@
                                     <p>Plan nacional de desarrollo.<br/>
 
                                         Metas del Buen vivir fijado en el Plan Nacional de Desarrollo</p>
+                                </div>
+                            </li>
+
+                            <li>
+                                <i class="fa-li fa fa-dot-circle-o text-success"></i>
+                                <g:link class="over text-success" controller="objetivoGastoCorriente" action="list">
+                                    Objetivos de Gasto Corriente
+                                </g:link> Objetivos de gasto corriente
+
+                                <div class="descripcion hidden">
+                                    <h4>Objetivos de Gasto Corriente</h4>
+                                    <p>Gasto Corriente<br/>
+                                        Objetivos de gasto corriente</p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fa-li fa fa-tasks text-success"></i>
+                                <g:link class="over text-success" controller="macroActividad" action="list">
+                                    Macroactividades
+                                </g:link> Macroactividad al interior del objetivo de gasto corriente
+
+                                <div class="descripcion hidden">
+                                    <h4>Macroactividad de Gasto Corriente</h4>
+                                    <p>Gasto Corriente<br/>
+                                        Macroactividad al interior del objetivo de gasto corriente</p>
                                 </div>
                             </li>
                         </ul>

@@ -44,7 +44,7 @@ class MenuTagLib {
         html += "<div class='banner-esquina'>"
         html += "</div>"
         html += "<div class='banner-title' style='margin-top:10px; margin-left: 20px; font-size: 22px'>SISTEMA DE GESTIÓN DE PLANIFICACIÓN INSTITUCIONAL</div>"
-        html += "<div class='banner-page-title' style='margin-top:10px'>${attrs.title ?: '' }</div>"
+        html += "<div class='banner-page-title' style='margin-top:12px'>${attrs.title ?: '' }</div>"
         if (large != "") {
             html += "<div class='banner-logo hidden-xs hidden-sm'>"
             html += "</div>"

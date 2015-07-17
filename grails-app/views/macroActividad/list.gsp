@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de MacroActividad</title>
+        <title>Lista de Macroactividades</title>
     </head>
     <body>
 
@@ -35,7 +35,7 @@
 
                     <th>Objetivo de Gasto Corriente</th>
 
-                    <g:sortableColumn property="descripcion" title="Descripción" />
+                    <g:sortableColumn property="descripcion" title="Macroactividad" />
                     
                 </tr>
             </thead>
@@ -75,7 +75,7 @@
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando MacroActividad");
+                    openLoader("Guardando la Macroactividad");
                     $.ajax({
                         type    : "POST",
                         url     : $form.attr("action"),
@@ -113,7 +113,7 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando MacroActividad");
+                                openLoader("Eliminando la Macroactividad");
                                 $.ajax({
                                     type    : "POST",
                                     url     : '${createLink(controller:'macroActividad', action:'delete_ajax')}',
@@ -147,7 +147,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " MacroActividad",
+                            title   : title + " Macroactividad",
                             
                             message : msg,
                             buttons : {
@@ -200,7 +200,7 @@
                                     },
                                     success : function (msg) {
                                         bootbox.dialog({
-                                            title   : "Ver MacroActividad",
+                                            title   : "Ver Macroactividad",
                                             message : msg,
                                             buttons : {
                                                 ok : {
