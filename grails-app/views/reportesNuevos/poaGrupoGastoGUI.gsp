@@ -51,7 +51,7 @@
 
                 <div class="col-md-3">
                     <g:select name="fuente" from="${Fuente.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"
-                              class="form-control" noSelection="['': 'Todas las fuentes']" value="${fuente?.id}" id="idFuente"/>
+                              class="form-control" value="${fuente?.id}" id="idFuente"/>
                 </div>
 
                 <div class="col-md-2">

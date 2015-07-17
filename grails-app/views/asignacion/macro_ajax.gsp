@@ -18,7 +18,7 @@
         </g:if>
         <g:else>
         <g:if test="${params.asignaciones == 'S'}">
-        cargarActividadesTareas($(".mac").val());
+        cargarActividadesTareas($("#mac").val());
         </g:if>
         $.ajax({
             type    : "POST",

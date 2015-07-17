@@ -221,7 +221,8 @@
                 type    : "POST",
                 url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
                 data    : {
-                    objetivo : $("#objetivo").val()
+                    objetivo : $("#objetivo").val(),
+                    asignaciones: "S"
                 },
                 success : function (msg) {
                     $("#tdMacro").html(msg);

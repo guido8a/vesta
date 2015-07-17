@@ -386,7 +386,13 @@ class ReportesNuevosController {
     }
 
     def poaGrupoGastoGUI() {
-        def fuente = Fuente.get(params.id)
+        def fuente
+        if(params.id){
+            fuente = Fuente.get(params.id)
+        }else{
+            fuente = Fuente.get(9)
+        }
+
         def data = poaGrupoGastos_funcion(fuente)
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales, fuente: fuente]
     }
