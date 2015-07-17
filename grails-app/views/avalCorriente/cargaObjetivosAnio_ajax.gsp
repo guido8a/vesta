@@ -14,8 +14,9 @@
             type    : "POST",
             url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
             data    : {
-                objetivo : $(this).val(),
-                copiar   : "${params.copiar}"
+                objetivo     : $(this).val(),
+                copiar       : "${params.copiar}",
+                asignaciones : "${params.asignaciones}"
             },
             success : function (msg) {
                 $("#tdMacro").html(msg);

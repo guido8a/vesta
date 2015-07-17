@@ -11,13 +11,15 @@
 <script>
     $("#mac${params.mod}").change(function () {
 
-        cargarActividadesTareas($(".mac").val());
         $("#tdActividad${params.mod}").html(spinner);
         <g:if test="${params.copiar == 'S'}">
         cargarActividadesAnio();
         cargarActividadesCopiadas();
         </g:if>
         <g:else>
+        <g:if test="${params.asignaciones == 'S'}">
+        cargarActividadesTareas($(".mac").val());
+        </g:if>
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'actividad_ajax',controller: 'asignacion')}",
