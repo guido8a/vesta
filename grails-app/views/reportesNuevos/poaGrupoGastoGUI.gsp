@@ -51,7 +51,7 @@
 
                 <div class="col-md-3">
                     <g:select name="fuente" from="${Fuente.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"
-                              class="form-control" noSelection="['': 'Todas las fuentes']" value="${fuente?.id}"/>
+                              class="form-control" noSelection="['': 'Todas las fuentes']" value="${fuente?.id}" id="idFuente"/>
                 </div>
 
                 <div class="col-md-2">
@@ -140,26 +140,38 @@
             function reporte(tipo) {
                 var url;
                 if (tipo == "pdf") {
-                    url = "${createLink(action: 'poaGrupoGastoPdf')}?fnt=" + $("#fuente").val();
-                    url += "?anio=" + $("#anio").val();
+                    %{--url = "${createLink(action: 'poaGrupoGastoPdf')}?fnt=" + $("#fuente").val();--}%
+                    url = "${createLink(action: 'poaGrupoGastoPdf')}?fnt=" + $("#idFuente").val();
+//                    url += "?anio=" + $("#anio").val();
+                    url += "&anio=" + ${anio};
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=POA_grupo_gasto.pdf";
                 } else if (tipo == "xls") {
-                    url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaGrupoGastoXls')}?fnt" + $("#fuente").val();
-                    url += "?anio=" + $("#anio").val();
+                    url = "${createLink(controller: 'reportesNuevosExcel', action: 'poaGrupoGastoXls')}?fnt=" + $("#idFuente").val();
+//                    url += "?anio=" + $("#anio").val();
+                    url += "&anio=" + ${anio};
                     location.href = url;
                 }
             }
 
             $(function () {
                 $("#btnCambiarFuente").click(function () {
-                    location.href = "${createLink(action:'poaGrupoGastoGUI')}/" + $("#fuente").val();
+                    location.href = "${createLink(action:'poaGrupoGastoGUI')}/" + $("#idFuente").val();
                 });
 
                 $("#btnXls").click(function () {
-                    reporte("xls");
+                    if($("#idFuente").val() != ''){
+                        reporte("xls");
+                    }else{
+                        log("Seleccione una fuente!","Error")
+                    }
+
                 });
                 $("#btnPrint").click(function () {
-                    reporte("pdf");
+                    if($("#idFuente").val() != ''){
+                        reporte("pdf");
+                    }else{
+                        log("Seleccione una fuente!","Error")
+                    }
                 });
             });
         </script>

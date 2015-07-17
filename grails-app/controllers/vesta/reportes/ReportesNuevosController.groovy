@@ -70,7 +70,7 @@ class ReportesNuevosController {
                 }
             }
             asignaciones.each { asg ->
-                def anioAsg = asg.anio
+                def anioAsg = asg?.anio
                 if (anioAsg?.id == anio?.id) {
                     m.valores[keyTotal] += asg.priorizado
                     totales[keyTotal] += asg.priorizado
@@ -407,6 +407,7 @@ class ReportesNuevosController {
     }
 
     def poaGrupoGastoPdf() {
+        println("---><<<>>>> " + params)
         def fuente = Fuente.get(params.fnt.toLong())
         def data = poaGrupoGastos_funcion(fuente)
         return [anio: data.anio, data: data.data, anios: data.anios, totales: data.totales, fuente: fuente]
