@@ -80,7 +80,7 @@
                 <div class="col-md-6">
                     <span class="grupo">
                         <label for="tipoInstitucion" class="col-md-4 control-label">
-                            Área de gestión
+                            Tipo de área
                         </label>
 
                         <div class="col-md-8">
