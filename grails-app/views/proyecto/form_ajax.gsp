@@ -1,4 +1,4 @@
-<%@ page import="vesta.parametros.UnidadEjecutora; vesta.parametros.proyectos.Programa; vesta.proyectos.Portafolio; vesta.proyectos.Estrategia; vesta.proyectos.ObjetivoEstrategicoProyecto; vesta.proyectos.Proyecto" %>
+<%@ page import="vesta.parametros.Localizacion; vesta.parametros.UnidadEjecutora; vesta.parametros.proyectos.Programa; vesta.proyectos.Portafolio; vesta.proyectos.Estrategia; vesta.proyectos.ObjetivoEstrategicoProyecto; vesta.proyectos.Proyecto" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!proyectoInstance}">
@@ -84,12 +84,26 @@
             <div class="form-group keeptogether ${hasErrors(bean: proyectoInstance, field: 'unidadAdministradora', 'error')} ">
                 <span class="grupo">
                     <label for="unidadAdministradora" class="col-md-3 control-label">
-                        Unidad Administradora
+                        Área de gestión
                     </label>
 
                     <div class="col-md-9">
                         <g:select id="unidadAdministradora" name="unidadAdministradora.id" from="${UnidadEjecutora.list([sort: 'nombre'])}"
                                   optionKey="id" value="${proyectoInstance?.unidadAdministradora?.id}"
+                                  class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                    </div>
+                </span>
+            </div>
+
+            <div class="form-group keeptogether ${hasErrors(bean: proyectoInstance, field: 'unidadAdministradora', 'error')} ">
+                <span class="grupo">
+                    <label for="unidadAdministradora" class="col-md-3 control-label">
+                        Localización
+                    </label>
+
+                    <div class="col-md-9">
+                        <g:select id="localizacion" name="localizacion.id" from="${Localizacion.list([sort: 'descripcion'])}"
+                                  optionKey="id" value="${proyectoInstance?.localizacion?.id}"
                                   class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                     </div>
                 </span>
@@ -125,7 +139,7 @@
                 <div class="col-md-6">
                     <span class="grupo">
                         <label for="monto" class="col-md-6 control-label">
-                            Monto
+                            Costo total
                         </label>
 
                         <div class="col-md-6">
@@ -209,6 +223,19 @@
                 </div>
             </div>
 
+            <div class="form-group keeptogether ${hasErrors(bean: proyectoInstance, field: 'problema', 'error')} ">
+                <span class="grupo">
+                    <label for="problema" class="col-md-3 control-label">
+                        Diagnóstico e identificación
+                    </label>
+
+                    <div class="col-md-9">
+                        <g:textArea name="problema" cols="40" rows="2" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.problema}"/>
+                    </div>
+
+                </span>
+            </div>
+
             <div class="form-group keeptogether ${hasErrors(bean: proyectoInstance, field: 'justificacion', 'error')} ">
                 <span class="grupo">
                     <label for="justificacion" class="col-md-3 control-label">
@@ -235,14 +262,27 @@
                 </span>
             </div>
 
-            <div class="form-group keeptogether ${hasErrors(bean: proyectoInstance, field: 'problema', 'error')} ">
+            <div class="form-group keeptogether ${hasErrors(bean: proyectoInstance, field: 'descripcion', 'error')} ">
                 <span class="grupo">
-                    <label for="problema" class="col-md-3 control-label">
-                        Propósito
+                    <label for="descripcion" class="col-md-3 control-label">
+                        Población beneficiaria
                     </label>
 
                     <div class="col-md-9">
-                        <g:textArea name="problema" cols="40" rows="2" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.problema}"/>
+                        <g:textArea name="poblacion" cols="40" rows="2" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.poblacion}"/>
+                    </div>
+
+                </span>
+            </div>
+
+            <div class="form-group keeptogether ${hasErrors(bean: proyectoInstance, field: 'descripcion', 'error')} ">
+                <span class="grupo">
+                    <label for="descripcion" class="col-md-3 control-label">
+                        Objetivo general
+                    </label>
+
+                    <div class="col-md-9">
+                        <g:textArea name="objetivoGeneral" cols="40" rows="2" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.objetivoGeneral}"/>
                     </div>
 
                 </span>

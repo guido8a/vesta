@@ -175,6 +175,19 @@ class Proyecto {
     Integer numeroAval = 0
 
     /**
+     * Localización del proyecto
+     */
+    Localizacion localizacion
+    /**
+     * Poblacion beneficiaria del proyecto
+     */
+    String poblacion
+    /**
+     * Objetivo general del proyecto
+     */
+    String objetivoGeneral
+
+    /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
     static auditable = [ignore: []]
@@ -236,6 +249,10 @@ class Proyecto {
             justificacion column: 'proyjust'
 
             numeroAval column: 'proynmav'
+
+            localizacion column: 'lclz__id'
+            poblacion column: 'proypbbn'
+            objetivoGeneral column: 'proyobgn'
         }
     }
 
@@ -287,6 +304,10 @@ class Proyecto {
         codigo(blank: true, nullable: true, attributes: [mensaje: 'Código'])
         estrategia(blank: true, nullable: true, attributes: [mensaje: 'Estrategia'])
         justificacion(size: 0..1023, blank: true, nullable: true, attributes: [mensaje: 'Justificación del Proyecto'])
+
+        localizacion(blank: true, nullable: true, attributes: [mensaje: 'Localización'])
+        poblacion(blank: true, nullable: true, maxSize: 1023, attributes: [mensaje: 'Población beneficiaria'])
+        objetivoGeneral(blank: true, nullable: true, maxSize: 1023, attributes: [mensaje: 'Objetivo general'])
     }
 
     /**

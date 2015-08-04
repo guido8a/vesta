@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -29,9 +28,9 @@
 
                                     <p>Valores de las tablas tipo del sistema y parámetros en general.<br/>
 
-                                    Entre los parámetros más importantes tenemos a: grupo de procesos, tipos de elemento,
-                                    fuentes de recursos, tipo de compra, año presupuestario, unidades de medida, programas,
-                                    portafolios, etc..</p>
+                                        Entre los parámetros más importantes tenemos a: grupo de procesos, tipos de elemento,
+                                        fuentes de recursos, tipo de compra, año presupuestario, unidades de medida, programas,
+                                        portafolios, etc..</p>
                                 </div>
                             </li>
 
@@ -46,7 +45,8 @@
 
                                     <p>Valores de las categorías de las actividades dentro de los componenetes de un proyecto.<br/>
 
-                                    Las categorías poseen valores de "ninguna" o específicos como Estudios, construcción, fiscalización, etc..</p>
+                                        Las categorías poseen valores de "ninguna" o específicos como Estudios, construcción, fiscalización, etc..
+                                    </p>
                                 </div>
                             </li>
 
@@ -74,8 +74,8 @@
 
                                     <p>Cargos del personal del Área de gestión y de la planta central del app.<br/>
 
-                                    Estos cargo se aplican a quienes van a ser los responsables del ingreso o seguimiento
-                                    y de la ejecución del proyecto</p>
+                                        Estos cargo se aplican a quienes van a ser los responsables del ingreso o seguimiento
+                                        y de la ejecución del proyecto</p>
                                 </div>
                             </li>
 
@@ -90,7 +90,7 @@
 
                                     <p>Se aplica a las distintas entidades, instituciones y dependencias para diferenciarlas como:<br/>
 
-                                    Gerencias, Direcciones, Unidades Operativas, etc.</p>
+                                        Gerencias, Direcciones, Unidades Operativas, etc.</p>
                                 </div>
                             </li>
 
@@ -118,7 +118,7 @@
 
                                     <p>Año al cual corresponde el PAPP, cada año debe iniciarse una nueva gestión de proyectos.<br/>
 
-                                    Es similar al período contable o año fiscal.</p>
+                                        Es similar al período contable o año fiscal.</p>
                                 </div>
                             </li>
 
@@ -168,6 +168,19 @@
                             </li>
 
                             <li>
+                                <i class="fa-li fa fa-map-marker text-info"></i>
+                                <g:link class="over" controller="localizacion" action="list">
+                                    Localizaciones
+                                </g:link> Localización de los proyectos
+
+                                <div class="descripcion hidden">
+                                    <h4>Localización</h4>
+
+                                    <p>Localización de los proyectos</p>
+                                </div>
+                            </li>
+
+                            <li>
                                 <i class="fa-li fa fa-dot-circle-o text-success"></i>
                                 <g:link class="over text-success" controller="objetivoGastoCorriente" action="list">
                                     Objetivos de Gasto Corriente
@@ -175,6 +188,7 @@
 
                                 <div class="descripcion hidden">
                                     <h4>Objetivos de Gasto Corriente</h4>
+
                                     <p>Gasto Corriente<br/>
                                         Objetivos de gasto corriente</p>
                                 </div>
@@ -187,6 +201,7 @@
 
                                 <div class="descripcion hidden">
                                     <h4>Macroactividad de Gasto Corriente</h4>
+
                                     <p>Gasto Corriente<br/>
                                         Macroactividad al interior del objetivo de gasto corriente</p>
                                 </div>

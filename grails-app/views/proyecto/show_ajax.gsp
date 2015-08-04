@@ -33,6 +33,14 @@
                             <div class="col-md-10">${proyectoInstance.nombre}</div>
                         </div>
 
+                        <g:if test="${proyectoInstance.localizacion}">
+                            <div class="row">
+                                <div class="col-md-2 show-label">Localización</div>
+
+                                <div class="col-md-10">${proyectoInstance.localizacion}</div>
+                            </div>
+                        </g:if>
+
                         <g:if test="${proyectoInstance.objetivoEstrategico}">
                             <div class="row">
                                 <div class="col-md-2 show-label">Obj. estratégico</div>
@@ -67,7 +75,7 @@
 
                         <g:if test="${proyectoInstance.unidadAdministradora}">
                             <div class="row">
-                                <div class="col-md-2 show-label">U. Administradora</div>
+                                <div class="col-md-2 show-label">Área de gestión</div>
 
                                 <div class="col-md-10">${proyectoInstance.unidadAdministradora?.nombre}</div>
                             </div>
@@ -127,6 +135,14 @@
                             </div>
                         </g:if>
 
+                        <g:if test="${proyectoInstance.problema}">
+                            <div class="row">
+                                <div class="col-md-2 show-label">Diagnóstico e identificación</div>
+
+                                <div class="col-md-10">${proyectoInstance.problema}</div>
+                            </div>
+                        </g:if>
+
                         <g:if test="${proyectoInstance.justificacion}">
                             <div class="row">
                                 <div class="col-md-2 show-label">Justificación</div>
@@ -143,11 +159,19 @@
                             </div>
                         </g:if>
 
-                        <g:if test="${proyectoInstance.problema}">
+                        <g:if test="${proyectoInstance.poblacion}">
                             <div class="row">
-                                <div class="col-md-2 show-label">Propósito</div>
+                                <div class="col-md-2 show-label">Población beneficiaria</div>
 
-                                <div class="col-md-10">${proyectoInstance.problema}</div>
+                                <div class="col-md-10">${proyectoInstance.poblacion}</div>
+                            </div>
+                        </g:if>
+
+                        <g:if test="${proyectoInstance.objetivoGeneral}">
+                            <div class="row">
+                                <div class="col-md-2 show-label">Objetivo general</div>
+
+                                <div class="col-md-10">${proyectoInstance.objetivoGeneral}</div>
                             </div>
                         </g:if>
                     </div>
