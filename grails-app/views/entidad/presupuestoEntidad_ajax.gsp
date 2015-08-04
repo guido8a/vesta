@@ -8,7 +8,7 @@
 <form class="form-horizontal" id="frmPresupuestoEntidad">
     <div class="form-group">
         <div class='grupo'>
-            <label for="anio" class="col-md-3 control-label">Año</label>
+            <label for="anio" class="col-md-4 control-label">Año</label>
 
             <div class="col-md-3">
                 <g:select name="anio" from="${Anio.list([sort: 'anio'])}" optionKey="id" optionValue="anio"
@@ -18,7 +18,7 @@
     </div>
 
     <div class="form-group">
-        <label for="maxInversion" class="col-md-3 control-label">Max. Inversión</label>
+        <label for="maxInversion" class="col-md-4 control-label">Presupuesto codificado</label>
 
         <div class="col-md-4">
             <div class='grupo'>
@@ -32,7 +32,7 @@
     </div>
 
     <div class="form-group">
-        <label for="originalCorrientes" class="col-md-3 control-label">Inversión original</label>
+        <label for="originalCorrientes" class="col-md-4 control-label">Presupuesto asignado</label>
 
         <div class="col-md-4">
             <div class='grupo'>
@@ -51,8 +51,8 @@
     $(function () {
 
         $("#frmPresupuestoEntidad").validate({
-            errorClass    : "help-block",
-            errorPlacement: function (error, element) {
+            errorClass     : "help-block",
+            errorPlacement : function (error, element) {
                 if (element.parent().hasClass("input-group")) {
                     error.insertAfter(element.parent());
                 } else {
@@ -60,9 +60,9 @@
                 }
                 element.parents(".grupo").addClass('has-error');
             },
-            success       : function (label) {
+            success        : function (label) {
                 label.parents(".grupo").removeClass('has-error');
-label.remove();
+                label.remove();
             }
         });
 
@@ -70,13 +70,13 @@ label.remove();
             var anioId = $("#anio").val();
             var unidadId = "${unidad?.id}";
             $.ajax({
-                type   : "POST",
-                url    : "${createLink(action: 'getPresupuestoAnio_ajax')}",
-                data   : {
-                    anio  : anioId,
-                    unidad: unidadId
+                type    : "POST",
+                url     : "${createLink(action: 'getPresupuestoAnio_ajax')}",
+                data    : {
+                    anio   : anioId,
+                    unidad : unidadId
                 },
-                success: function (msg) {
+                success : function (msg) {
                     var parts = msg.split("_");
                     $("#maxInversion").val(parts[0]);
                     $("#originalCorrientes").val(parts[1]);

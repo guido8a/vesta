@@ -142,7 +142,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id    : "dlgCreateEdit",
-                            title : title + " Entidad",
+                            title : title + " área de gestión",
 
                             class : "modal-lg",
 
@@ -418,14 +418,14 @@
                 var items = {};
 
                 var agregarEntidad = {
-                    label  : "Agregar entidad",
+                    label  : "Agregar área de gestión",
                     icon   : "fa fa-home text-success",
                     action : function () {
                         createEditUnidad(null, nodeId);
                     }
                 };
                 var docsEntidad = {
-                    label           : "Documentos entidad",
+                    label           : "Documentos área de gestión",
                     icon            : "fa fa-files-o",
                     separator_after : true,
                     action          : function () {
@@ -490,7 +490,7 @@
                     }
                 };
                 var verEntidad = {
-                    label            : "Ver datos de la entidad",
+                    label            : "Ver datos del área de gestión",
                     icon             : "fa fa-laptop text-info",
                     separator_before : true,
                     action           : function () {
@@ -502,7 +502,7 @@
                             },
                             success : function (msg) {
                                 bootbox.dialog({
-                                    title   : "Ver Entidad",
+                                    title   : "Ver Área de gestión",
                                     message : msg,
                                     buttons : {
                                         ok : {
@@ -518,14 +518,14 @@
                     }
                 };
                 var editarEntidad = {
-                    label  : "Editar datos de la entidad",
+                    label  : "Editar datos del área de gestión",
                     icon   : "fa fa-pencil text-info",
                     action : function () {
                         createEditUnidad(nodeId, null);
                     }
                 };
                 var presupuestoEntidad = {
-                    label            : "Presupuesto entidad",
+                    label            : "Presupuesto área de gestión",
                     icon             : "fa fa-money",
                     separator_before : true,
                     action           : function () {
@@ -537,7 +537,7 @@
                             },
                             success : function (msg) {
                                 bootbox.dialog({
-                                    title   : "Presupuesto entidad",
+                                    title   : "Presupuesto área de gestión",
                                     message : msg,
                                     buttons : {
                                         cancelar : {

@@ -60,21 +60,21 @@
                 </span>
             </div>
 
-            <div class="form-group keeptogether ${hasErrors(bean: unidadEjecutoraInstance, field: 'objetivoUnidad', 'error')} ">
-                <span class="grupo">
-                    <label for="objetivoUnidad" class="col-md-2 control-label">
-                        Objetivo
-                    </label>
+            %{--<div class="form-group keeptogether ${hasErrors(bean: unidadEjecutoraInstance, field: 'objetivoUnidad', 'error')} ">--}%
+                %{--<span class="grupo">--}%
+                    %{--<label for="objetivoUnidad" class="col-md-2 control-label">--}%
+                        %{--Objetivo--}%
+                    %{--</label>--}%
 
-                    <div class="col-md-10">
-                        <g:select id="objetivoUnidad" name="objetivoUnidad.id" from="${vesta.parametros.proyectos.ObjetivoUnidad.list()}"
-                                  optionKey="id" optionValue="descripcion"
-                                  value="${unidadEjecutoraInstance?.objetivoUnidad?.id}" class="many-to-one form-control input-sm"
-                                  noSelection="['null': '']"/>
-                    </div>
+                    %{--<div class="col-md-10">--}%
+                        %{--<g:select id="objetivoUnidad" name="objetivoUnidad.id" from="${vesta.parametros.proyectos.ObjetivoUnidad.list()}"--}%
+                                  %{--optionKey="id" optionValue="descripcion"--}%
+                                  %{--value="${unidadEjecutoraInstance?.objetivoUnidad?.id}" class="many-to-one form-control input-sm"--}%
+                                  %{--noSelection="['null': '']"/>--}%
+                    %{--</div>--}%
 
-                </span>
-            </div>
+                %{--</span>--}%
+            %{--</div>--}%
 
             <div class="form-group keeptogether ${hasErrors(bean: unidadEjecutoraInstance, field: 'tipoInstitucion', 'error')} ${hasErrors(bean: unidadEjecutoraInstance, field: 'codigo', 'error')} required">
                 <div class="col-md-6">
