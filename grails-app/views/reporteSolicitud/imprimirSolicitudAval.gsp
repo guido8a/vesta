@@ -219,7 +219,8 @@
                         <td width="50%" style=" text-align: center;">
                             <img src="${resource(dir: 'firmas', file: solicitud.firma.path)}" style="width: 150px;"/><br/>
                             <b>${solicitud.firma.usuario.nombre} ${solicitud.firma.usuario.apellido}<br/></b>
-                            <b>${solicitud.firma.usuario.cargoPersonal}<br/></b>
+                            %{--<b>${solicitud.firma.usuario.cargoPersonal}<br/></b>--}%
+                            <b>${solicitud.firma.usuario.cargo}<br/></b>
                         </td>
                     </tr>
                 </table>

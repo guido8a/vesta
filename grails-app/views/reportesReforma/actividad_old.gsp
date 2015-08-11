@@ -327,7 +327,8 @@
 
                                 <div style="border-bottom: solid; width: 150px"></div>
                                 ${reforma?.firmaSolicitud?.usuario?.nombre} ${reforma?.firmaSolicitud?.usuario?.apellido}<br/>
-                                <b>GERENTE DE ${reforma?.firmaSolicitud?.usuario?.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                %{--<b>GERENTE DE ${reforma?.firmaSolicitud?.usuario?.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
+                                <b>GERENTE DE ${reforma?.firmaSolicitud?.usuario?.cargo?.toString()?.toUpperCase()}<br/>
                                 </b>
                             </g:if>
                         </span>

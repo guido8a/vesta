@@ -83,7 +83,8 @@
         <g:if test="${solicitud?.firmaSol?.estado=='F'}">
             <img src="${resource(dir: 'firmas',file: solicitud.firmaSol.path)}"/><br/>
             ${solicitud.firmaSol.usuario.nombre} ${solicitud.firmaSol.usuario.apellido}<br/>
-            ${solicitud.firmaSol.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+            %{--${solicitud.firmaSol.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
+            ${solicitud.firmaSol.usuario.cargo?.toString()?.toUpperCase()}<br/>
             ${solicitud.firmaSol.fecha.format("dd-MM-yyyy hh:mm")}
         </g:if>
     %{--<div style="margin-top: 70px">--}%

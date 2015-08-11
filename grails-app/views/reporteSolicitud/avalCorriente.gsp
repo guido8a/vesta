@@ -221,14 +221,16 @@
                             <g:if test="${proceso.firma1?.estado == 'F'}">
                                 <img src="${resource(dir: 'firmas', file: proceso.firma1.path)}" style="width: 150px;"/><br/>
                                 ${proceso.firma1.usuario.nombre} ${proceso.firma1.usuario.apellido}<br/>
-                                <b>${proceso.firma1.usuario.cargoPersonal}<br/></b>
+                                %{--<b>${proceso.firma1.usuario.cargoPersonal}<br/></b>--}%
+                                <b>${proceso.firma1.usuario.cargo}<br/></b>
                             </g:if>
                         </td>
                         <td width="50%" style=" text-align: center;;border: none">
                             <g:if test="${proceso.firma2?.estado == 'F'}">
                                 <img src="${resource(dir: 'firmas', file: proceso.firma2.path)}" style="width: 150px"/><br/>
                                 ${proceso.firma2.usuario.nombre} ${proceso.firma2.usuario.apellido}<br/>
-                                <b>${proceso.firma2.usuario.cargoPersonal}<br/></b>
+                                %{--<b>${proceso.firma2.usuario.cargoPersonal}<br/></b>--}%
+                                <b>${proceso.firma2.usuario.cargo}<br/></b>
                             </g:if>
                         </td>
                     </tr>

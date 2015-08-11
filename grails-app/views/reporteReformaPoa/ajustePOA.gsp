@@ -232,12 +232,14 @@
                     <td></td>
                     <td>
                         <g:if test="${firma1}">
-                            ${ajuste.firma1.usuario.cargoPersonal?.descripcion}
+                            %{--${ajuste.firma1.usuario.cargoPersonal?.descripcion}--}%
+                            ${ajuste.firma1.usuario.cargo}
                         </g:if>
                     </td>
                     <td>
                         <g:if test="${firma2}">
-                            ${ajuste.firma2.usuario.cargoPersonal?.descripcion}
+                            %{--${ajuste.firma2.usuario.cargoPersonal?.descripcion}--}%
+                            ${ajuste.firma2.usuario.cargo}
                         </g:if>
                     </td>
                     <td></td>

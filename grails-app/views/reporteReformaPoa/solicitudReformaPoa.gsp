@@ -491,7 +491,8 @@
                             <img src="${resource(dir: 'firmas',file: sol.firmaSol.path)}" style="width: 150px;"/><br/>
                             <div style="border-bottom: solid; width: 150px"> </div>
                             ${sol.firmaSol.usuario.nombre} ${sol.firmaSol.usuario.apellido}<br/>
-                            <b>GERENTE DE ${sol.firmaSol.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/></b>
+                            %{--<b>GERENTE DE ${sol.firmaSol.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/></b>--}%
+                            <b>GERENTE DE ${sol.firmaSol.usuario.cargo?.toString()?.toUpperCase()}<br/></b>
                         </g:if>
                     </span>
                 </div>

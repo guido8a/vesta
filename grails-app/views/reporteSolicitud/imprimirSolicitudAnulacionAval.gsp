@@ -181,7 +181,8 @@
                         <td width="33%" style=" text-align: center;">
                             <img src="${resource(dir: 'firmas', file: solicitud.firma.path)}"/><br/>
                             ${solicitud.firma.usuario.nombre} ${solicitud.firma.usuario.apellido}<br/>
-                            ${solicitud.firma.usuario.cargoPersonal}<br/>
+                            %{--${solicitud.firma.usuario.cargoPersonal}<br/>--}%
+                            ${solicitud.firma.usuario.cargo}<br/>
                             ${solicitud.firma.fecha.format("dd-MM-yyyy hh:mm")}
                         </td>
                         <td width="33%" style=" text-align: center;"></td>

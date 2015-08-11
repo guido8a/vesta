@@ -261,14 +261,16 @@
                                 <g:if test="${aval.firma1?.estado == 'F'}">
                                     <img src="${resource(dir: 'firmas', file: aval.firma1.path)}" style="width: 150px;"/><br/>
                                     ${aval.firma1.usuario.nombre} ${aval.firma1.usuario.apellido}<br/>
-                                    <b>${aval.firma1.usuario.cargoPersonal}<br/></b>
+                                    %{--<b>${aval.firma1.usuario.cargoPersonal}<br/></b>--}%
+                                    <b>${aval.firma1.usuario.cargo}<br/></b>
                                 </g:if>
                             </td>
                             <td width="50%" style=" text-align: center;;border: none">
                                 <g:if test="${aval.firma2?.estado == 'F'}">
                                     <img src="${resource(dir: 'firmas', file: aval.firma2.path)}" style="width: 150px"/><br/>
                                     ${aval.firma2.usuario.nombre} ${aval.firma2.usuario.apellido}<br/>
-                                    <b>${aval.firma2.usuario.cargoPersonal}<br/></b>
+                                    %{--<b>${aval.firma2.usuario.cargoPersonal}<br/></b>--}%
+                                    <b>${aval.firma2.usuario.cargo}<br/></b>
                                 </g:if>
                             </td>
                         </tr>

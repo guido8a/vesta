@@ -145,7 +145,7 @@ class Reportes2Controller {
             label = new Label(3, row, u.unidad.nombre?.toUpperCase(), formatXls); sheet.addCell(label);
             label = new Label(4, row, u.telefono, formatXls); sheet.addCell(label);
             label = new Label(5, row, u.mail, formatXls); sheet.addCell(label);
-            label = new Label(6, row, u.cargoPersonal?.descripcion?.toUpperCase(), formatXls); sheet.addCell(label);
+            label = new Label(6, row, u.cargo?.toUpperCase(), formatXls); sheet.addCell(label);
             row++
 
         }

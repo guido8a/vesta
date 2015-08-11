@@ -63,21 +63,21 @@
                                 </div>
                             </li>
 
-                            <li>
-                                <i class="fa-li fa fa-users text-info"></i>
-                                <g:link data-info="cargo" class="over" controller="cargoPersonal" action="list">
-                                    Cargos del Personal de las Unidades
-                                </g:link> que se aplican a los responsables del ingreso y seguimiento del proyecto
+                            %{--<li>--}%
+                                %{--<i class="fa-li fa fa-users text-info"></i>--}%
+                                %{--<g:link data-info="cargo" class="over" controller="cargoPersonal" action="list">--}%
+                                    %{--Cargos del Personal de las Unidades--}%
+                                %{--</g:link> que se aplican a los responsables del ingreso y seguimiento del proyecto--}%
 
-                                <div class="descripcion hidden">
-                                    <h4>Cargos del Personal</h4>
+                                %{--<div class="descripcion hidden">--}%
+                                    %{--<h4>Cargos del Personal</h4>--}%
 
-                                    <p>Cargos del personal del Área de gestión y de la planta central del app.<br/>
+                                    %{--<p>Cargos del personal del Área de gestión y de la planta central del app.<br/>--}%
 
-                                        Estos cargo se aplican a quienes van a ser los responsables del ingreso o seguimiento
-                                        y de la ejecución del proyecto</p>
-                                </div>
-                            </li>
+                                        %{--Estos cargo se aplican a quienes van a ser los responsables del ingreso o seguimiento--}%
+                                        %{--y de la ejecución del proyecto</p>--}%
+                                %{--</div>--}%
+                            %{--</li>--}%
 
                             <li>
                                 <i class="fa-li fa fa-building-o text-info"></i>

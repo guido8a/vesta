@@ -474,7 +474,8 @@ class ReporteSolicitudController {
         def firmas = []
 
         if (solicitud.usuario) {
-            firmas += [cargo: solicitud?.usuario?.cargoPersonal?.descripcion ?: "Responsable unidad", usuario: solicitud.usuario]
+//            firmas += [cargo: solicitud?.usuario?.cargoPersonal?.descripcion ?: "Responsable unidad", usuario: solicitud.usuario]
+            firmas += [cargo: solicitud?.usuario?.cargo ?: "Responsable unidad", usuario: solicitud.usuario]
         }
         return [solicitud: solicitud, firmas: firmas]
     }

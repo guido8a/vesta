@@ -91,7 +91,7 @@
             </div>
         </g:if>
 
-        <g:if test="${personaInstance?.unidad || personaInstance?.cargoPersonal}">
+        <g:if test="${personaInstance?.unidad || personaInstance?.cargo}">
             <div class="row">
                 <div class="col-md-2 show-label">
                     Unidad
@@ -106,7 +106,8 @@
                 </div>
 
                 <div class="col-md-4">
-                    ${personaInstance?.cargoPersonal?.encodeAsHTML()}
+                    %{--${personaInstance?.cargoPersonal?.encodeAsHTML()}--}%
+                    ${personaInstance?.cargo ?: ''}
                 </div>
 
             </div>

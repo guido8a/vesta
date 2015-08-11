@@ -100,7 +100,7 @@
                         </label>
 
                         <div class="col-md-10">
-                            <g:textArea name="direccion" cols="80" rows="1" maxlength="127"  pattern="${personaInstance.constraints.direccion.matches}" class="form-control input-sm" value="${personaInstance?.direccion}"/>                        </div>
+                            <g:textArea name="direccion" cols="80" rows="1" maxlength="127"  pattern="${personaInstance.constraints.direccion.matches}" class="form-control input-sm" value="${personaInstance?.direccion}" style="resize: none"/>                        </div>
 
                     </span>
                 </div>
@@ -119,20 +119,29 @@
 
                     </span>
                 </div>
+            </div>
 
-                <div class="col-md-6 ">
+            <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'cargo', 'error')} ">
+
+                <div class="col-md-12 ">
                     <span class="grupo">
-                        <label for="cargoPersonal" class="col-md-4 control-label">
+                        <label for="cargo" class="col-md-2 control-label">
                             Cargo
                         </label>
 
-                        <div class="col-md-8">
-                            <g:select id="cargoPersonal" name="cargoPersonal.id" from="${vesta.parametros.CargoPersonal.list()}" optionKey="id" value="${personaInstance?.cargoPersonal?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+
+                        <div class="col-md-10">
+                            <g:textArea name="cargo" cols="80" rows="1" maxlength="250" class="form-control input-sm" value="${personaInstance?.cargo}" style="resize: none"/>
                         </div>
+
+                        %{--<div class="col-md-8">--}%
+                        %{--<g:select id="cargoPersonal" name="cargoPersonal.id" from="${vesta.parametros.CargoPersonal.list()}" optionKey="id" value="${personaInstance?.cargoPersonal?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>--}%
+                        %{--</div>--}%
 
                     </span>
                 </div>
             </div>
+
 
             <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'login', 'error')} ${hasErrors(bean: personaInstance, field: 'sigla', 'error')}">
                 <div class="col-md-6">

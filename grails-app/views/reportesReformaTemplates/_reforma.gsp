@@ -82,7 +82,8 @@
                                     ${reforma.firma1.usuario.nombre} ${reforma.firma1.usuario.apellido}<br/>
                                 </b>
                                 <b style="text-align: center;">
-                                    ${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                    %{--${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
+                                    ${reforma.firma1.usuario.cargo?.toString()?.toUpperCase()}<br/>
                                 </b>
                             </g:if>
                             <g:else>
@@ -93,7 +94,8 @@
                                     ${reforma.firma1.usuario.nombre} ${reforma.firma1.usuario.apellido}<br/>
                                 </b>
                                 <b style="text-align: center;">
-                                    ${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                    %{--${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
+                                    ${reforma.firma1.usuario.cargo?.toString()?.toUpperCase()}<br/>
                                 </b>
                             </g:else>
 
@@ -109,7 +111,8 @@
                                     ${reforma.firma2.usuario.nombre} ${reforma.firma2.usuario.apellido}<br/>
                                 </b>
                                 <b style="text-align: center;">
-                                    ${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                    %{--${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
+                                    ${reforma.firma2.usuario.cargo?.toString()?.toUpperCase()}<br/>
                                 </b>
 
                             </g:if>
@@ -121,7 +124,8 @@
                                     ${reforma.firma2.usuario.nombre} ${reforma.firma2.usuario.apellido}<br/>
                                 </b>
                                 <b style="text-align: center;">
-                                    ${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                    ${reforma.firma2.usuario.cargo?.toString()?.toUpperCase()}<br/>
+                                    %{--${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
                                 </b>
                             </g:else>
 

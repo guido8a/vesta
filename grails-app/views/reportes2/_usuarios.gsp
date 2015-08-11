@@ -48,7 +48,8 @@
                 </td>
 
                 <td>
-                    ${u.cargoPersonal?.descripcion}
+                    %{--${u.cargoPersonal?.descripcion}--}%
+                    ${u.cargo}
                 </td>
             </tr>
         </g:each>

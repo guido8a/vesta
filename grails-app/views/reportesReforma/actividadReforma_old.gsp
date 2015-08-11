@@ -302,7 +302,8 @@
                                         <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px"></div>
                                         <b style="text-align: center">${reforma.firma1.usuario.nombre} ${reforma.firma1.usuario.apellido}<br/>
                                         </b>
-                                        <b style="text-align: center;">${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                        %{--<b style="text-align: center;">${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
+                                        <b style="text-align: center;">${reforma.firma1.usuario.cargo?.toString()?.toUpperCase()}<br/>
                                         </b>
                                     </g:if>
                                     <g:else>
@@ -311,7 +312,8 @@
                                         <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px; margin-top: 150px"></div>
                                         <b style="text-align: center">${reforma.firma1.usuario.nombre} ${reforma.firma1.usuario.apellido}<br/>
                                         </b>
-                                        <b style="text-align: center;">${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                        %{--<b style="text-align: center;">${reforma.firma1.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
+                                        <b style="text-align: center;">${reforma.firma1.usuario.cargo?.toString()?.toUpperCase()}<br/>
                                         </b>
                                     </g:else>
 
@@ -325,7 +327,8 @@
                                         <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px;"></div>
                                         <b class="center">${reforma.firma2.usuario.nombre} ${reforma.firma2.usuario.apellido}<br/>
                                         </b>
-                                        <b class="center">${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                        %{--<b class="center">${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
+                                        <b class="center">${reforma.firma2.usuario.cargo?.toString()?.toUpperCase()}<br/>
                                         </b>
 
                                     </g:if>
@@ -335,7 +338,8 @@
                                         <div style="width: 150px; border-bottom: solid 1px; margin-left: 170px; margin-top: 150px"></div>
                                         <b class="center">${reforma.firma2.usuario.nombre} ${reforma.firma2.usuario.apellido}<br/>
                                         </b>
-                                        <b class="center">${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>
+                                        %{--<b class="center">${reforma.firma2.usuario.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
+                                        <b class="center">${reforma.firma2.usuario.cargo?.toString()?.toUpperCase()}<br/>
                                         </b>
                                     </g:else>
 
