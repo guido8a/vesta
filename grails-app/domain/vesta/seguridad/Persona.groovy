@@ -57,7 +57,7 @@ class Persona {
     /**
      * Cargo del usuario
      */
-    CargoPersonal cargoPersonal
+//    CargoPersonal cargoPersonal
     /**
      * Unidad ejecutora del usuario
      */
@@ -86,6 +86,10 @@ class Persona {
      * Fecha de cambio de contraseña
      */
     Date fechaPass
+    /**
+     * Cargo de la persona
+     */
+    String cargo
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -116,7 +120,7 @@ class Persona {
             fax column: 'prsnfaxx'
             observaciones column: 'prsnobsr'
 
-            cargoPersonal column: 'cgpr__id'
+//            cargoPersonal column: 'cgpr__id'
             login column: 'prsnlogn'
             password column: 'prsnpass'
             autorizacion column: 'prsnatrz'
@@ -124,6 +128,7 @@ class Persona {
             estaActivo column: 'prsnactv'
             fechaPass column: 'prsnfcps'
             unidad column: 'unej__id'
+            cargo column: 'prsncrgo'
         }
     }
 
@@ -143,7 +148,7 @@ class Persona {
         fax(size: 1..40, blank: true, nullable: true, attributes: ['mensaje': 'Fax de la persona'])
         observaciones(matches: /^[a-zA-Z0-9ñÑ .,áéíóúÁÉÍÚÓüÜ#_-]+$/, size: 1..127, blank: true, nullable: true, attributes: ['mensaje': 'Observaciones adicionales'])
 
-        cargoPersonal(blank: true, nullable: true, attributes: [mensaje: 'Cargo'])
+//        cargoPersonal(blank: true, nullable: true, attributes: [mensaje: 'Cargo'])
         login(matches: /^[a-zA-Z0-9_-]{1,15}$/, size: 1..15, blank: true, nullable: true, unique: true, attributes: [mensaje: 'Nombre de usuario'])
         password(matches: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÚÓüÜ_-]+$/, size: 1..64, blank: true, nullable: true, attributes: [mensaje: 'Contraseña para el ingreso al sistema'])
         autorizacion(matches: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÚÓüÜ_-]+$/, size: 1..255, blank: true, nullable: true, attributes: [mensaje: 'Contraseña para autorizaciones'])
@@ -151,6 +156,7 @@ class Persona {
         estaActivo(matches: /^[0-1]{1}$/, size: 1..1, blank: true, nullable: true, attributes: [mensaje: 'Usuario activo o no'])
         fechaPass(blank: true, nullable: true, attributes: [mensaje: 'Fecha de cambio de contraseña'])
         unidad(blank: true, nullable: true, attributes: [mensaje: 'Unidad Ejecutora a la que pertenece el usuario'])
+        cargo(blank: true, nullable: true, size: 1..255, attributes: [mensaje: 'Cargo'])
     }
 
     /**
@@ -163,11 +169,13 @@ class Persona {
 
     Boolean getEsDirector() {
         // si se cambia esto cambiar tambien en firmasService/listaFirmasCombos
-        return this.cargoPersonal?.descripcion?.toLowerCase()?.contains("director")
+//        return this.cargoPersonal?.descripcion?.toLowerCase()?.contains("director")
+        return this.cargo?.toLowerCase()?.contains("director")
     }
 
     Boolean getEsGerente() {
         // si se cambia esto cambiar tambien en firmasService/listaFirmasCombos
-        return this.cargoPersonal?.descripcion?.toLowerCase()?.contains("gerente")
+//        return this.cargoPersonal?.descripcion?.toLowerCase()?.contains("gerente")
+        return this.cargo?.toLowerCase()?.contains("gerente")
     }
 }
