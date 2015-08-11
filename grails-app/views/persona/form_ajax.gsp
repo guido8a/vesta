@@ -107,13 +107,13 @@
             </div>
 
             <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'unidad', 'error')} ${hasErrors(bean: personaInstance, field: 'cargoPersonal', 'error')}">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <span class="grupo">
-                        <label for="unidad" class="col-md-4 control-label">
+                        <label for="unidad" class="col-md-2 control-label">
                             Unidad
                         </label>
 
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <g:select id="unidad" name="unidad.id" from="${UnidadEjecutora.list([sort:'nombre'])}" optionKey="id" value="${personaInstance?.unidad?.id}" class="many-to-one form-control input-sm" noSelection="['null': '']"/>
                         </div>
 
