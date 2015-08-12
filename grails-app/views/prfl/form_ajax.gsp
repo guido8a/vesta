@@ -12,11 +12,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: prflInstance, field: 'descripcion', 'error')} required">
                 <span class="grupo">
-                    <label for="descripcion" class="col-md-2 control-label">
+                    <label for="descripcion" class="col-md-3 control-label">
                         Descripción
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <g:textField name="descripcion" required="" class="form-control input-sm required" value="${prflInstance?.descripcion}"/>
                     </div>
                     *
@@ -25,11 +25,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: prflInstance, field: 'nombre', 'error')} required">
                 <span class="grupo">
-                    <label for="nombre" class="col-md-2 control-label">
+                    <label for="nombre" class="col-md-3 control-label">
                         Nombre
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <g:textField name="nombre" required="" class="form-control input-sm required" value="${prflInstance?.nombre}"/>
                     </div>
                     *
@@ -38,11 +38,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: prflInstance, field: 'codigo', 'error')} ">
                 <span class="grupo">
-                    <label for="codigo" class="col-md-2 control-label">
+                    <label for="codigo" class="col-md-3 control-label">
                         Código
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <g:textField name="codigo" class="form-control input-sm unique noEspacios" value="${prflInstance?.codigo}"/>
                     </div>
 
@@ -51,11 +51,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: prflInstance, field: 'observaciones', 'error')} required">
                 <span class="grupo">
-                    <label for="observaciones" class="col-md-2 control-label">
+                    <label for="observaciones" class="col-md-3 control-label">
                         Observaciones
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <g:textField name="observaciones" required="" class="form-control input-sm required" value="${prflInstance?.observaciones}"/>
                     </div>
                     *
@@ -64,11 +64,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: prflInstance, field: 'padre', 'error')} required">
                 <span class="grupo">
-                    <label for="padre" class="col-md-2 control-label">
+                    <label for="padre" class="col-md-3 control-label">
                         Padre
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <g:select id="padre" name="padre.id" from="${Prfl.list()}" optionKey="id" required="" value="${prflInstance?.padre?.id}" class="many-to-one form-control input-sm"/>
                     </div>
                     *

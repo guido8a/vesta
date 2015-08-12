@@ -105,7 +105,7 @@
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando Prfl");
+                    openLoader("Guardando Perfil");
                     $.ajax({
                         type   : "POST",
                         url    : $form.attr("action"),
@@ -144,7 +144,7 @@
                             label    : "<i class='fa fa-trash-o'></i> Eliminar",
                             className: "btn-danger",
                             callback : function () {
-                                openLoader("Eliminando Prfl");
+                                openLoader("Eliminando Perfil");
                                 $.ajax({
                                     type   : "POST",
                                     url    : '${createLink(controller: 'prfl', action:'delete_ajax')}',
@@ -178,7 +178,7 @@
                     success: function (msg) {
                         var b = bootbox.dialog({
                             id   : "dlgCreateEdit",
-                            title: title + " Prfl",
+                            title: title + " Perfil",
 
                             message: msg,
                             buttons: {
