@@ -54,9 +54,10 @@ class FirmasService {
         def unidades = unidad.unidades
         def directores = Persona.withCriteria {
             inList("unidad", unidades)
-            cargoPersonal {
-                ilike("descripcion", "%director%")
-            }
+            ilike("cargo", "%director%")
+//            cargoPersonal {
+//                ilike("descripcion", "%director%")
+//            }
         }
         return directores
     }
@@ -75,9 +76,10 @@ class FirmasService {
         } else {
             gerentes = Persona.withCriteria {
                 inList("unidad", unidades)
-                cargoPersonal {
-                    ilike("descripcion", "%gerente%")
-                }
+                ilike("cargo", "%gerente%")
+//                cargoPersonal {
+//                    ilike("descripcion", "%gerente%")
+//                }
             }
         }
 //        }

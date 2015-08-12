@@ -700,6 +700,7 @@ class ReporteSolicitudController {
     def avalCorriente() {
         def proceso = AvalCorriente.get(params.id)
         def transf = NumberToLetterConverter.convertNumberToLetter(proceso?.monto)
+
         return [proceso: proceso, detalles: AvalCorrienteController.arreglarDetalles(proceso), transf: transf]
     }
 }
