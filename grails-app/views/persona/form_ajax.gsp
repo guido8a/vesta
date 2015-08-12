@@ -96,7 +96,7 @@
                 <div class="col-md-12">
                     <span class="grupo">
                         <label for="direccion" class="col-md-2 control-label">
-                            Dirección
+                            Dirección de trabajo
                         </label>
 
                         <div class="col-md-10">
@@ -144,42 +144,43 @@
 
 
             <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'login', 'error')} ${hasErrors(bean: personaInstance, field: 'sigla', 'error')}">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <span class="grupo">
-                        <label for="login" class="col-md-4 control-label">
+                        <label for="login" class="col-md-2 control-label">
                             Usuario
                         </label>
 
-                        <div class="col-md-8">
-                            <g:textField name="login" maxlength="15" pattern="${personaInstance.constraints.login.matches}" class="form-control input-sm unique noEspacios" value="${personaInstance?.login}"/>
+                        <div class="col-md-2">
+                            <g:textField name="login" maxlength="15" pattern="${personaInstance.constraints.login.matches}"
+                                         class="form-control input-sm unique noEspacios" value="${personaInstance?.login}" style="width: 160px"/>
                         </div>
 
-                    </span>
-                </div>
+                    %{--</span>--}%
+                %{--</div>--}%
 
-                <div class="col-md-6">
-                    <span class="grupo">
-                        <label for="sigla" class="col-md-4 control-label">
+                %{--<div class="col-md-6">--}%
+                    %{--<span class="grupo">--}%
+                        <label for="sigla" class="col-md-2 control-label">
                             Sigla
                         </label>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <g:textField name="sigla" maxlength="8" pattern="${personaInstance.constraints.sigla.matches}" class="form-control input-sm" value="${personaInstance?.sigla}"/>
                         </div>
 
-                    </span>
-                </div>
+                    %{--</span>--}%
+                %{--</div>--}%
 
-            </div>
+            %{--</div>--}%
 
-            <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'estaActivo', 'error')} ${hasErrors(bean: personaInstance, field: 'fechaPass', 'error')} required">
-                <div class="col-md-6">
-                    <span class="grupo">
-                        <label for="estaActivo" class="col-md-4 control-label">
+            %{--<div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'estaActivo', 'error')} ${hasErrors(bean: personaInstance, field: 'fechaPass', 'error')} required">--}%
+                %{--<div class="col-md-6">--}%
+                    %{--<span class="grupo">--}%
+                        <label for="estaActivo" class="col-md-2 control-label">
                             Activo
                         </label>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <g:select name="estaActivo" value="${personaInstance.estaActivo}" class="form-control input-sm required" required=""
                                       from="${[1: 'Sí', 0: 'No']}" optionKey="key" optionValue="value"/>
                         </div>
@@ -220,7 +221,7 @@
 
                                     <div class="col-md-2">
                                         <a href="#" class="btn btn-success btn-sm" id="btn-addPerfil" title="Agregar perfil">
-                                            <i class="fa fa-plus"></i>
+                                            <i class="fa fa-plus"></i> Agregar perfil
                                         </a>
                                     </div>
                                 </div>

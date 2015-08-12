@@ -205,7 +205,7 @@
                 } //else
             }
             function createEditPersona(id, unidadId) {
-                var title = id ? "Editar" : "Crear";
+                var title = id ? "Editar" : "Agregar";
                 var data = id ? {id : id} : {};
                 if (unidadId) {
                     data.unidad = unidadId;
@@ -217,7 +217,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id    : "dlgCreateEdit",
-                            title : title + " Persona",
+                            title : title + " Usuario",
 
                             class : "modal-lg",
 
@@ -525,7 +525,7 @@
                     }
                 };
                 var presupuestoEntidad = {
-                    label            : "Presupuesto área de gestión",
+                    label            : "Presupuesto de la Empresa",
                     icon             : "fa fa-money",
                     separator_before : true,
                     action           : function () {
@@ -537,7 +537,7 @@
                             },
                             success : function (msg) {
                                 bootbox.dialog({
-                                    title   : "Presupuesto área de gestión",
+                                    title   : "Presupuesto de la Empresa",
                                     message : msg,
                                     buttons : {
                                         cancelar : {

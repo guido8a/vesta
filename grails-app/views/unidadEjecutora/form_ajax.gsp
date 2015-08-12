@@ -41,7 +41,7 @@
                     </label>
 
                     <div class="col-md-1">
-                        <g:field name="orden" type="number" value="${unidadEjecutoraInstance.orden}"
+                        <g:field name="orden" type="number" min="0"  step="1" value="${unidadEjecutoraInstance.orden}"
                                  class="digits form-control input-sm required" required="" style="width: 60px;" />
                     </div>
                 </span>
@@ -96,7 +96,8 @@
                         </label>
 
                         <div class="col-md-8">
-                            <g:textField name="codigo" maxlength="6" class="form-control input-sm unique noEspacios allCaps"  value="${unidadEjecutoraInstance?.codigo}"/>
+                            <g:textField name="codigo" maxlength="6" class="form-control input-sm unique noEspacios allCaps"
+                                         value="${unidadEjecutoraInstance?.codigo}" style="width: 80px"/>
                         </div>
                     </span>
                 </div>

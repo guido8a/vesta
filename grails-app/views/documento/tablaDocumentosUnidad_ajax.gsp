@@ -19,14 +19,14 @@
                 <td><elm:textoBusqueda busca="${params.search}">${doc.resumen}</elm:textoBusqueda></td>
                 <td style="width: 90px;">
                     <div class="btn-group" role="group">
-                        <a href="#" class="btn btn-xs btn-danger btnDelDoc" data-id="${doc.id}" title="Eliminar">
-                            <i class="fa fa-trash-o"></i>
-                        </a>
                         <a href="#" class="btn btn-xs btn-success btnDownDoc" data-id="${doc.id}" title="Descargar">
                             <i class="fa fa-download"></i>
                         </a>
                         <a href="#" class="btn btn-xs btn-info btnEditDoc" data-id="${doc.id}" title="Editar">
                             <i class="fa fa-pencil"></i>
+                        </a>
+                        <a href="#" class="btn btn-xs btn-danger btnDelDoc" data-id="${doc.id}" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
                         </a>
                     </div>
                 </td>
