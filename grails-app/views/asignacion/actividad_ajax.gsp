@@ -6,9 +6,15 @@
 --%>
 
 <g:select from="${actividades}" optionValue="descripcion" optionKey="id" name="act${params.mod}" noSelection="['-1': 'Seleccione...']"
-          style="width: 100%" class="form-control input-sm" value="${valor}"/>
+          style="width: 100%" class="form-control input-sm selectpicker" value="${valor}"/>
 
 <script>
+    $('.selectpicker').selectpicker({
+        width      : "350px",
+        limitWidth : true,
+        style      : "btn-sm"
+    });
+
     $("#act${params.mod}").change(function () {
         if($("#act").val() != -1){
             $("#editarActividad").removeClass('hide').addClass('show');

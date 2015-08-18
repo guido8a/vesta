@@ -6,9 +6,14 @@
 --%>
 
 <g:select from="${tareas}" optionValue="descripcion" optionKey="id" name="tar${params.mod}" noSelection="['-1': 'Seleccione...']"
-          style="width: 100%" class="form-control input-sm" value="${valor}"/>
+          style="width: 100%" class="form-control input-sm selectpicker" value="${valor}"/>
 
 <script>
+    $('.selectpicker').selectpicker({
+        width      : "350px",
+        limitWidth : true,
+        style      : "btn-sm"
+    });
 
     $("#tar${params.mod}").change(function () {
        $("#tdAsignacion${params.mod}").html(spinner);

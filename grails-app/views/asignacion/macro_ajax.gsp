@@ -6,9 +6,15 @@
 --%>
 
 <g:select from="${macro}" optionValue="descripcion" optionKey="id" name="mac${params.mod}" noSelection="['-1': 'Seleccione...']"
-          style="width: 100%" class="form-control input-sm" value="${valor}"/>
+          style="width: 100%" class="form-control input-sm selectpicker" value="${valor}"/>
 
 <script>
+    $('.selectpicker').selectpicker({
+        width      : "350px",
+        limitWidth : true,
+        style      : "btn-sm"
+    });
+
     $("#mac${params.mod}").change(function () {
 
         $("#tdActividad${params.mod}").html(spinner);
