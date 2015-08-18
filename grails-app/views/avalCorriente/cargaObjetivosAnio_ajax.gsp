@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
     $('.selectpicker').selectpicker({
-        width      : "350px",
+        width      : "${params.width?:'350px'}",
         limitWidth : true,
         style      : "btn-sm"
     });
@@ -22,7 +22,8 @@
             data    : {
                 objetivo     : $(this).val(),
                 copiar       : "${params.copiar}",
-                asignaciones : "${params.asignaciones}"
+                asignaciones : "${params.asignaciones}",
+                width        : "${params.width}"
             },
             success : function (msg) {
                 $("#tdMacro").html(msg);
