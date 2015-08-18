@@ -5,6 +5,9 @@
     <head>
         <meta name="layout" content="main">
         <title>Lista de Macroactividades</title>
+
+        <script type="text/javascript" src="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/js', file: 'bootstrap-select.js')}"></script>
+        <link rel="stylesheet" href="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/css', file: 'bootstrap-select.css')}">
     </head>
     <body>
 

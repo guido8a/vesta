@@ -6,7 +6,7 @@
 </g:if>
 <g:else>
 
-    <div class="modal-contenido">
+    <div class="modal-contenido" style="height: 550px;">
         <g:form class="form-horizontal" name="frmMacroActividad" role="form" action="save_ajax" method="POST">
             <g:hiddenField name="id" value="${macroActividadInstance?.id}"/>
 
@@ -17,7 +17,9 @@
                     </label>
 
                     <div class="col-md-8">
-                        <g:select id="objetivoGastoCorriente" name="objetivoGastoCorriente.id" from="${vesta.poaCorrientes.ObjetivoGastoCorriente.list()}" optionKey="id" required="" value="${macroActividadInstance?.objetivoGastoCorriente?.id}" class="many-to-one form-control input-sm"/>
+                        <g:select id="objetivoGastoCorriente" name="objetivoGastoCorriente.id" from="${vesta.poaCorrientes.ObjetivoGastoCorriente.list()}"
+                                  optionKey="id" required="" value="${macroActividadInstance?.objetivoGastoCorriente?.id}"
+                                  class="many-to-one form-control input-sm selectpicker"/>
                     </div>
                     *
                 </span>
@@ -30,7 +32,8 @@
                     </label>
 
                     <div class="col-md-8">
-                        <g:textArea name="descripcion" cols="40" rows="5" maxlength="511" required="" class="form-control input-sm required" value="${macroActividadInstance?.descripcion}"/>
+                        <g:textArea name="descripcion" cols="40" rows="5" maxlength="511" required="" class="form-control input-sm required"
+                                    value="${macroActividadInstance?.descripcion}"/>
                     </div>
                     *
                 </span>
@@ -40,6 +43,12 @@
     </div>
 
     <script type="text/javascript">
+        $('.selectpicker').selectpicker({
+            width      : "350px",
+            limitWidth : true,
+            style      : "btn-sm"
+        });
+
         var validator = $("#frmMacroActividad").validate({
             errorClass     : "help-block",
             errorPlacement : function (error, element) {
