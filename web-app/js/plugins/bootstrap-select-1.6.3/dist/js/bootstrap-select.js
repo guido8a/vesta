@@ -76,6 +76,7 @@
 
     var Selectpicker = function (element, options, e) {
         if (e) {
+            //console.log("e" , e, "elm",element, "opt",options)
             e.stopPropagation();
             e.preventDefault();
         }
@@ -398,7 +399,15 @@
                 } else if (typeof $this.attr('title') !== 'undefined') {
                     return $this.attr('title');
                 } else {
-                    return icon + $this.html() + subtext;
+                    var text = $this.html() + subtext
+                    //var txt = icon + "<div class='tdn-select-opt' ";
+                    //if (that.options.limitWidth) {
+                    //    txt += " style='white-space: normal;'";
+                    //}
+                    //txt += ">" + text  + "</div>";
+                    //text = txt;
+                    return icon + text;
+                    //return icon + $this.html() + subtext;
                 }
             }).toArray();
 

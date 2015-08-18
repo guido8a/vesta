@@ -148,6 +148,8 @@
 
             totales($("#objetivo").val(), $("#idResponsable").val());
 
+//            $("#objetivo").selectpicker('val', ['-1']);
+
             function cargarDetalles(objetivo) {
 
                 $.ajax({
@@ -163,7 +165,8 @@
                 });
             }
 
-            function cargarActividadesTareas(macro) {
+            function cargarActividadesTareas(macro, band) {
+//                console.log("cargarActividadesTareas")
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(controller: 'asignacion', action:'actividadesTareas_ajax')}",
@@ -172,7 +175,11 @@
                         macro : macro
                     },
                     success : function (msg) {
+//                        console.log("success cargarActividadesTareas")
                         $("#divActividadesTareas").html(msg);
+                        if(band){
+                            $("#divColor1").removeClass("show").addClass("hide");
+                        }
                     }
                 });
             }
@@ -220,6 +227,9 @@
                     limitWidth : true,
                     style      : "btn-sm"
                 });
+
+                $("#objetivo").val("-1");
+                $("#objetivo").selectpicker('render');
 
                 $("#idResponsable").change(function () {
                     var unidad = $(this).val();

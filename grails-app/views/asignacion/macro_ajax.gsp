@@ -12,22 +12,29 @@
     $('.selectpicker').selectpicker({
         width      : "350px",
         limitWidth : true,
-        style      : "btn-sm"
+        style      : "btn-sm",
+        backgroundColor: 'red'
     });
 
     $("#mac${params.mod}").change(function () {
+
+        $("#divColor1").removeClass("show").addClass("hide");
 
         $("#tdActividad${params.mod}").html(spinner);
         <g:if test="${params.copiar == 'S'}">
         cargarActividadesAnio();
         cargarActividadesCopiadas();
+        $("#divColor1").removeClass("show").addClass("hide");
         </g:if>
         <g:else>
         <g:if test="${params.asignaciones == 'S'}">
-        cargarActividadesTareas($("#mac").val());
+        cargarActividadesTareas($("#mac").val(), true);
+        $("#divColor1").removeClass("show").addClass("hide");
         </g:if>
+//        console.log("-->")
         $.ajax({
             type    : "POST",
+async: false,
             url     : "${createLink(action:'actividad_ajax',controller: 'asignacion')}",
             data    : {
                 id   : $(this).val(),
@@ -35,12 +42,15 @@
                 mod  : "${params.mod}"
             },
             success : function (msg) {
+//                console.log("success -->", msg)
+                $("#divColor1").removeClass("show").addClass("hide");
                 $("#tdActividad${params.mod}").html(msg);
                 $("#tdTarea${params.mod}").html("");
                 $("#tdAsignacion${params.mod}").html("");
                 $("#max${params.mod}").html("");
                 $("#crearTarea").removeClass('show').addClass('hide');
-                $("#divColor1").removeClass("show").addClass("hide");
+
+                $("#editarActividad").removeClass('show').addClass('hide');
             }
         });
         </g:else>

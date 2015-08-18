@@ -57,7 +57,7 @@ l<%--
 
     $(".editar_ajax").click(function () {
 
-        cargarActividadesTareas($("#mac").val());
+        cargarActividadesTareas($("#mac").val(), false);
 
         $("#btnVerTodos").removeClass('show').addClass('hide');
         $("#divColor1").removeClass("hide").addClass("show");

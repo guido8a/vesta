@@ -38,6 +38,9 @@
 </fieldset>
 
 <script type="text/javascript">
+
+
+
     $("#editarActividad").click(function () {
         $.ajax({
             type: "POST",
@@ -390,24 +393,13 @@
 
     });
 
-    function cargarActividadesTareas2 (macro) {
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(controller: 'asignacion', action:'actividadesTareas_ajax')}",
-            data    : {
-                anio : $("#anio").val(),
-                macro: macro
-            },
-            success : function (msg) {
-                $("#divActividadesTareas").html(msg);
-                $("#divColor1").removeClass("show").addClass("hide");
-                $("#anio").prop('disabled', false);
-                $("#mac").prop('disabled',false);
-                $("#objetivo").prop('disabled',false);
-                $("#crearActividad").removeClass('show').addClass('hide');
-                $("#crearTarea").removeClass('show').addClass('hide');
-            }
-        });
-    }
+
+
+
+
+
+
+
+
 
 </script>
