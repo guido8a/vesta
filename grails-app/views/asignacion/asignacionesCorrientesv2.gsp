@@ -20,8 +20,13 @@
     <body>
 
         <div class="btn-group btn-group-sm" role="group" style="width: 400px;">
-            <a href="#" id="btnProgramacion" class="btn btn-success" title="Programación"><i class="fa fa-gear"></i> Programación
-            </a>
+            <a href="#" id="btnProgramacion" class="btn btn-success" title="Programación"><i class="fa fa-gear"></i> Programación</a>
+
+            %{--<g:link class="btn btn-success btn-sm " controller="asignacion" action="programacionAsignacionesCorrientes" params="[anio: actual.id]">--}%
+                %{--<i class="fa fa-gear"></i> Programación--}%
+            %{--</g:link>--}%
+
+
             <a href="#" id="btnVerTodos" class="btn btn-success" title="Ver todas"><i class="fa fa-search"></i> Ver todas
             </a>
             <a href="#" id="btnCopiar" class="btn btn-success" title="Copiar asignaciones"><i class="fa fa-copy"></i> Copiar asignaciones
@@ -405,6 +410,11 @@
 
                 $("#btnCopiar").click(function () {
                     location.href = "${createLink(controller: 'poaCorriente', action: 'copiarPoa')}"
+                });
+
+
+                $("#btnProgramacion").click(function () {
+                    location.href = "${createLink(controller: 'asignacion', action: 'programacionAsignacionesCorrientes')}?id=" + $("#idResponsable").val() + "&anio=" + ${actual?.id}
                 });
 
             });

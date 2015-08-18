@@ -3,7 +3,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main"/>
-        <title>Asignaciones del proyecto: ${proyecto}</title>
+        <g:if test="${proyecto?.id}">
+            <title>Asignaciones del proyecto: ${proyecto}</title>
+        </g:if>
+        <g:else>
+            <title>Asignaciones</title>
+        </g:else>
+
 
 
         <style type="text/css">
@@ -22,12 +28,14 @@
                 <a href="#" class="btn btn-default btnRegresar">
                     <i class="fa fa-arrow-left"></i> Regresar
                 </a>
-                <g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectov2" params="[id: proyecto.id, anio: actual.id]"><i class="fa fa-money"></i> Asignaciones</g:link>
+                <g:if test="${proyecto?.id}">
+                    <g:link class="btn btn-default btn-sm" controller="asignacion" action="asignacionProyectov2" params="[id: proyecto.id, anio: actual.id]"><i class="fa fa-money"></i> Asignaciones</g:link>
 
-                <div style="margin-left: 15px;display: inline-block;">
-                    <b style="font-size: 11px">Año:</b>
-                    <g:select from="${Anio.list([sort: 'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual.id}" style="font-size: 11px;width: 150px;display: inline" class="form-control"/>
-                </div>
+                    <div style="margin-left: 15px;display: inline-block;">
+                        <b style="font-size: 11px">Año:</b>
+                        <g:select from="${Anio.list([sort: 'anio'])}" id="anio_asg" name="anio" optionKey="id" optionValue="anio" value="${actual.id}" style="font-size: 11px;width: 150px;display: inline" class="form-control"/>
+                    </div>
+                </g:if>
             </div>
         </div>
         <elm:container tipo="horizontal" titulo="Programación de las asignaciones del proyecto: ${proyecto?.toStringLargo()}, para el año ${actual}" color="black">
@@ -160,9 +168,12 @@
             </table>
         </elm:container>
         <script type="text/javascript">
+            <g:if test="${proyecto?.id}">
             $("#anio_asg").change(function () {
-                location.href = "${createLink(controller:'asignacion',action:'programacionAsignacionesInversionPrio')}?id=${proyecto.id}&anio=" + $(this).val()
+            location.href = "${createLink(controller:'asignacion',action:'programacionAsignacionesInversionPrio')}?id=${proyecto.id}&anio=" + $(this).val()
             });
+            </g:if>
+
 
             $(".guardar").click(function (e) {
                 var icono = $("#" + $(this).attr("icono"))

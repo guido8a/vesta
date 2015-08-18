@@ -809,16 +809,38 @@ class AsignacionController extends Shield {
         if (actual.estado != 0) {
             redirect(action: 'programacionAsignacionesInversionPrio', params: params)
         }
-
-        def proyecto = Proyecto.get(params.id)
-
         def asgProy = []
-        MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
-            def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
-            if (asig) {
-                asgProy += asig
+        def proyecto
+
+
+        if(params.id){
+            proyecto = Proyecto.get(params.id)
+
+            MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+                def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
+                if (asig) {
+                    asgProy += asig
+                }
+            }
+        }else{
+            def ml = MarcoLogico.findAll("from MarcoLogico where proyecto is null and tipoElemento= 3 and estado=0")
+            if(ml.size() == 0){
+             //insertar asignaciones de gasto corriente
+            }
+            ml.each {
+                def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
+
+                if (asig) {
+                    asgProy += asig
+                }
             }
         }
+
+
+
+
+
+
 
         def meses = Mes.list([sort: "id"])
         [inversiones: asgProy, actual: actual, meses: meses, proyecto: proyecto]
@@ -840,19 +862,62 @@ class AsignacionController extends Shield {
         }
         //def unidad =UnidadEjecutora.get(params.id)
 
-        def proyecto = Proyecto.get(params.id)
-
         def asgProy = []
-        MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
-            def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
-            if (asig) {
-                asgProy += asig
-            }
-        }
+        def proyecto
+
+       if(params.id){
+
+           proyecto = Proyecto.get(params.id)
+
+           MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+               def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
+               if (asig) {
+                   asgProy += asig
+               }
+           }
+       }else{
+           proyecto = Proyecto.get(params.id)
+
+           MarcoLogico.findAll("from MarcoLogico where proyecto is null and tipoElemento=3 and estado=0").each {
+               def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
+               if (asig) {
+                   asgProy += asig
+               }
+           }
+
+       }
+
+
 
         def meses = Mes.list([sort: "id"])
         [inversiones: asgProy, actual: actual, meses: meses, proyecto: proyecto]
     }
+
+
+    def programacionAsignacionesCorrientes () {
+
+//        println("params 111" + params)
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+        if (!actual) {
+            actual = Anio.list([sort: 'anio', order: 'desc']).pop()
+        }
+
+        def unidad = UnidadEjecutora.get(params.id)
+        def asgProy = Asignacion.findAll("from Asignacion where unidad=${unidad.id} and marcoLogico is not null and anio=${actual.id} order by id")
+        def asgCor = Asignacion.findAll("from Asignacion where unidad=${unidad.id} and actividad is not null and anio=${actual.id} and marcoLogico is null order by id")
+        def max = PresupuestoUnidad.findByUnidadAndAnio(unidad,actual)
+        def meses = []
+        12.times {meses.add(it + 1)}
+        [unidad: unidad, corrientes: asgCor, inversiones: asgProy, actual: actual, meses: meses,max: max]
+    }
+
+
 
     /**
      * Acción
