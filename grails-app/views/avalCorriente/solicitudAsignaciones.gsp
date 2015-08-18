@@ -12,6 +12,9 @@
         <title>Nueva solicitud de aval: 2-Asignaciones</title>
 
         <link href="${resource(dir: 'css/custom', file: 'wizard.css')}" rel="stylesheet"/>
+
+        <script type="text/javascript" src="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/js', file: 'bootstrap-select.js')}"></script>
+        <link rel="stylesheet" href="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/css', file: 'bootstrap-select.css')}">
     </head>
 
     <body>

@@ -5,9 +5,15 @@
   Time: 01:21 PM
 --%>
 
-<g:select name="objetivo" from="${objetivos}" optionKey="id" optionValue="descripcion" class="form-control" noSelection="['': '- Seleccione -']"/>
+<g:select name="objetivo" from="${objetivos}" optionKey="id" optionValue="descripcion" class="form-control selectpicker" noSelection="['': '- Seleccione -']"/>
 
 <script type="text/javascript">
+    $('.selectpicker').selectpicker({
+        width      : "350px",
+        limitWidth : true,
+        style      : "btn-sm"
+    });
+
     $("#objetivo").change(function () {
         $("#tdMacro").html(spinner);
         $.ajax({
