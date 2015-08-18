@@ -101,8 +101,12 @@
                         </g:else>
 
                         <td class="${mes}" style="width: 70px;padding: 0;height: 30px">
-                            <input type="text" class="${mes} valor asg_cor_${asg.id}" mes="${mes}" ${(max?.aprobadoCorrientes != 0) ? "disabled" : ""}
-                                   value="${g.formatNumber(number: progra?.valor, format: '###,##0', minFractionDigits: '2', maxFractionDigits: '2')}"/>
+                            %{--<input type="text" class="${mes} valor asg_cor_${asg.id}" mes="${mes}" ${(max?.aprobadoCorrientes != 0) ? "disabled" : ""}--}%
+                                   %{--value="${g.formatNumber(number: progra?.valor, format: '###,##0', minFractionDigits: '2', maxFractionDigits: '2')}"/>--}%
+
+
+                            <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes}" value="${g.formatNumber(number: progra?.valor, format: '###,##0', minFractionDigits: '2', maxFractionDigits: '2')}">
+
 
                             <g:set var="totalFila" value="${totalFila += progra.valor}"/>
 
@@ -163,7 +167,7 @@
 
                 <td style="width: 50px;text-align: center;padding-top:0px;padding-bottom: 0px">
                     <a href="#" class="btn guardar ajax btn-primary btn-sm" asg="${asg.id}" icono="ico_cor_${i}" max="${asg.priorizado}" clase="asg_cor_${asg.id}" total="total_cor_${asg.id}" title="guardar">
-                        <i class="fa fa-floppy-o"></i></a>
+                        <i class="fa fa-floppy-o"></i></a> ${asg?.priorizado}
                 %{--</a>--}%
                 </td>
 
@@ -225,18 +229,24 @@
         var datos = ""
         $.each($("." + $(this).attr("clase")), function () {
             var val = $(this).val()
-            val = str_replace(".", "", val)
-            val = str_replace(",", ".", val)
+//            val = str_replace(".", "", val)
+            val = str_replace(",", "", val)
             val = val * 1
             total += val
             datos += $(this).attr("mes") + ":" + val + ";"
         });
         total = parseFloat(total).toFixed(2);
         if (total != max) {
-            alert("El total programado (" + total + ") es diferente al monto de la asignación" + max)
-            $("#" + $(this).attr("total")).html(total).css("color", "red").show("pulsate")
+            bootbox.alert({
+                message : "El total programado ( " + number_format(total, 2, ".", ",") + " ) es diferente al monto priorizado: " + number_format(max, 2, ".", ","),
+                title   : "Error",
+                class   : "modal-error"
+            });
+
+//            $("#" + $(this).attr("total")).html(total).css("color", "red").show("pulsate")
+//            e.preventDefault()
         } else {
-            $("#" + $(this).attr("total")).html(total).css("color", "black")
+//            $("#" + $(this).attr("total")).html(total).css("color", "black")
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(action:'guardarProgramacion',controller:'asignacion')}",
