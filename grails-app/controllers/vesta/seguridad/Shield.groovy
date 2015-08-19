@@ -7,6 +7,7 @@ class Shield {
      * Verifica si el usuario actual tiene los permisos para ejecutar una acción
      */
     def auth() {
+//        println "auth usuario: ${session.usuario}"
         if (!actionName.contains("ajax")) {
             session.an = actionName
             session.cn = controllerName

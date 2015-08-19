@@ -9,12 +9,12 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Ajustes</title>
+        <title>Ajustes al POA de gasto permanente</title>
         <link href="${resource(dir: 'css', file: 'reformas-ajustes.css')}" rel="stylesheet">
     </head>
 
     <body>
-        <elm:container tipo="horizontal" titulo="Ajustes">
+        <elm:container tipo="horizontal" titulo="Ajustes al POA de gasto permanente">
             <p>
                 Existen 2 tipos de ajustes posibles:
                 asignaciones existentes, partida nueva
