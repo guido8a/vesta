@@ -26,9 +26,11 @@
         <g:set var="total" value="${0}"/>
         <g:each in="${detalles}" var="det">
             <g:set var="total" value="${total + det.monto}"/>
+            <g:set var="objTitle" value="${det.asignacion.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}"/>
+            <g:set var="obj" value="${objTitle.size() > 80 ? objTitle[0..79] + '…' : objTitle}"/>
             <tr>
                 <td>${det.asignacion.tarea.actividad.anio.anio}</td>
-                <td>${det.asignacion.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}</td>
+                <td title="${objTitle}">${obj}</td>
                 <td>${det.asignacion.tarea.actividad.macroActividad.descripcion}</td>
                 <td>${det.asignacion.tarea.actividad.descripcion}</td>
                 <td>${det.asignacion.tarea.descripcion}</td>
@@ -55,7 +57,7 @@
     $(function () {
 
         $("#tblDetalle").fixedHeaderTable({
-            height     : 200,
+            height     : 250,
             autoResize : true,
             footer     : true
         });
