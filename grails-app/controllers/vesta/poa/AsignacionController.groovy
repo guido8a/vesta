@@ -167,6 +167,7 @@ class AsignacionController extends Shield {
             asignacionInstance.presupuesto = partida
             asignacionInstance.fuente = fuente
             asignacionInstance.planificado = params.valor.toDouble()
+            asignacionInstance.priorizado = params.valor.toDouble()
 
             if (!asignacionInstance) {
                 render "ERROR*No se encontró Asignacion."
@@ -175,6 +176,7 @@ class AsignacionController extends Shield {
         } else {
 
             asignacionInstance.planificado = params.valor
+            asignacionInstance.priorizado = params.valor
             asignacionInstance.unidad = unidad
             asignacionInstance.anio = anio
             asignacionInstance.tarea = tarea
@@ -825,7 +827,7 @@ class AsignacionController extends Shield {
         }else{
             def ml = MarcoLogico.findAll("from MarcoLogico where proyecto is null and tipoElemento= 3 and estado=0")
             if(ml.size() == 0){
-             //insertar asignaciones de gasto corriente
+                //insertar asignaciones de gasto corriente
             }
             ml.each {
                 def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
@@ -865,27 +867,27 @@ class AsignacionController extends Shield {
         def asgProy = []
         def proyecto
 
-       if(params.id){
+        if(params.id){
 
-           proyecto = Proyecto.get(params.id)
+            proyecto = Proyecto.get(params.id)
 
-           MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
-               def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
-               if (asig) {
-                   asgProy += asig
-               }
-           }
-       }else{
-           proyecto = Proyecto.get(params.id)
+            MarcoLogico.findAll("from MarcoLogico where proyecto = ${proyecto.id} and tipoElemento=3 and estado=0").each {
+                def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
+                if (asig) {
+                    asgProy += asig
+                }
+            }
+        }else{
+            proyecto = Proyecto.get(params.id)
 
-           MarcoLogico.findAll("from MarcoLogico where proyecto is null and tipoElemento=3 and estado=0").each {
-               def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
-               if (asig) {
-                   asgProy += asig
-               }
-           }
+            MarcoLogico.findAll("from MarcoLogico where proyecto is null and tipoElemento=3 and estado=0").each {
+                def asig = Asignacion.findAllByMarcoLogicoAndAnio(it, actual, [sort: "id"])
+                if (asig) {
+                    asgProy += asig
+                }
+            }
 
-       }
+        }
 
 
 
@@ -910,7 +912,8 @@ class AsignacionController extends Shield {
 
         def unidad = UnidadEjecutora.get(params.id)
         def asgProy = Asignacion.findAll("from Asignacion where unidad=${unidad.id} and marcoLogico is not null and anio=${actual.id} order by id")
-        def asgCor = Asignacion.findAll("from Asignacion where unidad=${unidad.id} and actividad is not null and anio=${actual.id} and marcoLogico is null order by id")
+//        def asgCor = Asignacion.findAll("from Asignacion where unidad=${unidad.id} and actividad is not null and anio=${actual.id} and marcoLogico is null order by id")
+        def asgCor = Asignacion.findAll("from Asignacion where actividad is not null and anio=${actual.id} and marcoLogico is null order by id")
         def max = PresupuestoUnidad.findByUnidadAndAnio(unidad,actual)
         def meses = []
         12.times {meses.add(it + 1)}
@@ -923,17 +926,17 @@ class AsignacionController extends Shield {
      * Acción
      */
     def guardarProgramacion() {
-        println "guardar prog " + params
+//        println "guardar prog params " + params
         def asig = Asignacion.get(params.asignacion)
         def datos = params.datos.split(";")
         datos.each {
             def partes = it.split(":")
 
-            def prog = ProgramacionAsignacion.findByAsignacionAndMes(asig, Mes.get(partes[0]))
+            def prog = ProgramacionAsignacion.findByAsignacionAndMes(asig, Mes.findByNumero(partes[0]))
             if (!prog) {
                 prog = new ProgramacionAsignacion()
                 prog.asignacion = asig
-                prog.mes = Mes.get(partes[0])
+                prog.mes = Mes.findByNumero(partes[0])
             }
             prog.valor = partes[1].toDouble()
             if (!prog.save(flush: true)) {

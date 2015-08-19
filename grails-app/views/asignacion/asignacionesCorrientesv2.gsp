@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main"/>
-        <title>Asignaciones gastos corrientes</title>
+        <title>Asignaciones gasto permanente</title>
 
         <script type="text/javascript" src="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/js', file: 'bootstrap-select.js')}"></script>
         <link rel="stylesheet" href="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/css', file: 'bootstrap-select.css')}">
@@ -20,12 +20,8 @@
     <body>
 
         <div class="btn-group btn-group-sm" role="group" style="width: 400px;">
+
             <a href="#" id="btnProgramacion" class="btn btn-success" title="Programación"><i class="fa fa-gear"></i> Programación</a>
-
-            %{--<g:link class="btn btn-success btn-sm " controller="asignacion" action="programacionAsignacionesCorrientes" params="[anio: actual.id]">--}%
-                %{--<i class="fa fa-gear"></i> Programación--}%
-            %{--</g:link>--}%
-
 
             <a href="#" id="btnVerTodos" class="btn btn-success" title="Ver todas"><i class="fa fa-search"></i> Ver todas
             </a>
@@ -39,7 +35,7 @@
                 <thead>
                     <tr>
                         <th style="width: 120px;">Año</th>
-                        <th style="width: 380px">Objetivo gasto corriente</th>
+                        <th style="width: 380px">Objetivo gasto permanente</th>
                         <th style="width: 380px;">Macro Actividad</th>
                     </tr>
                 </thead>
@@ -129,7 +125,7 @@
         <fieldset class="ui-corner-all" style="min-height: 100px;font-size: 11px">
 
             <legend>
-                Detalle asignaciones gasto corriente
+                Detalle asignaciones gasto permanente
             </legend>
             <g:set var="total" value="0"/>
             <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
