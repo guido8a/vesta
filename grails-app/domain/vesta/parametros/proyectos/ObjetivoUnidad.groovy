@@ -1,9 +1,11 @@
 package vesta.parametros.proyectos
 
 /**
- * Clase para conectar con la tabla 'obun' de la base de datos
+ * Clase para conectar con la tabla 'obun' de la base de datos   -- no se usa desde ago-2015
  */
 class ObjetivoUnidad {
+
+
     /**
      * Descripción del objetivo de la unidad
      */

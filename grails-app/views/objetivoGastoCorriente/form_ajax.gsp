@@ -17,7 +17,8 @@
                     Objetivo de Gasto Corriente
                 </label>
                 <div class="col-md-10">
-                    <g:textArea name="descripcion" cols="80" rows="3" maxlength="511" required="" class="form-control input-sm required" value="${objetivoGastoCorrienteInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" cols="80" rows="7" maxlength="511" required=""
+                                class="form-control input-sm required" value="${objetivoGastoCorrienteInstance?.descripcion}"/>
                 </div>
                  *
             </span>

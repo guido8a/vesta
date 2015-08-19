@@ -16,10 +16,10 @@
                         Objetivo de Gasto Corriente
                     </label>
 
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                         <g:select id="objetivoGastoCorriente" name="objetivoGastoCorriente.id" from="${vesta.poaCorrientes.ObjetivoGastoCorriente.list()}"
                                   optionKey="id" required="" value="${macroActividadInstance?.objetivoGastoCorriente?.id}"
-                                  class="many-to-one form-control input-sm selectpicker"/>
+                                  class="many-to-one form-control input-sm selectpicker" />
                     </div>
                     *
                 </span>

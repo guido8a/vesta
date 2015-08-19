@@ -19,7 +19,11 @@ class Shield {
             session.finalize()
             return false
         } else {
-            return true
+            if (!isAllowed()) {
+                redirect(controller: 'shield', action: 'unauthorized')
+                return false
+            } else
+                return true
         }
         /*************************************************************************** */
     }
@@ -34,6 +38,7 @@ class Shield {
 //        }
 //        return true
         return true
+
     }
 
 

@@ -540,17 +540,27 @@ class EntidadController extends Shield {
         def unidad = UnidadEjecutora.get(params.unidad)
         def anio = Anio.get(params.anio)
         def inversion = params.maxInversion
+        def corrientes = params.maxCorrientes
         def originalCorrientes = params.originalCorrientes
+        def originalInversion = params.originalInversion
 
-        if (!inversion) {
-            inversion = 0
-        }
-        if (!originalCorrientes) {
-            originalCorrientes = 0
-        }
+        if (!inversion) inversion = 0
+        if (!corrientes) corrientes = 0
+        if (!originalInversion) originalInversion = 0
+        if (!originalCorrientes) originalCorrientes = 0
 
         inversion = (inversion.toString().replaceAll(",", "")).toDouble()
+        corrientes = (corrientes.toString().replaceAll(",", "")).toDouble()
+        originalInversion = (originalInversion.toString().replaceAll(",", "")).toDouble()
         originalCorrientes = (originalCorrientes.toString().replaceAll(",", "")).toDouble()
+
+        // se pone valores originales d einversión y corrientes solo cuando estos son ceros
+        if(inversion > 0 && originalInversion == 0) {
+            originalInversion = inversion
+        }
+        if(corrientes > 0 && originalCorrientes == 0) {
+            originalCorrientes = corrientes
+        }
 
         def presupuestoUnidad = PresupuestoUnidad.findAllByUnidadAndAnio(unidad, anio)
         if (presupuestoUnidad.size() == 1) {
@@ -563,7 +573,9 @@ class EntidadController extends Shield {
             println "Hay ${presupuestoUnidad.size()} presupuestos para el anio ${anio.anio}, unidad ${unidad.codigo}"
             presupuestoUnidad = presupuestoUnidad.first()
         }
+        presupuestoUnidad.maxCorrientes = corrientes
         presupuestoUnidad.originalCorrientes = originalCorrientes
+        presupuestoUnidad.originalInversion = originalInversion
         presupuestoUnidad.maxInversion = inversion
 
         if (!presupuestoUnidad.save(flush: true)) {
@@ -591,6 +603,7 @@ class EntidadController extends Shield {
     def saveModificarPresupuesto_ajax() {
         def techo = PresupuestoUnidad.get(params.id)
         params.inversiones = (params.inversiones.toString().replaceAll(",", "")).toDouble()
+        // hacer un bloque idéntico para modificaciones de corrientes
         if (techo.maxInversion != params.inversiones) {
             def mod = new ModificacionTechos()
             mod.desde = techo
@@ -609,7 +622,7 @@ class EntidadController extends Shield {
                 render "ERROR*" + renderErrors(bean: mod)
             }
         } else {
-            render "ERROR*El valor del máximo de inversión del presupuesto de la unidad debe ser diferente de " +
+            render "ERROR*No se ha modificao el valor del máximo de inversión, sigue igual a " +
                     g.formatNumber(number: params.inversiones.toDouble(), maxFractionDigits: 2, minFractionDigits: 2)
         }
     }

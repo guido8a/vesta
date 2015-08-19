@@ -13,8 +13,15 @@
         <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
+                <g:link controller="inicio" action="parametros" class="btn btn-default btn-search">
+                    <i class="fa fa-arrow-left"></i> Regresar a parámetros
+                </g:link>
+            </div>
+
+
+            <div class="btn-group">
                 <a href="#" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Crear nuevo objetivo
                 </a>
             </div>
 

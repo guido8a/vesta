@@ -8,7 +8,7 @@
 <form class="form-horizontal" id="frmPresupuestoEntidad">
     <div class="form-group">
         <div class='grupo'>
-            <label for="anio" class="col-md-4 control-label">Año</label>
+            <label for="anio" class="col-md-6 control-label">Año</label>
 
             <div class="col-md-3">
                 <g:select name="anio" from="${Anio.list([sort: 'anio'])}" optionKey="id" optionValue="anio"
@@ -18,9 +18,9 @@
     </div>
 
     <div class="form-group">
-        <label for="maxInversion" class="col-md-4 control-label">Presupuesto codificado</label>
+        <label for="maxInversion" class="col-md-6 control-label">Presupuesto codificado</label>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class='grupo'>
                 <div class='input-group input-group-sm'>
                     <g:textField name="maxInversion" class="form-control input-sm required number money"
@@ -32,9 +32,37 @@
     </div>
 
     <div class="form-group">
-        <label for="originalCorrientes" class="col-md-4 control-label">Presupuesto asignado</label>
+        <label for="maxInversion" class="col-md-6 control-label">Presupuesto gasto permanente</label>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
+            <div class='grupo'>
+                <div class='input-group input-group-sm'>
+                    <g:textField name="maxCorrientes" class="form-control input-sm required number money"
+                                 value="${presupuesto ? g.formatNumber(number: presupuesto.maxCorrientes, maxFractionDigits: 2, minFractionDigits: 2) : ''}"/>
+                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="originalCorrientes" class="col-md-6 control-label">Presupuesto asignado gasto permanente</label>
+
+        <div class="col-md-6">
+            <div class='grupo'>
+                <div class='input-group input-group-sm'>
+                    <g:textField name="originalInversion" class="form-control input-sm required number money" readonly=""
+                                 value="${presupuesto ? g.formatNumber(number: presupuesto.originalInversion, maxFractionDigits: 2, minFractionDigits: 2) : ''}"/>
+                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="originalCorrientes" class="col-md-6 control-label">Presupuesto asignado inversiones</label>
+
+        <div class="col-md-6">
             <div class='grupo'>
                 <div class='input-group input-group-sm'>
                     <g:textField name="originalCorrientes" class="form-control input-sm required number money" readonly=""

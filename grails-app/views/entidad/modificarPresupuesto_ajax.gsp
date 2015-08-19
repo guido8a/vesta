@@ -7,14 +7,29 @@
 
 <form class="form-horizontal" id="frmModificarPresupuesto">
     <g:hiddenField name="id" value="${techo.id}"/>
-    <div class="form-group">
-        <label for="inversiones" class="col-md-4 control-label">Presupuesto de inversiones</label>
 
-        <div class="col-md-4">
+    <div class="form-group">
+        <label for="inversiones" class="col-md-7 control-label">Presupuesto de inversiones</label>
+
+        <div class="col-md-5">
             <div class='grupo'>
                 <div class='input-group input-group-sm'>
                     <g:textField name="inversiones" class="form-control input-sm required number money"
                                  value="${techo ? g.formatNumber(number: techo.maxInversion, maxFractionDigits: 2, minFractionDigits: 2) : ''}"/>
+                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inversiones" class="col-md-7 control-label">Presupuesto de gasto permanente</label>
+
+        <div class="col-md-5">
+            <div class='grupo'>
+                <div class='input-group input-group-sm'>
+                    <g:textField name="corrientes" class="form-control input-sm required number money"
+                                 value="${techo ? g.formatNumber(number: techo.maxCorrientes, maxFractionDigits: 2, minFractionDigits: 2) : ''}"/>
                     <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                 </div>
             </div>
