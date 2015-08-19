@@ -87,6 +87,8 @@ l<%--
         var actiId = $(this).parents("tr").attr("data-act");
         var tareaId = $(this).parents("tr").attr("data-tar");
 
+        console.log("objetivo" + objetivoId)
+
         $("#idResponsable").val(responsableEditar);
         $("#asignacion_txt").val(asignacionEditar);
         $("#prsp_id").val(partidaId);
@@ -94,7 +96,9 @@ l<%--
         $("#valor").val(valorEditar);
         $("#fuente").val(fuenteEditar);
         $("#asignacionId").val(asignacionId);
-        $("#objetivo").val(objetivoId).prop('disabled', true);
+//        $("#objetivo").val(objetivoId).prop('disabled', true);
+        $("#objetivo").val(objetivoId)
+
 //        $("#crearTarea").addClass('show');
 //        $("#crearActividad").addClass('show');
 

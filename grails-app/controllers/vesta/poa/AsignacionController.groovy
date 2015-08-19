@@ -190,7 +190,7 @@ class AsignacionController extends Shield {
             }
         }
 
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Asignación exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Asignación exitosa.*${asignacionInstance?.id}"
         return
     }
 
@@ -1261,6 +1261,39 @@ class AsignacionController extends Shield {
         }
     }
 
+    def crearProgramacionCorriente () {
+
+        println ("params" + params)
+
+        def asigna = Asignacion.get(params.id)
+
+        def valorPriorizado = asigna?.priorizado
+
+
+
+        def meses = 12
+        def ini = 0
+
+        while(ini != 12){
+            println("entrof " + ini)
+            def nuevaProgramacion = new ProgramacionAsignacion();
+
+            nuevaProgramacion.asignacion = asigna
+            nuevaProgramacion.mes = Mes.findByNumero(ini+1)
+            nuevaProgramacion.valor = (valorPriorizado/12).toDouble()
+
+            ini++
+
+            if (!nuevaProgramacion.save(flush: true)) {
+                println "errors " + nuevaProgramacion.errors
+            }
+
+        }
+
+        render "ok"
+
+    }
+
     def asignacionesCorrientesv2 = {
 
 //        println("params ac " + params)
@@ -1633,7 +1666,7 @@ class AsignacionController extends Shield {
 
         def unidadEjecutora = UnidadEjecutora.get(params.unidad)
 
-        def asignacionUnidad = Asignacion.findAllByUnidadAndAnio(unidadEjecutora, anio)
+        def asignacionUnidad = Asignacion.findAllByUnidadAndAnioAndMarcoLogicoIsNull(unidadEjecutora, anio)
 
         asignacionUnidad.each {
             totalUnidad += it?.planificado
@@ -1649,6 +1682,8 @@ class AsignacionController extends Shield {
                 totalTodas += it?.planificado
             }
         }
+
+        println("total todas" + totalTodas)
 
         if (presupuesto) {
             restante = (presupuesto?.maxCorrientes - totalTodas)

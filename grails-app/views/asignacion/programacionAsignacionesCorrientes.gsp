@@ -199,7 +199,7 @@
                                        value="${g.formatNumber(number: (valorPrio - (valorMes * 11)), format: '###,##0', minFractionDigits: '2', maxFractionDigits: '2')}">
                             </g:else>
 
-
+                            %{--${"valor"  + valorMes}--}%
 
                             <g:set var="totalFila" value="${totalFila += valorMes}"/>
 
@@ -237,7 +237,8 @@
                                 <g:set var="nov" value="${nov.toDouble() + valorMes}"/>
                             </g:if>
                             <g:if test="${j == 11}">
-                                <g:set var="dic" value="${dic.toDouble() + (valorPrio - (valorMes * 11))}"/>
+                                %{--<g:set var="dic" value="${dic.toDouble() + (valorPrio - (valorMes * 11))}"/>--}%
+                                <g:set var="dic" value="${dic.toDouble() + valorMes}"/>
                             </g:if>
                         </td>
                     </g:each>
@@ -245,7 +246,8 @@
                 </g:else>
 
 
-                <g:set var="totalFila" value="${(totalFila + (valorPrio - (valorMes * 11))) - valorMes}"/>
+                %{--<g:set var="totalFila" value="${(totalFila + (valorPrio - (valorMes * 11))) - valorMes}"/>--}%
+                %{--<g:set var="totalFila" value="${(totalFila + (valorPrio - (valorMes * 11))) - valorMes}"/>--}%
 
 
                 <td class="total" id="total_cor_${asg.id}" style="width: 80px;text-align: right;${(totalFila.toDouble().round(2) != asg.priorizado.toDouble().round(2)) ? 'color:red;' : ''}padding-top:0px;padding-bottom: 0px;line-height: 30px">
@@ -315,7 +317,6 @@
     });
 
     $("#btnActualizar").click(function () {
-        %{--location.href="${createLink(controller: 'asignacion', action: 'programacionAsignacionesCorrientes')}"--}%
         window.location.reload(true)
     });
 
@@ -327,7 +328,6 @@
         var datos = ""
         $.each($("." + $(this).attr("clase")), function () {
             var val = $(this).val()
-//            val = str_replace(".", "", val)
             val = str_replace(",", "", val)
             val = val * 1
             total += val
@@ -341,11 +341,7 @@
                 title   : "Error",
                 class   : "modal-error"
             });
-
-//            $("#" + $(this).attr("total")).html(total).css("color", "red").show("pulsate")
-//            e.preventDefault()
         } else {
-//            $("#" + $(this).attr("total")).html(total).css("color", "black")
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(action:'guardarProgramacion',controller:'asignacion')}",
@@ -353,8 +349,6 @@
                 success : function (msg) {
                     if (msg == "ok") {
                         log("Programación guardada correctamente", "success");
-//                        icono.show("pulsate")
-//                        window.location.reload(true)
                     }
                 }
             });

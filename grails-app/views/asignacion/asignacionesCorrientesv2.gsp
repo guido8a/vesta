@@ -45,7 +45,7 @@
 
                     <td style="width: 380px"><g:select from="${objetivos}" id="objetivo" name="objetivo_name" optionKey="id"
                                                        optionValue="descripcion" class="many-to-one form-control input-sm selectpicker "
-                                                       noSelection="['-1': 'Seleccione...']"/></td>
+                                                       noSelection="['-1': 'Seleccione...']" value=""/></td>
 
                     <td id="tdMacro" style="width: 380px"></td>
                 </tr>
@@ -229,6 +229,21 @@
                     style      : "btn-sm"
                 });
 
+                function crearProgramacion (id) {
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(action:'crearProgramacionCorriente',controller:'asignacion')}",
+                        data    : {id: id},
+
+                        success : function (msg) {
+//                            var parts = msg.split("*");
+//                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
+
+                        }
+                    });
+
+                }
+
                 $("#objetivo").val("-1");
                 $("#objetivo").selectpicker('render');
 
@@ -315,6 +330,8 @@
                                                         $("#valor").val('');
                                                         cargarDetalles(objetivo);
                                                         totales(objetivo, responsable);
+                                                        console.log("iDDDDDD " + parts[2])
+                                                        crearProgramacion(parts[2]);
                                                     }
                                                 }
                                             });
@@ -412,6 +429,9 @@
                 $("#btnProgramacion").click(function () {
                     location.href = "${createLink(controller: 'asignacion', action: 'programacionAsignacionesCorrientes')}?id=" + $("#idResponsable").val() + "&anio=" + ${actual?.id}
                 });
+
+
+
 
             });
         </script>
