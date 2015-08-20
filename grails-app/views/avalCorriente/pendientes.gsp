@@ -81,7 +81,7 @@
                                                     </g:link>
                                                 </g:elseif>
                                                 <g:else>
-                                                %{-- TODO: validar quien puede aqui --}%
+                                                %{-- TODO: validar quien puede aqui y en q estado debe estar el proceso --}%
                                                     <g:link class="btn btn-success btnModificar" action="nuevaSolicitud" id="${proc.id}" title="Modificar aval">
                                                         <i class="fa fa-pencil"></i>
                                                     </g:link>
