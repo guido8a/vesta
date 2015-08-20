@@ -10,19 +10,18 @@
 
 <script>
     $('.selectpicker').selectpicker({
-        width      : "350px",
+        width      : "${params.width?:'350px'}",
         limitWidth : true,
         style      : "btn-sm"
     });
 
     $("#tar${params.mod}").change(function () {
-       $("#tdAsignacion${params.mod}").html(spinner);
+        $("#tdAsignacion${params.mod}").html(spinner);
 
-
-        if($("#tar").val() != -1){
+        if ($("#tar").val() != -1) {
             $("#editarTarea").removeClass('hide').addClass('show');
             $("#crearTarea").removeClass('show').addClass('hide');
-        }else{
+        } else {
             $("#crearTarea").removeClass('hide').addClass('show');
             $("#editarTarea").removeClass('show').addClass('hide');
         }
@@ -35,8 +34,9 @@
             type    : "POST",
             url     : "${createLink(action:'asignacion_ajax',controller: 'asignacion')}",
             data    : {
-                id  : $(this).val(),
-                mod : "${params.mod}"
+                id    : $(this).val(),
+                mod   : "${params.mod}",
+                width : "${params.width}"
             },
             success : function (msg) {
                 $("#tdAsignacion${params.mod}").html(msg);

@@ -14,7 +14,7 @@
 <script>
 
     $('.selectpicker').selectpicker({
-        width      : "350px",
+        width      : "${params.width?:'350px'}",
         limitWidth : true,
         style      : "btn-sm"
     });

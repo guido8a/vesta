@@ -11,6 +11,9 @@
         <meta name="layout" content="main">
         <title><elm:tipoReformaStr tipo="Ajuste corriente" tipoSolicitud="E"/></title>
 
+        <script type="text/javascript" src="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/js', file: 'bootstrap-select.js')}"></script>
+        <link rel="stylesheet" href="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/css', file: 'bootstrap-select.css')}">
+
         <style type="text/css">
         .titulo-azul.subtitulo {
             border    : none;
@@ -90,7 +93,7 @@
                         </tr>
                         <tr class="info">
                             <td class="grupo">
-                                <g:select from="${objetivos}" optionKey="id" optionValue="descripcion" name="objetivo" class="form-control input-sm required requiredCombo"
+                                <g:select from="${objetivos}" optionKey="id" optionValue="descripcion" name="objetivo" class="form-control input-sm required requiredCombo selectpicker"
                                           noSelection="['-1': 'Seleccione...']"/>
                             </td>
                             <td class="grupo" id="tdMacro">
@@ -120,7 +123,7 @@
                         <tr class="success">
                             <td class="grupo">
                                 <g:select from="${objetivos2}" optionKey="id" optionValue="descripcion" name="objetivo_dest"
-                                          class="form-control required requiredCombo input-sm" noSelection="['-1': 'Seleccione...']"/>
+                                          class="form-control required requiredCombo input-sm selectpicker" noSelection="['-1': 'Seleccione...']"/>
                             </td>
                             <td class="grupo" id="tdMacro_dest">
                             </td>
@@ -440,6 +443,13 @@
 
             $(function () {
                 addData();
+
+                $('.selectpicker').selectpicker({
+                    width      : "200px",
+                    limitWidth : true,
+                    style      : "btn-sm"
+                });
+
                 $("#frmReforma").validate({
                     errorClass     : "help-block",
                     onfocusout     : false,
@@ -510,8 +520,8 @@
                 });
 
                 $("#btnAddReforma").click(function () {
-                    console.log($("#asg"), $("#asg_dest"));
-                    console.log($("#asg").val(), $("#asg_dest").val());
+//                    console.log($("#asg"), $("#asg_dest"));
+//                    console.log($("#asg").val(), $("#asg_dest").val());
                     if ($("#frmReforma").valid()) {
                         var dataOrigen = {};
                         dataOrigen.objetivo_nombre = $("#objetivo").find("option:selected").text();
@@ -543,7 +553,8 @@
                         type    : "POST",
                         url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
                         data    : {
-                            objetivo : $(this).val()
+                            objetivo : $(this).val(),
+                            width    : "140px"
                         },
                         success : function (msg) {
                             $("#tdMacro").html(msg);
@@ -562,7 +573,8 @@
                         url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
                         data    : {
                             objetivo : $("#objetivo_dest").val(),
-                            mod      : "_dest"
+                            mod      : "_dest",
+                            width    : "140px"
                         },
                         success : function (msg) {
                             $("#tdMacro_dest").html(msg);

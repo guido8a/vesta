@@ -10,16 +10,16 @@
 
 <script>
     $('.selectpicker').selectpicker({
-        width      : "350px",
+        width      : "${params.width?:'350px'}",
         limitWidth : true,
         style      : "btn-sm"
     });
 
     $("#act${params.mod}").change(function () {
-        if($("#act").val() != -1){
+        if ($("#act").val() != -1) {
             $("#editarActividad").removeClass('hide').addClass('show');
             $("#crearActividad").removeClass('show').addClass('hide');
-        }else{
+        } else {
             $("#crearActividad").removeClass('hide').addClass('show');
             $("#editarActividad").removeClass('show').addClass('hide');
         }
@@ -30,8 +30,9 @@
             type    : "POST",
             url     : "${createLink(action:'tarea_ajax',controller: 'asignacion')}",
             data    : {
-                id   : $(this).val(),
-                mod: "${params.mod}"
+                id    : $(this).val(),
+                mod   : "${params.mod}",
+                width : "${params.width}"
             },
             success : function (msg) {
 
@@ -39,7 +40,7 @@
                 $("#tdAsignacion${params.mod}").html("");
                 $("#max${params.mod}").html("");
                 $("#editarTarea").removeClass('show').addClass('hide');
-             }
+            }
         });
     })
 

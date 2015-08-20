@@ -10,10 +10,10 @@
 
 <script>
     $('.selectpicker').selectpicker({
-        width      : "${params.width?:'350px'}",
-        limitWidth : true,
-        style      : "btn-sm",
-        backgroundColor: 'red'
+        width           : "${params.width?:'350px'}",
+        limitWidth      : true,
+        style           : "btn-sm",
+        backgroundColor : 'red'
     });
 
     $("#mac${params.mod}").change(function () {
@@ -34,12 +34,13 @@
 //        console.log("-->")
         $.ajax({
             type    : "POST",
-async: false,
+            async   : false,
             url     : "${createLink(action:'actividad_ajax',controller: 'asignacion')}",
             data    : {
-                id   : $(this).val(),
-                anio : $("#anio").val(),
-                mod  : "${params.mod}"
+                id    : $(this).val(),
+                anio  : $("#anio").val(),
+                mod   : "${params.mod}",
+                width : "${params.width}"
             },
             success : function (msg) {
 //                console.log("success -->", msg)

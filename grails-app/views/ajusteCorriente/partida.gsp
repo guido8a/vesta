@@ -11,6 +11,9 @@
         <meta name="layout" content="main">
         <title><elm:tipoReformaStr tipo="Ajuste corriente" tipoSolicitud="P"/></title>
 
+        <script type="text/javascript" src="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/js', file: 'bootstrap-select.js')}"></script>
+        <link rel="stylesheet" href="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/css', file: 'bootstrap-select.css')}">
+
         <style type="text/css">
         .titulo-azul.subtitulo {
             border    : none;
@@ -87,7 +90,7 @@
                     <tbody>
                         <tr class="info">
                             <td>
-                                <g:select from="${objetivos}" optionKey="id" optionValue="descripcion" name="objetivo" class="form-control input-sm required requiredCombo"
+                                <g:select from="${objetivos}" optionKey="id" optionValue="descripcion" name="objetivo" class="form-control input-sm required requiredCombo selectpicker"
                                           noSelection="['-1': 'Seleccione...']"/>
                             </td>
                             <td class="grupo" id="tdMacro">
@@ -411,6 +414,12 @@
 
                 addData();
 
+                $('.selectpicker').selectpicker({
+                    width      : "200px",
+                    limitWidth : true,
+                    style      : "btn-sm"
+                });
+
                 $("#frmReforma, #frmPartida, #frmFirma").validate({
                     errorClass     : "help-block",
                     onfocusout     : false,
@@ -484,7 +493,8 @@
                         type    : "POST",
                         url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
                         data    : {
-                            objetivo : $(this).val()
+                            objetivo : $(this).val(),
+                            width    : "185px"
                         },
                         success : function (msg) {
                             $("#tdMacro").html(msg);
