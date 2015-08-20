@@ -18,6 +18,7 @@
     </head>
 
     <body>
+
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
         <div class="btn-toolbar" role="toolbar">
@@ -59,7 +60,7 @@
                 <div class="col-md-3">
                     <g:if test="${!readOnly}">
                         <elm:datepicker name="fechaInicioProceso" class="datepicker form-control input-sm required" value="${proceso?.fechaInicioProceso}"
-                                        onChangeDate="validarFechaIni" minDate="${new Date()}"/>
+                                        onChangeDate="validarFechaIni" minDate="${minDate}" maxDate="${maxDate}"/>
                     </g:if>
                     <g:else>
                         <p class="form-control-static">
@@ -76,7 +77,7 @@
                 <div class="col-md-3">
                     <g:if test="${!readOnly}">
                         <elm:datepicker name="fechaFinProceso" class="datepicker form-control input-sm required" value="${proceso?.fechaFinProceso}"
-                                        onChangeDate="validarFechaFin" minDate="${new Date()}"/>
+                                        onChangeDate="validarFechaFin" minDate="${minDate}" maxDate="${maxDate}"/>
                     </g:if>
                     <g:else>
                         <p class="form-control-static">

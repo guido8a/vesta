@@ -80,6 +80,12 @@
                                                         <i class="fa fa-check"></i>
                                                     </g:link>
                                                 </g:elseif>
+                                                <g:else>
+                                                %{-- TODO: validar quien puede aqui --}%
+                                                    <g:link class="btn btn-success btnModificar" action="nuevaSolicitud" id="${proc.id}" title="Modificar aval">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </g:link>
+                                                </g:else>
                                             </div>
                                         </td>
                                     </tr>
@@ -116,6 +122,68 @@
 
             $(function () {
                 buscar();
+
+                $(".btnModificar").click(function () {
+                    var url = $(this).attr("href");
+
+                    var msg = $("<div>Ingrese su clave de autorización</div>");
+                    var $txt = $("<input type='password' class='form-control input-sm'/>");
+
+                    var $group = $('<div class="input-group">');
+                    var $span = $('<span class="input-group-addon"><i class="fa fa-lock"></i> </span>');
+                    $group.append($txt).append($span);
+
+                    msg.append($group);
+
+                    var bAuth = bootbox.dialog({
+                        title   : "Autorización electrónica",
+                        message : msg,
+                        class   : "modal-sm",
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            eliminar : {
+                                label     : "<i class='fa fa-pencil'></i> Modificar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    $.ajax({
+                                        type    : "POST",
+                                        url     : '${createLink( action:'validarModificarAval')}',
+                                        data    : {
+                                            pass : $txt.val()
+                                        },
+                                        success : function (msg) {
+                                            if (msg == "ERROR") {
+                                                closeLoader();
+                                                bootbox.alert({
+                                                            message : "Clave incorrecta",
+                                                            title   : "Error",
+                                                            class   : "modal-error"
+                                                        }
+                                                );
+                                            } else {
+                                                location.href = url + "?a=" + msg;
+                                            }
+                                        },
+                                        error   : function () {
+                                            log("Ha ocurrido un error interno", "error");
+
+                                            closeLoader();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                    setTimeout(function () {
+                        bAuth.find(".form-control").first().focus();
+                    }, 500);
+                    return false;
+                });
 
                 $(".btnPrint").click(function () {
                     var url = "${g.createLink(controller: 'reporteSolicitud',action: 'solicitudAvalCorriente')}/" + $(this).data("id");

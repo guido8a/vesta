@@ -132,12 +132,24 @@ class AvalCorrienteController extends Shield {
         AvalCorriente proceso = null
         if (params.id) {
             proceso = AvalCorriente.get(params.id)
+
+            //TODO: aqui verificar en q estados debe tener autorizacion
+            if (proceso.estado.codigo == "EF4") {
+                if (params.a != session.usuario.autorizacion) {
+                    response.sendError(401)
+                }
+            }
         }
         def readOnly = false
         def unidad = UnidadEjecutora.get(session.unidad.id)
         def personasFirma = firmasService.listaDirectoresUnidad(unidad)
 
-        return [proceso: proceso, readOnly: readOnly, personas: personasFirma]
+        def anio = new Date().format("yyyy")
+
+        def minDate = new Date().parse("dd-MM-yyyy", "01-01-" + anio)
+        def maxDate = new Date().parse("dd-MM-yyyy", "31-12-" + anio)
+
+        return [proceso: proceso, readOnly: readOnly, personas: personasFirma, minDate: minDate, maxDate: maxDate]
     }
 
     /**
@@ -1157,4 +1169,19 @@ class AvalCorrienteController extends Shield {
         return ret
     }
 
+    def validarModificarAval() {
+        println getParams()
+
+        def auth = params.pass.toString().trim().encodeAsMD5()
+        def persona = Persona.get(session.usuario.id)
+
+        println persona.autorizacion
+        println params.pass.toString().trim() + "   ->    " + auth
+
+        if (persona.autorizacion == auth) {
+            render auth
+        } else {
+            render "ERROR"
+        }
+    }
 }
