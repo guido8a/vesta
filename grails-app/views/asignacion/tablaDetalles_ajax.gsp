@@ -11,11 +11,14 @@ l<%--
     <tr data-res="${asg?.unidad?.id}" data-asi="${asg?.actividad}" data-par="${asg?.presupuesto?.descripcion}"
         data-parId="${asg?.presupuesto?.id}" data-fue="${asg?.fuente?.id}" data-val="${asg?.planificado}" data-id="${asg?.id}" data-obj="${asg?.tarea?.actividad?.macroActividad?.objetivoGastoCorriente?.id}"
         data-mac="${asg?.tarea?.actividad?.macroActividad?.id}" data-act="${asg?.tarea?.actividad?.id}" data-tar="${asg?.tarea?.id}">
-        <td style="width: 250px">${asg?.unidad?.nombre}</td>
-        <td style="width: 250px" title="${objTitle}">${obj}</td>
-        <td style="width: 250px">${asg?.tarea?.actividad?.macroActividad?.descripcion}</td>
-        <td style="width: 250px">${asg?.actividad}</td>
-        <td style="width: 250px;">${asg?.presupuesto?.numero + " " + asg?.presupuesto?.descripcion}</td>
+        <td style="width: 200px">${asg?.unidad?.nombre}</td>
+        <td style="width: 200px" title="${objTitle}">${obj}</td>
+        <td style="width: 150px">${asg?.tarea?.actividad?.macroActividad?.descripcion}</td>
+        <td style="width: 150px">${asg?.tarea?.actividad?.descripcion}</td>
+        <td style="width: 100px">${asg?.tarea?.descripcion}</td>
+        %{--<td style="width: 250px">${asg?.actividad}</td>--}%
+        <td style="width: 80px;">${asg?.presupuesto?.numero}</td>
+        <td style="width: 100px;">${asg?.presupuesto?.descripcion}</td>
         <td style="width: 80px">${asg?.fuente?.codigo}</td>
         %{--<td style="width: 100px">${asg?.planificado}</td>--}%
         <td style="width: 100px"><g:formatNumber number="${asg?.planificado.toDouble()}"
@@ -34,6 +37,8 @@ l<%--
 
 <script>
 
+
+
     $(".borrar_ajax").click(function () {
         var idBorrar = $(this).attr("iden");
         var nombreBorrar = $(this).attr("nom");
@@ -50,7 +55,7 @@ l<%--
                         var parts = msg.split("*");
                         log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "SUCCESS") {
-                            cargarDetalles(objetivo);
+                            cargarDetalles(objetivo, unidad);
                             totales(objetivo, unidad);
                         }
                     }
@@ -87,8 +92,6 @@ l<%--
         var actiId = $(this).parents("tr").attr("data-act");
         var tareaId = $(this).parents("tr").attr("data-tar");
 
-        console.log("objetivo" + objetivoId)
-
         $("#idResponsable").val(responsableEditar);
         $("#asignacion_txt").val(asignacionEditar);
         $("#prsp_id").val(partidaId);
@@ -96,8 +99,9 @@ l<%--
         $("#valor").val(valorEditar);
         $("#fuente").val(fuenteEditar);
         $("#asignacionId").val(asignacionId);
-//        $("#objetivo").val(objetivoId).prop('disabled', true);
-        $("#objetivo").val(objetivoId)
+        $("#objetivo").val(objetivoId).prop('disabled', true);
+
+//       console.log("valf" +  objetivoId)
 
 //        $("#crearTarea").addClass('show');
 //        $("#crearActividad").addClass('show');

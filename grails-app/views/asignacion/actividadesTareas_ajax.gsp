@@ -16,7 +16,7 @@
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
         <thead>
         <tr>
-            <th style="width: 450px">Actividad gasto corriente</th>
+            <th style="width: 450px">Actividad gasto permanente</th>
             <th style="width: 450px">Tarea</th>
             <th style="width: 240px">Acciones</th>
         </tr>

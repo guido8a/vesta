@@ -75,11 +75,11 @@
 
             <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
                 <thead>
-                    <th style="width: 250px">Responsable</th>
-                    <th style="width: 270px">Asignación</th>
+                    <th style="width: 350px">Responsable</th>
+                    %{--<th style="width: 270px">Asignación</th>--}%
+                    <th style="width: 300px;">Fuente</th>
                     <th style="width: 210px;">Partida</th>
-                    <th style="width: 150px;">Fuente</th>
-                    <th style="width: 100px;">Presupuesto</th>
+                    <th style="width: 150px;">Presupuesto</th>
                     <th style="width: 100px;"></th>
                 </thead>
                 <tbody>
@@ -87,22 +87,24 @@
                     <tr class="odd">
                         <g:hiddenField name="asignacionId" value=""/>
                         <td>
-                            <g:select name="responsable" id="idResponsable" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" optionValue="nombre" style="width: 250px" class="many-to-one form-control input-sm"/>
+                            <g:select name="responsable" id="idResponsable" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" optionValue="nombre" style="width: 350px" class="many-to-one form-control input-sm"/>
                         </td>
-                        <td class="actividad">
-                            <g:textArea name="asignacion_name" style="width: 270px;height: 60px; resize: none" id="asignacion_txt" maxlength="150" class="form-control input-sm"/>
+                        %{--<td class="actividad">--}%
+                            %{--<g:textArea name="asignacion_name" style="width: 270px;height: 60px; resize: none" id="asignacion_txt" maxlength="150" class="form-control input-sm"/>--}%
+                        %{--</td>--}%
+
+                        <td class="fuente">
+                            <g:select from="${fuentes}" id="fuente" optionKey="id" optionValue="descripcion" name="fuente" class="fuente many-to-one form-control input-sm" value="" style="width: 300px;"/>
                         </td>
 
                         <td class="prsp">
                             <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
                                           titulo="Busque una partida" campos="${campos}" clase="required" style="width:100%;"/>
                         </td>
-                        <td class="fuente">
-                            <g:select from="${fuentes}" id="fuente" optionKey="id" optionValue="descripcion" name="fuente" class="fuente many-to-one form-control input-sm" value="" style="width: 150px;"/>
-                        </td>
+
 
                         <td class="valor">
-                            <g:textField name="valor_name" id="valor" class="form-control input-sm number" style="width: 100px" value=""/>
+                            <g:textField name="valor_name" id="valor" class="form-control input-sm number" style="width: 150px" value=""/>
                         </td>
                         <td>
                             <a href="#" id="btnGuardar" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Agregar
@@ -132,9 +134,11 @@
                 <thead>
                     <th style="width: 200px">Responsable</th>
                     <th style="width: 250px">Objetivo</th>
-                    <th style="width: 250px">Macro Actividad</th>
-                    <th style="width: 250px">Asignación</th>
-                    <th style="width: 250px;">Partida</th>
+                    <th style="width: 150px">Macro Actividad</th>
+                    <th style="width: 150px">Actividad</th>
+                    <th style="width: 100px">Tarea</th>
+                    <th style="width: 80px">#</th>
+                    <th style="width: 100px;">Partida</th>
                     <th style="width: 80px">Fuente</th>
                     <th style="width: 100px">Presupuesto</th>
                     <th style="width: 100px">Acciones</th>
@@ -151,14 +155,15 @@
 
 //            $("#objetivo").selectpicker('val', ['-1']);
 
-            function cargarDetalles(objetivo) {
+            function cargarDetalles(objetivo, unidad) {
 
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(controller: 'asignacion', action:'tablaDetalles_ajax')}",
                     data    : {
                         anio     : $("#anio").val(),
-                        objetivo : objetivo
+                        objetivo : objetivo,
+                        unidad   : unidad
                     },
                     success : function (msg) {
                         $("#tdDetalles").html(msg);
@@ -223,6 +228,8 @@
 
             $(function () {
 
+                $("#objetivo").prop('disabled', false);
+
                 $('.selectpicker').selectpicker({
                     width      : "350px",
                     limitWidth : true,
@@ -257,7 +264,7 @@
                     $("#tdMacro").html(spinner);
                     var idObjetivo = $("#objetivo").val();
                     var idUnidad = $("#idResponsable").val();
-                    cargarDetalles(idObjetivo);
+                    cargarDetalles(idObjetivo, idUnidad);
                     $.ajax({
                         type    : "POST",
                         url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
@@ -278,6 +285,12 @@
                     totales(idObjetivo, idUnidad);
                 });
 
+                $("#idResponsable").change(function () {
+                    var idObjetivo = $("#objetivo").val();
+                    var idUnidad = $("#idResponsable").val();
+                    cargarDetalles(idObjetivo, idUnidad);
+                });
+
                 $("#btnVerTodos").click(function () {
                     $("#objetivo").val(-1);
                     $("#tdMacro").html("");
@@ -285,7 +298,7 @@
                     $("#tdTarea").html("");
                     $("#crearActividad").removeClass('show').addClass('hide');
                     $("#crearTarea").removeClass('show').addClass('hide');
-                    cargarDetalles("T");
+                    cargarDetalles("T","U");
                     var idObjetivo = $("#objetivo").val();
                     var idUnidad = $("#idResponsable").val();
                     totales(idObjetivo, idUnidad);
@@ -313,7 +326,7 @@
                         log("Ingrese un valor menor al restante!", "error")
                     } else {
                         if (tarea && tarea != -1) {
-                            if (asignacion != '') {
+//                            if (asignacion != '') {
                                 if (parti != null && parti != 'null') {
                                     if (fuente != null) {
                                         if (valor != '') {
@@ -328,9 +341,8 @@
                                                     if (parts[0] == "SUCCESS") {
                                                         $("#asignacion_txt").val('');
                                                         $("#valor").val('');
-                                                        cargarDetalles(objetivo);
+                                                        cargarDetalles(objetivo,responsable);
                                                         totales(objetivo, responsable);
-                                                        console.log("iDDDDDD " + parts[2])
                                                         crearProgramacion(parts[2]);
                                                     }
                                                 }
@@ -344,9 +356,9 @@
                                 } else {
                                     log("Debe seleccionar una partida", "error")
                                 }
-                            } else {
-                                log("Ingrese el nombre de la asignación", "error")
-                            }
+//                            } else {
+//                                log("Ingrese el nombre de la asignación", "error")
+//                            }
                         } else {
                             log("Debe seleccionar una tarea", "error")
                         }
@@ -375,7 +387,7 @@
 
                         if (actId && actId != -1) {
                             if (tarId && tarId != -1) {
-                                if (asignacion != '') {
+//                                if (asignacion != '') {
                                     if (parti != null && parti != 'null') {
                                         if (fuente != null) {
                                             if (valor != '') {
@@ -389,7 +401,7 @@
                                                         log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
                                                         if (parts[0] == "SUCCESS") {
                                                             estadoAnterior();
-                                                            cargarDetalles(objetivo);
+                                                            cargarDetalles(objetivo, responsable);
                                                             totales(objetivo, responsable);
                                                         }
                                                     }
@@ -403,9 +415,9 @@
                                     } else {
                                         log("Debe seleccionar una partida", "error")
                                     }
-                                } else {
-                                    log("Ingrese el nombre de la asignación", "error")
-                                }
+//                                } else {
+//                                    log("Ingrese el nombre de la asignación", "error")
+//                                }
                             } else {
                                 log("Debe seleccionar una tarea", "error")
                             }

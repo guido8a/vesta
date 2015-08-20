@@ -1451,10 +1451,11 @@ class AsignacionController extends Shield {
         if (params.objetivo != -1 && params.objetivo != 'T') {
 
             def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+            def unidad = UnidadEjecutora.get(params.unidad)
             def macros = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
             def actividades = ActividadCorriente.findAllByMacroActividadInList(macros)
             def tareas = Tarea.findAllByActividadInList(actividades)
-            asignaciones = Asignacion.findAllByTareaInListAndAnio(tareas, anio, [sort: 'unidad', order: 'unidad'])
+            asignaciones = Asignacion.findAllByTareaInListAndAnioAndUnidad(tareas, anio, unidad, [sort: 'unidad', order: 'unidad'])
 
         }
         if (params.objetivo == 'T') {
@@ -1683,7 +1684,7 @@ class AsignacionController extends Shield {
             }
         }
 
-        println("total todas" + totalTodas)
+//        println("total todas" + totalTodas)
 
         if (presupuesto) {
             restante = (presupuesto?.maxCorrientes - totalTodas)
@@ -1693,7 +1694,7 @@ class AsignacionController extends Shield {
 
 
 
-        return [totalObjetivo: totalObjetivo, maximo: presupuesto, restante: restante, totalUnidad: totalUnidad]
+        return [totalObjetivo: totalObjetivo, maximo: presupuesto, restante: restante, totalUnidad: totalUnidad, totalTodas: totalTodas]
 
     }
 

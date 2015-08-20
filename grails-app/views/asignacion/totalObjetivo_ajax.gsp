@@ -20,7 +20,12 @@
         <g:formatNumber number="${maximo?.maxCorrientes ?: 0}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
     </div>
 
-    <div style="position: absolute;top:105px;right:10px;font-size: 17px;" data-res="${restante}" id="divRestante">
+    <div style="position: absolute;top:105px;right:10px;font-size: 15px;">
+        <b>Total Asignado:</b>
+        <g:formatNumber number="${totalTodas ?: 0}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
+    </div>
+
+    <div style="position: absolute;top:125px;right:10px;font-size: 17px;" data-res="${restante}" id="divRestante">
         <b>Restante:</b>
         <g:formatNumber number="${restante}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
     </div>
