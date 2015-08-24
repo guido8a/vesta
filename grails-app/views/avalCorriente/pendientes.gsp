@@ -80,12 +80,12 @@
                                                         <i class="fa fa-check"></i>
                                                     </g:link>
                                                 </g:elseif>
-                                                <g:else>
+                                                <g:elseif test="${proc.estado.codigo == 'EF1'}">
                                                 %{-- TODO: validar quien puede aqui y en q estado debe estar el proceso --}%
                                                     <g:link class="btn btn-success btnModificar" action="nuevaSolicitud" id="${proc.id}" title="Modificar aval">
                                                         <i class="fa fa-pencil"></i>
                                                     </g:link>
-                                                </g:else>
+                                                </g:elseif>
                                             </div>
                                         </td>
                                     </tr>

@@ -29,10 +29,11 @@
             </div>
         </div>
 
-        <elm:wizardAvalesCorrientes paso="1" proceso="${proceso}"/>
+        <elm:wizardAvalesCorrientes paso="1" proceso="${proceso}" a="${a}"/>
 
         <g:uploadForm action="saveProcesoWizard" class="form-horizontal wizard-form corner-bottom" name="frmProceso" role="form" method="POST">
             <input type="hidden" name="id" value="${proceso?.id}">
+            <input type="hidden" name="a" value="${a}">
 
             <div class="row grupo">
                 <label for="nombre" class="col-md-2 control-label">
@@ -158,24 +159,31 @@
                 </label>
 
                 <div class="col-md-4">
-                    <g:if test="${!readOnly}">
-                        <g:if test="${proceso?.estado?.codigo == 'D01'}">
-                            <p class="form-control-static">
-                                ${proceso?.director}
-                            </p>
-                        </g:if>
-                        <g:else>
-                        %{--*${solicitud?.directorId}*--}%
-                            <g:select from="${personas}" optionKey="id" class="form-control input-sm required"
-                                      optionValue="${{
-                                          it.nombre + ' ' + it.apellido
-                                      }}" name="director" value="${proceso?.directorId}" noSelection="['': '.. Seleccione ..']"/>
-                        </g:else>
-                    </g:if>
-                    <g:else>
+                    <g:if test="${modificar}">
                         <p class="form-control-static">
                             ${proceso?.director}
                         </p>
+                    </g:if>
+                    <g:else>
+                        <g:if test="${!readOnly}">
+                            <g:if test="${proceso?.estado?.codigo == 'D01'}">
+                                <p class="form-control-static">
+                                    ${proceso?.director}
+                                </p>
+                            </g:if>
+                            <g:else>
+                            %{--*${solicitud?.directorId}*--}%
+                                <g:select from="${personas}" optionKey="id" class="form-control input-sm required"
+                                          optionValue="${{
+                                              it.nombre + ' ' + it.apellido
+                                          }}" name="director" value="${proceso?.directorId}" noSelection="['': '.. Seleccione ..']"/>
+                            </g:else>
+                        </g:if>
+                        <g:else>
+                            <p class="form-control-static">
+                                ${proceso?.director}
+                            </p>
+                        </g:else>
                     </g:else>
                 </div>
             </div>

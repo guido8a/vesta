@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <elm:wizardAvalesCorrientes paso="2" proceso="${proceso}"/>
+        <elm:wizardAvalesCorrientes paso="2" proceso="${proceso}" a="${a}"/>
 
         <g:form action="" class="form-horizontal wizard-form corner-bottom" role="form" method="POST">
             <g:if test="${!readOnly}">

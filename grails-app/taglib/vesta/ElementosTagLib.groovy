@@ -1279,7 +1279,7 @@ class ElementosTagLib {
         html += '   <div class="col-md-6 wizard-step wizard-next-step corner-left ' + clase1 + '">\n' +
                 '       <span class="badge wizard-badge">1</span>\n'
         if (proceso && proceso.id && paso > 1) {
-            html += g.link(action: "nuevaSolicitud", id: proceso.id, title: "Regresar sin guardar cambios") {
+            html += g.link(action: "nuevaSolicitud", id: proceso.id, title: "Regresar sin guardar cambios", params: [a: attrs.a]) {
                 'Proceso de aval' + nombreProc
             }
         } else {
@@ -1291,7 +1291,7 @@ class ElementosTagLib {
         html += '   <div class="col-md-6 wizard-step corner-right ' + clase2 + '">\n' +
                 '       <span class="badge wizard-badge">2</span>\n'
         if (proceso && proceso.id && paso != 2) {
-            html += g.link(action: "solicitudAsignaciones", id: proceso.id, title: "Continuar sin guardar cambios") {
+            html += g.link(action: "solicitudAsignaciones", id: proceso.id, title: "Continuar sin guardar cambios", params: [a: attrs.a]) {
                 'Asignaciones' + nombreProc
             }
         } else {

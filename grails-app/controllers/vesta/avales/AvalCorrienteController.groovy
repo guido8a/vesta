@@ -130,13 +130,16 @@ class AvalCorrienteController extends Shield {
      */
     def nuevaSolicitud() {
         AvalCorriente proceso = null
+        def modificar = false
         if (params.id) {
             proceso = AvalCorriente.get(params.id)
 
             //TODO: aqui verificar en q estados debe tener autorizacion
-            if (proceso.estado.codigo == "EF4") {
+            if (proceso.estado.codigo == "EF1") {
                 if (params.a != session.usuario.autorizacion) {
                     response.sendError(401)
+                } else {
+                    modificar = true
                 }
             }
         }
@@ -149,7 +152,7 @@ class AvalCorrienteController extends Shield {
         def minDate = new Date().parse("dd-MM-yyyy", "01-01-" + anio)
         def maxDate = new Date().parse("dd-MM-yyyy", "31-12-" + anio)
 
-        return [proceso: proceso, readOnly: readOnly, personas: personasFirma, minDate: minDate, maxDate: maxDate]
+        return [proceso: proceso, readOnly: readOnly, personas: personasFirma, minDate: minDate, maxDate: maxDate, modificar: modificar, a: params.a]
     }
 
     /**
@@ -246,7 +249,7 @@ class AvalCorrienteController extends Shield {
             texto += "  de proceso exitosa. Por favor ingrese las asignaciones"
             flash.message = texto
             flash.tipo = "success"
-            redirect(action: 'solicitudAsignaciones', id: proceso.id)
+            redirect(action: 'solicitudAsignaciones', id: proceso.id, params: [a: params.a])
             return
         }
     }
@@ -257,6 +260,14 @@ class AvalCorrienteController extends Shield {
     def solicitudAsignaciones() {
         if (params.id) {
             def proceso = AvalCorriente.get(params.id)
+
+            //TODO: aqui verificar en q estados debe tener autorizacion
+            if (proceso.estado.codigo == "EF1") {
+                if (params.a != session.usuario.autorizacion) {
+                    response.sendError(401)
+                }
+            }
+
             def unidad = session.usuario.unidad
 
             def band = true
@@ -293,7 +304,7 @@ class AvalCorrienteController extends Shield {
                 total = detalles.sum { it.monto }
             }
 
-            return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual, anios: anios, total: total]
+            return [proceso: proceso, unidad: unidad, band: band, readOnly: readOnly, actual: actual, anios: anios, total: total, a: params.a]
         } else {
             redirect(action: "nuevaSolicitud")
         }
