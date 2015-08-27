@@ -330,8 +330,9 @@
                         id : id
                     },
                     success : function (msg) {
+                        var img = "${resource(dir:'images', file:'logoBuenVivir.png')}";
                         bootbox.dialog({
-                            title   : "Metas del Plan Nacional de Desarrollo",
+                            title   : "Metas del Plan Nacional de Desarrollo <img class='pull-right' src='" + img + "' height='40'/>",
                             class   : "modal-lg",
                             message : msg,
                             buttons : {
@@ -462,7 +463,7 @@
                             }
                         },
                         metas       : {
-                            label  : "Metas del P.N.D.",
+                            label  : "Plan Nacional de Desarrollo",
                             icon   : "fa fa-flag-checkered",
                             action : function ($element) {
                                 var id = $element.data("id");

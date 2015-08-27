@@ -274,8 +274,18 @@ class ProyectoController extends Shield {
         }
         def select = g.select(id: "estrategia", name: "estrategia.id", from: estrategias,
 //                optionKey: "id", optionValue: "descripcion", value: estr?.id,
-                optionKey: "id", value: estr?.id,
+                optionKey: "id", value: estr?.id, title: "Estrategia del proyecto",
                 class: "estrategia many-to-one form-control input-sm")
+
+        select+="<script type='text/javascript'>\$('#estrategia').qtip({\n" +
+                "        style    : {\n" +
+                "            classes : 'qtip-tipsy'\n" +
+                "        },\n" +
+                "        position : {\n" +
+                "            my : \"bottom center\",\n" +
+                "            at : \"top center\"\n" +
+                "        }\n" +
+                "    });</script>"
 
         render select.toString()
     }

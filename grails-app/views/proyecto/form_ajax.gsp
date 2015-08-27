@@ -21,7 +21,8 @@
                                   from="${ObjetivoEstrategicoProyecto.list([sort: 'descripcion'])}"
                                   optionKey="id"
                                   value="${proyectoInstance?.objetivoEstrategico?.id}"
-                                  class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                                  class="many-to-one form-control input-sm" noSelection="['null': '']"
+                                  title="Objetivo estratégico del proyecto"/>
                     </div>
                 </span>
             </div>
@@ -36,7 +37,8 @@
                         <g:select id="estrategia" name="estrategia.id" from="${Estrategia.list([sort: 'descripcion'])}"
                                   optionKey="id"
                                   value="${proyectoInstance?.estrategia?.id}"
-                                  class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                                  class="many-to-one form-control input-sm" noSelection="['null': '']"
+                                  title="Estrategia del proyecto"/> %{--si se cambia este title cambiar tambien en ProyectoController/estrategiaPorObjetivo_ajax--}%
                     </div>
                 </span>
             </div>
@@ -50,7 +52,8 @@
                     <div class="col-md-9">
                         <g:select id="portafolio" name="portafolio.id" from="${Portafolio.list([sort: 'descripcion'])}"
                                   optionKey="id" optionValue="descripcion" value="${proyectoInstance?.portafolio?.id}"
-                                  class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                                  class="many-to-one form-control input-sm" noSelection="['null': '']"
+                                  title="Portafolio del proyecto"/>
                     </div>
                 </span>
             </div>
@@ -64,7 +67,8 @@
                     <div class="col-md-9">
                         <g:select id="programa" name="programa.id" from="${Programa.list([sort: 'descripcion'])}"
                                   optionKey="id" optionValue="descripcion" value="${proyectoInstance?.programa?.id}"
-                                  class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                                  class="many-to-one form-control input-sm" noSelection="['null': '']"
+                                  title="Programa del proyecto"/>
                     </div>
                 </span>
             </div>
@@ -76,7 +80,8 @@
                     </label>
 
                     <div class="col-md-9">
-                        <g:textField name="nombre" maxlength="255" required="" class="form-control input-sm required" value="${proyectoInstance?.nombre}"/>
+                        <g:textField name="nombre" maxlength="255" required="" class="form-control input-sm required" value="${proyectoInstance?.nombre}"
+                                     title="Nombre del proyecto"/>
                     </div>
                 </span>
             </div>
@@ -90,7 +95,8 @@
                     <div class="col-md-9">
                         <g:select id="unidadAdministradora" name="unidadAdministradora.id" from="${UnidadEjecutora.list([sort: 'nombre'])}"
                                   optionKey="id" value="${proyectoInstance?.unidadAdministradora?.id}"
-                                  class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                                  class="many-to-one form-control input-sm" noSelection="['null': '']"
+                                  title="Área de gestión encargada del proyecto"/>
                     </div>
                 </span>
             </div>
@@ -104,7 +110,8 @@
                     <div class="col-md-9">
                         <g:select id="localizacion" name="localizacion.id" from="${Localizacion.list([sort: 'descripcion'])}"
                                   optionKey="id" value="${proyectoInstance?.localizacion?.id}"
-                                  class="many-to-one form-control input-sm" noSelection="['null': '']"/>
+                                  class="many-to-one form-control input-sm" noSelection="['null': '']"
+                                  title="Localización del proyecto"/>
                     </div>
                 </span>
             </div>
@@ -117,7 +124,8 @@
                         </label>
 
                         <div class="col-md-6">
-                            <g:textField name="codigo" class="form-control input-sm unique noEspacios" value="${proyectoInstance?.codigo}"/>
+                            <g:textField name="codigo" class="form-control input-sm unique noEspacios" value="${proyectoInstance?.codigo}"
+                                         title="Código"/>
                         </div>
                     </span>
                 </div>
@@ -129,7 +137,8 @@
                         </label>
 
                         <div class="col-md-6">
-                            <g:textField name="codigoProyecto" maxlength="24" class="form-control input-sm unique noEspacios" value="${proyectoInstance?.codigoProyecto}"/>
+                            <g:textField name="codigoProyecto" maxlength="24" class="form-control input-sm unique noEspacios" value="${proyectoInstance?.codigoProyecto}"
+                                         title="Código del proyecto"/>
                         </div>
                     </span>
                 </div>
@@ -145,7 +154,8 @@
                         <div class="col-md-6">
                             <div class="input-group input-group-sm">
                                 <g:textField name="monto" value="${fieldValue(bean: proyectoInstance, field: 'monto')}"
-                                             class="number money form-control input-sm "/>
+                                             class="number money form-control input-sm "
+                                             title="Costo total del proyecto"/>
                                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                             </div>
                         </div>
@@ -160,7 +170,8 @@
 
                         <div class="col-md-6">
                             <g:textField name="codigoEsigef" maxlength="3" class="form-control input-sm unique noEspacios"
-                                         value="${proyectoInstance?.codigoEsigef}"/>
+                                         value="${proyectoInstance?.codigoEsigef}"
+                                         title="Código financiero del proyecto"/>
                         </div>
 
                     </span>
@@ -176,7 +187,8 @@
 
                         <div class="col-md-6">
                             <elm:datepicker name="fechaInicioPlanificada" class="datepicker form-control input-sm"
-                                            value="${proyectoInstance?.fechaInicioPlanificada}" onChangeDate="validaFechasPlan"/>
+                                            value="${proyectoInstance?.fechaInicioPlanificada}" onChangeDate="validaFechasPlan"
+                                            title="Fecha de inicio planificada para el proyecto"/>
                         </div>
                     </span>
                 </div>
@@ -189,7 +201,8 @@
 
                         <div class="col-md-6">
                             <elm:datepicker name="fechaInicio" class="datepicker form-control input-sm"
-                                            value="${proyectoInstance?.fechaInicio}" onChangeDate="validaFechas"/>
+                                            value="${proyectoInstance?.fechaInicio}" onChangeDate="validaFechas"
+                                            title="Fecha de inicio real del proyecto"/>
                         </div>
                     </span>
                 </div>
@@ -204,7 +217,8 @@
 
                         <div class="col-md-6">
                             <elm:datepicker name="fechaFinPlanificada" class="datepicker form-control input-sm"
-                                            value="${proyectoInstance?.fechaFinPlanificada}"/>
+                                            value="${proyectoInstance?.fechaFinPlanificada}"
+                                            title="Fecha de fin planificada para el proyecto"/>
                         </div>
                     </span>
                 </div>
@@ -217,7 +231,8 @@
 
                         <div class="col-md-6">
                             <elm:datepicker name="fechaFin" class="datepicker form-control input-sm"
-                                            value="${proyectoInstance?.fechaFin}"/>
+                                            value="${proyectoInstance?.fechaFin}"
+                                            title="Fecha de fin real del proyecto"/>
                         </div>
                     </span>
                 </div>
@@ -230,7 +245,8 @@
                     </label>
 
                     <div class="col-md-9">
-                        <g:textArea name="problema" cols="40" rows="2" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.problema}"/>
+                        <g:textArea name="problema" cols="40" rows="2" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.problema}"
+                                    title="Diagnóstico e identificación del proyecto"/>
                     </div>
 
                 </span>
@@ -244,7 +260,8 @@
 
                     <div class="col-md-9">
                         <g:textArea name="justificacion" cols="40" rows="2" maxlength="1023" class="form-control input-sm"
-                                    value="${proyectoInstance?.justificacion}"/>
+                                    value="${proyectoInstance?.justificacion}"
+                                    title="Justificación del proyecto"/>
                     </div>
                 </span>
             </div>
@@ -256,7 +273,8 @@
                     </label>
 
                     <div class="col-md-9">
-                        <g:textArea name="descripcion" cols="40" rows="2" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.descripcion}"/>
+                        <g:textArea name="descripcion" cols="40" rows="2" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.descripcion}"
+                                    title="Descripción del proyecto"/>
                     </div>
 
                 </span>
@@ -269,7 +287,8 @@
                     </label>
 
                     <div class="col-md-9">
-                        <g:textArea name="poblacion" cols="40" rows="2" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.poblacion}"/>
+                        <g:textArea name="poblacion" cols="40" rows="2" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.poblacion}"
+                                    title="Población beneficiada por el proyecto"/>
                     </div>
 
                 </span>
@@ -282,7 +301,8 @@
                     </label>
 
                     <div class="col-md-9">
-                        <g:textArea name="objetivoGeneral" cols="40" rows="2" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.objetivoGeneral}"/>
+                        <g:textArea name="objetivoGeneral" cols="40" rows="2" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.objetivoGeneral}"
+                                    title="Objetivo general del proyecto"/>
                     </div>
 
                 </span>
