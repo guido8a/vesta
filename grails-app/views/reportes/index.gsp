@@ -30,7 +30,7 @@
                 </td>
 
                 <td>
-                    <g:link class="boton" controller="reportes" action="reasignacionAgrupado" target="_blank">Consolidado techos de inversión y corrientes</g:link>
+                    <g:link class="boton" controller="reportes" action="reasignacionAgrupado" target="_blank">Consolidado techos de inversión y permanente</g:link>
                     <g:link class="boton" controller="reportes" action="reasignacionAgrupadoXls">Excel</g:link>
                 </td>
             </tr>

@@ -40,7 +40,7 @@
                 %{--</li>--}%
 
                 <li role="presentation">
-                    <a href="#AVCR" class="" role="tab" data-toggle="tab">Firmas solicitud de aval corrientes</a>
+                    <a href="#AVCR" class="" role="tab" data-toggle="tab">Firmas solicitud de aval gasto permanente</a>
                 </li>
                 <li role="presentation">
                     <a href="#AJSC" class="" role="tab" data-toggle="tab">Firmas solicitud de ajuste corriente</a>

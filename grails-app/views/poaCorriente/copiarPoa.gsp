@@ -144,7 +144,7 @@
 
         <div class="row">
             <div class="col-md-2">
-                <label>Objetivo de gasto corriente</label>
+                <label>Objetivo gasto permanente</label>
             </div>
 
             <div class="col-md-10" id="tdObj">

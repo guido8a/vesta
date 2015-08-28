@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Ajustes corrientes pendientes</title>
+        <title>Ajustes POA gasto permanente pendientes</title>
 
         <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'avales.css')}" type="text/css"/>
     </head>

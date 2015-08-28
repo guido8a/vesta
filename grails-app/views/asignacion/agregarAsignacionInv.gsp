@@ -400,7 +400,7 @@
             modal    : true
         });
         $("#dlg_buscar_act").dialog({
-            title    : "Actividades corrientes",
+            title    : "Actividades gasto permanente",
             width    : 480,
             height   : 500,
             autoOpen : false,

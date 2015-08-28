@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Avales corrientes pendientes</title>
+        <title>Avales gasto permanente pendientes</title>
 
         <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'avales.css')}" type="text/css"/>
     </head>
