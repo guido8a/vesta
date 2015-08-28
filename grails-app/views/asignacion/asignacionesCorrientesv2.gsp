@@ -442,6 +442,14 @@
                     location.href = "${createLink(controller: 'asignacion', action: 'programacionAsignacionesCorrientes')}?id=" + $("#idResponsable").val() + "&anio=" + ${actual?.id}
                 });
 
+                $("#btnReporte").click(function () {
+                    var idObjetivo = $("#objetivo").val();
+                    var idUnidad = $("#idResponsable").val();
+                    var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteGastoPermanentePdf')}?objetivo=" + idObjetivo + "Wunidad=" + idUnidad + "Wanio=" + ${actual?.id};
+                    var pdfFileName = "ReporteGastoPermanente";
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + urlPdf + "&filename=" + pdfFileName;
+                });
+
 
 
 
