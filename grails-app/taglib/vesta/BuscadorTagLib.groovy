@@ -45,6 +45,7 @@ class BuscadorTagLib {
     }
 
     def buscador = { atr ->
+        println("params buscador " + atr)
         def name = atr.name ? atr.name : " "
         def value = atr.value
         def campos

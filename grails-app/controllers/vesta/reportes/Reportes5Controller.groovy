@@ -9,10 +9,15 @@ import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFRow
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
+import vesta.poaCorrientes.ActividadCorriente
+import vesta.poaCorrientes.MacroActividad
+import vesta.poaCorrientes.ObjetivoGastoCorriente
+import vesta.poaCorrientes.Tarea
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.ModificacionAsignacion
 import vesta.proyectos.Proyecto
@@ -662,6 +667,35 @@ class Reportes5Controller {
         }
 
         return [modificacion : modificacion, totalInicial: totalInicial, totalFinal: totalFinal]
+
+    }
+
+    def reporteGastoPermanentePdf () {
+
+//        println("params reportes gasto " + params)
+
+        def anio = Anio.get(params.anio)
+        def asignaciones = []
+
+        if (params.objetivo != '-1') {
+//            println("entro if")
+            def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+            def unidad = UnidadEjecutora.get(params.unidad)
+            def macros = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+            def actividades = ActividadCorriente.findAllByMacroActividadInList(macros)
+            def tareas = Tarea.findAllByActividadInList(actividades)
+            asignaciones = Asignacion.findAllByTareaInListAndAnioAndUnidad(tareas, anio, unidad, [sort: 'unidad', order: 'unidad'])
+
+        }else{
+//            println("entro else")
+            asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', order: 'unidad'])
+        }
+//       if (params.objetivo == 'T' || params.objetivo == -1) {
+//            asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', order: 'unidad'])
+//        }
+
+        return [asignaciones: asignaciones]
+
 
     }
 
