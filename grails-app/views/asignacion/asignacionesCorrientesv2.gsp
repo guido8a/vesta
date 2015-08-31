@@ -19,7 +19,7 @@
 
     <body>
 
-        <div class="btn-group btn-group-sm" role="group" style="width: 400px;">
+        <div class="btn-group btn-group-sm" role="group" style="width: 600px;">
 
             <a href="#" id="btnProgramacion" class="btn btn-success" title="Programación"><i class="fa fa-gear"></i> Programación</a>
 
@@ -28,6 +28,8 @@
             <a href="#" id="btnCopiar" class="btn btn-success" title="Copiar asignaciones"><i class="fa fa-copy"></i> Copiar asignaciones
             </a>
             <a href="#" id="btnReporte" class="btn btn-success" title="Reporte"><i class="fa fa-print"></i> Reporte</a>
+
+            <a href="#" id="btnReporteUnidad" class="btn btn-success" title="Reporte Unidad"><i class="fa fa-print"></i> Reporte por Área</a>
         </div>
 
         <div style="margin-top: 15px;">
@@ -447,6 +449,14 @@
                     var idUnidad = $("#idResponsable").val();
                     var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteGastoPermanentePdf')}?objetivo=" + idObjetivo + "Wunidad=" + idUnidad + "Wanio=" + ${actual?.id};
                     var pdfFileName = "ReporteGastoPermanente";
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + urlPdf + "&filename=" + pdfFileName;
+                });
+
+                $("#btnReporteUnidad").click(function () {
+                    var idObjetivo = $("#objetivo").val();
+                    var idUnidad = $("#idResponsable").val();
+                    var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteGastoPermanenteUnidad')}?objetivo=" + idObjetivo + "Wunidad=" + idUnidad + "Wanio=" + ${actual?.id};
+                    var pdfFileName = "reportePoaxArea";
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + urlPdf + "&filename=" + pdfFileName;
                 });
 

@@ -699,4 +699,36 @@ class Reportes5Controller {
 
     }
 
+
+    def reporteGastoPermanenteUnidad () {
+
+        def unidad = UnidadEjecutora.get(params.unidad)
+        def anio = Anio.get(params.anio)
+
+
+
+        def unidades = UnidadEjecutora.list()
+        def asignacionesxunidad = []
+        def mapa = [:]
+
+        unidades.each {uni->
+
+            def totalUnidad = 0
+            asignacionesxunidad = Asignacion.findAllByUnidadAndAnioAndMarcoLogicoIsNull(uni, anio).each {
+                totalUnidad += it?.planificado
+            }
+
+            if(totalUnidad != 0){
+                mapa[uni.id] = [
+                        unidad : uni,
+                        total : totalUnidad
+                ]
+            }
+
+        }
+
+        return [mapa: mapa]
+
+    }
+
 }

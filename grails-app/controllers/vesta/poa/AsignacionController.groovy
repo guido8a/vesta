@@ -1637,7 +1637,7 @@ class AsignacionController extends Shield {
 
     def totalObjetivo_ajax() {
 
-        println("params total" + params)
+//        println("params total" + params)
 
         def anio = Anio.get(params.anio)
 
