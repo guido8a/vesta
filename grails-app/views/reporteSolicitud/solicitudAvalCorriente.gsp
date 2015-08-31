@@ -8,8 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-        <title>Solicitud aval corriente</title>
-        <rep:estilos orientacion="p" pagTitle="Solicitud de Aval de POA corriente"/>
+        <title>Solicitud aval gasto permanente</title>
+        <rep:estilos orientacion="p" pagTitle="Solicitud de Aval de POA permanente"/>
         <style type="text/css">
         .table {
             width           : 100%;
@@ -38,13 +38,13 @@
     </head>
 
     <body>
-        <rep:headerFooter title="Solicitud de Aval de POA corriente" unidad="${proceso.fechaSolicitud.format('yyyy')}-${proceso.usuario.unidad?.codigo}"
+        <rep:headerFooter title="Solicitud de Aval de POA permanente" unidad="${proceso.fechaSolicitud.format('yyyy')}-${proceso.usuario.unidad?.codigo}"
                           numero="${proceso.numeroSolicitud.toString().padLeft(3, '0')}" estilo="right"/>
 
         <p style="margin-top: 40px">
             Con el propósito de ejecutar las actividades programadas en la planificación operativa institucional
             ${proceso.fechaInicioProceso?.format("yyyy")}, la ${proceso.usuario.unidad}
-            solicita emitir el Aval de POA corriente correspondiente al proceso que se detalla a continuación:
+            solicita emitir el Aval de POA de gasto permanente correspondiente al proceso que se detalla a continuación:
         </p>
 
         <table class="table table-bordered table-condensed">
@@ -100,7 +100,7 @@
             <g:set var="det" value="${d.value}"/>
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <td style="width:200px; font-weight: bold">OBJETIVO GASTO CORRIENTE</td>
+                    <td style="width:200px; font-weight: bold">OBJETIVO GASTO PERMANENTE</td>
                     <td>${det.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}</td>
                 </tr>
                 <tr>

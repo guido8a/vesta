@@ -8,8 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-        <title>Solicitud aval corriente</title>
-        <rep:estilos orientacion="p" pagTitle="Aval de POA corriente"/>
+        <title>Solicitud aval de gasto permanente</title>
+        <rep:estilos orientacion="p" pagTitle="Aval de POA de gasto permanente"/>
         <style type="text/css">
         .table {
             width           : 100%;
@@ -40,7 +40,7 @@
     <body>
         <g:set var="anio" value="${proceso.fechaSolicitud.format("yyyy")}"/>
 
-        <rep:headerFooter title="Aval de POA corriente" unidad="${proceso.fechaSolicitud.format('yyyy')}-${proceso.usuario.unidad?.codigo}"
+        <rep:headerFooter title="Aval de POA de gasto permanente" unidad="${proceso.fechaSolicitud.format('yyyy')}-${proceso.usuario.unidad?.codigo}"
                           numero="${proceso.numeroAval.toString().padLeft(3, '0')}" estilo="right"/>
 
         <p>
@@ -108,7 +108,7 @@
             <g:set var="det" value="${d.value}"/>
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <td style="width:200px; font-weight: bold">OBJETIVO GASTO CORRIENTE</td>
+                    <td style="width:200px; font-weight: bold">OBJETIVO GASTO PERMANENTE</td>
                     <td>${det.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}</td>
                 </tr>
                 <tr>

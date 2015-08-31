@@ -17,7 +17,7 @@
         <elm:container tipo="horizontal" titulo="Ajustes al POA de gasto permanente">
             <p>
                 Existen 2 tipos de ajustes posibles:
-                asignaciones existentes, partida nueva
+                asignaciones existentes y partida nueva
             </p>
 
             <div class="list-group">

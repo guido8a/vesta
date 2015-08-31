@@ -52,7 +52,7 @@
 
                 <div class="row grupo">
                     <label class="col-md-2 control-label">
-                        Objetivo gasto corriente
+                        Objetivo gasto permanente
                     </label>
 
                     <div class="col-md-3" id="tdObj">
@@ -310,7 +310,7 @@
 
                 $("#btnPreview").click(function () {
                     var url = "${g.createLink(controller: 'reporteSolicitud',action: 'solicitudAvalCorriente')}/?id=${proceso?.id}";
-                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud_aval_corriente.pdf"
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud_aval_permanente.pdf"
                 });
             });
         </script>

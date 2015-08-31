@@ -245,6 +245,7 @@
                 $("#btnOk").click(function () {
                     openLoader("Guardando");
                     $("#frmProceso").submit();
+                    closeLoader("Guardando");
                     return false;
                 });
 

@@ -1,15 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 22/06/15
-  Time: 03:48 PM
---%>
 
 <%@ page import="vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title><elm:tipoReformaStr tipo="Ajuste corriente" tipoSolicitud="E"/></title>
+        <title><elm:tipoReformaStr tipo="Ajuste al POA de gasto permanente" tipoSolicitud="E"/></title>
 
         <script type="text/javascript" src="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/js', file: 'bootstrap-select.js')}"></script>
         <link rel="stylesheet" href="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/css', file: 'bootstrap-select.css')}">
@@ -49,7 +43,7 @@
             </div>
         </div>
 
-        <elm:container tipo="horizontal" titulo="${elm.tipoReformaStr(tipo: "Ajuste corriente", tipoSolicitud: "E")}">
+        <elm:container tipo="horizontal" titulo="${elm.tipoReformaStr(tipo: "Ajuste al POA de gasto permanente", tipoSolicitud: "E")}">
             <div class="row">
                 <div class="col-md-1">
                     <label for="anio">
@@ -57,7 +51,7 @@
                     </label>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-2" style="width: 120px">
                     <g:select from="${[actual]}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
                               class="form-control input-sm required requiredCombo"/>
                 </div>
@@ -77,7 +71,7 @@
                 <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
                     <thead>
                         <tr>
-                            <th style="width:234px;">Objetivo gasto corriente</th>
+                            <th style="width:234px;">Objetivo gasto permanente</th>
                             <th style="width:234px;">MacroActividad</th>
                             <th style="width:234px;">Actividad</th>
                             <th style="width:234px;">Tarea</th>
@@ -108,7 +102,7 @@
                                 <div class="input-group">
                                     <g:textField type="text" name="monto"
                                                  class="form-control required input-sm number money"/>
-                                    <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                                    %{--<span class="input-group-addon"><i class="fa fa-usd"></i></span>--}%
                                 </div>
                             </td>
                             <td id="max">
@@ -163,7 +157,7 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th style='width:234px;'>Objetivo gasto corriente</th>
+                                <th style='width:234px;'>Objetivo gasto permanente</th>
                                 <th style='width:234px;'>MacroActividad</th>
                                 <th style='width:234px;'>Actividad</th>
                                 <th style='width:234px;'>Tarea</th>
@@ -171,10 +165,13 @@
                                 <th style='width:195px;'>Monto</th>
                             </tr>
                         </thead>
+
+                        <g:set var="objt" value="${detalle.asignacionOrigen.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}"/>
                         <tbody>
                             <tr class="info">
                                 <td>
-                                    ${detalle.asignacionOrigen.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}
+                                    %{--${detalle.asignacionOrigen.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}--}%
+                                   "${objt.size() > 0 ? objt[0..80] + "..." : objt}"
                                 </td>
                                 <td>
                                     ${detalle.asignacionOrigen.tarea.actividad.macroActividad.descripcion}
@@ -192,9 +189,10 @@
                                     -<g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
                                 </td>
                             </tr>
+                            <g:set var="objt_ds" value="${detalle.asignacionDestino.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}"/>
                             <tr class="success">
                                 <td>
-                                    ${detalle.asignacionDestino.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}
+                                    "${objt.size() > 0 ? objt[0..80] + "..." : objt}"
                                 </td>
                                 <td>
                                     ${detalle.asignacionDestino.tarea.actividad.macroActividad.descripcion}
@@ -395,7 +393,7 @@
                 $thead.append($trTitulo);
 
                 var $trHead = $("<tr>");
-                $("<th style='width:234px;'>Objetivo gasto corriente</th>").appendTo($trHead);
+                $("<th style='width:234px;'>Objetivo gasto permanente</th>").appendTo($trHead);
                 $("<th style='width:234px;'>MacroActividad</th>").appendTo($trHead);
                 $("<th style='width:234px;'>Actividad</th>").appendTo($trHead);
                 $("<th style='width:234px;'>Tarea</th>").appendTo($trHead);
@@ -524,7 +522,12 @@
 //                    console.log($("#asg").val(), $("#asg_dest").val());
                     if ($("#frmReforma").valid()) {
                         var dataOrigen = {};
-                        dataOrigen.objetivo_nombre = $("#objetivo").find("option:selected").text();
+                        var objt_og = $("#objetivo").find("option:selected").text();
+                        if(objt_og.length > 80) {
+                            dataOrigen.objetivo_nombre = objt_og.substring(1,80) + "...";
+                        } else {
+                            dataOrigen.objetivo_nombre = objt_og;
+                        }
                         dataOrigen.macro_nombre = $("#mac").find("option:selected").text();
                         dataOrigen.actividad_nombre = $("#act").find("option:selected").text();
                         dataOrigen.tarea_nombre = $("#tar").find("option:selected").text();
@@ -533,7 +536,13 @@
                         dataOrigen.monto = $("#monto").val();
 
                         var dataDestino = {};
-                        dataDestino.objetivo_nombre = $("#objetivo_dest").find("option:selected").text();
+                        var objt_ds = $("#objetivo_dest").find("option:selected").text();
+                        if(objt_ds.length > 80) {
+                            dataDestino.objetivo_nombre = objt_ds.substring(1,80) + "...";
+                        } else {
+                            dataDestino.objetivo_nombre = objt_ds;
+                        }
+//                        dataDestino.objetivo_nombre = $("#objetivo_dest").find("option:selected").text();
                         dataDestino.macro_nombre = $("#mac_dest").find("option:selected").text();
                         dataDestino.actividad_nombre = $("#act_dest").find("option:selected").text();
                         dataDestino.tarea_nombre = $("#tar_dest").find("option:selected").text();

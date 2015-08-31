@@ -21,23 +21,24 @@ class FirmasService {
 
     def listaFirmasCombos() {
         def unidad = UnidadEjecutora.findByCodigo("DPI") // DIRECCIÓN DE PLANIFICACIÓN E INVERSIÓN
-//        def personasFirmas = Persona.findAllByUnidad(unidad)
-//        def gerentes = Persona.findAllByUnidad(unidad.padre)
 
         def directores = Persona.withCriteria {
             eq("unidad", unidad)
             ilike("cargo", "%director%")
-//            cargoPersonal {
-//                ilike("descripcion", "%director%")
-//            }
         }
         def gerentes = Persona.withCriteria {
             eq("unidad", unidad.padre)
             ilike("cargo", "%gerente%")
-//            cargoPersonal {
-//                ilike("descripcion", "%gerente%")
-//            }
         }
+
+        return [directores: directores + gerentes, gerentes: gerentes]
+    }
+
+    def listaFirmasCorrientes() {
+        def unidad = UnidadEjecutora.findAllByCodigoInList(["DA","DF" ]) // DIRECCIONES ADMINISTRATIVA y FINANCIERA
+
+        def directores = Persona.findAllByUnidadInListAndCargoIlike(unidad, "%director%")
+        def gerentes = Persona.findAllByUnidadAndCargoIlike(unidad[0].padre, "%gerente%")
 
         return [directores: directores + gerentes, gerentes: gerentes]
     }

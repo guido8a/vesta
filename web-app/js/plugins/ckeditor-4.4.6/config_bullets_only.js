@@ -7,7 +7,7 @@ CKEDITOR.editorConfig = function (config) {
     config.language = 'es';
     config.uiColor = '#AABBCC';
 
-    config.height = '180px';
+    config.height = '220px';
 
     config.toolbar = 'Min';
     config.resizable = false;

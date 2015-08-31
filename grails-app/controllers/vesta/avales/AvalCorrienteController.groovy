@@ -449,7 +449,7 @@ class AvalCorrienteController extends Shield {
      */
     def solicitarFirmas() {
         def proceso = AvalCorriente.get(params.id)
-        def firmas = firmasService.listaFirmasCombos()
+        def firmas = firmasService.listaFirmasCorrientes()
         return [proceso: proceso, detalles: arreglarDetalles(proceso), personas: firmas.directores, personasGerente: firmas.gerentes]
     }
 

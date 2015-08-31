@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Solicitar firmas de aval corriente</title>
+        <title>Solicitar firmas de aval permanente</title>
 
         <script type="text/javascript" src="${resource(dir: 'js/plugins/ckeditor-4.4.6', file: 'ckeditor.js')}"></script>
         <script type="text/javascript" src="${resource(dir: 'js/plugins/ckeditor-4.4.6', file: 'adapters/jquery.js')}"></script>
@@ -53,7 +53,7 @@
                 </div>
             </g:if>
 
-            <elm:container tipo="horizontal" titulo="Solicitud a aprobar">
+            <elm:container tipo="horizontal" titulo="Solicitud a aprobar - Gasto Permanente">
                 <table class="table table-condensed table-bordered">
                     <thead>
                         <tr>
@@ -93,17 +93,36 @@
             </elm:container>
 
             <elm:container tipo="horizontal" titulo="Datos para la generación del documento">
-                <g:set var="val" value='El aval se otorga en base a los oficios:No.SENPLADES-SZ1N-2014-0204-OF, de 12 de diciembre de 2014, con el cual la Secretaría Nacional de Planificación y Desarrollo informa a la Empresa Pública “Yachay” que el dictamen de prioridad del proyecto “Ciudad del Conocimiento”, CUP:30400000.680.6990, para el período 2012 – 2017, se encuentra vigente; con Oficio Nro. MINFIN-SRF-2014-0512 de 08 de diciembre de 2014, el Ministerio de Finanzas informa que el monto asignado a la Empresa Pública Yachay E .P., dentro del Presupuesto General del Estado 2015, en la partida" Trasferencia desde Gobierno Central", asciende a un monto de USD9.543.697,00 para recursos fiscales permanentes y de USD.76.000.000,00 para recursos fiscales no permanentes; con Memorando Nro.YACHAY-GAF-2014-0015 de 24 de diciembre de 2014, la Gerencia Administrativa Financiera remitió al Gerente General el POA de gasto permanente para su aprobación; con Acta Nro.009-2014-DIR-YACHAY-EP y Resolución Nro.YACHAY.EP-GG-2014-0037 de 29 de diciembre de 2014, los miembros del Directorio aprueban la asignación presupuestaria de gasto permanente por el monto de USD9’543.697,00  y el Gerente General, aprobó el Plan Operativo Anual (POA) de gasto permanente de la Empresa Pública Yachay EP para el ejercicio fiscal 2015.'/>
+                <g:set var="val" value='El aval se otorga en base a los oficios:No.SENPLADES-SZ1N-2014-0204-OF, de 12 de
+                diciembre de 2014, con el cual la Secretaría Nacional de Planificación y Desarrollo informa a la Empresa
+                Pública “Yachay” que el dictamen de prioridad del proyecto “Ciudad del Conocimiento”, CUP:30400000.680.6990,
+                para el período 2012 – 2017, se encuentra vigente; con Oficio Nro. MINFIN-SRF-2014-0512 de 08 de diciembre
+                de 2014, el Ministerio de Finanzas informa que el monto asignado a la Empresa Pública Yachay E .P., dentro
+                del Presupuesto General del Estado 2015, en la partida" Trasferencia desde Gobierno Central", asciende a
+                un monto de USD9.543.697,00 para recursos fiscales permanentes y de USD.76.000.000,00 para recursos fiscales
+                no permanentes; con Memorando Nro.YACHAY-GAF-2014-0015 de 24 de diciembre de 2014, la Gerencia Administrativa
+                Financiera remitió al Gerente General el POA de gasto permanente para su aprobación; con Acta
+                Nro.009-2014-DIR-YACHAY-EP y Resolución Nro.YACHAY.EP-GG-2014-0037 de 29 de diciembre de 2014, los miembros
+                del Directorio aprueban la asignación presupuestaria de gasto permanente por el monto de USD9’543.697,00  y
+                el Gerente General, aprobó el Plan Operativo Anual (POA) de gasto permanente de la Empresa Pública Yachay
+                EP para el ejercicio fiscal 2015.'/>
                 <g:if test="${proceso.observacionesPdf && proceso.observacionesPdf.trim() != ''}">
                     <g:set var="val" value="${proceso.observacionesPdf}"/>
                 </g:if>
 
-                <div class="row">
+                <div class="row" style="width: 100%">
                     <div class="col-md-1 show-label">Número:</div>
 
                     <div class="col-md-3">
-                        ${proceso.fechaSolicitud.format("yyyy")}-GP No. ${proceso.numeroSolicitud.toString().padLeft(3, '0')}"/>
+                        ${proceso.fechaSolicitud.format("yyyy")}-GP No. ${proceso.numeroSolicitud.toString().padLeft(3, '0')}
                     </div>
+
+                    <span class="col-md-8">
+                        <a href="#" class="btn btn-success" id="guardarDatosDoc" style="float:right">
+                                <i class="fa fa-save"></i> Guardar texto
+                        </a>
+                    </span>
+
                 </div>
 
                 <div class="row">
@@ -114,17 +133,6 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-1 show-label">&nbsp;</div>
-
-                    <div class="btn-toolbar toolbar" style="margin-top: 15px;">
-                        <div class="btn-group">
-                            <a href="#" class="btn btn-success" id="guardarDatosDoc">
-                                <i class="fa fa-save"></i> Guardar texto
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </elm:container>
 
             <elm:container tipo="horizontal" titulo="Autorizaciones electrónicas">
@@ -199,7 +207,7 @@
 
                     $("#btnPreview").click(function () {
                         var url = "${createLink(controller: 'reporteSolicitud', action: 'avalCorriente')}/?id=${proceso.id}";
-                        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval_corriente.pdf";
+                        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval_permanente.pdf";
                         return false;
                     });
 
@@ -297,7 +305,7 @@
 
                     $(".imprimirSolicitud").click(function () {
                         var url = "${g.createLink(controller: 'reporteSolicitud',action: 'solicitudAvalCorriente')}/?id=" + $(this).attr("iden");
-                        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud_aval_corriente.pdf";
+                        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud_aval_permanente.pdf";
                         return false;
                     });
 

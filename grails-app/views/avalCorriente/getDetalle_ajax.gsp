@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>Año</th>
-            <th>Obj. gasto corriente</th>
+            <th>Obj. gasto permanente</th>
             <th>MacroActividad</th>
             <th>Actividad</th>
             <th>Tarea</th>

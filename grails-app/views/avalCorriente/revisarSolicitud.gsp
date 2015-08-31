@@ -9,11 +9,11 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Revisión de solicitud de aval corriente</title>
+        <title>Revisión de solicitud de aval para gasto permanente</title>
     </head>
 
     <body>
-        <h1>Revisar solicitud de aval corriente</h1>
+        <h1>Revisar solicitud de aval para gasto permanente</h1>
 
         <g:if test="${proceso.estado.codigo == 'D02' && proceso.firmaGerente.observaciones && proceso.firmaGerente.observaciones != '' && proceso.firmaGerente.observaciones != 'S'}">
             <elm:message tipo="warning"><strong>Devuelto por ${proceso.firmaGerente.usuario}</strong>: ${proceso.firmaGerente.observaciones}</elm:message>
@@ -72,7 +72,7 @@
             <g:set var="det" value="${d.value}"/>
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <td style="width:200px; font-weight: bold">OBJETIVO GASTO CORRIENTE</td>
+                    <td style="width:200px; font-weight: bold">OBJETIVO GASTO PERMANENTE</td>
                     <td>${det.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}</td>
                 </tr>
                 <tr>
