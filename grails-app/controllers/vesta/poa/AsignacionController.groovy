@@ -1724,4 +1724,8 @@ class AsignacionController extends Shield {
         render restante
     }
 
+    def partida_ajax () {
+
+    }
+
 }

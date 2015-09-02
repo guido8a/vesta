@@ -33,12 +33,13 @@
                     <th>Concepto</th>
                     <th>Tipo</th>
                     <th>Estado</th>
-                    <th style="width: 85px;">Ver</th>
+                    <th style="width: 125px;">Ver</th>
                 </tr>
             </thead>
             <tbody>
                 <g:each in="${reformas}" var="reforma">
-                    <tr>
+                    <tr id="trLista" data-id="${reforma?.id}">
+
                         <td>${reforma.persona.unidad} - ${reforma.persona}</td>
                         <td>${reforma.fecha.format("dd-MM-yyyy")}</td>
                         <td>${reforma.concepto}</td>
@@ -49,6 +50,9 @@
                         <td style="text-align: center">
                             <div class="btn-group btn-group-sm" role="group">
                                 <elm:linkPdfReforma reforma="${reforma}"/>
+                                <g:if test="${reforma?.estado?.codigo == 'P01' && (unidad == 'DF' || unidad == 'DA' || unidad == 'GAF')}">
+                                    <a href="#" id="btnEditar" class="btn btn-success edit" title="Editar"><i class="fa fa-pencil"></i></a>
+                                </g:if>
                             </div>
                         </td>
                     </tr>
@@ -57,6 +61,26 @@
         </table>
 
         <script type="text/javascript">
+
+            $(".edit").click(function () {
+                console.log($("#trLista").data("id"));
+
+                var idf = $("#trLista").data("id");
+                location.href = "${createLink(controller: 'ajusteCorriente', action: 'existente')}?id=" + idf;
+
+                %{--$.ajax({--}%
+                    %{--type    : "POST",--}%
+                    %{--url     : "${createLink(controller: 'ajusteCorriente', action:'existente')}",--}%
+                    %{--data    : {--}%
+                        %{--id  :  $("#trLista").data("id")--}%
+
+                    %{--},--}%
+                    %{--success : function (msg) {--}%
+
+                    %{--}--}%
+                %{--});--}%
+            });
+
 
         </script>
     </body>

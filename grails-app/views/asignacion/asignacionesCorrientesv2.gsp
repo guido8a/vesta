@@ -102,6 +102,8 @@
                         <td class="prsp">
                             <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
                                           titulo="Busque una partida" campos="${campos}" clase="required" style="width:100%;"/>
+                            %{--<g:textField name="partida" id="prsp_id" class="fuente many-to-one form-control input-sm" value=""/>--}%
+
                         </td>
 
 
@@ -152,6 +154,44 @@
         </fieldset>
 
         <script type="text/javascript">
+
+
+            %{--$("#prsp_id").click(function () {--}%
+                %{--$.ajax({--}%
+                    %{--type: "POST",--}%
+                    %{--url     : "${createLink(controller: 'asignacion', action:'partida_ajax')}",--}%
+                    %{--data    : {--}%
+                        %{--anio : $("#anio").val(),--}%
+                        %{--objetivo: $("#objetivo").val(),--}%
+                        %{--macro   : $("#mac").val(),--}%
+                        %{--acti:   $("#act").val(),--}%
+                        %{--id : $("#tar").val()--}%
+                    %{--},--}%
+                    %{--success: function(msg) {--}%
+                        %{--bootbox.dialog ({--}%
+                            %{--id: "dlgPartida",--}%
+                            %{--title: "Partidas",--}%
+%{--//                        class: "modal-lg",--}%
+                            %{--message: msg,--}%
+                            %{--buttons : {--}%
+                                %{--cancelar : {--}%
+                                    %{--label     : "Cancelar",--}%
+                                    %{--className : "btn-primary",--}%
+                                    %{--callback  : function () {--}%
+                                    %{--}--}%
+                                %{--},--}%
+                                %{--guardar : {--}%
+                                    %{--label     : "Aceptar",--}%
+                                    %{--className : "btn-success",--}%
+                                    %{--callback  : function () {--}%
+                                    %{--}--}%
+                                %{--}--}%
+                            %{--}--}%
+                        %{--})--}%
+                    %{--}--}%
+                %{--});--}%
+            %{--});--}%
+
 
             totales($("#objetivo").val(), $("#idResponsable").val());
 

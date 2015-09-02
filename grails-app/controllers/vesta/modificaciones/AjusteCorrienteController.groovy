@@ -29,17 +29,21 @@ class AjusteCorrienteController {
      */
     def lista() {
         def reformas
+        def unidadPersona = Persona.get(session.usuario.id).unidad.codigo
         def perfil = session.perfil.codigo.toString()
-        def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+//        def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+        def listaUnidades = ['DA', 'DF', 'GAF']
+        def unidadesReales = UnidadEjecutora.findAllByCodigoInList(listaUnidades)
+        println("unidades " + unidadesReales )
         reformas = Reforma.withCriteria {
             eq("tipo", "C")
             persona {
-                inList("unidad", unidades)
+                inList("unidad", unidadesReales)
                 order("unidad", "asc")
             }
             order("fecha", "desc")
         }
-        return [reformas: reformas]
+        return [reformas: reformas, unidad: unidadPersona]
     }
 
     /**
@@ -127,6 +131,9 @@ class AjusteCorrienteController {
      * Acción que permite realizar una solicitud de reforma a asignaciones existentes
      */
     def existente() {
+
+        println("params" + params)
+
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
