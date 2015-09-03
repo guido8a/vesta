@@ -731,4 +731,15 @@ class Reportes5Controller {
 
     }
 
-}
+    def reporteCorrientesPorAreas () {
+        def now = new Date()
+        params.anio = now.format("yyyy")
+        def urlPdf = "${createLink(controller: 'reportes5', action: 'reporteGastoPermanenteUnidad')}?Wanio=9";
+        def pdfFileName = "reportePoaxArea";
+        params.url = urlPdf
+        params.filename = pdfFileName
+        redirect(controller:'pdf',action:'pdfLink', params: params)
+    }
+
+
+    }

@@ -1014,7 +1014,7 @@ class ElementosTagLib {
                     fileName = "reforma_" + fileName + "_solicitud"
                 } else {
                     if (reforma?.tipo == "C") {
-                        fileName = "ajuste_" + fileName + "_solicitud_corriente"
+                        fileName = "ajuste_" + fileName + "_poa_permanente"
                     } else {
                         fileName = "ajuste_" + fileName + "_solicitud"
                     }

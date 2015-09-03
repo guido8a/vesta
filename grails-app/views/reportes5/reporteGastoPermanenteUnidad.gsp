@@ -9,9 +9,9 @@
 <%@ page import="vesta.avales.ProcesoAsignacion" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>POA GASTO CORRIENTE POR ÁREA ADMINISTRATIVA</title>
+    <title>POA GASTO PERMANENTE POR ÁREA ADMINISTRATIVA</title>
 
-    <rep:estilos orientacion="l" pagTitle="POA GASTO CORRIENTE POR ÁREA ADMINISTRATIVA"/>
+    <rep:estilos orientacion="l" pagTitle="POA GASTO PERMANENTE POR ÁREA DE GESTIÓN"/>
 
     <style type="text/css">
     .table {
@@ -69,7 +69,7 @@
 
 <body>
 <div class="hoja">
-    <rep:headerFooter title="POA GASTO CORRIENTE POR ÁREA ADMINISTRATIVA" estilo="right"/>
+    <rep:headerFooter title="POA GASTO PERMANENTE POR ÁREA ADMINISTRATIVA" estilo="right"/>
 
     <p>
         Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}

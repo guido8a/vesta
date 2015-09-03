@@ -157,12 +157,12 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th style='width:234px;'>Objetivo gasto permanente</th>
-                                <th style='width:234px;'>MacroActividad</th>
-                                <th style='width:234px;'>Actividad</th>
-                                <th style='width:234px;'>Tarea</th>
+                                <th style='width:260px;'>Objetivo gasto permanente</th>
+                                <th style='width:200px;'>MacroActividad</th>
+                                <th style='width:200px;'>Actividad</th>
+                                <th style='width:200px;'>Tarea</th>
                                 <th>Asignación</th>
-                                <th style='width:195px;'>Monto</th>
+                                <th style='width:100px;'>Monto</th>
                             </tr>
                         </thead>
 
@@ -171,7 +171,7 @@
                             <tr class="info">
                                 <td>
                                     %{--${detalle.asignacionOrigen.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}--}%
-                                   "${objt.size() > 0 ? objt[0..80] + "..." : objt}"
+                                   "${objt.size() > 70 ? objt[0..70] + "..." : objt}"
                                 </td>
                                 <td>
                                     ${detalle.asignacionOrigen.tarea.actividad.macroActividad.descripcion}
@@ -183,7 +183,7 @@
                                     ${detalle.asignacionOrigen.tarea.descripcion}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionOrigen}
+                                    ${detalle.asignacionOrigen.presupuesto.descripcion + ': ' + detalle.asignacionOrigen.presupuesto.numero}
                                 </td>
                                 <td class="text-right">
                                     -<g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
@@ -192,7 +192,7 @@
                             <g:set var="objt_ds" value="${detalle.asignacionDestino.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}"/>
                             <tr class="success">
                                 <td>
-                                    "${objt.size() > 0 ? objt[0..80] + "..." : objt}"
+                                    "${objt.size() > 70 ? objt[0..70] + "..." : objt}"
                                 </td>
                                 <td>
                                     ${detalle.asignacionDestino.tarea.actividad.macroActividad.descripcion}
@@ -204,7 +204,7 @@
                                     ${detalle.asignacionDestino.tarea.descripcion}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino}
+                                    ${detalle.asignacionDestino.presupuesto.descripcion + ': ' + detalle.asignacionDestino.presupuesto.numero}
                                 </td>
                                 <td class="text-right">
                                     <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
@@ -393,10 +393,10 @@
                 $thead.append($trTitulo);
 
                 var $trHead = $("<tr>");
-                $("<th style='width:234px;'>Objetivo gasto permanente</th>").appendTo($trHead);
-                $("<th style='width:234px;'>MacroActividad</th>").appendTo($trHead);
-                $("<th style='width:234px;'>Actividad</th>").appendTo($trHead);
-                $("<th style='width:234px;'>Tarea</th>").appendTo($trHead);
+                $("<th style='width:260px;'>Objetivo gasto permanente</th>").appendTo($trHead);
+                $("<th style='width:200px;'>MacroActividad</th>").appendTo($trHead);
+                $("<th style='width:200px;'>Actividad</th>").appendTo($trHead);
+                $("<th style='width:200px;'>Tarea</th>").appendTo($trHead);
                 $("<th>Asignación</th>").appendTo($trHead);
                 $("<th style='width:100px;'>Monto</th>").appendTo($trHead);
                 $thead.append($trHead);
@@ -523,8 +523,8 @@
                     if ($("#frmReforma").valid()) {
                         var dataOrigen = {};
                         var objt_og = $("#objetivo").find("option:selected").text();
-                        if(objt_og.length > 80) {
-                            dataOrigen.objetivo_nombre = objt_og.substring(1,80) + "...";
+                        if(objt_og.length > 70) {
+                            dataOrigen.objetivo_nombre = objt_og.substring(1,70) + "...";
                         } else {
                             dataOrigen.objetivo_nombre = objt_og;
                         }
@@ -537,8 +537,8 @@
 
                         var dataDestino = {};
                         var objt_ds = $("#objetivo_dest").find("option:selected").text();
-                        if(objt_ds.length > 80) {
-                            dataDestino.objetivo_nombre = objt_ds.substring(1,80) + "...";
+                        if(objt_ds.length > 70) {
+                            dataDestino.objetivo_nombre = objt_ds.substring(1,70) + "...";
                         } else {
                             dataDestino.objetivo_nombre = objt_ds;
                         }

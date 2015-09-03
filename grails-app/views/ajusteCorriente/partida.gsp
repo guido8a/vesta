@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title><elm:tipoReformaStr tipo="Ajuste corriente" tipoSolicitud="P"/></title>
+        <title><elm:tipoReformaStr tipo="Ajuste POA de gasto permanente" tipoSolicitud="P"/></title>
 
         <script type="text/javascript" src="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/js', file: 'bootstrap-select.js')}"></script>
         <link rel="stylesheet" href="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/css', file: 'bootstrap-select.css')}">
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <elm:container tipo="horizontal" titulo="${elm.tipoReformaStr(tipo: "Ajuste corriente", tipoSolicitud: "P")}">
+        <elm:container tipo="horizontal" titulo="${elm.tipoReformaStr(tipo: "Ajuste POA de gasto permanente", tipoSolicitud: "P")}">
             <div class="row">
                 <div class="col-md-1">
                     <label for="anio">
@@ -58,7 +58,7 @@
                     </label>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-2" style="width: 120px">
                     <g:select from="${[actual]}" value="${reforma ? reforma.anioId : actual?.id}" optionKey="id" optionValue="anio" name="anio"
                               class="form-control input-sm required requiredCombo"/>
                 </div>
@@ -126,7 +126,7 @@
                         <label>Partida</label>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-7">
                         <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
                                       titulo="Busque una partida" campos="${campos}" clase="required" style="width:100%;"/>
                     </div>

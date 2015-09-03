@@ -133,11 +133,11 @@ class Reforma {
     }
 
     String getTituloSolicitud() {
-        return (this.tipo == 'R' ? 'Solicitud de reforma' : 'Ajuste') + " al POA" + (this.tipo == 'C' ? ' corriente' : '')
+        return (this.tipo == 'R' ? 'Solicitud de reforma' : 'Ajuste') + " al POA" + (this.tipo == 'C' ? ' de gasto permanente' : '')
     }
 
     String getTituloReforma() {
-        return (this.tipo == 'R' ? 'Reforma' : 'Ajuste') + " al POA" + (this.tipo == 'C' ? ' corriente' : '')
+        return (this.tipo == 'R' ? 'Reforma' : 'Ajuste') + " al POA" + (this.tipo == 'C' ? ' de gasto permanente' : '')
     }
 
     String getTipoString() {

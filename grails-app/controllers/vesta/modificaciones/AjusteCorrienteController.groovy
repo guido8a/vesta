@@ -154,7 +154,7 @@ class AjusteCorrienteController {
         def estadoPendiente = EstadoAval.findByCodigo("P01")
         def estados = [estadoPendiente, estadoDevuelto]
 
-        def firmas = firmasService.listaFirmasCombos()
+        def firmas = firmasService.listaFirmasCorrientes()
 
         def total = 0
 
@@ -197,7 +197,7 @@ class AjusteCorrienteController {
         objetivos.sort { it.descripcion }
 
         def campos = ["numero": ["Número", "string"], "descripcion": ["Descripción", "string"]]
-        def firmas = firmasService.listaFirmasCombos()
+        def firmas = firmasService.listaFirmasCorrientes()
         def estadoDevuelto = EstadoAval.findByCodigo("D03")
         def estadoPendiente = EstadoAval.findByCodigo("P01")
         def estados = [estadoPendiente, estadoDevuelto]
