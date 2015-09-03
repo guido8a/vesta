@@ -8,7 +8,7 @@ l<%--
 <g:each in="${asignaciones}" var="asg">
     <g:set var="objTitle" value="${asg.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}"/>
     <g:set var="obj" value="${objTitle.size() > 80 ? objTitle[0..79] + '…' : objTitle}"/>
-    <tr data-res="${asg?.unidad?.id}" data-asi="${asg?.actividad}" data-par="${asg?.presupuesto?.descripcion}"
+    <tr data-res="${asg?.unidad?.id}" data-asi="${asg?.actividad}" data-par="${asg?.presupuesto?.numero + " - " + asg?.presupuesto?.descripcion}"
         data-parId="${asg?.presupuesto?.id}" data-fue="${asg?.fuente?.id}" data-val="${asg?.planificado}" data-id="${asg?.id}" data-obj="${asg?.tarea?.actividad?.macroActividad?.objetivoGastoCorriente?.id}"
         data-mac="${asg?.tarea?.actividad?.macroActividad?.id}" data-act="${asg?.tarea?.actividad?.id}" data-tar="${asg?.tarea?.id}">
         <td style="width: 200px">${asg?.unidad?.nombre}</td>
@@ -92,9 +92,12 @@ l<%--
         var actiId = $(this).parents("tr").attr("data-act");
         var tareaId = $(this).parents("tr").attr("data-tar");
 
+
         $("#idResponsable").val(responsableEditar);
         $("#asignacion_txt").val(asignacionEditar);
-        $("#prsp_id").val(partidaId);
+//        $("#prsp_id").val(partidaId);
+        $("#prsp_id").val(partidaEditar);
+        $("#prsp_hide").val(partidaId);
         $("#bsc-desc-prsp_id").val(partidaEditar);
         $("#valor").val(valorEditar);
         $("#fuente").val(fuenteEditar);

@@ -1725,6 +1725,30 @@ class AsignacionController extends Shield {
     }
 
     def partida_ajax () {
+//        println("params " + params)
+       def fuente = Fuente.get(params.fuente)
+        def partidas
+
+        if(fuente.codigo == '001'){
+            partidas = Presupuesto.withCriteria {
+                or{
+                    ilike("numero", '5%')
+                    ilike("numero", '7%')
+                }
+                order("numero","asc")
+            }
+        }else{
+            if(fuente.codigo == '002'){
+                partidas = Presupuesto.withCriteria {
+                    ilike("numero", '6%')
+                }
+            }else {
+            partidas = Presupuesto.list()
+            }
+        }
+//        println("partidas " + partidas)
+
+        return [ partidas: partidas]
 
     }
 

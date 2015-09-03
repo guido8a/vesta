@@ -14,12 +14,11 @@
 
         <script type="text/javascript" src="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/js', file: 'bootstrap-select.js')}"></script>
         <link rel="stylesheet" href="${resource(dir: 'js/plugins/bootstrap-select-1.6.3/dist/css', file: 'bootstrap-select.css')}">
-
-    </head>
+ </head>
 
     <body>
 
-        <div class="btn-group btn-group-sm" role="group" style="width: 600px;">
+        <div class="btn-group btn-group-sm" role="group" style="width: 700px;">
 
             <a href="#" id="btnProgramacion" class="btn btn-success" title="Programación"><i class="fa fa-gear"></i> Programación</a>
 
@@ -30,6 +29,8 @@
             <a href="#" id="btnReporte" class="btn btn-success" title="Reporte"><i class="fa fa-print"></i> Reporte</a>
 
             <a href="#" id="btnReporteUnidad" class="btn btn-success" title="Reporte Unidad"><i class="fa fa-print"></i> Reporte por Área</a>
+
+            <a href="#" id="btnReporteExcel" class="btn btn-success" title="Reporte Excel"><i class="fa fa-print"></i> Reporte Excel</a>
         </div>
 
         <div style="margin-top: 15px;">
@@ -100,9 +101,11 @@
                         </td>
 
                         <td class="prsp">
-                            <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
-                                          titulo="Busque una partida" campos="${campos}" clase="required" style="width:100%;"/>
-                            %{--<g:textField name="partida" id="prsp_id" class="fuente many-to-one form-control input-sm" value=""/>--}%
+                            %{--<bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"--}%
+                                          %{--titulo="Busque una partida" campos="${campos}" clase="required" style="width:100%;"/>--}%
+                            <g:hiddenField name="partidaHide" id="prsp_hide" value=""/>
+
+                            <g:textField name="partida" id="prsp_id" class="fuente many-to-one form-control input-sm" value=""/>
 
                         </td>
 
@@ -156,41 +159,44 @@
         <script type="text/javascript">
 
 
-            %{--$("#prsp_id").click(function () {--}%
-                %{--$.ajax({--}%
-                    %{--type: "POST",--}%
-                    %{--url     : "${createLink(controller: 'asignacion', action:'partida_ajax')}",--}%
-                    %{--data    : {--}%
-                        %{--anio : $("#anio").val(),--}%
-                        %{--objetivo: $("#objetivo").val(),--}%
-                        %{--macro   : $("#mac").val(),--}%
-                        %{--acti:   $("#act").val(),--}%
-                        %{--id : $("#tar").val()--}%
-                    %{--},--}%
-                    %{--success: function(msg) {--}%
-                        %{--bootbox.dialog ({--}%
-                            %{--id: "dlgPartida",--}%
-                            %{--title: "Partidas",--}%
-%{--//                        class: "modal-lg",--}%
-                            %{--message: msg,--}%
-                            %{--buttons : {--}%
-                                %{--cancelar : {--}%
-                                    %{--label     : "Cancelar",--}%
-                                    %{--className : "btn-primary",--}%
-                                    %{--callback  : function () {--}%
-                                    %{--}--}%
-                                %{--},--}%
-                                %{--guardar : {--}%
-                                    %{--label     : "Aceptar",--}%
-                                    %{--className : "btn-success",--}%
-                                    %{--callback  : function () {--}%
-                                    %{--}--}%
-                                %{--}--}%
-                            %{--}--}%
-                        %{--})--}%
-                    %{--}--}%
-                %{--});--}%
-            %{--});--}%
+            $("#prsp_id").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url     : "${createLink(controller: 'asignacion', action:'partida_ajax')}",
+                    data    : {
+                        anio : $("#anio").val(),
+                        objetivo: $("#objetivo").val(),
+                        macro   : $("#mac").val(),
+                        acti:   $("#act").val(),
+                        id : $("#tar").val(),
+                        fuente: $("#fuente").val()
+                    },
+                    success: function(msg) {
+                        bootbox.dialog ({
+                            id: "dlgPartida",
+                            title: "Partidas",
+
+//                        class: "modal-lg",
+                            message: msg,
+                            buttons : {
+                                cancelar : {
+                                    id         :"btnClose",
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+//                              guardar : {
+//                                    label     : "Aceptar",
+//                                    className : "btn-success",
+//                                    callback  : function () {
+//                                    }
+//                                }
+                            }
+                        })
+                    }
+                });
+            });
 
 
             totales($("#objetivo").val(), $("#idResponsable").val());
@@ -360,23 +366,25 @@
                     var anio = $("#anio").val();
                     var responsable = $("#idResponsable").val();
                     var asignacion = $("#asignacion_txt").val();
-                    var parti = $("#prsp_id").val();
+                    var parti = $("#prsp_hide").val();
                     var fuente = $("#fuente").val();
                     var valor = $("#valor").val();
+                    var prsp_hide = $("#prsp_hide").val();
 
                     if (valor >= rest) {
                         log("Ingrese un valor menor al restante!", "error")
                     } else {
                         if (tarea && tarea != -1) {
 //                            if (asignacion != '') {
-                                if (parti != null && parti != 'null') {
+
+                                if (prsp_hide != null && prsp_hide != 'null' && prsp_hide != '') {
                                     if (fuente != null) {
                                         if (valor != '') {
                                             $.ajax({
                                                 type    : "POST",
                                                 url     : "${createLink(action:'guardarAsignacion',controller:'asignacion')}",
                                                 data    : "anio=" + anio + "&objetivo=" + objetivo + "&macro=" + macro + "&actividad=" + actividad + "&tarea=" + tarea + "&responsable=" + responsable +
-                                                          "&asignacion=" + asignacion + "&partida=" + parti + "&fuente=" + fuente + "&valor=" + valor,
+                                                          "&asignacion=" + asignacion + "&partida=" + prsp_hide + "&fuente=" + fuente + "&valor=" + valor,
                                                 success : function (msg) {
                                                     var parts = msg.split("*");
                                                     log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
@@ -422,6 +430,7 @@
                     var actId = $("#act").val();
                     var tarId = $("#tar").val();
                     var objetivo = $("#objetivo").val();
+                    var prsp_hide = $("#prsp_hide").val();
 
                     if (valor >= rest) {
                         log("Ingrese un valor menor al restante!", "error")
@@ -430,13 +439,13 @@
                         if (actId && actId != -1) {
                             if (tarId && tarId != -1) {
 //                                if (asignacion != '') {
-                                    if (parti != null && parti != 'null') {
+                                    if (prsp_hide != null && prsp_hide != 'null' && prsp_hide != '') {
                                         if (fuente != null) {
                                             if (valor != '') {
                                                 $.ajax({
                                                     type    : "POST",
                                                     url     : "${createLink(action:'guardarAsignacion',controller:'asignacion')}",
-                                                    data    : "&responsable=" + responsable + "&asignacion=" + asignacion + "&partida=" + parti + "&fuente=" + fuente + "&valor=" + valor + "&id=" + asigId
+                                                    data    : "&responsable=" + responsable + "&asignacion=" + asignacion + "&partida=" + prsp_hide + "&fuente=" + fuente + "&valor=" + valor + "&id=" + asigId
                                                               + "&actividad=" + actId + "&tarea=" + tarId,
                                                     success : function (msg) {
                                                         var parts = msg.split("*");
