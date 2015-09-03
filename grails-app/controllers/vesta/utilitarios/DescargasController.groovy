@@ -68,5 +68,16 @@ class DescargasController extends vesta.seguridad.Shield {
         response.getOutputStream().write(b)
     }
 
+    def manualPOApermanente() {
+        def filePath = "manual del usuario poa permanente.pdf"
+        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def file = new File(path)
+        def b = file.getBytes()
+        response.setContentType('pdf')
+        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
 
 } //fin controller
