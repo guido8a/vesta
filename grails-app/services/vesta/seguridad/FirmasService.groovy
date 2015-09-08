@@ -87,6 +87,20 @@ class FirmasService {
         return gerentes
     }
 
+
+    def requirentes() {
+        def requirentes = []
+        def general = UnidadEjecutora.findByCodigo('9999')
+        def tecnica = UnidadEjecutora.findByCodigo('GT')
+
+        def gerencias = UnidadEjecutora.findAllByPadreAndNombreIlike(tecnica, 'gerenc', [sort: 'nombre'])
+        def direcciones = UnidadEjecutora.findAllByPadreAndNombreIlike(general, 'direcc', [sort: 'nombre'])
+        requirentes = gerencias + direcciones
+        println "requirentes: $requirentes"
+        return requirentes
+    }
+
+
     /**
      * Firma digitalmente un documento
      * @param usuario es el usuario que firma
