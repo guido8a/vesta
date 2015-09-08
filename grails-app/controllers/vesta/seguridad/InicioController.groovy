@@ -1,6 +1,11 @@
 package vesta.seguridad
 
+import vesta.parametros.UnidadEjecutora
+
+
 class InicioController extends Shield {
+
+    def firmasService
 
     def inicio() {
         redirect(action: "index")
@@ -57,6 +62,12 @@ class InicioController extends Shield {
 //        }
 
         return [params: params, items: items]
+    }
+
+    def probar(){
+        def un = UnidadEjecutora.findByCodigo('DSBM')
+        def hh = firmasService.requirentes(un)
+        println "retorna: $hh"
     }
 }
 
