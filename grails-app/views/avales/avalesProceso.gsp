@@ -109,9 +109,10 @@
                                     <th style="width: 85px;">Fecha</th>
                                     <th>Proceso</th>
                                     <th>Tipo</th>
-                                    <th>Concepto</th>
+                                    <th>Justificación</th>
                                     <th>Monto</th>
                                     <th>Estado</th>
+                                    <th>Revisor</th>
                                     <th>Doc. <br>Respaldo</th>
                                     <th>Solicitud</th>
                                     <th>Observaciones</th>
@@ -130,6 +131,9 @@
                                         <g:set var="avalEstado" value="${p?.estado?.codigo}"/>
                                         <td style="text-align: center;font-weight: bold" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : avalEstado == 'E02' ? 'verde' : 'rojo'}">
                                             ${p.estado?.descripcion}
+                                        </td>
+                                        <td style="text-align: center">
+                                                ${p?.director?.nombre + " " + p?.director?.apellido}
                                         </td>
 
                                         <td style="text-align: center">

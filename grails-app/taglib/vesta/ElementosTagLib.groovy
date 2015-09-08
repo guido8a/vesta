@@ -891,14 +891,18 @@ class ElementosTagLib {
             sol = SolicitudAval.get(attrs.solicitud)
         }
         def num = null
+        def uno = 1
         def output = ""
         if (aval) {
             num = aval.numeroAval.toString()
-//            println "AVAL"
+            if(aval.numeroAval == '000'){
+                num = uno.toString()
+            }
+//            println "AVAL" + num
         }
         if (sol) {
             num = sol.numero.toString()
-//            println "SOL"
+//            println "SOL" + num
         }
 
 //        println("num " + num)
@@ -908,8 +912,9 @@ class ElementosTagLib {
 //                output += "0"
 //            }
         num = num.toString().padLeft(3, '0')
+//        println("num1 " + num)
         if (!num || num == "null") {
-            num = "000"
+            num = "001"
         }
         output += num
 //        }

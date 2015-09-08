@@ -40,7 +40,7 @@
         }
 
         .tbl2 {
-            width           : 50%;
+            width           : 60%;
             border-collapse : collapse;
         }
 
@@ -71,21 +71,22 @@
             text-decoration : underline;
         }
 
+
         </style>
 
     </head>
 
     <body>
         <div class="hoja">
-            <rep:headerFooter title="Aval de POA" unidad="${anio}-GPE"
-                              numero="${elm.imprimeNumero(aval: aval?.id)}" estilo="right"/>
+            <rep:headerFooter title="Aval de POA" unidad="${sol.unidad}"
+                              numero="${elm.imprimeNumero(aval: aval?.id)}" anio="${anio}" estilo="right"/>
 
-            <div style="text-align: justify;float: left;font-size: 10pt;">
+            <div style="text-align: justify;float: left;font-size: 8pt;">
                 <p>
-                    Con solicitud de aval de POA ${anio}-${sol.unidad.sigla}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${sol.fecha.format("dd-MM-yyyy")},
-                    la ${sol?.unidad?.nombre} solicita emitir el aval de POA para realizar el proceso "${sol.proceso.nombre}",
-                    por un monto total de USD <g:formatNumber number="${sol.monto}" type="currency" currencySymbol="USD "/>
-                    (${transf.toLowerCase()}), con base en cual informo lo siguiente:
+                    Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${sol.fecha.format("dd-MM-yyyy")},
+                    la ${ua.nombre} solicita emitir el aval de POA para realizar el proceso "${sol.proceso.nombre}",
+                    por un monto total de <g:formatNumber number="${sol.monto}" type="currency" currencySymbol="USD "/>
+                    (${transf.capitalize()}, con base en cual informo lo siguiente:
                 </p>
 
                 <p>
@@ -176,8 +177,7 @@
                                             <table class="tbl2">
                                                 <g:each in="${segundo.value.asignaciones}" var="tercero">
                                                     <tr>
-                                                        <td><strong>Fuente ${tercero.asignacion?.fuente?.codigo}:</strong>
-                                                        </td>
+                                                        <td><strong>Fuente ${tercero.asignacion?.fuente?.codigo},Partida ${tercero?.asignacion?.presupuesto?.numero}:</strong></td>
                                                         <td style="text-align: right;">
                                                             <g:formatNumber number="${tercero.monto ?: 0}" type="currency" currencySymbol="USD "/>
                                                         </td>
@@ -207,7 +207,8 @@
 
                 <div class="observaciones">
                     <span class="ttl">OBSERVACIONES:</span>
-                    ${sol.observacionesPdf}
+                    %{--${sol.observacionesPdf}--}%
+                    ${sol.observaciones}
                 </div>
 
                 <p>

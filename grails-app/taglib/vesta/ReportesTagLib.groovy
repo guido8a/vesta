@@ -1,9 +1,13 @@
 package vesta
 
+import vesta.parametros.UnidadEjecutora
+
 /**
  * Tags para facilitar la creación de reportes (HTML -> PDF)
  */
 class ReportesTagLib {
+
+    def firmasService
 
     static namespace = 'rep'
 
@@ -102,10 +106,10 @@ class ReportesTagLib {
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +
 //                "    font-family    : 'PT Sans';\n" +
-                "    font-size      : 25pt;\n" +
+                "    font-size      : 20pt;\n" +
 //                "    font-weight    : bold;\n" +
                 "    color          : #17365D;\n" +
-                "    border-bottom  : solid 2px #4F81BD;\n" +
+//                "    border-bottom  : solid 2px #4F81BD;\n" +
                 "}"
         css += ".tituloReporteSinLinea{\n" +
                 "    text-align     : center;\n" +
@@ -122,7 +126,7 @@ class ReportesTagLib {
                 "    font-size      : 20pt;\n" +
 //                "    font-weight    : bold;\n" +
                 "    color          : #17365D;\n" +
-                "    border-bottom  : solid 2px #4F81BD;\n" +
+//                "    border-bottom  : solid 2px #4F81BD;\n" +
                 "}"
         css += ".numeracion {\n" +
                 "    margin-top     : 0.5cm;\n" +
@@ -161,9 +165,14 @@ class ReportesTagLib {
      * @param title el título del reporte
      */
     def headerReporte = { attrs ->
-//        println("AQUIF   " + attrs)
+        println("AQUIF   " + attrs)
         def title = attrs.title ?: ""
         def titulo = attrs.titulo ?: ""
+        def unidadEjecutora = UnidadEjecutora.get(attrs.unidad.id)
+        def unidadAutonoma = firmasService.requirentes(unidadEjecutora)
+
+        println("ue " + unidadEjecutora)
+        println("ua " + unidadAutonoma)
 
         def subtitulo = attrs.subtitulo ?: ""
 
@@ -217,7 +226,8 @@ class ReportesTagLib {
             html += "<tr>" + "\n"
             html += "<td style='background: #0F243E;'>Form. ${form}</td>" + "\n"
             html += "<td style='background: #008080;'>Numeración:</td>" + "\n"
-            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>" + "\n"
+//            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>" + "\n"
+            html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
             html += "<td style='background: #008080;'>No. ${attrs.numero != null ? attrs.numero.toString().padLeft(3, '0') : ''}</td>" + "\n"
             html += "</tr>" + "\n"
             html += "</table>" + "\n"
@@ -236,7 +246,7 @@ class ReportesTagLib {
         def logoPath = resource(dir: 'images', file: 'logo-pdf-footer.png')
 
         html += '<div id="footer">'
-        html += "<div class='fechaReporte' style='font-size: 8.5pt; margin-bottom: 15px;'>Impreso el ${new Date().format('dd-MM-yyyy HH:mm')}</div>"
+//        html += "<div class='fechaReporte' style='font-size: 8.5pt; margin-bottom: 15px;'>Impreso el ${new Date().format('dd-MM-yyyy HH:mm')}</div>"
         html += "<img src='${logoPath}' style='height:${h}px; float:right; margin-left: 1cm; margin-bottom: 1cm;'/>"
         html += "<div style='float:right; font-size:8pt;'>"
         html += "Amazonas N26-146 y La Niña<br/>"

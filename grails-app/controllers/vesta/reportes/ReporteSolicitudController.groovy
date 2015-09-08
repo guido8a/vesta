@@ -25,6 +25,8 @@ import vesta.seguridad.Persona
  */
 class ReporteSolicitudController {
 
+    def firmasService
+
     /**
      * Acción que genera un archivo XLS de las solicitudes
      */
@@ -541,6 +543,7 @@ class ReporteSolicitudController {
     def imprimirSolicitudAval = {
 //        println "impr sol " + params
         def solicitud = SolicitudAval.get(params.id)
+        def unidaAutonoma = firmasService.requirentes(solicitud.unidad)
 //        println "solcitud " + solicitud
 
         def anio = Anio.findByAnio(new Date().format("yyyy"))
@@ -590,7 +593,7 @@ class ReporteSolicitudController {
 
 //        println("--><<<<>>" + arr)
 
-        return [solicitud: solicitud, anios: anios, arr: arr, devengado: dosDevengado, anio: anio]
+        return [solicitud: solicitud, anios: anios, arr: arr, devengado: dosDevengado, anio: anio, ua: unidaAutonoma]
     }
 
     /**

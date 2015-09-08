@@ -42,7 +42,7 @@
                                 <tr>
                                     <th>Solicita</th>
                                     <th>Fecha</th>
-                                    <th>Concepto</th>
+                                    <th>Justificación</th>
                                     <th>Tipo</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>

@@ -28,6 +28,7 @@ import vesta.NumberToLetterConverter
 class ReportesController {
 
     def dbConnectionService
+    def firmasService
 
     /**
      * Acción
@@ -158,6 +159,7 @@ class ReportesController {
 //        println "certiificacion aaaa " + params
         def solicitud = SolicitudAval.get(params.id)
         def aval = solicitud?.aval
+        def unidaAutonoma = firmasService.requirentes(solicitud.unidad)
 //        println "aval " + aval
         def anio = Anio.findByAnio(new Date().format("yyyy"))
 
@@ -218,7 +220,7 @@ class ReportesController {
 //        println("totalf " + dosDevengado)
 
         def devengado = 0
-        def transf = NumberToLetterConverter.convertNumberToLetter(solicitud?.monto)
+        def transf = NumberToLetterConverter.convertNumberToLetter(solicitud?.monto).toLowerCase()
 
 //        def montoTest = solicitud.monto + 0.56
 //        println "\n\n\nMonto test"
@@ -226,7 +228,7 @@ class ReportesController {
 
 //        println("-->" + transf)
 
-        return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval, arr: arr, transf: transf, devengado: dosDevengado]
+        return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval, arr: arr, transf: transf, devengado: dosDevengado, ua: unidaAutonoma]
     }
 
     /**

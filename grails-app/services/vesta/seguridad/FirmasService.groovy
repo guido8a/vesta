@@ -92,20 +92,25 @@ class FirmasService {
         def requirentes = []
         def general = UnidadEjecutora.findByCodigo('9999')
         def tecnica = UnidadEjecutora.findByCodigo('GT')
+        def administrativaFinan = UnidadEjecutora.findByCodigo('GAF')
+        def planificacion = UnidadEjecutora.findByCodigo('GPE')
+        def juridica = UnidadEjecutora.findByCodigo('GJ')
         def gerencias = UnidadEjecutora.findAllByPadreAndNombreIlike(tecnica, 'gerenc%', [sort: 'nombre'])
         def direcciones = UnidadEjecutora.findAllByPadreAndNombreIlike(general, 'direcc%', [sort: 'nombre'])
-        requirentes = gerencias + direcciones
-        println "requirentes: $requirentes"
+        requirentes = gerencias + direcciones + administrativaFinan + juridica + planificacion
+//        println "requirentes: $requirentes"
 
         def un = unej
+//        println("unej " + un.id)
         while(un != null) {
-            println " verfica si es $un"
+//            println " verfica si es $un"
             if(requirentes.find { it.id == un.id }) {
-                println "si contiene"
+//                println "si contiene"
                 return un
             }
             un = un.padre
         }
+
         return null
     }
 
