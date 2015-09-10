@@ -1355,15 +1355,15 @@ class AvalesController extends vesta.seguridad.Shield {
             }
             sol.numero = numero
             sol.save(flush: true)
-            def perfilDireccionPlanificacion = Prfl.findByCodigo("ASPL") //igual q en reformas
-//                def perfilDireccionPlanificacion = Prfl.findByCodigo("DP")
+//            def perfilDireccionPlanificacion = Prfl.findByCodigo("ASPL") //igual q en reformas
+            def perfilDireccionPlanificacion = Prfl.findByCodigo("DP")
 //            def perfilDireccionComprasPublicas = Prfl.findByCodigo("GJ")
             def perfiles = [perfilDireccionPlanificacion]
             def sesiones = Sesn.findAllByPerfilInList(perfiles)
 
 //            println "sesiones: " + sesiones
 //            println "personas: " + sesiones.usuario
-//            println "usuarios: " + sesiones.usuario.login
+            println "usuarios: " + sesiones.usuario.login
 
             if (sesiones.size() > 0) {
                 def persona = Persona.get(session.usuario.id)

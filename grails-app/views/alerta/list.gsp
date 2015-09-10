@@ -49,7 +49,7 @@
         </p>
 
     <div class="hide">
-        <g:set var="valorReforma" value="${0}" />
+        <g:set var="valorReforma" value="${0}"/>
     </div>
 
 
@@ -104,7 +104,7 @@
                                 </elm:textoBusqueda></td>
                                 <td>${Reforma.get(alertaInstance.id_remoto)?.concepto}</td>
                                 <g:each in="${DetalleReforma.findAllByReforma(Reforma.get(alertaInstance.id_remoto))}" var="valor">
-                                    ${valorReforma += valor.valor}
+                                    <g:set var="valorReforma" value="${valorReforma + valor.valor}"/>
                                 </g:each>
                                 <td>${valorReforma}</td>
                                 <td class="text-center">

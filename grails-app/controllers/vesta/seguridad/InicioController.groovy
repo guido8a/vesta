@@ -64,11 +64,13 @@ class InicioController extends Shield {
         return [params: params, items: items]
     }
 
+/*
     def probar(){
         def un = UnidadEjecutora.findByCodigo('DSBM')
         def hh = firmasService.requirentes(un)
         println "retorna: $hh"
     }
+*/
 }
 
 
