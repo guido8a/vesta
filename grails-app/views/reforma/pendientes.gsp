@@ -49,9 +49,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <g:each in="${reformas}" var="reforma">
+                                <g:each in="${reformas}" var="reforma" status="j">
                                     <tr>
-                                        <td>${reforma.persona}</td>
+                                        %{--<td>${reforma.persona}</td>--}%
+                                        <td>${gerencias[j]}</td>
                                         <td>${reforma.fecha.format("dd-MM-yyyy")}</td>
                                         <td>${reforma.concepto}</td>
                                         <td>

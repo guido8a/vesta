@@ -133,7 +133,7 @@
                                             ${p.estado?.descripcion}
                                         </td>
                                         <td style="text-align: center">
-                                                ${p?.director?.nombre + " " + p?.director?.apellido}
+                                                ${((p?.director?.nombre) ?: '') + " " + ((p?.director?.apellido) ?: '')}
                                         </td>
 
                                         <td style="text-align: center">

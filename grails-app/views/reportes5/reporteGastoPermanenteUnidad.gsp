@@ -69,7 +69,7 @@
 
 <body>
 <div class="hoja">
-    <rep:headerFooter title="POA GASTO PERMANENTE POR ÁREA ADMINISTRATIVA" estilo="right"/>
+    <rep:headerFooter title="POA GASTO PERMANENTE POR ÁREA ADMINISTRATIVA" estilo="right" unidad="${unidad}"/>
 
     <p>
         Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}

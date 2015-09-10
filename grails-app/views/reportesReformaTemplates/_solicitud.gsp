@@ -1,6 +1,11 @@
+%{--<rep:headerFooter title="${reforma.tituloSolicitud.toUpperCase()}"--}%
+                  %{--form=" GPE-DPI-003"--}%
+                  %{--unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.gerencia.codigo}"--}%
+                  %{--numero="${reforma.numero}" estilo="right"/>--}%
+
 <rep:headerFooter title="${reforma.tituloSolicitud.toUpperCase()}"
                   form=" GPE-DPI-003"
-                  unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.gerencia.codigo}"
+                  unidad="${unidades.unidad}"
                   numero="${reforma.numero}" estilo="right"/>
 
 <div style="margin-left: 10px;">

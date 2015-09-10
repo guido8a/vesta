@@ -727,7 +727,7 @@ class Reportes5Controller {
 
         }
 
-        return [mapa: mapa]
+        return [mapa: mapa, unidad: unidad]
 
     }
 

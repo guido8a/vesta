@@ -1226,12 +1226,21 @@ class Reportes4Controller {
 
             def actividades = MarcoLogico.findAllByProyecto(proy)
             def asignaciones = []
+            def asignacionesCero = []
+//            println("actividades" + actividades)
             if (actividades.size() > 0) {
                 asignaciones = Asignacion.withCriteria {
                     inList("marcoLogico", actividades)
                 }
+            }else{
+                asignacionesCero = Asignacion.findAllByPriorizado(0.toDouble())
+
             }
-            asignaciones.each { asg ->
+
+//            println("asignaciones " + asignacionesCero)
+
+            (asignaciones + asignacionesCero).each { asg ->
+//                println("id" + asg.id)
                 def m = [:]
                 m.proyecto = proy
                 m.asignacion = asg

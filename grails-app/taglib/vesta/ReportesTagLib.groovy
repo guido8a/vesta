@@ -168,11 +168,23 @@ class ReportesTagLib {
         println("AQUIF   " + attrs)
         def title = attrs.title ?: ""
         def titulo = attrs.titulo ?: ""
-        def unidadEjecutora = UnidadEjecutora.get(attrs.unidad.id)
-        def unidadAutonoma = firmasService.requirentes(unidadEjecutora)
+        def unidadEjecutora
+        def unidadAutonoma
+
+        if(!attrs.anio){
+            attrs.anio = new Date().format("yyyy")
+        }
+
+
+        if(attrs.unidad){
+            unidadEjecutora= UnidadEjecutora.get(attrs.unidad.id)
+            unidadAutonoma = firmasService.requirentes(unidadEjecutora)
+        }
+
 
         println("ue " + unidadEjecutora)
         println("ua " + unidadAutonoma)
+        println("anio " + attrs.anio)
 
         def subtitulo = attrs.subtitulo ?: ""
 
@@ -227,7 +239,13 @@ class ReportesTagLib {
             html += "<td style='background: #0F243E;'>Form. ${form}</td>" + "\n"
             html += "<td style='background: #008080;'>Numeración:</td>" + "\n"
 //            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>" + "\n"
-            html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+            if(attrs.unidad.id)
+            {
+                html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+            }else{
+                html += "<td style='background: #008080;'>${attrs.anio}</td>" + "\n"
+            }
+
             html += "<td style='background: #008080;'>No. ${attrs.numero != null ? attrs.numero.toString().padLeft(3, '0') : ''}</td>" + "\n"
             html += "</tr>" + "\n"
             html += "</table>" + "\n"

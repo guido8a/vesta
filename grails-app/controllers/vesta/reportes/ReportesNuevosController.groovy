@@ -350,8 +350,9 @@ class ReportesNuevosController {
 
             def asignaciones = Asignacion.findAllByFuente(fuente)
             asignaciones.each { asg ->
-                def anioAsg = asg.anio
-                if (anioAsg.id == anio.id) {
+
+                def anioAsg = asg?.anio
+                if (anioAsg?.id == anio?.id) {
                     m.valores[keyTotal] += asg.priorizado
                     totales[keyTotal] += asg.priorizado
                     m.valores[keyTotalActual] += asg.priorizado

@@ -527,7 +527,16 @@ class ReformaController extends Shield {
 
         unidadesList = unidadesList.sort { it.nombre }
 
-        return [reformas: reformas, actual: actual, unidades: unidadesList]
+        def gerencias = []
+
+        reformas.each {
+            gerencias += firmasService.requirentes(it.persona.unidad)
+        }
+
+//        println("reformas " + reformas)
+//        println("gerencias " + gerencias)
+
+        return [reformas: reformas, actual: actual, unidades: unidadesList, gerencias: gerencias]
     }
 
     /**
@@ -1061,7 +1070,7 @@ class ReformaController extends Shield {
             alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             alerta.controlador = "reforma"
             alerta.accion = "pendientes"
-            alerta.id_remoto = 0
+            alerta.id_remoto = reforma.id
             if (!alerta.save(flush: true)) {
                 println "error alerta: " + alerta.errors
             }
@@ -1213,7 +1222,7 @@ class ReformaController extends Shield {
             alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             alerta.controlador = "reforma"
             alerta.accion = "pendientes"
-            alerta.id_remoto = 0
+            alerta.id_remoto = reforma.id
             if (!alerta.save(flush: true)) {
                 println "error alerta: " + alerta.errors
             }
@@ -1369,7 +1378,7 @@ class ReformaController extends Shield {
             alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             alerta.controlador = "reforma"
             alerta.accion = "pendientes"
-            alerta.id_remoto = 0
+            alerta.id_remoto = reforma.id
             if (!alerta.save(flush: true)) {
                 println "error alerta: " + alerta.errors
             }
@@ -1516,7 +1525,7 @@ class ReformaController extends Shield {
             alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             alerta.controlador = "reforma"
             alerta.accion = "pendientes"
-            alerta.id_remoto = 0
+            alerta.id_remoto = reforma.id
             if (!alerta.save(flush: true)) {
                 println "error alerta: " + alerta.errors
             }
@@ -1668,7 +1677,7 @@ class ReformaController extends Shield {
             alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             alerta.controlador = "reforma"
             alerta.accion = "pendientes"
-            alerta.id_remoto = 0
+            alerta.id_remoto = reforma.id
             if (!alerta.save(flush: true)) {
                 println "error alerta: " + alerta.errors
             }

@@ -60,13 +60,16 @@
                             <thead>
                                 <tr>
                                     <th>Concepto</th>
+                                    <th>Área gestión solicitante</th>
                                     <th style="width: 250px;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <g:each in="${firmasAvales}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
-                                        <td>${f.concepto}</td>
+                                        %{--<td>${f.concepto}</td>--}%
+                                        <td>${vesta.avales.SolicitudAval.get(f.idAccionVer).proceso?.nombre} </td>
+                                        <td>${vesta.avales.SolicitudAval.findById(f.idAccionVer).usuario.unidad.nombre}</td>
                                         <td style="text-align: center">
                                             <div class="btn-group btn-group-sm" role="group">
                                                 <g:if test="${f.accionVer}">
@@ -115,6 +118,7 @@
                             <thead>
                                 <tr>
                                     <th>Concepto</th>
+                                    <th>Área gestión solicitante</th>
                                     <th style="width: 250px;">Acciones</th>
                                 </tr>
                             </thead>
@@ -122,6 +126,7 @@
                                 <g:each in="${firmasReformas}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         <td>${f.concepto}</td>
+                                        <td>${vesta.modificaciones.Reforma.get(f.idAccionVer).persona.unidad.nombre}</td>
                                         <td style="text-align: center">
                                             <div class="btn-group btn-group-sm" role="group">
                                                 <g:if test="${f.accionVer}">
@@ -177,6 +182,7 @@
                                 <g:each in="${firmasAjustes}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         <td>${f.concepto}</td>
+
                                         <td style="text-align: center">
                                             <div class="btn-group btn-group-sm" role="group">
                                                 <g:if test="${f.accionVer}">

@@ -62,6 +62,8 @@ class AlertaController extends Shield {
         def alertaInstanceList = getList(params, false)
         def alertaInstanceCount = getList(params, true).size()
 
+        println("alerta " + alertaInstanceList)
+
         return [alertaInstanceList: alertaInstanceList, alertaInstanceCount: alertaInstanceCount]
     }
 
