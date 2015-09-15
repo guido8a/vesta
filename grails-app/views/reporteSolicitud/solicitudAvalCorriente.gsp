@@ -38,8 +38,11 @@
     </head>
 
     <body>
-        <rep:headerFooter title="Solicitud de Aval de POA permanente" unidad="${proceso.fechaSolicitud.format('yyyy')}-${proceso.usuario.unidad?.codigo}"
-                          numero="${proceso.numeroSolicitud.toString().padLeft(3, '0')}" estilo="right"/>
+        %{--<rep:headerFooter title="Solicitud de Aval de POA permanente" unidad="${proceso.fechaSolicitud.format('yyyy')}-${proceso.usuario.unidad?.codigo}"--}%
+                          %{--numero="${proceso.numeroSolicitud.toString().padLeft(3, '0')}" estilo="right"/>--}%
+
+        <rep:headerFooter title="Solicitud de Aval de POA permanente" unidad="${proceso.usuario.unidad}"
+                          numero="${proceso.numeroSolicitud.toString().padLeft(3, '0')}" estilo="right" anio="${proceso.fechaSolicitud.format('yyyy')}"/>
 
         <p style="margin-top: 40px">
             Con el propósito de ejecutar las actividades programadas en la planificación operativa institucional

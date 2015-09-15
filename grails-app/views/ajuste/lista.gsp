@@ -52,7 +52,7 @@
                         </td>
                         <td>${reforma.estado.descripcion}</td>
                         <td style="text-align: center">
-                            <div class="btn-group" role="group">
+                            %{--<div class="btn-group" role="group">--}%
                                 <elm:linkPdfReforma reforma="${reforma}"/>
                                 %{--<g:if test="${reforma.estado.codigo == 'E02'}">--}%
                                 %{--<g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existenteReforma' :--}%
@@ -82,7 +82,7 @@
                                 %{--<i class="fa fa-sign-in"></i> Solicitud--}%
                                 %{--</a>--}%
                                 %{--</g:else>--}%
-                            </div>
+                            %{--</div>--}%
                         </td>
                     </tr>
                 </g:each>

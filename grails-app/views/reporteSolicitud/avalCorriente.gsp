@@ -40,8 +40,11 @@
     <body>
         <g:set var="anio" value="${proceso.fechaSolicitud.format("yyyy")}"/>
 
-        <rep:headerFooter title="Aval de POA de gasto permanente" unidad="${proceso.fechaSolicitud.format('yyyy')}-${proceso.usuario.unidad?.codigo}"
-                          numero="${proceso.numeroAval.toString().padLeft(3, '0')}" estilo="right"/>
+        %{--<rep:headerFooter title="Aval de POA de gasto permanente" unidad="${proceso.fechaSolicitud.format('yyyy')}-${proceso.usuario.unidad?.codigo}"--}%
+                          %{--numero="${proceso.numeroAval.toString().padLeft(3, '0')}" estilo="right"/>--}%
+
+        <rep:headerFooter title="Aval de POA de gasto permanente" unidad="${proceso.usuario.unidad}"
+                          numero="${proceso.numeroAval.toString().padLeft(3, '0')}" estilo="right" anio="${proceso.fechaSolicitud.format('yyyy')}"/>
 
         <p>
             Con solicitud de aval de POA ${anio}-${proceso.usuario.unidad.sigla}

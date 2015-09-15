@@ -3,10 +3,16 @@
                   %{--unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.gerencia.codigo}"--}%
                   %{--numero="${reforma.numeroReforma}" estilo="right"/>--}%
 
+%{--<rep:headerFooter title="REFORMA AL POA${reforma.tipo == 'C' ? ' CORRIENTE' : ''}"--}%
+                  %{--form="GPE-DPI-003"--}%
+                  %{--unidad="Ref. ${unidades?.unidad}"--}%
+                  %{--numero="${reforma.numeroReforma}" estilo="right"/>--}%
+
 <rep:headerFooter title="REFORMA AL POA${reforma.tipo == 'C' ? ' CORRIENTE' : ''}"
                   form="GPE-DPI-003"
-                  unidad="Ref. ${unidades?.unidad}"
-                  numero="${reforma.numeroReforma}" estilo="right"/>
+                  unidad="${unidades?.unidad}"
+                  numero="${reforma.numeroReforma}" estilo="right" anio="${reforma.fecha.format('yyyy')}"/>
+
 
 <div style="margin-left: 10px;">
     <div>

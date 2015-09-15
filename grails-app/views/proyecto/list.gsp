@@ -24,14 +24,17 @@
                     Cargar Excel
                 </g:link>
 
-                <a class="btn btn-sm btn-success" id="reporte">
-                    <i class="fa fa-print"></i>
-                    Reporte de Total de Priorización
-                </a>
-                <g:link controller="reportesNuevos" action="reporteProyectosGUI" class="btn btn-sm btn-success">
-                    <i class="fa fa-print"></i>
-                    Reporte de Total de Priorización Por Fuente
-                </g:link>
+                <g:if test="${autorizado == 1}">
+                    <a class="btn btn-sm btn-success" id="reporte">
+                        <i class="fa fa-print"></i>
+                        Reporte de Total de Priorización
+                    </a>
+                    <g:link controller="reportesNuevos" action="reporteProyectosGUI" class="btn btn-sm btn-success">
+                        <i class="fa fa-print"></i>
+                        Reporte de Total de Priorización Por Fuente
+                    </g:link>
+                </g:if>
+
             </div>
 
             <div class="btn-group">

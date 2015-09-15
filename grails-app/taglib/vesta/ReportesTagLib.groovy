@@ -241,7 +241,12 @@ class ReportesTagLib {
 //            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>" + "\n"
             if(attrs.unidad.id)
             {
-                html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+                if(attrs.title != 'REFORMA AL POA'){
+                    html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+                }else{
+                    html += "<td style='background: #008080;'>${attrs.anio}-GPE</td>" + "\n"
+                }
+
             }else{
                 html += "<td style='background: #008080;'>${attrs.anio}</td>" + "\n"
             }
