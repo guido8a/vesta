@@ -106,16 +106,16 @@ class ReportesTagLib {
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +
 //                "    font-family    : 'PT Sans';\n" +
-                "    font-size      : 20pt;\n" +
+                "    font-size      : 18pt;\n" +
 //                "    font-weight    : bold;\n" +
                 "    color          : #17365D;\n" +
-//                "    border-bottom  : solid 2px #4F81BD;\n" +
+                "    border-bottom  : solid 2px #4F81BD;\n" +
                 "}"
         css += ".tituloReporteSinLinea{\n" +
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +
 //                "    font-family    : 'PT Sans';\n" +
-                "    font-size      : 25pt;\n" +
+                "    font-size      : 20pt;\n" +
 //                "    font-weight    : bold;\n" +
                 "    color          : #17365D;\n" +
                 "}"
@@ -123,7 +123,7 @@ class ReportesTagLib {
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +
 //                "    font-family    : 'PT Sans';\n" +
-                "    font-size      : 20pt;\n" +
+                "    font-size      : 18pt;\n" +
 //                "    font-weight    : bold;\n" +
                 "    color          : #17365D;\n" +
 //                "    border-bottom  : solid 2px #4F81BD;\n" +
@@ -202,7 +202,7 @@ class ReportesTagLib {
         html += '</div>' + "\n"
 
         html += "<div class='tituloRprt'>"
-        html += "<div class='tituloReporte'>"
+        html += "<div class='tituloReporteSinLinea'>"
         html += "Empresa pública YACHAY EP"
         html += '</div>'
         html += '</div>'

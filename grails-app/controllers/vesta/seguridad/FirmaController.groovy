@@ -57,7 +57,7 @@ class FirmaController extends Shield {
  * @param anio es el anio para mostrar el historial de firmas
  */
     def historial = {
-//        println "historial " + params
+        println "historial " + params
         def anio = Anio.get(params.anio).anio
 
         def datos = []

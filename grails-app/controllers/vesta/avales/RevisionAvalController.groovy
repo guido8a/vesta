@@ -904,35 +904,39 @@ class RevisionAvalController extends Shield {
         println "FIRMAR AVAL: " + params
         def firma = Firma.findByKey(params.key)
         def numero = 0
+        def unej = UnidadEjecutora.findByCodigo('GPE')
         if (!firma) {
             response.sendError(403)
         } else {
             def aval = Aval.findByFirma1OrFirma2(firma, firma)
-            println "AVAL ID: " + aval.id
+            println "firmarAval AVAL ID: " + aval.id
             if (aval.firma1.estado == "F" && aval.firma2.estado == "F") {
                 println "AMBAS FIRMAS OK: PONE NUMERO"
                 aval.fechaAprobacion = new Date()
 
-                numero = aval.proceso.proyecto.siguienteNumeroAval
-                if (numero == 0) {
-                    numero = Aval.list([sort: "numero", order: "desc", max: 1])
-                    if (numero.size() > 0) {
-                        numero = numero?.pop()?.numero
-                    }
-                    if (!numero) {
+                if(aval.proceso.proyecto.codigo == "P.19") {
+                    numero = aval.proceso.proyecto.siguienteNumeroAval
+                } else {
+                    numero = unej.numeroAval   //numeración única para GPE para todos los avales excepto proy: P.19
+                    if (numero == 0) {
                         numero = 1
                     } else {
                         numero = numero + 1
                     }
                 }
+
                 println "NUMERO: " + numero
                 aval.numero = numero
-
                 aval.estado = EstadoAval.findByCodigo("E02")
                 aval.save(flush: true)
-                def sol = SolicitudAval.findByAvalAndTipoNotEqual(aval, "A")
-                sol.estado = aval.estado
-                sol.save(flush: true)
+
+                unej.numeroAval = numero
+                unej.save(flush: true)
+
+                def sol = SolicitudAval.findByAval(aval)
+                if(sol.tipo != 'A') {
+                    sol.estado = aval.estado
+                    sol.save(flush: true)
                 try {
                     def personaMail = sol.firma.usuario
 //                    def perDir = Prfl.findByCodigo("DRRQ")
@@ -956,7 +960,7 @@ class RevisionAvalController extends Shield {
                                 body "Se ha emitido el aval #" + aval.numeroAval
                             }
                         } else {
-                            println "El usuario ${usro.login} no tiene email"
+                            println "El usuario ${sol.firma.usuario.login} no tiene email"
                         }
 //                        }
                     } else {
@@ -966,6 +970,7 @@ class RevisionAvalController extends Shield {
                     println "Error al enviar mail: ${e.printStackTrace()}"
                 }
 //            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
+                }
             }
             def url = g.createLink(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
             render "${url}"

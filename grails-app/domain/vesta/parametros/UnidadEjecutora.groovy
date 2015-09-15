@@ -85,6 +85,14 @@ class UnidadEjecutora {
      * Número de la última solicitud de reforma al poa
      */
     Integer numeroSolicitudReforma = 0
+    /**
+     * Número de la última solicitud de aval poa
+     */
+    Integer numeroSolicitudAval = 0
+    /**
+     * Número de Aval emitido
+     */
+    Integer numeroAval = 0
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -123,6 +131,8 @@ class UnidadEjecutora {
             objetivoUnidad column: 'obun__id'
 
             numeroSolicitudReforma column: 'unejnmsr'
+            numeroSolicitudAval    column: 'unejnmsa'
+            numeroAval    column: 'unejnmav'
         }
     }
 
