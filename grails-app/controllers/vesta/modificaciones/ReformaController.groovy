@@ -533,7 +533,7 @@ class ReformaController extends Shield {
             gerencias += firmasService.requirentes(it.persona.unidad)
         }
 
-//        println("reformas " + reformas)
+        println("reformas " + reformas)
 //        println("gerencias " + gerencias)
 
         return [reformas: reformas, actual: actual, unidades: unidadesList, gerencias: gerencias]
@@ -792,23 +792,28 @@ class ReformaController extends Shield {
             //E: existente, A: actividad, P: partida, I: incremento
             switch (reforma.tipoSolicitud) {
                 case "E":
-                    accion = "existentePreviewReforma"
+//                    accion = "existentePreviewReforma"
+                    accion = "existenteReforma"
 //                mensaje = "Aprobación de ${tipoStr}"
                     break;
                 case "A":
-                    accion = "actividadPreviewReforma"
+//                    accion = "actividadPreviewReforma"
+                    accion = "actividadReforma"
 //                mensaje = "Aprobación de ${tipoStr}"
                     break;
                 case "C":
-                    accion = "incrementoActividadPreviewReforma"
+//                    accion = "incrementoActividadPreviewReforma"
+                    accion = "incrementoActividadReforma"
 //                mensaje = "Aprobación de reforma de incremento a nuevas actividades"
                     break;
                 case "P":
-                    accion = "partidaPreviewReforma"
+//                    accion = "partidaPreviewReforma"
+                    accion = "partidaReforma"
 //                mensaje = "Aprobación de reforma a nuevas partidas"
                     break;
                 case "I":
-                    accion = "incrementoPreviewReforma"
+//                    accion = "incrementoPreviewReforma"
+                    accion = "incrementoReforma"
 //                mensaje = "Aprobación de reforma de incremento"
                     params.each { k, v ->
                         if (k.toString().startsWith("r")) {

@@ -925,7 +925,7 @@ class ElementosTagLib {
                 str += "a asignaciones existentes"
                 break;
             case "A":
-                str += "nuevas actividades financiadas con recursos del área"
+                str += "Reforma para actividad del área con financiamiento del área"
                 break;
             case "C":
                 str += "nuevas actividades sin financiamiento de recursos del área"
@@ -944,9 +944,11 @@ class ElementosTagLib {
     }
 
     def linkPdfReforma = { attrs ->
+        println "linkPdfReforma - attrs: $attrs"
+
         Reforma reforma = attrs.reforma
 
-        def solicitud = attrs.solicitud?.toUpperCase() == "S"
+//        def solicitud = attrs.solicitud?.toUpperCase() == "S"
 
         def disabledIfNull = attrs.disabledIfNull && (attrs.disabledIfNull == "true" || attrs.disabledIfNull == true)
 

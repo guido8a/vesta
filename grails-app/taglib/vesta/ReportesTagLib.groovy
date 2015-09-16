@@ -175,12 +175,14 @@ class ReportesTagLib {
             attrs.anio = new Date().format("yyyy")
         }
 
+//        println "....2, attrs.unidad: ${attrs.unidad}, id: ${attrs.unidad.id}"
 
         if(attrs.unidad){
             unidadEjecutora= UnidadEjecutora.get(attrs.unidad.id)
             unidadAutonoma = firmasService.requirentes(unidadEjecutora)
         }
 
+//        println "....3"
 
         println("ue " + unidadEjecutora)
         println("ua " + unidadAutonoma)

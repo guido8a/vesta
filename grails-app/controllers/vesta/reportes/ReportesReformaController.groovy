@@ -100,7 +100,11 @@ class ReportesReformaController {
      * Acción que muestra el pdf de previsualización de reforma a nuevas partidas
      */
     def partidaPreviewReforma() {
+//        println "partidaPreviewReforma params: $params"
         def reforma = Reforma.get(params.id.toString().toLong())
+//        println "..reforma: $reforma"
+//        println "..det: ${generaDetallesSolicitudPartida(reforma).det}"
+//        println "..unidades: ${reforma.persona.unidad.unidadYGerencia}"
         return [reforma: reforma, det: generaDetallesSolicitudPartida(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia]
     }
 
@@ -509,10 +513,13 @@ class ReportesReformaController {
         def valorFinalDestino = [:]
         def det = [:]
         def total = 0
+//        println "Map... 1"
         detalles.each { detalle ->
             total += detalle.valor
             def key = "" + detalle.asignacionOrigenId
             def keyDestino = "" + detalle.asignacionDestinoId
+//            println "Map... 2"
+
             if (!det[key]) {
                 det[key] = [:]
                 det[key].desde = [:]
@@ -527,8 +534,7 @@ class ReportesReformaController {
 //                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
 //                        " <strong>Partida:</strong> ${detalle.asignacionOrigen.presupuesto.numero}"
                 det[key].desde.partida = detalle.asignacionOrigen.presupuesto.numero
-//                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
-                det[key].desde.inicial = detalle.valorOrigenInicial
+                det[key].desde.inicial = detalle.asignacionOrigen.priorizado
                 det[key].desde.dism = 0
                 det[key].desde.aum = 0
 //                det[key].desde.final = detalle.asignacionOrigen.priorizado
@@ -536,6 +542,8 @@ class ReportesReformaController {
 
                 det[key].hasta = []
             }
+//            println "Map... 3"
+
             det[key].desde.dism += detalle.valor
             det[key].desde.final -= detalle.valor
 
@@ -555,10 +563,21 @@ class ReportesReformaController {
 //            m.partida = "<strong>Priorizado:</strong> 0.00\n" +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}\n"
             m.partida = detalle.presupuesto.numero
-            m.inicial = valorFinalDestino[keyDestino]
+
             m.dism = 0
             m.aum = detalle.valor
-            m.final = valorFinalDestino[keyDestino] + detalle.valor
+
+//            println "generaDetallesSolicitudPartida: valor: ${detalle.valor}, final: ${valorFinalDestino[keyDestino]}"
+//            println "Map... 4"
+
+            if(reforma.tipoSolicitud == "P") { //si se trata de partidas, el origen inicla es 0
+                m.inicial = 0
+                m.final = detalle.valor
+            } else {
+                m.inicial = valorFinalDestino[keyDestino]
+                m.final = valorFinalDestino[keyDestino] + detalle.valor
+            }
+
 
             det[key].hasta += m
 
