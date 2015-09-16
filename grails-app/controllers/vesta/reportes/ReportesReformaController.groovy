@@ -191,6 +191,8 @@ class ReportesReformaController {
                 det[key].desde.componente = modificacion.desde.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = modificacion.desde.marcoLogico.numero
                 det[key].desde.actividad = modificacion.desde.marcoLogico.toStringCompleto()
+                det[key].desde.responsable = modificacion.desde.marcoLogico.responsable.gerencia.codigo
+
 //                det[key].desde.partida = modificacion.desde.toString()
 //                det[key].desde.partida = "<strong>Priorizado:</strong> " + modificacion.desde.priorizado +
 //                        " <strong>Partida:</strong> ${modificacion.desde.presupuesto.numero}"
@@ -222,6 +224,7 @@ class ReportesReformaController {
                 m.componente = modificacion.recibe.marcoLogico.marcoLogico.toStringCompleto()
                 m.no = modificacion.recibe.marcoLogico.numero
                 m.actividad = modificacion.recibe.marcoLogico.toStringCompleto()
+                m.responsable = modificacion.recibe.marcoLogico.responsable.gerencia.codigo
 //            m.partida = modificacion.recibe.toString()
 //                m.partida = "<strong>Priorizado:</strong> " + modificacion.recibe.priorizado +
 //                        " <strong>Partida:</strong> ${modificacion.recibe.presupuesto.numero}"

@@ -40,7 +40,7 @@
                         <table class="table table-bordered table-hover table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Solicita</th>
+                                    <th>Gerencia</th>
                                     <th>Fecha</th>
                                     <th>Justificación</th>
                                     <th>Tipo</th>

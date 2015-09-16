@@ -5,11 +5,12 @@
             <th style="background: #9dbfdb; text-align: center">Componente</th>
             <th style="background: #9dbfdb; text-align: center">No</th>
             <th style="background: #9dbfdb; text-align: center">Nombre de la actividad</th>
+            <th style="background: #9dbfdb; text-align: center">Responsable</th>
             <th style="background: #9dbfdb; text-align: center">
                 Partida <br/>
                 presupuestaria
             </th>
-            <th>Responsable</th>
+
             <th style="background: #9dbfdb; text-align: center">Valor inicial</th>
             <th style="background: #9dbfdb; text-align: center">Disminución</th>
             <th style="background: #9dbfdb; text-align: center">Aumento</th>
@@ -32,8 +33,8 @@
                 <td>${d.desde.componente}</td>
                 <td>${d.desde.no}</td>
                 <td>${d.desde.actividad}</td>
+                <td>${d.desde.responsable}</td>
                 <td>${d.desde.partida}</td>
-                <td></td>
                 <td class="text-right"><g:formatNumber number="${d.desde.inicial}" type="currency" currencySymbol=""/></td>
                 <td class="text-right"><g:formatNumber number="${d.desde.dism}" type="currency" currencySymbol=""/></td>
                 <td class="text-right"><g:formatNumber number="${d.desde.aum}" type="currency" currencySymbol=""/></td>
@@ -49,8 +50,8 @@
                     <td>${h.componente}</td>
                     <td>${h.no}</td>
                     <td>${h.actividad}</td>
+                    <td>${h.responsable}</td>
                     <td>${h.partida}</td>
-                    <td></td>
                     <td class="text-right"><g:formatNumber number="${h.inicial}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${h.dism}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${h.aum}" type="currency" currencySymbol=""/></td>
@@ -61,7 +62,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="5" class="text-right formato">TOTAL</th>
+            <th colspan="6" class="text-right formato">TOTAL</th>
             <th class="text-right formato"><g:formatNumber number="${tInicial}" type="currency" currencySymbol=""/></th>
             <th class="text-right formato"><g:formatNumber number="${tDism}" type="currency" currencySymbol=""/></th>
             <th class="text-right formato"><g:formatNumber number="${tAum}" type="currency" currencySymbol=""/></th>

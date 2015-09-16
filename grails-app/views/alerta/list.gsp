@@ -104,7 +104,7 @@
                                 <g:each in="${DetalleReforma.findAllByReforma(Reforma.get(alertaInstance.id_remoto))}" var="valor">
                                     <g:set var="valorReforma" value="${valorReforma + valor.valor}"/>
                                 </g:each>
-                                <td>${valorReforma}</td>
+                                <td><g:formatNumber number="${valorReforma}" type="currency" minFractionDigits="2" maxFractionDigits="2"/> </td>
                                 <td class="text-center">
                                     <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
                                 </td>

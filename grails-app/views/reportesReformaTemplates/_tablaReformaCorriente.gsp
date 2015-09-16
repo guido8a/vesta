@@ -5,10 +5,12 @@
             <th style="background: #9dbfdb; text-align: center">MacroActividad</th>
             <th style="background: #9dbfdb; text-align: center">Actividad</th>
             <th style="background: #9dbfdb; text-align: center">Tarea</th>
+            <th style="background: #9dbfdb; text-align: center">Responsable</th>
             <th style="background: #9dbfdb; text-align: center">
                 Partida <br/>
                 presupuestaria
             </th>
+
             <th style="background: #9dbfdb; text-align: center">Valor inicial</th>
             <th style="background: #9dbfdb; text-align: center">Disminución</th>
             <th style="background: #9dbfdb; text-align: center">Aumento</th>
@@ -31,6 +33,7 @@
                 <td>${d.desde.macro}</td>
                 <td>${d.desde.actividad}</td>
                 <td>${d.desde.tarea}</td>
+                <td>${d.desde.responsable}</td>
                 <td>${d.desde.partida}</td>
                 <td class="text-right"><g:formatNumber number="${d.desde.inicial}" type="currency" currencySymbol=""/></td>
                 <td class="text-right"><g:formatNumber number="${d.desde.dism}" type="currency" currencySymbol=""/></td>
@@ -47,6 +50,7 @@
                     <td>${h.macro}</td>
                     <td>${h.actividad}</td>
                     <td>${h.tarea}</td>
+                    <td>${h.responsable}</td>
                     <td>${h.partida}</td>
                     <td class="text-right"><g:formatNumber number="${h.inicial}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${h.dism}" type="currency" currencySymbol=""/></td>
@@ -58,7 +62,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="5" class="text-right formato">TOTAL</th>
+            <th colspan="6" class="text-right formato">TOTAL</th>
             <th class="text-right formato"><g:formatNumber number="${tInicial}" type="currency" currencySymbol=""/></th>
             <th class="text-right formato"><g:formatNumber number="${tDism}" type="currency" currencySymbol=""/></th>
             <th class="text-right formato"><g:formatNumber number="${tAum}" type="currency" currencySymbol=""/></th>
