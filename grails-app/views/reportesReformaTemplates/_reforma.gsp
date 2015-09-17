@@ -33,6 +33,7 @@
                 <g:else>
                     <g:render template="/reportesReformaTemplates/tablaReforma"
                               model="[det: det, tipo: tipo]"/>
+
                 </g:else>
             </li>
         </ol>

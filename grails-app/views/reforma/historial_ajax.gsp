@@ -29,7 +29,7 @@
                 </td>
                 <td class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                 <td>
-                    <div class="btn-group" role="group">
+                    <div class="btn-group btn-group-xs" role="group">
                         <elm:linkPdfReforma reforma="${reforma}"/>
                     </div>
                 </td>

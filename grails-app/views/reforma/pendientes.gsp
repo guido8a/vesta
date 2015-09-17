@@ -17,6 +17,15 @@
 
     <body>
 
+
+    <div class="btn-toolbar toolbar">
+        <div class="btn-group">
+            <g:link action="pendientes" class="btn btn-success">
+                <i class="fa fa-refresh"></i> Actualizar
+            </g:link>
+        </div>
+    </div>
+
         <div role="tabpanel" style="margin-top: 15px;">
 
             <!-- Nav tabs -->
@@ -60,7 +69,7 @@
                                         </td>
                                         <td class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                                         <td>
-                                            <div class="btn-group btn-group-sm" role="group">
+                                            <div class="btn-group btn-group-xs" role="group">
                                                 <elm:linkPdfReforma reforma="${reforma}"/>
                                                 <elm:linkEditarReforma reforma="${reforma}" perfil="${session.perfil}"/>
                                             </div>
@@ -100,6 +109,11 @@
             $(function () {
                 buscar();
             });
+
+            %{--$("#btnActualizar").click(function () {--}%
+                %{--console.log("entrofff")--}%
+                %{--location.href = "${createLink(controller: 'reforma', action: 'pendientes')}"--}%
+            %{--});--}%
         </script>
     </body>
 </html>
