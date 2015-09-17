@@ -90,6 +90,7 @@
 
     <g:if test="${alertaInstanceCount > 0}">
         <g:each in="${alertaInstanceList}" status="i" var="alertaInstance">
+            <g:set var="valorReforma" value="${0}"/>
             <tr>
                 <td class="d${(((new Date()) - alertaInstance.fechaEnvio) > 2) ? "mas" : (new Date()) - alertaInstance.fechaEnvio} clickable" data-id="${alertaInstance.id}">
                     <i class="fa fa-square-o"></i>
@@ -102,7 +103,7 @@
                     </elm:textoBusqueda></td>
                     <td>${Reforma.get(alertaInstance.id_remoto)?.concepto}</td>
                     <g:each in="${DetalleReforma.findAllByReforma(Reforma.get(alertaInstance.id_remoto))}" var="valor">
-                        <g:set var="valorReforma" value="${valorReforma + valor.valor}"/>
+                        <g:set var="valorReforma" value="${valorReforma += valor.valor}"/>
                     </g:each>
                     <td><g:formatNumber number="${valorReforma}" type="currency" minFractionDigits="2" maxFractionDigits="2"/> </td>
                     <td class="text-center">
