@@ -33,9 +33,9 @@ class ReportesTagLib {
         def pOrientacion = attrs.orientacion.toString().toLowerCase()
         def orientacion = "portrait"
         def margenes = [
-                top   : 2,
+                top   : 1.8,
                 right : 2,
-                bottom: 2.5,
+                bottom: 2,
                 left  : 2
         ]
         switch (pOrientacion) {
@@ -84,6 +84,7 @@ class ReportesTagLib {
                 "    text-align : right;\n" +
                 "    position   : running(header);\n" +
                 "}"
+
         css += "#footer{\n" +
                 "    text-align : right;\n" +
                 "    position   : running(footer);\n" +
@@ -115,18 +116,16 @@ class ReportesTagLib {
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +
 //                "    font-family    : 'PT Sans';\n" +
-                "    font-size      : 20pt;\n" +
+                "    font-size      : 18pt;\n" +
+                "    top : -10px;\n" +
 //                "    font-weight    : bold;\n" +
                 "    color          : #17365D;\n" +
                 "}"
         css += ".tituloRprt{\n" +
                 "    text-align     : center;\n" +
                 "    text-transform : uppercase;\n" +
-//                "    font-family    : 'PT Sans';\n" +
-                "    font-size      : 18pt;\n" +
-//                "    font-weight    : bold;\n" +
+                "    font-size      : 20pt;\n" +
                 "    color          : #17365D;\n" +
-//                "    border-bottom  : solid 2px #4F81BD;\n" +
                 "}"
         css += ".numeracion {\n" +
                 "    margin-top     : 0.5cm;\n" +
@@ -175,7 +174,7 @@ class ReportesTagLib {
             attrs.anio = new Date().format("yyyy")
         }
 
-//        println "....2, attrs.unidad: ${attrs.unidad}, id: ${attrs.unidad.id}"
+//        println "attrs.title: ${attrs.title}, titulo: ${attrs.titulo}"
 
         if(attrs.unidad){
             unidadEjecutora= UnidadEjecutora.get(attrs.unidad.id)
@@ -203,10 +202,14 @@ class ReportesTagLib {
         html += "<img src='${logoPath}' style='height:${h}px;'/>" + "\n"
         html += '</div>' + "\n"
 
-        html += "<div class='tituloRprt'>"
-        html += "<div class='tituloReporteSinLinea'>"
+//        html += "<div class='tituloRprt'>"
+//        html += "<div class='tituloReporteSinLinea'>"
+//        html += "Empresa pública YACHAY EP"
+//        html += '</div>'
+//        html += '</div>'
+
+        html += "<div class='tituloRprt tituloReporteSinLinea'>"
         html += "Empresa pública YACHAY EP"
-        html += '</div>'
         html += '</div>'
 
         if (titulo) {

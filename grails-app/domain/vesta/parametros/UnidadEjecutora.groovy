@@ -180,7 +180,7 @@ class UnidadEjecutora {
         if (!codigosNo.contains(padre.codigo)) {
             gerencia = padre
         }
-        println "gerencia++: $gerencia"
+//        println "gerencia++: $gerencia"
         return gerencia
     }
 
