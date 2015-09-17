@@ -792,18 +792,17 @@ class ReformaController extends Shield {
             //E: existente, A: actividad, P: partida, I: incremento
             switch (reforma.tipoSolicitud) {
                 case "E":
-//                    accion = "existentePreviewReforma"
-                    accion = "existenteReforma"
+                    accion = "existentePreviewReforma"
+//                    accion = "existenteReforma"
 //                mensaje = "Aprobación de ${tipoStr}"
                     break;
                 case "A":
-//                    accion = "actividadPreviewReforma"
-                    accion = "actividadReforma"
+                    accion = "actividadPreviewReforma"
+//                    accion = "actividadReforma"
 //                mensaje = "Aprobación de ${tipoStr}"
                     break;
                 case "C":
-//                    accion = "incrementoActividadPreviewReforma"
-                    accion = "incrementoActividadReforma"
+                    accion = "incrementoActividadPreviewReforma"
 //                mensaje = "Aprobación de reforma de incremento a nuevas actividades"
                     break;
                 case "P":
@@ -812,8 +811,8 @@ class ReformaController extends Shield {
 //                mensaje = "Aprobación de reforma a nuevas partidas"
                     break;
                 case "I":
-//                    accion = "incrementoPreviewReforma"
-                    accion = "incrementoReforma"
+                    accion = "incrementoPreviewReforma"
+//                    accion = "incrementoReforma"
 //                mensaje = "Aprobación de reforma de incremento"
                     params.each { k, v ->
                         if (k.toString().startsWith("r")) {
