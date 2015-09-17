@@ -64,21 +64,21 @@
             causado por la modificación de POA no afecta a los objetivos institucionales
         </div>
 
-        %{--<div class="firma no-break" style="text-align: center;">--}%
-            %{--<span class="spanFirma">--}%
-                %{--<g:if test="${reforma?.firmaSolicitud?.estado == 'F'}">--}%
-                    %{--<img src="${resource(dir: 'firmas', file: reforma?.firmaSolicitud?.path)}" style="width: 150px;"/><br/>--}%
+        <div class="firma no-break" style="text-align: center;">
+            <span class="spanFirma">
+                <g:if test="${reforma?.firmaSolicitud?.estado == 'F'}">
+                    <img src="${resource(dir: 'firmas', file: reforma?.firmaSolicitud?.path)}" style="width: 150px;"/><br/>
 
-                    %{--<b>--}%
-                        %{--${reforma?.firmaSolicitud?.usuario?.nombre} ${reforma?.firmaSolicitud?.usuario?.apellido}<br/>--}%
-                    %{--</b>--}%
-                    %{--<b>--}%
+                    <b>
+                        ${reforma?.firmaSolicitud?.usuario?.nombre} ${reforma?.firmaSolicitud?.usuario?.apellido}<br/>
+                    </b>
+                    <b>
                         %{--${reforma?.firmaSolicitud?.usuario?.cargoPersonal?.toString()?.toUpperCase()}<br/>--}%
-                        %{--${reforma?.firmaSolicitud?.usuario?.cargo?.toString()?.toUpperCase()}<br/>--}%
-                    %{--</b>--}%
-                %{--</g:if>--}%
-            %{--</span>--}%
-        %{--</div>--}%
+                        ${reforma?.firmaSolicitud?.usuario?.cargo?.toString()?.toUpperCase()}<br/>
+                    </b>
+                </g:if>
+            </span>
+        </div>
 
         %{--<div class="no-break">--}%
             %{--<table width="100%" style="margin-top: 0.5cm; border: none" border="none">--}%
