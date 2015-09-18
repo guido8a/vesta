@@ -903,7 +903,7 @@ class ElementosTagLib {
         num = num.toString().padLeft(3, '0')
 //        println("num1 " + num)
         if (!num || num == "null") {
-            num = "001"
+            num = "000"
         }
         output += num
         out << output
