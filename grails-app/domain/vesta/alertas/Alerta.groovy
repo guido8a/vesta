@@ -45,6 +45,12 @@ class Alerta {
     String parametros
 
     /**
+     * tipo de alerta
+     */
+    String tipo
+
+
+    /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
     static auditable = [ignore: ['fechaEnvio', 'fechaRecibido']]
@@ -69,6 +75,7 @@ class Alerta {
             accion column: 'aleraccn'
             id_remoto column: 'aleridrm'
             parametros column: 'alerprmt'
+            tipo column: 'alertipo'
         }
     }
 
@@ -85,6 +92,7 @@ class Alerta {
         accion(nullable: true, blank: true)
         id_remoto(nullable: true, blank: true)
         parametros(nullable: true, blank: true)
+        tipo(nullable: true, blank: true)
     }
 
     /**

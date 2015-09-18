@@ -338,7 +338,7 @@ class AjusteCorrienteController {
             alerta1.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             alerta1.controlador = "firma"
             alerta1.accion = "firmasPendientes"
-            alerta1.id_remoto = 0
+            alerta1.id_remoto = reforma.id
             if (!alerta1.save(flush: true)) {
                 println "error alerta: " + alerta1.errors
             }
@@ -349,6 +349,7 @@ class AjusteCorrienteController {
             alerta2.mensaje = alerta1.mensaje
             alerta2.controlador = alerta1.controlador
             alerta2.accion = alerta1.accion
+
             alerta2.id_remoto = alerta1.id_remoto
             if (!alerta2.save(flush: true)) {
                 println "error alerta: " + alerta2.errors
@@ -525,7 +526,7 @@ class AjusteCorrienteController {
             alerta1.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
             alerta1.controlador = "firma"
             alerta1.accion = "firmasPendientes"
-            alerta1.id_remoto = 0
+            alerta1.id_remoto = reforma.id
             if (!alerta1.save(flush: true)) {
                 println "error alerta: " + alerta1.errors
             }

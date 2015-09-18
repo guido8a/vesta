@@ -333,7 +333,8 @@ class AvalCorrienteController extends Shield {
         alerta.mensaje = "Nueva ${strSolicitud} de aval: " + proceso.nombreProceso
         alerta.controlador = "avalCorriente"
         alerta.accion = "pendientes"
-        alerta.id_remoto = 0
+        alerta.id_remoto = proceso.id
+        alerta.tipo = 'slct'
         if (!alerta.save(flush: true)) {
             println "error alerta: " + alerta.errors
         }
@@ -480,6 +481,8 @@ class AvalCorrienteController extends Shield {
                 alerta1.mensaje = "Devolución de ${strSolicitud} de aval corriente: " + solicitud.nombreProceso
                 alerta1.controlador = "avalCorriente"
                 alerta1.accion = "pendientes"
+                alerta1.id_remoto = solicitud.id
+                alerta1.tipo = 'slct'
                 if (!alerta1.save(flush: true)) {
                     println "error alerta1: " + alerta1.errors
                 }
@@ -572,6 +575,8 @@ class AvalCorrienteController extends Shield {
                 alerta1.controlador = "firma"
                 alerta1.accion = "firmasCorrientesPendientes"
                 alerta1.parametros = "tab=AVCR"
+                alerta1.id_remoto = solicitud.id
+                alerta1.tipo = 'slct'
                 println alerta1
                 if (!alerta1.save(flush: true)) {
                     println "error alerta1: " + alerta1.errors
@@ -619,6 +624,8 @@ class AvalCorrienteController extends Shield {
             alerta1.mensaje = "Devolución de ${strSolicitud} de aval corriente: " + solicitud.nombreProceso
             alerta1.controlador = "avalCorriente"
             alerta1.accion = "pendientes"
+            alerta1.id_remoto = solicitud.id
+            alerta1.tipo = 'slct'
             if (!alerta1.save(flush: true)) {
                 println "error alerta1: " + alerta1.errors
             }
@@ -698,7 +705,8 @@ class AvalCorrienteController extends Shield {
                     alerta.mensaje = "${strSolicitud.capitalize()} de aval corriente: " + sol.nombreProceso
                     alerta.controlador = "avalCorriente"
                     alerta.accion = "pendientes"
-                    alerta.id_remoto = 0
+                    alerta.id_remoto = sol.id
+                    alerta.tipo = 'slct'
                     if (!alerta.save(flush: true)) {
                         println "error alerta: " + alerta.errors
                     }
@@ -856,6 +864,8 @@ class AvalCorrienteController extends Shield {
                         alerta1.controlador = "firma"
                         alerta1.accion = "firmasCorrientesPendientes"
                         alerta1.parametros = "tab=AVCR"
+                        alerta1.id_remoto = sol.id
+                        alerta1.tipo = 'aval'
                         if (!alerta1.save(flush: true)) {
                             println "error alerta1: " + alerta1.errors
                         }
@@ -867,6 +877,8 @@ class AvalCorrienteController extends Shield {
                         alerta2.controlador = alerta1.controlador
                         alerta2.accion = alerta1.accion
                         alerta2.parametros = alerta1.parametros
+                        alerta2.id_remoto = alerta1.id_remoto
+                        alerta2.tipo = 'aval'
                         if (!alerta2.save(flush: true)) {
                             println "error alerta2: " + alerta2.errors
                         }
@@ -1012,6 +1024,8 @@ class AvalCorrienteController extends Shield {
             alerta.mensaje = "Devolución de ${strAnulacion}aval corriente: " + sol.nombreProceso
             alerta.controlador = "avalCorriente"
             alerta.accion = "pendientes"
+            alerta.id_remoto = sol.id
+            alerta.tipo = 'aval'
             if (!alerta.save(flush: true)) {
                 println "error alerta: " + alerta.errors
             }

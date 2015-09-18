@@ -586,7 +586,8 @@ class RevisionAvalController extends Shield {
                         alerta1.controlador = "firma"
                         alerta1.accion = "firmasPendientes"
                         alerta1.parametros = "tab=AVAL"
-                        alerta.id_remoto = aval.id
+                        alerta1.id_remoto = aval.id
+                        alerta1.tipo = 'aval'
                         if (!alerta1.save(flush: true)) {
                             println "error alerta1: " + alerta1.errors
                         }
@@ -598,7 +599,8 @@ class RevisionAvalController extends Shield {
                         alerta2.controlador = "firma"
                         alerta2.accion = "firmasPendientes"
                         alerta2.parametros = "tab=AVAL"
-                        alerta.id_remoto = aval.id
+                        alerta2.id_remoto = aval.id
+                        alerta2.tipo = 'aval'
                         if (!alerta2.save(flush: true)) {
                             println "error alerta2: " + alerta2.errors
                         }
@@ -772,6 +774,8 @@ class RevisionAvalController extends Shield {
                         alerta1.controlador = "firma"
                         alerta1.accion = "firmasPendientes"
                         alerta1.parametros = "tab=AVAL"
+                        alerta1.id_remoto = aval.id
+                        alerta1.tipo = 'aval'
                         if (!alerta1.save(flush: true)) {
                             println "error alerta1: " + alerta1.errors
                         }
@@ -782,7 +786,9 @@ class RevisionAvalController extends Shield {
                         alerta2.mensaje = "Anulación de Aval pendiente de firma para aprobación: " + aval.concepto
                         alerta2.controlador = "firma"
                         alerta2.accion = "firmasPendientes"
-                        alerta1.parametros = "tab=AVAL"
+                        alerta2.parametros = "tab=AVAL"
+                        alerta2.id_remoto = aval.id
+                        alerta2.tipo = 'aval'
                         if (!alerta2.save(flush: true)) {
                             println "error alerta2: " + alerta2.errors
                         }
@@ -875,6 +881,8 @@ class RevisionAvalController extends Shield {
             alerta.mensaje = "Devolución de ${strAnulacion}aval: " + sol.proceso.nombre
             alerta.controlador = "revisionAval"
             alerta.accion = "pendientes"
+            alerta.id_remoto = sol.id
+            alerta.tipo = 'slct'
             if (!alerta.save(flush: true)) {
                 println "error alerta: " + alerta.errors
             }
@@ -1484,6 +1492,8 @@ class RevisionAvalController extends Shield {
                 alerta1.mensaje = "Devolución de ${solicitud} de aval: " + solicitud.proceso.nombre
                 alerta1.controlador = "revisionAval"
                 alerta1.accion = "pendientes"
+                alerta1.tipo = 'slct'
+                alerta1.id_remoto = solicitud.id
                 if (!alerta1.save(flush: true)) {
                     println "error alerta1: " + alerta1.errors
                 }
@@ -1532,6 +1542,8 @@ class RevisionAvalController extends Shield {
             alerta1.mensaje = "Devolución de ${strSolicitud} de aval: " + solicitud.proceso.nombre
             alerta1.controlador = "revisionAval"
             alerta1.accion = "pendientes"
+            alerta1.id_remoto = solicitud.id
+            alerta1.tipo = 'slct'
             if (!alerta1.save(flush: true)) {
                 println "error alerta1: " + alerta1.errors
             }
@@ -1626,6 +1638,8 @@ class RevisionAvalController extends Shield {
                 alerta1.controlador = "firma"
                 alerta1.accion = "firmasPendientes"
                 alerta1.parametros = "tab=AVAL"
+                alerta1.tipo = 'slct'
+                alerta1.id_remoto = solicitud.id
                 println alerta1
                 if (!alerta1.save(flush: true)) {
                     println "error alerta1: " + alerta1.errors

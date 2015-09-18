@@ -1,4 +1,4 @@
-<%@ page import="vesta.modificaciones.DetalleReforma; vesta.modificaciones.Reforma; vesta.alertas.Alerta" %>
+<%@ page import="vesta.avales.Aval; vesta.modificaciones.DetalleReforma; vesta.modificaciones.Reforma; vesta.alertas.Alerta" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,28 +110,128 @@
                         <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
                     </td>
                 </g:if>
-                <g:else>
-                    <g:if test="${alertaInstance?.controlador == 'aval' || alertaInstance?.controlador == 'revisionAval' }">
-                        <td><elm:textoBusqueda busca="${params.search}">
-                            ${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.usuario?.unidad?.nombre}
-                        </elm:textoBusqueda></td>
-                        <td>${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.proceso?.nombre}</td>
-                        <td><g:formatNumber number="${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.monto}" type="currency" minFractionDigits="2" maxFractionDigits="2"/></td>
-                        <td class="text-center">
-                            <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
-                        </td>
+                <g:elseif test="${alertaInstance?.controlador == 'aval' || alertaInstance?.controlador == 'revisionAval' }">
+                    <td><elm:textoBusqueda busca="${params.search}">
+                        ${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.usuario?.unidad?.nombre}
+                    </elm:textoBusqueda></td>
+                    <td>${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.proceso?.nombre}</td>
+                    <td><g:formatNumber number="${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.monto}" type="currency" minFractionDigits="2" maxFractionDigits="2"/></td>
+                    <td class="text-center">
+                        <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
+                    </td>
+                </g:elseif>
+                <g:elseif test="${alertaInstance?.controlador == 'avalCorriente'}">
+                    <td><elm:textoBusqueda busca="${params.search}">
+                        ${vesta.avales.AvalCorriente.get(alertaInstance.id_remoto)?.usuario?.unidad?.nombre}
+                    </elm:textoBusqueda></td>
+                    <td>${vesta.avales.AvalCorriente.get(alertaInstance.id_remoto)?.nombreProceso}</td>
+                    <td><g:formatNumber number="${vesta.avales.AvalCorriente.get(alertaInstance.id_remoto)?.monto}" type="currency" minFractionDigits="2" maxFractionDigits="2"/></td>
+                    <td class="text-center">
+                        <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
+                    </td>
+                </g:elseif>
+                <g:elseif test="${alertaInstance?.controlador == 'firma'}">
+                    <g:if test="${alertaInstance?.parametros == 'tab=AVAL'}">
+                        <g:if test="${alertaInstance?.tipo == 'aval'}">
+                            <td><elm:textoBusqueda busca="${params.search}">
+                                ${vesta.avales.SolicitudAval.findByAval(vesta.avales.Aval.get(alertaInstance.id_remoto))?.usuario?.unidad?.nombre}
+                            </elm:textoBusqueda></td>
+                            <td>${vesta.avales.SolicitudAval.findByAval(Aval.get(alertaInstance.id_remoto))?.proceso?.nombre}</td>
+                            <td><g:formatNumber number="${vesta.avales.SolicitudAval.findByAval(Aval.get(alertaInstance.id_remoto))?.monto}" type="currency" minFractionDigits="2" maxFractionDigits="2"/></td>
+                            <td class="text-center">
+                                <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
+                            </td>
+                        </g:if>
+                        <g:else>
+                            <td><elm:textoBusqueda busca="${params.search}">
+                                ${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.usuario?.unidad?.nombre}
+                            </elm:textoBusqueda></td>
+                            <td>${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.proceso?.nombre}</td>
+                            <td><g:formatNumber number="${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.monto}" type="currency" minFractionDigits="2" maxFractionDigits="2"/></td>
+                            <td class="text-center">
+                                <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
+                            </td>
+                        </g:else>
+
                     </g:if>
                     <g:else>
-                        <td>${alertaInstance.from.unidad}</td>
-                        <td><elm:textoBusqueda busca="${params.search}">
-                            ${alertaInstance.mensaje}
-                        </elm:textoBusqueda></td>
-                        <td></td>
-                        <td class="text-center">
-                            <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
-                        </td>
+                        <g:if test="${alertaInstance?.parametros == 'tab=AVCR'}">
+                            <td><elm:textoBusqueda busca="${params.search}">
+                                ${vesta.avales.AvalCorriente.get(alertaInstance.id_remoto)?.usuario?.unidad?.nombre}
+                            </elm:textoBusqueda></td>
+                            <td>${vesta.avales.AvalCorriente.get(alertaInstance.id_remoto)?.nombreProceso}</td>
+                            <td><g:formatNumber number="${vesta.avales.AvalCorriente.get(alertaInstance.id_remoto)?.monto}" type="currency" minFractionDigits="2" maxFractionDigits="2"/></td>
+                            <td class="text-center">
+                                <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
+                            </td>
+                        </g:if>
+                        <g:else>
+                            <td><elm:textoBusqueda busca="${params.search}">
+                                ${vesta.modificaciones.Reforma.get(alertaInstance.id_remoto)?.persona?.unidad?.nombre}
+                            </elm:textoBusqueda></td>
+                            <td>${Reforma.get(alertaInstance.id_remoto)?.concepto}</td>
+                            <g:each in="${DetalleReforma.findAllByReforma(Reforma.get(alertaInstance.id_remoto))}" var="valor">
+                                <g:set var="valorReforma" value="${valorReforma += valor.valor}"/>
+                            </g:each>
+                            <td><g:formatNumber number="${valorReforma}" type="currency" minFractionDigits="2" maxFractionDigits="2"/> </td>
+                            <td class="text-center">
+                                <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
+                            </td>
+                        </g:else>
                     </g:else>
+                </g:elseif>
+                <g:else>
+                    <td>${alertaInstance.from.unidad}</td>
+                    <td><elm:textoBusqueda busca="${params.search}">
+                        ${alertaInstance.mensaje}
+                    </elm:textoBusqueda></td>
+                    <td></td>
+                    <td class="text-center">
+                        <g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>
+                    </td>
                 </g:else>
+
+
+                %{--<g:else>--}%
+                    %{--<g:if test="${alertaInstance?.controlador == 'aval' || alertaInstance?.controlador == 'revisionAval' }">--}%
+                        %{--<td><elm:textoBusqueda busca="${params.search}">--}%
+                            %{--${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.usuario?.unidad?.nombre}--}%
+                        %{--</elm:textoBusqueda></td>--}%
+                        %{--<td>${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.proceso?.nombre}</td>--}%
+                        %{--<td><g:formatNumber number="${vesta.avales.SolicitudAval.get(alertaInstance.id_remoto)?.monto}" type="currency" minFractionDigits="2" maxFractionDigits="2"/></td>--}%
+                        %{--<td class="text-center">--}%
+                            %{--<g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>--}%
+                        %{--</td>--}%
+                    %{--</g:if>--}%
+                    %{--<g:else>--}%
+                        %{--<g:if test="${alertaInstance?.controlador == 'firma'}">--}%
+                            %{--<g:if test="">--}%
+                                %{--<td>${alertaInstance.from.unidad}</td>--}%
+                                %{--<td><elm:textoBusqueda busca="${params.search}">--}%
+                                    %{--${alertaInstance.mensaje}--}%
+                                %{--</elm:textoBusqueda></td>--}%
+                                %{--<td></td>--}%
+                                %{--<td class="text-center">--}%
+                                    %{--<g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>--}%
+                                %{--</td>--}%
+
+                            %{--</g:if>--}%
+
+
+                        %{--</g:if>--}%
+                        %{--<g:else>--}%
+                            %{--<td>${alertaInstance.from.unidad}</td>--}%
+                            %{--<td><elm:textoBusqueda busca="${params.search}">--}%
+                                %{--${alertaInstance.mensaje}--}%
+                            %{--</elm:textoBusqueda></td>--}%
+                            %{--<td></td>--}%
+                            %{--<td class="text-center">--}%
+                                %{--<g:link action="showAlerta" id="${alertaInstance.id}" class="btn btn-default">IR</g:link>--}%
+                            %{--</td>--}%
+                        %{--</g:else>--}%
+
+                    %{--</g:else>--}%
+                %{--</g:else>--}%
             </tr>
         </g:each>
     </g:if>
