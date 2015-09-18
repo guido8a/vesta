@@ -586,6 +586,7 @@ class RevisionAvalController extends Shield {
                         alerta1.controlador = "firma"
                         alerta1.accion = "firmasPendientes"
                         alerta1.parametros = "tab=AVAL"
+                        alerta.id_remoto = aval.id
                         if (!alerta1.save(flush: true)) {
                             println "error alerta1: " + alerta1.errors
                         }
@@ -597,6 +598,7 @@ class RevisionAvalController extends Shield {
                         alerta2.controlador = "firma"
                         alerta2.accion = "firmasPendientes"
                         alerta2.parametros = "tab=AVAL"
+                        alerta.id_remoto = aval.id
                         if (!alerta2.save(flush: true)) {
                             println "error alerta2: " + alerta2.errors
                         }
