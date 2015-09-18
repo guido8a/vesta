@@ -105,7 +105,7 @@ class FirmasService {
         while(un != null) {
 //            println " verfica si es $un"
             if(requirentes.find { it.id == un.id }) {
-//                println "si contiene"
+//                println "si contiene retorna $un"
                 return un
             }
             un = un.padre
