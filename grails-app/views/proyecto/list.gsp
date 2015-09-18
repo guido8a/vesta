@@ -12,6 +12,7 @@
 
         <!-- botones -->
         <div class="btn-toolbar toolbar">
+            <g:if test="${session.perfil.codigo in ['ASPL', 'DP', 'GP', 'GDP']}">
             <div class="btn-group">
                 <a href="#" class="btn btn-sm btn-default btnCrear">
                     <i class="fa fa-file-o"></i> Nuevo proyecto
@@ -24,7 +25,6 @@
                     Cargar Excel
                 </g:link>
 
-                <g:if test="${autorizado == 1}">
                     <a class="btn btn-sm btn-success" id="reporte">
                         <i class="fa fa-print"></i>
                         Reporte de Total de Priorización
@@ -33,9 +33,9 @@
                         <i class="fa fa-print"></i>
                         Reporte de Total de Priorización Por Fuente
                     </g:link>
-                </g:if>
 
             </div>
+            </g:if>
 
             <div class="btn-group">
                 <a class="btn btn-sm btn-default" id="btn_buscar">
@@ -457,6 +457,9 @@
                                 });
                             }
                         },
+
+                        <g:if test="${session.perfil.codigo in ['DP', 'GP', 'ASPL']}">
+
                         editar      : {
                             label  : "Editar",
                             icon   : "fa fa-pencil",
@@ -568,6 +571,7 @@
                                 deleteProyecto(id);
                             }
                         }
+                        </g:if>
                         </g:if>
                     },
                     onShow : function ($element) {

@@ -103,18 +103,7 @@ class ProyectoController extends Shield {
         }
         def usu = Persona.get(session.usuario.id)
 
-        def perfil = session.perfil.codigo.toString()
-
-        def perfilesAutorizados = ['ASPL', 'DP', 'GP', 'GDP']
-        def autorizado = 0
-
-        if(perfilesAutorizados.contains(perfil)){
-            autorizado = 1
-        }else{
-            autorizado = 2
-        }
-
-        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount, anios: anios, usu: usu, autorizado: autorizado]
+        return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount, anios: anios, usu: usu]
     }
 
     /**
