@@ -59,7 +59,7 @@
                         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
                                 <tr>
-                                    <th>Concepto</th>
+                                    <th>Proceso</th>
                                     <th>Área gestión solicitante</th>
                                     <th style="width: 250px;">Acciones</th>
                                 </tr>

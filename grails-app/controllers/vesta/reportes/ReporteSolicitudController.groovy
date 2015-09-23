@@ -600,9 +600,9 @@ class ReporteSolicitudController {
      * Acción que genera un archivo PDF de la negacion de la solicitud de aval
      */
     def imprimirSolicitudAnulacionAval = {
-//        println "impr sol " + params
+        println "impr sol " + params
         def solicitud = SolicitudAval.get(params.id)
-//        println "solcitud " + solicitud
+        println "solcitud " + solicitud
         return [solicitud: solicitud]
     }
 

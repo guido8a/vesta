@@ -52,7 +52,7 @@
 
     <body>
         <div class="hoja">
-            <rep:headerFooter title="Solicitud de Anulación de Aval de POA" unidad="${solicitud.fecha.format('yyyy')}-${solicitud.unidad?.codigo}"
+            <rep:headerFooter title="Solicitud de Anulación de Aval de POA" unidad="${solicitud.unidad}"
                               numero="${elm.imprimeNumero(solicitud: solicitud.id)}" estilo="right"/>
 
             <div class="texto">

@@ -55,7 +55,7 @@
                             <thead>
                                 <tr>
                                     <th>Proceso</th>
-                                    <th>Concepto</th>
+                                    <th>Justificación</th>
                                     <th>Fecha</th>
                                     <th>Número</th>
                                     <th>Monto</th>

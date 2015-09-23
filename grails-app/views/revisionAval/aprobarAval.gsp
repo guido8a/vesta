@@ -59,7 +59,7 @@
                     <thead>
                         <tr>
                             <th>Proceso</th>
-                            <th>Concepto</th>
+                            <th>Justificación</th>
                             <th>Monto</th>
                             <th>Estado</th>
                             <th>Doc. Respaldo</th>

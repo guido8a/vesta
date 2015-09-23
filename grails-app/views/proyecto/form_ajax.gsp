@@ -81,7 +81,7 @@
 
                     <div class="col-md-9">
                         <g:textField name="nombre" maxlength="255" required="" class="form-control input-sm required" value="${proyectoInstance?.nombre}"
-                                     title="Nombre del proyecto"/>
+                                     title="Describir en pocas palabras el nombre del proyecto, definiendo la acción o proceso a realizarse y el objeto sobre el cual se va a intervenir"/>
                     </div>
                 </span>
             </div>
@@ -96,7 +96,7 @@
                         <g:select id="unidadAdministradora" name="unidadAdministradora.id" from="${UnidadEjecutora.list([sort: 'nombre'])}"
                                   optionKey="id" value="${proyectoInstance?.unidadAdministradora?.id}"
                                   class="many-to-one form-control input-sm" noSelection="['null': '']"
-                                  title="Área de gestión encargada del proyecto"/>
+                                  title="Indicar el nombre de la unidad responsable de la ejecución del proyecto"/>
                     </div>
                 </span>
             </div>
@@ -111,7 +111,7 @@
                         <g:select id="localizacion" name="localizacion.id" from="${Localizacion.list([sort: 'descripcion'])}"
                                   optionKey="id" value="${proyectoInstance?.localizacion?.id}"
                                   class="many-to-one form-control input-sm" noSelection="['null': '']"
-                                  title="Localización del proyecto"/>
+                                  title="Determinar la localización específica del proyecto: zona 1, Zona 2, Zona 3, Zona 4 o fuera de ella"/>
                     </div>
                 </span>
             </div>
@@ -155,7 +155,7 @@
                             <div class="input-group input-group-sm">
                                 <g:textField name="monto" value="${fieldValue(bean: proyectoInstance, field: 'monto')}"
                                              class="number money form-control input-sm "
-                                             title="Costo total del proyecto"/>
+                                             title="Establecer el costo total del proyecto"/>
                                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                             </div>
                         </div>
@@ -246,7 +246,7 @@
 
                     <div class="col-md-9">
                         <g:textArea name="problema" cols="40" rows="2" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.problema}"
-                                    title="Diagnóstico e identificación del proyecto"/>
+                                    title="Exponer de manera sucinta y concreta el problema u oportunidad que el proyecto intentará atender"/>
                     </div>
 
                 </span>
@@ -261,7 +261,7 @@
                     <div class="col-md-9">
                         <g:textArea name="justificacion" cols="40" rows="2" maxlength="1023" class="form-control input-sm"
                                     value="${proyectoInstance?.justificacion}"
-                                    title="Justificación del proyecto"/>
+                                    title="Describir los aspectos y circunstancias que motivan la preparación y presentación del proyecto"/>
                     </div>
                 </span>
             </div>
@@ -274,7 +274,7 @@
 
                     <div class="col-md-9">
                         <g:textArea name="descripcion" cols="40" rows="2" maxlength="1024" class="form-control input-sm" value="${proyectoInstance?.descripcion}"
-                                    title="Descripción del proyecto"/>
+                                    title="Describir la idea que se pretende materializar, lo que se intenta conseguir, el contenido de la intervención que se va a desarrollar y el resultado que se espera obtener"/>
                     </div>
 
                 </span>
@@ -288,7 +288,7 @@
 
                     <div class="col-md-9">
                         <g:textArea name="poblacion" cols="40" rows="2" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.poblacion}"
-                                    title="Población beneficiada por el proyecto"/>
+                                    title="Especificar el número beneficiarios directos e indirectos que serán considerados en la ejecución del proyecto"/>
                     </div>
 
                 </span>
@@ -302,7 +302,7 @@
 
                     <div class="col-md-9">
                         <g:textArea name="objetivoGeneral" cols="40" rows="2" maxlength="1023" class="form-control input-sm" value="${proyectoInstance?.objetivoGeneral}"
-                                    title="Objetivo general del proyecto"/>
+                                    title="Especificación de los propósitos que pretenden ser logrados con la ejecución del proyecto"/>
                     </div>
 
                 </span>

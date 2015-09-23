@@ -156,7 +156,7 @@ class ReportesController {
      * Acción
      */
     def certificacion = {
-//        println "certiificacion aaaa " + params
+        println "certiificacion aaaa " + params
         def solicitud = SolicitudAval.get(params.id)
         def aval = solicitud?.aval
         def unidaAutonoma = firmasService.requirentes(solicitud.unidad)

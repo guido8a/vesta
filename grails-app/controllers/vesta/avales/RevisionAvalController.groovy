@@ -1386,6 +1386,7 @@ class RevisionAvalController extends Shield {
         def filtroDirector = null,
             filtroPersona = null
 
+//        println "perfil: $perfil"
         switch (perfil) {
             case "RQ":
                 estados = [estadoPendiente, estadoDevueltoReq]
@@ -1406,6 +1407,7 @@ class RevisionAvalController extends Shield {
                 filtroDirector = Persona.get(session.usuario.id)
                 break;
             case ["ASPL", "GP", "DP"]:
+                println "opcion de ASPL, GP, DP"
                 estados = [estadoSolicitado, estadoDevueltoAnPlan]
                 break;
         }
@@ -1463,6 +1465,7 @@ class RevisionAvalController extends Shield {
         }
 
         unidadesList = unidadesList.sort { it.nombre }
+//        println "solicitudes: $solicitudes, actual: $actual, unidades: $unidadesList, procesosSinSolicitud: $p"
 
         return [solicitudes: solicitudes, actual: actual, unidades: unidadesList, procesosSinSolicitud: p]
     }

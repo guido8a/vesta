@@ -109,7 +109,7 @@
                 <div class="form-group keeptogether required">
                     <span class="grupo">
                         <label for="concepto" class="col-md-2 control-label">
-                            Concepto
+                            Justificación
                         </label>
 
                         <div class="col-md-7">
