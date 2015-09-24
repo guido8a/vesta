@@ -88,12 +88,12 @@
                     title="Creación de una nueva actividad para la que se requiere asignación de recursos ">
             3.- Actividad del área sin financiamiento
         </g:link> <br>
-        <g:link action="incrementoActividad" class="btn btn-default bgActividades2"   style="width: 370px;
+        <g:link action="actividad" class="btn btn-default bgActividades2"   style="width: 370px;
             text-align: left;  font-size: large; font-weight: bolder; margin-bottom: 10px; margin-left: 300px"
             title="Creación de una nueva actividad con asignación de recursos de otra actividad del área">
             4.- Creación de una nueva actividad
         </g:link> <br>
-        <g:link action="actividad" class="btn btn-default bgActividades"  style="width: 370px; text-align: left;
+        <g:link action="incrementoActividad" class="btn btn-default bgActividades"  style="width: 370px; text-align: left;
             font-size: large; font-weight: bolder; margin-bottom: 10px; margin-left: 300px"
                     title="Selección de actividad dentro del área para la que se requiere asignación o incremento de recursos">
             5.- Creación de una nueva actividad sin financiamiento

@@ -922,19 +922,19 @@ class ElementosTagLib {
         def str = attrs.tipo + " "
         switch (attrs.tipoSolicitud) {
             case "E":
-                str += "a asignaciones existentes"
+                str += "de reasignación de recursos existentes"
                 break;
             case "A":
-                str += "Reforma para actividad del área con financiamiento del área"
+                str += "para creación de nueva actividad con financiamiento del área"
                 break;
             case "C":
-                str += "nuevas actividades sin financiamiento de recursos del área"
+                str += "para creación de nueva actividad sin financiamiento del área"
                 break;
             case "I":
-                str += "incremento de recursos"
+                str += "para actividad existente sin financiamiento (incremento de recursos)" //no se usa
                 break;
             case "P":
-                str += "partidas presupuestarias"
+                str += "para la inclusión de nuevas partidas presupuestarias"
                 break;
             case "T":
                 str += "por modificación de techo presupuestario"
