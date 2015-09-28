@@ -913,7 +913,7 @@ class ReformaController extends Shield {
             alerta2.mensaje = "${mensaje} (${reforma.fecha.format('dd-MM-yyyy')}): " + reforma.concepto
             alerta2.controlador = "firma"
             alerta2.accion = "firmasPendientes"
-            alerta2.id_remoto = 0
+            alerta2.id_remoto = alerta.id_remoto
             if (!alerta2.save(flush: true)) {
                 println "error alerta: " + alerta2.errors
             }

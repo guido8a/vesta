@@ -166,11 +166,12 @@
                             </td>
                         </g:if>
                         <g:else>
+                            %{--Valor de la asignacion en firma de la reforma--}%
                             <td><elm:textoBusqueda busca="${params.search}">
                                 ${vesta.modificaciones.Reforma.get(alertaInstance.id_remoto)?.persona?.unidad?.nombre}
                             </elm:textoBusqueda></td>
                             <td>${Reforma.get(alertaInstance.id_remoto)?.concepto}</td>
-                            <g:each in="${DetalleReforma.findAllByReforma(Reforma.get(alertaInstance.id_remoto))}" var="valor">
+                            <g:each in="${DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(Reforma.get(alertaInstance.id_remoto))}" var="valor">
                                 <g:set var="valorReforma" value="${valorReforma += valor.valor}"/>
                             </g:each>
                             <td><g:formatNumber number="${valorReforma}" type="currency" minFractionDigits="2" maxFractionDigits="2"/> </td>
