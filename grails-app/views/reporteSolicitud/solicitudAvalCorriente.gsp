@@ -162,19 +162,22 @@
             </p>
         </div>
 
-        <div class="no-break">
-            <g:if test="${firma?.estado == 'F'}">
-                <table width="100%" style="margin-top: 1.5cm;">
-                    <tr>
-                        <td width="50%" style=" text-align: center;">
-                            <img src="${resource(dir: 'firmas', file: firma.path)}" style="width: 150px;"/><br/>
-                            <b>${firma.usuario.nombre} ${firma.usuario.apellido}<br/></b>
-                            <b>${firma.usuario.cargo}<br/></b>
-                        </td>
-                    </tr>
-                </table>
-            </g:if>
-        </div>
+        <g:if test="${firma}">
+            <div class="no-break">
+                <g:if test="${firma?.estado == 'F'}">
+                    <table width="100%" style="margin-top: 1.5cm;">
+                        <tr>
+                            <td width="50%" style=" text-align: center;">
+                                <img src="${resource(dir: 'firmas', file: firma.path)}" style="width: 150px;"/><br/>
+                                <b>${firma.usuario.nombre} ${firma.usuario.apellido}<br/></b>
+                                <b>${firma.usuario.cargo}<br/></b>
+                            </td>
+                        </tr>
+                    </table>
+                </g:if>
+            </div>
+        </g:if>
+
 
 
     </body>

@@ -699,7 +699,14 @@ class ReporteSolicitudController {
     def solicitudAvalCorriente() {
         def proceso = AvalCorriente.get(params.id)
 
-        def firma = Firma.get(proceso.firmaGerente.id)
+        def firma
+
+        if(proceso.firmaGerente){
+            firma = Firma.get(proceso.firmaGerente.id)
+        }else{
+            firma = null
+        }
+
 
         return [proceso: proceso, detalles: AvalCorrienteController.arreglarDetalles(proceso), firma: firma]
     }
