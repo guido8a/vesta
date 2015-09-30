@@ -16,6 +16,7 @@ import vesta.contratacion.Solicitud
 import vesta.modificaciones.SolicitudModPoa
 import vesta.parametros.poaPac.Anio
 import vesta.poa.Asignacion
+import vesta.seguridad.Firma
 import vesta.seguridad.Prfl
 import vesta.seguridad.Sesn
 import vesta.seguridad.Persona
@@ -697,7 +698,10 @@ class ReporteSolicitudController {
 
     def solicitudAvalCorriente() {
         def proceso = AvalCorriente.get(params.id)
-        return [proceso: proceso, detalles: AvalCorrienteController.arreglarDetalles(proceso)]
+
+        def firma = Firma.get(proceso.firmaGerente.id)
+
+        return [proceso: proceso, detalles: AvalCorrienteController.arreglarDetalles(proceso), firma: firma]
     }
 
     def avalCorriente() {

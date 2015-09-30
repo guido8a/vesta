@@ -60,8 +60,15 @@
 
                 <div class="col-md-3">
                     <g:if test="${!readOnly}">
-                        <elm:datepicker name="fechaInicioProceso" class="datepicker form-control input-sm required" value="${proceso?.fechaInicioProceso}"
-                                        onChangeDate="validarFechaIni" minDate="${minDate}" maxDate="${maxDate}"/>
+                        <g:if test="${vesta.seguridad.Persona.get(session.usuario.id).getEsDirector()}">
+                            <elm:datepicker name="fechaInicioProceso" class="datepicker form-control input-sm required" value="${proceso?.fechaInicioProceso}"
+                                            onChangeDate="validarFechaIni" minDate="${minDate}" maxDate="${maxDate}"/>
+                        </g:if>
+                        <g:else>
+                            <elm:datepicker name="fechaInicioProceso" class="datepicker form-control input-sm required" value="${proceso?.fechaInicioProceso}"
+                                            onChangeDate="validarFechaIni" minDate="${ahora}" maxDate="${maxDate}"/>
+                        </g:else>
+
                     </g:if>
                     <g:else>
                         <p class="form-control-static">

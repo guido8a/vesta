@@ -19,7 +19,12 @@
     <tbody>
         <g:each in="${datos}" var="firma">
             <tr data-estado="${firma.estado}">
-                <td style="text-align: center">${firma.fecha.format("dd-MM-yyyy")}</td>
+                <g:if test="${firma.fecha}">
+                    <td style="text-align: center">${firma?.fecha?.format("dd-MM-yyyy")}</td>
+                </g:if>
+                <g:else>
+                    <td></td>
+                </g:else>
                 <td style="text-align: center">
                     <g:if test="${firma.tipoFirma == 'AVAL'}">
                         Aval

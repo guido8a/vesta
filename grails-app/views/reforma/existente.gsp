@@ -151,7 +151,7 @@
                             <tr>
                                 <th style='width:234px;'>Proyecto</th>
                                 <th style='width:234px;'>Componente</th>
-                                <th style='width:234px;'>Actividad</th>
+                                <th style='width:234px;'>Actividad1</th>
                                 <th>Asignación</th>
                                 <th style='width:195px;'>Monto</th>
                             </tr>
@@ -166,6 +166,7 @@
                                 </td>
                                 <td>
                                     ${detalle.asignacionOrigen.marcoLogico.numero} - ${detalle.asignacionOrigen.marcoLogico.toStringCompleto()}
+                                    111
                                 </td>
                                 <td>
                                     ${detalle.asignacionOrigen}
@@ -477,7 +478,7 @@
                         var dataOrigen = {};
                         dataOrigen.proyecto_nombre = $("#proyecto").find("option:selected").text();
                         dataOrigen.componente_nombre = $("#comp").find("option:selected").text();
-                        dataOrigen.actividad_nombre = $("#actividad").find("option:selected").text();
+                        dataOrigen.actividad_nombre = $("#actividadRf").find("option:selected").text();
                         dataOrigen.asignacion_nombre = $("#asignacion").find("option:selected").text();
                         dataOrigen.asignacion_id = $("#asignacion").val();
 //                        dataOrigen.monto = $("#monto").val();
