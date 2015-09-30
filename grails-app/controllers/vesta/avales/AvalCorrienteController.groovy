@@ -145,7 +145,7 @@ class AvalCorrienteController extends Shield {
         }
         def readOnly = false
         def unidad = UnidadEjecutora.get(session.unidad.id)
-        def personasFirma = firmasService.listaDirectoresUnidad(unidad)
+        def personasFirma = firmasService.listaDirectoresUnidadCorr(unidad)
 
         def anio = new Date().format("yyyy")
 
@@ -444,7 +444,8 @@ class AvalCorrienteController extends Shield {
     def revisarSolicitud() {
         def proceso = AvalCorriente.get(params.id)
         def gerentes = firmasService.listaGerentesUnidad(proceso.usuario.unidad)
-        return [proceso: proceso, detalles: arreglarDetalles(proceso), gerentes: gerentes]
+        def directores = firmasService.listaDirectoresUnidadCorr(session.usuario.unidad)
+        return [proceso: proceso, detalles: arreglarDetalles(proceso), gerentes: gerentes, directores: directores]
     }
 
     /**

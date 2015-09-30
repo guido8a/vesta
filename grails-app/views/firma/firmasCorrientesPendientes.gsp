@@ -43,7 +43,7 @@
                     <a href="#AVCR" class="" role="tab" data-toggle="tab">Firmas solicitud de aval gasto permanente</a>
                 </li>
                 <li role="presentation">
-                    <a href="#AJSC" class="" role="tab" data-toggle="tab">Firmas solicitud de ajuste corriente</a>
+                    <a href="#AJSC" class="" role="tab" data-toggle="tab">Firmas solicitud de ajuste de gasto permanente</a>
                 </li>
                 <li role="presentation">
                     <a href="#HIST" class="" role="tab" data-toggle="tab">Historial</a>

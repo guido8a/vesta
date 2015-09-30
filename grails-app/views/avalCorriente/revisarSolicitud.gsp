@@ -120,7 +120,7 @@
                 </tr>
             </table>
         </g:each>
-
+        ${session.usuario}
         <form id="frmFirmas">
             <div class="row">
                 <div class="col-md-2 show-label">Autorización electrónica</div>
@@ -132,9 +132,16 @@
                         </p>
                     </g:if>
                     <g:else>
-                        <g:select from="${gerentes}" optionKey="id" optionValue="${{
-                            it.nombre + ' ' + it.apellido
-                        }}" noSelection="['': '- Seleccione -']" name="firma" class="form-control required input-sm"/>
+                        <g:if test="${session.usuario.unidad.codigo in ["DF", "DA", "DTH"]}">
+                            <g:select from="${directores}" optionKey="id" optionValue="${{
+                                it.nombre + ' ' + it.apellido
+                            }}" noSelection="['': '- Seleccione -']" name="firma" class="form-control required input-sm"/>
+                        </g:if>
+                        <g:else>
+                            <g:select from="${gerentes}" optionKey="id" optionValue="${{
+                                it.nombre + ' ' + it.apellido
+                            }}" noSelection="['': '- Seleccione -']" name="firma" class="form-control required input-sm"/>
+                        </g:else>
                     </g:else>
                 </div>
             </div>

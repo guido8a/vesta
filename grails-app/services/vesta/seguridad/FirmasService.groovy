@@ -35,7 +35,8 @@ class FirmasService {
     }
 
     def listaFirmasCorrientes() {
-        def unidad = UnidadEjecutora.findAllByCodigoInList(["DA","DF" ]) // DIRECCIONES ADMINISTRATIVA y FINANCIERA
+//        def unidad = UnidadEjecutora.findAllByCodigoInList(["DA","DF" ]) // DIRECCIONES ADMINISTRATIVA y FINANCIERA
+        def unidad = UnidadEjecutora.findAllByCodigoInList(["DF"]) // DIRECCIONES ADMINISTRATIVA y FINANCIERA
 
         def directores = Persona.findAllByUnidadInListAndCargoIlike(unidad, "%director%")
         def gerentes = Persona.findAllByUnidadAndCargoIlike(unidad[0].padre, "%gerente%")
@@ -59,6 +60,14 @@ class FirmasService {
 //            cargoPersonal {
 //                ilike("descripcion", "%director%")
 //            }
+        }
+        return directores
+    }
+
+    def listaDirectoresUnidadCorr(UnidadEjecutora unidad) {
+        def directores = Persona.withCriteria {
+            eq("unidad", unidad)
+            ilike("cargo", "%director%")
         }
         return directores
     }
