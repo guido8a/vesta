@@ -124,7 +124,7 @@
                         <table class="table table-bordered table-condensed tbl-small" style="width: auto">
                             <thead>
                                 <tr>
-                                    <th>Asignación</th>
+                                    %{--<th>Asignación</th>--}%
                                     <th># partida</th>
                                     <th>Partida</th>
                                     <th>Fuente</th>
@@ -136,7 +136,7 @@
                                 <g:each in="${det.asignaciones}" var="a">
                                     <g:set var="total" value="${total + a.monto}"/>
                                     <tr>
-                                        <td>${a.asg.actividad ?: ""}</td>
+                                        %{--<td>${a.asg.actividad ?: ""}</td>--}%
                                         <td>${a.asg.presupuesto.numero}</td>
                                         <td>${a.asg.presupuesto.descripcion}</td>
                                         <td>${a.asg.fuente}</td>
@@ -146,7 +146,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="4">TOTAL</th>
+                                    <th colspan="3">TOTAL</th>
                                     <td class="text-right"><g:formatNumber number="${total}" type="currency" currencySymbol=""/></td>
                                 </tr>
                             </tfoot>
