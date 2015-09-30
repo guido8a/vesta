@@ -452,9 +452,12 @@ class AvalCorrienteController extends Shield {
      * Acción que permite al analista admin. solicitar las firmas de aprobación de un aval corriente
      */
     def solicitarFirmas() {
+
         def proceso = AvalCorriente.get(params.id)
         def firmas = firmasService.listaFirmasCorrientes()
-        return [proceso: proceso, detalles: arreglarDetalles(proceso), personas: firmas.directores, personasGerente: firmas.gerentes]
+        def poas = ProcesoAsignacion.findAllByAvalCorriente(proceso).asignacion
+
+        return [proceso: proceso, detalles: arreglarDetalles(proceso), personas: firmas.directores, personasGerente: firmas.gerentes, poas: poas]
     }
 
     /**

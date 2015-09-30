@@ -92,6 +92,33 @@
                 </table>
             </elm:container>
 
+
+            <elm:container tipo="horizontal" titulo="Asignaciones">
+                <table class="table table-condensed table-bordered">
+                    <thead>
+                    <tr>
+                        <th># Partida</th>
+                        <th>Partida</th>
+                        <th>Priorizado</th>
+                        <th>Avalado</th>
+                        <th>Saldo</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <g:each in="${poas}" var="asig">
+                            <tr>
+                            <td>${asig?.presupuesto?.numero}</td>
+                            <td>${asig?.presupuesto?.descripcion}</td>
+                            <td>${asig?.priorizado}</td>
+                            <td></td>
+                            <td></td>
+                            </tr>
+                        </g:each>
+                    </tbody>
+                </table>
+            </elm:container>
+
+
             <elm:container tipo="horizontal" titulo="Datos para la generación del documento">
                 <g:set var="val" value='El aval se otorga en base a los oficios:No.SENPLADES-SZ1N-2014-0204-OF, de 12 de
                 diciembre de 2014, con el cual la Secretaría Nacional de Planificación y Desarrollo informa a la Empresa

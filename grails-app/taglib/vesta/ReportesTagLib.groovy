@@ -247,7 +247,11 @@ class ReportesTagLib {
             if(attrs.unidad.id)
             {
                 if(attrs.title != 'REFORMA AL POA'){
-                    html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+                    if(attrs.title == 'Aval de POA de gasto permanente'){
+                        html += "<td style='background: #008080;'>${attrs.anio}-GAF</td>" + "\n"
+                    }else{
+                        html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+                    }
                 }else{
                     html += "<td style='background: #008080;'>${attrs.anio}-GPE</td>" + "\n"
                 }
