@@ -22,6 +22,7 @@
         .table {
             margin-top : 15px;
         }
+
         </style>
     </head>
 
@@ -93,25 +94,30 @@
             </elm:container>
 
 
-            <elm:container tipo="horizontal" titulo="Asignaciones">
+            <elm:container tipo="horizontal" titulo="Detalle informativo de las asignaciones del Aval" style="margin-top: -20px; width: 80%">
+            %{--<h3>Detalle de asignaciones del Aval</h3>--}%
                 <table class="table table-condensed table-bordered">
                     <thead>
                     <tr>
                         <th># Partida</th>
                         <th>Partida</th>
                         <th>Priorizado</th>
+                        <th>Solicitado</th>
                         <th>Avalado</th>
                         <th>Saldo</th>
+                        <th>Disponible</th>
                     </tr>
                     </thead>
                     <tbody>
                         <g:each in="${poas}" var="asig">
                             <tr>
-                            <td>${asig?.presupuesto?.numero}</td>
-                            <td>${asig?.presupuesto?.descripcion}</td>
-                            <td>${asig?.priorizado}</td>
-                            <td></td>
-                            <td></td>
+                            <td>${asig?.numero}</td>
+                            <td>${asig?.partida}</td>
+                            <td class="text-right"><g:formatNumber number="${asig?.priorizado.toDouble()}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
+                            <td class="text-right"><g:formatNumber number="${asig?.solicitado.toDouble()}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
+                            <td class="text-right"><g:formatNumber number="${asig?.avalado.toDouble()}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
+                            <td class="text-right"><g:formatNumber number="${asig?.saldo.toDouble()}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
+                            <td class="text-right"><g:formatNumber number="${(asig?.saldo - asig.solicitado).toDouble()}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
                             </tr>
                         </g:each>
                     </tbody>

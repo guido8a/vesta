@@ -17,6 +17,7 @@ class AvalCorrienteController extends Shield {
 
     def firmasService
     def mailService
+    def dbConnectionService
 
     /**
      * Acción que muestra la lista de solicitudes dependiendo del perfil
@@ -452,10 +453,37 @@ class AvalCorrienteController extends Shield {
      * Acción que permite al analista admin. solicitar las firmas de aprobación de un aval corriente
      */
     def solicitarFirmas() {
-
+        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
         def proceso = AvalCorriente.get(params.id)
         def firmas = firmasService.listaFirmasCorrientes()
-        def poas = ProcesoAsignacion.findAllByAvalCorriente(proceso).asignacion
+        def poas = []
+        def data = [:]
+        def tx = "select asgn.prsp__id, prspnmro, prspdscr, asgnprio, poasmnto from asgn, poas, prsp " +
+                "where asgn.asgn__id = poas.asgn__id and avcr__id = ${proceso.id} and " +
+                "prsp.prsp__id = asgn.prsp__id order by prspnmro"
+        def tx1 = ""
+//        println "solicitarFirmas sql: $tx"
+        cn.eachRow(tx.toString()) { d ->
+            data = [:]
+            data.numero = d.prspnmro
+            data.partida = d.prspdscr
+            data.priorizado = d.asgnprio
+            data.solicitado = d.poasmnto
+            /* calcular valor avalado y saldo */
+            tx1 = "select sum(poasmnto) suma from poas, asgn, avcr, anio where asgn.prsp__id = ${d.prsp__id} and " +
+                    "asgn.asgn__id = poas.asgn__id and avcr.avcr__id = poas.avcr__id and edav__id = 89 and " +
+                    "asgn.anio__id = anio.anio__id and anioanio = '${new Date().format('yyyy')}'"
+//            println "solicitarFirmas tx1: $tx1"
+            cn1.eachRow(tx1.toString() ) {av ->
+                data.avalado = av.suma?:0
+            }
+            data.saldo = data.priorizado - data.avalado
+
+            poas.add(data)
+        }
+        cn.close()
+        cn1.close()
 
         return [proceso: proceso, detalles: arreglarDetalles(proceso), personas: firmas.directores, personasGerente: firmas.gerentes, poas: poas]
     }
