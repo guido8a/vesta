@@ -77,6 +77,15 @@
                         label  : "Acciones",
                         header : true
                     },
+                    fecha :{
+                        label  : "Cambio de fechas",
+                        icon   : "fa fa-clock-o",
+                        action : function ($element) {
+                            var id = $element.data("id");
+                            cambiarFecha(id);
+                        }
+                    },
+
                     solicitud : {
                         label  : "Solicitud",
                         icon   : "fa fa-print",
@@ -85,6 +94,7 @@
                             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud_aval_corriente.pdf";
                         }
                     }
+
                 };
 
                 if (estaAprobado) {
@@ -219,7 +229,6 @@
                 }
             } //crea
 
-
             function submitForm() {
                 var $form = $("#frmLiberar");
                 var $btn = $("#dlgLiberar").find("#btnSave");
@@ -258,6 +267,87 @@
                     return false;
                 } //else
             }
+
+            function submitFechas () {
+                var $form = $("#frmFechas");
+                var $btn = $("#dlgCambioFechas").find("#btnSave");
+                if ($form.valid()) {
+                    $btn.replaceWith(spinner);
+                    openLoader("Cambiando fechas");
+                    var formData = new FormData($form[0]);
+                    $.ajax({
+                        type        : "POST",
+                        url         : $form.attr("action"),
+                        data        : formData,
+                        async       : false,
+                        cache       : false,
+                        contentType : false,
+                        processData : false,
+                        success     : function (msg) {
+                            var parts = msg.split("*");
+                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                            setTimeout(function () {
+                                if (parts[0] == "SUCCESS") {
+                                    location.reload(true);
+                                    closeLoader();
+                                } else {
+                                    closeLoader();
+                                    spinner.replaceWith($btn);
+                                    return false;
+
+                                }
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    $('.modal-contenido').animate({
+                        scrollTop : $($(".has-error")[0]).offset().top - 100
+                    }, 1000);
+                    return false;
+                } //else
+            }
+
+
+            function cambiarFecha(id) {
+
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(action:'cambiarFechas')}",
+                        data    : {
+                            id: id
+                        },
+                        success : function (msg) {
+                            var b = bootbox.dialog({
+                                id      : "dlgCambioFechas",
+                                title   : "Cambiar Fechas",
+//                                class   : "modal-sm",
+                                message : msg,
+                                buttons : {
+
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+                                    guardar  : {
+                                        id        : "btnSave",
+                                        label     : "<i class='fa fa-save'></i> Guardar",
+                                        className : "btn-success",
+                                        callback  : function () {
+                                                submitFechas();
+                                            closeLoader();
+                                        } //callback
+                                    } //guardar
+                                } //buttons
+                            }); //dialog
+                            setTimeout(function () {
+                                b.find(".form-control").first().focus()
+                            }, 500);
+                        } //success
+                    }); //ajax
+            } //crea
+
 
         </script>
 

@@ -1366,4 +1366,46 @@ class AvalCorrienteController extends Shield {
         }
     }
 
+
+    def cambiarFechas () {
+
+        def avalCorriente = AvalCorriente.get(params.id)
+
+        return [aval: avalCorriente]
+    }
+
+    def guardarCambioFechas () {
+
+//        println("params cambio fechas " + params)
+
+        def fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio_input)
+        def fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin_input)
+
+//        println("ini " + fechaInicio)
+//        println("fin " + fechaFin)
+
+        def aval = AvalCorriente.get(params.id)
+
+        def usu = Persona.get(session.usuario.id)
+
+        if (params.codigo.toString().trim().encodeAsMD5() == usu.autorizacion) {
+
+            aval.fechaInicioProceso = fechaInicio
+            aval.fechaFinProceso = fechaFin
+
+            if(aval.save(flush: true)){
+                render "SUCCESS*Fechas cambiadas."
+                return
+            }else{
+                render "No*Ocurrio un error al cambiar de fechas."
+                return
+            }
+
+        }else{
+            render "No*Autorización electrónica no válida."
+            return
+
+        }
+    }
+
 }
