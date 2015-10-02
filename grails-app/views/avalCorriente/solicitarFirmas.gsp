@@ -101,7 +101,8 @@
                     <tr>
                         <th># Partida</th>
                         <th>Partida</th>
-                        <th>Priorizado</th>
+                        <th>Fuente</th>
+                        <th>Asignado</th>
                         <th>Solicitado</th>
                         <th>Avalado</th>
                         <th>Saldo</th>
@@ -113,6 +114,7 @@
                             <tr>
                             <td>${asig?.numero}</td>
                             <td>${asig?.partida}</td>
+                            <td>${asig?.fuente}</td>
                             <td class="text-right"><g:formatNumber number="${asig?.priorizado.toDouble()}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
                             <td class="text-right"><g:formatNumber number="${asig?.solicitado.toDouble()}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
                             <td class="text-right"><g:formatNumber number="${asig?.avalado.toDouble()}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>

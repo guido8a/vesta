@@ -459,8 +459,8 @@ class AvalCorrienteController extends Shield {
         def firmas = firmasService.listaFirmasCorrientes()
         def poas = []
         def data = [:]
-        def tx = "select asgn.prsp__id, prspnmro, prspdscr, asgnprio, poasmnto from asgn, poas, prsp " +
-                "where asgn.asgn__id = poas.asgn__id and avcr__id = ${proceso.id} and " +
+        def tx = "select asgn.prsp__id, prspnmro, prspdscr, asgnprio, poasmnto, fntecdgo from asgn, poas, prsp, c_fnte " +
+                "where asgn.asgn__id = poas.asgn__id and avcr__id = ${proceso.id} and c_fnte.fnte__id = asgn.fnte__id and " +
                 "prsp.prsp__id = asgn.prsp__id order by prspnmro"
         def tx1 = ""
 //        println "solicitarFirmas sql: $tx"
@@ -468,6 +468,7 @@ class AvalCorrienteController extends Shield {
             data = [:]
             data.numero = d.prspnmro
             data.partida = d.prspdscr
+            data.fuente = d.fntecdgo
             data.priorizado = d.asgnprio
             data.solicitado = d.poasmnto
             /* calcular valor avalado y saldo */

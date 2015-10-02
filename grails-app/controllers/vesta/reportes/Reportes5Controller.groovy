@@ -746,5 +746,15 @@ class Reportes5Controller {
         redirect(controller:'reportes4',action:'poaXlsx', params: params)
     }
 
+    def reportePoaCorrientes() {
+        def now = new Date()
+        params.anio = now.format("yyyy")
+        def urlPdf = "${createLink(controller: 'reportes5', action: 'reporteGastoPermanentePdf')}?Wanio=9&Wobjetivo=-1";
+        def pdfFileName = "ReporteGastoPermanente";
+        params.url = urlPdf
+        params.filename = pdfFileName
+        redirect(controller:'pdf',action:'pdfLink', params: params)
+    }
+
 
 }
