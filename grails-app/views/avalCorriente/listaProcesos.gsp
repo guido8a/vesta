@@ -98,6 +98,19 @@
                     };
                 }
 
+                if(estado == 'E02' && ${perfil == 'ASAF'}){
+                    items.liberar = {
+                        label  : "Liberar",
+                        icon   : "fa fa-unlink",
+                        action : function ($element) {
+                            var id = $element.data("id");
+                            liberarAvalPermanente(id)
+                            return false
+                        }
+                    };
+                }
+
+
                 return items;
             }
             $(function () {
@@ -111,6 +124,85 @@
                     }
                 });
             });
+
+            function liberarAvalPermanente(id) {
+                var data = id ? {id : id} : {};
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'liberarAvalCorriente')}",
+                    data    : data,
+                    success : function (msg) {
+                        var b = bootbox.dialog({
+                            id      : "dlgLiberarCorriente",
+                            title   : "Liberar Aval Permanente",
+                            class   : "modal-lg",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        return submitForm();
+                                        closeLoader();
+
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                        setTimeout(function () {
+                            b.find(".form-control").first().focus()
+                        }, 500);
+                    } //success
+                }); //ajax
+            } //crea
+
+
+            function submitForm() {
+                var $form = $("#frmLiberar");
+                var $btn = $("#dlgLiberar").find("#btnSave");
+                if ($form.valid()) {
+                    $btn.replaceWith(spinner);
+                    openLoader("Liberando Aval");
+                    var formData = new FormData($form[0]);
+                    $.ajax({
+                        type        : "POST",
+                        url         : $form.attr("action"),
+                        data        : formData,
+                        async       : false,
+                        cache       : false,
+                        contentType : false,
+                        processData : false,
+                        success     : function (msg) {
+                            var parts = msg.split("*");
+                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                            setTimeout(function () {
+                                if (parts[0] == "SUCCESS") {
+                                    location.reload(true);
+                                    closeLoader();
+                                } else {
+                                    closeLoader();
+                                    spinner.replaceWith($btn);
+                                    return false;
+
+                                }
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    $('.modal-contenido').animate({
+                        scrollTop : $($(".has-error")[0]).offset().top - 100
+                    }, 1000);
+                    return false;
+                } //else
+            }
+
         </script>
 
     </body>

@@ -54,7 +54,7 @@ class AvalCorrienteController extends Shield {
                 eq("director", filtroDirector)
             }
         }
-        return [procesos: procesos]
+        return [procesos: procesos, perfil: perfil]
     }
 
     /**
@@ -1243,4 +1243,126 @@ class AvalCorrienteController extends Shield {
             render "ERROR"
         }
     }
+
+
+    def liberarAvalCorriente () {
+
+        def avalCorriente = AvalCorriente.get(params.id)
+        def detalle = ProcesoAsignacion.findAllByAvalCorriente(avalCorriente)
+        return [aval: avalCorriente, detalle: detalle]
+    }
+
+
+    /**
+     * Acción que permite guardar la liberación de un aval
+     * @params los parámetros enviados por el submit del formulario
+     */
+    def guardarLiberacionPermanente = {
+        println "liberacion " + params
+
+        if (params.monto) {
+            params.monto = params.monto.replaceAll("\\.", "")
+            params.monto = params.monto.replaceAll(",", ".")
+        }
+
+        def path = servletContext.getRealPath("/") + "avales/"
+        new File(path).mkdirs()
+        def f = request.getFile('archivo')
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename()
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+            def reps = [
+                    "a": "[àáâãäåæ]",
+                    "e": "[èéêë]",
+                    "i": "[ìíîï]",
+                    "o": "[òóôõöø]",
+                    "u": "[ùúûü]",
+
+                    "A": "[ÀÁÂÃÄÅÆ]",
+                    "E": "[ÈÉÊË]",
+                    "I": "[ÌÍÎÏ]",
+                    "O": "[ÒÓÔÕÖØ]",
+                    "U": "[ÙÚÛÜ]",
+
+                    "n": "[ñ]",
+                    "c": "[ç]",
+
+                    "N": "[Ñ]",
+                    "C": "[Ç]",
+
+                    "" : "[\\!@\\\$%\\^&*()='\"\\/<>:;\\.,\\?]",
+
+                    "_": "[\\s]"
+            ]
+
+            reps.each { k, v ->
+                fileName = (fileName.trim()).replaceAll(v, k)
+            }
+
+            fileName = fileName + "_" + new Date().format("mm_ss") + "." + "pdf"
+
+            def pathFile = path + File.separatorChar + fileName
+            def src = new File(pathFile)
+            def msn
+
+            if (src.exists()) {
+
+                flash.message = "Ya existe un archivo con ese nombre. Por favor cámbielo."
+                redirect(action: 'listaAvales')
+
+
+            } else {
+                def band = false
+//                def usuario = Usro.get(session.usuario.id)
+                def usuario = Persona.get(session.usuario.id)
+                def aval = AvalCorriente.get(params.id)
+                /*Todo aqui validar quien puede*/
+                band = true
+                def datos = params.datos.split("&")
+                datos.each {
+                    if (it != "") {
+                        def data = it.split(";")
+                        println "data " + data
+                        if (data.size() == 2) {
+                            def det = ProcesoAsignacion.get(data[0])
+//                            det.monto = data[1].toDouble()
+                            det.monto = params.montoAvalado.toDouble()
+                            det.save(flush: true)
+                        }
+                    }
+                }
+                if (band) {
+                    f.transferTo(new File(pathFile))
+                    aval.pathLiberacion = fileName
+                    aval.liberacion = aval.monto
+//                    aval.monto = params.monto.toDouble()
+                    aval.monto = params.montoAvalado.toDouble()
+                    aval.estado = EstadoAval.findByCodigo("E05")
+                    aval.contrato = params.contrato
+                    aval.certificacion = params.certificacion
+                    aval.save(flush: true)
+//                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numeroAval + " Liberado"
+//                    redirect(action: 'listaAvales', controller: 'revisionAval')
+                    render "SUCCESS*Aval liberado."
+                    return
+                } else {
+//                    flash.message = "Usted no tiene permisos para liberar avales"
+//                    redirect(controller: 'listaAvales', action: 'revisionAval')
+                    render "No*Ocurrio un error al liberar el aval."
+                    return
+                }
+            }
+        }
+    }
+
 }
