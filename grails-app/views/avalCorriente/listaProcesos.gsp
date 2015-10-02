@@ -104,13 +104,33 @@
                         icon   : "fa fa-unlink",
                         action : function ($element) {
                             var id = $element.data("id");
-                            liberarAvalPermanente(id)
+                            liberarAvalPermanente(id, 'no')
                             return false
                         }
                     };
                 }
 
 
+                if(estado == 'E05'){
+                    items.aval = {
+                        label  : "Aval",
+                        icon   : "fa fa-print",
+                        action : function ($element) {
+                            var url = "${g.createLink(controller: 'reporteSolicitud',action: 'avalCorriente')}/" + id;
+                            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval_corriente.pdf";
+                        }
+                    };
+
+                    items.verLiberado = {
+                        label  : "Ver Liberado",
+                        icon   : "fa fa-print",
+                        action : function ($element) {
+                            var id = $element.data("id");
+                            liberarAvalPermanente(id, 'si')
+                            return false
+                        }
+                    };
+                }
                 return items;
             }
             $(function () {
@@ -125,42 +145,78 @@
                 });
             });
 
-            function liberarAvalPermanente(id) {
+            function liberarAvalPermanente(id, estado) {
                 var data = id ? {id : id} : {};
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(action:'liberarAvalCorriente')}",
-                    data    : data,
-                    success : function (msg) {
-                        var b = bootbox.dialog({
-                            id      : "dlgLiberarCorriente",
-                            title   : "Liberar Aval Permanente",
-                            class   : "modal-lg",
-                            message : msg,
-                            buttons : {
-                                cancelar : {
-                                    label     : "Cancelar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                },
-                                guardar  : {
-                                    id        : "btnSave",
-                                    label     : "<i class='fa fa-save'></i> Guardar",
-                                    className : "btn-success",
-                                    callback  : function () {
-                                        return submitForm();
-                                        closeLoader();
+                if(estado == 'no'){
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(action:'liberarAvalCorriente')}",
+                        data    : {
+                                    id: id,
+                                    edi: estado
+                        },
+                        success : function (msg) {
+                            var b = bootbox.dialog({
+                                id      : "dlgLiberarCorriente",
+                                title   : "Liberar Aval Permanente",
+                                class   : "modal-lg",
+                                message : msg,
+                                buttons : {
 
-                                    } //callback
-                                } //guardar
-                            } //buttons
-                        }); //dialog
-                        setTimeout(function () {
-                            b.find(".form-control").first().focus()
-                        }, 500);
-                    } //success
-                }); //ajax
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+
+                                    guardar  : {
+                                        id        : "btnSave",
+                                        label     : "<i class='fa fa-save'></i> Guardar",
+                                        className : "btn-success",
+                                        callback  : function () {
+                                            return submitForm();
+                                            closeLoader();
+
+                                        } //callback
+                                    } //guardar
+                                } //buttons
+                            }); //dialog
+                            setTimeout(function () {
+                                b.find(".form-control").first().focus()
+                            }, 500);
+                        } //success
+                    }); //ajax
+                }else{
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(action:'liberarAvalCorriente')}",
+                        data    : {
+                                    id: id,
+                                    edi: estado
+                        },
+                        success : function (msg) {
+                            var b = bootbox.dialog({
+                                id      : "dlgLiberarCorriente",
+                                title   : "Liberar Aval Permanente",
+                                class   : "modal-lg",
+                                message : msg,
+                                buttons : {
+
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    }
+                                } //buttons
+                            }); //dialog
+                            setTimeout(function () {
+                                b.find(".form-control").first().focus()
+                            }, 500);
+                        } //success
+                    }); //ajax
+                }
             } //crea
 
 

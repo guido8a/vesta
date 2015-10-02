@@ -1250,7 +1250,7 @@ class AvalCorrienteController extends Shield {
 
         def avalCorriente = AvalCorriente.get(params.id)
         def detalle = ProcesoAsignacion.findAllByAvalCorriente(avalCorriente)
-        return [aval: avalCorriente, detalle: detalle]
+        return [aval: avalCorriente, detalle: detalle, edi: params.edi]
     }
 
 

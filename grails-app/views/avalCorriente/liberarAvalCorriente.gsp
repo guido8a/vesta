@@ -24,9 +24,17 @@
                 <label for="contrato" class="col-md-3 control-label">
                     Contrato:
                 </label>
-                <div class="col-md-5">
-                    <g:textField class="form-control input-sm required" name="contrato" id="contrato"/>
-                </div>
+                <g:if test="${edi == 'si'}">
+                    <div class="col-md-5">
+                        <g:textField class="form-control input-sm required" name="contrato" id="contrato" value="${aval?.contrato}" readonly="true"/>
+                    </div>
+                </g:if>
+                <g:else>
+                    <div class="col-md-5">
+                        <g:textField class="form-control input-sm required" name="contrato" id="contrato" value="${aval?.contrato}"/>
+                    </div>
+                </g:else>
+
             </span>
             *
         </div>
@@ -35,10 +43,17 @@
                 <label for="certificacion" class="col-md-3 control-label">
                     Certificación presupuestaria:
                 </label>
+                <g:if test="${edi == 'si'}">
+                    <div class="col-md-5">
+                        <g:textField class="form-control input-sm required" name="certificacion" id="certificacion" value="${aval?.certificacion}" readonly="true"/>
+                    </div>
+                </g:if>
+                <g:else>
+                    <div class="col-md-5">
+                        <g:textField class="form-control input-sm required" name="certificacion" id="certificacion" value="${aval?.certificacion}"/>
+                    </div>
+                </g:else>
 
-                <div class="col-md-5">
-                    <g:textField class="form-control input-sm required" name="certificacion" id="certificacion"/>
-                </div>
             </span>
             *
         </div>
@@ -50,9 +65,17 @@
                 <label for="contrato" class="col-md-3 control-label">
                     Documento de respaldo:
                 </label>
-                <div class="col-md-5">
-                    <input type="file"  class="form-control input-sm required" id="archivo" name="archivo" >
-                </div>
+                <g:if test="${edi == 'si'}">
+                    <div class="col-md-5">
+                        <g:textField class="form-control input-sm " name="archivo" value="${aval?.pathLiberacion}" readonly="true" />
+                    </div>
+                </g:if>
+                <g:else>
+                    <div class="col-md-5">
+                        <input type="file"  class="form-control input-sm required" id="archivo" name="archivo">
+                    </div>
+                </g:else>
+
             </span>
             *
         </div>
@@ -87,9 +110,17 @@
                         <g:formatNumber number="${asg.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
                     </td>
                     <td style="text-align: right;">
-                        <input type="text" class="form-control input-sm required det_${asg.id} detalle decimal" iden="${asg.id}" name="montoAvalado"
-                               value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}"
-                               style="width: 100px;text-align: right" max="${asg.monto}">
+                        <g:if test="${edi == 'si'}">
+                            <input type="text" class="form-control input-sm required det_${asg.id} detalle decimal" iden="${asg.id}" name="montoAvalado"
+                                   value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}" readonly="true"
+                                   style="width: 100px;text-align: right; float: right" max="${asg.monto}">
+                        </g:if>
+                        <g:else>
+                            <input type="text" class="form-control input-sm required det_${asg.id} detalle decimal" iden="${asg.id}" name="montoAvalado"
+                                   value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}"
+                                   style="width: 100px;text-align: right; float: right" max="${asg.monto}">
+                        </g:else>
+
                     </td>
 
                 </tr>
