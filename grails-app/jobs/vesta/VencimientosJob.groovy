@@ -14,7 +14,7 @@ class VencimientosJob {
 
     static triggers = {
 //        simple repeatInterval: 5000l // execute job once in 5 seconds
-        simple startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 10   // ejecuta cada 10 minutos
+        simple startDelay: 1000 * 60, repeatInterval: 1000 * 60 * 60 * 12  // ejecuta cada 12 horas
     }
 
     def execute() {
