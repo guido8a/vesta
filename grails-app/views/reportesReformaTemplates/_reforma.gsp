@@ -1,8 +1,3 @@
-%{--<rep:headerFooter title="REFORMA AL POA${reforma.tipo == 'C' ? ' CORRIENTE' : ''}"--}%
-                  %{--form="GPE-DPI-003"--}%
-                  %{--unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.gerencia.codigo}"--}%
-                  %{--numero="${reforma.numeroReforma}" estilo="right"/>--}%
-
 <rep:headerFooter title="REFORMA AL POA${reforma.tipo == 'C' ? ' DE GASTO PERMANENTE' : ''}"
                   form="GPE-DPI-003"
                   unidad="${unidades?.unidad}"
