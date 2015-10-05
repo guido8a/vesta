@@ -54,7 +54,7 @@
                                 <i class="fa-li fa fa-money text-info"></i>
                                 <g:link class="over" controller="presupuesto" action="arbol">
                                     Plan de cuentas Presupuestario
-                                </g:link> o partidas presupuestarias para la asignación de gasto corriente y de inversión
+                                </g:link> o partidas presupuestarias para la asignación de gasto permanente y de inversión
 
                                 <div class="descripcion hidden">
                                     <h4>Plan de cuentas Presupuestario</h4>
@@ -183,27 +183,27 @@
                             <li>
                                 <i class="fa-li fa fa-dot-circle-o text-success"></i>
                                 <g:link class="over text-success" controller="objetivoGastoCorriente" action="list">
-                                    Objetivos de Gasto Corriente
-                                </g:link> Objetivos de gasto corriente
+                                    Objetivos de Gasto Permanente
+                                </g:link> Objetivos de gasto permanente
 
                                 <div class="descripcion hidden">
-                                    <h4>Objetivos de Gasto Corriente</h4>
+                                    <h4>Objetivos de Gasto Permanente</h4>
 
-                                    <p>Gasto Corriente<br/>
-                                        Objetivos de gasto corriente</p>
+                                    <p>Gasto Permanente<br/>
+                                        Objetivos de gasto permanente</p>
                                 </div>
                             </li>
                             <li>
                                 <i class="fa-li fa fa-tasks text-success"></i>
                                 <g:link class="over text-success" controller="macroActividad" action="list">
                                     Macroactividades
-                                </g:link> Macroactividad al interior del objetivo de gasto corriente
+                                </g:link> Macroactividad al interior del objetivo de gasto permanente
 
                                 <div class="descripcion hidden">
-                                    <h4>Macroactividad de Gasto Corriente</h4>
+                                    <h4>Macroactividad de Gasto Permanente</h4>
 
-                                    <p>Gasto Corriente<br/>
-                                        Macroactividad al interior del objetivo de gasto corriente</p>
+                                    <p>Gasto Permanente<br/>
+                                        Macroactividad al interior del objetivo de gasto permanente</p>
                                 </div>
                             </li>
                         </ul>

@@ -44,7 +44,7 @@
             <thead>
                 <tr>
 
-                    <th>Objetivo de Gasto Corriente</th>
+                    <th>Objetivo de Gasto Permanente</th>
 
                     <g:sortableColumn property="descripcion" title="Macroactividad" />
                     

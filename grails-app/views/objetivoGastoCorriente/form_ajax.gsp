@@ -14,7 +14,7 @@
         <div class="form-group keeptogether ${hasErrors(bean: objetivoGastoCorrienteInstance, field: 'descripcion', 'error')} required">
             <span class="grupo">
                 <label for="descripcion" class="col-md-2 control-label">
-                    Objetivo de Gasto Corriente
+                    Objetivo de Gasto Permanente
                 </label>
                 <div class="col-md-10">
                     <g:textArea name="descripcion" cols="80" rows="7" maxlength="511" required=""

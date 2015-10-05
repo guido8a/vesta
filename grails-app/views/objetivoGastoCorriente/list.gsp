@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Objetivos de Gasto Corriente</title>
+        <title>Lista de Objetivos de Gasto Permanente</title>
     </head>
 
     <body>
@@ -79,7 +79,7 @@
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                     $btn.replaceWith(spinner);
-                    openLoader("Guardando Objetivo de Gasto Corriente");
+                    openLoader("Guardando Objetivo de Gasto Permanente");
                     $.ajax({
                         type    : "POST",
                         url     : $form.attr("action"),
@@ -105,7 +105,7 @@
                 bootbox.dialog({
                     title   : "Alerta",
                     message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                              "¿Está seguro que desea eliminar el Objetivo de Gasto Corriente seleccionado? Esta acción no se puede deshacer.</p>",
+                              "¿Está seguro que desea eliminar el Objetivo de Gasto Permanente seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -117,7 +117,7 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando Objetivo de Gasto Corriente");
+                                openLoader("Eliminando Objetivo de Gasto Permanente");
                                 $.ajax({
                                     type    : "POST",
                                     url     : '${createLink(controller:'objetivoGastoCorriente', action:'delete_ajax')}',
@@ -151,7 +151,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id    : "dlgCreateEdit",
-                            title : title + " Objetivo de Gasto Corriente",
+                            title : title + " Objetivo de Gasto Permanente",
 
                             message : msg,
                             buttons : {
@@ -204,7 +204,7 @@
                                     },
                                     success : function (msg) {
                                         bootbox.dialog({
-                                            title   : "Ver Objetivo de Gasto Corriente",
+                                            title   : "Ver Objetivo de Gasto Permanente",
                                             message : msg,
                                             buttons : {
                                                 ok : {

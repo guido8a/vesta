@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Procesos de aval corriente</title>
+        <title>Procesos de avales gasto permanente</title>
 
         <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'avales.css')}" type="text/css"/>
     </head>
@@ -31,7 +31,7 @@
                 <tr>
                     <th>Solicita</th>
                     <th>Nombre del proceso</th>
-                    <th>Concepto</th>
+                    <th>Justificación</th>
                     <th>Estado</th>
                     <th style="width: 85px">Fecha</th>
                     <th style="width: 85px">Inicio</th>
@@ -77,6 +77,7 @@
                         label  : "Acciones",
                         header : true
                     },
+/*
                     fecha :{
                         label  : "Cambio de fechas",
                         icon   : "fa fa-clock-o",
@@ -85,6 +86,7 @@
                             cambiarFecha(id);
                         }
                     },
+*/
 
                     solicitud : {
                         label  : "Solicitud",
@@ -97,12 +99,24 @@
 
                 };
 
-                if (estaAprobado) {
-                    items.aval = {
-                        label  : "Aval",
-                        icon   : "fa fa-print",
-                        action : function ($element) {
-                            var url = "${g.createLink(controller: 'reporteSolicitud',action: 'avalCorriente')}/" + id;
+                <g:if test="${session.usuario.unidad.codigo in ["GAF", "DA", "DF"]}">
+                items.fecha = {
+                    label  : "Cambio de fechas",
+                            icon   : "fa fa-clock-o",
+                            action : function ($element) {
+                        var id = $element.data("id");
+                        cambiarFecha(id);
+                    }
+                };
+                </g:if>
+
+
+    if (estaAprobado) {
+        items.aval = {
+            label  : "Aval",
+            icon   : "fa fa-print",
+            action : function ($element) {
+                var url = "${g.createLink(controller: 'reporteSolicitud',action: 'avalCorriente')}/" + id;
                             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval_corriente.pdf";
                         }
                     };

@@ -13,7 +13,7 @@
             <div class="form-group keeptogether ${hasErrors(bean: macroActividadInstance, field: 'objetivoGastoCorriente', 'error')} required">
                 <span class="grupo">
                     <label for="objetivoGastoCorriente" class="col-md-3 control-label">
-                        Objetivo de Gasto Corriente
+                        Objetivo de Gasto Permanente
                     </label>
 
                     <div class="col-md-9">
