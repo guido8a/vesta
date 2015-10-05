@@ -23,9 +23,6 @@
                     %{--${reforma.persona.unidad} (No está completo el código!)--}%
                 %{--</g:else>--}%
                 ${uni}
-
-
-
             </li>
             <li>
                 <strong>Tipo de ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>

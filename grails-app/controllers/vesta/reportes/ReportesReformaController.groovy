@@ -30,7 +30,11 @@ class ReportesReformaController {
      */
     def actividad() {
         def reforma = Reforma.get(params.id.toString().toLong())
-        return [reforma: reforma, det: generaDetallesSolicitudActividad(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia]
+
+        def uni = firmasService.requirentes(reforma.persona.unidad)
+
+
+        return [reforma: reforma, det: generaDetallesSolicitudActividad(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
     }
 
     /**
@@ -39,7 +43,10 @@ class ReportesReformaController {
     def incrementoActividad() {
         def reforma = Reforma.get(params.id.toString().toLong())
         def d = generaDetallesSolicitudIncrementoActividad(reforma)
-        return [reforma: reforma, det: d.det2, det2: d.det, unidades: reforma.persona.unidad.unidadYGerencia]
+
+       def uni = firmasService.requirentes(reforma.persona.unidad)
+
+        return [reforma: reforma, det: d.det2, det2: d.det, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
     }
 
     /**
@@ -53,7 +60,10 @@ class ReportesReformaController {
         } else {
             det = generaDetallesSolicitudPartida(reforma).det
         }
-        return [reforma: reforma, det: det, unidades: reforma.persona.unidad.unidadYGerencia]
+
+        def uni = firmasService.requirentes(reforma.persona.unidad)
+
+        return [reforma: reforma, det: det, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
     }
 
     /**
@@ -62,7 +72,10 @@ class ReportesReformaController {
     def incremento() {
         def reforma = Reforma.get(params.id.toString().toLong())
         def d = generaDetallesSolicitudIncremento(reforma)
-        return [reforma: reforma, det: d.det2, det2: d.det, unidades: reforma.persona.unidad.unidadYGerencia]
+
+        def uni = firmasService.requirentes(reforma.persona.unidad)
+
+        return [reforma: reforma, det: d.det2, det2: d.det, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
     }
 
     /**
@@ -70,7 +83,10 @@ class ReportesReformaController {
      */
     def techo() {
         def reforma = Reforma.get(params.id.toString().toLong())
-        return [reforma: reforma, det: generaDetallesSolicitudTecho(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia]
+
+        def uni = firmasService.requirentes(reforma.persona.unidad)
+
+        return [reforma: reforma, det: generaDetallesSolicitudTecho(reforma).det, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
     }
 
     /**
