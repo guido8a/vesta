@@ -68,7 +68,7 @@
                                 <g:each in="${firmasAvales}" var="f">
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         %{--<td>${f.concepto}</td>--}%
-                                        <td>${vesta.avales.SolicitudAval.get(f.idAccionVer)?.proceso?.nombre} ${f.id}</td>
+                                        <td>${vesta.avales.SolicitudAval.get(f.idAccionVer)?.proceso?.nombre} </td>
                                         <td>${vesta.avales.SolicitudAval.findById(f.idAccionVer)?.usuario?.unidad?.nombre}</td>
                                         <td style="text-align: center">
                                             <div class="btn-group btn-group-sm" role="group">
