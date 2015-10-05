@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Procesos de avales gasto permanente</title>
+        <title>Procesos de avales Gasto Permanente</title>
 
         <link rel="stylesheet" href="${resource(dir: 'css/custom', file: 'avales.css')}" type="text/css"/>
     </head>
@@ -123,7 +123,7 @@
 
                 };
 
-                <g:if test="${session.usuario.unidad.codigo in ["GAF", "DA", "DF"]}">
+                <g:if test="${session.perfil.codigo in ["GAF", "DA", "DF", "ASAF"]}">
                 items.fecha = {
                     label  : "Cambio de fechas",
                             icon   : "fa fa-clock-o",

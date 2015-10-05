@@ -1815,7 +1815,8 @@ class ReformaController extends Shield {
             reforma.estado = estadoSolicitado
             reforma.save(flush: true)
 
-            def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
+//            def perfilAnalistaPlan = Prfl.findByCodigo("ASPL")
+            def perfilAnalistaPlan = Prfl.findByCodigo("DP")
             def analistas = Sesn.findAllByPerfil(perfilAnalistaPlan).usuario
             def now = new Date()
             def usu = Persona.get(session.usuario.id)
