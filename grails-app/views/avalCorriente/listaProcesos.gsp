@@ -26,19 +26,40 @@
             </g:if>
         </div>
 
-        <table class="table table-bordered table-hover table-striped table-condensed" style="margin-top: 25px;">
-            <thead>
-                <tr>
-                    <th>Solicita</th>
-                    <th>Nombre del proceso</th>
-                    <th>Justificación</th>
-                    <th>Estado</th>
-                    <th style="width: 85px">Fecha</th>
-                    <th style="width: 85px">Inicio</th>
-                    <th style="width: 85px">Fin</th>
-                    <th>Monto</th>
-                </tr>
-            </thead>
+
+
+
+    <table class="table table-bordered table-hover table-striped table-condensed" style="margin-top: 25px;">
+        <thead>
+        <tr>
+            <th style="width: 270px">Solicita</th>
+            <th style="width: 220px">Nombre del proceso</th>
+            <th style="width: 210px">Justificación</th>
+            <th style="width: 110px">Estado</th>
+            <th style="width: 85px">Fecha</th>
+            <th style="width: 85px">Inicio</th>
+            <th style="width: 85px">Fin</th>
+            <th style="width: 85px">Monto</th>
+        </tr>
+        </thead>
+    </table>
+
+    <div class="row-fluid"  style="width: 99.7%;height: 600px;overflow-y: auto;float: right;">
+        <div class="span12">
+    <div style="width: 1120px; height: 600px;">
+        <table class="table table-bordered table-hover table-striped table-condensed">
+            %{--<thead>--}%
+                %{--<tr>--}%
+                    %{--<th>Solicita</th>--}%
+                    %{--<th>Nombre del proceso</th>--}%
+                    %{--<th>Justificación</th>--}%
+                    %{--<th>Estado</th>--}%
+                    %{--<th style="width: 85px">Fecha</th>--}%
+                    %{--<th style="width: 85px">Inicio</th>--}%
+                    %{--<th style="width: 85px">Fin</th>--}%
+                    %{--<th>Monto</th>--}%
+                %{--</tr>--}%
+            %{--</thead>--}%
             <tbody>
                 <g:if test="${procesos.size() > 0}">
                     <g:each in="${procesos}" var="proc">
@@ -63,6 +84,9 @@
                 </g:else>
             </tbody>
         </table>
+     </div>
+      </div>
+        </div>
 
         <script type="text/javascript">
             function createContextMenu(node) {
