@@ -13,15 +13,19 @@
         <ol>
             <li>
                 <strong>Unidad responsable (Gerencia - Dirección):</strong>
-                <g:if test="${unidades}">
-                    <g:if test="${unidades.gerencia.id != unidades.unidad.id}">
-                        ${unidades.gerencia} -
-                    </g:if>
-                    ${unidades.unidad}
-                </g:if>
-                <g:else>
-                    ${reforma.persona.unidad} (No está completo el código!)
-                </g:else>
+                %{--<g:if test="${unidades}">--}%
+                    %{--<g:if test="${unidades.gerencia.id != unidades.unidad.id}">--}%
+                        %{--${unidades.gerencia} ---}%
+                    %{--</g:if>--}%
+                    %{--${unidades.unidad}--}%
+                %{--</g:if>--}%
+                %{--<g:else>--}%
+                    %{--${reforma.persona.unidad} (No está completo el código!)--}%
+                %{--</g:else>--}%
+                ${uni}
+
+
+
             </li>
             <li>
                 <strong>Tipo de ${reforma.tipo == 'R' ? 'reforma' : 'ajuste'}:</strong>

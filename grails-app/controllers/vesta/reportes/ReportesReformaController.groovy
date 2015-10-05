@@ -6,6 +6,8 @@ import vesta.proyectos.ModificacionAsignacion
 
 class ReportesReformaController {
 
+    def firmasService
+
     /**
      * Acción que muestra el pdf de la solicitud de reforma existente
      */
@@ -17,7 +19,10 @@ class ReportesReformaController {
         } else {
             det = generaDetallesSolicitudExistente(reforma).det
         }
-        return [reforma: reforma, det: det, unidades: reforma.persona.unidad.unidadYGerencia]
+
+        def uni = firmasService.requirentes(reforma.persona.unidad)
+
+        return [reforma: reforma, det: det, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
     }
 
     /**
