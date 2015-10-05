@@ -21,13 +21,18 @@
 
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
-        <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group" role="group">
-                <g:link action="listaProcesos" class="btn btn-default">
-                    <i class="fa fa-bars"></i> Regresar a lista de procesos de avales
-                </g:link>
-            </div>
-        </div>
+
+       <g:if test="${session.perfil.codigo != 'GP' }">
+           <div class="btn-toolbar" role="toolbar">
+               <div class="btn-group" role="group">
+                   <g:link action="listaProcesos" class="btn btn-default">
+                       <i class="fa fa-bars"></i> Regresar a lista de procesos de avales
+                   </g:link>
+               </div>
+           </div>
+
+       </g:if>
+
 
         <elm:wizardAvalesCorrientes paso="1" proceso="${proceso}" a="${a}"/>
 
