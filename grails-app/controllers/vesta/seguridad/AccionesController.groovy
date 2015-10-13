@@ -23,11 +23,14 @@ class AccionesController extends Shield {
      * Acción que muestra una lista de acciones filtrando por módulo y tipo para editar las acciones
      */
     def acciones_ajax() {
-
+//        println "acciones_ajax params: $params"
         def pruebasInicio = new Date()
         def pruebasFin
+        def excede = false
 
-        def acciones = Accn.withCriteria {
+        def accn = Accn.createCriteria()
+        def acciones = accn.list(max: 60, offset: 0) {
+//            ilike("nombre", "%${params.criterio}%")
             eq("modulo", Modulo.get(params.id))
             not {
                 ilike("nombre", "%_ajax%")
@@ -35,15 +38,19 @@ class AccionesController extends Shield {
             }
             order("tipo", "asc")
             control {
+                ilike("nombre", "%${params.criterio}%")
                 order("nombre", "asc")
             }
             order("nombre", "asc")
         }
         def modulo = Modulo.list([sort: 'nombre'])
 
+        excede = (acciones.totalCount > 60)
+
         pruebasFin = new Date()
-        println "tiempo ejecución executeRecibir: ${TimeCategory.minus(pruebasFin, pruebasInicio)}"
-        return [acciones: acciones, modulo: modulo]
+//        println "tiempo acciones_ajax: ${TimeCategory.minus(pruebasFin, pruebasInicio)}, total reg: ${acciones.totalCount}"
+        params.criterio = params.criterio
+        return [acciones: acciones, modulo: modulo, excede: excede, total: acciones.totalCount]
     }
 
     /**
@@ -206,7 +213,9 @@ class AccionesController extends Shield {
     def permisos_ajax() {
         def perfil = Prfl.get(params.perf.toLong())
         def modulo = Modulo.get(params.id)
-        def acciones = Accn.withCriteria {
+        def accn = Accn.createCriteria()
+        def excede = true
+        def acciones = accn.list(max: 60, offset: 0) {
             eq("modulo", modulo)
             not {
                 ilike("nombre", "%_ajax%")
@@ -214,11 +223,18 @@ class AccionesController extends Shield {
             }
             order("tipo", "asc")
             control {
+                ilike("nombre", "%${params.criterio}%")
                 order("nombre", "asc")
             }
             order("nombre", "asc")
         }
-        return [acciones: acciones, perfil: perfil, modulo: modulo]
+
+        excede = (acciones.totalCount > 60)
+
+//        println "total reg: ${acciones.totalCount}"
+        params.criterio = params.criterio
+        return [acciones: acciones, perfil: perfil, modulo: modulo, excede: excede, total: acciones.totalCount]
+
     }
 
     /**

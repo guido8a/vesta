@@ -14,21 +14,25 @@
 
     <body>
 
-        <div class="alert alert-primary padding-sm">
+        <div>
             <div class="row margin-sm">
-                <div class="col-md-8">
-                    <p class="form-control-static">
-                        Seleccione el módulo y el perfil para fijar permisos
+                <div class="col-md-4">
+                    <p class="form-control-static text-info">
+                       Filtro: "Nombre del controlador como:"
                     </p>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-2" style="margin-left: -150px">
+                    <input type="text" id="criterio" value="${params.valor}" style="width: 120px" class="text-info">
+                </div>
+
+                <div class="col-md-3" style="text-align: right">
                     <p class="form-control-static">
                         Seleccione el perfil
                     </p>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <g:select name="perfil" class="form-control input-sm" from="${Prfl.list([sort: 'nombre'])}"
                               optionKey="id" optionValue="nombre"/>
                 </div>
@@ -91,7 +95,8 @@
                     url    : "${createLink(controller:'acciones', action:'permisos_ajax')}",
                     data   : {
                         id  : id,
-                        perf: perfil
+                        perf: perfil,
+                        criterio: $("#criterio").val()
                     },
                     success: function (msg) {
                         $("#permisos").html(msg);

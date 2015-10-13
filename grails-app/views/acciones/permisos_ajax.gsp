@@ -9,8 +9,13 @@
 }
 </style>
 
-<p>
+
+<p style="margin-top: -10px">
     Permisos asignados al perfil <strong>${perfil.nombre}</strong>
+<g:if test="${excede}">
+    <span class="text-danger" style="float: right">Existen ${total} registros en este módulo que cumplen con el criterio de búsqueda:"${params.criterio}"</span>
+</g:if>
+
 </p>
 
 <table id="tblPermisos" class="table table-bordered table-condensed table-hover">

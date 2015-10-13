@@ -3,13 +3,17 @@
 <script src="${resource(dir: 'js/plugins/fixed-header-table-1.3', file: 'jquery.fixedheadertable.js')}"></script>
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'js/plugins/fixed-header-table-1.3/css', file: 'defaultTheme.css')}"/>
 
+<g:if test="${excede}">
+    <p class="text-danger" style="margin-top: -10px">Existen ${total} registros en este módulo que cumplen con el criterio de búsqueda:"${params.criterio}"</p>
+</g:if>
+
 <table id="tblAcciones" class="table table-bordered table-condensed table-hover">
     <thead>
         <tr>
             <th width="19%">Acción</th>
             <th width="27%">
                 Nombre
-                <a href="#" title="Guardar todos los nombre modificados" class="btn btn-save-desc btn-success btn-sm pull-right">
+                <a href="#" title="Guardar todos los nombres modificados" class="btn btn-save-desc btn-success btn-sm pull-right">
                     <i class="fa fa-save"></i>
                 </a>
             </th>

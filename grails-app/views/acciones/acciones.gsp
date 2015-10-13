@@ -5,7 +5,7 @@
   Time: 04:55 PM
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.seguridad.Prfl" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main"/>
@@ -14,9 +14,27 @@
 
     <body>
 
-        <div class="alert alert-primary padding-sm">
-            Seleccione el módulo para editar acciones y procesos
+    <div>
+        <div class="row margin-sm">
+        <div class="col-md-6">
+                <p class="form-control-static">
+                    Seleccione el módulo para editar acciones y procesos
+               </p>
         </div>
+
+
+        <div class="col-md-3">
+                <p class="form-control-static text-info">
+                    Nombre del controlador como:
+                </p>
+        </div>
+
+        <div class="col-md-3" style="margin-left: -100px">
+                <input type="text" id="criterio" value="${params.valor}" style="width: 120px" class="text-info">
+        </div>
+        </div>
+    </div>
+
 
         <ul class="nav nav-pills corner-all" style="border: solid 1px #cccccc; margin-bottom: 10px;">
             <g:each in="${modulos}" var="modulo">
@@ -26,6 +44,7 @@
             </g:each>
         %{--<li role="presentation" class="active"><a href="#">Home</a></li>--}%
         </ul>
+
 
         <div class="well" id="acciones">
 
@@ -59,7 +78,8 @@
                         type   : "POST",
                         url    : "${createLink(controller:'acciones', action:'acciones_ajax')}",
                         data   : {
-                            id: id
+                            "id": id,
+                            "criterio": $("#criterio").val()
                         },
                         success: function (msg) {
                             $("#acciones").html(msg);
