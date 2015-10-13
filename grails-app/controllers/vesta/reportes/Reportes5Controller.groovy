@@ -21,10 +21,15 @@ import vesta.poaCorrientes.Tarea
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.ModificacionAsignacion
 import vesta.proyectos.Proyecto
+import vesta.utilitarios.BuscadorService
 
 class Reportes5Controller {
 
 //    def index() {}
+
+    def dbConnectionService
+    def buscadorService
+
 
     def reporteRecursosPdf() {
 
@@ -754,6 +759,49 @@ class Reportes5Controller {
         params.url = urlPdf
         params.filename = pdfFileName
         redirect(controller:'pdf',action:'pdfLink', params: params)
+    }
+
+
+    def pruebaBuscador () {
+        def cn = dbConnectionService.getConnection()
+
+        params.old = params.criterio
+        params.criterio = buscadorService.limpiaCriterio(params.criterio)
+
+        def sql = armaSql(params)
+        def res = cn.rows(sql)
+//        println "registro retornados del sql: ${res.size()}"
+//        println ("sql :  " + sql)
+        params.criterio = params.old
+//        println("res " + res)
+        return [res: res, params: params]
+    }
+
+    def armaSql(params){
+        def campos = buscadorService.parametros()
+        def operador = buscadorService.operadores()
+
+
+        def sqlSelect = "select prsnnmbr,prsnapll, prsncdla, prsndire " +
+                        "from prsn "
+        def sqlWhere = "where prsn__id is not null "
+
+        println "llega params: $params"
+        params.nombre = "Código"
+        if(campos.find {it.campo == params.buscador}?.size() > 0) {
+            def op = operador.find {it.valor == params.operador}
+//            println "op: $op"
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+//        println "txWhere: $sqlWhere"
+//        println "sql armado: sqlSelect: ${sqlSelect} \n sqlWhere: ${sqlWhere} \n sqlOrder: ${sqlOrder}"
+        //retorna sql armado:
+//        "$sqlSelect $sqlWhere $sqlOrder".toString()
+        "$sqlSelect $sqlWhere ".toString()
+    }
+
+    def prueba () {
+
     }
 
 

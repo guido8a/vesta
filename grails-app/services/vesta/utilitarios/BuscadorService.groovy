@@ -343,4 +343,50 @@ class BuscadorService {
     }
 
 
+    def parametros () {
+            [[campo: 'prsnnmbr', nombre: 'Nombre',         operador: "contiene:contiene, inicia:inicia con"],
+             [campo: 'prsnapll', nombre: 'Apellido',       operador: "contiene:contiene"],
+             [campo: 'prsncdla', nombre: 'Cedula',         operador: "contiene:contiene"],
+             [campo: 'prsndire', nombre: 'Direccion',      operador: "contiene:contiene"],
+             ]
+    }
+
+    def operadores() {   //operadores usados en la opción operador
+        [[valor: 'contiene', operador: 'ilike', strInicio: "'%", strFin: "%'"],
+         [valor: 'inicia', operador: 'ilike', strInicio: "'", strFin: "%'"],
+         [valor: 'eq', operador: '=', strInicio: '', strFin: ''],
+         [valor: 'gt', operador: '>', strInicio: '', strFin: ''],
+         [valor: 'gteq', operador: '>=', strInicio: '', strFin: ''],
+         [valor: 'lt', operador: '<', strInicio: '', strFin: ''],
+         [valor: 'lteq', operador: '<=', strInicio: '', strFin: ''],
+         [valor: 'gtfc', operador: '>', strInicio: "'", strFin: "'"],
+         [valor: 'ltfc', operador: '<', strInicio: "'", strFin: "'"]
+        ]
+    }
+
+    def limpiaCriterio(criterio) {
+        if (!criterio) {
+            criterio = ""
+        }
+//        println "limpiaCriterio: entra: "+criterio
+        criterio = criterio.toLowerCase()
+        criterio = criterio.replaceAll(";", "")
+        criterio = criterio.replaceAll(":", "")
+        criterio = criterio.replaceAll("select", "")
+        criterio = criterio.replaceAll("\\*", "")
+        criterio = criterio.replaceAll("#", "")
+//        criterio = criterio.replaceAll("%", "")
+//        criterio = criterio.replaceAll("/", "")
+        criterio = criterio.replaceAll("drop", "")
+        criterio = criterio.replaceAll("table", "")
+        criterio = criterio.replaceAll("from", "")
+        criterio = criterio.replaceAll("'", "")
+        criterio = criterio.replaceAll('"', "")
+        criterio = criterio.replaceAll("\\\\", "")
+        criterio = criterio.trim()
+//        println "sale: "+criterio
+        return criterio
+    }
+
+
 }

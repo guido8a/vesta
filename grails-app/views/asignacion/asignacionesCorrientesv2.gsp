@@ -90,7 +90,7 @@
                     <tr class="odd">
                         <g:hiddenField name="asignacionId" value=""/>
                         <td>
-                            <g:select name="responsable" id="idResponsable" from="${vesta.parametros.UnidadEjecutora.list()}" optionKey="id" optionValue="nombre" style="width: 350px" class="many-to-one form-control input-sm"/>
+                            <g:select name="responsable" id="idResponsable" from="${vesta.parametros.UnidadEjecutora.list([sort: 'nombre'])}" optionKey="id" optionValue="nombre" style="width: 350px" class="many-to-one form-control input-sm"/>
                         </td>
                         %{--<td class="actividad">--}%
                             %{--<g:textArea name="asignacion_name" style="width: 270px;height: 60px; resize: none" id="asignacion_txt" maxlength="150" class="form-control input-sm"/>--}%

@@ -71,13 +71,13 @@
         <g:set var="nov" value="${0}"/>
         <g:set var="dic" value="${0}"/>
         <g:set var="asignado" value="0"/>
-        <g:each in="${corrientes}" var="asg" status="i">
 
+        <g:each in="${corrientes}" var="asg" status="i">
             <g:set var="totalFila" value="${0}"/>
             <g:set var="totalMeses" value="${0}"/>
 
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                <td colspan="15"><b>Programa:</b>${asg.programa} <b>Actividad:</b> ${asg.actividad} <b>Partida:</b> ${asg.presupuesto.descripcion}
+                <td colspan="15">%{--<b>Programa:</b>${asg?.programa?.descripcion}--}% <b>Actividad:</b> ${asg?.tarea?.actividad?.descripcion} <b>Partida:</b> ${asg.presupuesto.descripcion}
                 </td>
             </tr>
 

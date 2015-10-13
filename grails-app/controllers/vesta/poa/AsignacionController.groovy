@@ -1275,7 +1275,7 @@ class AsignacionController extends Shield {
         def ini = 0
 
         while(ini != 12){
-            println("entrof " + ini)
+//            println("entrof " + ini)
             def nuevaProgramacion = new ProgramacionAsignacion();
 
             nuevaProgramacion.asignacion = asigna
@@ -1734,6 +1734,7 @@ class AsignacionController extends Shield {
                 or{
                     ilike("numero", '5%')
                     ilike("numero", '7%')
+                    ilike("numero", '8%')
                 }
                 order("numero","asc")
             }
