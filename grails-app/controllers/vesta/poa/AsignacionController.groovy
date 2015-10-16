@@ -1780,7 +1780,7 @@ class AsignacionController extends Shield {
                 "from prsp"
         def sqlWhere = "where (prspnmro ilike '5%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
 
-        def sqlOrder = "order by prspnmro"
+        def sqlOrder = "order by prspnmro limit 20"
 
 //        println "llega params: $params"
 //        params.nombre = "Código"
