@@ -20,8 +20,8 @@
                 <td>
                     ${partida?.descripcion}
                 </td>
-                <td>
-                    <a href="#" id="btnSel" class="btn btn-success btn-sm btnP" title="Seleccionar" prt="${partida?.id}" num="${partida?.numero}" des="${partida?.descripcion}"><i class="fa fa-check"></i></a>
+                <td style="text-align: center">
+                    <a href="#" id="btnSel"  class="btn btn-success btn-sm btnP" title="Seleccionar" prt="${partida?.id}" num="${partida?.numero}" des="${partida?.descripcion}"><i class="fa fa-check"></i></a>
                 </td>
             </tr>
         </g:each>

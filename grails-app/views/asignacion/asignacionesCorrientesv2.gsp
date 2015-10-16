@@ -158,45 +158,65 @@
 
         <script type="text/javascript">
 
+            //buscador funcionando
+            %{--$("#prsp_id").click(function () {--}%
+                %{--$.ajax({--}%
+                    %{--type: "POST",--}%
+                    %{--url     : "${createLink(controller: 'asignacion', action:'partida_ajax')}",--}%
+                    %{--data    : {--}%
+                        %{--anio : $("#anio").val(),--}%
+                        %{--objetivo: $("#objetivo").val(),--}%
+                        %{--macro   : $("#mac").val(),--}%
+                        %{--acti:   $("#act").val(),--}%
+                        %{--id : $("#tar").val(),--}%
+                        %{--fuente: $("#fuente").val()--}%
+                    %{--},--}%
+                    %{--success: function(msg) {--}%
+                        %{--bootbox.dialog ({--}%
+                            %{--id: "dlgPartida",--}%
+                            %{--title: "Partidas",--}%
+                            %{--message: msg,--}%
+                            %{--buttons : {--}%
+                                %{--cancelar : {--}%
+                                    %{--id         :"btnClose",--}%
+                                    %{--label     : "Cancelar",--}%
+                                    %{--className : "btn-primary",--}%
+                                    %{--callback  : function () {--}%
+                                    %{--}--}%
+                                %{--}--}%
+                            %{--}--}%
+                        %{--})--}%
+                    %{--}--}%
+                %{--});--}%
+            %{--});--}%
 
-            $("#prsp_id").click(function () {
-                $.ajax({
-                    type: "POST",
-                    url     : "${createLink(controller: 'asignacion', action:'partida_ajax')}",
-                    data    : {
-                        anio : $("#anio").val(),
-                        objetivo: $("#objetivo").val(),
-                        macro   : $("#mac").val(),
-                        acti:   $("#act").val(),
-                        id : $("#tar").val(),
-                        fuente: $("#fuente").val()
+
+
+            $("#prsp_id").click(function(){
+
+                $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidas')}",
+                    data     : {
+
                     },
-                    success: function(msg) {
-                        bootbox.dialog ({
-                            id: "dlgPartida",
-                            title: "Partidas",
-
-//                        class: "modal-lg",
+                    success  : function (msg) {
+                        var b = bootbox.dialog({
+                            id: "dlgPartidas",
+                            title: "Buscador Partidas",
+                            class   : "modal-lg",
                             message: msg,
                             buttons : {
                                 cancelar : {
-                                    id         :"btnClose",
-                                    label     : "Cancelar",
+                                    label : "Cancelar",
                                     className : "btn-primary",
                                     callback  : function () {
                                     }
                                 }
-//                              guardar : {
-//                                    label     : "Aceptar",
-//                                    className : "btn-success",
-//                                    callback  : function () {
-//                                    }
-//                                }
                             }
                         })
                     }
                 });
             });
+
 
 
             totales($("#objetivo").val(), $("#idResponsable").val());

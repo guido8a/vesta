@@ -11,11 +11,12 @@ l<%--
     <tr data-res="${asg?.unidad?.id}" data-asi="${asg?.actividad}" data-par="${asg?.presupuesto?.numero + " - " + asg?.presupuesto?.descripcion}"
         data-parId="${asg?.presupuesto?.id}" data-fue="${asg?.fuente?.id}" data-val="${asg?.planificado}" data-id="${asg?.id}" data-obj="${asg?.tarea?.actividad?.macroActividad?.objetivoGastoCorriente?.id}"
         data-mac="${asg?.tarea?.actividad?.macroActividad?.id}" data-act="${asg?.tarea?.actividad?.id}" data-tar="${asg?.tarea?.id}">
+
         <td style="width: 200px">${asg?.unidad?.nombre}</td>
         <td style="width: 200px" title="${objTitle}">${obj}</td>
         <td style="width: 150px">${asg?.tarea?.actividad?.macroActividad?.descripcion}</td>
         <td style="width: 150px">${asg?.tarea?.actividad?.descripcion}</td>
-        <td style="width: 100px">${asg?.tarea?.descripcion}</td>
+        <td style="width: 100px">${asg?.tarea?.descripcion?.substring(0,70)}</td>
         %{--<td style="width: 250px">${asg?.actividad}</td>--}%
         <td style="width: 80px;">${asg?.presupuesto?.numero}</td>
         <td style="width: 100px;">${asg?.presupuesto?.descripcion}</td>

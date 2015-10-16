@@ -351,6 +351,12 @@ class BuscadorService {
              ]
     }
 
+    def parametrosPartidas () {
+        [[campo: 'prspnmro', nombre: 'Número',        operador: "contiene:contiene"],
+         [campo: 'prspdscr', nombre: 'Partida',       operador: "contiene:contiene"],
+        ]
+    }
+
     def operadores() {   //operadores usados en la opción operador
         [[valor: 'contiene', operador: 'ilike', strInicio: "'%", strFin: "%'"],
          [valor: 'inicia', operador: 'ilike', strInicio: "'", strFin: "%'"],

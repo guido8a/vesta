@@ -28,7 +28,10 @@ import vesta.seguridad.Shield
 class AsignacionController extends Shield {
 
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
+
     def buscadorService
+    def dbConnectionService
+
     /**
      * Acción que redirecciona a la lista (acción "list")
      */
@@ -1752,5 +1755,47 @@ class AsignacionController extends Shield {
         return [ partidas: partidas]
 
     }
+
+    def buscadorPartidas () {
+        def cn = dbConnectionService.getConnection()
+
+        params.old = params.criterio
+        params.criterio = buscadorService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlPartidas(params)
+        def res = cn.rows(sql)
+//        println "registro retornados del sql: ${res.size()}"
+        println ("sql :  " + sql)
+        params.criterio = params.old
+//        println("res " + res)
+        return [res: res, params: params]
+    }
+
+    def armaSqlPartidas(params){
+        def campos = buscadorService.parametrosPartidas()
+        def operador = buscadorService.operadores()
+
+
+        def sqlSelect = "select prsp__id, prspnmro, prspdscr  " +
+                "from prsp"
+        def sqlWhere = "where (prspnmro ilike '5%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
+
+        def sqlOrder = "order by prspnmro"
+
+//        println "llega params: $params"
+//        params.nombre = "Código"
+
+        if(campos.find {it.campo == params.buscador}?.size() > 0) {
+            def op = operador.find {it.valor == params.operador}
+            println "op: $op"
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+//        println "txWhere: $sqlWhere"
+//        println "sql armado: sqlSelect: ${sqlSelect} \n sqlWhere: ${sqlWhere} \n sqlOrder: ${sqlOrder}"
+        //retorna sql armado:
+
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
 
 }
