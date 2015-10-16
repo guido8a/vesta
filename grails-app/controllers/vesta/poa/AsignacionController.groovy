@@ -1765,7 +1765,7 @@ class AsignacionController extends Shield {
         def sql = armaSqlPartidas(params)
         def res = cn.rows(sql)
 //        println "registro retornados del sql: ${res.size()}"
-        println ("sql :  " + sql)
+//        println ("sql :  " + sql)
         params.criterio = params.old
 //        println("res " + res)
         return [res: res, params: params]
@@ -1780,14 +1780,14 @@ class AsignacionController extends Shield {
                 "from prsp"
         def sqlWhere = "where (prspnmro ilike '5%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
 
-        def sqlOrder = "order by prspnmro limit 20"
+        def sqlOrder = "order by prspnmro limit 40"
 
 //        println "llega params: $params"
 //        params.nombre = "Código"
 
         if(campos.find {it.campo == params.buscador}?.size() > 0) {
             def op = operador.find {it.valor == params.operador}
-            println "op: $op"
+//            println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
 //        println "txWhere: $sqlWhere"
