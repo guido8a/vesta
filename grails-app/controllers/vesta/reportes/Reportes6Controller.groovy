@@ -912,7 +912,7 @@ class Reportes6Controller {
 
     def reporteAvalesPermanentesExcel() {
 
-        println("params excel p " + params)
+        println("params excel: " + params)
 
 
         def anio = Anio.get(params.anio)
