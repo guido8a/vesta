@@ -507,7 +507,7 @@ class AsignacionController extends Shield {
      * Acción
      */
     def creaHijo = {
-//        println "parametros creaHijo:" + params
+        println "parametros creaHijo:" + params
         if (params.id) {
             def nueva = new Asignacion()
             def valor = params.valor.toFloat()
@@ -558,7 +558,7 @@ class AsignacionController extends Shield {
      * Acción
      */
     def creaHijoPrio = {
-//        println "parametros creaHijo:" + params
+        println "parametros creaHijo:" + params
         if (params.id) {
             def nueva = new Asignacion()
             def valor = params.valor.toFloat()

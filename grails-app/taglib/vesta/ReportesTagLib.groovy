@@ -1,6 +1,7 @@
 package vesta
 
 import vesta.parametros.UnidadEjecutora
+import vesta.seguridad.Persona
 
 /**
  * Tags para facilitar la creación de reportes (HTML -> PDF)
@@ -164,7 +165,7 @@ class ReportesTagLib {
      * @param title el título del reporte
      */
     def headerReporte = { attrs ->
-        println("AQUIF   " + attrs)
+//        println("AQUIF   " + attrs)
         def title = attrs.title ?: ""
         def titulo = attrs.titulo ?: ""
         def unidadEjecutora
@@ -183,9 +184,16 @@ class ReportesTagLib {
 
 //        println "....3"
 
-        println("ue " + unidadEjecutora)
-        println("ua " + unidadAutonoma)
-        println("anio " + attrs.anio)
+//        println("ue " + unidadEjecutora)
+//        println("ua " + unidadAutonoma)
+//        println("anio " + attrs.anio)
+
+
+        def gaf = UnidadEjecutora.findByCodigo("GAF")
+        def direccionesGaf = UnidadEjecutora.findAllByPadre(gaf).codigo
+
+//        println("direcciones gaf " + direccionesGaf)
+
 
         def subtitulo = attrs.subtitulo ?: ""
 
@@ -250,7 +258,12 @@ class ReportesTagLib {
                     if(attrs.title == 'Aval de POA de gasto permanente'){
                         html += "<td style='background: #008080;'>${attrs.anio}-GAF</td>" + "\n"
                     }else{
-                        html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+                        if(direccionesGaf.contains(unidadEjecutora.codigo)){
+                            html += "<td style='background: #008080;'>${attrs.anio}-${unidadEjecutora?.codigo}</td>" + "\n"
+                        }else{
+                            html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+                        }
+
                     }
                 }else{
                     html += "<td style='background: #008080;'>${attrs.anio}-GPE</td>" + "\n"
