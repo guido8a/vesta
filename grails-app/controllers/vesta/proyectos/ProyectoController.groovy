@@ -95,12 +95,13 @@ class ProyectoController extends Shield {
         def proyectoInstanceList = getList(params, false)
         def proyectoInstanceCount = getList(params, true).size()
 
-        def anios = Asignacion.withCriteria {
-            isNotNull("marcoLogico")
-            projections {
-                distinct "anio"
-            }
-        }
+        def sql = "select distinct anio.anio__id id, anioanio anio from anio, asgn " +
+                "where asgn.anio__id = anio.anio__id and mrlg__id is not null order by anioanio "
+
+        def cn = dbConnectionService.getConnection()
+
+        def anios = cn.rows(sql.toString())
+
         def usu = Persona.get(session.usuario.id)
 
         return [proyectoInstanceList: proyectoInstanceList, proyectoInstanceCount: proyectoInstanceCount, anios: anios, usu: usu]

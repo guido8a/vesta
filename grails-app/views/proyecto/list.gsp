@@ -100,6 +100,7 @@
                         <th>Descripción</th>
                         <th>Programa</th>
                         <g:each in="${anios}" var="anio">
+                            %{--<th>${anio?.anio}</th>--}%
                             <th>${anio?.anio}</th>
                         </g:each>
                         <th>Total Planificado</th>
@@ -142,7 +143,7 @@
                                 <g:each in="${anios}" var="anio">
                                     <td>
                                         %{--*--}%
-                                        <g:formatNumber number="${proyectoInstance.getValorPlanificadoAnio(anio)}" type="currency" currencySymbol=""/>
+                                        <g:formatNumber number="${proyectoInstance.getValorPlanificadoAnio(Anio.get(anio.id))}" type="currency" currencySymbol=""/>
                                     </td>
                                 </g:each>
 
