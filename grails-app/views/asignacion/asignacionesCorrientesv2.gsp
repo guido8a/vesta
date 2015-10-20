@@ -510,7 +510,7 @@
 
 
                 $("#btnProgramacion").click(function () {
-                    location.href = "${createLink(controller: 'asignacion', action: 'programacionAsignacionesCorrientes')}?id=" + $("#idResponsable").val() + "&anio=" + ${actual?.id}
+                    location.href = "${createLink(controller: 'asignacion', action: 'programacionAsignacionesCorrientes')}?id=" + $("#idResponsable").val() + "&anio=" + ${actual?.id};
                 });
 
                 $("#btnReporte").click(function () {
@@ -527,6 +527,13 @@
                     var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteGastoPermanenteUnidad')}?objetivo=" + idObjetivo + "Wunidad=" + idUnidad + "Wanio=" + ${actual?.id};
                     var pdfFileName = "reportePoaxArea";
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + urlPdf + "&filename=" + pdfFileName;
+                });
+
+                $("#btnReporteExcel").click(function () {
+                    var idObjetivo = $("#objetivo").val();
+                    var idUnidad = $("#idResponsable").val();
+                    location.href =   "${createLink(controller: 'reportes6', action: 'reporteAvalesPermanentesExcel')}?objetivo=" + idObjetivo + "&unidad=" + idUnidad + "&anio=" + ${actual?.id};
+
                 });
 
 

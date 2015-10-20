@@ -9,12 +9,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
 import vesta.avales.Aval
 import vesta.avales.EstadoAval
 import vesta.avales.ProcesoAsignacion
+import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Mes
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.poa.ProgramacionAsignacion
+import vesta.poaCorrientes.ActividadCorriente
+import vesta.poaCorrientes.MacroActividad
+import vesta.poaCorrientes.ObjetivoGastoCorriente
+import vesta.poaCorrientes.Tarea
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.MetaBuenVivirProyecto
 import vesta.proyectos.Proyecto
@@ -903,4 +908,213 @@ class Reportes6Controller {
         anios = anios.sort()
         return [anio: anio, data: data, anios: anios, meses: meses, totales: totales]
     }
+
+
+    def reporteAvalesPermanentesExcel() {
+
+//        println("params excel p " + params)
+
+
+        def anio = Anio.get(params.anio)
+        def asignaciones = []
+
+        if (params.objetivo != '-1') {
+//            println("entro if")
+            def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+            def unidad = UnidadEjecutora.get(params.unidad)
+            def macros = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+            def actividades = ActividadCorriente.findAllByMacroActividadInList(macros)
+            def tareas = Tarea.findAllByActividadInList(actividades)
+            asignaciones = Asignacion.findAllByTareaInListAndAnioAndUnidad(tareas, anio, unidad, [sort: 'unidad', order: 'unidad'])
+
+        }else{
+//            println("entro else")
+            asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', order: 'unidad'])
+        }
+
+
+        def iniRow = 0
+        def iniCol = 1
+
+        def curRow = iniRow
+        def curCol = iniCol
+
+        try {
+
+            Workbook wb = new Workbook()
+            Sheet sheet = wb.createSheet("Reporte de Avales Permanentes")
+
+            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
+            CellStyle styleNumber = estilos.styleNumber
+            CellStyle styleDate = estilos.styleDate
+
+
+            def titulo = "REPORTE DE AVALES PERMANENTES"
+            def subtitulo = ""
+            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
+
+            Row rowHeader = sheet.createRow((short) curRow)
+            curRow++
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("RESPONSABLE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 10000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("OBJETIVO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 12000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("MACRO ACTIVIDAD")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 8000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ACTIVIDAD")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 10000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("TAREA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 8000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("#")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PARTIDA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 8000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("FUENTE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PRESUPUESTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
+            def totalCols = curCol
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols, false)
+            def totalPriorizado = 0
+
+            asignaciones.each{ d ->
+
+                curCol = iniCol
+                Row tableRow = sheet.createRow((short) curRow)
+                Cell cellTabla = tableRow.createCell((short) curCol)
+
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.unidad?.nombre)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.tarea?.actividad?.macroActividad?.objetivoGastoCorriente?.descripcion)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.tarea?.actividad?.macroActividad?.descripcion)
+                cellTabla.setCellStyle(styleDate)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.tarea?.actividad?.descripcion)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.tarea?.descripcion)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.presupuesto?.numero)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.presupuesto?.descripcion)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.fuente?.codigo)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.planificado)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
+
+                curRow++
+
+            }
+
+
+//            curCol = iniCol
+//            Row totalRow = sheet.createRow((short) curRow)
+//            Cell cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("TOTAL")
+//            cellFooter.setCellStyle(styleFooterCenter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("")
+//            cellFooter.setCellStyle(styleFooterCenter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("")
+//            cellFooter.setCellStyle(styleFooterCenter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("")
+//            cellFooter.setCellStyle(styleFooterCenter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue(totalPriorizado)
+//            cellFooter.setCellStyle(styleFooter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("")
+//            cellFooter.setCellStyle(styleFooter)
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    curRow, //first row (0-based)
+                    curRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 3 //last column  (0-based)
+            ))
+
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "reporte_avales_perma.xlsx"
+            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", header)
+            wb.write(output)
+            output.flush()
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
 }

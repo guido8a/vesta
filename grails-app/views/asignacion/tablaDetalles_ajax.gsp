@@ -16,7 +16,13 @@ l<%--
         <td style="width: 200px" title="${objTitle}">${obj}</td>
         <td style="width: 150px">${asg?.tarea?.actividad?.macroActividad?.descripcion}</td>
         <td style="width: 150px">${asg?.tarea?.actividad?.descripcion}</td>
-        <td style="width: 100px">${asg?.tarea?.descripcion?.substring(0,70)}</td>
+        <g:if test="${asg?.tarea?.descripcion}">
+            %{--<td style="width: 100px">${asg?.tarea?.descripcion?.size() > 70 ? asg?.tarea?.descripcion?.substring(0,70) : asg?.tarea?.descripcion}</td> --}%
+            <td style="width: 100px">${asg?.tarea?.descripcion?.size() < 70 ?: asg?.tarea?.descripcion?.substring(0,70)}</td>
+        </g:if>
+        <g:else>
+            <td></td>
+        </g:else>
         %{--<td style="width: 250px">${asg?.actividad}</td>--}%
         <td style="width: 80px;">${asg?.presupuesto?.numero}</td>
         <td style="width: 100px;">${asg?.presupuesto?.descripcion}</td>
