@@ -16,8 +16,9 @@ environments {
         dataSource {
             dbCreate = "update"
 //            url = "jdbc:postgresql://10.0.0.2:5432/vesta_curso"
-            url = "jdbc:postgresql://10.0.0.2:5432/vesta"
+//            url = "jdbc:postgresql://10.0.0.2:5432/vesta"
 //            url = "jdbc:postgresql://10.0.0.2:5432/vesta_corr"
+            url = "jdbc:postgresql://10.0.0.2:5432/vesta_prdc"
             username = "postgres"
             password = "postgres"
         }
