@@ -752,6 +752,9 @@ class Reportes5Controller {
     }
 
     def reportePOAExcelCorr() {  // poner etiqueta: Planificación operativa anual - POA
+        def now = new Date()
+        params.anio = Anio.findByAnio(now.format("yyyy")).id
+        params.objetivo = '-1'
         def urlExcel = "${createLink(controller: 'reportes6', action: 'reporteAvalesPermanentesExcel')}";
         redirect(controller:'reportes6',action:'reporteAvalesPermanentesExcel', params: params)
     }
