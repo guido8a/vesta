@@ -563,7 +563,7 @@
                             }
                         },
                         priorizado : {
-                            label            : "Reporte Priorizado Excel",
+                            label            : "Reporte de Asignaciones Excel",
                             icon             : "fa fa-print",
                             separator_before : true,
                             action           : function ($element) {

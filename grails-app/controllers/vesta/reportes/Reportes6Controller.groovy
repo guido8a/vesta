@@ -1116,7 +1116,7 @@ class Reportes6Controller {
         try {
 
             Workbook wb = new Workbook()
-            Sheet sheet = wb.createSheet("Reporte de priorización por actividades y fuente de financiamiento")
+            Sheet sheet = wb.createSheet("asignaciones")
 
             def estilos = ReportesNuevosExcelController.getEstilos(wb)
             CellStyle styleHeader = estilos.styleHeader
@@ -1127,7 +1127,7 @@ class Reportes6Controller {
             CellStyle styleDate = estilos.styleDate
 
 
-            def titulo = "REPORTE DE PRIORIZACIÓN POR ACTIVIDADES Y FUENTE DE FINANCIAMIENTO"
+            def titulo = "REPORTE DE ASIGNACIONES POR ACTIVIDADES Y FUENTE DE FINANCIAMIENTO"
             def subtitulo = "PROYECTO: " + proyecto.nombre.toUpperCase()
 
             curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
