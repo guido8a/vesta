@@ -25,6 +25,7 @@ import vesta.proyectos.MetaBuenVivirProyecto
 import vesta.proyectos.Proyecto
 
 class Reportes6Controller {
+    def dbConnectionService
 
     def disponibilidadFuenteXlsx() {
         def fuente = Fuente.get(params.fnt.toLong())
@@ -1064,38 +1065,302 @@ class Reportes6Controller {
 
             }
 
+            sheet.addMergedRegion(new CellRangeAddress(
+                    curRow, //first row (0-based)
+                    curRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 3 //last column  (0-based)
+            ))
 
-//            curCol = iniCol
-//            Row totalRow = sheet.createRow((short) curRow)
-//            Cell cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue("TOTAL")
-//            cellFooter.setCellStyle(styleFooterCenter)
-//
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue("")
-//            cellFooter.setCellStyle(styleFooterCenter)
-//
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue("")
-//            cellFooter.setCellStyle(styleFooterCenter)
-//
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue("")
-//            cellFooter.setCellStyle(styleFooterCenter)
-//
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue(totalPriorizado)
-//            cellFooter.setCellStyle(styleFooter)
-//
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue("")
-//            cellFooter.setCellStyle(styleFooter)
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "reporte_avales_perma.xlsx"
+            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", header)
+            wb.write(output)
+            output.flush()
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    def reportePriorizacion() {
+
+//        println("params prio: " + params)
+
+        def proyecto = Proyecto.get(params.id)
+
+
+        def cn = dbConnectionService.getConnection()
+
+        def sql = "select cm.mrlgnmcm, cm.mrlgobjt componente, ac.mrlgnmro num, ac.mrlgobjt actividad,prspnmro, asgnplan, fnte.fntecdgo, fntedscr " +
+                "from mrlg cm, mrlg ac, asgn, c_fnte fnte, prsp " +
+                "where cm.proy__id = ${proyecto.id} and ac.mrlgpdre = cm.mrlg__id and " +
+                "cm.tpel__id = 2 and ac.tpel__id = 3 and" +
+                " asgn.mrlg__id = ac.mrlg__id and" +
+                " fnte.fnte__id = asgn.fnte__id and prsp.prsp__id = asgn.prsp__id" +
+                " order by cm.mrlgnmcm, ac.mrlgnmro"
+
+
+//        println("sql " + sql)
+
+
+        def iniRow = 0
+        def iniCol = 1
+
+        def curRow = iniRow
+        def curRow2 = iniRow + 1
+        def curCol = iniCol
+
+        try {
+
+            Workbook wb = new Workbook()
+            Sheet sheet = wb.createSheet("Reporte de priorización por actividades y fuente de financiamiento")
+
+            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
+            CellStyle styleNumber = estilos.styleNumber
+            CellStyle styleDate = estilos.styleDate
+
+
+            def titulo = "REPORTE DE PRIORIZACIÓN POR ACTIVIDADES Y FUENTE DE FINANCIAMIENTO"
+            def subtitulo = "PROYECTO: " + proyecto.nombre.toUpperCase()
+
+            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
+            Row rowHeader = sheet.createRow((short) curRow)
+            curRow++
+
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("COMPONENTE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("#")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ACTIVIDAD")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 16000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PARTIDA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PLANIFICADO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("001 RECURSOS FISCALES")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("998 ANTICIPO DE EJERCICIOS ANTERIORES")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("101 CANJE DE DEUDA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("002 AUTOGESTIÓN")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
+
+            def totalCols = curCol
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols, true)
+            def totalPriorizado = 0
+            def total1 = 0
+            def total2 = 0
+            def total3 = 0
+            def total4 = 0
+
+
+            cn.eachRow(sql.toString()) { d ->
+
+                curCol = iniCol
+                Row tableRow = sheet.createRow((short) curRow)
+                Cell cellTabla = tableRow.createCell((short) curCol)
+
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.componente)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.num)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.actividad)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.prspnmro)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.asgnplan)
+                cellTabla.setCellStyle(styleNumber)
+                totalPriorizado += d?.asgnplan
+                curCol++
+
+                if(d?.fntecdgo == '001'){
+                    cellTabla = tableRow.createCell((short) curCol)
+                    cellTabla.setCellValue(d?.asgnplan)
+                    cellTabla.setCellStyle(styleNumber)
+                    total1 += d?.asgnplan
+                    curCol++
+                    cellTabla = tableRow.createCell((short) curCol)
+                    cellTabla.setCellValue("")
+                    cellTabla.setCellStyle(styleNumber)
+                    curCol++
+                    cellTabla = tableRow.createCell((short) curCol)
+                    cellTabla.setCellValue("")
+                    cellTabla.setCellStyle(styleNumber)
+                    curCol++
+                    cellTabla = tableRow.createCell((short) curCol)
+                    cellTabla.setCellValue("")
+                    cellTabla.setCellStyle(styleNumber)
+                    curCol++
+                }else{
+                    if(d?.fntecdgo == '998'){
+                        cellTabla = tableRow.createCell((short) curCol)
+                        cellTabla.setCellValue("")
+                        cellTabla.setCellStyle(styleNumber)
+                        curCol++
+                        cellTabla = tableRow.createCell((short) curCol)
+                        cellTabla.setCellValue(d?.asgnplan)
+                        cellTabla.setCellStyle(styleNumber)
+                        total2 += d?.asgnplan
+                        curCol++
+                        cellTabla = tableRow.createCell((short) curCol)
+                        cellTabla.setCellValue("")
+                        cellTabla.setCellStyle(styleNumber)
+                        curCol++
+                        cellTabla = tableRow.createCell((short) curCol)
+                        cellTabla.setCellValue("")
+                        cellTabla.setCellStyle(styleNumber)
+                        curCol++
+                    }else{
+                        if(d?.fntecdgo == '101'){
+                            cellTabla = tableRow.createCell((short) curCol)
+                            cellTabla.setCellValue("")
+                            cellTabla.setCellStyle(styleNumber)
+                            curCol++
+                            cellTabla = tableRow.createCell((short) curCol)
+                            cellTabla.setCellValue("")
+                            cellTabla.setCellStyle(styleNumber)
+                            curCol++
+                            cellTabla = tableRow.createCell((short) curCol)
+                            cellTabla.setCellValue(d?.asgnplan)
+                            cellTabla.setCellStyle(styleNumber)
+                            total3 += d?.asgnplan
+                            curCol++
+                            cellTabla = tableRow.createCell((short) curCol)
+                            cellTabla.setCellValue("")
+                            cellTabla.setCellStyle(styleNumber)
+                            curCol++
+                        }else{
+                            if(d?.fntecdgo == '002'){
+                                cellTabla = tableRow.createCell((short) curCol)
+                                cellTabla.setCellValue("")
+                                cellTabla.setCellStyle(styleNumber)
+                                curCol++
+                                cellTabla = tableRow.createCell((short) curCol)
+                                cellTabla.setCellValue("")
+                                cellTabla.setCellStyle(styleNumber)
+                                curCol++
+                                cellTabla = tableRow.createCell((short) curCol)
+                                cellTabla.setCellValue("")
+                                cellTabla.setCellStyle(styleNumber)
+                                curCol++
+                                cellTabla = tableRow.createCell((short) curCol)
+                                cellTabla.setCellValue(d?.asgnplan)
+                                cellTabla.setCellStyle(styleNumber)
+                                total4 += d?.asgnplan
+                                curCol++
+                            }
+                        }
+                    }
+                }
+
+                curRow++
+
+            }
+
+            cn.close()
+
+            curCol = iniCol
+            Row totalRow = sheet.createRow((short) curRow)
+            Cell cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(totalPriorizado)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(total1)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(total2)
+            cellFooter.setCellStyle(styleFooter)
+
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(total3)
+            cellFooter.setCellStyle(styleFooter)
+
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(total4)
+            cellFooter.setCellStyle(styleFooter)
+
 
             sheet.addMergedRegion(new CellRangeAddress(
                     curRow, //first row (0-based)

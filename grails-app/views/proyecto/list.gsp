@@ -459,6 +459,7 @@
                             }
                         },
 
+
                         <g:if test="${session.perfil.codigo in ['DP', 'GP', 'ASPL']}">
 
                         editar      : {
@@ -559,6 +560,15 @@
                             action : function ($element) {
                                 var id = $element.data("id");
                                 location.href = "${createLink(controller: 'asignacion', action:'asignacionProyectov2')}/" + id
+                            }
+                        },
+                        priorizado : {
+                            label            : "Reporte Priorizado Excel",
+                            icon             : "fa fa-print",
+                            separator_before : true,
+                            action           : function ($element) {
+                                var id = $element.data("id");
+                                location.href = "${createLink(controller:'reportes6', action:'reportePriorizacion')}/" + id;
                             }
                         }
                         <g:if test="${session.perfil.codigo == 'GP'}">

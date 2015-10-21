@@ -159,7 +159,7 @@ class ReportesNuevosExcelController {
             Row rowSubtitulo = sheet.createRow((short) curRow)
             Cell cellSubtitulo = rowSubtitulo.createCell((short) iniCol)
             cellSubtitulo.setCellValue(subtitulo)
-            cellSubtitulo.setCellStyle(styleSubtitulo)
+            cellSubtitulo.setCellStyle(styleTitulo)
             curRow++
         }
 
@@ -171,6 +171,8 @@ class ReportesNuevosExcelController {
 
         return curRow
     }
+
+
 
     public static joinTitulos(Sheet sheet, int iniRow, int iniCol, int totalCols) {
         joinTitulos(sheet, iniRow, iniCol, totalCols, true)
