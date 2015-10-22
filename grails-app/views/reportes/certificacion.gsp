@@ -207,7 +207,7 @@
 
                 <div class="observaciones">
                     <span class="ttl">OBSERVACIONES:</span>
-                    ${sol.observacionesPdf}
+                    ${sol.observacionesPdf.replaceAll('&ndash','-')}
                 </div>
 
                 <p>

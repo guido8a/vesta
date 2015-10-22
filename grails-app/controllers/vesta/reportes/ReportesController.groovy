@@ -228,7 +228,14 @@ class ReportesController {
 
 //        println("-->" + transf)
 
-        return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval, arr: arr, transf: transf, devengado: dosDevengado, ua: unidaAutonoma]
+
+//        solicitud.observacionesPdf = solicitud.observacionesPdf.replaceAll("-", " ")
+//        solicitud.observacionesPdf = solicitud.observacionesPdf.replaceAll("&ndash", "-")
+
+//        println("->>>>>>>>>>>>" + solicitud.observacionesPdf)
+
+
+        return [sol: solicitud, anio: anio, mes: mes, anterior: anterior, aval: aval, arr: arr, transf: transf, devengado: dosDevengado, ua: unidaAutonoma, observaciones: solicitud.observacionesPdf]
     }
 
     /**
