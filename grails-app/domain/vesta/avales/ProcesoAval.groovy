@@ -3,6 +3,7 @@ package vesta.avales
 import vesta.hitos.AvanceAvance
 import vesta.hitos.AvanceFisico
 import vesta.proyectos.Proyecto
+import vesta.seguridad.Persona
 
 /**
  * Clase para conectar con la tabla 'alertas' de la base de datos
@@ -29,6 +30,9 @@ class ProcesoAval {
     */
     int informar = 0
 
+
+    Persona usuario
+
     /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
      */
@@ -45,6 +49,7 @@ class ProcesoAval {
             fechaInicio column: 'prcofcin'
             fechaFin column: 'prcofcfn'
             informar column: 'prcoinfm'
+            usuario column: 'usro__id'
         }
     }
 
@@ -53,6 +58,7 @@ class ProcesoAval {
      */
     static constraints = {
         nombre(size: 1..255, blank: false, nullable: false)
+        usuario(blank: true, nullable: true)
     }
 
     /**
@@ -67,6 +73,14 @@ class ProcesoAval {
         }
         return monto
     }
+
+//    def getUsuario (){
+//
+//       def persona =  Persona.get(this.usuario.id)
+//
+//       return persona
+//
+//    }
 
     def getAvanceFisico() {
         def avance = 0

@@ -463,13 +463,19 @@ class AvalesController extends vesta.seguridad.Shield {
     def saveProcesoWizard = {
         println "save proceso " + params
 
+        def usuario = Persona.get(session.usuario.id)
+
         def proceso
         if (params.id) {
             proceso = ProcesoAval.get(params.id)
         } else {
             proceso = new ProcesoAval()
         }
+
+        println("personsa " + usuario)
         proceso.properties = params
+        proceso.usuario = usuario
+        println("persona desp " + proceso.usuario)
         if (!proceso.save(flush: true)) {
             flash.message = "Ha ocurrido un error al guardar el proceso: " + renderErrors(bean: proceso)
             flash.tipo = "error"

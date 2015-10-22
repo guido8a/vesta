@@ -5,7 +5,7 @@
   Time: 01:06 PM
 --%>
 
-<%@ page import="vesta.parametros.UnidadEjecutora; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.seguridad.Persona; vesta.parametros.UnidadEjecutora; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main"/>
@@ -44,7 +44,7 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="pendientes">
-                    <g:if test="${solicitudes.size() > 0 || procesosSinSolicitud.size() > 0}">
+                    <g:if test="${(solicitudes.size() > 0 || procesosSinSolicitud.size() > 0)}">
                         <table class="table table-condensed table-striped table-hover table-bordered" style="margin-top: 20px;">
                             <thead>
                                 <tr>
@@ -62,6 +62,7 @@
                             </thead>
                             <tbody>
                                 <g:each in="${procesosSinSolicitud}" var="p">
+                                    <g:if test="${session.usuario.unidad.codigo == vesta.seguridad.Persona.get(p?.usuario?.id).unidad.codigo}">
                                     <tr>
                                         <td></td>
                                         <td></td>
@@ -69,7 +70,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td>Solicitud pendiente</td>
+                                        <td>Solicitud pendiente </td>
                                         <td></td>
                                         <td></td>
                                         <td class="text-center">
@@ -80,6 +81,7 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    </g:if>
                                 </g:each>
                                 <g:each in="${solicitudes}" var="p">
                                     <g:set var="title"/>
@@ -89,7 +91,10 @@
                                     <g:if test="${p.estado.codigo == 'D02'}">
                                         <g:set var="title" value="Devuelto por ${p.firma.usuario}${p.firma.observaciones && p.firma.observaciones != 'S' ? ': ' + p.firma.observaciones : ''}"/>
                                     </g:if>
+                                    <g:if test="${session.usuario.unidad.codigo == p?.unidad?.codigo}">
                                     <tr>
+
+
                                         <td>
                                             ${p.unidad?.codigo}-${p.numero}
                                         </td>
@@ -97,7 +102,7 @@
                                             ${p.unidad}
                                         </td>
                                         <td>
-                                            ${p.proceso.nombre}
+                                            ${p.proceso.nombre} ${session.usuario.unidad.codigo} ${p?.unidad?.codigo}
                                         </td>
                                         <td class="${(p.tipo == 'A') ? 'E03' : 'E02'}" style="text-align: center">
                                             ${(p.tipo == "A") ? 'Anulación' : 'Aprobación'}
@@ -168,7 +173,9 @@
                                                 </g:elseif>
                                             </div>
                                         </td>
+
                                     </tr>
+                                    </g:if>
                                 </g:each>
 
                             </tbody>
