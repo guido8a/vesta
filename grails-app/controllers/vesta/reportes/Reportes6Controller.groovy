@@ -23,6 +23,8 @@ import vesta.poaCorrientes.Tarea
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.MetaBuenVivirProyecto
 import vesta.proyectos.Proyecto
+import vesta.seguridad.Persona
+import vesta.seguridad.Sesn
 
 class Reportes6Controller {
     def dbConnectionService
@@ -1371,6 +1373,148 @@ class Reportes6Controller {
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "reporte_avales_perma.xlsx"
+            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", header)
+            wb.write(output)
+            output.flush()
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+
+    def reporteUsuariosPerfiles () {
+
+        def unidades = UnidadEjecutora.findAllByPadreIsNotNull([sort:"nombre",order:"desc"])
+
+        def usuarios = Persona.findAllByUnidadInList(unidades)
+
+        def sesiones = Sesn.findAllByUsuarioInList(usuarios, [sort: "usuario.unidad.nombre",order: "asc"])
+
+//        return [sesiones: sesiones]
+
+        //        println("params prio: " + params)
+
+
+        def iniRow = 0
+        def iniCol = 1
+
+        def curRow = iniRow
+        def curCol = iniCol
+
+        try {
+
+            Workbook wb = new Workbook()
+            Sheet sheet = wb.createSheet("usuarios")
+
+            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
+            CellStyle styleNumber = estilos.styleNumber
+            CellStyle styleDate = estilos.styleDate
+
+
+            def titulo = "REPORTE DE USUARIOS Y PERFILES"
+            def subtitulo = ""
+
+            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
+            Row rowHeader = sheet.createRow((short) curRow)
+            curRow++
+
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("N°")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("NOMBRE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 10000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("USUARIO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ÁREA DE GESTIÓN")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 16000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("CARGO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 10000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PERFIL")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 8000)
+            curCol++
+
+
+            def totalCols = curCol
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols, false)
+            def totalPriorizado = 0
+            def total1 = 0
+            def total2 = 0
+            def total3 = 0
+            def total4 = 0
+            def ordinal = 1
+
+
+           sesiones.each { d ->
+
+                curCol = iniCol
+                Row tableRow = sheet.createRow((short) curRow)
+                Cell cellTabla = tableRow.createCell((short) curCol)
+
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(ordinal++)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.usuario?.nombre + " " + d?.usuario?.apellido)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+               cellTabla = tableRow.createCell((short) curCol)
+               cellTabla.setCellValue(d?.usuario?.login)
+               cellTabla.setCellStyle(styleTabla)
+               curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.usuario?.unidad?.nombre)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.usuario?.cargo)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.perfil?.nombre)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                curRow++
+
+            }
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    curRow, //first row (0-based)
+                    curRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 3 //last column  (0-based)
+            ))
+
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "reporte_usuarios_perfiles.xlsx"
             response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response.setHeader("Content-Disposition", header)
             wb.write(output)

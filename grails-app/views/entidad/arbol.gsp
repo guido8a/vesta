@@ -424,6 +424,16 @@
                         createEditUnidad(null, nodeId);
                     }
                 };
+
+                var reporteUsuarios = {
+                    label  : "Reporte Usuarios y Perfiles",
+                    icon   : "fa fa-print",
+                    action : function () {
+                        location.href =   "${createLink(controller: 'reportes6', action: 'reporteUsuariosPerfiles')}";
+                    }
+                };
+
+
                 var docsEntidad = {
                     label           : "Documentos área de gestión",
                     icon            : "fa fa-files-o",
@@ -699,6 +709,7 @@
                     items.agregarUsuario = agregarUsu;
                     items.ver = verEntidad;
                     items.editar = editarEntidad;
+                    items.reporte = reporteUsuarios;
                 } else if (esUnidad) {
                     items.agregarEntidad = agregarEntidad;
                     items.documentos = docsEntidad;
