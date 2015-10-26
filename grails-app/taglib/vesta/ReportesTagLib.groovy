@@ -165,7 +165,7 @@ class ReportesTagLib {
      * @param title el título del reporte
      */
     def headerReporte = { attrs ->
-//        println("AQUIF   " + attrs)
+//        println("AQUI atributos   " + attrs)
         def title = attrs.title ?: ""
         def titulo = attrs.titulo ?: ""
         def unidadEjecutora
@@ -254,19 +254,28 @@ class ReportesTagLib {
 //            html += "<td style='background: #008080;'>${attrs.unidad ?: ''}</td>" + "\n"
             if(attrs.unidad.id)
             {
-                if(attrs.title != 'REFORMA AL POA'){
-                    if(attrs.title == 'Aval de POA de gasto permanente'){
-                        html += "<td style='background: #008080;'>${attrs.anio}-GAF</td>" + "\n"
-                    }else{
-                        if(direccionesGaf.contains(unidadEjecutora.codigo)){
-                            html += "<td style='background: #008080;'>${attrs.anio}-${unidadEjecutora?.codigo}</td>" + "\n"
-                        }else{
-                            html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
-                        }
+//                println "atrr: ${attrs.title.trim().toLowerCase()}"
+                if(attrs.title.trim().toLowerCase() in ['aval de poa', 'reforma al poa']) {
 
-                    }
-                }else{
                     html += "<td style='background: #008080;'>${attrs.anio}-GPE</td>" + "\n"
+                }
+                if(attrs.title.trim().toLowerCase() in ['solicitud de reforma al poa', 'solicitud de aval de poa']) {
+                    html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+                }
+
+                if(attrs.title.trim().toLowerCase() in ['aval de poa de gasto permanente', 'ajuste al poa de gasto permanente', 'reforma al poa de gasto permanente']){
+                    html += "<td style='background: #008080;'>${attrs.anio}-GAF</td>" + "\n"
+                }
+
+                if(attrs.title.toLowerCase() in ['solicitud de aval de poa permanente', 'solicitud de reforma al poa de gasto permanente']) {
+                    if(direccionesGaf.contains(unidadEjecutora.codigo)){
+                        html += "<td style='background: #008080;'>${attrs.anio}-${unidadEjecutora?.codigo}</td>" + "\n"
+                    }else{
+                        html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+                    }
+
+                } else {
+                    html += "<td style='background: #008080;'>${attrs.anio}</td>" + "\n"
                 }
 
             }else{
