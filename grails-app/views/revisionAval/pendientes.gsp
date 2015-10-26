@@ -91,7 +91,7 @@
                                     <g:if test="${p.estado.codigo == 'D02'}">
                                         <g:set var="title" value="Devuelto por ${p.firma.usuario}${p.firma.observaciones && p.firma.observaciones != 'S' ? ': ' + p.firma.observaciones : ''}"/>
                                     </g:if>
-                                    <g:if test="${session.usuario.unidad.codigo == p?.unidad?.codigo}">
+                                    %{--<g:if test="${session.usuario.unidad.codigo == p?.unidad?.codigo}">--}%
                                     <tr>
 
 
@@ -175,7 +175,7 @@
                                         </td>
 
                                     </tr>
-                                    </g:if>
+                                    %{--</g:if>--}%
                                 </g:each>
 
                             </tbody>
