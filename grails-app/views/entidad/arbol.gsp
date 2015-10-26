@@ -471,34 +471,37 @@
                         createEditPersona(null, nodeId);
                     }
                 };
-                var responsablesUnidad = {
-                    label  : "Responsables",
-                    icon   : "fa fa-users text-info",
-                    action : function () {
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(controller: "persona", action:'responsablesUnidad_ajax')}",
-                            data    : {
-                                id : nodeId
-                            },
-                            success : function (msg) {
-                                bootbox.dialog({
-                                    title   : "Responsables de " + nodeText,
-                                    message : msg,
-                                    class   : "modal-lg",
-                                    buttons : {
-                                        ok : {
-                                            label     : "Aceptar",
-                                            className : "btn-primary",
-                                            callback  : function () {
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                };
+
+                //para asignar un responsable de la unidad
+
+                %{--var responsablesUnidad = {--}%
+                    %{--label  : "Responsables",--}%
+                    %{--icon   : "fa fa-users text-info",--}%
+                    %{--action : function () {--}%
+                        %{--$.ajax({--}%
+                            %{--type    : "POST",--}%
+                            %{--url     : "${createLink(controller: "persona", action:'responsablesUnidad_ajax')}",--}%
+                            %{--data    : {--}%
+                                %{--id : nodeId--}%
+                            %{--},--}%
+                            %{--success : function (msg) {--}%
+                                %{--bootbox.dialog({--}%
+                                    %{--title   : "Responsables de " + nodeText,--}%
+                                    %{--message : msg,--}%
+                                    %{--class   : "modal-lg",--}%
+                                    %{--buttons : {--}%
+                                        %{--ok : {--}%
+                                            %{--label     : "Aceptar",--}%
+                                            %{--className : "btn-primary",--}%
+                                            %{--callback  : function () {--}%
+                                            %{--}--}%
+                                        %{--}--}%
+                                    %{--}--}%
+                                %{--});--}%
+                            %{--}--}%
+                        %{--});--}%
+                    %{--}--}%
+                %{--};--}%
                 var verEntidad = {
                     label            : "Ver datos del área de gestión",
                     icon             : "fa fa-laptop text-info",
@@ -714,7 +717,7 @@
                     items.agregarEntidad = agregarEntidad;
                     items.documentos = docsEntidad;
                     items.agregarUsuario = agregarUsu;
-                    items.responsables = responsablesUnidad;
+//                    items.responsables = responsablesUnidad;
                     items.ver = verEntidad;
                     items.editar = editarEntidad;
                 } else if (esUsuario) {
