@@ -140,8 +140,11 @@
                     </div>
 
                     <div class="col-md-3">
-                        <bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"
-                                      titulo="Busque una partida" campos="${campos}" clase="required"/>
+                        %{--<bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"--}%
+                                      %{--titulo="Busque una partida" campos="${campos}" clase="required"/>--}%
+                        <g:hiddenField name="partidaHide" id="prsp_hide" value="" />
+
+                        <g:textField name="partida" id="prsp_id" class="fuente many-to-one form-control input-sm required" value=""/>
                     </div>
                 </div>
 
@@ -294,6 +297,33 @@
         </form>
 
         <script type="text/javascript">
+
+
+            $("#prsp_id").click(function(){
+
+                $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidasFiltradas')}",
+                    data     : {
+
+                    },
+                    success  : function (msg) {
+                        var b = bootbox.dialog({
+                            id: "dlgPartidas",
+                            title: "Buscador Partidas",
+                            class   : "modal-lg",
+                            message: msg,
+                            buttons : {
+                                cancelar : {
+                                    label : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        })
+                    }
+                });
+            });
+
             var cont = 1;
 
             function addData() {
@@ -519,7 +549,7 @@
                         var dataOrigen = {};
                         dataOrigen.proyecto_nombre = $("#proyecto").find("option:selected").text();
                         dataOrigen.componente_nombre = $("#comp").find("option:selected").text();
-                        dataOrigen.actividad_nombre = $("#actividad").find("option:selected").text();
+                        dataOrigen.actividad_nombre = $("#actividadRf").find("option:selected").text();
                         dataOrigen.asignacion_nombre = $("#asignacion").find("option:selected").text();
                         dataOrigen.asignacion_id = $("#asignacion").val();
 //                        dataOrigen.monto = $("#monto").val();
@@ -530,9 +560,14 @@
                         dataDestino.componente_nombre = $("#compDest").find("option:selected").text();
                         dataDestino.componente_id = $("#compDest").val();
                         dataDestino.actividad_nombre = $("#actividad_dest").val();
-                        dataDestino.partida_nombre = $("#bsc-desc-prsp_id").val();
-                        dataDestino.partida_id = $("#prsp_id").val();
-                        var partidaNum = $.trim(dataDestino.partida_nombre.split("(")[0]);
+//                        dataDestino.partida_nombre = $("#bsc-desc-prsp_id").val();
+                        dataDestino.partida_id = $("#prsp_hide").val();
+                        var nombre = $("#prsp_id").val().split("-");
+                        dataDestino.partida_nombre = nombre[1]
+//                        dataDestino.partida_id = $("#prsp_id").val();
+
+//                        var partidaNum = $.trim(dataDestino.partida_nombre.split("(")[0]);
+                        var partidaNum = nombre[0];
                         dataDestino.asignacion_nombre = "Responsable: ${unidad}, Partida: " + partidaNum + ", Monto: " + number_format(dataOrigen.monto, 2, ".", ",");
                         dataDestino.inicio = $("#inicio").val();
                         dataDestino.fin = $("#fin").val();

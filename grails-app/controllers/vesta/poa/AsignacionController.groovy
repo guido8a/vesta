@@ -1798,6 +1798,43 @@ class AsignacionController extends Shield {
     }
 
 
+    def buscadorPartidasFiltradas () {
+
+        def cn = dbConnectionService.getConnection()
+
+        params.old = params.criterio
+        params.criterio = buscadorService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlPartidasFiltradas(params)
+        def res = cn.rows(sql)
+        params.criterio = params.old
+
+        return [res: res, params: params]
+    }
+
+
+    def armaSqlPartidasFiltradas(params){
+        def campos = buscadorService.parametrosPartidas()
+        def operador = buscadorService.operadores()
+
+
+        def sqlSelect = "select prsp__id, prspnmro, prspdscr  " +
+                "from prsp"
+        def sqlWhere = "where (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
+
+        def sqlOrder = "order by prspnmro limit 40"
+
+
+        if(campos.find {it.campo == params.buscador}?.size() > 0) {
+            def op = operador.find {it.valor == params.operador}
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
+
+
 
 
 

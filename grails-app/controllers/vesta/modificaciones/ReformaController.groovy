@@ -702,6 +702,7 @@ class ReformaController extends Shield {
         nuevoDetalle.valor = monto
         nuevoDetalle.asignacionOrigen = asignacionOrigen
         nuevoDetalle.detalleOriginal = detalle
+        nuevoDetalle.valorOrigenInicial = asignacionOrigen.priorizado
         if (nuevoDetalle.save(flush: true)) {
             detalle.saldo -= monto
             if (!detalle.save(flush: true)) {

@@ -397,7 +397,7 @@
                         var dataDestino = {};
                         dataDestino.proyecto_nombre = $("#proyecto").find("option:selected").text();
                         dataDestino.componente_nombre = $("#comp").find("option:selected").text();
-                        dataDestino.actividad_nombre = $("#actividad").find("option:selected").text();
+                        dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                         dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
                         dataDestino.asignacion_id = $("#asignacion").val();
                         if (validarPar(dataOrigen, dataDestino)) {

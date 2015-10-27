@@ -63,6 +63,7 @@
                     <td class="text-right"><g:formatNumber number="${d.desde.dism}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${d.desde.aum}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${d.desde.final}" type="currency" currencySymbol=""/></td>
+                    %{--<td class="text-right"><g:formatNumber number="${0}" type="currency" currencySymbol=""/></td>--}%
                     <g:if test="${btnDelete}">
                         <td rowspan="2" class="danger" style="vertical-align: middle;">
                             <a href="#" class="btn btn-xs btn-danger btnDeleteDetalle" title="Eliminar detalle" data-id="${d.desde.id}">
@@ -76,7 +77,8 @@
                 <g:set var="tInicial" value="${tInicial + h.inicial}"/>
                 <g:set var="tDism" value="${tDism + h.dism}"/>
                 <g:set var="tAum" value="${tAum + h.aum}"/>
-                <g:set var="tFinal" value="${tFinal + h.final}"/>
+                %{--<g:set var="tFinal" value="${tFinal + h.final}"/>--}%
+                <g:set var="tFinal" value="${tFinal + (h.inicial - h.dism + h.aum)}"/>
                 <g:if test="${btnSelect}">
                     <g:set var="tSaldo" value="${tSaldo + h.saldo}"/>
                 </g:if>
@@ -106,7 +108,9 @@
                     <td class="text-right"><g:formatNumber number="${h.inicial}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${h.dism}" type="currency" currencySymbol=""/></td>
                     <td class="text-right"><g:formatNumber number="${h.aum}" type="currency" currencySymbol=""/></td>
-                    <td class="text-right"><g:formatNumber number="${h.final}" type="currency" currencySymbol=""/></td>
+                    %{--<td class="text-right"><g:formatNumber number="${h.final}" type="currency" currencySymbol=""/></td>--}%
+                    <g:set var="finalVal" value="${h.inicial - h.dism + h.aum}"/>
+                    <td class="text-right"><g:formatNumber number="${finalVal}" type="currency" currencySymbol=""/></td>
                     <g:if test="${btnSelect}">
                         <td class="text-right"><g:formatNumber number="${h.saldo}" type="currency" currencySymbol=""/></td>
                         <th>

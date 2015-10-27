@@ -944,7 +944,7 @@ class ElementosTagLib {
     }
 
     def linkPdfReforma = { attrs ->
-//        println "linkPdfReforma - attrs: $attrs"
+        println "linkPdfReforma - attrs: $attrs"
 
         Reforma reforma = attrs.reforma
 
