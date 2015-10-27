@@ -412,6 +412,7 @@ class EntidadController extends Shield {
 
             tree += "</ul>"
         }
+//        println "arbol: $tree"
         return tree
     }
 
