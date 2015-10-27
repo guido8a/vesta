@@ -469,7 +469,7 @@ class ReformaController extends Shield {
                 estados = [estadoPorRevisar, estadoDevueltoDirReq]
                 filtroDirector = Persona.get(session.usuario.id)
                 break;
-            case "ASPL":
+            case "ASPL":    // analista de planificacion
                 estados = [estadoSolicitado, estadoDevueltoAnPlan]
                 break;
         }
@@ -2152,6 +2152,7 @@ class ReformaController extends Shield {
     }
 
     def enviarAGerente_ajax() {
+        println "enviarAGerente_ajax params: $params"
         def solicitud = Reforma.get(params.id)
         def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: solicitud.tipoSolicitud)
         def usu = Persona.get(session.usuario.id)
