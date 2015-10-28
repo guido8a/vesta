@@ -112,12 +112,14 @@
                                 UNIDAD RESPONSABLE
                             </th>
                             <td>
-                                <g:if test="${sol.usuario.unidad.padre.nombre}">
-                                    ${sol.usuario.unidad.padre.nombre}
-                                </g:if>
-                                <g:else>
-                                    ${sol.usuario.unidad.nombre}
-                                </g:else>
+                                %{--<g:if test="${sol.usuario.unidad.padre.nombre}">--}%
+                                    %{--${sol.usuario.unidad.padre.nombre}--}%
+                                %{--</g:if>--}%
+                                %{--<g:else>--}%
+                                    %{--${sol.usuario.unidad.nombre}--}%
+                                %{--</g:else>--}%
+                                ${ua}
+
                             </td>
                         </tr>
 
