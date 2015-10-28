@@ -25,7 +25,7 @@
             <g:each in="${datos}" var="aval">
                 <g:set var="sol" value="${SolicitudAval.findByAval(aval)}"/>
                 <tr estadoTr="${aval.estado.codigo}" data-sol="${sol.id}" data-id="${aval?.id}" usu="${perfil}">
-                    <td>${aval.fechaAprobacion?.format("yyyy")}-GP No.<elm:imprimeNumero aval="${aval.id}"/></td>
+                    <td>${aval.fechaAprobacion?.format("yyyy")}-GPE No.<elm:imprimeNumero aval="${aval.id}"/></td>
                     <td style="text-align: center" title="${aval.proceso.proyecto.toStringCompleto()}">${aval.proceso.proyecto}</td>
                     <td>${aval.proceso.nombre}</td>
                     <td style="text-align: right">
@@ -220,6 +220,7 @@
 
     $(".imprimiAval").button({icons : {primary : "ui-icon-print"}, text : false}).click(function () {
         //location.href = "${createLink(controller:'avales',action:'descargaAval')}/"+$(this).attr("iden")
+        %{--var url = "${g.createLink(controller: 'reportes',action: 'certificacion')}/?id=" + $(this).attr("iden")--}%
         var url = "${g.createLink(controller: 'reportes',action: 'certificacion')}/?id=" + $(this).attr("iden")
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval.pdf"
     });

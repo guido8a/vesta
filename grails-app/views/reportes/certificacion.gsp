@@ -53,22 +53,33 @@
             font-size : 8pt !important;
         }
 
-        .observaciones {
-            border            : 1px solid black;
-            padding           : 5px;
-            text-align        : justify;
-            page-break-inside : avoid;
-            font-size         : 8pt;
+        /*.observaciones {*/
+            /*border            : 1px solid black;*/
+            /*padding           : 5px;*/
+            /*text-align        : justify;*/
+            /*page-break-inside : avoid;*/
+            /*font-size         : 0.5em;*/
+        /*}*/
+
+        /*.observaciones p {*/
+            /*font-size : 6pt;*/
+        /*}*/
+
+        /*.observaciones .ttl {*/
+            /*font-size       : 9pt;*/
+            /*font-weight     : bold;*/
+            /*text-decoration : underline;*/
+        /*}*/
+
+        .letra {
+            font-size: 0.5em !important;
         }
 
-        .observaciones p {
-            font-size : 8pt;
-        }
-
-        .observaciones .ttl {
+        .ttl {
             font-size       : 9pt;
             font-weight     : bold;
             text-decoration : underline;
+
         }
 
 
@@ -86,7 +97,7 @@
                     Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${sol.fecha.format("dd-MM-yyyy")},
                     la ${ua.nombre} solicita emitir el aval de POA para realizar el proceso "${sol.proceso.nombre}",
                     por un monto total de <g:formatNumber number="${sol.monto}" type="currency" currencySymbol="USD "/>
-                    (${transf.capitalize()}, con base en cual informo lo siguiente:
+                    (${transf.capitalize()}), con base en cual informo lo siguiente:
                 </p>
 
                 <p>
@@ -205,9 +216,12 @@
                 </div>
 
 
-                <div class="observaciones">
+                <div %{--class="observaciones"--}%>
                     <span class="ttl">OBSERVACIONES:</span>
-                    ${sol.observacionesPdf.replaceAll('&ndash','-')}
+                    <p class="letra">
+                        ${sol.observacionesPdf.replaceAll('&ndash','-')}
+                    </p>
+
                 </div>
 
                 <p>
