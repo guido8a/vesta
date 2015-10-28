@@ -2,6 +2,7 @@ package vesta.reportes
 
 import vesta.modificaciones.DetalleReforma
 import vesta.modificaciones.Reforma
+import vesta.parametros.Unidad
 import vesta.proyectos.ModificacionAsignacion
 
 class ReportesReformaController {
@@ -212,7 +213,8 @@ class ReportesReformaController {
                 det[key].desde.componente = modificacion.desde.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = modificacion.desde.marcoLogico.numero
                 det[key].desde.actividad = modificacion.desde.marcoLogico.toStringCompleto()
-                det[key].desde.responsable = modificacion.desde.marcoLogico.responsable.gerencia.codigo
+//                det[key].desde.responsable = modificacion.desde.marcoLogico.responsable.gerencia.codigo
+                det[key].desde.responsable = modificacion.desde.marcoLogico.responsable.codigo  //responsable celeste
 
 //                det[key].desde.partida = modificacion.desde.toString()
 //                det[key].desde.partida = "<strong>Priorizado:</strong> " + modificacion.desde.priorizado +
@@ -245,7 +247,8 @@ class ReportesReformaController {
                 m.componente = modificacion.recibe.marcoLogico.marcoLogico.toStringCompleto()
                 m.no = modificacion.recibe.marcoLogico.numero
                 m.actividad = modificacion.recibe.marcoLogico.toStringCompleto()
-                m.responsable = modificacion.recibe.marcoLogico.responsable.gerencia.codigo
+//                m.responsable = modificacion.recibe.marcoLogico.responsable.gerencia.codigo
+                m.responsable = modificacion.recibe.marcoLogico.responsable.codigo  //responsable celeste
 //            m.partida = modificacion.recibe.toString()
 //                m.partida = "<strong>Priorizado:</strong> " + modificacion.recibe.priorizado +
 //                        " <strong>Partida:</strong> ${modificacion.recibe.presupuesto.numero}"
@@ -278,7 +281,8 @@ class ReportesReformaController {
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+//                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo  //responsable celeste
 //                det[key].desde.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
 //                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
@@ -308,7 +312,8 @@ class ReportesReformaController {
             m.componente = detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()
             m.no = detalle.asignacionDestino.marcoLogico.numero
             m.actividad = detalle.asignacionDestino.marcoLogico.toStringCompleto()
-            m.responsable = detalle.asignacionDestino.marcoLogico.responsable.gerencia.codigo
+//            m.responsable = detalle.asignacionDestino.marcoLogico.responsable.gerencia.codigo
+            m.responsable = detalle.asignacionDestino.marcoLogico.responsable.codigo  //responsable celeste
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionDestino.marcoLogico.responsable).gerencia.codigo
 //            m.partida = detalle.asignacionDestino.toString()
 //            m.partida = "<strong>Priorizado:</strong> " + detalle.asignacionDestino.priorizado +
@@ -326,7 +331,8 @@ class ReportesReformaController {
         return [det: det, det2: [:], total: total]
     }
 
-    public static Map generaDetallesSolicitudActividad(Reforma reforma) {
+//    public static Map generaDetallesSolicitudActividad(Reforma reforma) {
+    def generaDetallesSolicitudActividad(Reforma reforma) {
         def detalles = DetalleReforma.findAllByReforma(reforma, [sort: "asignacionOrigen"])
         def valorFinalDestino = [:]
         def det = [:]
@@ -343,7 +349,8 @@ class ReportesReformaController {
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+//                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo  //responsable celeste
 //                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
 //                det[key].desde.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
@@ -374,7 +381,8 @@ class ReportesReformaController {
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.reforma.persona.unidad).gerencia.codigo
-            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
+//            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
+            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
 //            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}" +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}"
             m.partida = detalle.presupuesto.numero
@@ -390,7 +398,9 @@ class ReportesReformaController {
         return [det: det, det2: [:], total: total]
     }
 
-    public static Map generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
+//    public static Map generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
+//    Map generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
+    def generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
         def detalles = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(reforma, [sort: "asignacionOrigen"])
         def detalles2 = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNull(reforma, [sort: "descripcionNuevaActividad"])
         def valorFinalDestino = [:]
@@ -423,7 +433,9 @@ class ReportesReformaController {
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
-            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
+//            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
+            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
+
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.reforma.persona.unidad).gerencia.codigo
 //            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}\n" +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto}"
@@ -454,7 +466,8 @@ class ReportesReformaController {
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+//                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo   //responsable celeste
+                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo   //responsable celeste
 //                det[key].desde.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
 //                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
@@ -486,7 +499,8 @@ class ReportesReformaController {
                 detallado[keyDetallado].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 detallado[keyDetallado].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 detallado[keyDetallado].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-                detallado[keyDetallado].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+//                detallado[keyDetallado].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+                detallado[keyDetallado].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo //responsable celeste
 //                detallado[keyDetallado].desde.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //                detallado[keyDetallado].desde.partida = detalle.asignacionOrigen.toString()
 //                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
@@ -512,7 +526,8 @@ class ReportesReformaController {
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
-            m.responsable = detalle.reforma.persona.unidad.gerencia
+//            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
+            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.reforma.persona.unidad).gerencia.codigo
 //            m.partida = "<strong>Priorizado:</strong> " + detalle.valor +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto}\n"
@@ -526,6 +541,7 @@ class ReportesReformaController {
 
             det[key].hasta += m
             detallado[keyDetallado].hasta += m
+
 
             valorFinalDestino[keyDestino] = m.final
         }
@@ -552,7 +568,8 @@ class ReportesReformaController {
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+//                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo //responsable celeste
 //                det[key].desde.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
 //                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
@@ -582,7 +599,8 @@ class ReportesReformaController {
             m.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
             m.no = detalle.asignacionOrigen.marcoLogico.numero
             m.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-            m.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+//            m.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+            m.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo  //responsable celeste
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //            m.partida = "<strong>Priorizado:</strong> 0.00\n" +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}\n"
@@ -646,7 +664,8 @@ class ReportesReformaController {
             m.componente = detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()
             m.no = detalle.asignacionDestino.marcoLogico.numero
             m.actividad = detalle.asignacionDestino.marcoLogico.toStringCompleto()
-            m.responsable = detalle.asignacionDestino.marcoLogico.responsable.gerencia.codigo
+//            m.responsable = detalle.asignacionDestino.marcoLogico.responsable.gerencia.codigo
+            m.responsable = detalle.asignacionDestino.marcoLogico.responsable.codigo  //responsable celeste
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionDestino.marcoLogico.responsable).gerencia.codigo
 //            m.partida = detalle.asignacionDestino.toString()
 //            m.partida = "<strong>Priorizado:</strong> " + detalle.asignacionDestino.priorizado +
@@ -676,7 +695,8 @@ class ReportesReformaController {
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+//                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo  //responsable celeste
 //                det[key].desde.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
 //                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
@@ -708,7 +728,8 @@ class ReportesReformaController {
                 detallado[keyDetallado].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 detallado[keyDetallado].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 detallado[keyDetallado].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-                detallado[keyDetallado].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+//                detallado[keyDetallado].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+                detallado[keyDetallado].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo   //responsable celeste
 //                detallado[keyDetallado].desde.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //                detallado[keyDetallado].desde.partida = detalle.asignacionOrigen.toString()
 //                det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
@@ -735,7 +756,8 @@ class ReportesReformaController {
             m.componente = detalle.asignacionDestino.marcoLogico.marcoLogico.toStringCompleto()
             m.no = detalle.asignacionDestino.marcoLogico.numero
             m.actividad = detalle.asignacionDestino.marcoLogico.toStringCompleto()
-            m.responsable = detalle.asignacionDestino.marcoLogico.responsable.gerencia.codigo
+//            m.responsable = detalle.asignacionDestino.marcoLogico.responsable.gerencia.codigo
+            m.responsable = detalle.asignacionDestino.marcoLogico.responsable.codigo  //responsable celeste
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionDestino.marcoLogico.responsable).gerencia.codigo
 //            m.partida = detalle.asignacionDestino.toString()
 //            m.partida = "<strong>Priorizado:</strong> " + detalle.asignacionDestino.priorizado +
@@ -771,7 +793,8 @@ class ReportesReformaController {
                     det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                     det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                     det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-                    det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+//                    det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
+                    det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo  //responsable celeste
 //                    det[key].desde.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
 //                    det[key].desde.partida = "<strong>Priorizado:</strong> " + detalle.asignacionOrigen.priorizado +
