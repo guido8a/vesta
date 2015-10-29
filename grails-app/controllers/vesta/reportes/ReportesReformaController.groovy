@@ -3,9 +3,11 @@ package vesta.reportes
 import vesta.modificaciones.DetalleReforma
 import vesta.modificaciones.Reforma
 import vesta.parametros.Unidad
+import vesta.parametros.UnidadEjecutora
 import vesta.proyectos.ModificacionAsignacion
+import vesta.seguridad.Shield
 
-class ReportesReformaController {
+class ReportesReformaController extends Shield {
 
     def firmasService
 
@@ -331,8 +333,8 @@ class ReportesReformaController {
         return [det: det, det2: [:], total: total]
     }
 
-//    public static Map generaDetallesSolicitudActividad(Reforma reforma) {
-    def generaDetallesSolicitudActividad(Reforma reforma) {
+    public static Map generaDetallesSolicitudActividad(Reforma reforma) {
+//    def generaDetallesSolicitudActividad(Reforma reforma) {
         def detalles = DetalleReforma.findAllByReforma(reforma, [sort: "asignacionOrigen"])
         def valorFinalDestino = [:]
         def det = [:]
@@ -382,7 +384,9 @@ class ReportesReformaController {
             m.actividad = detalle.descripcionNuevaActividad
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.reforma.persona.unidad).gerencia.codigo
 //            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
-            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
+//            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
+            m.responsable = requirentes(detalle.reforma.persona.unidad.id)
+
 //            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}" +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}"
             m.partida = detalle.presupuesto.numero
@@ -398,9 +402,9 @@ class ReportesReformaController {
         return [det: det, det2: [:], total: total]
     }
 
-//    public static Map generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
+    public static Map generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
 //    Map generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
-    def generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
+//    def generaDetallesSolicitudIncrementoActividad(reforma) {
         def detalles = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(reforma, [sort: "asignacionOrigen"])
         def detalles2 = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNull(reforma, [sort: "descripcionNuevaActividad"])
         def valorFinalDestino = [:]
@@ -433,8 +437,7 @@ class ReportesReformaController {
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
-//            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
-            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
+            m.responsable = requirentes(detalle.reforma.persona.unidad.id)
 
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.reforma.persona.unidad).gerencia.codigo
 //            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}\n" +
@@ -527,7 +530,9 @@ class ReportesReformaController {
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
 //            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
-            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
+//            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
+            m.responsable = requirentes(detalle.reforma.persona.unidad.id)
+
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.reforma.persona.unidad).gerencia.codigo
 //            m.partida = "<strong>Priorizado:</strong> " + detalle.valor +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto}\n"
@@ -844,4 +849,27 @@ class ReportesReformaController {
         }
         return [det: det, det2: [:], total: total]
     }
+
+    static String requirentes(id) {
+        def requirentes = []
+        def general = UnidadEjecutora.findByCodigo('9999')
+        def tecnica = UnidadEjecutora.findByCodigo('GT')
+        def administrativaFinan = UnidadEjecutora.findByCodigo('GAF')
+        def planificacion = UnidadEjecutora.findByCodigo('GPE')
+        def juridica = UnidadEjecutora.findByCodigo('GJ')
+        def gerencias = UnidadEjecutora.findAllByPadreAndNombreIlike(tecnica, 'gerenc%', [sort: 'nombre'])
+        def direcciones = UnidadEjecutora.findAllByPadreAndNombreIlike(general, 'direcc%', [sort: 'nombre'])
+        def unej = UnidadEjecutora.get(id)
+        requirentes = gerencias + direcciones + administrativaFinan + juridica + planificacion
+        def un = unej
+        while(un != null) {
+            if(requirentes.find { it.id == un.id }) {
+                return un.codigo.toString()
+            }
+            un = un.padre
+        }
+        return null
+    }
+
+
 }

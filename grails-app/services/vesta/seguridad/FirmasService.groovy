@@ -97,7 +97,7 @@ class FirmasService {
     }
 
 
-    def requirentes(unej) {
+    static vesta.parametros.UnidadEjecutora requirentes(unej) {
         def requirentes = []
         def general = UnidadEjecutora.findByCodigo('9999')
         def tecnica = UnidadEjecutora.findByCodigo('GT')
