@@ -855,7 +855,8 @@ class AvalesController extends vesta.seguridad.Shield {
             def f = request.getFile('file')
             def okContents = [
                     'application/pdf'     : 'pdf',
-                    'application/download': 'pdf'
+                    'application/download': 'pdf',
+                    'application/vnd.ms-pdf' : 'pdf'
             ]
             def nombre = ""
             def pathFile
@@ -1108,7 +1109,8 @@ class AvalesController extends vesta.seguridad.Shield {
         def f = request.getFile('file')
         def okContents = [
                 'application/pdf'     : 'pdf',
-                'application/download': 'pdf'
+                'application/download': 'pdf',
+                'application/vnd.ms-pdf' : 'pdf'
         ]
         def nombre, pathFile
         def fileName = ""

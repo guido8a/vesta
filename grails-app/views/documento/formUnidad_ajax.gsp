@@ -74,7 +74,7 @@
 
             'application/pdf'      : 'pdf',
             'application/download' : 'pdf',
-            'application/vnd.ms-pdf'                                                   : 'pdf',
+            'application/vnd.ms-pdf' : 'pdf',
 
             'application/excel'                                                 : 'xls',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'xlsx',
