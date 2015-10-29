@@ -1098,7 +1098,7 @@ class AvalesController extends vesta.seguridad.Shield {
     }
 
     def guardarSolicitud() {
-        println "solicitud aval " + params
+//        println "solicitud aval params:" + params
 
         def preview = params.preview == "S"
 
