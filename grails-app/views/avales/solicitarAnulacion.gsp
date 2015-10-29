@@ -162,9 +162,12 @@
                 var validator = $(".frmUpload").validate({
                     rules          : {
                         file : {
-                            accept    : "application/pdf",
+//                            accept    : ["application/pdf", "application/download", "application/vnd.ms-pdf"],
+                            accept    : "application/pdf,application/download,application/vnd.ms-pdf",
                             extension : "pdf"
+
                         }
+
                     },
                     messages       : {
                         file : {
