@@ -414,7 +414,7 @@
 
                 <g:if test="${btnSelect}">
                 function validarPar(dataOrigen, dataDestino) {
-//                    console.log(dataDestino);
+//                    console.log(dataDestino, dataDestino.mrlg, dataDestino.prsp);
                     var monto = parseFloat($.trim(str_replace(",", "", $("#monto").val())));
 //                    console.log(dataOrigen.monto, monto, dataOrigen.max);
                     var ok = true;
@@ -423,13 +423,15 @@
                         bootbox.alert("No puede seleccionar una asignación cuyo máximo es menor que el valor de la asignación de destino");
                     }
                     if (ok) {
+
                         $(".tb").children().each(function () {
                             var d = $(this).data();
                             if (ok) {
-
                                 var b1 = false, b2 = false;
+
                                 if (d.aso) {
-                                    b1 = d.aso == dataOrigen.asignacion_id;
+//                                    console.log(d.aso, dataOrigen.asignacion_id, "compara:", dataDestino.mrlg, "con", d.dtrfmrlg, "y", dataDestino.prsp, "con", d.dtrfprsp);
+                                    b1 = (d.aso == dataOrigen.asignacion_id) && (d.dtrfmrlg == dataDestino.mrlg) && (d.dtrfprsp == dataDestino.prsp);
                                     b2 = d.aso == dataDestino.asignacion_id
                                     if (d.asd) {
                                         b1 = b1 && d.asd == dataDestino.asignacion_id;
@@ -441,6 +443,8 @@
                                         b2 = d.asd == dataOrigen.asignacion_id
                                     }
                                 }
+
+
 
 //                                console.log($(this), d.aso, "==", dataOrigen.asignacion_id, "&&", d.asd, "==", dataDestino.asignacion_id, (d.aso == dataOrigen.asignacion_id && d.asd == dataDestino.asignacion_id), "b1:", b1);
                                 if (b1) {
@@ -518,7 +522,9 @@
                                         callback  : function () {
                                             if ($("#frmReforma").valid()) {
                                                 var dataDestino = {
-                                                    asignacion_id : $tr.data("asd")
+                                                    asignacion_id : $tr.data("asd"),
+                                                    mrlg : $btn.data("mrlg"),
+                                                    prsp : $btn.data("prsp").split(" ")[0]
                                                 };
                                                 var dataOrigen = {
                                                     monto : $tr.data("saldo")

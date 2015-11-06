@@ -51,7 +51,8 @@
             <g:set var="tFinal" value="${tFinal + d.desde.final}"/>
             <g:if test="${d.desde.proyecto}">
                 <tr class="info"
-                    data-aso="${d.desde.asignacion}"
+                    %{--data-aso="${d.desde.asignacion}" --}%
+                    data-aso="${d.desde.asignacion}" data-dtrfmrlg="${d.hasta[0].mrlg}" data-dtrfprsp="${d.hasta[0].partida}"
                     data-asd="${d.hasta && d.hasta.size() > 0 ? d.hasta?.first()?.asignacion : ''}">
                     <td>${d.desde.proyecto}</td>
                     <td>${d.desde.componente}</td>
@@ -115,7 +116,7 @@
                         <td class="text-right"><g:formatNumber number="${h.saldo}" type="currency" currencySymbol=""/></td>
                         <th>
                             <g:if test="${h.saldo > 0}">
-                                <a href="#" class="btn btn-xs btn-success btnSelect" title="Seleccionar asignación de origen" data-id="${h.id}">
+                                <a href="#" class="btn btn-xs btn-success btnSelect" title="Seleccionar asignación de origen" data-id="${h.id}" data-mrlg="${h.mrlg}" data-prsp="${h.partida}">
                                     <i class="fa fa-pencil-square"></i>
                                 </a>
                             </g:if>

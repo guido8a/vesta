@@ -388,6 +388,7 @@ class ReportesReformaController {
             m.dism = 0
             m.aum = detalle.valor
             m.final = valorFinalDestino[keyDestino] + detalle.valor
+            m.mrlg = detalle.componente.id
 
             det[key].hasta += m
 
@@ -440,6 +441,7 @@ class ReportesReformaController {
             m.aum = detalle.valor
             m.saldo = detalle.saldo
             m.final = valorFinalDestino[keyDestino] + detalle.valor
+            m.mrlg = detalle.componente.id
 
             det2[key].hasta += m
 
@@ -533,6 +535,7 @@ class ReportesReformaController {
             m.aum = detalle.valor
             m.saldo = detalle.saldo
             m.final = valorFinalDestino[keyDestino] + detalle.valor
+            m.mrlg = detalle.componente.id
 
             det[key].hasta += m
             detallado[keyDetallado].hasta += m

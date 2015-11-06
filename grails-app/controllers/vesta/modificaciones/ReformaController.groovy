@@ -693,7 +693,7 @@ class ReformaController extends Shield {
         println "\tasignar par asignaciones: " + params
         def detalle = DetalleReforma.get(params.det.toLong())
         def asignacionOrigen = Asignacion.get(params.asg.toLong())
-        def monto = (params.mnt.toString().replaceAll(",", "")).toDouble()
+        def monto = ((params.mnt.toString().replaceAll(",", "")).toDouble() * 100).round() / 100
 
         println "\tdetalle ANTES: ${detalle.id}, monto: ${detalle.valor}, saldo: ${detalle.saldo}"
         def nuevoDetalle = new DetalleReforma()
