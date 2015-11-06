@@ -2,12 +2,10 @@ package vesta.reportes
 
 import vesta.modificaciones.DetalleReforma
 import vesta.modificaciones.Reforma
-import vesta.parametros.Unidad
 import vesta.parametros.UnidadEjecutora
 import vesta.proyectos.ModificacionAsignacion
-import vesta.seguridad.Shield
 
-class ReportesReformaController extends Shield {
+class ReportesReformaController {
 
     def firmasService
 
@@ -334,7 +332,6 @@ class ReportesReformaController extends Shield {
     }
 
     public static Map generaDetallesSolicitudActividad(Reforma reforma) {
-//    def generaDetallesSolicitudActividad(Reforma reforma) {
         def detalles = DetalleReforma.findAllByReforma(reforma, [sort: "asignacionOrigen"])
         def valorFinalDestino = [:]
         def det = [:]
@@ -382,11 +379,8 @@ class ReportesReformaController extends Shield {
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
-//            m.responsable = proyectosService.getUnidadYGerencia(detalle.reforma.persona.unidad).gerencia.codigo
 //            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
-//            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
-            m.responsable = requirentes(detalle.reforma.persona.unidad.id)
-
+            m.responsable = requirentesUnej(detalle.reforma.persona.unidad.id)
 //            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}" +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto.numero}"
             m.partida = detalle.presupuesto.numero
@@ -403,8 +397,6 @@ class ReportesReformaController extends Shield {
     }
 
     public static Map generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
-//    Map generaDetallesSolicitudIncrementoActividad(Reforma reforma) {
-//    def generaDetallesSolicitudIncrementoActividad(reforma) {
         def detalles = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(reforma, [sort: "asignacionOrigen"])
         def detalles2 = DetalleReforma.findAllByReformaAndAsignacionOrigenIsNull(reforma, [sort: "descripcionNuevaActividad"])
         def valorFinalDestino = [:]
@@ -437,8 +429,8 @@ class ReportesReformaController extends Shield {
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
-            m.responsable = requirentes(detalle.reforma.persona.unidad.id)
-
+//            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
+            m.responsable = requirentesUnej(detalle.reforma.persona.unidad.id)
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.reforma.persona.unidad).gerencia.codigo
 //            m.partida = "<strong>Priorizado:</strong> ${detalle.valor}\n" +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto}"
@@ -469,7 +461,7 @@ class ReportesReformaController extends Shield {
                 det[key].desde.componente = detalle.asignacionOrigen.marcoLogico.marcoLogico.toStringCompleto()
                 det[key].desde.no = detalle.asignacionOrigen.marcoLogico.numero
                 det[key].desde.actividad = detalle.asignacionOrigen.marcoLogico.toStringCompleto()
-//                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo   //responsable celeste
+//                det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.gerencia.codigo
                 det[key].desde.responsable = detalle.asignacionOrigen.marcoLogico.responsable.codigo   //responsable celeste
 //                det[key].desde.responsable = proyectosService.getUnidadYGerencia(detalle.asignacionOrigen.marcoLogico.responsable).gerencia.codigo
 //                det[key].desde.partida = detalle.asignacionOrigen.toString()
@@ -529,10 +521,8 @@ class ReportesReformaController extends Shield {
             m.componente = detalle.componente.toStringCompleto()
             m.no = "Nueva"
             m.actividad = detalle.descripcionNuevaActividad
-//            m.responsable = detalle.reforma.persona.unidad.gerencia.codigo
-//            m.responsable = firmasService.requirentes(detalle.reforma.persona.unidad).codigo
-            m.responsable = requirentes(detalle.reforma.persona.unidad.id)
-
+//            m.responsable = detalle.reforma.persona.unidad.gerencia
+            m.responsable = requirentesUnej(detalle.reforma.persona.unidad.id)
 //            m.responsable = proyectosService.getUnidadYGerencia(detalle.reforma.persona.unidad).gerencia.codigo
 //            m.partida = "<strong>Priorizado:</strong> " + detalle.valor +
 //                    " <strong>Partida:</strong> ${detalle.presupuesto}\n"
@@ -546,7 +536,6 @@ class ReportesReformaController extends Shield {
 
             det[key].hasta += m
             detallado[keyDetallado].hasta += m
-
 
             valorFinalDestino[keyDestino] = m.final
         }
@@ -850,7 +839,7 @@ class ReportesReformaController extends Shield {
         return [det: det, det2: [:], total: total]
     }
 
-    static String requirentes(id) {
+    static String requirentesUnej(id) {
         def requirentes = []
         def general = UnidadEjecutora.findByCodigo('9999')
         def tecnica = UnidadEjecutora.findByCodigo('GT')
@@ -870,6 +859,4 @@ class ReportesReformaController extends Shield {
         }
         return null
     }
-
-
 }
