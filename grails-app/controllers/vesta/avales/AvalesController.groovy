@@ -1352,16 +1352,19 @@ class AvalesController extends vesta.seguridad.Shield {
             def strSolicitud = sol.tipo == "A" ? "solicitud de anulación" : "solicitud"
 
             def numero = 0
-            def gerencia = firmasService.requirentes(session.usuario.unidad)
-            println "solicitd a firmar para gerencia: $gerencia, numero actual : ${gerencia.numeroSolicitudAval}"
+//            def gerencia = firmasService.requirentes(session.usuario.unidad)
+            def gerencia = UnidadEjecutora.get(firmasService.requirentes(session.usuario.unidad).id)
 
 //            numero = SolicitudAval.findAllByUnidad(session.usuario.unidad, [sort: "numero", order: "desc", max: 1])
             numero = gerencia.numeroSolicitudAval
             if (numero == 0) {
                 numero = 1
             } else {
-                numero += 1
+                numero++
             }
+
+            println "solicitd a firmar para gerencia: $gerencia, numero actual : ${gerencia.numeroSolicitudAval}, nuevo: $numero"
+
             sol.numero = numero
             sol.save(flush: true)
 

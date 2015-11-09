@@ -17,8 +17,8 @@
             <th>Componente</th>
             <th>Actividad</th>
             <th>Partida</th>
-            <th>Priorizado</th>
-            <th>Monto</th>
+            <th>Presupuesto</th>
+            <th>Monto Aval</th>
             <th>Devengado</th>
             <g:if test="${!readOnly}">
                 <th></th>
