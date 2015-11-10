@@ -1407,6 +1407,7 @@ class AvalesController extends vesta.seguridad.Shield {
                     }*/
                     if (mail) {
                         try {
+                            println "Envía mail de Solicitud Aval para: ${usro.login} a $mail"
                             mailService.sendMail {
                                 to mail
                                 subject "Nueva ${strSolicitud} de aval"

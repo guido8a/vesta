@@ -964,6 +964,7 @@ class RevisionAvalController extends Shield {
 //                            Persona usro = sesn.usuario
                         def mail = personaMail.mail
                         if (mail) {
+                            println "Envía mail de Aval firmado para: ${sol.firma.usuario.login} a $mail"
                             mailService.sendMail {
                                 to mail
                                 subject "Nuevo aval emitido"
