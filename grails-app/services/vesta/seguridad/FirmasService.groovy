@@ -16,7 +16,9 @@ class FirmasService {
     def proyectosService
 
     def servletContext
-    static transactional = true
+//    static transactional = true
+    static transactional = false
+
     def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib()
 
     def listaFirmasCombos() {

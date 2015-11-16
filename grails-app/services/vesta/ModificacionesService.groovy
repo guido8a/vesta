@@ -12,7 +12,8 @@ import vesta.proyectos.ModificacionProyecto
  */
 class ModificacionesService {
 
-    static transactional = true
+//    static transactional = true
+    static transactional = false
 
     def kerberosService
 
