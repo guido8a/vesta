@@ -8,7 +8,7 @@
 <table class="table table-hover table-condensed table-hover table-bordered">
     <thead>
         <tr>
-            <th>Objetivo gasto corriente1</th>
+            <th>Objetivo gasto corriente</th>
             <th>MacroActividad</th>
             <th>Actividad</th>
             <th>Tarea</th>

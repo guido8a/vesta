@@ -154,7 +154,7 @@ class MenuTagLib {
         html += '<ul class="nav navbar-nav navbar-right">'
         html += '<li><a href="' + g.createLink(controller: 'alerta', action: 'list') + '" ' + ((count > 0) ? ' style="color:#ab623a" class="annoying"' : "") + '><i class="fa fa-exclamation-triangle"></i> Alertas ' + alertas + '</a></li>'
         html += '<li class="dropdown">'
-        html += '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' + usuario.login + ' (' + session.perfil + ')' + ' <b class="caret"></b></a>'
+        html += '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' + usuario?.login + ' (' + session?.perfil + ')' + ' <b class="caret"></b></a>'
         html += '<ul class="dropdown-menu">'
         html += '<li><a href="' + g.createLink(controller: 'persona', action: 'personal') + '"><i class="fa fa-cogs"></i> Configuración</a></li>'
         html += '<li class="divider"></li>'

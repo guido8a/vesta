@@ -275,11 +275,11 @@ class ReportesTagLib {
                     }
 
                 } else {
-                    html += "<td style='background: #008080;'>${attrs.anio}</td>" + "\n"
+//                    html += "<td style='background: #008080;'>${attrs.anio}</td>" + "\n"
                 }
 
             }else{
-                html += "<td style='background: #008080;'>${attrs.anio}</td>" + "\n"
+//                html += "<td style='background: #008080;'>${attrs.anio}</td>" + "\n"
             }
 
             html += "<td style='background: #008080;'>No. ${attrs.numero != null ? attrs.numero.toString().padLeft(3, '0') : ''}</td>" + "\n"
@@ -317,6 +317,7 @@ class ReportesTagLib {
      * Muestra header y footer para los reportes
      */
     def headerFooter = { attrs ->
+        println("header footer attr " + attrs)
         attrs.title = attrs.title ?: ""
         def header = headerReporte(attrs)
         def footer = footerReporte(attrs)

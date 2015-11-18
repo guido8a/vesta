@@ -1131,7 +1131,7 @@ class RevisionAvalController extends Shield {
                         if (data.size() == 2) {
                             def det = ProcesoAsignacion.get(data[0])
 //                            det.monto = data[1].toDouble()
-                            det.monto = params.montoAvalado
+                            det.monto = params.montoAvalado.toDouble()
                             det.save(flush: true)
                         }
                     }

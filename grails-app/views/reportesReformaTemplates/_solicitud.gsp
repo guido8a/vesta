@@ -1,7 +1,4 @@
-%{--<rep:headerFooter title="${reforma.tituloSolicitud.toUpperCase()}"--}%
-                  %{--form=" GPE-DPI-003"--}%
-                  %{--unidad="Ref. ${reforma.fecha.format('yyyy')}-${reforma.persona.unidad.gerencia.codigo}"--}%
-                  %{--numero="${reforma.numero}" estilo="right"/>--}%
+
 
 <rep:headerFooter title="${reforma.tituloSolicitud.toUpperCase()}"
                   form=" GPE-DPI-003"
@@ -13,15 +10,6 @@
         <ol>
             <li>
                 <strong>Unidad responsable (Gerencia - Dirección):</strong>
-                %{--<g:if test="${unidades}">--}%
-                    %{--<g:if test="${unidades.gerencia.id != unidades.unidad.id}">--}%
-                        %{--${unidades.gerencia} ---}%
-                    %{--</g:if>--}%
-                    %{--${unidades.unidad}--}%
-                %{--</g:if>--}%
-                %{--<g:else>--}%
-                    %{--${reforma.persona.unidad} (No está completo el código!)--}%
-                %{--</g:else>--}%
                 ${uni}
             </li>
             <li>

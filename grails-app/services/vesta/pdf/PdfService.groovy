@@ -2,9 +2,12 @@ package vesta.pdf
 
 import com.lowagie.text.FontFactory
 import com.lowagie.text.pdf.BaseFont
+import org.w3c.dom.Document
+import org.w3c.dom.html.HTMLDocument
 import org.xhtmlrenderer.pdf.ITextFontResolver
 import org.xhtmlrenderer.pdf.ITextRenderer
 import org.xhtmlrenderer.extend.FontResolver
+import org.xhtmlrenderer.resource.XMLResource
 
 //import com.lowagie.text.pdf.BaseFont
 //import org.xhtmlrenderer.pdf.ITextFontResolver
@@ -30,6 +33,8 @@ class PdfService {
         ITextRenderer renderer = new ITextRenderer();
 
         FontFactory.registerDirectories();
+
+
 
         def pf = pathFonts + "${g.resource(dir: 'fonts/PT/PT_Sans')}/"
         def font = pf + "PT_Sans-Web-Regular.ttf"
@@ -82,9 +87,11 @@ class PdfService {
         fontResolver.addFont(pathFonts + "ariblk.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 */
 
+
 //        println "123123123 " + url
         try {
-            renderer.setDocument(url);
+
+            renderer.setDocument(url)
             renderer.layout();
             renderer.createPDF(baos);
             byte[] b = baos.toByteArray();
@@ -124,6 +131,7 @@ class PdfService {
             log.error e
         }
     }
+
 
 }
 

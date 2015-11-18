@@ -15,6 +15,7 @@ class PdfController extends Shield {
             def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
 
             params.url = params.url.replaceAll("W", "&")
+
             if (params.pdfController) {
                 def content = g.include(controller: params.pdfController, action: params.pdfAction, id: params.pdfId)
                 b = pdfService.buildPdfFromString(content.readAsString(), baseUri)
@@ -22,7 +23,9 @@ class PdfController extends Shield {
                 println "sin plugin --> params url " + params.url
                 def url = baseUri + params.url
                 println "URL --> " + url
+
                 b = pdfService.buildPdf(url, baseUri)
+//                b = pdfService.buildPdf(params.url, baseUri)
             }
             response.setContentType("application/pdf")
             response.setHeader("Content-disposition", "attachment; filename=" + (params.filename ?: "document.pdf"))
@@ -35,7 +38,7 @@ class PdfController extends Shield {
             if (params.pdfController) {
                 redirect(controller: params.pdfController, action: params.pdfAction, params: params)
             } else {
-                redirect(action: "index", controller: "reportes", params: [msn: "Hubo un error en la genración del reporte. Si este error vuelve a ocurrir comuniquelo al administrador del sistema."])
+                redirect(action: "index", controller: "reportes", params: [msn: "Hubo un error en la genración del reporte. Si este error vuelve a ocurrir comuníquelo al administrador del sistema."])
             }
         }
     }

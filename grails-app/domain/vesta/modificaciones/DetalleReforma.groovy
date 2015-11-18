@@ -3,6 +3,8 @@ package vesta.modificaciones
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
+import vesta.poaCorrientes.MacroActividad
+import vesta.poaCorrientes.ObjetivoGastoCorriente
 import vesta.proyectos.Categoria
 import vesta.proyectos.MarcoLogico
 
@@ -70,6 +72,23 @@ class DetalleReforma {
     Double valorDestinoInicial
 
     /**
+     * Tarea de gasto permanente
+     */
+    String tarea
+
+    /**
+     * Objetivo de gasto permanente
+     */
+
+    ObjetivoGastoCorriente objetivoGastoCorriente
+
+    /**
+     * Macro actividad de gasto permanente
+     */
+
+    MacroActividad macroActividad
+
+    /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
     static auditable = [ignore: []]
@@ -99,6 +118,10 @@ class DetalleReforma {
             detalleOriginal column: 'dtrfdtrf'
             valorOrigenInicial column: 'dtrfvloi'
             valorDestinoInicial column: 'dtrfvldi'
+            tarea column: 'treadscr'
+            objetivoGastoCorriente column: 'obgc__id'
+            macroActividad column: 'mcac__id'
+
         }
     }
 
@@ -116,5 +139,10 @@ class DetalleReforma {
         categoria nullable: true
         fuente nullable: true
         detalleOriginal nullable: true
+        tarea blank: true, nullable: true
+        objetivoGastoCorriente nullable: true
+        macroActividad nullable: true
+
+
     }
 }

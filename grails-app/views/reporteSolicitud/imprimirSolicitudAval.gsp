@@ -129,15 +129,15 @@
                             ${primero?.key?.marcoLogico?.proyecto?.codigoEsigef} ${primero?.key?.marcoLogico?.numeroComp} ${primero?.key.numero}
                         </td>
                     </tr>
-                    <tr>
-                        <td style="font-weight: bold">SUBTOTAL</td>
-                        <td>
-                            <g:formatNumber number="${primero.value.total}" type="currency" currencySymbol="USD "/>
-                        </td>
-                    </tr>
+                    %{--<tr>--}%
+                        %{--<td style="font-weight: bold">SUBTOTAL</td>--}%
+                        %{--<td>--}%
+                            %{--<g:formatNumber number="${primero.value.total}" type="currency" currencySymbol="USD "/>--}%
+                        %{--</td>--}%
+                    %{--</tr>--}%
                     <g:if test="${primero.value.devengado != 0}">
                         <tr>
-                            <td style="font-weight: bold">EJERCICIO ANTERIOR</td>
+                            <td style="font-weight: bold">EJERCICIOS ANTERIORES</td>
                             <td>
                                 <g:formatNumber number="${primero.value.devengado}" type="currency" currencySymbol="USD "/>
                             </td>
