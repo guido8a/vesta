@@ -44,13 +44,23 @@ class RevisionAvalController extends Shield {
 
             def strSolicitud = sol.tipo == "A" ? "solicitud de anulación" : "solicitud"
 
-            /*todo aqui validar quien puede*/
             band = true
             if (band) {
                 sol.estado = EstadoAval.findByCodigo("E03")
                 sol.observaciones = params.obs
                 sol.fechaRevision = new Date()
                 sol.save(flush: true)
+                //quitar dinero del poas
+
+                def proceso = sol.proceso
+
+                def poas = ProcesoAsignacion.findAllByProceso(proceso)
+
+                poas.each { p->
+                    p.monto = 0
+                    p.save(flush: true)
+                }
+
                 render "SUCCESS*${strSolicitud.capitalize()} de aval negado exitosamente"
             } else {
                 render("ERROR*No puede negar solicitudes")
