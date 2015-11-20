@@ -83,8 +83,16 @@ class FirmasService {
 //        if (codigosNo.contains(padre.codigo)) {
 //            gerentes = listaDirectoresUnidad(unidad)
 //        } else {
+
+
         if (unidad.padre.codigo == '9999') {
             gerentes = listaDirectoresUnidad(unidad)
+
+            def gerenteUnidad = Persona.withCriteria {
+                eq("unidad", unidad)
+                ilike("cargo", "%gerente%")
+            }
+            gerentes += gerenteUnidad
         } else {
             gerentes = Persona.withCriteria {
                 inList("unidad", unidades)
