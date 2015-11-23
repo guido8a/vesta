@@ -657,6 +657,8 @@ class ReportesNuevosController {
             sheet.setColumnWidth(curCol, 3000)
             curCol++
 
+            println("pp")
+
 
             cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("N° AVAL")
