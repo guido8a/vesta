@@ -83,9 +83,15 @@
                         <g:formatNumber number="${asg.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
                     </td>
                     <td style="text-align: right">
-                        <input type="text" class="form-control input-sm required det_${asg.id} detalle decimal" iden="${asg.id}" name="montoAvalado"
-                               value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}"
-                               style="width: 100px;text-align: right" max="${asg.monto}" data-decimals="3">
+                        %{--<input type="text" class="form-control input-sm required det_${asg.id} detalle decimal" iden="${asg.id}" name="montoAvalado"--}%
+                               %{--value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}"--}%
+                               %{--style="width: 100px;text-align: right" max="${asg.monto}" data-decimals="3">--}%
+
+                        <g:textField name="montoName" id="montoAvalado" class="form-control input-sm required det_${asg.id} detalle decimal number montoN" iden="${asg.id}"
+                                     value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}"
+                                     style="width: 100px;text-align: right" max="${asg.monto}" data-decimals="3"/>
+
+
                     </td>
 
                 </tr>
@@ -140,7 +146,7 @@
             $("#datos").val($("#datos").val() + $(this).attr("iden") + ";" + monto + "&");
             total += monto
         });
-        $("#total").html(total);
+        $("#total").html(total.toFixed(2));
         $("#total").attr("valor", total)
     }
 
@@ -161,11 +167,33 @@
         }
     });
 
-    $("#montoAvalado").keydown(function () {
+
+    $(".montoN").focusout(function (ev){
         var enteros = $(this).val();
-        console.log(enteros)
-        $(this).val(round(enteros*100)/100);
-        console.log($('#montoAvalado').val());
+        $(this).val(parseFloat(enteros).toFixed(2))
+
     });
+
+
+    function validarNum(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 190 || ev.keyCode == 110 ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39);
+    }
+
 
 </script>
