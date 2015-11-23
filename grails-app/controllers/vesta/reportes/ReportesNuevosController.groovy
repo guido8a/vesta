@@ -606,13 +606,24 @@ class ReportesNuevosController {
     def reporteAvalesExcel() {
 
         def cn = dbConnectionService.getConnection()
-        def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
-                "from prco, slav, unej, aval, poas, asgn " +
-                "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
-                "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
-                "asgn.asgn__id = poas.asgn__id " +
-                "group by avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
-                "order by avalnmro, fnte__id;"
+//        def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
+//                "from prco, slav, unej, aval, poas, asgn " +
+//                "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
+//                "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
+//                "asgn.asgn__id = poas.asgn__id " +
+//                "group by avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
+//                "order by avalnmro, fnte__id;"
+
+        //nuevo query
+
+        def tx =  "select slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
+        "from prco, slav, unej, aval, poas, asgn " +
+        "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
+        "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
+        "asgn.asgn__id = poas.asgn__id " +
+        "group by slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
+        "order by avalnmro, prconmbr, fnte__id;"
+
 
         def iniRow = 0
         def iniCol = 1
@@ -641,6 +652,13 @@ class ReportesNuevosController {
             Row rowHeader = sheet.createRow((short) curRow)
             curRow++
             Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("N° SOLICITUD")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+
+            cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("N° AVAL")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 2000)
@@ -686,6 +704,10 @@ class ReportesNuevosController {
                 Row tableRow = sheet.createRow((short) curRow)
                 Cell cellTabla = tableRow.createCell((short) curCol)
 
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d.slavnmro)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
                 cellTabla = tableRow.createCell((short) curCol)
                 cellTabla.setCellValue(d.avalnmro)
                 cellTabla.setCellStyle(styleTabla)
