@@ -439,7 +439,7 @@ class ReportesReformaController {
             m.inicial = 0
             m.dism = 0
             m.aum = detalle.valor
-            m.saldo = detalle.saldo
+            m.saldo = Math.round(detalle.saldo *100)/100
             m.final = valorFinalDestino[keyDestino] + detalle.valor
             m.mrlg = detalle.componente.id
 
@@ -533,7 +533,7 @@ class ReportesReformaController {
 
             m.dism = 0
             m.aum = detalle.valor
-            m.saldo = detalle.saldo
+            m.saldo = Math.round(detalle.saldo *100)/100
             m.final = valorFinalDestino[keyDestino] + detalle.valor
             m.mrlg = detalle.componente.id
 
@@ -670,7 +670,7 @@ class ReportesReformaController {
             m.partida = detalle.asignacionDestino.presupuesto.numero
             m.inicial = valorFinalDestino[keyDestino]
             m.dism = 0
-            m.saldo = detalle.saldo
+            m.saldo = Math.round(detalle.saldo *100)/100
             m.aum = detalle.valor
             m.final = valorFinalDestino[keyDestino] + detalle.valor
 

@@ -609,7 +609,7 @@ class ReformaController extends Shield {
      */
     def procesar() {
         def reforma = Reforma.get(params.id)
-        println "init: reforma=${reforma.id} estado reforma id=${reforma.estado.id} cod=${reforma.estado.codigo}"
+//        println "init: reforma=${reforma.id} estado reforma id=${reforma.estado.id} cod=${reforma.estado.codigo}"
         if (reforma.estado.codigo == "E01" || reforma.estado.codigo == "D03") {
             def d
 
@@ -634,13 +634,15 @@ class ReformaController extends Shield {
             def det2 = d.det2
             def detallado = d.detallado
             def total = d.total
-            def totalSaldo = d.saldo
+            def totalSaldo = Math.round(d.saldo * 100)/100
+
+//            println "........ totalSaldo: $totalSaldo"
 
             def firmas = firmasService.listaFirmasCombos()
             return [reforma : reforma, det: det, det2: det2, detallado: detallado, total: total, personas: firmas.directores,
                     gerentes: firmas.gerentes, tipo: reforma.tipoSolicitud, totalSaldo: totalSaldo]
         } else {
-            println "redireccionando: reforma=${reforma.id} estado reforma=${reforma.estado.codigo}"
+//            println "redireccionando: reforma=${reforma.id} estado reforma=${reforma.estado.codigo}"
             redirect(action: "pendientes")
         }
     }
@@ -690,12 +692,12 @@ class ReformaController extends Shield {
      * Acción llamada con ajax que guarda los pares de asignaciones seleccionados por el asistente de planificación para completar la solicitud de incremento
      */
     def asignarParAsignaciones_ajax() {
-        println "\tasignar par asignaciones: " + params
+//        println "\tasignar par asignaciones: " + params
         def detalle = DetalleReforma.get(params.det.toLong())
         def asignacionOrigen = Asignacion.get(params.asg.toLong())
         def monto = ((params.mnt.toString().replaceAll(",", "")).toDouble() * 100).round() / 100
 
-        println "\tdetalle ANTES: ${detalle.id}, monto: ${detalle.valor}, saldo: ${detalle.saldo}"
+//        println "\tdetalle ANTES: ${detalle.id}, monto: ${detalle.valor}, saldo: ${detalle.saldo}"
         def nuevoDetalle = new DetalleReforma()
         nuevoDetalle.properties = detalle.properties
         nuevoDetalle.saldo = 0
@@ -708,7 +710,7 @@ class ReformaController extends Shield {
             if (!detalle.save(flush: true)) {
                 println "error al disminuir saldo de detalle: " + detalle.errors
             }
-            println "\tdetalle DESPUES: ${detalle.id}, monto: ${detalle.valor}, saldo: ${detalle.saldo}"
+//            println "\tdetalle DESPUES: ${detalle.id}, monto: ${detalle.valor}, saldo: ${detalle.saldo}"
         } else {
             println "error al guardar nuevo detalle: " + nuevoDetalle.errors
             render "ERROR*" + renderErrors(bean: nuevoDetalle)
