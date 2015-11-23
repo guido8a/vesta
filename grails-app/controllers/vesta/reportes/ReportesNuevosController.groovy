@@ -622,7 +622,7 @@ class ReportesNuevosController {
         "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
         "asgn.asgn__id = poas.asgn__id " +
         "group by slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
-        "order by avalnmro, prconmbr, fnte__id;"
+        "order by cast(avalnmro as integer), prconmbr, fnte__id;"
 
 
         def iniRow = 0

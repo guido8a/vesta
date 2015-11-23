@@ -85,7 +85,7 @@
                     <td style="text-align: right">
                         <input type="text" class="form-control input-sm required det_${asg.id} detalle decimal" iden="${asg.id}" name="montoAvalado"
                                value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}"
-                               style="width: 100px;text-align: right" max="${asg.monto}">
+                               style="width: 100px;text-align: right" max="${asg.monto}" data-decimals="3">
                     </td>
 
                 </tr>
@@ -108,57 +108,7 @@
         monto();
     });
 
-//        $("#guardar").click(function () {
-//            var file = $("#archivo").val();
-//            var contrato = $("#contrato").val();
-//            var certificacion = $("#certificacion").val();
-//            var monto = $("#total").attr("valor");
-//    //        monto = monto.replace(new RegExp("\\.", 'g'), "");
-//            monto = monto.replace(new RegExp(",", 'g'), ".");
-//            var msg = "";
-//            if (monto == "") {
-//                msg += "<br>Ingrese los montos avalados en la sección de detalle."
-//            }
-//            if (isNaN(monto)) {
-//                msg += "<br>Ingrese los montos avalados en la sección de detalle."
-//            } else {
-//                if (monto * 1 < 0) {
-//                    msg += "<br>El total debe ser un número positivo mayor a cero."
-//                }
-//            }
-//            if (contrato == "") {
-//                msg += "<br>Ingrese un número de contrato."
-//            }
-//            if (certificacion == "") {
-//                msg += "<br>Ingrese un número de certificación presupuestaria."
-//            }
-//
-//            if (file.length < 1) {
-//                msg += "<br>Por favor seleccione un archivo."
-//            } else {
-//                var ext = file.split('.').pop();
-//                if (ext != "pdf") {
-//                    msg += "<br>Por favor seleccione un archivo de formato pdf. El formato " + ext + " no es aceptado por el sistema"
-//                }
-//            }
-//            if (msg == "") {
-//                $(".frmLiberar").submit()
-//            } else {
-//                $("#monto").val(monto);
-//                $.box({
-//                    title  : "Error",
-//                    text   : msg,
-//                    dialog : {
-//                        resizable : false,
-//                        buttons   : {
-//                            "Cerrar" : function () {
-//
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//        });
+
 
     function monto () {
         var monto = $("#total").attr("valor");
@@ -209,6 +159,13 @@
             label.parents(".grupo").removeClass('has-error');
             label.remove();
         }
+    });
+
+    $("#montoAvalado").keydown(function () {
+        var enteros = $(this).val();
+        console.log(enteros)
+        $(this).val(round(enteros*100)/100);
+        console.log($('#montoAvalado').val());
     });
 
 </script>

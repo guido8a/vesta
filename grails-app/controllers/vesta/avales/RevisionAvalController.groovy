@@ -1134,14 +1134,15 @@ class RevisionAvalController extends Shield {
                 /*Todo aqui validar quien puede*/
                 band = true
                 def datos = params.datos.split("&")
+                println "..... datos. $datos"
                 datos.each {
                     if (it != "") {
                         def data = it.split(";")
                         println "data " + data
                         if (data.size() == 2) {
                             def det = ProcesoAsignacion.get(data[0])
-//                            det.monto = data[1].toDouble()
-                            det.monto = params.montoAvalado.toDouble()
+                            det.monto = data[1].toDouble()
+//                            det.monto = params.montoAvalado.toDouble()
                             det.save(flush: true)
                         }
                     }
@@ -1150,8 +1151,8 @@ class RevisionAvalController extends Shield {
                     f.transferTo(new File(pathFile))
                     aval.pathLiberacion = fileName
                     aval.liberacion = aval.monto
-//                    aval.monto = params.monto.toDouble()
-                    aval.monto = params.montoAvalado.toDouble()
+                    aval.monto = params.monto.toDouble()
+//                    aval.monto = params.montoAvalado.toDouble()
                     aval.estado = EstadoAval.findByCodigo("E05")
                     aval.contrato = params.contrato
                     aval.certificacion = params.certificacion
