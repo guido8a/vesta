@@ -1,6 +1,5 @@
 package vesta.modificaciones
 
-import vesta.ProyectosService
 import vesta.alertas.Alerta
 import vesta.avales.EstadoAval
 import vesta.parametros.TipoElemento
@@ -27,8 +26,9 @@ import vesta.seguridad.Shield
 class ReformaController extends Shield {
 
     def firmasService
-    def proyectosService
+//    def proyectosService
     def mailService
+    def dbConnectionService
 
     /**
      * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
@@ -379,25 +379,9 @@ class ReformaController extends Shield {
     def lista() {
         def reformas
         def perfil = session.perfil.codigo
-//        def perfiles = ["GAF", "ASPL"]
-//
-//        if (perfiles.contains(perfil)) {
-//            reformas = Reforma.withCriteria {
-//                eq("tipo", "R")
-//                persona {
-//                    order("unidad", "asc")
-//                }
-//                order("fecha", "desc")
-//            }
-//        } else {
-//            def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-//            def personas = Persona.findAllByUnidadInList(unidades)
-//
-//            reformas = Reforma.findAllByTipoAndPersonaInList('R', personas, [sort: "fecha", order: "desc"])
-//        }
-
-//        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
         def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+        def cn = dbConnectionService.getConnection()
+        def totales = [:]
         reformas = Reforma.withCriteria {
             eq("tipo", "R")
             persona {
@@ -407,7 +391,14 @@ class ReformaController extends Shield {
             order("fecha", "desc")
         }
 
-        return [reformas: reformas]
+        reformas.each {rf ->
+            cn.eachRow("select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id}".toString()){
+                totales[rf.id] = it.suma
+            }
+        }
+        cn.close()
+
+        return [reformas: reformas, totales: totales]
     }
 
     /**
@@ -634,7 +625,7 @@ class ReformaController extends Shield {
             def det2 = d.det2
             def detallado = d.detallado
             def total = d.total
-            def totalSaldo = Math.round(d.saldo * 100)/100
+            def totalSaldo = Math.round(d.saldo?:0 * 100)/100
 
 //            println "........ totalSaldo: $totalSaldo"
 

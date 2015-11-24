@@ -29,18 +29,20 @@
         <div role="tabpanel" style="margin-top: 15px;">
 
             <!-- Nav tabs -->
+            <g:if test="${session.perfil.codigo != 'ASPL'}">
             <ul class="nav nav-pills" role="tablist">
                 <li role="presentation" class="active">
                     <a href="#pendientes" aria-controls="home" role="tab" data-toggle="pill">
-                        Solicitudes pendientes
+                        Reformas pendientes
                     </a>
                 </li>
                 <li role="presentation">
                     <a href="#historial" aria-controls="profile" role="tab" data-toggle="pill">
-                        Historial solicitudes
+                        Historial de reformas
                     </a>
                 </li>
             </ul>
+            </g:if>
 
             <!-- Tab panes -->
             <div class="tab-content">
@@ -50,6 +52,7 @@
                             <thead>
                                 <tr>
                                     <th>Gerencia</th>
+                                    <th>Sol. No.</th>
                                     <th>Fecha</th>
                                     <th>Justificación</th>
                                     <th>Tipo</th>
@@ -62,6 +65,7 @@
                                     <tr>
                                         %{--<td>${reforma.persona}</td>--}%
                                         <td>${gerencias[j]}</td>
+                                        <td>${reforma.numero}</td>
                                         <td>${reforma.fecha.format("dd-MM-yyyy")}</td>
                                         <td>${reforma.concepto}</td>
                                         <td>

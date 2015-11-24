@@ -33,9 +33,10 @@
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr style="width: 1120px">
-            <th style="width: 380px;">Solicita</th>
+            <th style="width: 200px;">Solicita</th>
             <th style="width: 85px;">Fecha</th>
-            <th style="width: 260px;">Justificación</th>
+            <th style="width: 360px;">Justificación</th>
+            <th style="width: 80px;">Monto</th>
             <th style="width: 200px">Tipo</th>
             <th style="width: 105px;">Estado</th>
             <th style="width: 90px;">Acciones</th>
@@ -63,21 +64,39 @@
 
             <tbody>
                 <g:each in="${reformas}" var="reforma">
+                    <g:if test="${session.perfil.codigo =='ASPL'}">
+                        <g:if test="${reforma.estado.codigo == 'E02'}">
                     <tr>
-                        <td style="width: 380px;">${reforma.persona.unidad} - ${reforma.persona}</td>
+                        %{--<td style="width: 380px;">${reforma.persona.unidad} - ${reforma.persona}</td>--}%
+                        <td style="width: 200px;">${reforma.persona.unidad}</td>
                         <td style="width: 85px;">${reforma.fecha.format("dd-MM-yyyy")}</td>
-                        <td style="width: 260px;">${reforma.concepto}</td>
-                        <td style="width: 200px">
-                            <elm:tipoReforma reforma="${reforma}"/>
-                        </td>
+                        <td style="width: 360px;">${reforma.concepto}</td>
+                        <td style="width: 80px;">${totales[reforma.id]}</td>
+                        <td style="width: 200px"><elm:tipoReforma reforma="${reforma}"/></td>
                         <td style="width: 105px" class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                         <td style="text-align: center;width: 90px">
                             <div class="btn-group btn-group-xs" role="group">
-                                %{--<elm:linkPdfReforma reforma="${reforma}" solicitud="s"/>--}%
                                 <elm:linkPdfReforma reforma="${reforma}"/>
                             </div>
                         </td>
                     </tr>
+                    </g:if>
+                    </g:if>
+                    <g:else>
+                        <tr>
+                    %{--<td style="width: 380px;">${reforma.persona.unidad} - ${reforma.persona}</td>--}%
+                        <td style="width: 200px;">${reforma.persona.unidad}</td>
+                        <td style="width: 85px;">${reforma.fecha.format("dd-MM-yyyy")}</td>
+                        <td style="width: 360px;">${reforma.concepto}</td>
+                        <td style="width: 80px;">${totales[reforma.id]}</td>
+                        <td style="width: 200px"><elm:tipoReforma reforma="${reforma}"/></td>
+                        <td style="width: 105px" class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
+                        <td style="text-align: center;width: 90px">
+                            <div class="btn-group btn-group-xs" role="group">
+                                <elm:linkPdfReforma reforma="${reforma}"/>
+                            </div>
+                        </td>
+                    </g:else>
                 </g:each>
             </tbody>
         </table>
