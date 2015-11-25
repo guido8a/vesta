@@ -521,10 +521,19 @@
                                         className : "btn-success",
                                         callback  : function () {
                                             if ($("#frmReforma").valid()) {
+//                                                console.log('mrlg', $btn.data("mrlg"), 'prsp:')
+//                                                console.log($btn.data("prsp"))
+//                                                var partida = String($btn.data("prsp"));
+//                                                var n = partida.indexOf(" ");
+//                                                console.log('n', n);
+//                                                if(n > 0) {
+//                                                    prsp = partida.split(" ")[0]
+//                                                }
                                                 var dataDestino = {
                                                     asignacion_id : $tr.data("asd"),
                                                     mrlg : $btn.data("mrlg"),
-                                                    prsp : $btn.data("prsp").split(" ")[0]
+//                                                    prsp : partida
+                                                    prsp : String($btn.data("prsp")).split(" ")[0]
                                                 };
                                                 var dataOrigen = {
                                                     monto : $tr.data("saldo")
