@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label for="descProceso">Requirente:</label>
                     <g:select name="requirente" from="${unidades}" noSelection="['': '- Seleccione -']"
-                              class="form-control input-sm" style="width: 200px;" optionKey="id"/>
+                              class="form-control input-sm" style="width: 200px;" optionKey="id" id="requirenteId"/>
                 </div>
 
                 <div class="form-group">
@@ -84,7 +84,8 @@
 
             }
             $("#buscar").button().click(function () {
-                cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirente").val())
+//                cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirente").val())
+                cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirenteId").val())
             })
         </script>
     </body>

@@ -117,7 +117,7 @@
         </thead>
         <tbody>
 
-                <g:each in="${cn}" var="d">
+                <g:each in="${cn}" var="d" status="j">
                     <tr>
                         <td>${d.avalnmro}</td>
                         <td>${vesta.parametros.poaPac.Fuente.get(d.fnte__id).codigo}</td>
@@ -125,7 +125,8 @@
                         <td><g:formatDate date="${d.avalfcap}" format="dd-MM-yyyy"/> </td>
                         <td>${d.prconmbr}</td>
                         <td><g:formatNumber number="${d.sum ?: 0}" type="currency"/></td>
-                        <td>${d.unejnmbr}</td>
+                        %{--<td>${d.unejnmbr}</td>--}%
+                        <td>${unidades[j]}</td>
                     </tr>
                 </g:each>
         </tbody>

@@ -22,7 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            <g:each in="${datos}" var="aval">
+            <g:each in="${datos}" var="aval" status="j">
                 <g:set var="sol" value="${SolicitudAval.findByAval(aval)}"/>
                 <tr estadoTr="${aval.estado.codigo}" data-sol="${sol.id}" data-id="${aval?.id}" usu="${perfil}">
                     <td>${aval.fechaAprobacion?.format("yyyy")}-GPE No.<elm:imprimeNumero aval="${aval.id}"/></td>
@@ -31,7 +31,8 @@
                     <td style="text-align: right">
                         <g:formatNumber number="${aval.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
                     </td>
-                    <td>${sol.unidad}</td>
+                    %{--<td>${sol.unidad}</td>--}%
+                    <td>${unidades[j]}</td>
                     <td>
                         ${aval.fechaAprobacion?.format("dd-MM-yyyy")}
                     </td>

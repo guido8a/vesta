@@ -29,6 +29,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook as Workbook
 
 class ReportesNuevosController {
     def dbConnectionService
+    def firmasService
 
     def poaGrupoGastos_funcion(Fuente fuente) {
         def strAnio = new Date().format('yyyy')
@@ -606,22 +607,16 @@ class ReportesNuevosController {
     def reporteAvalesExcel() {
 
         def cn = dbConnectionService.getConnection()
-//        def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
-//                "from prco, slav, unej, aval, poas, asgn " +
-//                "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
-//                "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
-//                "asgn.asgn__id = poas.asgn__id " +
-//                "group by avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
-//                "order by avalnmro, fnte__id;"
+
 
         //nuevo query
 
-        def tx =  "select slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
+        def tx =  "select slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, sum(poasmnto), fnte__id " +
         "from prco, slav, unej, aval, poas, asgn " +
         "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
         "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
         "asgn.asgn__id = poas.asgn__id " +
-        "group by slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
+        "group by slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, avalnmro, avalfcap, fnte__id " +
         "order by cast(avalnmro as integer), prconmbr, fnte__id;"
 
 
@@ -732,7 +727,8 @@ class ReportesNuevosController {
                 totalPriorizado += d.sum
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(d.unejnmbr)
+//                cellTabla.setCellValue(d.unejnmbr)
+                cellTabla.setCellValue(firmasService.requirentes(UnidadEjecutora.get(d.unej__id)).toString())
                 cellTabla.setCellStyle(styleTabla)
                 curCol++
                 curRow++
@@ -1030,23 +1026,24 @@ class ReportesNuevosController {
         def total = 0
 
         def cn = dbConnectionService.getConnection()
-        def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, sum(poasmnto), fnte__id " +
+        def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, sum(poasmnto), fnte__id " +
                 "from prco, slav, unej, aval, poas, asgn " +
                 "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
                 "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
                 "asgn.asgn__id = poas.asgn__id " +
-                "group by avalnmro, avalfcap, prconmbr, unejnmbr, avalnmro, avalfcap, fnte__id " +
+                "group by avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, avalnmro, avalfcap, fnte__id " +
                 "order by avalnmro, fnte__id;"
 
         def res = cn.rows(tx.toString())
+        def unidades = []
 
         cn.eachRow(tx.toString()) { d ->
             total += d.sum
+            unidades += firmasService.requirentes(UnidadEjecutora.get(d.unej__id))
         }
 
         cn.close()
-
-        return [cn: res, total: total]
+        return [cn: res, total: total, unidades: unidades]
 
     }
 

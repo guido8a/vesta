@@ -158,19 +158,7 @@ class RevisionAvalController extends Shield {
         def codi = session.perfil.codigo
 
         def unidades
-//        def perfiles = ["GAF", "ASPL"]
-//
-//        def unidades
-//        if (params.requirente) {
-//            unidades = [UnidadEjecutora.get(params.requirente.toLong())]
-//        } else {
-//            if (perfiles.contains(perfil)) {
-//                unidades = UnidadEjecutora.list()
-//            } else {
-//                unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-//            }
-//        }
-//        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
+
         unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
 
         def personasLista = Persona.findAllByUnidadInList(unidades)
@@ -188,39 +176,6 @@ class RevisionAvalController extends Shield {
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy HH:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy HH:mm:ss", "31-12-" + anio + " 23:59:59")
-
-//            println "anio: " + anio
-//            println "inicio: " + fechaInicio
-//            println "fin: " + fechaFin
-//            println "aprobacion"
-//            println Aval.list().fechaAprobacion
-//            println Aval.withCriteria {
-//                and {
-//                    gt("fechaAprobacion", fechaInicio)
-//                    lt("fechaAprobacion", fechaFin)
-//                }
-//            }
-//            println "anulacion"
-//            println Aval.list().fechaAnulacion
-//            println Aval.withCriteria {
-//                and {
-//                    gt("fechaAnulacion", fechaInicio)
-//                    lt("fechaAnulacion", fechaFin)
-//                }
-//            }
-//            println "liberacion"
-//            println Aval.list().fechaLiberacion
-//            println Aval.withCriteria {
-//                and {
-//                    gt("fechaLiberacion", fechaInicio)
-//                    lt("fechaLiberacion", fechaFin)
-//                }
-//            }
-//            println "numero: " + params.numero
-//            println Aval.list().numero
-//            println Aval.withCriteria {
-//                eq("numero", "" + params.numero)
-//            }
 
             def avales = Aval.withCriteria {
                 or {
@@ -246,9 +201,26 @@ class RevisionAvalController extends Shield {
                     }
                 }
             }
-//            println "final:"
-//            println avales
-            datos = avales
+
+            def requirente
+            def filtroSol = []
+            def unidadComun
+
+            if(params.requirente != '' && params.requirente != null){
+              unidadComun = UnidadEjecutora.get(params.requirente)
+              requirente =  firmasService.requirentes(unidadComun)
+
+              def solicitudes = SolicitudAval.findAllByAvalInList(avales)
+
+              solicitudes.each {
+                  if(firmasService.requirentes(it.unidad) == requirente){
+                      filtroSol.add(it.aval)
+                  }
+              }
+               datos = filtroSol
+            }else{
+                datos = avales
+            }
         }
 
 //        println "proceso: " + proceso
@@ -261,32 +233,17 @@ class RevisionAvalController extends Shield {
                 }
             }
             datos = datosTemp
-//            println "datos proceso " + datos
         }
-//        def datosTemp2 = []
-//        datos.each { d->
-//             SolicitudAval.findAllByAval(d).each { s->
-//                 if(!datosTemp2.contains(d ) && unidades.contains(s.unidad)) {
-//                     datosTemp2 += d
-//                 }
-//             }
-//
-//
-//        }
-//        datos = datosTemp2
 
-//        println "unidades: " + unidades
         def datosTemp = []
         datos.each { av ->
-//                def solicitud = SolicitudAval.countByAvalAndUnidad(av, req)
             def solicitud = SolicitudAval.countByAvalAndUnidadInList(av, unidades)
             if (solicitud > 0) {
                 datosTemp.add(av)
             }
         }
         datos = datosTemp
-//        println "datos unidades: " + datos
-//        }
+
         if (!band) {
             switch (params.sort) {
                 case "proceso":
@@ -303,7 +260,12 @@ class RevisionAvalController extends Shield {
             }
 
         }
-        [datos: datos, estado: estado, sort: params.sort, order: params.order, now: now, perfil: codi]
+
+        def unidadesAutonomas = []
+        datos.each {
+            unidadesAutonomas += firmasService.requirentes(SolicitudAval.findByAval(it).unidad)
+        }
+        [datos: datos, estado: estado, sort: params.sort, order: params.order, now: now, perfil: codi, unidades: unidadesAutonomas]
     }
 
     /**
@@ -957,8 +919,8 @@ class RevisionAvalController extends Shield {
                 if(sol.tipo != 'A') {
                     sol.estado = aval.estado
                     sol.save(flush: true)
-                try {
-                    def personaMail = sol.firma.usuario
+                    try {
+                        def personaMail = sol.firma.usuario
 //                    def perDir = Prfl.findByCodigo("DRRQ")
 //                    def sesiones = []
 //                    /*drrq*/
@@ -968,28 +930,28 @@ class RevisionAvalController extends Shield {
 //                            sesiones += ses
 //                        }
 //                    }
-                    if (personaMail) {
+                        if (personaMail) {
 //                        println "Se enviaran ${sesiones.size()} mails"
 //                        sesiones.each { sesn ->
 //                            Persona usro = sesn.usuario
-                        def mail = personaMail.mail
-                        if (mail) {
-                            println "Envía mail de Aval firmado para: ${sol.firma.usuario.login} a $mail"
-                            mailService.sendMail {
-                                to mail
-                                subject "Nuevo aval emitido"
-                                body "Se ha emitido el aval #" + aval.numeroAval
+                            def mail = personaMail.mail
+                            if (mail) {
+                                println "Envía mail de Aval firmado para: ${sol.firma.usuario.login} a $mail"
+                                mailService.sendMail {
+                                    to mail
+                                    subject "Nuevo aval emitido"
+                                    body "Se ha emitido el aval #" + aval.numeroAval
+                                }
+                            } else {
+                                println "El usuario ${sol.firma.usuario.login} no tiene email"
                             }
-                        } else {
-                            println "El usuario ${sol.firma.usuario.login} no tiene email"
-                        }
 //                        }
-                    } else {
-                        println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
+                        } else {
+                            println "No hay nadie registrado con perfil de direccion de planificacion: no se mandan mails"
+                        }
+                    } catch (e) {
+                        println "Error al enviar mail: ${e.printStackTrace()}"
                     }
-                } catch (e) {
-                    println "Error al enviar mail: ${e.printStackTrace()}"
-                }
 //            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
                 }
             }
