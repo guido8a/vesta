@@ -26,6 +26,10 @@ class ProcesoAsignacion {
      * Devengado
      */
     double devengado
+    /**
+     * Liberado
+     */
+    double liberado
 
     /**
      * Define el mapeo entre los campos del dominio y las columnas de la base de datos
@@ -43,6 +47,7 @@ class ProcesoAsignacion {
             asignacion column: 'asgn__id'
             monto column: 'poasmnto'
             devengado column: 'poasdvgd'
+            liberado column: 'poaslbrd'
         }
     }
 
@@ -52,5 +57,6 @@ class ProcesoAsignacion {
     static constraints = {
         proceso nullable: true
         avalCorriente nullable: true
+        liberado nullable: true
     }
 }
