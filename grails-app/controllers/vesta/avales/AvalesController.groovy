@@ -339,20 +339,29 @@ class AvalesController extends vesta.seguridad.Shield {
      * @Renders el monto priorizado menos el monto utilizado
      */
     def getMaximoAsg = {
-        println "params Maximo " + params
+//        println "params Maximo " + params
         def asg = Asignacion.get(params.id)
         def monto = asg.priorizado
         def usado = 0;
         def estadoPendiente = EstadoAval.findByCodigo("P01")
         def estadoPorRevisar = EstadoAval.findByCodigo("R01")
         def estadoSolicitado = EstadoAval.findByCodigo("E01")
+        def estadoLiberado = EstadoAval.findByCodigo("E05")
         def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
         def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
         def estados = [estadoPendiente, estadoPorRevisar, estadoSolicitado, estadoSolicitadoSinFirma, estadoAprobadoSinFirma]
+
         ProcesoAsignacion.findAllByAsignacion(asg).each {
-//            usado += it.monto
-            usado += it.liberado
+            def estadoAval = Aval.findByProceso(it.proceso).estado
+            if(estadoAval.id == estadoLiberado.id){
+//                usado += it.liberado
+                usado += it.monto
+            }else{
+//                usado += it.monto
+                usado += it.liberado
+            }
         }
+
         def locked = 0
         def detalles = DetalleReforma.withCriteria {
             reforma {
@@ -364,7 +373,7 @@ class AvalesController extends vesta.seguridad.Shield {
             locked = detalles.sum { it.valor }
         }
         def disponible = monto - usado - locked
-        println "get Maximo asgn2 " + params + " :  monto: " + monto + "   usado: " + usado + "    locked: " + locked + "     disponible: " + disponible
+//        println "get Maximo asgn2 " + params + " :  monto: " + monto + "   usado: " + usado + "    locked: " + locked + "     disponible: " + disponible
         render "" + (disponible)
     }
 
