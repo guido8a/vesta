@@ -177,6 +177,7 @@ class ReportesController {
         def total
 
         ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
+            println "****************** ProcesoAsignacion"
             if (it.asignacion.anio.anio.toInteger() >= anio.anio.toInteger()) {
                 if (arr[it.asignacion.marcoLogico]) {
                     arr[it.asignacion.marcoLogico]["total"] += it.monto
