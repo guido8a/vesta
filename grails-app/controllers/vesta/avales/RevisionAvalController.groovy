@@ -1103,18 +1103,25 @@ class RevisionAvalController extends Shield {
                         println "data " + data
                         if (data.size() == 2) {
                             def det = ProcesoAsignacion.get(data[0])
-                            det.monto = data[1].toDouble()
+                            det.liberado = data[1].toDouble()
 //                            det.monto = params.montoAvalado.toDouble()
                             det.save(flush: true)
                         }
                     }
                 }
+
+
+//                def montoTotal = 0
+//                params.montoAvalado.each{
+//                    montoTotal = (montoTotal + it.toDouble())
+//                }
+
                 if (band) {
                     f.transferTo(new File(pathFile))
                     aval.pathLiberacion = fileName
-                    aval.liberacion = aval.monto
-                    aval.monto = params.monto.toDouble()
+//                    aval.liberacion = aval.monto
 //                    aval.monto = params.montoAvalado.toDouble()
+//                    aval.monto = montoTotal.toDouble().round(2)
                     aval.estado = EstadoAval.findByCodigo("E05")
                     aval.contrato = params.contrato
                     aval.certificacion = params.certificacion

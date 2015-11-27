@@ -166,7 +166,6 @@ class ReportesController {
         def mes
 
         if (solicitud?.fecha) {
-            println("fechaf")
             mes = Mes.findByNumero(solicitud.fecha.format("MM").toInteger())
         }
 
@@ -176,6 +175,7 @@ class ReportesController {
         def anios = [:]
         def arr = [:]
         def total
+
         ProcesoAsignacion.findAllByProceso(solicitud.proceso).each {
             if (it.asignacion.anio.anio.toInteger() >= anio.anio.toInteger()) {
                 if (arr[it.asignacion.marcoLogico]) {
@@ -215,7 +215,7 @@ class ReportesController {
             dosDevengado += it.devengado
         }
 
-//        println("arr" + arr)
+        println("arr" + arr)
 //
 //        println("totalf " + dosDevengado)
 

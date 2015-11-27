@@ -57,6 +57,6 @@ class ProcesoAsignacion {
     static constraints = {
         proceso nullable: true
         avalCorriente nullable: true
-        liberado nullable: true
+        liberado blank: true, nullable: true
     }
 }

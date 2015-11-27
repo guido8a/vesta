@@ -339,7 +339,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * @Renders el monto priorizado menos el monto utilizado
      */
     def getMaximoAsg = {
-        println "get Maximo asgn " + params
+        println "params Maximo " + params
         def asg = Asignacion.get(params.id)
         def monto = asg.priorizado
         def usado = 0;
@@ -350,7 +350,8 @@ class AvalesController extends vesta.seguridad.Shield {
         def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
         def estados = [estadoPendiente, estadoPorRevisar, estadoSolicitado, estadoSolicitadoSinFirma, estadoAprobadoSinFirma]
         ProcesoAsignacion.findAllByAsignacion(asg).each {
-            usado += it.monto
+//            usado += it.monto
+            usado += it.liberado
         }
         def locked = 0
         def detalles = DetalleReforma.withCriteria {

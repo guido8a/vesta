@@ -87,7 +87,7 @@
                                %{--value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}"--}%
                                %{--style="width: 100px;text-align: right" max="${asg.monto}" data-decimals="3">--}%
 
-                        <g:textField name="montoName" id="montoAvalado" class="form-control input-sm required det_${asg.id} detalle decimal number montoN" iden="${asg.id}"
+                        <g:textField name="montoAvalado" id="montoId" class="form-control input-sm required det_${asg.id} detalle decimal number montoN" iden="${asg.id}"
                                      value="${g.formatNumber(number: asg.monto, maxFractionDigits: 2, minFractionDigits: 2)}"
                                      style="width: 100px;text-align: right" max="${asg.monto}" data-decimals="3"/>
 
