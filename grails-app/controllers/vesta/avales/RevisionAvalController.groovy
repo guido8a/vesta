@@ -1125,9 +1125,10 @@ class RevisionAvalController extends Shield {
                     aval.certificacion = params.certificacion
                     aval.fechaLiberacion = new Date()
                     aval.save(flush: true)
+                    println "... actualiza datos de aval liberado: ${aval.id}"
 //                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numeroAval + " Liberado"
 //                    redirect(action: 'listaAvales', controller: 'revisionAval')
-                    render "SUCCESS*Aval liberado."
+                    render "SUCCESS*Aval ${aval.id} liberado."
                     return
                 } else {
 //                    flash.message = "Usted no tiene permisos para liberar avales"

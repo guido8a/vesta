@@ -65,7 +65,7 @@
                 <th>Partida</th>
                 <th>Priorizado</th>
                 <th>Monto</th>
-                <th>Monto Avalado</th>
+                <th>Monto Utilizado</th>
             </tr>
             </thead>
             <tbody>
