@@ -1097,11 +1097,11 @@ class RevisionAvalController extends Shield {
                 /*Todo aqui validar quien puede*/
                 band = true
                 def datos = params.datos.split("&")
-                println "..... datos. $datos"
+//                println "..... datos. $datos"
                 datos.each {
                     if (it != "") {
                         def data = it.split(";")
-                        println "data " + data
+//                        println "data " + data
                         if (data.size() == 2) {
                             def det = ProcesoAsignacion.get(data[0])
                             det.liberado = data[1].toDouble()
