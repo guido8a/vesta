@@ -131,7 +131,7 @@ class Aval {
         path(blank: true, nullable: true, size: 1..350)
         pathLiberacion(blank: true, nullable: true, size: 1..350)
         pathAnulacion(blank: true, nullable: true, size: 1..350)
-        contrato(blank: true, nullable: true, size: 1..30)
+        contrato(blank: true, nullable: true, size: 1..50)
         numero(blank: true, nullable: true, size: 1..10)
         concepto(blank: true, nullable: true, size: 1..500)
         certificacion(blank: true, nullable: true, size: 1..50)

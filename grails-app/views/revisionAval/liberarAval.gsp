@@ -19,8 +19,7 @@
                     Contrato:
                 </label>
                 <div class="col-md-5">
-                    %{--<g:textField class="form-control input-sm required" name="contrato" id="contrato" maxlength="30"/>--}%
-                    <g:textField class="form-control required" name="contrato" id="contrato" maxlength="30"/>
+                    <g:textField class="form-control input-sm required" name="contrato" id="contrato" maxlength="50"/>
                 </div>
             </span>
             *
@@ -114,8 +113,6 @@
         calcular();
         monto();
     });
-
-
 
     function monto () {
         var monto = $("#total").attr("valor");
