@@ -899,6 +899,7 @@ class RevisionAvalController extends Shield {
                 if(aval.proceso.proyecto.codigo == "P.19") {
                     numero = aval.proceso.proyecto.siguienteNumeroAval
                 } else {
+                    unej.refresh()
                     numero = unej.numeroAval   //numeración única para GPE para todos los avales excepto proy: P.19
                     if (numero == 0) {
                         numero = 1

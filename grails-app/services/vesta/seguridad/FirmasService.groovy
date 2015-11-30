@@ -91,12 +91,14 @@ class FirmasService {
             def gerenteUnidad = Persona.withCriteria {
                 eq("unidad", unidad)
                 ilike("cargo", "%gerente%")
+                eq("estaActivo", 1)
             }
             gerentes += gerenteUnidad
         } else {
             gerentes = Persona.withCriteria {
                 inList("unidad", unidades)
                 ilike("cargo", "%gerente%")
+                eq("estaActivo", 1)
 //                cargoPersonal {
 //                    ilike("descripcion", "%gerente%")
 //                }
