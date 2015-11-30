@@ -113,7 +113,6 @@
                             callback  : function () {
                                 return submitForm();
                                 closeLoader();
-
                             } //callback
                         } //guardar
                     } //buttons

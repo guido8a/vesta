@@ -1119,12 +1119,10 @@ class RevisionAvalController extends Shield {
                 if (band) {
                     f.transferTo(new File(pathFile))
                     aval.pathLiberacion = fileName
-//                    aval.liberacion = aval.monto
-//                    aval.monto = params.montoAvalado.toDouble()
-//                    aval.monto = montoTotal.toDouble().round(2)
                     aval.estado = EstadoAval.findByCodigo("E05")
                     aval.contrato = params.contrato
                     aval.certificacion = params.certificacion
+                    aval.fechaLiberacion = new Date()
                     aval.save(flush: true)
 //                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numeroAval + " Liberado"
 //                    redirect(action: 'listaAvales', controller: 'revisionAval')
