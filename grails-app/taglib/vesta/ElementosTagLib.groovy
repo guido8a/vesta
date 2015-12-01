@@ -1098,7 +1098,7 @@ class ElementosTagLib {
                     break;
             }
 
-            println "estados editables: " + estadosEditables
+            println "linkeditarReforma estados editables: " + estadosEditables
 
             def accion = "", controlador = "", title = "", clase = "default", icono = "question"
 //            println "Estados editables: " + estadosEditables

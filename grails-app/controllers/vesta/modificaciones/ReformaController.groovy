@@ -375,58 +375,75 @@ class ReformaController extends Shield {
 
     /**
      * Acción que muestra la lista de todas las reformas, con su estado y una opción para ver el pdf
+     * Tipo de la solicitud     E: existente (ajustes -> 1 y reformas -> 1)
+                                P: inclusión de nuevas partidas (ajustes -> 2 y reformas -> 2)
+                                I: incremento de recursos (reformas -> 3)
+                                A: nueva actividad con financiamiento del área (ajustes -> 3 y reformas -> 4)
+                                C: nueva actividad sin financiamiento del área tipo --> 5
+                                T: Ajuste por modificación de techo presupuestario (ajustes -> 4)
      */
     def lista() {
+        println "lista ref: $params"
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
         def reformas
         def perfil = session.perfil.codigo
         def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+
         def cn = dbConnectionService.getConnection()
         def totales = [:]
+        def tx = ""
         reformas = Reforma.withCriteria {
             eq("tipo", "R")
             persona {
-                inList("unidad", unidades)
-                order("unidad", "asc")
+                if(params.requirente){
+                    eq("unidad", UnidadEjecutora.get(params.requirente))
+                } else {
+                    inList("unidad", unidades)
+                    order("unidad", "asc")
+                }
             }
+            if(params.anio){
+                eq("anio", Anio.get(params.anio))
+            }
+            if(params.numero){
+                eq("numeroReforma", params.numero.toInteger())
+            }
+
             order("fecha", "desc")
         }
 
         reformas.each {rf ->
-            cn.eachRow("select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id}".toString()){
+            switch (rf.tipoSolicitud){
+                case ['E', 'P', 'A']:
+                    tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is not null"
+                    break
+                default:
+                    tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is null"
+                    break
+            }
+            cn.eachRow(tx.toString()){
                 totales[rf.id] = it.suma
             }
         }
         cn.close()
 
-        return [reformas: reformas, totales: totales]
+        unidades = unidades.sort { it.nombre }
+
+        params.actual = params.actual?:actual.id
+        params.numero = params.numero
+        params.requirente = params.requirente
+        return [reformas: reformas, totales: totales, unidades: unidades, params: params]
     }
 
     /**
      * Acción que muestra la lista de las reformas solicitadas para q un analista de planificación apruebe y pida firmas o niegue
      */
     def pendientes() {
-//        def estadoSolicitado = EstadoAval.findByCodigo("E01")
-//        def estadoDevueltoAnalista = EstadoAval.findByCodigo("D02")
-//        def estados = [estadoSolicitado, estadoDevueltoAnalista]
-//
-//        def reformas = Reforma.findAllByTipoAndEstadoInList("R", estados, [sort: "fecha", order: "desc"])
-
-//        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-//        def personas = Persona.findAllByUnidadInList(unidades)
-//
-//        def reformas = Reforma.withCriteria {
-//            eq("tipo", "R")
-//            inList("estado", estados)
-//            inList("persona", personas)
-//            order("fecha", "asc")
-//        }
-
-//        println params
-//        println reformas
-//        println reformas.estado
-//        println reformas.estado.codigo
-
-//        return [reformas: reformas]
 
         def estadoPendiente = EstadoAval.findByCodigo("P01")
         def estadoDevueltoReq = EstadoAval.findByCodigo("D01")
@@ -435,17 +452,12 @@ class ReformaController extends Shield {
         def estadoDevueltoDirReq = EstadoAval.findByCodigo("D02")
         def estadoDevueltoAnPlan = EstadoAval.findByCodigo("D03")
         def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
-
+        def tx = ""
+        def cn = dbConnectionService.getConnection()
+        def totales = [:]
         def estados = []
         def perfil = session.perfil.codigo.toString()
-//        def perfiles = ["GAF", "ASPL"]
         def unidades
-//        if (perfiles.contains(perfil)) {
-//            unidades = UnidadEjecutora.list()
-//        } else {
-//            unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-//        }
-//        unidades = unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
         unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
 
         def filtroDirector = null,
@@ -482,6 +494,7 @@ class ReformaController extends Shield {
                 eq("director", filtroDirector)
             }
         }
+
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
@@ -489,45 +502,43 @@ class ReformaController extends Shield {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
 
-        def unidadesList
-
-//        if (perfiles.contains(perfil)) {
-//            unidadesList = Asignacion.withCriteria {
-//                projections {
-//                    distinct("unidad")
-//                }
-//            }
-//        } else {
-//            def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-//            unidadesList = Asignacion.withCriteria {
-//                inList("unidad", uns)
-//                projections {
-//                    distinct("unidad")
-//                }
+//        def unidadesList
+//
+//        def uns = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+//        unidadesList = Asignacion.withCriteria {
+//            inList("unidad", uns)
+//            projections {
+//                distinct("unidad")
 //            }
 //        }
-
-//        def uns = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
-        def uns = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
-        unidadesList = Asignacion.withCriteria {
-            inList("unidad", uns)
-            projections {
-                distinct("unidad")
-            }
-        }
-
-        unidadesList = unidadesList.sort { it.nombre }
+//
+//        unidadesList = unidadesList.sort { it.nombre }
 
         def gerencias = []
+
+        reformas.each {rf ->
+            switch (rf.tipoSolicitud){
+                case ['E', 'P', 'A']:
+                    tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is not null"
+                    break
+                default:
+                    tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is null"
+                    break
+            }
+            cn.eachRow(tx.toString()){
+                totales[rf.id] = it.suma
+            }
+        }
+        cn.close()
 
         reformas.each {
             gerencias += firmasService.requirentes(it.persona.unidad)
         }
 
-        println("reformas " + reformas)
+//        println("reformas " + reformas)
 //        println("gerencias " + gerencias)
 
-        return [reformas: reformas, actual: actual, unidades: unidadesList, gerencias: gerencias]
+        return [reformas: reformas, actual: actual, gerencias: gerencias, totales: totales]
     }
 
     /**

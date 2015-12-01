@@ -139,7 +139,7 @@ class RevisionAvalController extends Shield {
      * @param order
      */
     def historialAvales = {
-//        println "historial aval " + params
+        println "historial aval " + params
 
         def now = new Date()
         def anio = Anio.get(params.anio).anio

@@ -55,6 +55,7 @@
                                     <th>Sol. No.</th>
                                     <th>Fecha</th>
                                     <th>Justificación</th>
+                                    <th>Monto</th>
                                     <th>Tipo</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
@@ -64,10 +65,11 @@
                                 <g:each in="${reformas}" var="reforma" status="j">
                                     <tr>
                                         %{--<td>${reforma.persona}</td>--}%
-                                        <td>${gerencias[j]}</td>
-                                        <td>${reforma.numero}</td>
+                                        <td>${gerencias[j].codigo}</td>
+                                        <td>${reforma?.numero}</td>
                                         <td>${reforma.fecha.format("dd-MM-yyyy")}</td>
                                         <td>${reforma.concepto}</td>
+                                        <td>${totales[reforma.id]}</td>
                                         <td>
                                             <elm:tipoReforma reforma="${reforma}"/>
                                         </td>
