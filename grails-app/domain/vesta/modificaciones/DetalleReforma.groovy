@@ -31,6 +31,10 @@ class DetalleReforma {
      */
     MarcoLogico componente
     /**
+     * Tipo de reforma
+     */
+    TipoReforma tipoReforma
+    /**
      * Valor
      */
     Double valor
@@ -79,13 +83,11 @@ class DetalleReforma {
     /**
      * Objetivo de gasto permanente
      */
-
     ObjetivoGastoCorriente objetivoGastoCorriente
 
     /**
      * Macro actividad de gasto permanente
      */
-
     MacroActividad macroActividad
 
     /**
@@ -121,6 +123,7 @@ class DetalleReforma {
             tarea column: 'treadscr'
             objetivoGastoCorriente column: 'obgc__id'
             macroActividad column: 'mcac__id'
+            tipoReforma column: 'tprf__id'
 
         }
     }
@@ -142,7 +145,7 @@ class DetalleReforma {
         tarea blank: true, nullable: true
         objetivoGastoCorriente nullable: true
         macroActividad nullable: true
-
+        tipoReforma nullable: true
 
     }
 }

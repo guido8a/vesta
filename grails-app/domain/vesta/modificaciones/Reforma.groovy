@@ -105,7 +105,7 @@ class Reforma {
             fecha column: 'rfrmfcha'
             fechaRevision column: 'rfrmfcrv'
             tipo column: 'rfrmtipo'
-            tipoSolicitud column: 'rfrmtprf'
+            tipoSolicitud column: 'rfrmtprf'   /* ya no se usa */
             textoPdf column: 'rfrm_pdf'
             nota column: 'rfrmnota'
             numero column: 'rfrmnmro'
