@@ -8,6 +8,7 @@ import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
+import vesta.poa.Componente
 import vesta.proyectos.Categoria
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.ModificacionAsignacion
@@ -422,6 +423,9 @@ class ReformaController extends Shield {
                 case ['E', 'P', 'A']:
                     tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is not null"
                     break
+                case ['X']:
+                    tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and tprf__id != '6'"
+                    break
                 default:
                     tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is null"
                     break
@@ -520,6 +524,9 @@ class ReformaController extends Shield {
             switch (rf.tipoSolicitud){
                 case ['E', 'P', 'A']:
                     tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is not null"
+                    break
+                case ['X']:
+                    tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and tprf__id != '6'"
                     break
                 default:
                     tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is null"
@@ -631,18 +638,32 @@ class ReformaController extends Shield {
                 case "I": //incremento
                     d = ReportesReformaController.generaDetallesSolicitudIncremento(reforma)
                     break;
+                case "X": //incremento
+                    d = null
+                    break;
             }
-            def det = d.det
-            def det2 = d.det2
-            def detallado = d.detallado
-            def total = d.total
-            def totalSaldo = Math.round(d.saldo?:0 * 100)/100
+            def det = d?.det
+            def det2 = d?.det2
+            def detallado = d?.detallado
+            def total = d?.total
+            def totalSaldo
+            if(d?.saldo){
+                totalSaldo = Math.round(d?.saldo?:0 * 100)/100
+            }else{
+                totalSaldo = 0
+            }
 
+            def detallesX = null
+
+            if(reforma?.tipoSolicitud == 'X'){
+                detallesX = DetalleReforma.findAllByReforma(reforma)
+
+            }
 //            println "........ totalSaldo: $totalSaldo"
 
             def firmas = firmasService.listaFirmasCombos()
             return [reforma : reforma, det: det, det2: det2, detallado: detallado, total: total, personas: firmas.directores,
-                    gerentes: firmas.gerentes, tipo: reforma.tipoSolicitud, totalSaldo: totalSaldo]
+                    gerentes: firmas.gerentes, tipo: reforma.tipoSolicitud, totalSaldo: totalSaldo, detallesX: detallesX]
         } else {
 //            println "redireccionando: reforma=${reforma.id} estado reforma=${reforma.estado.codigo}"
             redirect(action: "pendientes")
@@ -831,6 +852,10 @@ class ReformaController extends Shield {
                         }
                     }
                     break;
+                case "X":
+                    accion = "nuevaReformaPreviewReforma"
+                    break;
+
                 default:
                     accion = "existentePreviewReforma"
                     mensaje = "Tipo de solicitud ${reforma.tipoSolicitud} no reconocido"
@@ -1001,6 +1026,76 @@ class ReformaController extends Shield {
         }
         render "SUCCESS*Detalle eliminado exitosamente"
     }
+
+
+    def saveNuevaReforma_ajax () {
+        println("save nueva ref " + params)
+        def anio = Anio.get(params.anio.toLong())
+        def personaRevisa
+        def estado = EstadoAval.findByCodigo("P01") //pendiente
+        if (params.send == "S") {
+            estado = EstadoAval.findByCodigo("R01") //por revisar
+        }
+        def now = new Date()
+        def usu = Persona.get(session.usuario.id)
+        def reforma
+        if (params.id) {
+            reforma = Reforma.get(params.id)
+            personaRevisa = Persona.get(params.firma.toLong())
+        }
+
+        reforma.anio = anio
+        reforma.persona = usu
+        reforma.estado = estado
+        reforma.concepto = params.concepto.trim()
+        reforma.fecha = now
+        reforma.tipo = "R"
+        reforma.tipoSolicitud = "X"
+        reforma.director = personaRevisa
+        if (!reforma.save(flush: true)) {
+            println "error al guardar la reforma: " + reforma.errors
+            render "ERROR*" + renderErrors(bean: reforma)
+            return
+        }
+
+        def tipoStr = elm.tipoReformaStr(tipo: 'Reforma', tipoSolicitud: reforma.tipoSolicitud)
+
+        if (params.send == "S") {
+            println "nueva reforma : se hace la alerta y se manda mail"
+            def alerta = new Alerta()
+            alerta.from = usu
+            alerta.persona = personaRevisa
+            alerta.fechaEnvio = now
+            alerta.mensaje = "Solicitud de ${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta.controlador = "reforma"
+            alerta.accion = "pendientes"
+            alerta.id_remoto = reforma.id
+            if (!alerta.save(flush: true)) {
+                println "error alerta: " + alerta.errors
+                render "ERROR*" + renderErrors(bean: reforma)
+            }
+            try {
+                def mail = personaRevisa.mail
+                if (mail) {
+                    mailService.sendMail {
+                        to mail
+                        subject "Solicitud de reforma (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+                        body "Tiene una Solicitud de reforma pendiente que requiere su revisión"
+                    }
+                } else {
+                    println "El usuario ${personaRevisa} no tiene email"
+                }
+                render "SUCCESS*Reforma solicitada exitosamente"
+            } catch (e) {
+                println "error email " + e.printStackTrace()
+            }
+        } else {
+            println "no se manda: no se hace alerta ni se manda mail"
+        }
+
+       render "SUCCESS*Reforma solicitada exitosamente"
+    }
+
 
     /**
      * Acción llamada con ajax que guarda una solicitud de reforma de asignaciones existentes
@@ -2148,11 +2243,14 @@ class ReformaController extends Shield {
             case "P":
                 det = rep.generaDetallesSolicitudPartida(reforma).det
                 break;
+
         }
 
         def gerentes = firmasService.listaGerentesUnidad(reforma.persona.unidad)
 
-        return [reforma: reforma, det: det, gerentes: gerentes]
+        def detallesX = DetalleReforma.findAllByReforma(reforma)
+
+        return [reforma: reforma, det: det, gerentes: gerentes, detallesX: detallesX ]
     }
 
     def enviarAGerente_ajax() {
@@ -2195,6 +2293,10 @@ class ReformaController extends Shield {
                         case "T":
                             accion = "techo"
                             break;
+                        case "X":
+                            accion = "nuevaReforma"
+                            break;
+
                     }
                     firma = new Firma()
                     firma.usuario = personaFirma
@@ -2328,6 +2430,7 @@ class ReformaController extends Shield {
                 alerta1.mensaje = "Devolución de solicitud de ${tipoStr}: " + solicitud.concepto
                 alerta1.controlador = "reforma"
                 alerta1.accion = "pendientes"
+                alerta1.id_remoto = solicitud.id
                 if (!alerta1.save(flush: true)) {
                     println "error alerta1: " + alerta1.errors
                 }
@@ -2354,6 +2457,453 @@ class ReformaController extends Shield {
         } else {
             render("ERROR*Clave de autorización incorrecta")
         }
+    }
+
+    def nuevaReforma () {
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def personasFirma = firmasService.listaDirectoresUnidad(unidad)
+
+
+        def reforma = null
+        def detalle = null
+        if(params.id){
+
+            reforma = Reforma.get(params.id)
+            detalle = DetalleReforma.findAllByReforma(reforma)
+
+        }
+
+        println("dtrf " + detalle)
+
+        return [personas: personasFirma, actual: actual, proyectos: proyectos3, reforma: reforma, detalle: detalle]
+    }
+
+    def asignacionOrigen_ajax () {
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def  proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos:  proyectos3, detalle: detalle]
+    }
+
+    def asignacionDestino_ajax () {
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        return [proyectos:  proyectos3]
+    }
+
+    def incremento_ajax () {
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos:  proyectos3, detalle: detalle]
+    }
+
+    def partida_ajax () {
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def gerencias = firmasService.requirentes(session.usuario.unidad)
+
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos:  proyectos3, gerencias: gerencias, detalle: detalle]
+
+    }
+
+
+    def actividad_ajax () {
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def gerencias = firmasService.requirentes(session.usuario.unidad)
+
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos: proyectos3, gerencias: gerencias, detalle: detalle]
+    }
+
+
+    def guardarNuevaReforma () {
+
+
+//        println("params nr " + params)
+
+        def anio = Anio.get(params.anio)
+        def estadoAval = EstadoAval.findByCodigo("P01")
+        def usuario = Persona.get(session.usuario.id)
+
+        def reforma
+
+        if(!params.id){
+            //crear!!!!!!!!!!
+//            println("entro a")
+
+            reforma = new Reforma()
+            reforma.anio = anio
+            reforma.concepto = params.texto
+            reforma.estado = estadoAval
+            reforma.persona = usuario
+            reforma.tipo = 'R'
+            reforma.tipoSolicitud = 'X'
+            reforma.numero = 0
+            reforma.numeroReforma = 0
+            reforma.fecha = new Date()
+
+            if(!reforma.save(flush: true)){
+                println("error al guardar nueva reforma " + errors)
+                render "no"
+            }else{
+                render "ok_${reforma.id}"
+            }
+
+        }else{
+            //editar
+//            println("entro b")
+
+            reforma = Reforma.get(params.id)
+            reforma.anio = anio
+            reforma.concepto = params.texto
+            reforma.estado = estadoAval
+            reforma.persona = usuario
+            reforma.tipo = 'R'
+            reforma.tipoSolicitud = 'X'
+            reforma.numero = 0
+            reforma.numeroReforma = 0
+            reforma.fecha = new Date()
+
+            if(!reforma.save(flush: true)){
+                println("error al actualizar nueva reforma " + errors)
+                render "no"
+            }else{
+                render "ok_${reforma.id}"
+            }
+        }
+
+
+    }
+
+
+    def grabarDetalleA () {
+
+//        println("params A " + params)
+
+        def reforma = Reforma.get(params.reforma)
+        def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
+        def componente = MarcoLogico.get(params.componente)
+        def asignacion = Asignacion.get(params.asignacion)
+        def fuente = Fuente.get(asignacion?.fuente?.id)
+
+        def detalleReforma
+
+        if(!params.id){
+            //crear
+
+            detalleReforma = new DetalleReforma()
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = componente
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = asignacion.priorizado
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma A " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }else{
+            //editar
+
+            detalleReforma = DetalleReforma.get(params.id)
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = componente
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = asignacion.priorizado
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma A " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }
+
+    }
+
+    def grabarDetalleB () {
+//        println("params B " + params)
+
+        def reforma = Reforma.get(params.reforma)
+        def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
+        def componente = MarcoLogico.get(params.componente)
+        def asignacion = Asignacion.get(params.asignacion)
+        def fuente = Fuente.get(asignacion?.fuente?.id)
+
+        def detalleReforma
+
+        if(!params.id){
+            //crear
+
+            detalleReforma = new DetalleReforma()
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = componente
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = asignacion.priorizado
+            detalleReforma.fuente = fuente
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma B " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }else{
+            //editar
+
+            detalleReforma = DetalleReforma.get(params.id)
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = componente
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = asignacion.priorizado
+            detalleReforma.fuente = fuente
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma B " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }
+    }
+
+
+    def grabarDetalleC () {
+
+//        println("params C " + params)
+//
+        def reforma = Reforma.get(params.reforma)
+        def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
+        def componente = MarcoLogico.get(params.componente)
+        def asignacion = Asignacion.get(params.asignacion)
+        def fuente = Fuente.get(asignacion?.fuente?.id)
+        def partida = Presupuesto.get(params.partida)
+
+        def detalleReforma
+
+        if(!params.id){
+            //crear
+
+            detalleReforma = new DetalleReforma()
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = componente
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = asignacion.priorizado
+            detalleReforma.fuente = fuente
+            detalleReforma.presupuesto = partida
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma C  " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+
+
+        }else{
+            //editar
+
+            detalleReforma = DetalleReforma.get(params.id)
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = componente
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = asignacion.priorizado
+            detalleReforma.fuente = fuente
+            detalleReforma.presupuesto = partida
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma C  " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }
+
+
+    }
+
+    def grabarDetalleD () {
+
+//        println("params D " + params)
+
+        def reforma = Reforma.get(params.reforma)
+        def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
+        def componente = MarcoLogico.get(params.componente)
+        def fuente = Fuente.get(params.fuente)
+        def partida = Presupuesto.get(params.partida)
+        def categoria = Categoria.get(params.categoria)
+        def inicio = new Date().parse("dd-MM-yyyy", params.inicio)
+        def fin = new Date().parse("dd-MM-yyyy", params.fin)
+
+        def responsable = UnidadEjecutora.get(params.responsable)
+
+        def detalleReforma
+
+        if(!params.id){
+            //crear
+
+            detalleReforma = new DetalleReforma()
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = componente
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+            detalleReforma.presupuesto = partida
+            detalleReforma.categoria = categoria
+            detalleReforma.fechaInicioNuevaActividad = inicio
+            detalleReforma.fechaFinNuevaActividad = fin
+            detalleReforma.descripcionNuevaActividad = params.actividad
+            detalleReforma.responsable = responsable
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma D  " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+
+
+        }else{
+            //editar
+
+
+            detalleReforma = DetalleReforma.get(params.id)
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = componente
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+            detalleReforma.presupuesto = partida
+            detalleReforma.categoria = categoria
+            detalleReforma.fechaInicioNuevaActividad = inicio
+            detalleReforma.fechaFinNuevaActividad = fin
+            detalleReforma.descripcionNuevaActividad = params.actividad
+            detalleReforma.responsable = responsable
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma D  " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+
+        }
+
+
+    }
+
+
+    def borrarDetalle () {
+
+        println("params borrar " + params)
+
+        def detalleBorra = DetalleReforma.get(params.detalle)
+
+        if(!detalleBorra.delete(flush: true)){
+
+            render "ok"
+        }else{
+            println("error al borrar detalle de reforma " + errors);
+            render "no"
+        }
+
     }
 
 

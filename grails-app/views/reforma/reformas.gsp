@@ -98,6 +98,11 @@
                     title="Selección de actividad dentro del área para la que se requiere asignación o incremento de recursos">
             5.- Creación de una nueva actividad sin financiamiento
         </g:link>
+        <g:link action="nuevaReforma" class="btn btn-default bgNuevaReforma"  style="width: 370px; text-align: left;
+            font-size: large; font-weight: bolder; margin-bottom: 10px; margin-left: 300px"
+                title="Nueva Reforma">
+            6.- Nueva Reforma
+        </g:link>
         </div>
         </elm:container>
 

@@ -55,35 +55,12 @@
 <table class="table table-condensed table-bordered table-striped table-hover">
     <thead>
     <tr>
-
-        %{--<g:if test="${alertaInstance?.controlador == 'reforma'}">--}%
         <th></th>
         <th style="width: 85px;">Fecha</th>
         <th>Área de gestión</th>
         <th>Nombre del proceso</th>
         <th>Monto</th>
         <th>Link</th>
-
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-        %{--<g:if test="${alertaInstance?.controlador == 'aval'}">--}%
-        %{--<th></th>--}%
-        %{--<th style="width: 85px;">Fecha</th>--}%
-        %{--<th>Área de gestión</th>--}%
-        %{--<th>Nombre del proceso</th>--}%
-        %{--<th>Monto</th>--}%
-        %{--<th>Link</th>--}%
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-        %{--<th></th>--}%
-        %{--<th style="width: 85px;">Fecha</th>--}%
-        %{--<th>Mensaje</th>--}%
-        %{--<th>Originador</th>--}%
-        %{--<th>Link</th>--}%
-        %{--</g:else>--}%
-        %{--</g:else>--}%
-
-
     </tr>
     </thead>
     <tbody>
@@ -103,7 +80,9 @@
                     </elm:textoBusqueda></td>
                     <td>${Reforma.get(alertaInstance.id_remoto)?.concepto}</td>
                     <g:each in="${DetalleReforma.findAllByReforma(Reforma.get(alertaInstance.id_remoto))}" var="valor">
-                        <g:set var="valorReforma" value="${valorReforma += valor.valor}"/>
+                        <g:if test="${valor?.tipoReforma?.codigo != 'O'}">
+                            <g:set var="valorReforma" value="${valorReforma += valor.valor}"/>
+                        </g:if>
                     </g:each>
                     <td><g:formatNumber number="${valorReforma}" type="currency" minFractionDigits="2" maxFractionDigits="2"/> </td>
                     <td class="text-center">
@@ -171,8 +150,13 @@
                                 ${vesta.modificaciones.Reforma.get(alertaInstance.id_remoto)?.persona?.unidad?.nombre}
                             </elm:textoBusqueda></td>
                             <td>${Reforma.get(alertaInstance.id_remoto)?.concepto}</td>
-                            <g:each in="${DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(Reforma.get(alertaInstance.id_remoto))}" var="valor">
-                                <g:set var="valorReforma" value="${valorReforma += valor.valor}"/>
+                            %{--<g:each in="${DetalleReforma.findAllByReformaAndAsignacionOrigenIsNotNull(Reforma.get(alertaInstance.id_remoto))}" var="valor">--}%
+                            <g:each in="${DetalleReforma.findAllByReforma(Reforma.get(alertaInstance.id_remoto))}" var="valor">
+                                <g:if test="${valor?.tipoReforma?.codigo == 'O'}">
+                                </g:if>
+                                <g:else>
+                                    <g:set var="valorReforma" value="${valorReforma += valor.valor}"/>
+                                </g:else>
                             </g:each>
                             <td><g:formatNumber number="${valorReforma}" type="currency" minFractionDigits="2" maxFractionDigits="2"/> </td>
                             <td class="text-center">

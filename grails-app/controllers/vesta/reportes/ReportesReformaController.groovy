@@ -80,6 +80,37 @@ class ReportesReformaController {
     }
 
     /**
+     * Acción que muestra el pdf del tipo nuevaReforma
+     */
+    def nuevaReforma () {
+        def reforma = Reforma.get(params.id.toString().toLong())
+        def detallesReforma = DetalleReforma.findAllByReforma(reforma)
+
+        def uni = firmasService.requirentes(reforma.persona.unidad)
+
+        println("detalles " + detallesReforma)
+
+        return [reforma: reforma, detallesReforma: detallesReforma, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
+
+    }
+
+
+    def nuevaReformaPreviewReforma () {
+
+        def reforma = Reforma.get(params.id.toString().toLong())
+        def detallesReforma = DetalleReforma.findAllByReforma(reforma)
+
+        def uni = firmasService.requirentes(reforma.persona.unidad)
+
+        println("detalles " + detallesReforma)
+
+        return [reforma: reforma, detallesReforma: detallesReforma, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
+
+    }
+
+
+
+    /**
      * Acción que muestra el pdf de la solicitud de reforma de modificacion de techos
      */
     def techo() {

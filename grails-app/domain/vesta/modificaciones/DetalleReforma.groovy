@@ -1,5 +1,6 @@
 package vesta.modificaciones
 
+import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
@@ -91,6 +92,11 @@ class DetalleReforma {
     MacroActividad macroActividad
 
     /**
+     * Responsable
+     */
+    UnidadEjecutora responsable
+
+    /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
     static auditable = [ignore: []]
@@ -124,6 +130,7 @@ class DetalleReforma {
             objetivoGastoCorriente column: 'obgc__id'
             macroActividad column: 'mcac__id'
             tipoReforma column: 'tprf__id'
+            responsable column: 'unej__id'
 
         }
     }
@@ -146,6 +153,7 @@ class DetalleReforma {
         objetivoGastoCorriente nullable: true
         macroActividad nullable: true
         tipoReforma nullable: true
+        responsable blank: true, nullable: true
 
     }
 }

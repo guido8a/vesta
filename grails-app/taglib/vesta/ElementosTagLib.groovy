@@ -939,6 +939,10 @@ class ElementosTagLib {
             case "T":
                 str += "por modificación de techo presupuestario"
                 break;
+            case "X":
+                str += ""
+                break;
+
         }
         out << "" + str
     }
@@ -984,6 +988,10 @@ class ElementosTagLib {
                     case "T":
                         accion = "techo"
                         fileName = "techo"
+                        break;
+                    case "X":
+                        accion = "nuevaReforma"
+                        fileName = "nuevaReforma"
                         break;
                 }
             }
@@ -1126,6 +1134,9 @@ class ElementosTagLib {
                         break;
                     case "T":
                         accion = "techo"
+                        break;
+                    case "X":
+                        accion = "nuevaReforma"
                         break;
                 }
                 if (reforma.tipo == "A") {
