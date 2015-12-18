@@ -1003,13 +1003,24 @@ class ElementosTagLib {
                 clase = "btn-info"
             } else {
                 if (reforma?.estado?.codigo == 'E02') {
-                    accion2 = accion + "Reforma"
-                    if (reforma?.tipo == 'C') {
-                        fileName += "_corriente"
+                    if(reforma?.tipoSolicitud != 'X'){
+                        accion2 = accion + "Reforma"
+                        if (reforma?.tipo == 'C') {
+                            fileName += "_corriente"
+                        }
+                        fileName2 = fileName + "_reforma.pdf"
+                        title2 = "Reforma"
+                        clase2 = "btn-success"
+                    }else{
+                        accion2 = accion + "PreviewReforma"
+                        if (reforma?.tipo == 'C') {
+                            fileName += "_corriente"
+                        }
+                        fileName2 = fileName + "_reforma.pdf"
+                        title2 = "Reforma"
+                        clase2 = "btn-success"
                     }
-                    fileName2 = fileName + "_reforma.pdf"
-                    title2 = "Reforma"
-                    clase2 = "btn-success"
+
                 }
                 if (reforma?.tipo == "R") {
                     fileName = "reforma_" + fileName + "_solicitud"

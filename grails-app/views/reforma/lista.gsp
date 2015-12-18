@@ -99,7 +99,6 @@
                     </g:if>
                     <g:else>
                         <tr>
-                    %{--<td style="width: 380px;">${reforma.persona.unidad} - ${reforma.persona}</td>--}%
                         <td style="width: 200px;">${reforma.persona.unidad}</td>
                         <td style="width: 80px;">${reforma?.numero}</td>
                         <td style="width: 85px;">${reforma.fecha.format("dd-MM-yyyy")}</td>

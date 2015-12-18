@@ -384,7 +384,7 @@ class ReformaController extends Shield {
                                 T: Ajuste por modificación de techo presupuestario (ajustes -> 4)
      */
     def lista() {
-        println "lista ref: $params"
+//        println "lista ref: $params"
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
@@ -441,6 +441,7 @@ class ReformaController extends Shield {
         params.actual = params.actual?:actual.id
         params.numero = params.numero
         params.requirente = params.requirente
+
         return [reformas: reformas, totales: totales, unidades: unidades, params: params]
     }
 
