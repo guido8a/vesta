@@ -2761,13 +2761,14 @@ class ReformaController extends Shield {
 
     def grabarDetalleC () {
 
-//        println("params C " + params)
+        println("params C " + params)
 //
         def reforma = Reforma.get(params.reforma)
         def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
         def componente = MarcoLogico.get(params.componente)
-        def asignacion = Asignacion.get(params.asignacion)
-        def fuente = Fuente.get(asignacion?.fuente?.id)
+        def actividad = MarcoLogico.get(params.actividad)
+//        def asignacion = Asignacion.get(params.asignacion)
+        def fuente = Fuente.get(params.fuente)
         def partida = Presupuesto.get(params.partida)
 
         def detalleReforma
@@ -2777,12 +2778,13 @@ class ReformaController extends Shield {
 
             detalleReforma = new DetalleReforma()
             detalleReforma.reforma = reforma
-            detalleReforma.componente = componente
-            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.componente = actividad
+//            detalleReforma.asignacionOrigen = asignacion
             detalleReforma.tipoReforma = tipoReforma
             detalleReforma.valor = params.monto.toDouble()
             detalleReforma.valorOrigenInicial = 0
-            detalleReforma.valorDestinoInicial = asignacion.priorizado
+//            detalleReforma.valorDestinoInicial = asignacion.priorizado
+            detalleReforma.valorDestinoInicial = 0
             detalleReforma.fuente = fuente
             detalleReforma.presupuesto = partida
 
@@ -2799,12 +2801,13 @@ class ReformaController extends Shield {
 
             detalleReforma = DetalleReforma.get(params.id)
             detalleReforma.reforma = reforma
-            detalleReforma.componente = componente
-            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.componente = actividad
+//            detalleReforma.asignacionOrigen = asignacion
             detalleReforma.tipoReforma = tipoReforma
             detalleReforma.valor = params.monto.toDouble()
             detalleReforma.valorOrigenInicial = 0
-            detalleReforma.valorDestinoInicial = asignacion.priorizado
+//            detalleReforma.valorDestinoInicial = asignacion.priorizado
+            detalleReforma.valorDestinoInicial = 0
             detalleReforma.fuente = fuente
             detalleReforma.presupuesto = partida
 

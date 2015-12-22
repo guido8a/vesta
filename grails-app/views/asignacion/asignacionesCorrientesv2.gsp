@@ -18,7 +18,7 @@
 
     <body>
 
-        <div class="btn-group btn-group-sm" role="group" style="width: 700px;">
+        <div class="btn-group btn-group-sm" role="group" style="width: 800px;">
 
             <a href="#" id="btnProgramacion" class="btn btn-success" title="Programación"><i class="fa fa-gear"></i> Programación</a>
 
@@ -31,6 +31,8 @@
             <a href="#" id="btnReporteUnidad" class="btn btn-success" title="Reporte Unidad"><i class="fa fa-print"></i> Reporte por Área</a>
 
             <a href="#" id="btnReporteExcel" class="btn btn-success" title="Reporte Excel"><i class="fa fa-print"></i> Reporte Excel</a>
+
+            <a href="#" id="btnReporteCompleto" class="btn btn-success" title="Reporte POA Completo"><i class="fa fa-print"></i> Reporte Completo</a>
         </div>
 
         <div style="margin-top: 15px;">
@@ -501,7 +503,6 @@
 
                 $("#cancelarEditar").click(function () {
                     estadoAnterior();
-
                 });
 
                 $("#btnCopiar").click(function () {
@@ -533,11 +534,13 @@
                     var idObjetivo = $("#objetivo").val();
                     var idUnidad = $("#idResponsable").val();
                     location.href =   "${createLink(controller: 'reportes6', action: 'reporteAvalesPermanentesExcel')}?objetivo=" + idObjetivo + "&unidad=" + idUnidad + "&anio=" + ${actual?.id};
-
                 });
 
-
-
+                $("#btnReporteCompleto").click(function () {
+                    var idObjetivo = $("#objetivo").val();
+                    var idUnidad = $("#idResponsable").val();
+                    location.href =   "${createLink(controller: 'reportes6', action: 'reporteCompletoPermanente')}?objetivo=" + idObjetivo + "&unidad=" + idUnidad + "&anio=" + ${actual?.id};
+                });
 
             });
         </script>

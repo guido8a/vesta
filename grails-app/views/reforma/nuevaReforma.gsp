@@ -1,4 +1,4 @@
-<%@ page import="vesta.poa.Asignacion; vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.proyectos.MarcoLogico; vesta.poa.Asignacion; vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
@@ -165,13 +165,9 @@
                     <g:set var="disminucion" value="${disminucion += det?.valor}"/>
                     <g:set var="montoFinal" value="${montoFinal += (det?.valorOrigenInicial - det?.valor)}"/>
                 </g:if>
-                <g:if test="${det?.tipoReforma?.codigo == 'E' || det?.tipoReforma?.codigo == 'P' }">
-                    <g:if test="${det?.tipoReforma?.codigo == 'E'}">
-                        <tr class="success" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
-                    </g:if>
-                    <g:else>
-                        <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
-                    </g:else>
+                <g:if test="${det?.tipoReforma?.codigo == 'E'}">
+                    <tr class="success" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+
                     <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                     <td style=width:16%>${det?.componente?.objeto}</td>
                     <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
@@ -181,6 +177,25 @@
                     <g:else>
                         <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
                     </g:else>
+                    <td style=width:8%></td>
+                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                    <td style='width:9%' class='text-center'>${' --- '}</td>
+                    <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                    <td style=width:3%>
+                        <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
+                        <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
+                    </td>
+                    </tr>
+                    <g:set var="incremento" value="${incremento += det?.valor}"/>
+                    <g:set var="montoFinal" value="${montoFinal += (det?.valorDestinoInicial + det?.valor)}"/>
+                </g:if>
+                <g:if test="${det?.tipoReforma?.codigo == 'P'}">
+                        <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+                    <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                    <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
+                    <td style=width:15%>${det?.componente?.objeto}</td>
+                    <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
                     <td style=width:8%></td>
                     <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                     <td style='width:9%' class='text-center'>${' --- '}</td>
@@ -556,15 +571,15 @@
                                         dataDestino.componente_id = $("#comp").val();
                                         dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                         dataDestino.actividad_id = $("#actividadRf").val();
-                                        dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                        var part = $("#asignacion").find("option:selected").text().split(": ")
-                                        var partid = part[2].split(",")
-                                        var ini = part[1].split(", Partida")
+//                                        dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
+//                                        var part = $("#asignacion").find("option:selected").text().split(": ")
+//                                        var partid = part[2].split(",")
+//                                        var ini = part[1].split(", Partida")
 //                                    dataDestino.partida = partid[0]
                                         var nume = $("#prsp_id").val().split("-");
                                         dataDestino.partida = nume[0];
                                         dataDestino.partida_id = $("#prsp_hide").val();
-                                        dataDestino.inicial = ini[0]
+//                                        dataDestino.inicial = ini[0]
                                         dataDestino.asignacion_id = $("#asignacion").val();
                                         resetForm();
 
@@ -576,7 +591,7 @@
                                                 monto: dataOrigen.monto,
                                                 componente: dataDestino.componente_id,
                                                 actividad: dataDestino.actividad_id,
-                                                asignacion: dataDestino.asignacion_id,
+//                                                asignacion: dataDestino.asignacion_id,
                                                 tipoReforma: "P",
                                                 reforma: '${reforma?.id}',
                                                 partida: dataDestino.partida_id,
@@ -879,17 +894,17 @@
                                     dataDestino.componente_id = $("#comp").val();
                                     dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                     dataDestino.actividad_id = $("#actividadRf").val();
-                                    dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                    var part = $("#asignacion").find("option:selected").text().split(": ")
-                                    var partid = part[2].split(",")
-                                    var ini = part[1].split(", Partida")
-//                                    dataDestino.partida = partid[0]
+//                                    dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
+//                                    var part = $("#asignacion").find("option:selected").text().split(": ")
+//                                    var partid = part[2].split(",")
+//                                    var ini = part[1].split(", Partida")
                                     var nume = $("#prsp_id").val().split("-");
                                     dataDestino.partida = nume[0];
                                     dataDestino.partida_id = $("#prsp_hide").val();
-                                    dataDestino.inicial = ini[0]
-                                    dataDestino.asignacion_id = $("#asignacion").val();
-                                    addPartida(dataOrigen, dataDestino);
+//                                    dataDestino.inicial = ini[0]
+//                                    dataDestino.asignacion_id = $("#asignacion").val();
+//                                    addPartida(dataOrigen, dataDestino);
+                                    dataDestino.fuente = $("#fuente").val();
                                     resetForm();
 
                                     $.ajax({
@@ -900,10 +915,11 @@
                                             monto: dataOrigen.monto,
                                             componente: dataDestino.componente_id,
                                             actividad: dataDestino.actividad_id,
-                                            asignacion: dataDestino.asignacion_id,
+//                                            asignacion: dataDestino.asignacion_id,
                                             tipoReforma: "P",
                                             reforma: '${reforma?.id}',
-                                            partida: dataDestino.partida_id
+                                            partida: dataDestino.partida_id,
+                                            fuente: dataDestino.fuente
 
                                         },
                                         success: function (msg){
@@ -1204,322 +1220,6 @@
         $("#monto").val("");
         $("#max").html("");
     }
-
-    %{--var cont = 1;--}%
-
-    %{--function addData() {--}%
-    %{--$(".tableReformaExistente").each(function () {--}%
-    %{--var d = $(this).data();--}%
-    %{--var data = {--}%
-    %{--origen  : {--}%
-    %{--monto         : d.monto,--}%
-    %{--asignacion_id : d.aso--}%
-    %{--},--}%
-    %{--destino : {--}%
-    %{--asignacion_id : d.asd--}%
-    %{--}--}%
-    %{--};--}%
-    %{--$(this).data(data);--}%
-    %{--});--}%
-    %{--}--}%
-
-    %{--function getMaximo(asg) {--}%
-    %{--if ($("#asignacion").val() != "-1") {--}%
-    %{--$.ajax({--}%
-    %{--type    : "POST",--}%
-    %{--url     : "${createLink(action:'getMaximoAsg',controller: 'avales')}",--}%
-    %{--data    : {--}%
-    %{--id : asg--}%
-    %{--},--}%
-    %{--success : function (msg) {--}%
-    %{--var valor = parseFloat(msg);--}%
-    %{--//                            console.log("valor=", valor);--}%
-    %{--var tot = 0;--}%
-    %{--$(".tableReformaNueva").each(function () {--}%
-    %{--var d = $(this).data();--}%
-    %{--if ("" + d.origen.asignacion_id == "" + asg) {--}%
-    %{--tot += parseFloat(d.origen.monto);--}%
-    %{--}--}%
-    %{--});--}%
-    %{--var ok = valor - tot;--}%
-    %{--//                            console.log("tot=", tot);--}%
-    %{--//                            console.log("utilizable= ", ok);--}%
-
-    %{--$("#max").html("$" + number_format(ok, 2, ".", ","))--}%
-    %{--.attr("valor", ok);--}%
-    %{--$("#monto").attr("tdnMax", ok);--}%
-    %{--}--}%
-    %{--});--}%
-    %{--}--}%
-    %{--}--}%
-
-    %{--function resetForm() {--}%
-    %{--$("#proyecto").val("-1");--}%
-    %{--$("#divComp").html("");--}%
-    %{--$("#divAct").html("");--}%
-    %{--$("#divAsg").html("");--}%
-    %{--$("#monto").val("");--}%
-    %{--$("#max").html("");--}%
-
-    %{--$("#proyectoDest").val("-1");--}%
-    %{--$("#divComp_dest").html("");--}%
-    %{--$("#divAct_dest").html("");--}%
-    %{--$("#divAsg_dest").html("");--}%
-    %{--$("#monto_dest").val("");--}%
-    %{--$("#tdTotalDestino").html("");--}%
-    %{--}--}%
-
-    %{--function validarPar(dataOrigen, dataDestino) {--}%
-    %{--var ok = true;--}%
-    %{--$(".tableReforma").each(function () {--}%
-    %{--var d = $(this).data();--}%
-    %{--if (d.origen.asignacion_id == dataOrigen.asignacion_id && d.destino.asignacion_id == dataDestino.asignacion_id) {--}%
-    %{--ok = false;--}%
-    %{--bootbox.alert("No puede seleccionar un par de asignaciones ya ingresados");--}%
-    %{--} else {--}%
-    %{--if (d.origen.asignacion_id == dataDestino.asignacion_id || d.destino.asignacion_id == dataOrigen.asignacion_id) {--}%
-    %{--ok = false;--}%
-    %{--bootbox.alert("No puede seleccionar una asignación de origen que está listada como destino ni vice versa");--}%
-    %{--}--}%
-    %{--}--}%
-    %{--});--}%
-    %{--return ok;--}%
-    %{--}--}%
-
-    %{--function calcularTotal() {--}%
-    %{--var tot = 0;--}%
-    %{--$(".tableReforma").each(function () {--}%
-    %{--tot += parseFloat($(this).data().origen.monto);--}%
-    %{--});--}%
-    %{--if (tot > 0) {--}%
-    %{--$("#btnEnviar").removeClass("disabled");--}%
-    %{--} else {--}%
-    %{--$("#btnEnviar").addClass("disabled");--}%
-    %{--}--}%
-    %{--$("#divTotal").data("valor", tot).text("$" + number_format(tot, 2, ".", ","));--}%
-    %{--}--}%
-
-    %{--function addReforma(dataOrigen, dataDestino) {--}%
-    %{--var data = {origen : dataOrigen, destino : dataDestino};--}%
-
-    %{--var $tabla = $("<table class='table table-bordered table-hover table-condensed tableReforma tableReformaNueva'>");--}%
-    %{--var $thead = $("<thead>");--}%
-    %{--var $tbody = $("<tbody>");--}%
-    %{--var $rowOrigen = $("<tr class='info'>");--}%
-    %{--var $rowDestino = $("<tr class='success'>");--}%
-
-    %{--var $btn = $("<a href='' class='btn btn-danger btn-xs pull-right'><i class='fa fa-trash-o'></i></a>");--}%
-    %{--$btn.click(function () {--}%
-    %{--$(this).parents("table").remove();--}%
-    %{--cont--;--}%
-    %{--calcularTotal();--}%
-    %{--return false;--}%
-    %{--});--}%
-
-    %{--var $trTitulo = $("<tr>");--}%
-    %{--var $thTitulo = $("<th colspan='5'>Detalle " + cont + "</th>");--}%
-    %{--$thTitulo.append($btn);--}%
-    %{--$thTitulo.appendTo($trTitulo);--}%
-    %{--cont++;--}%
-    %{--$thead.append($trTitulo);--}%
-
-    %{--var $trHead = $("<tr>");--}%
-    %{--$("<th style='width:234px;'>Proyecto</th>").appendTo($trHead);--}%
-    %{--$("<th style='width:234px;'>Componente</th>").appendTo($trHead);--}%
-    %{--$("<th style='width:234px;'>Actividad</th>").appendTo($trHead);--}%
-    %{--$("<th>Asignación</th>").appendTo($trHead);--}%
-    %{--$("<th style='width:195px;'>Monto</th>").appendTo($trHead);--}%
-    %{--$thead.append($trHead);--}%
-
-    %{--var $tdPrO = $("<td>");--}%
-    %{--var $tdCmO = $("<td>");--}%
-    %{--var $tdAcO = $("<td>");--}%
-    %{--var $tdAsO = $("<td>");--}%
-    %{--var $tdMnO = $("<td class='text-right'>");--}%
-
-    %{--var $tdPrD = $("<td>");--}%
-    %{--var $tdCmD = $("<td>");--}%
-    %{--var $tdAcD = $("<td>");--}%
-    %{--var $tdAsD = $("<td>");--}%
-    %{--var $tdMnD = $("<td class='text-right'>");--}%
-
-    %{--$tdPrO.text(dataOrigen.proyecto_nombre);--}%
-    %{--$tdCmO.text(dataOrigen.componente_nombre);--}%
-    %{--$tdAcO.text(dataOrigen.actividad_nombre);--}%
-    %{--$tdAsO.text(dataOrigen.asignacion_nombre);--}%
-    %{--$tdMnO.text("-" + number_format(dataOrigen.monto, 2, ".", ","));--}%
-
-    %{--$tdPrD.text(dataDestino.proyecto_nombre);--}%
-    %{--$tdCmD.text(dataDestino.componente_nombre);--}%
-    %{--$tdAcD.text(dataDestino.actividad_nombre);--}%
-    %{--$tdAsD.text(dataDestino.asignacion_nombre);--}%
-    %{--$tdMnD.text(number_format(dataOrigen.monto, 2, ".", ","));--}%
-
-    %{--$rowOrigen.data(dataOrigen).append($tdPrO).append($tdCmO).append($tdAcO).append($tdAsO).append($tdMnO);--}%
-    %{--$rowDestino.data(dataDestino).append($tdPrD).append($tdCmD).append($tdAcD).append($tdAsD).append($tdMnD);--}%
-
-    %{--$tbody.append($rowOrigen).append($rowDestino);--}%
-
-    %{--$tabla.data(data).append($thead).append($tbody);--}%
-    %{--$("#divReformas").prepend($tabla);--}%
-    %{--calcularTotal();--}%
-    %{--}--}%
-
-    %{--$(function () {--}%
-    %{--addData();--}%
-    %{--$("#frmReforma").validate({--}%
-    %{--errorClass     : "help-block",--}%
-    %{--onfocusout     : false,--}%
-    %{--rules          : {--}%
-    %{--asg_dest : {--}%
-    %{--notEqualTo : "#asignacion"--}%
-    %{--}--}%
-    %{--},--}%
-    %{--messages       : {--}%
-    %{--asg_dest : {--}%
-    %{--notEqualTo : "Ingrese una asignación diferente a la de origen"--}%
-    %{--}--}%
-    %{--},--}%
-    %{--errorPlacement : function (error, element) {--}%
-    %{--if (element.parent().hasClass("input-group")) {--}%
-    %{--error.insertAfter(element.parent());--}%
-    %{--} else {--}%
-    %{--error.insertAfter(element);--}%
-    %{--}--}%
-    %{--element.parents(".grupo").addClass('has-error');--}%
-    %{--},--}%
-    %{--success        : function (label) {--}%
-    %{--label.parents(".grupo").removeClass('has-error');--}%
-    %{--label.remove();--}%
-    %{--}--}%
-    %{--});--}%
-
-
-
-    %{--$(".btnDeleteDetalle").click(function () {--}%
-    %{--var id = $(this).data("id");--}%
-    %{--var $tabla = $(this).parents("table");--}%
-    %{--bootbox.confirm("¿Está seguro de querer eliminar este detalle? Se eliminará permanente de esta reforma.", function (res) {--}%
-    %{--if (res) {--}%
-    %{--$.ajax({--}%
-    %{--type    : "POST",--}%
-    %{--url     : "${createLink(action:'deleteDetalle_ajax')}",--}%
-    %{--data    : {--}%
-    %{--id : id--}%
-    %{--},--}%
-    %{--success : function (msg) {--}%
-    %{--var parts = msg.split("*");--}%
-    %{--log(parts[1], parts[0]);--}%
-    %{--if (parts[0] == "SUCCESS") {--}%
-    %{--$tabla.remove();--}%
-    %{--}--}%
-    %{--calcularTotal();--}%
-    %{--}--}%
-    %{--});--}%
-    %{--}--}%
-    %{--});--}%
-    %{--return false;--}%
-    %{--});--}%
-
-    %{--$("#btnAddReforma").click(function () {--}%
-    %{--if ($("#frmReforma").valid()) {--}%
-    %{--var dataOrigen = {};--}%
-    %{--dataOrigen.proyecto_nombre = $("#proyecto").find("option:selected").text();--}%
-    %{--dataOrigen.componente_nombre = $("#comp").find("option:selected").text();--}%
-    %{--dataOrigen.actividad_nombre = $("#actividadRf").find("option:selected").text();--}%
-    %{--dataOrigen.asignacion_nombre = $("#asignacion").find("option:selected").text();--}%
-    %{--dataOrigen.asignacion_id = $("#asignacion").val();--}%
-    %{--//                        dataOrigen.monto = $("#monto").val();--}%
-    %{--dataOrigen.monto = str_replace(",", "", $("#monto").val());--}%
-
-    %{--var dataDestino = {};--}%
-    %{--dataDestino.proyecto_nombre = $("#proyectoDest").find("option:selected").text();--}%
-    %{--dataDestino.componente_nombre = $("#compDest").find("option:selected").text();--}%
-    %{--dataDestino.actividad_nombre = $("#actividad_dest").find("option:selected").text();--}%
-    %{--dataDestino.asignacion_nombre = $("#asignacion_dest").find("option:selected").text();--}%
-    %{--dataDestino.asignacion_id = $("#asignacion_dest").val();--}%
-    %{--if (validarPar(dataOrigen, dataDestino)) {--}%
-    %{--addReforma(dataOrigen, dataDestino);--}%
-    %{--resetForm();--}%
-    %{--}--}%
-    %{--}--}%
-    %{--return false;--}%
-    %{--});--}%
-
-    %{--$("#proyecto").val("-1").change(function () {--}%
-    %{--$("#divComp").html(spinner);--}%
-    %{--$.ajax({--}%
-    %{--type    : "POST",--}%
-    %{--url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste_ajax')}",--}%
-    %{--data    : {--}%
-    %{--id   : $("#proyecto").val(),--}%
-    %{--anio : $("#anio").val()--}%
-    %{--},--}%
-    %{--success : function (msg) {--}%
-    %{--$("#divComp").html(msg);--}%
-    %{--$("#divAct").html("");--}%
-    %{--$("#divAsg").html("");--}%
-    %{--}--}%
-    %{--});--}%
-    %{--});--}%
-
-    %{--$("#proyectoDest").val("-1").change(function () {--}%
-    %{--$("#divComp_dest").html(spinner);--}%
-    %{--$.ajax({--}%
-    %{--type    : "POST",--}%
-    %{--url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste2_ajax')}",--}%
-    %{--data    : {--}%
-    %{--id      : $("#proyectoDest").val(),--}%
-    %{--anio    : $("#anio").val(),--}%
-    %{--idCombo : "compDest",--}%
-    %{--div     : "divAct_dest"--}%
-    %{--},--}%
-    %{--success : function (msg) {--}%
-    %{--$("#divComp_dest").html(msg);--}%
-    %{--$("#divAct_dest").html("");--}%
-    %{--$("#divAsg_dest").html("");--}%
-    %{--}--}%
-    %{--});--}%
-    %{--});--}%
-
-    %{--$("#btnGuardar").click(function () {--}%
-    %{--if ($("#frmFirma").valid()) {--}%
-    %{--openLoader();--}%
-    %{--var data = {};--}%
-    %{--var c = 0;--}%
-    %{--$(".tableReformaNueva").each(function () {--}%
-    %{--var d = $(this).data();--}%
-    %{--data["r" + c] = d.origen.asignacion_id + "_" + d.destino.asignacion_id + "_" + d.origen.monto;--}%
-    %{--c++;--}%
-    %{--});--}%
-    %{--data.firma = $("#firma").val();--}%
-    %{--data.anio = $("#anio").val();--}%
-    %{--data.concepto = $("#concepto").val();--}%
-    %{--data.id = "${reforma?.id}";--}%
-    %{--data.send = "N";--}%
-    %{--$.ajax({--}%
-    %{--type    : "POST",--}%
-    %{--url     : "${createLink(action:'saveExistente_ajax')}",--}%
-    %{--data    : data,--}%
-    %{--success : function (msg) {--}%
-    %{--var parts = msg.split("*");--}%
-    %{--log(parts[1], parts[0]);--}%
-    %{--if (parts[0] == "SUCCESS") {--}%
-    %{--setTimeout(function () {--}%
-    %{--location.href = "${createLink(action:'existente')}/" + parts[2];--}%
-    %{--}, 2000);--}%
-    %{--} else {--}%
-    %{--closeLoader();--}%
-    %{--}--}%
-    %{--},--}%
-    %{--error   : function () {--}%
-    %{--log("Ha ocurrido un error interno", "error");--}%
-    %{--closeLoader();--}%
-    %{--}--}%
-    %{--});--}%
-    %{--}--}%
-    %{--return false;--}%
-    %{--});--}%
 
     $("#btnEnviar").click(function () {
         if ($(this).hasClass("disabled")) {

@@ -36,14 +36,14 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-2">
-            <label>Asignación:</label>
-        </div>
-        <div  class="col-md-5" id="divAsg">
+    %{--<div class="row">--}%
+        %{--<div class="col-md-2">--}%
+            %{--<label>Asignación:</label>--}%
+        %{--</div>--}%
+        %{--<div  class="col-md-5" id="divAsg">--}%
 
-        </div>
-    </div>
+        %{--</div>--}%
+    %{--</div>--}%
 
 
 <div class="row">
@@ -56,7 +56,18 @@
             <g:textField name="partida" id="prsp_id" class="fuente many-to-one form-control input-sm required" value="${detalle ? (detalle?.presupuesto?.numero + " - " + detalle?.presupuesto?.descripcion) : " "}"/>
         </div>
 
-</div>
+
+        <div class="col-md-2">
+            <label>Fuente</label>
+        </div>
+
+        <div class="col-md-4">
+            <g:select from="${vesta.parametros.poaPac.Fuente.list()}" optionKey="id" optionValue="descripcion"
+                      name="fuente" class="form-control input-sm required requiredCmb" value="${detalle?.fuente?.id}"/>
+        </div>
+
+
+    </div>
 
 <div class="row">
 
@@ -115,7 +126,7 @@ $("#proyecto").change(function () {
         success : function (msg) {
             $("#divComp").html(msg);
             $("#divAct").html("");
-            $("#divAsg").html("");
+//            $("#divAsg").html("");
         }
     });
 });
@@ -123,12 +134,12 @@ $("#proyecto").change(function () {
 <g:if test="${detalle}">
 $("#proyecto").val("${detalle?.componente?.proyecto?.id}").change();
 setTimeout(function () {
-    $("#comp").val("${detalle?.componente?.id}").change();
+    $("#comp").val("${detalle?.componente?.marcoLogico?.id}").change();
     setTimeout(function () {
-        $("#actividadRf").val("${ detalle?.asignacionOrigen?.marcoLogicoId}").change();
-        setTimeout(function () {
-            $("#asignacion").val("${detalle?.asignacionOrigenId}").change();
-        }, 500);
+        $("#actividadRf").val("${ detalle?.componente?.id}").change();
+        %{--setTimeout(function () {--}%
+            %{--$("#asignacion").val("${detalle?.asignacionOrigenId}").change();--}%
+        %{--}, 500);--}%
     }, 500);
 }, 500);
 </g:if>
