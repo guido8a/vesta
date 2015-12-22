@@ -47,7 +47,7 @@
         <label>Monto:</label>
     </div>
 
-    <div  class="col-md-5">
+    <div  class="col-md-3">
         <div class="input-group">
         <g:textField type="text" name="monto" style="float: right" class="form-control required input-sm number money" value="${detalle?.valor}"/>
         <span class="input-group-addon"><i class="fa fa-usd"></i></span>
@@ -76,7 +76,7 @@
         });
     });
 
-    function getMaximo(asg) {
+    /*function getMaximo(asg) {
         if ($("#asignacion").val() != "-1") {
             $.ajax({
                 type    : "POST",
@@ -101,7 +101,7 @@
             });
         }
     }
-
+*/
 
     <g:if test="${detalle}">
     $("#proyecto").val("${detalle?.componente?.proyecto?.id}").change();

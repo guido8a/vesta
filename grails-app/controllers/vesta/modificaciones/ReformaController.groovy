@@ -2461,7 +2461,7 @@ class ReformaController extends Shield {
     }
 
     def nuevaReforma () {
-
+        def cn = dbConnectionService.getConnection()
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
@@ -2469,24 +2469,27 @@ class ReformaController extends Shield {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
 
-        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
-
         def unidad = UnidadEjecutora.get(session.unidad.id)
+        def proyectos = unidad.getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
+                "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
+                "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
+                "order by anioanio".toString()).anio__id
+        def anios = Anio.findAllByIdInList(anios__id)
+//        println "anios: $anios"
+
         def personasFirma = firmasService.listaDirectoresUnidad(unidad)
 
-
-        def reforma = null
-        def detalle = null
+        def reforma
+        def detalle
         if(params.id){
-
             reforma = Reforma.get(params.id)
             detalle = DetalleReforma.findAllByReforma(reforma)
-
         }
 
-        println("dtrf " + detalle)
-
-        return [personas: personasFirma, actual: actual, proyectos: proyectos3, reforma: reforma, detalle: detalle]
+        return [personas: personasFirma, actual: actual, proyectos: proyectos, reforma: reforma, detalle: detalle,
+            anios: anios]
     }
 
     def asignacionOrigen_ajax () {

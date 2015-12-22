@@ -1,17 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 03/12/15
-  Time: 11:06 AM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 14/04/15
-  Time: 03:31 PM
---%>
-
 <%@ page import="vesta.poa.Asignacion; vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -62,84 +48,12 @@
 <body>
 
 
-<!-- botones -->
-
-%{--<elm:container tipo="horizontal" titulo="${elm.tipoReformaStr(tipo: "Reforma", tipoSolicitud: "E")}">--}%
-
-<div class="row">
-
-
-    <div class="col-md-1">
-        <label for="anio">
-            POA Año
-        </label>
-    </div>
-
-    <div class="col-md-2">
-        <g:select from="${[actual]}" value="${''}" optionKey="id" optionValue="anio" name="anio"
-                  class="form-control input-sm required requiredCombo"/>
-    </div>
-
-    <div class="col-md-1">
-
-    </div>
-
-    <g:if test="${reforma?.id}">
-        <div class="btn-toolbar toolbar">
-            <div class="btn-group">
-                <a href="#" id="btnAddA" class="btn btn-info pull-right">
-                    <i class="fa fa-plus"></i> Asignación Origen
-                </a>
-            </div>
-            <div class="btn-group">
-                <a href="#" id="btnAddB" class="btn btn-success pull-right">
-                    <i class="fa fa-plus"></i> Incremento
-                </a>
-            </div>
-            <div class="btn-group">
-                <a href="#" id="btnAddC" class="btn botonC pull-right">
-                    <i class="fa fa-plus"></i> Partida
-                </a>
-            </div>
-            <div class="btn-group">
-                <a href="#" id="btnAddD" class="btn botonD pull-right">
-                    <i class="fa fa-plus"></i> Actividad
-                </a>
-            </div>
-        </div>
-    </g:if>
-    <g:else>
-        <div class="btn-toolbar toolbar">
-            <div class="btn-group">
-                <a href="#" id="btnAddA" class="btn btn-info pull-right disabled">
-                    <i class="fa fa-plus"></i> Asignación Origen
-                </a>
-            </div>
-            <div class="btn-group">
-                <a href="#" id="btnAddB" class="btn btn-success pull-right disabled">
-                    <i class="fa fa-plus"></i> Incremento
-                </a>
-            </div>
-            <div class="btn-group">
-                <a href="#" id="btnAddC" class="btn botonC pull-right disabled">
-                    <i class="fa fa-plus"></i> Partida
-                </a>
-            </div>
-            <div class="btn-group">
-                <a href="#" id="btnAddD" class="btn botonD pull-right disabled">
-                    <i class="fa fa-plus"></i> Actividad
-                </a>
-            </div>
-        </div>
-    </g:else>
-</div>
-
-<div class="row">
+<div class="row" style="margin-bottom: 30px;">
     <div class="col-md-1">
         <label>Justificación de la reforma</label>
     </div>
     <div class="col-md-9 grupo">
-        <g:textArea name="concepto" class="form-control required" style="height: 80px; resize: none" value="${reforma?.concepto}" />
+        <g:textArea name="concepto" class="form-control required" style="height: 60px; resize: none" value="${reforma?.concepto}" />
     </div>
     <div class="col-md-2">
         <div class="btn-group pull-center" role="group" style="margin-top: 25px">
@@ -149,6 +63,48 @@
         </div>
     </div>
 </div>
+
+<div class="row" style="padding: 10px; background: #DDD; border-radius: 8px;">
+
+    <div class="col-md-1">
+        <label for="anio">
+            POA Año
+        </label>
+    </div>
+    <div class="col-md-2">
+        <g:select from="${anios}" value="${actual.anio}" optionKey="id" optionValue="anio" name="anio"
+                  class="form-control input-sm required requiredCombo"/>
+    </div>
+
+    <div class="col-md-1"></div>
+
+    <div class="btn-toolbar toolbar">
+        <div class="btn-group">
+            <a href="#" id="btnAddA" class="btn btn-info pull-right ${reforma?.id ?: 'disabled'} botones">
+                <i class="fa fa-plus"></i> Asignación Origen
+            </a>
+        </div>
+
+        <div class="btn-group">
+            <a href="#" id="btIncremento" class="btn btn-success pull-right ${reforma?.id ?: 'disabled'} botones">
+                <i class="fa fa-plus"></i> Incremento
+            </a>
+        </div>
+
+        <div class="btn-group">
+            <a href="#" id="btnAddC" class="btn botonC pull-right ${reforma?.id ?: 'disabled'} botones">
+                <i class="fa fa-plus"></i> Partida
+            </a>
+        </div>
+
+        <div class="btn-group">
+            <a href="#" id="btnAddD" class="btn botonD pull-right ${reforma?.id ?: 'disabled'} botones">
+                <i class="fa fa-plus"></i> Actividad
+            </a>
+        </div>
+    </div>
+</div>
+
 
 <form id="frmReforma">
     <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
@@ -361,11 +317,14 @@
                     var parts =  msg.split("_")
                     if(parts[0] == 'ok'){
                         log("Reforma guardada correctamente!","success");
+/*
                         setTimeout(function () {
                             location.href = "${createLink(controller:'reforma',action:'nuevaReforma')}/" + parts[1];
                         }, 500);
+*/
 //                        $("#btnAddA, #btnAddB, #btnAddC, #btnAddD").removeClass("disabled");
-                    }else{
+                        $(".botones").removeClass("disabled")
+                    } else {
                         log("Ocurrió un error al guardar la reforma!","error")
                     }
                 }
@@ -812,7 +771,7 @@
 
     //agragar y guardar existente
 
-    $("#btnAddB").click(function () {
+    $("#btIncremento").click(function () {
         $.ajax({
             type: 'POST',
             url     : "${createLink(controller: 'reforma', action: 'incremento_ajax')}",

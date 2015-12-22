@@ -199,7 +199,7 @@ class UnidadEjecutora {
         } else {
             unidades += UnidadEjecutora.findAllByPadre(this)
         }
-        println "---------unidades: $unidades"
+//        println "---------unidades: $unidades"
         return unidades.unique().sort { it.nombre }
     }
 
