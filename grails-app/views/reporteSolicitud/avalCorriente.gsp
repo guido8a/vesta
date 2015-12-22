@@ -55,7 +55,7 @@
         </p>
 
         <p>
-            Luego de revisar el Plan Operativo Anual ${anio}, la Gerencia de Planificación Estratégica emite el aval a la actividad conforme el siguiente detalle:
+            Luego de revisar el Plan Operativo Anual ${anio}, la Gerencia Administrativa Finanaciera emite el aval a la actividad conforme el siguiente detalle:
         </p>
 
         <table class="table table-bordered table-condensed">

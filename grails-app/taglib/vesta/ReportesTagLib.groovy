@@ -165,7 +165,7 @@ class ReportesTagLib {
      * @param title el título del reporte
      */
     def headerReporte = { attrs ->
-//        println("AQUI atributos   " + attrs)
+        println("AQUI atributos headerReporte  " + attrs)
         def title = attrs.title ?: ""
         def titulo = attrs.titulo ?: ""
         def unidadEjecutora
@@ -199,7 +199,12 @@ class ReportesTagLib {
 
         def estilo = attrs.estilo ?: "center"
 
-        def form = attrs.form ?: 'GPE-DPI-01'
+        def form
+        if(attrs.title.contains("permanente")) {
+            form = attrs.form ?: 'GAF-001'
+        }  else {
+            form = attrs.form ?: 'GPE-DPI-01'
+        }
 
         def h = 55
 

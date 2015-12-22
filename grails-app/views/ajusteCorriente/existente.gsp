@@ -296,7 +296,7 @@
                 if (asg != "-1") {
                     $.ajax({
                         type    : "POST",
-                        url     : "${createLink(action:'getMaximoAsg',controller: 'avales')}",
+                        url     : "${createLink(action:'getMaximoAsg',controller: 'avalCorriente')}",
                         data    : {
                             id : asg
                         },

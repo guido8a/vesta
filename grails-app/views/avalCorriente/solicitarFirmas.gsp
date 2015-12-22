@@ -128,19 +128,16 @@
 
 
             <elm:container tipo="horizontal" titulo="Datos para la generación del documento">
-                <g:set var="val" value='El aval se otorga en base a los oficios:No.SENPLADES-SZ1N-2014-0204-OF, de 12 de
-                diciembre de 2014, con el cual la Secretaría Nacional de Planificación y Desarrollo informa a la Empresa
-                Pública “Yachay” que el dictamen de prioridad del proyecto “Ciudad del Conocimiento”, CUP:30400000.680.6990,
-                para el período 2012 – 2017, se encuentra vigente; con Oficio Nro. MINFIN-SRF-2014-0512 de 08 de diciembre
-                de 2014, el Ministerio de Finanzas informa que el monto asignado a la Empresa Pública Yachay E .P., dentro
-                del Presupuesto General del Estado 2015, en la partida" Trasferencia desde Gobierno Central", asciende a
-                un monto de USD9.543.697,00 para recursos fiscales permanentes y de USD.76.000.000,00 para recursos fiscales
-                no permanentes; con Memorando Nro.YACHAY-GAF-2014-0015 de 24 de diciembre de 2014, la Gerencia Administrativa
-                Financiera remitió al Gerente General el POA de gasto permanente para su aprobación; con Acta
-                Nro.009-2014-DIR-YACHAY-EP y Resolución Nro.YACHAY.EP-GG-2014-0037 de 29 de diciembre de 2014, los miembros
-                del Directorio aprueban la asignación presupuestaria de gasto permanente por el monto de USD9’543.697,00  y
-                el Gerente General, aprobó el Plan Operativo Anual (POA) de gasto permanente de la Empresa Pública Yachay
-                EP para el ejercicio fiscal 2015.'/>
+                <g:set var="val" value='El aval se otorga en base al Oficio Nro. MINFIN-SRF-2014-0512 de 08 de diciembre
+                 de 2014, el Ministerio de Finanzas informa que el monto asignado a la Empresa Pública Yachay E .P.,
+                 dentro del Presupuesto General del Estado 2015, en la partida "Trasferencia desde Gobierno Central",
+                 asciende a un monto de USD9.543.697,00 para recursos fiscales permanentes y de
+                 USD.76.000.000,00 para recursos fiscales no permanentes; con Memorando Nro.YACHAY-GAF-2014-0015 de 24
+                 de diciembre de 2014, la Gerencia Administrativa Financiera remitió al Gerente General el POA de gasto
+                 permanente para su aprobación; con Acta Nro.009-2014-DIR-YACHAY-EP y Resolución Nro.YACHAY.EP-GG-2014-0037
+                 de 29 de diciembre de 2014, los miembros del Directorio aprueban la asignación presupuestaria de gasto
+                 permanente por el mon to de USD9’543.697,00 y el Gerente General, aprobó el Plan Operativo Anual (POA)
+                 de gasto permanente de la Empresa Pública Yachay EP para el ejercicio fiscal 2015.'/>
                 <g:if test="${proceso.observacionesPdf && proceso.observacionesPdf.trim() != ''}">
                     <g:set var="val" value="${proceso.observacionesPdf}"/>
                 </g:if>

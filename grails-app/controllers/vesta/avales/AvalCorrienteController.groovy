@@ -1409,4 +1409,46 @@ class AvalCorrienteController extends Shield {
         }
     }
 
+/*
+    def getMaximoAsg = {
+        println "params Maximo asg. correintes " + params
+        def asg = Asignacion.get(params.id)
+        def monto = asg.priorizado
+        def usado = 0;
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estadoPorRevisar = EstadoAval.findByCodigo("R01")
+        def estadoSolicitado = EstadoAval.findByCodigo("E01")
+        def estadoLiberado = EstadoAval.findByCodigo("E05")
+        def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
+        def estados = [estadoPendiente, estadoPorRevisar, estadoSolicitado, estadoSolicitadoSinFirma, estadoAprobadoSinFirma]
+
+        ProcesoAsignacion.findAllByAsignacion(asg).each {
+            def estadoAval = it.avalCorriente.estado
+            if(estadoAval.id == estadoLiberado.id){
+//                usado += it.liberado
+                usado += it.monto
+            }else{
+//                usado += it.monto
+                usado += it.liberado
+            }
+        }
+
+        def locked = 0
+        def detalles = DetalleReforma.withCriteria {
+            reforma {
+                inList("estado", estados)
+            }
+            eq("asignacionOrigen", asg)
+        }
+        if (detalles.size() > 0) {
+            locked = detalles.sum { it.valor }
+        }
+        def disponible = monto - usado - locked
+//        println "get Maximo asgn2 " + params + " :  monto: " + monto + "   usado: " + usado + "    locked: " + locked + "     disponible: " + disponible
+        render "" + (disponible)
+    }
+*/
+
+
 }
