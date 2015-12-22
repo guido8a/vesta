@@ -332,11 +332,11 @@
                     var parts =  msg.split("_")
                     if(parts[0] == 'ok'){
                         log("Reforma guardada correctamente!","success");
-/*
+
                         setTimeout(function () {
                             location.href = "${createLink(controller:'reforma',action:'nuevaReforma')}/" + parts[1];
                         }, 500);
-*/
+
 //                        $("#btnAddA, #btnAddB, #btnAddC, #btnAddD").removeClass("disabled");
                         $(".botones").removeClass("disabled")
                     } else {

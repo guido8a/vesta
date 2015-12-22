@@ -2678,7 +2678,7 @@ class ReformaController extends Shield {
             detalleReforma.fuente = fuente
 
             if(!detalleReforma.save(flush: true)){
-                println("error al guardar detalle de reforma A " + errors);
+                println("error al guardar detalle de reforma A " + detalleReforma.errors);
                 render "no"
             }else{
                 render "ok"
@@ -2697,7 +2697,7 @@ class ReformaController extends Shield {
             detalleReforma.fuente = fuente
 
             if(!detalleReforma.save(flush: true)){
-                println("error al guardar detalle de reforma A " + errors);
+                println("error al guardar detalle de reforma A " + detalleReforma.errors);
                 render "no"
             }else{
                 render "ok"
