@@ -55,12 +55,12 @@
         </p>
 
         <p>
-            Luego de revisar el Plan Operativo Anual ${anio}, la Gerencia Administrativa Finanaciera emite el aval a la actividad conforme el siguiente detalle:
+            Luego de revisar el Plan Operativo Anual ${anio}, la Gerencia Administrativa Financiera emite el aval a la actividad conforme el siguiente detalle:
         </p>
 
         <table class="table table-bordered table-condensed">
             <tr>
-                <th style="width: 200px">
+                <th style="width: 160px">
                     UNIDAD REQUIRENTE
                 </th>
                 <td>${proceso.usuario.unidad}</td>
@@ -111,7 +111,7 @@
             <g:set var="det" value="${d.value}"/>
             <table class="table table-bordered table-condensed">
                 <tr>
-                    <td style="width:200px; font-weight: bold">OBJETIVO GASTO PERMANENTE</td>
+                    <td style="width:160px; font-weight: bold">OBJETIVO GASTO PERMANENTE</td>
                     <td>${det.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}</td>
                 </tr>
                 <tr>
@@ -129,10 +129,10 @@
                 <tr>
                     <td style="font-weight: bold">ASIGNACIONES</td>
                     <td>
-                        <table class="table table-bordered table-condensed tbl-small" style="width: auto">
+                        <table class="table table-bordered table-condensed tbl-small" style="width: 98%">
                             <thead>
                                 <tr>
-                                    <th>Asignación</th>
+                                    %{--<th>Asignación</th>--}%
                                     <th># partida</th>
                                     <th>Partida</th>
                                     <th>Fuente</th>
@@ -144,7 +144,7 @@
                                 <g:each in="${det.asignaciones}" var="a">
                                     <g:set var="total" value="${total + a.monto}"/>
                                     <tr>
-                                        <td>${a.asg.actividad ?: ""}</td>
+                                        %{--<td>${a.asg.actividad ?: ""}</td>--}%
                                         <td>${a.asg.presupuesto.numero}</td>
                                         <td>${a.asg.presupuesto.descripcion}</td>
                                         <td>${a.asg.fuente}</td>
@@ -154,7 +154,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="4">TOTAL</th>
+                                    <th colspan="3">TOTAL</th>
                                     <td class="text-right"><g:formatNumber number="${total}" type="currency" currencySymbol=""/></td>
                                 </tr>
                             </tfoot>
@@ -171,29 +171,31 @@
         </div>
 
 
-        <div class="observaciones">
+        <div class="observaciones" style="margin-top:-10px;">
             <span class="ttl">OBSERVACIONES:</span>
-            ${proceso.observacionesPdf.decodeHTML()}
+            <div style="margin-top: -10px; text-align: justify">${proceso.observacionesPdf.decodeHTML()}</div>
         </div>
 
-        <p>
+        <p style="text-align: justify">
             Es importante señalar que la Gerencia Administrativa Financiera en el marco de sus competencias verificará la disponibilidad presupuestaria.
         </p>
 
-        <p>
-            <strong>Elaborado por:</strong> ${proceso.analista ?
-                (proceso.analista.sigla ?: proceso.analista.nombre + ' ' + proceso.analista.apellido) :
-                (proceso.usuario.sigla ?: proceso.usuario.nombre + ' ' + proceso.usuario.apellido)
-        }
-        </p>
-
-        <p style="float: right">
-            <strong>FECHA:</strong> ${proceso.fechaSolicitud.format("dd-MM-yyyy")}
-        </p>
+        <div style="display: inline-block">
+            <div style="width: 80%; float:left">
+                <strong>Elaborado por:</strong> ${proceso.analista ?
+                    (proceso.analista.sigla ?: proceso.analista.nombre + ' ' + proceso.analista.apellido) :
+                    (proceso.usuario.sigla ?: proceso.usuario.nombre + ' ' + proceso.usuario.apellido)
+            }
+            </div>
+            <div style="width: 18%; float: right">
+                <strong>FECHA:</strong> ${proceso.fechaSolicitud.format("dd-MM-yyyy")}
+            </div>
+        </div>
 
         <div style="text-align: justify;float: left;font-size: 10pt;width: 100%">
             <g:if test="${proceso.firma1}">
-                <table width="100%" style="margin-top: 1.5cm; border: none" border="none">
+                %{--<table width="100%" style="margin-top: 1.5cm; border: none" border="none">--}%
+                <table width="100%" style="margin-top:0; border: none" border="none">
                     <tr>
                         <g:if test="${proceso.firma1?.estado == 'F' && proceso.firma2?.estado == 'F'}">
                             <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
@@ -218,7 +220,7 @@
                 </table>
 
 
-                <table width="100%" style="margin-top: 1.5cm; border: none" border="none">
+                <table width="100%" style="margin-top: 0; border: none" border="none">
                     <tr>
                         <td width="50%" style=" text-align: center;border: none">
                             <g:if test="${proceso.firma1?.estado == 'F'}">
