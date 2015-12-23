@@ -296,9 +296,7 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="btn-group pull-right" role="group">
                 <elm:linkPdfReforma reforma="${reforma}" class="btn-default" title="Previsualizar" label="true" disabledIfNull="true"/>
-                %{--<a href="#" id="btnGuardar" class="btn btn-info" title="Guardar y seguir editando">--}%
-                %{--<i class="fa fa-save"></i> Guardar--}%
-                %{--</a>--}%
+
                 <a href="#" id="btnEnviar" class="btn btn-success ${(detalle?.size() == 0 || detalle == null ) ? 'disabled' : ''}" title="Guardar y solicitar revisión">
                     <i class="fa fa-save"></i> Guardar y Enviar <i class="fa fa-paper-plane-o"></i>
                 </a>

@@ -2654,7 +2654,7 @@ class ReformaController extends Shield {
 
     def grabarDetalleA () {
 
-//        println("params A " + params)
+        println("params A " + params)
 
         def reforma = Reforma.get(params.reforma)
         def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
@@ -2676,6 +2676,10 @@ class ReformaController extends Shield {
             detalleReforma.valorOrigenInicial = asignacion.priorizado
             detalleReforma.valorDestinoInicial = 0
             detalleReforma.fuente = fuente
+            if(params.adicional){
+                println("entro")
+            detalleReforma.solicitado = params.adicional
+            }
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma A " + detalleReforma.errors);

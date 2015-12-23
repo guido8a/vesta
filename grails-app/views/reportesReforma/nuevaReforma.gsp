@@ -67,7 +67,7 @@
                     </thead>
                     <tbody class="tb">
                     <g:each in="${detallesReforma}" var="detallesNuevos">
-                        <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'O'}">
+                        <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'O' && detallesNuevos?.solicitado != 'R'}">
                             <tr>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style="width: 16%">${detallesNuevos?.componente?.objeto}</td>

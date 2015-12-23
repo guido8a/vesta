@@ -2017,34 +2017,34 @@ class Reportes6Controller {
             ))
 
             curCol = iniCol
-            Row totalRow = sheet.createRow((short) curRow)
-
-            Cell cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue("TOTAL")
-            cellFooter.setCellStyle(styleFooterCenter)
-
-            (1..3).each {
-                cellFooter = totalRow.createCell((short) curCol)
-                curCol++
-                cellFooter.setCellValue("")
-                cellFooter.setCellStyle(styleFooterCenter)
-            }
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue('')
-            cellFooter.setCellStyle(styleFooter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue('')
-            cellFooter.setCellStyle(styleFooter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue('')
-            cellFooter.setCellStyle(styleFooter)
+//            Row totalRow = sheet.createRow((short) curRow)
+//
+//            Cell cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("TOTAL")
+//            cellFooter.setCellStyle(styleFooterCenter)
+//
+//            (1..3).each {
+//                cellFooter = totalRow.createCell((short) curCol)
+//                curCol++
+//                cellFooter.setCellValue("")
+//                cellFooter.setCellStyle(styleFooterCenter)
+//            }
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue('')
+//            cellFooter.setCellStyle(styleFooter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue('')
+//            cellFooter.setCellStyle(styleFooter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue('')
+//            cellFooter.setCellStyle(styleFooter)
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "disponibilidad_recursos_permanentes.xlsx"

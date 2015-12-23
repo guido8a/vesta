@@ -481,7 +481,8 @@
                                                     actividad: dataDestino.actividad_id,
                                                     asignacion: dataDestino.asignacion_id,
                                                     tipoReforma: "O",
-                                                    reforma: '${reforma?.id}'
+                                                    reforma: '${reforma?.id}',
+                                                    adicional: "R"
                                                 },
                                                 success: function (msg){
                                                     if(msg == 'ok'){
