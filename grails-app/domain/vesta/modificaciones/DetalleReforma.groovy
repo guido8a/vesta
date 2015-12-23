@@ -97,6 +97,11 @@ class DetalleReforma {
     UnidadEjecutora responsable
 
     /**
+     * Solicitado
+     */
+    String solicitado
+
+    /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
     static auditable = [ignore: []]
@@ -131,6 +136,7 @@ class DetalleReforma {
             macroActividad column: 'mcac__id'
             tipoReforma column: 'tprf__id'
             responsable column: 'unej__id'
+            solicitado column: 'dtrfslct'
 
         }
     }
@@ -154,6 +160,6 @@ class DetalleReforma {
         macroActividad nullable: true
         tipoReforma nullable: true
         responsable blank: true, nullable: true
-
+        solicitado blank: true, nullable: true, size: 1..1
     }
 }
