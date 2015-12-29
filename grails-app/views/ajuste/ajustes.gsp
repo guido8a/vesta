@@ -58,6 +58,15 @@
                         se incrementa o decrementa el valor de asignaciones, o se crean nuevas asignaciones
                     </p>
                 </g:link>
+                <g:link action="nuevoAjuste" class="list-group-item bgNuevoAjuste">
+                    <h4 class="list-group-item-heading"><span class="icon"></span>
+                        <elm:tipoReformaStr tipo="Ajuste" tipoSolicitud="X"/>
+                    </h4>
+
+                    <p class="list-group-item-text">
+                        Nuevo Ajuste
+                    </p>
+                </g:link>
             </div>
         </elm:container>
 

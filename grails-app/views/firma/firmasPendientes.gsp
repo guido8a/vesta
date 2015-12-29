@@ -360,6 +360,9 @@
                                                                 }
                                                         );
                                                     } else {
+                                                    //aprobacion MDAS
+
+
                                                         log("Documento firmado correctamente", "success");
                                                         setTimeout(function () {
                                                             location.reload(true)

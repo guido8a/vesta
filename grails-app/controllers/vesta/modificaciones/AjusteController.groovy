@@ -21,6 +21,7 @@ class AjusteController extends Shield {
 
     def firmasService
     def proyectosService
+    def dbConnectionService
 
     /**
      * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
@@ -1355,5 +1356,278 @@ class AjusteController extends Shield {
             println "error alerta: " + alerta.errors
         }
         render "OK"
+    }
+
+
+    def nuevoAjuste () {
+
+        def cn = dbConnectionService.getConnection()
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def proyectos = unidad.getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
+                "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
+                "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
+                "order by anioanio".toString()).anio__id
+        def anios = Anio.findAllByIdInList(anios__id)
+
+        def personasFirma = firmasService.listaDirectoresUnidad(unidad)
+        def firmas = firmasService.listaFirmasCombos()
+
+        def reforma
+        def detalle
+        if(params.id){
+            reforma = Reforma.findByIdAndTipo(params.id, "A")
+            detalle = DetalleReforma.findAllByReforma(reforma)
+        }
+
+        return [actual: actual, proyectos: proyectos, reforma: reforma, detalle: detalle,
+                anios: anios, gerentes : firmas.gerentes, personas: firmas.directores]
+
+    }
+
+
+    def guardarNuevoAjuste () {
+
+//        println("params nr " + params)
+
+        def anio = Anio.get(params.anio)
+        def estadoAval = EstadoAval.findByCodigo("P01")
+        def usuario = Persona.get(session.usuario.id)
+
+        def reforma
+
+        if(!params.id){
+            //crear!!!!!!!!!!
+//            println("entro a")
+
+            reforma = new Reforma()
+            reforma.anio = anio
+            reforma.concepto = params.texto
+            reforma.estado = estadoAval
+            reforma.persona = usuario
+            reforma.tipo = 'A'
+            reforma.tipoSolicitud = 'Z'
+            reforma.numero = 0
+            reforma.numeroReforma = 0
+            reforma.fecha = new Date()
+
+            if(!reforma.save(flush: true)){
+                println("error al guardar el nuevo ajuste " + errors)
+                render "no"
+            }else{
+                render "ok_${reforma.id}"
+            }
+
+        }else{
+            //editar
+//            println("entro b")
+
+            reforma = Reforma.get(params.id)
+            reforma.anio = anio
+            reforma.concepto = params.texto
+            reforma.estado = estadoAval
+            reforma.persona = usuario
+            reforma.tipo = 'A'
+            reforma.tipoSolicitud = 'Z'
+            reforma.numero = 0
+            reforma.numeroReforma = 0
+            reforma.fecha = new Date()
+
+            if(!reforma.save(flush: true)){
+                println("error al actualizar nuevo ajuste " + errors)
+                render "no"
+            }else{
+                render "ok_${reforma.id}"
+            }
+        }
+
+
+    }
+
+
+
+    def asignacionOrigenAjuste_ajax () {
+
+
+        println("params a ajuste " + params)
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def  proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos:  proyectos3, detalle: detalle]
+
+
+    }
+
+    def incrementoAjuste_ajax () {
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos:  proyectos3, detalle: detalle]
+
+    }
+
+
+    def partidaAjuste_ajax() {
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+
+
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos:  proyectos3, detalle: detalle]
+
+    }
+
+
+    def actividadAjuste_ajax () {
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+//        def gerencias = firmasService.requirentes(session.usuario.unidad)
+        def gerencias = null
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos: proyectos3, gerencias: gerencias, detalle: detalle]
+    }
+
+
+    def techoAjuste_ajax () {
+
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos:  proyectos3, detalle: detalle]
+    }
+
+
+    def grabarDetalleE () {
+
+
+        println("params E " + params)
+//
+        def reforma = Reforma.get(params.reforma)
+        def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
+        def componente = MarcoLogico.get(params.componente)
+        def actividad = MarcoLogico.get(params.actividad)
+        def fuente = Fuente.get(params.fuente)
+        def partida = Presupuesto.get(params.partida)
+
+        def detalleReforma
+
+        if(!params.id){
+            //crear
+
+            detalleReforma = new DetalleReforma()
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = actividad
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+            detalleReforma.presupuesto = partida
+            detalleReforma.responsable = session.usuario.unidad
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma E  " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+
+
+        }else{
+            //editar
+
+            detalleReforma = DetalleReforma.get(params.id)
+            detalleReforma.reforma = reforma
+            detalleReforma.componente = actividad
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+            detalleReforma.presupuesto = partida
+            detalleReforma.responsable = session.usuario.unidad
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma E  " + errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }
+
+
     }
 }

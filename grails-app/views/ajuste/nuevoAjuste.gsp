@@ -1,9 +1,16 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 28/12/15
+  Time: 09:42 AM
+--%>
+
 <%@ page import="vesta.proyectos.MarcoLogico; vesta.poa.Asignacion; vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
     %{--<title><elm:tipoReformaStr tipo="Reforma" tipoSolicitud="E"/></title>--}%
-    <title>Nueva Reforma</title>
+    <title>Nuevo Ajuste</title>
 
     <style type="text/css">
     .titulo-azul.subtitulo {
@@ -14,11 +21,6 @@
     td {
         vertical-align : middle;
     }
-
-    /*table {*/
-    /*table-layout: fixed;*/
-    /*overflow: hidden;*/
-    /*}*/
 
     .botonC {
 
@@ -41,6 +43,17 @@
         background-color: #a47680;
     }
 
+    .botonE {
+
+        background-color: #9f9edf;
+        color: seashell;
+    }
+
+
+    .rowE {
+        background-color: #9f9edf;
+    }
+
 
     </style>
 </head>
@@ -50,7 +63,7 @@
 
 <div class="row" style="margin-bottom: 30px;">
     <div class="col-md-1">
-        <label>Justificación de la reforma</label>
+        <label>Justificación del ajuste</label>
     </div>
     <div class="col-md-9 grupo">
         <g:textArea name="concepto" class="form-control required" style="height: 60px; resize: none" value="${reforma?.concepto}" />
@@ -58,7 +71,7 @@
     <div class="col-md-2">
         <div class="btn-group pull-center" role="group" style="margin-top: 25px">
             <a href="#" id="btnGuardar" class="btn btn-success">
-                <i class="fa fa-save"></i> Guardar Reforma
+                <i class="fa fa-save"></i> Guardar Ajuste
             </a>
         </div>
     </div>
@@ -92,7 +105,7 @@
         </div>
 
         <div class="btn-group">
-            <a href="#" id="btnAddC" class="btn botonC pull-right ${reforma?.id ?: 'disabled'} botones">
+            <a href="#" id="btnAddC" class="btn botonC pull-right  ${reforma?.id ?: 'disabled'} botones">
                 <i class="fa fa-plus"></i> Partida
             </a>
         </div>
@@ -100,6 +113,12 @@
         <div class="btn-group">
             <a href="#" id="btnAddD" class="btn botonD pull-right ${reforma?.id ?: 'disabled'} botones">
                 <i class="fa fa-plus"></i> Actividad
+            </a>
+        </div>
+
+        <div class="btn-group">
+            <a href="#" id="btnAddE" class="btn botonE pull-right ${reforma?.id ?: 'disabled'} botones">
+                <i class="fa fa-plus"></i> Techo
             </a>
         </div>
     </div>
@@ -145,12 +164,7 @@
                     <tr class="info" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.id}" data-val="${det?.valor}">
                         <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                         <td style=width:16%>${det?.componente?.objeto}</td>
-                        %{--<g:if test="${det?.asignacionOrigen?.marcoLogico?.objeto?.size() >= 70}">--}%
-                        %{--<td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto?.substring(0,69) + "..."}</td>--}%
-                        %{--</g:if>--}%
-                        %{--<g:else>--}%
                         <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
-                        %{--</g:else>--}%
                         <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
                         <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
                         <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorOrigenInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -168,43 +182,43 @@
                 <g:if test="${det?.tipoReforma?.codigo == 'E'}">
                     <tr class="success" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
 
-                    <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
-                    <td style=width:16%>${det?.componente?.objeto}</td>
-                    <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
-                    <g:if test="${det?.tipoReforma?.codigo == 'P'}">
-                        <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
-                    </g:if>
-                    <g:else>
-                        <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
-                    </g:else>
-                    <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
-                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:9%' class='text-center'>${' --- '}</td>
-                    <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style=width:3%>
-                        <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
-                        <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
-                    </td>
+                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:16%>${det?.componente?.objeto}</td>
+                        <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                        <g:if test="${det?.tipoReforma?.codigo == 'P'}">
+                            <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
+                        </g:if>
+                        <g:else>
+                            <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
+                        </g:else>
+                        <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:9%' class='text-center'>${' --- '}</td>
+                        <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style=width:3%>
+                            <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
+                            <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
+                        </td>
                     </tr>
                     <g:set var="incremento" value="${incremento += det?.valor}"/>
                     <g:set var="montoFinal" value="${montoFinal += (det?.valorDestinoInicial + det?.valor)}"/>
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'P'}">
-                        <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
-                    <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
-                    <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
-                    <td style=width:15%>${det?.componente?.objeto}</td>
-                    <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
-                    <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
-                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:9%' class='text-center'>${' --- '}</td>
-                    <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style=width:3%>
-                        <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
-                        <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
-                    </td>
+                    <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
+                        <td style=width:15%>${det?.componente?.objeto}</td>
+                        <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
+                        <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:9%' class='text-center'>${' --- '}</td>
+                        <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style=width:3%>
+                            <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
+                            <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
+                        </td>
                     </tr>
                     <g:set var="incremento" value="${incremento += det?.valor}"/>
                     <g:set var="montoFinal" value="${montoFinal += (det?.valorDestinoInicial + det?.valor)}"/>
@@ -228,6 +242,25 @@
                     <g:set var="incremento" value="${incremento += det?.valor}"/>
                     <g:set var="montoFinal" value="${montoFinal += det?.valor}"/>
                 </g:if>
+                <g:if test="${det?.tipoReforma?.codigo == 'N'}">
+                    <tr class="rowE" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
+                        <td style=width:15%>${det?.componente?.objeto}</td>
+                        <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
+                        <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:9%' class='text-center'>${' --- '}</td>
+                        <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style=width:3%>
+                            <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
+                            <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
+                        </td>
+                    </tr>
+                    <g:set var="incremento" value="${incremento += det?.valor}"/>
+                    <g:set var="montoFinal" value="${montoFinal += (det?.valorDestinoInicial + det?.valor)}"/>
+                </g:if>
                 <g:else>
                 </g:else>
                 </tbody>
@@ -241,7 +274,6 @@
     </div>
 </g:else>
 
-%{--</elm:container>--}%
 
 <g:if test="${detalle}">
     <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
@@ -282,28 +314,46 @@
     </table>
 </g:else>
 
-
-<form id="frmFirma">
+<form id="frmFirmas">
     <div class="row" style="margin-bottom: 100px; margin-top: 50px">
         <div class="col-md-1">
-            <label>Pedir revisión de</label>
-        </div>
-        <div class="col-md-3 grupo">
-            <g:select from="${personas}" optionKey="id" optionValue="" id="firma" name="firma"
-                      class="form-control input-sm required" noSelection="['': '- Seleccione -']" value="${reforma ? reforma.directorId : ''}"/>
+            <label>Firmas</label>
         </div>
 
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-md-3 grupo">
+            <g:if test="${reforma && reforma.estado.codigo == 'D03'}">
+                ${reforma.firma1.usuario}
+            </g:if>
+            <g:else>
+                <g:select from="${personas}" optionKey="id" optionValue="${{it.nombre + ' ' + it.apellido}}"
+                          noSelection="['': '- Seleccione -']" name="firma1" class="form-control required input-sm"
+                          value="${reforma ? reforma.firma1?.usuarioId : ''}"/>
+            </g:else>
+        </div>
+
+        <div class="col-md-3 grupo">
+            <g:if test="${reforma && reforma.estado.codigo == 'D03'}">
+                ${reforma.firma2.usuario}
+            </g:if>
+            <g:else>
+                <g:select from="${gerentes}" optionKey="id" optionValue="${{it.nombre + ' ' + it.apellido}}"
+                          noSelection="['': '- Seleccione -']" name="firma2" class="form-control required input-sm"
+                          value="${reforma ? reforma.firma2?.usuarioId : ''}"/>
+            </g:else>
+        </div>
+
+        <div class="col-md-5">
             <div class="btn-group pull-right" role="group">
                 <elm:linkPdfReforma reforma="${reforma}" class="btn-default" title="Previsualizar" label="true" disabledIfNull="true"/>
 
-                <a href="#" id="btnEnviar" class="btn btn-success ${(detalle?.size() == 0 || detalle == null ) ? 'disabled' : ''}" title="Guardar y solicitar revisión">
+                <a href="#" id="btnEnviar" class="btn btn-success ${(detalle?.size() == 0 || detalle == null ) ? 'disabled' : ''}" title="Guardar y enviar">
                     <i class="fa fa-save"></i> Guardar y Enviar <i class="fa fa-paper-plane-o"></i>
                 </a>
             </div>
         </div>
     </div>
 </form>
+
 
 <script type="text/javascript">
 
@@ -320,25 +370,24 @@
         data.id = '${reforma?.id}';
 
         if(vacio == '' || vacio == null){
-            log("Debe ingresar una justificación para la reforma!","error")
+            log("Debe ingresar una justificación para el ajuste!","error")
         }else{
             $.ajax({
                 type: 'POST',
-                url :"${createLink(controller: 'reforma', action: 'guardarNuevaReforma')}",
+                url :"${createLink(controller: 'ajuste', action: 'guardarNuevoAjuste')}",
                 data : data,
                 success: function (msg){
-                    var parts =  msg.split("_")
+                    var parts =  msg.split("_");
                     if(parts[0] == 'ok'){
-                        log("Reforma guardada correctamente!","success");
+                        log("Ajuste guardado correctamente!","success");
 
                         setTimeout(function () {
-                            location.href = "${createLink(controller:'reforma',action:'nuevaReforma')}/" + parts[1];
+                            location.href = "${createLink(controller:'ajuste',action:'nuevoAjuste')}/" + parts[1];
                         }, 500);
 
-//                        $("#btnAddA, #btnAddB, #btnAddC, #btnAddD").removeClass("disabled");
                         $(".botones").removeClass("disabled")
                     } else {
-                        log("Ocurrió un error al guardar la reforma!","error")
+                        log("Ocurrió un error al guardar el ajuste!","error")
                     }
                 }
 
@@ -351,7 +400,7 @@
 
         var detalleId = $(this).parent().parent().data("id");
 
-        bootbox.confirm("Está seguro de borrar este detalle?", function (res) {
+        bootbox.confirm("Está seguro de borrar este detalle del ajuste?", function (res) {
             if(res){
                 $.ajax({
                     type: 'POST',
@@ -363,7 +412,7 @@
                         if(msg == 'ok'){
                             log("Detalle borrado correctamente!","success");
                             setTimeout(function () {
-                                location.href = "${createLink(controller:'reforma',action:'nuevaReforma')}/" + '${reforma?.id}';
+                                location.href = "${createLink(controller:'ajuste',action:'nuevoAjuste')}/" + '${reforma?.id}';
                             }, 500);
                         }else{
                             log("Error al borrar el detalle!","error");
@@ -412,11 +461,11 @@
                                         dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                         dataDestino.actividad_id = $("#actividadRf").val();
                                         dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                        var part = $("#asignacion").find("option:selected").text().split(": ")
-                                        var partid = part[2].split(",")
-                                        var ini = part[1].split(", Partida")
-                                        dataDestino.partida = partid[0]
-                                        dataDestino.inicial = ini[0]
+                                        var part = $("#asignacion").find("option:selected").text().split(": ");
+                                        var partid = part[2].split(",");
+                                        var ini = part[1].split(", Partida");
+                                        dataDestino.partida = partid[0];
+                                        dataDestino.inicial = ini[0];
                                         dataDestino.asignacion_id = $("#asignacion").val();
                                         resetForm();
 
@@ -491,11 +540,11 @@
                                         dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                         dataDestino.actividad_id = $("#actividadRf").val();
                                         dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                        var part = $("#asignacion").find("option:selected").text().split(": ")
-                                        var partid = part[2].split(",")
-                                        var ini = part[1].split(", Partida")
-                                        dataDestino.partida = partid[0]
-                                        dataDestino.inicial = ini[0]
+                                        var part = $("#asignacion").find("option:selected").text().split(": ");
+                                        var partid = part[2].split(",");
+                                        var ini = part[1].split(", Partida");
+                                        dataDestino.partida = partid[0];
+                                        dataDestino.inicial = ini[0];
                                         dataDestino.asignacion_id = $("#asignacion").val();
                                         resetForm();
 
@@ -569,15 +618,9 @@
                                         dataDestino.componente_id = $("#comp").val();
                                         dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                         dataDestino.actividad_id = $("#actividadRf").val();
-//                                        dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-//                                        var part = $("#asignacion").find("option:selected").text().split(": ")
-//                                        var partid = part[2].split(",")
-//                                        var ini = part[1].split(", Partida")
-//                                    dataDestino.partida = partid[0]
                                         var nume = $("#prsp_id").val().split("-");
                                         dataDestino.partida = nume[0];
                                         dataDestino.partida_id = $("#prsp_hide").val();
-//                                        dataDestino.inicial = ini[0]
                                         dataDestino.asignacion_id = $("#asignacion").val();
                                         resetForm();
 
@@ -585,7 +628,6 @@
                                             type: 'POST',
                                             url: "${createLink(controller: 'reforma', action: 'grabarDetalleC')}",
                                             data:{
-
                                                 monto: dataOrigen.monto,
                                                 componente: dataDestino.componente_id,
                                                 actividad: dataDestino.actividad_id,
@@ -594,7 +636,6 @@
                                                 reforma: '${reforma?.id}',
                                                 partida: dataDestino.partida_id,
                                                 id: detalleId
-
                                             },
                                             success: function (msg){
                                                 if(msg == 'ok'){
@@ -665,7 +706,6 @@
                                             type: 'POST',
                                             url: "${createLink(controller: 'reforma', action: 'grabarDetalleD')}",
                                             data:{
-
                                                 monto: dataOrigen.monto,
                                                 componente: dataDestino.componente_id,
                                                 actividad: dataDestino.actividad_nombre,
@@ -678,7 +718,6 @@
                                                 fin: dataDestino.ff,
                                                 responsable: dataDestino.responsable_id,
                                                 id: detalleId
-
                                             },
                                             success: function (msg){
                                                 if(msg == 'ok'){
@@ -708,7 +747,7 @@
     $("#btnAddA").click(function () {
         $.ajax({
             type: 'POST',
-            url     : "${createLink(controller: 'reforma', action: 'asignacionOrigen_ajax')}",
+            url     : "${createLink(controller: 'ajuste', action: 'asignacionOrigenAjuste_ajax')}",
             data    : {
                 anio: $("#anio").val()
             },
@@ -740,11 +779,11 @@
                                     dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                     dataDestino.actividad_id = $("#actividadRf").val();
                                     dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                    var part = $("#asignacion").find("option:selected").text().split(": ")
-                                    var partid = part[2].split(",")
-                                    var ini = part[1].split(", Partida")
-                                    dataDestino.partida = partid[0]
-                                    dataDestino.inicial = ini[0]
+                                    var part = $("#asignacion").find("option:selected").text().split(": ");
+                                    var partid = part[2].split(",");
+                                    var ini = part[1].split(", Partida");
+                                    dataDestino.partida = partid[0];
+                                    dataDestino.inicial = ini[0];
                                     dataDestino.asignacion_id = $("#asignacion").val();
                                     addAsignacionOrigen(dataOrigen, dataDestino);
                                     resetForm();
@@ -764,12 +803,12 @@
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
-                                                log("Detalle guardado correctamente!","success");
+                                                log("Detalle del ajuste guardado correctamente!","success");
                                                 setTimeout(function () {
-                                                    location.href = "${createLink(controller:'reforma',action:'nuevaReforma')}/" + '${reforma?.id}';
+                                                    location.href = "${createLink(controller:'ajuste',action:'nuevoAjuste')}/" + '${reforma?.id}';
                                                 }, 500);
                                             }else{
-                                                log("Error al guardar el detalle!","error");
+                                                log("Error al guardar el detalle del ajuste!","error");
                                             }
                                         }
                                     });
@@ -790,7 +829,7 @@
     $("#btIncremento").click(function () {
         $.ajax({
             type: 'POST',
-            url     : "${createLink(controller: 'reforma', action: 'incremento_ajax')}",
+            url     : "${createLink(controller: 'ajuste', action: 'incrementoAjuste_ajax')}",
             data    : {
                 anio: $("#anio").val()
             },
@@ -822,11 +861,11 @@
                                     dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                     dataDestino.actividad_id = $("#actividadRf").val();
                                     dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                    var part = $("#asignacion").find("option:selected").text().split(": ")
-                                    var partid = part[2].split(",")
-                                    var ini = part[1].split(", Partida")
-                                    dataDestino.partida = partid[0]
-                                    dataDestino.inicial = ini[0]
+                                    var part = $("#asignacion").find("option:selected").text().split(": ");
+                                    var partid = part[2].split(",");
+                                    var ini = part[1].split(", Partida");
+                                    dataDestino.partida = partid[0];
+                                    dataDestino.inicial = ini[0];
                                     dataDestino.asignacion_id = $("#asignacion").val();
                                     addIncremento(dataOrigen, dataDestino);
                                     resetForm();
@@ -835,23 +874,21 @@
                                         type: 'POST',
                                         url: "${createLink(controller: 'reforma', action: 'grabarDetalleB')}",
                                         data:{
-
                                             monto: dataOrigen.monto,
                                             componente: dataDestino.componente_id,
                                             actividad: dataDestino.actividad_id,
                                             asignacion: dataDestino.asignacion_id,
                                             tipoReforma: "E",
                                             reforma: '${reforma?.id}'
-
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
-                                                log("Detalle guardado correctamente!","success");
+                                                log("Detalle del ajuste guardado correctamente!","success");
                                                 setTimeout(function () {
-                                                    location.href = "${createLink(controller:'reforma',action:'nuevaReforma')}/" + '${reforma?.id}';
+                                                    location.href = "${createLink(controller:'ajuste',action:'nuevoAjuste')}/" + '${reforma?.id}';
                                                 }, 500);
                                             }else{
-                                                log("Error al guardar el detalle!","error");
+                                                log("Error al guardar el detalle de ajuste!","error");
                                             }
                                         }
                                     });
@@ -871,7 +908,7 @@
     $("#btnAddC").click(function () {
         $.ajax({
             type: 'POST',
-            url     : "${createLink(controller: 'reforma', action: 'partida_ajax')}",
+            url     : "${createLink(controller: 'ajuste', action: 'partidaAjuste_ajax')}",
             data    : {
                 anio: $("#anio").val()
             },
@@ -901,16 +938,9 @@
                                     dataDestino.componente_id = $("#comp").val();
                                     dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                     dataDestino.actividad_id = $("#actividadRf").val();
-//                                    dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-//                                    var part = $("#asignacion").find("option:selected").text().split(": ")
-//                                    var partid = part[2].split(",")
-//                                    var ini = part[1].split(", Partida")
                                     var nume = $("#prsp_id").val().split("-");
                                     dataDestino.partida = nume[0];
                                     dataDestino.partida_id = $("#prsp_hide").val();
-//                                    dataDestino.inicial = ini[0]
-//                                    dataDestino.asignacion_id = $("#asignacion").val();
-//                                    addPartida(dataOrigen, dataDestino);
                                     dataDestino.fuente = $("#fuente").val();
                                     resetForm();
 
@@ -918,25 +948,22 @@
                                         type: 'POST',
                                         url: "${createLink(controller: 'reforma', action: 'grabarDetalleC')}",
                                         data:{
-
                                             monto: dataOrigen.monto,
                                             componente: dataDestino.componente_id,
                                             actividad: dataDestino.actividad_id,
-//                                            asignacion: dataDestino.asignacion_id,
                                             tipoReforma: "P",
                                             reforma: '${reforma?.id}',
                                             partida: dataDestino.partida_id,
                                             fuente: dataDestino.fuente
-
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
-                                                log("Detalle guardado correctamente!","success");
+                                                log("Detalle del ajuste guardado correctamente!","success");
                                                 setTimeout(function () {
-                                                    location.href = "${createLink(controller:'reforma',action:'nuevaReforma')}/" + '${reforma?.id}';
+                                                    location.href = "${createLink(controller:'ajuste',action:'nuevoAjuste')}/" + '${reforma?.id}';
                                                 }, 500);
                                             }else{
-                                                log("Error al guardar el detalle!","error");
+                                                log("Error al guardar el detalle del ajuste!","error");
                                             }
                                         }
                                     });
@@ -955,7 +982,7 @@
     $("#btnAddD").click(function () {
         $.ajax({
             type: 'POST',
-            url     : "${createLink(controller: 'reforma', action: 'actividad_ajax')}",
+            url     : "${createLink(controller: 'ajuste', action: 'actividadAjuste_ajax')}",
             data    : {
                 anio: $("#anio").val()
             },
@@ -1015,12 +1042,87 @@
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
-                                                log("Detalle guardado correctamente!","success");
+                                                log("Detalle del ajuste guardado correctamente!","success");
                                                 setTimeout(function () {
-                                                    location.href = "${createLink(controller:'reforma',action:'nuevaReforma')}/" + '${reforma?.id}';
+                                                    location.href = "${createLink(controller:'ajuste',action:'nuevoAjuste')}/" + '${reforma?.id}';
                                                 }, 500);
                                             }else{
-                                                log("Error al guardar el detalle!","error");
+                                                log("Error al guardar el detalle del ajuste!","error");
+                                            }
+                                        }
+                                    });
+                                }else{
+                                    return false
+                                }
+                            }
+                        }
+                    } //buttons
+                }); //dialo
+            }
+        });
+    });
+
+    //techo
+
+    $("#btnAddE").click(function () {
+        $.ajax({
+            type: 'POST',
+            url     : "${createLink(controller: 'ajuste', action: 'techoAjuste_ajax')}",
+            data    : {
+                anio: $("#anio").val()
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgPartida",
+                    title : '<h3 class="text-info">Ajuste por Modificación de Techo</h3>',
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        aceptar : {
+                            label     : "<i class='fa fa-save'></i> Aceptar",
+                            className : "btn-success",
+                            callback  : function () {
+                                if($("#frmPartida").valid()){
+                                    var dataOrigen = {};
+                                    dataOrigen.monto = str_replace(",", "", $("#monto").val());
+                                    var dataDestino = {};
+                                    dataDestino.proyecto_nombre = $("#proyecto").find("option:selected").text();
+                                    dataDestino.componente_nombre = $("#comp").find("option:selected").text();
+                                    dataDestino.componente_id = $("#comp").val();
+                                    dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
+                                    dataDestino.actividad_id = $("#actividadRf").val();
+                                    var nume = $("#prsp_id").val().split("-");
+                                    dataDestino.partida = nume[0];
+                                    dataDestino.partida_id = $("#prsp_hide").val();
+                                    dataDestino.fuente = $("#fuente").val();
+                                    resetForm();
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: "${createLink(controller: 'ajuste', action: 'grabarDetalleE')}",
+                                        data:{
+                                            monto: dataOrigen.monto,
+                                            componente: dataDestino.componente_id,
+                                            actividad: dataDestino.actividad_id,
+                                            tipoReforma: "N",
+                                            reforma: '${reforma?.id}',
+                                            partida: dataDestino.partida_id,
+                                            fuente: dataDestino.fuente
+                                        },
+                                        success: function (msg){
+                                            if(msg == 'ok'){
+                                                log("Detalle del ajuste guardado correctamente!","success");
+                                                setTimeout(function () {
+                                                    location.href = "${createLink(controller:'ajuste',action:'nuevoAjuste')}/" + '${reforma?.id}';
+                                                }, 500);
+                                            }else{
+                                                log("Error al guardar el detalle del ajuste!","error");
                                             }
                                         }
                                     });
