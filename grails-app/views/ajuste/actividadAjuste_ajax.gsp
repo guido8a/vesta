@@ -117,18 +117,18 @@
 
     </div>
 
-    %{--<div class="row">--}%
+    <div class="row">
 
-        %{--<div class="col-md-2">--}%
-            %{--<label>Reponsable</label>--}%
-        %{--</div>--}%
+        <div class="col-md-2">
+            <label>Reponsable</label>
+        </div>
 
-        %{--<div class="col-md-4 grupo">--}%
-            %{--<g:select from="${gerencias}" name="responsable" optionKey="id" optionValue="codigo"--}%
-                      %{--class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']" value="${detalle?.responsable?.id}"/>--}%
-        %{--</div>--}%
+        <div class="col-md-4 grupo">
+            <g:select from="${gerencias}" name="responsable" optionKey="id" optionValue="codigo"
+                      class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']" value="${detalle?.responsable?.id}"/>
+        </div>
 
-    %{--</div>--}%
+    </div>
 </form>
 
 <script type="text/javascript">

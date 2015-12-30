@@ -2717,13 +2717,14 @@ class ReformaController extends Shield {
         def reforma
         def detalle
         if(params.id){
-            reforma = Reforma.findByIdAndTipo(params.id, "R")
+            reforma = Reforma.findByIdAndTipoAndTipoSolicitud(params.id, "R","X")
             detalle = DetalleReforma.findAllByReforma(reforma)
         }
 
         return [personas: personasFirma, actual: actual, proyectos: proyectos, reforma: reforma, detalle: detalle,
                 anios: anios]
     }
+
 
     def asignacionOrigen_ajax () {
 
@@ -2792,7 +2793,9 @@ class ReformaController extends Shield {
 
         def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
-        def gerencias = firmasService.requirentes(session.usuario.unidad)
+
+        def unidad = UnidadEjecutora.get(session.usuario.unidad.id)
+        def gerencias = firmasService.requirentes(unidad)
 
         def detalle = null
 
@@ -2816,7 +2819,8 @@ class ReformaController extends Shield {
 
         def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
-        def gerencias = firmasService.requirentes(session.usuario.unidad)
+        def unidad = UnidadEjecutora.get(session.usuario.unidad.id)
+        def gerencias = firmasService.requirentes(unidad)
 
         def detalle = null
 
@@ -3136,10 +3140,7 @@ class ReformaController extends Shield {
             }else{
                 render "ok"
             }
-
         }
-
-
     }
 
 
@@ -3156,6 +3157,64 @@ class ReformaController extends Shield {
             println("error al borrar detalle de reforma " + errors);
             render "no"
         }
+    }
+
+
+    def guardarReformaCorriente () {
+
+        println("params rc " + params)
+
+        def anio = Anio.get(params.anio)
+        def estadoAval = EstadoAval.findByCodigo("P01")
+        def usuario = Persona.get(session.usuario.id)
+
+        def reforma
+
+        if(!params.id){
+            //crear!!!!!!!!!!
+//            println("entro a")
+
+            reforma = new Reforma()
+            reforma.anio = anio
+            reforma.concepto = params.texto
+            reforma.estado = estadoAval
+            reforma.persona = usuario
+            reforma.tipo = 'R'
+            reforma.tipoSolicitud = 'Q'
+            reforma.numero = 0
+            reforma.numeroReforma = 0
+            reforma.fecha = new Date()
+
+            if(!reforma.save(flush: true)){
+                println("error al guardar nueva reforma permanente " + errors)
+                render "no"
+            }else{
+                render "ok_${reforma.id}"
+            }
+
+        }else{
+            //editar
+//            println("entro b")
+
+            reforma = Reforma.get(params.id)
+            reforma.anio = anio
+            reforma.concepto = params.texto
+            reforma.estado = estadoAval
+            reforma.persona = usuario
+            reforma.tipo = 'R'
+            reforma.tipoSolicitud = 'Q'
+            reforma.numero = 0
+            reforma.numeroReforma = 0
+            reforma.fecha = new Date()
+
+            if(!reforma.save(flush: true)){
+                println("error al actualizar nueva reforma permanente " + errors)
+                render "no"
+            }else{
+                render "ok_${reforma.id}"
+            }
+        }
+
 
     }
 

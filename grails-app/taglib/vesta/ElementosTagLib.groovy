@@ -942,6 +942,9 @@ class ElementosTagLib {
             case "X":
                 str += ""
                 break;
+            case "Z":
+                str += ""
+                break;
 
         }
         out << "" + str
@@ -992,6 +995,10 @@ class ElementosTagLib {
                     case "X":
                         accion = "nuevaReforma"
                         fileName = "nuevaReforma"
+                        break;
+                    case "Z":
+                        accion = "verNuevoAjuste"
+                        fileName = "verNuevoAjuste"
                         break;
                 }
             }

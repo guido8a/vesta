@@ -36,17 +36,7 @@
         </div>
     </div>
 
-    %{--<div class="row">--}%
-        %{--<div class="col-md-2">--}%
-            %{--<label>Asignación:</label>--}%
-        %{--</div>--}%
-        %{--<div  class="col-md-5" id="divAsg">--}%
-
-        %{--</div>--}%
-    %{--</div>--}%
-
-
-<div class="row">
+    <div class="row">
         <div class="col-md-2">
             <label>Partida</label>
         </div>
@@ -137,9 +127,6 @@ setTimeout(function () {
     $("#comp").val("${detalle?.componente?.marcoLogico?.id}").change();
     setTimeout(function () {
         $("#actividadRf").val("${ detalle?.componente?.id}").change();
-        %{--setTimeout(function () {--}%
-            %{--$("#asignacion").val("${detalle?.asignacionOrigenId}").change();--}%
-        %{--}, 500);--}%
     }, 500);
 }, 500);
 </g:if>

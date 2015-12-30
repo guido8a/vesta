@@ -352,8 +352,8 @@ class AvalesController extends vesta.seguridad.Shield {
         def estados = [estadoPendiente, estadoPorRevisar, estadoSolicitado, estadoSolicitadoSinFirma, estadoAprobadoSinFirma]
 
         ProcesoAsignacion.findAllByAsignacion(asg).each {
-            def estadoAval = Aval.findByProceso(it.proceso).estado
-            if(estadoAval.id == estadoLiberado.id){
+            def estadoAval = Aval.findByProceso(it.proceso)?.estado
+            if(estadoAval?.id == estadoLiberado.id){
 //                usado += it.liberado
                 usado += it.monto
             }else{

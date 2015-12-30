@@ -109,6 +109,23 @@ class ReportesReformaController {
     }
 
 
+    /**
+     * Acción que muestra el pdf de nuevo ajuste
+     */
+    def verNuevoAjuste () {
+
+        def reforma = Reforma.get(params.id.toString().toLong())
+        def detallesReforma = DetalleReforma.findAllByReforma(reforma)
+
+        def uni = firmasService.requirentes(reforma.persona.unidad)
+
+        println("detalles " + detallesReforma)
+
+        return [reforma: reforma, detallesReforma: detallesReforma, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
+
+    }
+
+
 
     /**
      * Acción que muestra el pdf de la solicitud de reforma de modificacion de techos
@@ -229,6 +246,10 @@ class ReportesReformaController {
         def reforma = Reforma.get(params.id.toString().toLong())
         return [reforma: reforma, det: generaDetallesReforma_function(reforma), unidades: reforma.persona.unidad.unidadYGerencia]
     }
+
+
+
+
 
     public static Map generaDetallesReforma_function(Reforma reforma) {
         def detalles = DetalleReforma.findAllByReforma(reforma)
