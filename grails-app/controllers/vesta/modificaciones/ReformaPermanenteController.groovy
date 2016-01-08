@@ -12,6 +12,7 @@ import vesta.poaCorrientes.MacroActividad
 import vesta.poaCorrientes.ObjetivoGastoCorriente
 import vesta.poaCorrientes.Tarea
 import vesta.proyectos.MarcoLogico
+import vesta.seguridad.Persona
 import vesta.seguridad.Shield
 
 
@@ -95,10 +96,11 @@ class ReformaPermanenteController extends  Shield{
         def unidad = UnidadEjecutora.get(session.unidad.id)
         def proyectos = unidad.getProyectosUnidad(actual, session.perfil.codigo.toString())
 
-        def anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
-                "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
-                "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
-                "order by anioanio".toString()).anio__id
+        def txto = "select distinct asgn.anio__id, anioanio from asgn, anio " +
+                "where mrlg__id is null and anio.anio__id = asgn.anio__id and " +
+                "cast(anioanio as integer) >= ${actual.anio} order by anioanio"
+        println "txto: $txto"
+        def anios__id = cn.rows(txto.toString()).anio__id
 
         def anios = Anio.findAllByIdInList(anios__id)
 
@@ -111,16 +113,14 @@ class ReformaPermanenteController extends  Shield{
             detalle = DetalleReforma.findAllByReforma(reforma)
         }
 
+        println "anios: $anios"
         return [personas: personasFirma, actual: actual, proyectos: proyectos, reforma: reforma, detalle: detalle,
                 anios: anios]
     }
 
 
     def origen_ajax () {
-
-
         println("params a " + params)
-
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
@@ -129,12 +129,9 @@ class ReformaPermanenteController extends  Shield{
         }
 
         def detalle = null
-
         if(params.id){
             detalle = DetalleReforma.get(params.id)
         }
-
-        //objetivos
 
         List<ObjetivoGastoCorriente> objetivos = []
         ActividadCorriente.findAllByAnio(actual).each { ac ->
@@ -409,8 +406,98 @@ class ReformaPermanenteController extends  Shield{
                 render "ok"
             }
         }
+    }
 
 
+    /**
+     * Lista de las reformas de GP pendientes para enviar a revisión y luego a firmar solicitud "depende del perfil"
+     */
+    def pendientes() {
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estadoDevueltoReq = EstadoAval.findByCodigo("D01")
+        def estadoPorRevisar = EstadoAval.findByCodigo("R01")
+        def estadoSolicitado = EstadoAval.findByCodigo("E01")
+        def estadoDevueltoDirReq = EstadoAval.findByCodigo("D02")
+//        def estadoDevueltoAnPlan = EstadoAval.findByCodigo("D03")
+        def tx = ""
+        def cn = dbConnectionService.getConnection()
+        def totales = [:]
+        def estados = []
+        def perfil = session.perfil.codigo.toString()
+        def unidades
+        unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+
+        def filtroDirector = null,
+            filtroPersona = null
+
+        switch (perfil) {
+            case "RQ":
+                estados = [estadoPendiente, estadoDevueltoReq]
+                filtroPersona = Persona.get(session.usuario.id)
+                break;
+            case "DRRQ":
+                estados = [estadoPorRevisar, estadoDevueltoDirReq]
+                filtroDirector = Persona.get(session.usuario.id)
+                break;
+            case "ASPL":    // analista de planificacion
+                estados = [estadoSolicitado, estadoDevueltoAnPlan]
+                break;
+        }
+
+        def reformas = Reforma.withCriteria {
+            eq("tipo", "R")
+            eq("tipoSolicitud", "Q")
+            if (estados.size() > 0) {
+                inList("estado", estados)
+            }
+            if (unidades.size() > 0) {
+                persona {
+                    inList("unidad", unidades)
+                }
+            }
+            if (filtroPersona) {
+                eq("persona", filtroPersona)
+            }
+            if (filtroDirector) {
+                eq("director", filtroDirector)
+            }
+        }
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def gerencias = []
+
+        reformas.each {rf ->
+            switch (rf.tipoSolicitud){
+                case ['E', 'P', 'A']:
+                    tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is not null"
+                    break
+                case ['X']:
+                    tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and tprf__id != '6'"
+                    break
+                default:
+                    tx = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${rf.id} and asgn__id is null"
+                    break
+            }
+            cn.eachRow(tx.toString()){
+                totales[rf.id] = it.suma
+            }
+        }
+        cn.close()
+
+        reformas.each {
+            gerencias += firmasService.requirentes(it.persona.unidad)
+        }
+
+//        println("reformas " + reformas)
+//        println("gerencias " + gerencias)
+
+        return [reformas: reformas, actual: actual, gerencias: gerencias, totales: totales]
     }
 
 

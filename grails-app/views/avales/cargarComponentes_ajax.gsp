@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 18/05/15
-  Time: 12:12 PM
---%>
-
 <g:select from="${comps}" optionValue="objeto" optionKey="id" name="comp" id="comp" noSelection="['-1': 'Seleccione...']"
           style="width: 100%" class="form-control input-sm required requiredCombo"/>
 <script>
@@ -20,7 +13,7 @@
             success : function (msg) {
                 $("#divAct").html(msg);
                 $("#divAsg").html("");
-                $("#spanDevengado").addClass("hidden");
+//                $("#spanDevengado").addClass("hidden");
             }
         });
     })

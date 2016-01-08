@@ -47,31 +47,6 @@
         <elm:wizardAvales paso="2" proceso="${proceso}"/>
     %{--****************************************************************************************************************************************--}%
 
-    %{--<div class="wizard-container row">--}%
-    %{--<div class="col-md-4 wizard-step wizard-next-step corner-left wizard-completed">--}%
-    %{--<span class="badge wizard-badge">1</span>--}%
-    %{--<g:link action="nuevaSolicitud" id="${proceso.id}">Proceso de aval</g:link>--}%
-    %{--</div>--}%
-
-    %{--<div class="col-md-4 wizard-step wizard-next-step wizard-current">--}%
-    %{--<span class="badge wizard-badge">2</span> Asignaciones--}%
-    %{--</div>--}%
-
-    %{--<g:if test="${monto > 0}">--}%
-    %{--<div class="col-md-4 wizard-step corner-right wizard-available">--}%
-    %{--<span class="badge wizard-badge">3</span>--}%
-    %{--<g:link action="solicitudProceso" id="${proceso.id}" title="Continuar sin guardar cambios">--}%
-    %{--Solicitud--}%
-    %{--</g:link>--}%
-    %{--</div>--}%
-    %{--</g:if>--}%
-    %{--<g:else>--}%
-    %{--<div class="col-md-4 wizard-step corner-right wizard-not-completed">--}%
-    %{--<span class="badge wizard-badge">3</span> Solicitud--}%
-    %{--</div>--}%
-    %{--</g:else>--}%
-    %{--</div>--}%
-
         <g:form action="" class="form-horizontal wizard-form corner-bottom" name="frmProceso" role="form" method="POST">
             <g:if test="${!readOnly}">
                 <div class="row">
@@ -148,14 +123,15 @@
                         </div>
                     </span>
 
-                    <span class="grupo hidden" id="spanDevengado">
-                        <label class="col-md-1 control-label">
+                    <span class="grupo" id="spanDevengado">
+                        <label class="col-md-1 control-label text-success">
                             Devengado
                         </label>
 
                         <div class="col-md-2">
                             <div class="input-group">
-                                <g:textField class="form-control input-sm number money" name="devengado" style="text-align: right; margin-right: 10px"/>
+                                <g:textField class="form-control input-sm number money" name="devengado"
+                                             style="text-align: right; margin-right: 10px" title="Valor devengado años anteriores, en caso de existir"/>
                                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
                             </div>
                         </div>
@@ -232,47 +208,6 @@
                 $("#asignacion").val("-1");
             }
 
-            %{--function editarAsg(id, max) {--}%
-            %{--$.ajax({--}%
-            %{--type    : "POST",--}%
-            %{--url     : "${createLink(action:'editarAsignacion_ajax')}",--}%
-            %{--data    : {--}%
-            %{--band : ${band},--}%
-            %{--id   : id,--}%
-            %{--max  : max--}%
-            %{--},--}%
-            %{--success : function (msg) {--}%
-            %{--var b = bootbox.dialog({--}%
-            %{--id    : "dlgCreateEdit",--}%
-            %{--title : "Editar asignación",--}%
-
-            %{--class : "modal-lg",--}%
-
-            %{--message : msg,--}%
-            %{--buttons : {--}%
-            %{--cancelar : {--}%
-            %{--label     : "Cancelar",--}%
-            %{--className : "btn-primary",--}%
-            %{--callback  : function () {--}%
-            %{--}--}%
-            %{--},--}%
-            %{--guardar  : {--}%
-            %{--id        : "btnSave",--}%
-            %{--label     : "<i class='fa fa-save'></i> Guardar",--}%
-            %{--className : "btn-success",--}%
-            %{--callback  : function () {--}%
-
-            %{--} //callback--}%
-            %{--} //guardar--}%
-            %{--} //buttons--}%
-            %{--}); //dialog--}%
-            %{--setTimeout(function () {--}%
-            %{--b.find(".form-control").first().focus()--}%
-            %{--}, 500);--}%
-            %{--}--}%
-            %{--});--}%
-            %{--}--}%
-
             function cargarCompAnio() {
                 $("#div_comp").html(spinner);
                 $.ajax({
@@ -286,7 +221,7 @@
                         $("#div_comp").html(msg);
                         $("#divAct").html("");
                         $("#divAsg").html("");
-                        $("#spanDevengado").addClass("hidden");
+//                        $("#spanDevengado").addClass("hidden");
                     }
                 });
             }

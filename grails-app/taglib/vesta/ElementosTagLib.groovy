@@ -1156,6 +1156,9 @@ class ElementosTagLib {
                     case "X":
                         accion = "nuevaReforma"
                         break;
+                    case "Q":
+                        accion = "nuevaReformaCorriente"
+                        break;
                 }
                 if (reforma.tipo == "A") {
                     controlador = "ajuste"
@@ -1163,6 +1166,9 @@ class ElementosTagLib {
                     controlador = "ajusteCorriente"
                 } else if (reforma.tipo == "R") {
                     controlador = "reforma"
+                }
+                if (reforma.tipoSolicitud == "Q") {
+                    controlador = "reformaPermanente"
                 }
             } else if (estadosRevisar.contains(reforma.estado.codigo)) {
                 title = "Revisar"

@@ -17,8 +17,9 @@ environments {
             dbCreate = "update"
 //            url = "jdbc:postgresql://10.0.0.2:5432/vesta_curso"
 //            url = "jdbc:postgresql://10.0.0.2:5432/vesta"
-//            url = "jdbc:postgresql://10.0.0.2:5432/vesta_corr1"
-            url = "jdbc:postgresql://10.0.0.2:5432/vesta_prdc1"
+//            url = "jdbc:postgresql://10.0.0.2:5432/vesta_corr"  // desarrollo GP reformas y ajustes
+            url = "jdbc:postgresql://10.0.0.2:5432/vesta_prdc"
+//            url = "jdbc:postgresql://10.0.0.2:5432/vesta_prba"  //BD de yachay: vesta2016
             username = "postgres"
             password = "postgres"
         }

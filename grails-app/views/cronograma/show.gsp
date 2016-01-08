@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 13/01/15
-  Time: 04:40 PM
---%>
-
 <%@ page import="vesta.proyectos.MarcoLogico; vesta.proyectos.Cronograma; vesta.parametros.poaPac.Mes; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -43,6 +36,7 @@
     </head>
 
     <body>
+        ${anio.estado} proy: ${proyecto.aprobado}
         <g:set var="editable" value="${anio.estado == 0 && proyecto.aprobado != 'a'}"/>
         <g:if test="${params.list != 'list'}">
             <g:set var="editable" value="${false}"/>

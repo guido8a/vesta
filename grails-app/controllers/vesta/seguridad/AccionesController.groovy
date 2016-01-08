@@ -163,7 +163,7 @@ class AccionesController extends Shield {
                                 def accn = Accn.findByNombreAndControl(s[2], Ctrl.findByNombre(ct.getName()))
                                 //println "si service "+ s[2]+" accion "+accn.id+" url "+it
                                 if (accn == null) {
-                                    println "if 2";
+//                                    println "if 2";
                                     accn = new Accn()
                                     accn.nombre = s[2]
                                     accn.control = Ctrl.findByNombre(ct.getName())
@@ -177,7 +177,7 @@ class AccionesController extends Shield {
                                     accn.modulo = Modulo.findByDescripcionLike("no%asignado")
                                     accn.save(flush: true)
                                     i++
-                                    println "errores " + accn.errors
+//                                    println "errores " + accn.errors
                                 }
                                 t.add(s.getAt(2))
                             } else {

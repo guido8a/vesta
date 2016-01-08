@@ -1,33 +1,17 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 30/12/15
-  Time: 10:31 AM
---%>
-
 <%@ page import="vesta.proyectos.MarcoLogico; vesta.poa.Asignacion; vesta.seguridad.Persona; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
-    %{--<title><elm:tipoReformaStr tipo="Reforma" tipoSolicitud="E"/></title>--}%
-    <title>Nueva Reforma de gasto permanente</title>
+    <title>Reforma de Gasto Permanente</title>
 
     <style type="text/css">
-    .titulo-azul.subtitulo {
-        border    : none;
-        font-size : 18px;
-    }
-
     td {
         vertical-align : middle;
     }
 
-
     .botonC {
-
         background-color: #dd8404;
         color: seashell;
-
     }
 
     .rowC {
@@ -35,7 +19,6 @@
     }
 
     .botonD {
-
         background-color: #a47680;
         color: seashell;
     }
@@ -294,7 +277,7 @@
         data.id = '${reforma?.id}';
 
         if(vacio == '' || vacio == null){
-            log("Debe ingresar una justificación para la reforma de gasto permanente!","error")
+            log("Debe ingresar una justificación de la reforma de gasto permanente!","error")
         }else{
             $.ajax({
                 type: 'POST',
@@ -687,7 +670,7 @@
 
                 var b = bootbox.dialog({
                     id    : "dlgOrigen",
-                    title : '<h3 class="text-info">Asignación de Origen permanente</h3>',
+                    title : '<h3 class="text-info">Asignación de Origen de Gasto Permanente</h3>',
                     class : "modal-lg",
                     message : msg,
                     buttons : {
@@ -767,7 +750,7 @@
 
                 var b = bootbox.dialog({
                     id    : "dlgIncremento",
-                    title : '<h3 class="text-info">Incremento de gasto permanente</h3>',
+                    title : '<h3 class="text-info">Incremento de Gasto Permanente</h3>',
                     class : "modal-lg",
                     message : msg,
                     buttons : {
@@ -843,7 +826,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id    : "dlgPartida",
-                    title : '<h3 class="text-info">Partida de destino permanente</h3>',
+                    title : '<h3 class="text-info">Nueva Partida Gasto Permanente</h3>',
                     class : "modal-lg",
                     message : msg,
                     buttons : {

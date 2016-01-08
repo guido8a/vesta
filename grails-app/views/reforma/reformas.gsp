@@ -47,11 +47,13 @@
                 title="Nueva Reforma">
             6.- Nueva Reforma
         </g:link>
+%{--
         <g:link controller="reformaPermanente" action="nuevaReformaCorriente" class="btn btn-default bgNuevaReformaCorriente"  style="width: 370px; text-align: left;
             font-size: large; font-weight: bolder; margin-bottom: 10px; margin-left: 300px"
                 title="Nueva Reforma de gasto corriente">
             7.- Nueva Reforma Corriente
         </g:link>
+--}%
 
 
         </div>

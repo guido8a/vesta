@@ -631,4 +631,40 @@ class EntidadController extends Shield {
     def arbol_asg() {
 
     }
+
+    def cierreAnio() {
+        def actual = params.anio? Anio.get(params.anio) : Anio.findByAnio(new Date().format("yyyy").toInteger() - 1)
+
+        def anios = Anio.findAllByAnioLessThanAndEstado(new Date().format("yyyy"), 0)
+
+        println "anios: $anios"
+        if(anios.size() == 0) {
+            flash.message = "No hay añios pendientes de cierre"
+
+        }
+        [actual: actual, anios: anios]
+    }
+
+    def cerrarAnio() {
+        println "params: $params"
+        def anio = Anio.get(params.anio)
+        anio.estado = 1     // 0 activo y modificacble cronograma, 1 cerrado
+        def mesg = ""
+        if(!anio.save(flush: true)) mesg = "Error al actualizar el anio ${anio.anio}"
+
+        UnidadEjecutora.findAll().each {ue ->
+            ue.numeroAval = 0
+            ue.numeroSolicitudAval = 0
+            ue.numeroSolicitudReforma = 0
+            if(!ue.save(flush: true)) {
+                mesg += "error al actualizar la Unidad: ${ue.nombre}"
+            }
+        }
+        if(mesg == "") {
+            flash.message = "El año ${anio.anio} se ha cerrado correctamente"
+        } else {
+            flash.message = mesg
+        }
+        redirect(action: 'cierreAnio')
+    }
 }

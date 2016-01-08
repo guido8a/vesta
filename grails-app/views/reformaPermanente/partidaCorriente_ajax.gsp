@@ -1,23 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 30/12/15
-  Time: 11:48 AM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 04/12/15
-  Time: 10:12 AM
---%>
-
 <form id="frmPartida">
-
-
     <div class="row">
         <div class="col-md-2">
-            <label>Proyecto: </label>
+            <label>Objetivo del gasto permanente:</label>
         </div>
         <div  class="col-md-8">
             <g:select from="${objetivos}" optionKey="id" optionValue="descripcion" name="objetivo" class="form-control input-sm required requiredCombo selectpicker"

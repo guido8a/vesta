@@ -3159,11 +3159,9 @@ class ReformaController extends Shield {
         }
     }
 
-
+    /* se guardan en reformas con "tipoSolicitud = Q" (rfrmtprf)*/
     def guardarReformaCorriente () {
-
-        println("params rc " + params)
-
+        println "guardarReformaCorriente params: $params"
         def anio = Anio.get(params.anio)
         def estadoAval = EstadoAval.findByCodigo("P01")
         def usuario = Persona.get(session.usuario.id)
@@ -3171,9 +3169,6 @@ class ReformaController extends Shield {
         def reforma
 
         if(!params.id){
-            //crear!!!!!!!!!!
-//            println("entro a")
-
             reforma = new Reforma()
             reforma.anio = anio
             reforma.concepto = params.texto
@@ -3192,10 +3187,7 @@ class ReformaController extends Shield {
                 render "ok_${reforma.id}"
             }
 
-        }else{
-            //editar
-//            println("entro b")
-
+        } else {
             reforma = Reforma.get(params.id)
             reforma.anio = anio
             reforma.concepto = params.texto

@@ -23,7 +23,7 @@
             },
             success : function (msg) {
                 $("#divAsg").html(msg);
-                $("#spanDevengado").addClass("hidden");
+//                $("#spanDevengado").addClass("hidden");
             }
         });
     })

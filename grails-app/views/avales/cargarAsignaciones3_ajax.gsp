@@ -14,7 +14,8 @@
                 it.fuente.codigo
             }}"
             optionValue='${{
-                "Monto: " + g.formatNumber(number: it.priorizado, type: "currency", currencySymbol: " ") + ", Partida: " + it.presupuesto.numero + ", Fuente: " + it.fuente.codigo
+                "Monto: " + g.formatNumber(number: it.priorizado, type: "currency", currencySymbol: " ") +
+                        ", Partida: " + it.presupuesto.numero + ", Fuente: " + it.fuente.codigo
             }}'
             noSelection="['-1': 'Seleccione..']" class="form-control input-sm required requiredCombo"/>
 <script>
@@ -22,10 +23,12 @@
         var max = getMaximo($("#asignacion").val(), 0);
         $("#max").text(number_format(max, 2, '.', ',')).data("max", max);
 
+/*
         if($(this).find("option:selected").attr("class") == "998") {
             $("#spanDevengado").removeClass("hidden");
         } else {
             $("#spanDevengado").addClass("hidden");
         }
+*/
     });
 </script>

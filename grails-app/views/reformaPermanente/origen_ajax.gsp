@@ -1,23 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 30/12/15
-  Time: 10:59 AM
---%>
-
 <%@ page import="vesta.poa.Asignacion" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 03/12/15
-  Time: 11:47 AM
---%>
-
-%{--//origen--}%
+%{--Asignación Origen--}%
 <form id="frmAsignacion">
     <div class="row">
         <div class="col-md-2">
-            <label>Proyecto: </label>
+            <label>Objetivo del gasto permanente: </label>
         </div>
         <div  class="col-md-8">
             <g:select from="${objetivos}" optionKey="id" optionValue="descripcion" name="objetivo" class="form-control input-sm required requiredCombo selectpicker"
