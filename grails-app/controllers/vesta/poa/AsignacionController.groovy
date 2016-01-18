@@ -1400,6 +1400,7 @@ class AsignacionController extends Shield {
     }
 
     def macro_ajax() {
+        println "macro_ajax: params: $params"
         if (!params.mod) {
             params.mod = ""
         }
@@ -1410,6 +1411,7 @@ class AsignacionController extends Shield {
     }
 
     def actividad_ajax() {
+        println "actividad ajax ... params: $params"
         if (!params.mod) {
             params.mod = ""
         }
@@ -1418,7 +1420,7 @@ class AsignacionController extends Shield {
         def macro = MacroActividad.get(params.id)
 
         def actividades = ActividadCorriente.findAllByAnioAndMacroActividad(anio, macro)
-
+        println "actividades ${actividades.id}"
         return [actividades: actividades, params: params, valor: params.act ?: '']
     }
 

@@ -247,7 +247,7 @@
         </div>
         <div class="col-md-3 grupo">
             <g:select from="${personas}" optionKey="id" optionValue="" id="firma" name="firma"
-                      class="form-control input-sm required" noSelection="['': '- Seleccione -']" value="${reforma ? reforma.directorId : ''}"/>
+                      class="form-control input-sm required" noSelection="['': '- Seleccione -']" value="${reforma ? reforma?.director?.id : ''}"/>
         </div>
 
         <div class="col-md-4 col-md-offset-4">
@@ -335,7 +335,7 @@
         if(codigoDt == 'O'){
             $.ajax({
                 type: 'POST',
-                url     : "${createLink(controller: 'reforma', action: 'asignacionOrigen_ajax')}",
+                url     : "${createLink(controller: 'reformaPermanente', action: 'asignacionOrigen_ajax')}",
                 data : {
                     id: detalleId
                 },
@@ -356,42 +356,40 @@
                                 label     : "<i class='fa fa-save'></i> Aceptar",
                                 className : "btn-success",
                                 callback  : function () {
+//                                    console.log("valid: " + $("#frmAsignacion").valid());
                                     if($("#frmAsignacion").valid()){
                                         var dataOrigen = {};
                                         dataOrigen.monto = str_replace(",", "", $("#monto").val());
                                         var dataDestino = {};
-                                        dataDestino.proyecto_nombre = $("#proyecto").find("option:selected").text();
-                                        dataDestino.componente_nombre = $("#comp").find("option:selected").text();
-                                        dataDestino.componente_id = $("#comp").val();
-                                        dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
-                                        dataDestino.actividad_id = $("#actividadRf").val();
-                                        dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                        var part = $("#asignacion").find("option:selected").text().split(": ")
-                                        var partid = part[2].split(",")
-                                        var ini = part[1].split(", Partida")
-                                        dataDestino.partida = partid[0]
-                                        dataDestino.inicial = ini[0]
-                                        dataDestino.asignacion_id = $("#asignacion").val();
-                                        resetForm();
+                                        dataDestino.objetivo_nombre = $("#objetivo").find("option:selected").text();
+                                        dataDestino.objetivo_id = $("#objetivo").val();
+                                        dataDestino.macro_nombre = $("#mac").find("option:selected").text();
+                                        dataDestino.macro_id = $("#mac").val();
+                                        dataDestino.actividad_nombre = $("#act").find("option:selected").text();
+                                        dataDestino.actividad_id = $("#act").val();
+                                        dataDestino.tarea_id = $("#tar").val();
+                                        dataDestino.asignacion_id = $("#asg").val();
 
                                         //grabar detalle reforma
                                         $.ajax({
                                             type: 'POST',
-                                            url: "${createLink(controller: 'reforma', action: 'grabarDetalleA')}",
+                                            url: "${createLink(controller: 'reformaPermanente', action: 'grabarDetalleA')}",
                                             data:{
+                                                id: detalleId,
                                                 monto: dataOrigen.monto,
-                                                componente: dataDestino.componente_id,
+                                                objetivo: dataDestino.objetivo_id,
+                                                macro: dataDestino.macro_id,
                                                 actividad: dataDestino.actividad_id,
                                                 asignacion: dataDestino.asignacion_id,
+                                                tarea: dataDestino.tarea_id,
                                                 tipoReforma: "O",
-                                                reforma: '${reforma?.id}',
-                                                id: detalleId
+                                                reforma: '${reforma?.id}'
                                             },
                                             success: function (msg){
                                                 if(msg == 'ok'){
                                                     log("Detalle guardado correctamente!","success");
                                                     setTimeout(function () {
-                                                        location.href = "${createLink(controller:'reforma',action:'nuevaReforma')}/" + '${reforma?.id}';
+                                                        location.href = "${createLink(controller:'reformaPermanente',action:'nuevaReformaCorriente')}/" + '${reforma?.id}';
                                                     }, 500);
                                                 }else{
                                                     log("Error al guardar el detalle!","error");

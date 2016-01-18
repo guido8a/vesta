@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 30/12/15
-  Time: 11:34 AM
---%>
-
 <g:select from="${asignaciones}" optionKey="id" name="asg${params.mod}" noSelection="['-1': 'Seleccione...']"
           optionValue='${{
               (it.presupuesto.numero + " " + it.presupuesto.descripcion) + " Monto: " +

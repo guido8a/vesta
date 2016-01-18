@@ -3,7 +3,7 @@
 <form id="frmAsignacion">
     <div class="row">
         <div class="col-md-2">
-            <label>Objetivo del gasto permanente: </label>
+            <label>Objetivo del gasto permanente:</label>
         </div>
         <div  class="col-md-8">
             <g:select from="${objetivos}" optionKey="id" optionValue="descripcion" name="objetivo" class="form-control input-sm required requiredCombo selectpicker"

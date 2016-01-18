@@ -133,10 +133,16 @@ class Reforma {
     }
 
     String getTituloSolicitud() {
+        if(this.tipoSolicitud == 'Q') {
+            return 'Solicitud de reforma al POA de gasto permanente'
+        }
         return (this.tipo == 'R' ? 'Solicitud de reforma' : 'Ajuste') + " al POA" + (this.tipo == 'C' ? ' de gasto permanente' : '')
     }
 
     String getTituloReforma() {
+        if(this.tipoSolicitud == 'Q') {
+            return 'Reforma al POA de gasto permanente'
+        }
         return (this.tipo == 'R' ? 'Reforma' : 'Ajuste') + " al POA" + (this.tipo == 'C' ? ' de gasto permanente' : '')
     }
 

@@ -15,16 +15,9 @@
         vertical-align : middle;
     }
 
-    /*table {*/
-    /*table-layout: fixed;*/
-    /*overflow: hidden;*/
-    /*}*/
-
     .botonC {
-
         background-color: #dd8404;
         color: seashell;
-
     }
 
     .rowC {
@@ -32,7 +25,6 @@
     }
 
     .botonD {
-
         background-color: #a47680;
         color: seashell;
     }
@@ -40,8 +32,6 @@
     .rowD {
         background-color: #a47680;
     }
-
-
     </style>
 </head>
 
@@ -71,10 +61,17 @@
             POA Año
         </label>
     </div>
-    <div class="col-md-2">
-        <g:select from="${anios}" value="${actual.anio}" optionKey="id" optionValue="anio" name="anio"
-                  class="form-control input-sm required requiredCombo"/>
-    </div>
+    <g:if test="${anios.size() > 0}">
+        <div class="col-md-2">
+            <g:select from="${anios}" value="${actual.anio}" optionKey="id" optionValue="anio" name="anio"
+                      class="form-control input-sm required requiredCombo"/>
+        </div>
+    </g:if>
+    <g:else>
+        <div class="col-md-2 alert-danger">
+        No hay POA para este año
+        </div>
+    </g:else>
 
     <div class="col-md-1"></div>
 
@@ -976,8 +973,8 @@
                             label     : "<i class='fa fa-save'></i> Aceptar",
                             className : "btn-success",
                             callback  : function () {
-                                if($("#frmNuevaActividad").valid()){
 
+                                if($("#frmNuevaActividad").valid()){
                                     var dataOrigen = {};
                                     dataOrigen.monto = str_replace(",", "", $("#monto").val());
                                     var dataDestino = {};

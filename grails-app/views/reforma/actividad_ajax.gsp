@@ -1,10 +1,4 @@
 <%@ page import="vesta.parametros.poaPac.Fuente; vesta.proyectos.Categoria" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 07/12/15
-  Time: 10:51 AM
---%>
 <form id="frmNuevaActividad">
 <div class="row">
     <div class="col-md-2">
@@ -130,7 +124,6 @@
 
         $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidasFiltradas')}",
             data     : {
-
             },
             success  : function (msg) {
                 var b = bootbox.dialog({

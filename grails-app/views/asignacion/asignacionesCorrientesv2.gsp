@@ -380,7 +380,7 @@
 
                 $("#btnGuardar").click(function () {
 
-                    var rest = $("#divRestante").data("res")
+                    var rest = parseFloat($("#divRestante").data("res"))
                     var objetivo = $("#objetivo").val();
                     var macro = $("#mac").val();
                     var actividad = $("#act").val();
@@ -390,8 +390,10 @@
                     var asignacion = $("#asignacion_txt").val();
                     var parti = $("#prsp_hide").val();
                     var fuente = $("#fuente").val();
-                    var valor = $("#valor").val();
+                    var valor = parseFloat($("#valor").val());
                     var prsp_hide = $("#prsp_hide").val();
+
+//                    console.log("restante", rest, "valor: ", valor)
 
                     if (valor >= rest) {
                         log("Ingrese un valor menor al restante!", "error")
@@ -405,8 +407,9 @@
                                             $.ajax({
                                                 type    : "POST",
                                                 url     : "${createLink(action:'guardarAsignacion',controller:'asignacion')}",
-                                                data    : "anio=" + anio + "&objetivo=" + objetivo + "&macro=" + macro + "&actividad=" + actividad + "&tarea=" + tarea + "&responsable=" + responsable +
-                                                          "&asignacion=" + asignacion + "&partida=" + prsp_hide + "&fuente=" + fuente + "&valor=" + valor,
+                                                data    : "anio=" + anio + "&objetivo=" + objetivo + "&macro=" + macro +
+                                                    "&actividad=" + actividad + "&tarea=" + tarea + "&responsable=" + responsable +
+                                                    "&asignacion=" + asignacion + "&partida=" + prsp_hide + "&fuente=" + fuente + "&valor=" + valor,
                                                 success : function (msg) {
                                                     var parts = msg.split("*");
                                                     log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
@@ -440,22 +443,24 @@
 
                 $("#guardarEditar").click(function () {
 
-                    var rest = $("#divRestante").data("res")
+                    var rest = parseFloat($("#divRestante").data("res"))
 
                     //guardar
                     var responsable = $("#idResponsable").val();
                     var asignacion = $("#asignacion_txt").val();
                     var parti = $("#prsp_id").val();
                     var fuente = $("#fuente").val();
-                    var valor = $("#valor").val();
+                    var valor = parseFloat($("#valor").val());
                     var asigId = $("#asignacionId").val();
                     var actId = $("#act").val();
                     var tarId = $("#tar").val();
                     var objetivo = $("#objetivo").val();
                     var prsp_hide = $("#prsp_hide").val();
+//                    alert(valor)
+//                    console.log("valor:", valor, "restante:", rest)
 
                     if (valor >= rest) {
-                        log("Ingrese un valor menor al restante!", "error")
+                        log("Ingrese un valor menor al restante!!", "error")
                     } else {
 
                         if (actId && actId != -1) {

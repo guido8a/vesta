@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Procesar solicitud de reforma</title>
+        <title>Procesar solicitud de reforma de GP</title>
 
         <script type="text/javascript" src="${resource(dir: 'js/plugins/ckeditor-4.4.6', file: 'ckeditor.js')}"></script>
         <script type="text/javascript" src="${resource(dir: 'js/plugins/ckeditor-4.4.6', file: 'adapters/jquery.js')}"></script>
@@ -58,10 +58,11 @@
                     POA Año
                 </div>
 
-                <div class="col-md-1">
+                <div class="col-md-2">
                     ${reforma.anio.anio}
                 </div>
 
+%{--
                 <div class="col-md-1 show-label">
                     Total
                 </div>
@@ -69,9 +70,10 @@
                 <div class="col-md-2" id="divTotal">
                     <g:formatNumber number="${total}" type="currency"/>
                 </div>
+--}%
 
                 <g:if test="${btnSelect}">
-                    <div class="col-md-1 show-label">
+                    <div class="col-md-3 show-label">
                         Saldo
                     </div>
 
@@ -104,7 +106,7 @@
             <g:set var="incremento" value="${0}"/>
             <g:set var="montoFinal" value="${0}"/>
 
-            <g:if test="${reforma?.tipoSolicitud == 'X'}">
+            <g:if test="${reforma?.tipoSolicitud == 'Q'}">
 
                     <div class="btn-group pull-center" role="group" style="margin-top: 5px; margin-bottom: 5px; float: right">
                         <a href="#" id="btnAsignacion" class="btn btn-info">
@@ -114,9 +116,9 @@
                 <table class="table table-hover table-condensed table-hover table-bordered">
                     <thead>
                     <tr>
-                        <th>Proyecto</th>
-                        <th>Componente</th>
+                        <th>MacroActividad</th>
                         <th>Actividad</th>
+                        <th>Tarea</th>
                         <th>Partida</th>
                         <th>Responsable</th>
                         <th>Valor inicial<br/>USD</th>
@@ -131,9 +133,9 @@
 
                         <g:if test="${det?.tipoReforma?.codigo == 'O'}">
                             <tr class="info" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.id}" data-val="${det?.valor}">
-                                <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
-                                <td style=width:16%>${det?.componente?.objeto}</td>
-                                <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                                <td style=width:15%>${det?.macroActividad?.descripcion}</td>
+                                <td style=width:16%>${vesta.poaCorrientes.Tarea.get(det?.tarea).actividad?.descripcion}</td>
+                                <td style=width:15%>${vesta.poaCorrientes.Tarea.get(det?.tarea).descripcion}</td>
                                 <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
                                 <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
                                 <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorOrigenInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -155,14 +157,14 @@
                             <g:else>
                                 <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
                             </g:else>
-                            <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                            <td style=width:15%>${det?.macroActividad?.descripcion}</td>
                             <g:if test="${det?.tipoReforma?.codigo == 'P'}">
-                                <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
-                                <td style=width:15%>${det?.componente?.objeto}</td>
+                                <td style=width:16%>${vesta.poaCorrientes.Tarea.get(det?.tarea).actividad?.descripcion}</td>
+                                <td style=width:15%>${vesta.poaCorrientes.Tarea.get(det?.tarea).descripcion}</td>
                             </g:if>
                             <g:else>
-                                <td style=width:16%>${det?.componente?.objeto}</td>
-                                <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                                <td style=width:16%>${vesta.poaCorrientes.Tarea.get(det?.tarea).actividad?.descripcion}</td>
+                                <td style=width:15%>${vesta.poaCorrientes.Tarea.get(det?.tarea).descripcion}</td>
                             </g:else>
                             <g:if test="${det?.tipoReforma?.codigo == 'P'}">
                                 <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
@@ -182,9 +184,9 @@
                         </g:if>
                         <g:if test="${det?.tipoReforma?.codigo == 'A'}" >
                             <tr class="rowD" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
-                                <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
-                                <td style=width:16%>${det?.componente?.objeto}</td>
-                                <td style=width:15%>${det?.descripcionNuevaActividad}</td>
+                                <td style=width:15%>${det?.macroActividad?.descripcion}</td>
+                                <td style=width:16%>${vesta.poaCorrientes.Tarea.get(det?.tarea).actividad?.descripcion}</td>
+                                <td style=width:15%>${vesta.poaCorrientes.Tarea.get(det?.tarea).descripcion}</td>
                                 <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
                                 <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
                                 <td style='width:8%' class='text-center'>${' --- '}</td>
@@ -329,7 +331,7 @@
                                 if(msg == 'ok'){
                                     log("Detalle borrado correctamente!","success");
                                     setTimeout(function () {
-                                        location.href = "${createLink(controller:'reforma',action:'procesar')}/" + '${reforma?.id}';
+                                        location.href = "${createLink(controller:'reformaPermanente',action:'procesar')}/" + '${reforma?.id}';
                                     }, 500);
                                 }else{
                                     log("Error al borrar el detalle!","error");
@@ -347,7 +349,7 @@
                 if(codigoDt == 'O'){
                     $.ajax({
                         type: 'POST',
-                        url     : "${createLink(controller: 'reforma', action: 'asignacionOrigen_ajax')}",
+                        url     : "${createLink(controller: 'reformaPermanente', action: 'asignacionOrigen_ajax')}",
                         data : {
                             id: detalleId
                         },
@@ -372,38 +374,36 @@
                                                 var dataOrigen = {};
                                                 dataOrigen.monto = str_replace(",", "", $("#monto").val());
                                                 var dataDestino = {};
-                                                dataDestino.proyecto_nombre = $("#proyecto").find("option:selected").text();
-                                                dataDestino.componente_nombre = $("#comp").find("option:selected").text();
-                                                dataDestino.componente_id = $("#comp").val();
-                                                dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
-                                                dataDestino.actividad_id = $("#actividadRf").val();
-                                                dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                                var part = $("#asignacion").find("option:selected").text().split(": ")
-                                                var partid = part[2].split(",")
-                                                var ini = part[1].split(", Partida")
-                                                dataDestino.partida = partid[0]
-                                                dataDestino.inicial = ini[0]
-                                                dataDestino.asignacion_id = $("#asignacion").val();
+                                                dataDestino.objetivo_nombre = $("#objetivo").find("option:selected").text();
+                                                dataDestino.objetivo_id = $("#objetivo").val();
+                                                dataDestino.macro_nombre = $("#mac").find("option:selected").text();
+                                                dataDestino.macro_id = $("#mac").val();
+                                                dataDestino.actividad_nombre = $("#act").find("option:selected").text();
+                                                dataDestino.actividad_id = $("#act").val();
+                                                dataDestino.tarea_id = $("#tar").val();
+                                                dataDestino.asignacion_id = $("#asg").val();
 //                                                resetForm();
 
                                                 //grabar detalle reforma
                                                 $.ajax({
                                                     type: 'POST',
-                                                    url: "${createLink(controller: 'reforma', action: 'grabarDetalleA')}",
+                                                    url: "${createLink(controller: 'reformaPermanente', action: 'grabarDetalleA')}",
                                                     data:{
+                                                        id: detalleId,
                                                         monto: dataOrigen.monto,
-                                                        componente: dataDestino.componente_id,
+                                                        objetivo: dataDestino.objetivo_id,
+                                                        macro: dataDestino.macro_id,
                                                         actividad: dataDestino.actividad_id,
                                                         asignacion: dataDestino.asignacion_id,
+                                                        tarea: dataDestino.tarea_id,
                                                         tipoReforma: "O",
-                                                        reforma: '${reforma?.id}',
-                                                        id: detalleId
+                                                        reforma: '${reforma?.id}'
                                                     },
                                                     success: function (msg){
                                                         if(msg == 'ok'){
                                                             log("Detalle guardado correctamente!","success");
                                                             setTimeout(function () {
-                                                                location.href = "${createLink(controller:'reforma',action:'procesar')}/" + '${reforma?.id}';
+                                                                location.href = "${createLink(controller:'reformaPermanente',action:'procesar')}/" + '${reforma?.id}';
                                                             }, 500);
                                                         }else{
                                                             log("Error al guardar el detalle!","error");
@@ -526,7 +526,8 @@
                 var data = {
                     id : "${reforma.id}"
                 };
-                if (!aprobado) {  //negar
+//                console.log("aprobado: " + aprobado)
+                if (!aprobado) {  // negar
                     url = "${createLink(action:'negar')}";
                     str = "Negando";
                     str2 = "negar";
@@ -534,7 +535,7 @@
                     clase = "danger";
                     ico = "thumbs-down";
                 } else {
-                    if (!mandar) {  // solo guarda texto
+                    if (!mandar) {   //solo guarda texto
                         url = "${createLink(action:'guardar')}";
                         str = "Guardando";
                         str2 = "guardar";
@@ -581,6 +582,7 @@
 
                 var dlg = function () {
                     openLoader(str);
+//                    console.log("... url:" + url)
                     $.ajax({
                         type    : "POST",
                         url     : url,
@@ -599,49 +601,8 @@
                             }
                         }
                     });
-                    %{--bootbox.dialog({--}%
-                    %{--title   : str3,--}%
-                    %{--message : $msg,--}%
-                    %{--class   : "modal-sm",--}%
-                    %{--buttons : {--}%
-                    %{--devolver : {--}%
-                    %{--label     : "<i class='fa fa-" + ico + "'></i> " + str3,--}%
-                    %{--className : "btn-" + clase,--}%
-                    %{--callback  : function () {--}%
-                    %{--if ($form.valid()) {--}%
-                    %{--data.auth = $auth.val();--}%
-                    %{--openLoader(str);--}%
-                    %{--$.ajax({--}%
-                    %{--type    : "POST",--}%
-                    %{--url     : url,--}%
-                    %{--data    : data,--}%
-                    %{--success : function (msg) {--}%
-                    %{--var parts = msg.split("*");--}%
-                    %{--log(parts[1], parts[0]);--}%
-                    %{--if (parts[0] == "SUCCESS") {--}%
-                    %{--if (mandar) {--}%
-                    %{--location.href = "${createLink(action:'pendientes')}";--}%
-                    %{--} else {--}%
-                    %{--location.reload(true);--}%
-                    %{--}--}%
-                    %{--} else {--}%
-                    %{--closeLoader();--}%
-                    %{--}--}%
-                    %{--}--}%
-                    %{--});--}%
-                    %{--}--}%
-                    %{--return false;--}%
-                    %{--}--}%
-                    %{--},--}%
-                    %{--cancelar : {--}%
-                    %{--label     : "Cancelar",--}%
-                    %{--className : "btn-default",--}%
-                    %{--callback  : function () {--}%
-                    %{--}--}%
-                    %{--}--}%
-                    %{--}--}%
-                    %{--});--}%
                 };
+
                 if (mandar) {
                     bootbox.confirm("¿Está seguro de querer <strong class='text-" + clase + "'>" + str2 + "</strong> esta solicitud de reforma?<br/>Esta acción no puede revertirse.",
                             function (res) {
@@ -696,9 +657,10 @@
                     return false;
                 });
                 $("#btnGuardar").click(function () {
-                    procesar(true, false);     //procesar(aprobado, mandar)
+                    procesar(true, false);  // procesar(aprobado, mandar)
                     return false;
                 });
+
                 $("#btnNegar").click(function () {
                     procesar(false, true);
                     return false;

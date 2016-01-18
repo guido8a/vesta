@@ -484,6 +484,7 @@ class ReformaController extends Shield {
 
         def reformas = Reforma.withCriteria {
             eq("tipo", "R")
+            ne("tipoSolicitud", "Q")
             if (estados.size() > 0) {
                 inList("estado", estados)
             }
@@ -2705,11 +2706,22 @@ class ReformaController extends Shield {
         def unidad = UnidadEjecutora.get(session.unidad.id)
         def proyectos = unidad.getProyectosUnidad(actual, session.perfil.codigo.toString())
 
-        def anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
-                "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
-                "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
-                "order by anioanio".toString()).anio__id
-        def anios = Anio.findAllByIdInList(anios__id)
+        def anios__id = 0
+        try {
+            anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
+                    "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
+                    "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
+                    "order by anioanio".toString()).anio__id
+
+        } catch (e) {
+            println e
+        }
+
+        def anios = []
+        if(anios__id) {
+            anios = Anio.findAllByIdInList(anios__id)
+        }
+
 //        println "anios: $anios"
 
         def personasFirma = firmasService.listaDirectoresUnidad(unidad)
@@ -2727,16 +2739,9 @@ class ReformaController extends Shield {
 
 
     def asignacionOrigen_ajax () {
-
-
         println("params a " + params)
 
-        def actual
-        if (params.anio) {
-            actual = Anio.get(params.anio)
-        } else {
-            actual = Anio.findByAnio(new Date().format("yyyy"))
-        }
+        def actual = params.anio ? Anio.get(params.anio) : Anio.findByAnio(new Date().format("yyyy"))
 
         def  proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
 
@@ -2745,12 +2750,10 @@ class ReformaController extends Shield {
         if(params.id){
             detalle = DetalleReforma.get(params.id)
         }
-
         return [proyectos:  proyectos3, detalle: detalle]
     }
 
     def asignacionDestino_ajax () {
-
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)

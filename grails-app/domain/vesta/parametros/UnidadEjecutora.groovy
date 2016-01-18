@@ -86,13 +86,25 @@ class UnidadEjecutora {
      */
     Integer numeroSolicitudReforma = 0
     /**
+     * Número de la última solicitud de reforma al gasto permanente
+     */
+    Integer numeroSolicitudReformaGp = 0
+    /**
      * Número de la última solicitud de aval poa
      */
     Integer numeroSolicitudAval = 0
     /**
+     * Número de la última solicitud de aval poa gasto permanente
+     */
+    Integer numeroSolicitudAvalGp = 0
+    /**
      * Número de Aval emitido
      */
     Integer numeroAval = 0
+    /**
+     * Número de Aval emitido gasto permanente
+     */
+//    Integer numeroAvalGp = 0
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -133,6 +145,10 @@ class UnidadEjecutora {
             numeroSolicitudReforma column: 'unejnmsr'
             numeroSolicitudAval    column: 'unejnmsa'
             numeroAval    column: 'unejnmav'
+            numeroSolicitudReformaGp column: 'unejgprf'
+            numeroSolicitudAvalGp column: 'unejgpsa'
+//            numeroAvalGp column: 'unejgpav'
+
         }
     }
 
@@ -171,6 +187,12 @@ class UnidadEjecutora {
         this.numeroSolicitudReforma = this.numeroSolicitudReforma + 1
         this.save(flush: true)
         return this.numeroSolicitudReforma
+    }
+
+    def getSiguienteNumeroSolicitudReformaGp() {
+        this.numeroSolicitudReformaGp = this.numeroSolicitudReformaGp + 1
+        this.save(flush: true)
+        return this.numeroSolicitudReformaGp
     }
 
     UnidadEjecutora getGerencia() {

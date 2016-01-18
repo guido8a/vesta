@@ -129,6 +129,7 @@
                                         <td>${vesta.modificaciones.Reforma.get(f.idAccionVer)?.persona?.unidad?.nombre}</td>
                                         <td style="text-align: center">
                                             <div class="btn-group btn-group-sm" role="group">
+                                                ver:${f.accionVer}
                                                 <g:if test="${f.accionVer}">
                                                 %{--<g:if test="${f.esPdf != 'N'}">--}%
                                                     <g:if test="${f.esPdf == 'S'}">

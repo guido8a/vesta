@@ -945,6 +945,9 @@ class ElementosTagLib {
             case "Z":
                 str += ""
                 break;
+            case "Q":
+                str += "Gasto Permanente"
+                break;
 
         }
         out << "" + str
@@ -999,6 +1002,10 @@ class ElementosTagLib {
                     case "Z":
                         accion = "verNuevoAjuste"
                         fileName = "verNuevoAjuste"
+                        break;
+                    case "Q":
+                        accion = "reformaGp"
+                        fileName = "reformaGp"
                         break;
                 }
             }
@@ -1080,6 +1087,7 @@ class ElementosTagLib {
                 str += "</a>"
             }
 
+            println "<<<< $str"
             out << str
         }
     }
@@ -1107,24 +1115,25 @@ class ElementosTagLib {
             def estadosAprobar = [estadoSolicitado, estadoDevueltoAnPlan]
 
             switch (perfil.codigo) {
-                case "RQ":
+                case "RQ":   //requirente
                     if (reforma.tipo == "R") {
                         estadosEditables = [estadoPendiente, estadoDevueltoReq]
                     }
                     break;
-                case "ASPL":
+                case "ASPL": //Analista de Planificación
                     if (reforma.tipo == "A") {
                         estadosEditables = [estadoPendiente]
                     }
                     break;
-                case "ASAF":
-                    if (reforma.tipo == "C") {
+                case "ASAF": //Analista administrativo financiero
+                    if (reforma.tipo in ["C"]) {
                         estadosEditables = [estadoPendiente, estadoDevueltoAnPlan]
                     }
                     break;
             }
 
-//            println "linkeditarReforma estados editables: " + estadosEditables
+            println "linkeditarReforma estados editables: " + estadosEditables
+            println "linkeditarReforma estados aprobar: " + estadosAprobar
 
             def accion = "", controlador = "", title = "", clase = "default", icono = "question"
 //            println "Estados editables: " + estadosEditables
@@ -1175,8 +1184,15 @@ class ElementosTagLib {
                 clase = "info"
                 icono = "pencil"
                 if (perfil.codigo == "DRRQ") {
-                    controlador = "reforma"
-                    accion = "revisionSolicitud"
+                    switch (reforma.tipoSolicitud) {
+                        case "Q":
+                            controlador = "reformaPermanente"
+                            accion = "revisionSolicitud"
+                            break
+                        default:
+                            controlador = "reforma"
+                            accion = "revisionSolicitud"
+                    }
                 }
             } else if (estadosAprobar.contains(reforma.estado.codigo)) {
                 title = "Revisar"
@@ -1184,6 +1200,9 @@ class ElementosTagLib {
                 icono = "check"
                 if (perfil.codigo == "ASPL") {
                     controlador = "reforma"
+                    accion = "procesar"
+                } else if (perfil.codigo == "ASAF") {
+                    controlador = "reformaPermanente"
                     accion = "procesar"
                 }
             }

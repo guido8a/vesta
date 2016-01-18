@@ -1,4 +1,5 @@
 <%@ page import="vesta.poa.Asignacion" %>
+
 %{--//origen--}%
 <form id="frmAsignacion">
 <div class="row">
@@ -8,6 +9,7 @@
     <div  class="col-md-8">
         <g:select from="${objetivos}" optionKey="id" optionValue="descripcion" name="objetivo" class="form-control input-sm required requiredCombo"
                   noSelection="['-1': 'Seleccione...']"/>
+
     </div>
 </div>
 
@@ -15,7 +17,7 @@
         <div class="col-md-2">
             <label>Macro Actividad:</label>
         </div>
-        <div  class="col-md-8" id="divComp">
+        <div  class="col-md-8" id="divMacro">
         </div>
     </div>
 
