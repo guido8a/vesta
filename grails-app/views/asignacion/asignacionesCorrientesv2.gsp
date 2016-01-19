@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 19/06/15
-  Time: 03:23 PM
---%>
-
 <%@ page import="vesta.parametros.Unidad; vesta.parametros.proyectos.TipoMeta; vesta.proyectos.MarcoLogico" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -62,11 +55,43 @@
 
         </div>
 
-        <div id="divActividadesTareas"></div>
+    %{--<span class="ui-icon ui-icon-carat-2-e-w text-info" style="display: inline-block;  "></span><span id="ocultaActv" class="text-info" style="display: inline-block; cursor: pointer">Mostrar/Ocultar actividades y tareas</span>--}%
+
+    <div id="divActividadesTareas">
+    <fieldset class="ui-corner-all" style="min-height: 10px;font-size: 11px; align-content: center">
+        <legend>
+            Actividades y Tareas
+            <div class="hidden" style="color: #5cb74c" id="divColor1">
+                Editando...
+            </div>
+        </legend>
+
+        <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+            <thead>
+            <tr>
+                <th style="width: 450px">Actividad gasto permanente</th>
+                <th style="width: 450px">Tarea</th>
+                <th style="width: 240px">Acciones</th>
+            </tr>
+            </thead>
+            <tr>
+                <td id="tdActividad"></td>
+                <td id="tdTarea"></td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group" style="width: 240px; align-items: center" id="grupoBotones">
+                        <a href="#" id="crearActividad" class="btn btn-primary" title="Crear Actvidad"><i class="fa fa-plus"></i> Crear Actividad</a>
+                        <a href="#" id="editarActividad" class="btn btn-success hide" title="Editar Actvidad"><i class="fa fa-pencil"></i> Editar Actividad</a>
+                        <a href="#" id="crearTarea" class="btn btn-info" title="Crear Tarea"><i class="fa fa-plus"></i> Crear Tarea</a>
+                        <a href="#" id="editarTarea" class="btn btn-success hide" title="Editar Tarea"><i class="fa fa-pencil"></i> Editar Tarea</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    </div>
 
 
-
-        <fieldset class="ui-corner-all" style="min-height: 110px;font-size: 11px;">
+    <fieldset class="ui-corner-all" style="min-height: 10px;font-size: 11px;">
             <legend id="titulo2">
                 Ingreso de datos
                 <div class="hide" style="color: #5cb74c" id="divColor2">
@@ -77,7 +102,6 @@
             <div id="divIngreso">
 
             </div>
-
             <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
                 <thead>
                     <th style="width: 350px">Responsable</th>
@@ -88,29 +112,19 @@
                     <th style="width: 100px;"></th>
                 </thead>
                 <tbody>
-
                     <tr class="odd">
                         <g:hiddenField name="asignacionId" value=""/>
                         <td>
                             <g:select name="responsable" id="idResponsable" from="${vesta.parametros.UnidadEjecutora.list([sort: 'nombre'])}" optionKey="id" optionValue="nombre" style="width: 350px" class="many-to-one form-control input-sm"/>
                         </td>
-                        %{--<td class="actividad">--}%
-                            %{--<g:textArea name="asignacion_name" style="width: 270px;height: 60px; resize: none" id="asignacion_txt" maxlength="150" class="form-control input-sm"/>--}%
-                        %{--</td>--}%
-
                         <td class="fuente">
                             <g:select from="${fuentes}" id="fuente" optionKey="id" optionValue="descripcion" name="fuente" class="fuente many-to-one form-control input-sm" value="" style="width: 300px;"/>
                         </td>
 
                         <td class="prsp">
-                            %{--<bsc:buscador name="partida" id="prsp_id" controlador="asignacion" accion="buscarPresupuesto" tipo="search"--}%
-                                          %{--titulo="Busque una partida" campos="${campos}" clase="required" style="width:100%;"/>--}%
                             <g:hiddenField name="partidaHide" id="prsp_hide" value=""/>
-
                             <g:textField name="partida" id="prsp_id" class="fuente many-to-one form-control input-sm" value=""/>
-
                         </td>
-
 
                         <td class="valor">
                             <g:textField name="valor_name" id="valor" class="form-control input-sm number" style="width: 150px" value=""/>
@@ -160,39 +174,6 @@
 
         <script type="text/javascript">
 
-            //buscador funcionando
-            %{--$("#prsp_id").click(function () {--}%
-                %{--$.ajax({--}%
-                    %{--type: "POST",--}%
-                    %{--url     : "${createLink(controller: 'asignacion', action:'partida_ajax')}",--}%
-                    %{--data    : {--}%
-                        %{--anio : $("#anio").val(),--}%
-                        %{--objetivo: $("#objetivo").val(),--}%
-                        %{--macro   : $("#mac").val(),--}%
-                        %{--acti:   $("#act").val(),--}%
-                        %{--id : $("#tar").val(),--}%
-                        %{--fuente: $("#fuente").val()--}%
-                    %{--},--}%
-                    %{--success: function(msg) {--}%
-                        %{--bootbox.dialog ({--}%
-                            %{--id: "dlgPartida",--}%
-                            %{--title: "Partidas",--}%
-                            %{--message: msg,--}%
-                            %{--buttons : {--}%
-                                %{--cancelar : {--}%
-                                    %{--id         :"btnClose",--}%
-                                    %{--label     : "Cancelar",--}%
-                                    %{--className : "btn-primary",--}%
-                                    %{--callback  : function () {--}%
-                                    %{--}--}%
-                                %{--}--}%
-                            %{--}--}%
-                        %{--})--}%
-                    %{--}--}%
-                %{--});--}%
-            %{--});--}%
-
-
 
             $("#prsp_id").click(function(){
 
@@ -241,6 +222,7 @@
                 });
             }
 
+/*
             function cargarActividadesTareas(macro, band) {
 //                console.log("cargarActividadesTareas")
                 $.ajax({
@@ -259,6 +241,7 @@
                     }
                 });
             }
+*/
 
             function totales(objetivo, unidad) {
                 $.ajax({
@@ -350,6 +333,7 @@
                             $("#crearTarea").removeClass('show').addClass('hide');
                             $("#editarActividad").removeClass('show').addClass('hide');
                             $("#editarTarea").removeClass('show').addClass('hide');
+                            $("#divActividadesTareas").removeClass("hidden");
                         }
                     });
                     totales(idObjetivo, idUnidad);
@@ -548,6 +532,360 @@
                 });
 
             });
+
+
+            // --- actividades y tareas ---
+            $("#editarActividad").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url     : "${createLink(controller: 'asignacion', action:'actividadCreacion_ajax')}",
+                    data    : {
+                        anio : $("#anio").val(),
+                        objetivo: $("#objetivo").val(),
+                        macro   : $("#mac").val(),
+                        actividad : $("#act").val()
+
+                    },
+                    success: function(msg) {
+                        bootbox.dialog ({
+                            id: "dlgCrearActividad",
+                            title: "Editar Actividad",
+//                        class: "modal-lg",
+                            message: msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar : {
+                                    label     : "Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        if($("#creacionActividad").val()){
+                                            if($("#metaActividad").val()){
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url     : "${createLink(controller: 'asignacion', action:'guardarActividad_ajax')}",
+                                                    data    : {
+                                                        id: $("#act").val(),
+                                                        anio : $("#anio").val(),
+                                                        macro: $("#mac").val(),
+                                                        obj: $("#objetivo").val(),
+                                                        desc: $("#creacionActividad").val(),
+                                                        meta :$("#metaActividad").val()
+                                                    },
+                                                    success: function(msg) {
+                                                        var parts = msg.split("*");
+                                                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
+                                                        if (parts[0] == "SUCCESS") {
+                                                            $("#divColor1").removeClass("show").addClass("hide");
+                                                            $("#divColor2").removeClass("show").addClass("hide");
+                                                            $("#anio").prop('disabled', false);
+                                                            $("#mac").prop('disabled',false);
+                                                            $("#objetivo").prop('disabled',false);
+                                                            estadoAnterior();
+                                                            $.ajax({
+                                                                type    : "POST",
+                                                                url     : "${createLink(action:'actividad_ajax',controller: 'asignacion')}",
+                                                                data    : {
+                                                                    id   : $("#mac").val(),
+                                                                    anio : $("#anio").val()
+
+                                                                },
+                                                                success : function (msg) {
+                                                                    $("#tdActividad").html(msg);
+
+                                                                    $("#tdTarea").html("");
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                })
+                                            } else{
+                                                log("Ingrese una meta!", "error");
+                                                return
+                                            }
+                                        }else{
+                                            log("Ingrese una descripción!", "error");
+                                            return
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    }
+                });
+            });
+
+            $("#editarTarea").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url     : "${createLink(controller: 'asignacion', action:'tareaCreacion_ajax')}",
+                    data    : {
+                        anio : $("#anio").val(),
+                        objetivo: $("#objetivo").val(),
+                        macro   : $("#mac").val(),
+                        acti:   $("#act").val(),
+                        id : $("#tar").val()
+                    },
+                    success: function(msg) {
+                        bootbox.dialog ({
+                            id: "dlgCreartarea",
+                            title: "Editar Tarea",
+//                        class: "modal-lg",
+                            message: msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar : {
+                                    label     : "Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        if($("#creacionTarea").val()){
+                                            $.ajax({
+                                                type: "POST",
+                                                url     : "${createLink(controller: 'asignacion', action:'guardarTarea_ajax')}",
+                                                data    : {
+                                                    actividad: $("#act").val(),
+                                                    desc: $("#creacionTarea").val(),
+                                                    id: $("#tar").val()
+
+                                                },
+                                                success: function(msg) {
+                                                    var parts = msg.split("*");
+                                                    log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
+                                                    if (parts[0] == "SUCCESS") {
+                                                        estadoAnterior();
+                                                        $.ajax({
+                                                            type    : "POST",
+                                                            url     : "${createLink(action:'actividad_ajax',controller: 'asignacion')}",
+                                                            data    : {
+                                                                id   : $("#mac").val(),
+                                                                anio : $("#anio").val()
+
+                                                            },
+                                                            success : function (msg) {
+                                                                $("#tdActividad").html(msg);
+//                                                                $("#tdTarea").html("");
+                                                                $.ajax({
+                                                                    type    : "POST",
+                                                                    url     : "${createLink(action:'tarea_ajax',controller: 'asignacion')}",
+                                                                    data    : {
+                                                                        id   : $("#act").val()
+
+                                                                    },
+                                                                    success : function (msg) {
+                                                                        $("#tdTarea").html(msg);
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+
+                                                    }
+                                                }
+                                            })
+                                        }else{
+                                            log("Ingrese un nombre!", "error")
+                                            return
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    }
+                });
+
+            });
+
+            $("#crearActividad").click(function () {
+                if($("#mac").val() != -1){
+                    $.ajax({
+                        type: "POST",
+                        url     : "${createLink(controller: 'asignacion', action:'actividadCreacion_ajax')}",
+                        data    : {
+                            anio : $("#anio").val(),
+                            objetivo: $("#objetivo").val(),
+                            macro   : $("#mac").val()
+
+                        },
+                        success: function(msg) {
+                            bootbox.dialog ({
+                                id: "dlgCrearActividad",
+                                title: "Crear Actividad",
+//                        class: "modal-lg",
+                                message: msg,
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+                                    guardar : {
+                                        label     : "Guardar",
+                                        className : "btn-success",
+                                        callback  : function () {
+                                            if($("#creacionActividad").val()){
+                                                if($("#metaActividad").val()){
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url     : "${createLink(controller: 'asignacion', action:'guardarActividad_ajax')}",
+                                                        data    : {
+                                                            anio : $("#anio").val(),
+                                                            macro: $("#mac").val(),
+                                                            obj: $("#objetivo").val(),
+                                                            desc: $("#creacionActividad").val(),
+                                                            meta :$("#metaActividad").val()
+                                                        },
+                                                        success: function(msg) {
+                                                            var parts = msg.split("*");
+                                                            log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
+                                                            if (parts[0] == "SUCCESS") {
+                                                                $("#divColor1").removeClass("show").addClass("hide");
+                                                                $("#divColor2").removeClass("show").addClass("hide");
+                                                                $("#anio").prop('disabled', false);
+                                                                $("#mac").prop('disabled',false);
+                                                                $("#objetivo").prop('disabled',false);
+                                                                estadoAnterior();
+                                                                $.ajax({
+                                                                    type    : "POST",
+                                                                    url     : "${createLink(action:'actividad_ajax',controller: 'asignacion')}",
+                                                                    data    : {
+                                                                        id   : $("#mac").val(),
+                                                                        anio : $("#anio").val()
+
+                                                                    },
+                                                                    success : function (msg) {
+                                                                        $("#tdActividad").html(msg);
+
+                                                                        $("#tdTarea").html("");
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    })
+                                                } else{
+                                                    log("Ingrese una meta!", "error");
+                                                    return
+                                                }
+                                            }else{
+                                                log("Ingrese una descripción!", "error");
+                                                return
+                                            }
+
+
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    });
+                }else{
+                    log("Elija una macro actividad!", "error")
+                    return
+                }
+
+            });
+
+
+            $("#crearTarea").click(function () {
+                if($("#act").val() != -1 || $("#act").val() != '-1'){
+                    $.ajax({
+                        type: "POST",
+                        url     : "${createLink(controller: 'asignacion', action:'tareaCreacion_ajax')}",
+                        data    : {
+                            anio : $("#anio").val(),
+                            objetivo: $("#objetivo").val(),
+                            macro   : $("#mac").val(),
+                            acti:   $("#act").val()
+                        },
+                        success: function(msg) {
+                            bootbox.dialog ({
+                                id: "dlgCreartarea",
+                                title: "Crear Tarea",
+//                        class: "modal-lg",
+                                message: msg,
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+                                    guardar : {
+                                        label     : "Guardar",
+                                        className : "btn-success",
+                                        callback  : function () {
+                                            if($("#creacionTarea").val()){
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url     : "${createLink(controller: 'asignacion', action:'guardarTarea_ajax')}",
+                                                    data    : {
+                                                        actividad: $("#act").val(),
+                                                        desc: $("#creacionTarea").val()
+
+                                                    },
+                                                    success: function(msg) {
+                                                        var parts = msg.split("*");
+                                                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error");
+                                                        if (parts[0] == "SUCCESS") {
+                                                            estadoAnterior();
+                                                            $.ajax({
+                                                                type    : "POST",
+                                                                url     : "${createLink(action:'actividad_ajax',controller: 'asignacion')}",
+                                                                data    : {
+                                                                    id   : $("#mac").val(),
+                                                                    anio : $("#anio").val()
+
+                                                                },
+                                                                success : function (msg) {
+                                                                    $("#tdActividad").html(msg);
+//                                                                $("#tdTarea").html("");
+                                                                    $.ajax({
+                                                                        type    : "POST",
+                                                                        url     : "${createLink(action:'tarea_ajax',controller: 'asignacion')}",
+                                                                        data    : {
+                                                                            id   : $("#act").val()
+
+                                                                        },
+                                                                        success : function (msg) {
+                                                                            $("#tdTarea").html(msg);
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+
+                                                        }
+                                                    }
+                                                })
+                                            }else{
+                                                log("Ingrese un nombre!", "error")
+                                                return
+                                            }
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    });
+                }else{
+                    log("Seleccione una actividad!", "error");
+                    return
+                }
+            });
+
+
+            $("#ocultaActv").click(function(){
+                $("#divActividadesTareas").toggleClass("hidden")
+            });
+
+
         </script>
 
     </body>

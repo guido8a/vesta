@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 03/07/15
-  Time: 03:32 PM
---%>
-
+%{--
 <fieldset class="ui-corner-all" style="min-height: 100px;font-size: 11px; align-content: center">
     <legend>
         Actividades y Tareas
@@ -32,15 +26,12 @@
                     <a href="#" id="editarTarea" class="btn btn-success hide" title="Editar Tarea"><i class="fa fa-pencil"></i> Editar Tarea</a>
                 </div>
             </td>
-
         </tr>
     </table>
 </fieldset>
+--}%
 
 <script type="text/javascript">
-
-
-
     $("#editarActividad").click(function () {
         $.ajax({
             type: "POST",
@@ -117,8 +108,6 @@
                                     log("Ingrese una descripción!", "error");
                                     return
                                 }
-
-
                             }
                         }
                     }
@@ -202,8 +191,6 @@
                                     log("Ingrese un nombre!", "error")
                                     return
                                 }
-
-
                             }
                         }
                     }
@@ -378,8 +365,6 @@
                                         log("Ingrese un nombre!", "error")
                                         return
                                     }
-
-
                                 }
                             }
                         }
@@ -392,14 +377,4 @@
         }
 
     });
-
-
-
-
-
-
-
-
-
-
 </script>

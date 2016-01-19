@@ -18,19 +18,17 @@
 
     $("#mac${params.mod}").change(function () {
 
-        $("#divColor1").removeClass("show").addClass("hide");
+//        $("#divColor1").removeClass("show").addClass("hide");
 
         $("#tdActividad${params.mod}").html(spinner);
         <g:if test="${params.copiar == 'S'}">
         cargarActividadesAnio();
         cargarActividadesCopiadas();
-        $("#divColor1").removeClass("show").addClass("hide");
+//        $("#divColor1").removeClass("show").addClass("hide");
         </g:if>
         <g:else>
         <g:if test="${params.asignaciones == 'S'}">
-        cargarActividadesTareas($("#mac").val(), true);
-        /* todo: no funciona en chrome ------------*/
-        $("#divColor1").removeClass("show").addClass("hide");
+//        $("#divColor1").removeClass("show").addClass("hide");
         </g:if>
 //        console.log("-->")
         $.ajax({
