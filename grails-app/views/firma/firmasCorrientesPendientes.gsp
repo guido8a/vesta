@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 19/01/15
-  Time: 12:32 PM
---%>
-
 <%@ page import="vesta.parametros.poaPac.Anio; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -44,6 +37,9 @@
                 </li>
                 <li role="presentation">
                     <a href="#AJSC" class="" role="tab" data-toggle="tab">Firmas solicitud de ajuste de gasto permanente</a>
+                </li>
+                <li role="presentation">
+                    <a href="#RFRM" class="" role="tab" data-toggle="tab">Firmas reformas de gasto permanente</a>
                 </li>
                 <li role="presentation">
                     <a href="#HIST" class="" role="tab" data-toggle="tab">Historial</a>
@@ -162,6 +158,61 @@
                     </g:else>
                 </div>
 
+                <div role="tabpanel" class="tab-pane fade" id="RFRM">
+                    <g:if test="${firmasReformasCorrientes.size() > 0}">
+                        <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th style="width: 250px;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <g:each in="${firmasReformasCorrientes}" var="f">
+                                    <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
+                                        <td>${f.concepto}</td>
+                                        <td style="text-align: center">
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <g:if test="${f.accionVer}">
+                                                %{--<g:if test="${f.esPdf != 'N'}">--}%
+                                                    <g:if test="${f.esPdf == 'S'}">
+                                                        <a href="${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
+                                                           target="_blank" class="btn btn-info" title="Ver">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </g:if>
+                                                    <g:else>
+                                                        <a href="${g.createLink(action: f.accionVer, controller: f.controladorVer, id: f.idAccionVer)}"
+                                                           class="btn btn-info" title="Ver">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </g:else>
+                                                </g:if>
+                                                <a href="#" iden="${f.id}" class="aprobar btn btn-success" title="Firmar">
+                                                    ${imgFirma}
+                                                </a>
+                                                <g:if test="${f.tipoFirma && f.tipoFirma != ''}">
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
+                                                        <i class="fa fa-thumbs-down"></i>
+                                                    </a>
+                                                </g:if>
+                                                <g:else>
+                                                    <a href="#" iden="${f.id}" class="devolver btn btn-danger" title="Devolver">
+                                                        <i class="fa fa-thumbs-down"></i>
+                                                    </a>
+                                                </g:else>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </g:each>
+                            </tbody>
+                        </table>
+                    </g:if>
+                    <g:else>
+                        <div class="alert alert-info" style="width: 450px;margin-top: 20px">No existen firmas de ajustes pendientes</div>
+                    </g:else>
+                </div>
+
                 <div role="tabpanel" class="tab-pane fade" id="HIST">
                     <div class="row">
                         <div class="col-md-1">
@@ -178,8 +229,8 @@
                         </div>
 
                         <div class="col-md-2">
-                            <g:select name="tipo" from="${['': 'Todos', 'AVAL': 'Avales', 'RFRM': 'Reformas', 'AJST': 'Ajustes']}" optionKey="key" optionValue="value"
-                                      class="form-control input-sm"/>
+                            <g:select name="tipo" from="${['': 'Todos', 'AVAL': 'Avales', 'RFRM': 'Reformas', 'AJST': 'Ajustes']}"
+                                      optionKey="key" optionValue="value" class="form-control input-sm"/>
                         </div>
 
                     </div>

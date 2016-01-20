@@ -131,7 +131,7 @@ class DetalleReforma {
             detalleOriginal column: 'dtrfdtrf'
             valorOrigenInicial column: 'dtrfvloi'
             valorDestinoInicial column: 'dtrfvldi'
-            tarea column: 'treadscr'
+            tarea column: 'treadscr'  //alamcena el id de tarea como texto no como objeto
             objetivoGastoCorriente column: 'obgc__id'
             macroActividad column: 'mcac__id'
             tipoReforma column: 'tprf__id'

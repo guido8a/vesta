@@ -1773,7 +1773,7 @@ class AjusteController extends Shield {
         def detalle
         if(params.id){
             reforma = Reforma.findByIdAndTipoAndTipoSolicitud(params.id, "A", "Z")
-            detalle = DetalleReforma.findAllByReforma(reforma)
+            detalle = DetalleReforma.findAllByReforma(reforma, [sort: 'tipoReforma.id', order: 'desc'])
         }
 
         return [actual: actual, proyectos: proyectos, reforma: reforma, detalle: detalle,
@@ -1922,9 +1922,9 @@ class AjusteController extends Shield {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
 
-        def unidadUsuario = UnidadEjecutora.get(session.usuario.unidad.id)
+//        def unidadUsuario = UnidadEjecutora.get(session.usuario.unidad.id)
         def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
-        def gerencias = firmasService.requirentes(unidadUsuario)
+//        def gerencias = firmasService.requirentes(unidadUsuario)
         def detalle = null
 
         if(params.id){

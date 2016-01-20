@@ -78,8 +78,8 @@
                                     <td style="width: 15%">${vesta.poaCorrientes.Tarea.get(detallesNuevos?.tarea).descripcion}</td>
                                 </g:if>
                                 <g:else>
-                                    <td style="width: 16%">${detallesNuevos?.componente?.objeto}</td>
-                                    <td style="width: 15%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                                    <td style="width: 16%">${vesta.poaCorrientes.Tarea.get(detallesNuevos?.tarea).actividad?.descripcion}</td>
+                                    <td style="width: 15%">${vesta.poaCorrientes.Tarea.get(detallesNuevos?.tarea).descripcion}</td>
                                 </g:else>
                                 <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'P'}">
                                     <td style='width:8%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>

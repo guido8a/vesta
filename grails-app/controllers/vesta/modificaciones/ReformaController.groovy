@@ -2730,7 +2730,7 @@ class ReformaController extends Shield {
         def detalle
         if(params.id){
             reforma = Reforma.findByIdAndTipoAndTipoSolicitud(params.id, "R","X")
-            detalle = DetalleReforma.findAllByReforma(reforma)
+            detalle = DetalleReforma.findAllByReforma(reforma, [sort: 'tipoReforma.id', order: 'desc'])
         }
 
         return [personas: personasFirma, actual: actual, proyectos: proyectos, reforma: reforma, detalle: detalle,

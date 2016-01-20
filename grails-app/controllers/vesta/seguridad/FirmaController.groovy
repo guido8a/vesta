@@ -102,6 +102,13 @@ class FirmaController extends Shield {
             order("fecha", "desc")
         }
 
+        def firmasReformasCorrientes = Firma.withCriteria {
+            eq("usuario", session.usuario)
+            eq("estado", "S")
+            eq("tipoFirma", "RFRM")
+            order("fecha", "desc")
+        }
+
         def firmasAvalesCorrientes = Firma.withCriteria {
             eq("usuario", session.usuario)
             eq("estado", "S")
@@ -119,7 +126,8 @@ class FirmaController extends Shield {
         def imgFirma = "<i class='fa fa-pencil'></i>";
 //        def imgFirma = "<img src='${resource(dir: 'images/ico', file: 'feather.png')}' alt='Firmar'/>"
 
-        return [firmasAjustesCorrientes: firmasAjustesCorrientes, firmasAvalesCorrientes: firmasAvalesCorrientes, actual: actual, imgFirma: imgFirma, params: params]
+        return [firmasAjustesCorrientes: firmasAjustesCorrientes, firmasAvalesCorrientes: firmasAvalesCorrientes,
+                firmasReformasCorrientes: firmasReformasCorrientes, actual: actual, imgFirma: imgFirma, params: params]
 
     }
 /**
@@ -127,7 +135,7 @@ class FirmaController extends Shield {
  * @param anio es el anio para mostrar el historial de firmas
  */
     def historialCorrientes = {
-//        println "historial " + params
+        println "historial " + params
         def anio = Anio.get(params.anio).anio
 
         def datos = []
@@ -146,9 +154,9 @@ class FirmaController extends Shield {
                     if (params.tipo && params.tipo != "") {
                         eq("tipoFirma", params.tipo)
                     }
-                    not {
-                        inList("tipoFirma", ["AVAL", "RFRM", "AJST"])
-                    }
+//                    not {
+//                        inList("tipoFirma", ["AVAL", "RFRM", "AJST"])
+//                    }
                 }
                 order("fecha", "desc")
             }
@@ -207,6 +215,7 @@ class FirmaController extends Shield {
         }
 
     }
+
     /**
      * Acción de devolver documento (accionNegar)
      * @param id es el identificador de la firma

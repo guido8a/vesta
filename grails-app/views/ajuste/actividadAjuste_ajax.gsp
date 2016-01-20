@@ -5,7 +5,7 @@
   Time: 11:23 AM
 --%>
 
-<%@ page import="vesta.parametros.poaPac.Fuente; vesta.proyectos.Categoria" %>
+<%@ page import="vesta.parametros.UnidadEjecutora; vesta.parametros.poaPac.Fuente; vesta.proyectos.Categoria" %>
 <%--
   Created by IntelliJ IDEA.
   User: gato
@@ -124,8 +124,12 @@
         </div>
 
         <div class="col-md-4 grupo">
-            <g:select from="${gerencias}" name="responsable" optionKey="id" optionValue="codigo"
-                      class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']" value="${detalle?.responsable?.id}"/>
+            <g:select name="responsable" from="${vesta.parametros.UnidadEjecutora.list([sort: 'nombre'])}"
+                      optionKey="id" value="${detalle?.responsable?.id}"
+                      class="form-control required" noSelection="['': 'Seleccione...']"/>
+
+            %{--<g:select from="${gerencias}" name="responsable" optionKey="id" optionValue="codigo"--}%
+                      %{--class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']" value="${detalle?.responsable?.id}"/>--}%
         </div>
 
     </div>

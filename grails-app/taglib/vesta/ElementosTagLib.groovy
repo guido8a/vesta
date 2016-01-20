@@ -1165,6 +1165,9 @@ class ElementosTagLib {
                     case "X":
                         accion = "nuevaReforma"
                         break;
+                    case "Z":
+                        accion = "nuevoAjuste"
+                        break;
                     case "Q":
                         accion = "nuevaReformaCorriente"
                         break;

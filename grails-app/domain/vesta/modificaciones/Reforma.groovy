@@ -79,6 +79,10 @@ class Reforma {
      * Observaciones del director al momento de devolver
      */
     String observacionesDirector
+    /**
+     * Secuencial (número reforma GP) generado cuando se aprueba (2da firma de aprobacion)
+     */
+    Integer numeroReformaGp = 0
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -114,6 +118,7 @@ class Reforma {
             director column: 'rfrmprdr'
             observacionesDirector column: 'rfrmobdr'
             observacionesDirector type: 'text'
+            numeroReformaGp column: 'rfrmnmgp'
         }
     }
 
