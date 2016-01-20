@@ -1165,7 +1165,6 @@ class Reportes6Controller {
 
         def proyecto = Proyecto.get(params.id)
 
-
         def cn = dbConnectionService.getConnection()
 
         def sql = "select cm.mrlgnmcm, cm.mrlgobjt componente, ac.mrlgnmro num, ac.mrlgobjt actividad,prspnmro, asgnplan, fnte.fntecdgo, fntedscr " +
@@ -1175,10 +1174,7 @@ class Reportes6Controller {
                 " asgn.mrlg__id = ac.mrlg__id and" +
                 " fnte.fnte__id = asgn.fnte__id and prsp.prsp__id = asgn.prsp__id" +
                 " order by cm.mrlgnmcm, ac.mrlgnmro"
-
-
 //        println("sql " + sql)
-
 
         def iniRow = 0
         def iniCol = 1
@@ -1251,7 +1247,7 @@ class Reportes6Controller {
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("101 CANJE DE DEUDA")
+            cellHeader.setCellValue("701 CANJE DE DEUDA")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 5000)
             curCol++
@@ -1338,7 +1334,7 @@ class Reportes6Controller {
                         cellTabla.setCellStyle(styleNumber)
                         curCol++
                     }else{
-                        if(d?.fntecdgo == '101'){
+                        if(d?.fntecdgo == '701'){
                             cellTabla = tableRow.createCell((short) curCol)
                             cellTabla.setCellValue("")
                             cellTabla.setCellStyle(styleNumber)
