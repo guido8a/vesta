@@ -100,7 +100,7 @@
                             ${v?.actividad?.toStringCompleto()}
                         </td>
                         <td>
-                            ${v?.actividad?.responsable?.gerencia?.nombre}
+                            ${v?.actividad?.responsable?.nombre}
                         </td>
                         <td class="text-right">
                             <g:formatNumber number="${v?.valores['priorizado']}" type="currency" currencySymbol=""/>

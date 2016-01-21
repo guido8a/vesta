@@ -115,7 +115,7 @@ class ReportesReformaController {
     def verNuevoAjuste () {
 
         def reforma = Reforma.get(params.id.toString().toLong())
-        def detallesReforma = DetalleReforma.findAllByReforma(reforma)
+        def detallesReforma = DetalleReforma.findAllByReforma(reforma, [sort: 'tipoReforma.id', order: 'desc'],[sort: 'id'])
 
         def uni = firmasService.requirentes(reforma.persona.unidad)
 

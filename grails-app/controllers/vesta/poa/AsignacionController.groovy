@@ -929,24 +929,29 @@ class AsignacionController extends Shield {
      * Acción
      */
     def guardarProgramacion() {
-//        println "guardar prog params " + params
+        println "guardarProgramacion params " + params
         def asig = Asignacion.get(params.asignacion)
         def datos = params.datos.split(";")
         datos.each {
             def partes = it.split(":")
-
-            def prog = ProgramacionAsignacion.findByAsignacionAndMes(asig, Mes.findByNumero(partes[0]))
-            if (!prog) {
+            println "partes: $partes"
+            def prog = ProgramacionAsignacion.findByAsignacionAndMes(asig, Mes.get(partes[0]))
+            println "prog: $prog"
+            if ((!prog) && (partes[1]?:0 > 0)) {
                 prog = new ProgramacionAsignacion()
                 prog.asignacion = asig
-                prog.mes = Mes.findByNumero(partes[0])
+                prog.mes = Mes.get(partes[0])
+                println "crea pras: ${prog.mes}"
+                if (!prog.save(flush: true)) {
+                    println "errors " + prog.errors
+                }
+            } else {
+                prog.valor = partes[1]?.toDouble()
+                println "actualiza prog a ${partes[1]}"
+                if (!prog.save(flush: true)) {
+                    println "errors " + prog.errors
+                }
             }
-            prog.valor = partes[1].toDouble()
-            if (!prog.save(flush: true)) {
-                println "errors " + prog.errors
-            }
-
-
         }
         render "ok"
     }

@@ -130,7 +130,7 @@ class Reportes6Controller {
                 curCol++
 
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(v?.actividad?.responsable?.gerencia?.nombre)
+                tableCell.setCellValue(v?.actividad?.responsable?.nombre)
                 tableCell.setCellStyle(styleTabla)
                 curCol++
 

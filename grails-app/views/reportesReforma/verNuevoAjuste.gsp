@@ -1,17 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 29/12/15
-  Time: 12:12 PM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 16/12/15
-  Time: 11:03 AM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -77,9 +63,9 @@
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'O' && detallesNuevos?.solicitado != 'R'}">
                             <tr>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
-                                <td style="width: 16%">${detallesNuevos?.componente?.objeto}</td>
-                                <td style="width: 15%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
-                                <td style="width: 8%; text-align: center">${detallesNuevos?.asignacionOrigen?.presupuesto?.numero}</td>
+                                <td style="width: 12%">${detallesNuevos?.componente?.objeto}</td>
+                                <td style="width: 22%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                                <td style="width: 6%; text-align: center">${detallesNuevos?.asignacionOrigen?.presupuesto?.numero}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
                                 <td style="width: 8%; text-align: right"><g:formatNumber number="${detallesNuevos?.valorOrigenInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                                 <td style="width: 9%; text-align: right;"><g:formatNumber number="${detallesNuevos?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -93,16 +79,16 @@
                             <tr>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'P'}">
-                                    <td style="width: 16%">${detallesNuevos?.componente?.marcoLogico?.objeto}</td>
-                                    <td style="width: 15%">${detallesNuevos?.componente?.objeto}</td>
+                                    <td style="width: 12%">detallesNuevos?.componente?.marcoLogico?.objeto}</td>
+                                    <td style="width: 22%">${detallesNuevos?.componente?.numero} - ${detallesNuevos?.componente?.objeto}</td>
                                 </g:if>
                                 <g:else>
-                                    <td style="width: 16%">${detallesNuevos?.componente?.objeto}</td>
-                                    <td style="width: 15%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                                    <td style="width: 12%">${detallesNuevos?.componente?.objeto}</td>
+                                    <td style="width: 22%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
                                 </g:else>
 
                                 <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'P'}">
-                                    <td style='width:8%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
+                                    <td style='width:6%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
                                 </g:if>
                                 <g:else>
                                     <td style='width:8%; text-align: center'>${detallesNuevos?.asignacionOrigen?.presupuesto?.numero}</td>
@@ -119,9 +105,9 @@
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'A'}" >
                             <tr>
                                 <td style='width:15%'>${detallesNuevos?.componente?.proyecto?.nombre}</td>
-                                <td style='width:16%'>${detallesNuevos?.componente?.objeto}</td>
-                                <td style='width:15%'>${detallesNuevos?.descripcionNuevaActividad}</td>
-                                <td style='width:8%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
+                                <td style='width:12%'>${detallesNuevos?.componente?.objeto}</td>
+                                <td style='width:22%'>${detallesNuevos?.descripcionNuevaActividad}</td>
+                                <td style='width:6%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
                                 <td style='width:8%; text-align: center'>${' --- '}</td>
                                 <td style='width:9%; text-align: center'>${' --- '}</td>
@@ -134,9 +120,9 @@
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'N'}">
                             <tr>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
-                                    <td style="width: 16%">${detallesNuevos?.componente?.marcoLogico?.objeto}</td>
-                                    <td style="width: 15%">${detallesNuevos?.componente?.objeto}</td>
-                                    <td style='width:8%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
+                                <td style="width: 12%">${detallesNuevos?.componente?.marcoLogico?.objeto}</td>
+                                <td style="width: 22%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.componente?.objeto}</td>
+                                <td style='width:6%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
                                 <td style='width:8%; text-align: right'><g:formatNumber number="${detallesNuevos?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                                 <td style='width:9%; text-align: center'>${' --- '}</td>
