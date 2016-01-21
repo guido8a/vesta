@@ -570,7 +570,7 @@ class Reportes6Controller {
                     curCol++
 
                     tableCell = tableRow.createCell(curCol)
-                    tableCell.setCellValue(asignacion.marcoLogico.responsable.gerencia.nombre)
+                    tableCell.setCellValue(asignacion.marcoLogico.responsable.nombre)
                     tableCell.setCellStyle(styleTabla)
                     curCol++
 

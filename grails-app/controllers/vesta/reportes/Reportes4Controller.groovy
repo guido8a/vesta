@@ -18,6 +18,7 @@ import vesta.proyectos.MetaBuenVivirProyecto
 import vesta.proyectos.Proyecto
 
 class Reportes4Controller {
+
     def proformaEgresosNoPermanentesXlsx() {
         def fuente = Fuente.get(params.fnt.toLong())
         def datos = proformaEgresosNoPermanentes_funcion(fuente)
@@ -685,7 +686,7 @@ class Reportes4Controller {
                     curCol++
 
                     tableCell = tableRow.createCell(curCol)
-                    tableCell.setCellValue(asignacion.marcoLogico.responsable.gerencia.nombre)
+                    tableCell.setCellValue(asignacion.marcoLogico.responsable.nombre) // Responsable
                     tableCell.setCellStyle(styleTabla)
                     curCol++
 
