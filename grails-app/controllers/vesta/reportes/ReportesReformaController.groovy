@@ -113,6 +113,7 @@ class ReportesReformaController {
      * Acción que muestra el pdf de nuevo ajuste
      */
     def verNuevoAjuste () {
+        println "......verNuevoAjuste+++ "
 
         def reforma = Reforma.get(params.id.toString().toLong())
         def detallesReforma = DetalleReforma.findAllByReforma(reforma, [sort: 'tipoReforma.id', order: 'desc'],[sort: 'id'])

@@ -37,7 +37,7 @@
                 <elm:tipoReforma reforma="${reforma}"/>
             </li>
             <li>
-                <strong>Matriz de la ${reforma.tipoString}:</strong>
+                <strong>Matriz de ${reforma.tipoString}:</strong>
 
                 <g:set var="totalOrigen" value="${0}"/>
                 <g:set var="disminucion" value="${0}"/>
@@ -47,15 +47,15 @@
                 <table class="table table-hover table-condensed table-hover table-bordered">
                     <thead>
                     <tr>
-                        <th>Proyecto</th>
-                        <th>Componente</th>
-                        <th>Actividad</th>
-                        <th>Partida</th>
-                        <th>Responsable</th>
-                        <th>Valor inicial<br/>USD</th>
-                        <th>Disminución<br/>USD</th>
-                        <th>Aumento<br/>USD</th>
-                        <th>Valor final<br/>USD</th>
+                        <th style="width: 15%">Proyecto</th>
+                        <th style="width: 12%">Componente</th>
+                        <th style="width: 25%">Actividad</th>
+                        <th style="width: 6%">Partida</th>
+                        <th style="width: 8%">Responsable</th>
+                        <th style="width: 8%">Valor inicial<br/>USD</th>
+                        <th style="width: 9%">Disminución<br/>USD</th>
+                        <th style="width: 9%">Aumento<br/>USD</th>
+                        <th style="width: 8%">Valor final<br/>USD</th>
                     </tr>
                     </thead>
                     <tbody class="tb">
@@ -64,7 +64,7 @@
                             <tr>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style="width: 12%">${detallesNuevos?.componente?.objeto}</td>
-                                <td style="width: 22%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                                <td style="width: 25%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
                                 <td style="width: 6%; text-align: center">${detallesNuevos?.asignacionOrigen?.presupuesto?.numero}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
                                 <td style="width: 8%; text-align: right"><g:formatNumber number="${detallesNuevos?.valorOrigenInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -79,12 +79,12 @@
                             <tr>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'P'}">
-                                    <td style="width: 12%">detallesNuevos?.componente?.marcoLogico?.objeto}</td>
+                                    <td style="width: 12%">${detallesNuevos?.componente?.marcoLogico?.objeto}</td>
                                     <td style="width: 22%">${detallesNuevos?.componente?.numero} - ${detallesNuevos?.componente?.objeto}</td>
                                 </g:if>
                                 <g:else>
                                     <td style="width: 12%">${detallesNuevos?.componente?.objeto}</td>
-                                    <td style="width: 22%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                                    <td style="width: 25%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
                                 </g:else>
 
                                 <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'P'}">
@@ -106,7 +106,7 @@
                             <tr>
                                 <td style='width:15%'>${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style='width:12%'>${detallesNuevos?.componente?.objeto}</td>
-                                <td style='width:22%'>${detallesNuevos?.descripcionNuevaActividad}</td>
+                                <td style='width:25%'>${detallesNuevos?.descripcionNuevaActividad}</td>
                                 <td style='width:6%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
                                 <td style='width:8%; text-align: center'>${' --- '}</td>
@@ -121,7 +121,7 @@
                             <tr>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style="width: 12%">${detallesNuevos?.componente?.marcoLogico?.objeto}</td>
-                                <td style="width: 22%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.componente?.objeto}</td>
+                                <td style="width: 25%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.componente?.objeto}</td>
                                 <td style='width:6%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
                                 <td style='width:8%; text-align: right'><g:formatNumber number="${detallesNuevos?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
