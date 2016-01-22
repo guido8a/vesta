@@ -424,5 +424,27 @@ class MarcoLogicoController extends Shield {
         [componentes:comps,resp:resp]
         
     }
-    
+
+    /**
+     * cambiar el número d ela actividad
+     */
+    def cambiaNumero_ajax() {
+        println "cambiaNumero_ajax: " + params
+        def marcoLogicoInstance = new MarcoLogico()
+        def totComp = 0
+        def totFin = 0
+        def totOtros = 0
+        if (params.id) {
+            marcoLogicoInstance = MarcoLogico.get(params.id)
+            if (!marcoLogicoInstance) {
+                render "ERROR*No se encontró Actividad."
+                return
+            }
+        }
+
+        return [marcoLogicoInstance: marcoLogicoInstance, show: params.show ]
+    }
+
+
+
 }

@@ -1773,7 +1773,7 @@ class AjusteController extends Shield {
         def detalle
         if(params.id){
             reforma = Reforma.findByIdAndTipoAndTipoSolicitud(params.id, "A", "Z")
-            detalle = DetalleReforma.findAllByReforma(reforma, [sort: 'tipoReforma.id', order: 'desc'],[sort: 'id'])
+            detalle = DetalleReforma.findAllByReforma(reforma, [sort: 'tipoReforma.id', order: 'desc'],[sort: 'id', order: 'desc'])
         }
 
         return [actual: actual, proyectos: proyectos, reforma: reforma, detalle: detalle,

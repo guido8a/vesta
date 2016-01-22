@@ -183,7 +183,8 @@ class ModificacionesPoaController extends Shield {
 //        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
         def anio = Anio.get(params.anio)
 //        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
-        def comps = UnidadEjecutora.get(session.unidad.id).getComponentesUnidadProyecto(anio, proyecto, session.perfil.codigo.toString())
+//        def comps = UnidadEjecutora.get(session.unidad.id).getComponentesUnidadProyecto(anio, proyecto, session.perfil.codigo.toString())
+        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2), [sort:  'numeroComp'])
         [comps: comps, idCombo: params.idCombo, div: params.div]
     }
 

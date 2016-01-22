@@ -26,7 +26,7 @@
             <i class="fa fa-list"></i> Lista de proyectos
         </g:link>
     </div>
-    <g:if test="${editable}">
+    <g:if test="${editable || (session.perfil.codigo == 'ASPL')}">
         <div class="btn-group">
             <a href="#" class="btn btn-sm btn-success" id="btnAddComp" title="Agregar componente"
                data-show="${componentes.size()}">
@@ -467,19 +467,123 @@
             createEditActividad($(this).data("show"), $(this).data("id"));
             return false;
         });
-//                $(".btnEditAct").click(function () {
-//                    createEditActividad($(this).data("show"), null, $(this).data("id"));
-//                    return false;
-//                });
-//                $(".btnDeleteAct").click(function () {
-//                    deleteMarcoLogico($(this).data("id"), $(this).data("info"), "act");
-//                    return false;
-//                });
     });
 </script>
 </g:if>
 <g:else>
     <script type="text/javascript">
+
+        $("#btnAddComp").click(function () {
+            createEditComponente($(this).data("show"));
+            return false;
+        });
+
+        function submitFormComponente(show) {
+            var $form = $("#frmComponente");
+            var $btn = $("#dlgCreateEditComponente").find("#btnSave");
+            if ($form.valid()) {
+                $btn.replaceWith(spinner);
+                openLoader("Guardando Componente");
+                $.ajax({
+                    type    : "POST",
+                    url     : $form.attr("action"),
+                    data    : $form.serialize(),
+                    success : function (msg) {
+                        var parts = msg.split("*");
+                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                        setTimeout(function () {
+                            if (parts[0] == "SUCCESS") {
+                                location.href = "${createLink(controller: 'marcoLogico', action: 'marcoLogicoProyecto', id:proyecto.id, params:reqParams)}&show=" + show;
+                            } else {
+                                spinner.replaceWith($btn);
+                                return false;
+                            }
+                        }, 1000);
+                    }
+                });
+            } else {
+                return false;
+            } //else
+        }
+
+        function createEditComponente(show, id) {
+            var title = id ? "Editar" : "Crear";
+            var data = id ? {id : id} : {};
+            data.proyecto = "${proyecto.id}";
+            data.tipoElemento = '${TipoElemento.findByDescripcion("Componente").id}';
+            data.show = show;
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(controller:'marcoLogico', action:'form_componente_ajax')}",
+                data    : data,
+                success : function (msg) {
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEditComponente",
+                        title   : title + " Componente",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitFormComponente(show);
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                    setTimeout(function () {
+                        b.find(".form-control").first().focus()
+                    }, 500);
+                } //success
+            }); //ajax
+        } //createEdit
+
+        function numeroActividad(show, dscr, id) {
+            var title = id ? "Editar" : "Crear";
+            var data = id ? {id : id} : {};
+            data.proyecto = "${proyecto.id}";
+            data.tipoElemento = '${TipoElemento.findByDescripcion("Actividad").id}';
+            data.show = show;
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(controller:'marcoLogico', action:'cambiaNumero_ajax')}",
+                data    : data,
+                success : function (msg) {
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEditActividad",
+                        title   : "Cambia el número de la actividad:<p>" + dscr + "</p>",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitFormActividad(show);
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                    setTimeout(function () {
+                        b.find(".form-control").first().focus()
+                    }, 500);
+                } //success
+            }); //ajax
+        }
+
         $(function () {
             $("tbody>tr").contextMenu({
                 items  : {
@@ -487,8 +591,18 @@
                         label  : "Acciones",
                         header : true
                     },
+                    editar     : {
+                        label  : "Cambiar número",
+                        icon   : "fa fa-pencil",
+                        action : function ($element) {
+                            var id = $element.data("id");
+                            var dscr = $element.data("info");
+                            var show = $element.data("show");
+                            numeroActividad(show, dscr, id);
+                        }
+                    },
                     cronograma : {
-                        label  : "Cronograma",
+                        label  : "Cronogramacc",
                         icon   : "fa fa-calendar",
                         action : function ($element) {
                             var id = $element.data("id");
