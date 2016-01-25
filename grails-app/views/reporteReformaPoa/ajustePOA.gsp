@@ -190,7 +190,7 @@
                     <th width="25%"></th>
                     <th width="25%">
                         <g:if test="${firma1}">
-                            Aprobado por
+                            Revisado por
                         </g:if>
                     </th>
                     <th width="25%">

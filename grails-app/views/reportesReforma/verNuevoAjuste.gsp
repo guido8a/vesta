@@ -173,14 +173,14 @@
             <table width="100%" style="margin-top: 0.5cm; border: none" border="none">
                 <tr>
                     <g:if test="${reforma.firma1?.estado == 'F' && reforma.firma2?.estado == 'F'}">
-                        <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
+                        <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
                         <td width="25%" style="border: none"></td>
                         <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
                         <td width="25%" style="border: none"></td>
                     </g:if>
 
                     <g:if test="${reforma.firma1?.estado == 'F' && reforma.firma2?.estado != 'F'}">
-                        <td width="25%" style="text-align: center; border: none"><b>Aprobado por:</b></td>
+                        <td width="25%" style="text-align: center; border: none"><b>Revisado por:</b></td>
                         <td width="25%" style="border: none"></td>
                         <td width="25%" style="border: none"></td>
                         <td width="25%" style="border: none"></td>
