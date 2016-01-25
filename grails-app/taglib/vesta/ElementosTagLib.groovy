@@ -1016,8 +1016,12 @@ class ElementosTagLib {
                 title = "Previsualizar"
                 clase = "btn-info"
             } else {
-                if (reforma?.estado?.codigo == 'E02') {
-                    if(reforma?.tipoSolicitud != 'X'){
+                if (reforma?.estado?.codigo == 'E02') {    //aprobado
+                    if(reforma.tipoSolicitud == 'Z') {
+                        accion2 = accion
+                        title2 = "Ajuste"
+                        clase2 = "btn-success"
+                    } else if(reforma?.tipoSolicitud != 'X'){
                         accion2 = accion + "Reforma"
                         if (reforma?.tipo == 'C') {
                             fileName += "_corriente"
@@ -1079,6 +1083,8 @@ class ElementosTagLib {
             str += "class='btn ${clase} btnVer' title='${title}'>"
             str += "<i class='fa fa-search'></i> ${label ? title : ''}"
             str += "</a>"
+
+            println "primer parte: $str"
 
             if (accion2 != "") {
                 str += "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: controlador, action: accion2, id: reforma?.id)}&filename=${fileName2}\""
