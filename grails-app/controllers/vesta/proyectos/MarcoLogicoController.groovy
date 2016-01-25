@@ -429,7 +429,7 @@ class MarcoLogicoController extends Shield {
      * cambiar el número d ela actividad
      */
     def cambiaNumero_ajax() {
-        println "cambiaNumero_ajax: " + params
+//        println "cambiaNumero_ajax: " + params
         def marcoLogicoInstance = new MarcoLogico()
         def totComp = 0
         def totFin = 0
@@ -445,6 +445,13 @@ class MarcoLogicoController extends Shield {
         return [marcoLogicoInstance: marcoLogicoInstance, show: params.show ]
     }
 
-
+    def cambiaNumeroActividad() {
+//        println "params .... $params"
+        def mrlg = MarcoLogico.get(params.id)
+        mrlg.numero = params.numero.toInteger()
+        mrlg.save(flush: true)
+        params.id = mrlg.proyecto.id
+        render "SUCCESS*"
+    }
 
 }

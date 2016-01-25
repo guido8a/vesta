@@ -572,7 +572,7 @@
                                 label     : "<i class='fa fa-save'></i> Guardar",
                                 className : "btn-success",
                                 callback  : function () {
-                                    return submitFormActividad(show);
+                                    return submitFormNumero(show);
                                 } //callback
                             } //guardar
                         } //buttons
@@ -583,6 +583,39 @@
                 } //success
             }); //ajax
         }
+
+        function submitFormNumero(show) {
+            var $form = $("#frmaActividad");
+            var $btn = $("#dlgCreateEditActividad").find("#btnSave");
+            if ($form.valid()) {
+                $btn.replaceWith(spinner);
+                openLoader("Guardando Actividad");
+                $.ajax({
+                    type    : "POST",
+                    url     : $form.attr("action"),
+                    data    : $form.serialize(),
+                    success : function (msg) {
+                        var parts = msg.split("*");
+                        log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
+                        setTimeout(function () {
+                            if (parts[0] == "SUCCESS") {
+                                location.href = "${createLink(controller: 'marcoLogico', action: 'marcoLogicoProyecto', id:proyecto.id, params:reqParams)}";
+                            } else {
+                                closeLoader();
+                                spinner.replaceWith($btn);
+                                return false;
+                            }
+                        }, 1000);
+                    },
+                    error   : function () {
+                        log("Ha ocurrido un error interno", "error");
+                    }
+                });
+            } else {
+                return false;
+            } //else
+        }
+
 
         $(function () {
             $("tbody>tr").contextMenu({

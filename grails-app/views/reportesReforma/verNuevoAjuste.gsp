@@ -104,9 +104,18 @@
                         </g:if>
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'A'}" >
                             <tr>
+                                <g:set var="nuevaActv" value="${vesta.proyectos.MarcoLogico.findByObjeto(detallesNuevos?.descripcionNuevaActividad)?.numero}"/>
+                                <g:if test="${nuevaActv}">
+                                    <g:set var="nuevaActvStr" value="${nuevaActv} - "/>
+                                </g:if>
+                                <g:else>
+                                    <g:set var="nuevaActvStr" value="S/N - "/>
+                                </g:else>
+
                                 <td style='width:15%'>${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style='width:12%'>${detallesNuevos?.componente?.objeto}</td>
-                                <td style='width:25%'>${detallesNuevos?.descripcionNuevaActividad}</td>
+                                %{--<td style='width:25%'>${vesta.proyectos.MarcoLogico.findByObjeto(detallesNuevos?.descripcionNuevaActividad)?.numero} - ${detallesNuevos?.descripcionNuevaActividad}</td>--}%
+                                <td style='width:25%'>${nuevaActvStr}${detallesNuevos?.descripcionNuevaActividad}</td>
                                 <td style='width:6%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
                                 <td style='width:8%; text-align: center'>${' --- '}</td>
