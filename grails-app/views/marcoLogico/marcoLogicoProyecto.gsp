@@ -635,7 +635,7 @@
                         }
                     },
                     cronograma : {
-                        label  : "Cronogramacc",
+                        label  : "Cronograma",
                         icon   : "fa fa-calendar",
                         action : function ($element) {
                             var id = $element.data("id");
