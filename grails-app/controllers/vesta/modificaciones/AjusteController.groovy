@@ -1480,14 +1480,9 @@ class AjusteController extends Shield {
                 def detalles = DetalleReforma.findAllByReforma(reforma)
 
                detalles.each { d->
-
-
                    switch (d?.tipoReforma?.codigo){
-                       case "O":
-                           //asignacion origen
-
-                           println("entro origen")
-
+                       case "O":  //asignacion origen
+//                           println("entro origen")
                            def modificacionOrigen = new ModificacionAsignacion()
                            modificacionOrigen.usuario = usu
                            modificacionOrigen.desde = d?.asignacionOrigen
@@ -1509,13 +1504,10 @@ class AjusteController extends Shield {
                                    errores += renderErrors(bean: asig)
                                }
                            }
-
                            break;
-                       case "E":
-                           //incremento
 
-                           println("entro incremento")
-
+                       case "E":  //incremento
+//                           println("entro incremento")
                            def modificacionIncremento = new ModificacionAsignacion()
                            modificacionIncremento.usuario = usu
                            modificacionIncremento.recibe = d?.asignacionOrigen
@@ -1536,15 +1528,10 @@ class AjusteController extends Shield {
                                    errores += renderErrors(bean: asigDestino)
                                }
                            }
-
                            break;
-                       case "A":
 
-                           //creacion actividad
-
-
-                           println("entro actividad")
-
+                       case "A": //creacion actividad
+//                           println("entro actividad")
                            def ultimoNumAct = MarcoLogico.withCriteria {
                                projections {
                                    max "numero"
@@ -1566,10 +1553,9 @@ class AjusteController extends Shield {
                            nuevaActividad.categoria = d?.categoria
                            nuevaActividad.fechaInicio = d?.fechaInicioNuevaActividad
                            nuevaActividad.fechaFin = d?.fechaFinNuevaActividad
-                           nuevaActividad.responsable = reforma.persona.unidad
+                           nuevaActividad.responsable = detalles.responsable
                            nuevaActividad.numero = numAct
                            nuevaActividad.reforma = reforma
-
 
                            if (!nuevaActividad.save(flush: true)) {
                                println "error al guardar la actividad A " + nuevaActividad.errors
@@ -1605,16 +1591,11 @@ class AjusteController extends Shield {
 //                                        render "ok"
                                    }
                                }
-
                            }
-
                            break;
-                       case "P":
 
-                           //partida - priorizado original en 0, valor ingresado en priorizado, no tiene padre
-
-                           println("entro partida")
-
+                       case "P": //partida - priorizado original en 0, valor ingresado en priorizado, no tiene padre
+//                           println("entro partida")
                            def nuevaPartida = new Asignacion()
                            nuevaPartida.anio = reforma.anio
                            nuevaPartida.fuente = d?.fuente
@@ -1648,12 +1629,8 @@ class AjusteController extends Shield {
                            }
                            break;
 
-                       case "N":
-
-                           //partida - priorizado original en 0, valor ingresado en priorizado, no tiene padre
-
-                           println("entro techo")
-
+                       case "N": //partida - priorizado original en 0, valor ingresado en priorizado, no tiene padre
+//                           println("entro techo")
                            def nuevaPartida = new Asignacion()
                            nuevaPartida.anio = reforma.anio
                            nuevaPartida.fuente = d?.fuente
@@ -1667,8 +1644,7 @@ class AjusteController extends Shield {
                                println "error al guardar la nueva partida   " + nuevaPartida.errors
                                errores += renderErrors(bean: nuevaPartida)
                                nuevaPartida = null
-                           }else{
-
+                           } else {
                                def modificacionPartida = new ModificacionAsignacion()
                                modificacionPartida.usuario = usu
                                modificacionPartida.recibe = nuevaPartida
@@ -1783,9 +1759,7 @@ class AjusteController extends Shield {
 
 
     def guardarNuevoAjuste () {
-
 //        println("params nr " + params)
-
         def anio = Anio.get(params.anio)
         def estadoAval = EstadoAval.findByCodigo("P01")
         def usuario = Persona.get(session.usuario.id)
@@ -1793,9 +1767,6 @@ class AjusteController extends Shield {
         def reforma
 
         if(!params.id){
-            //crear!!!!!!!!!!
-//            println("entro a")
-
             reforma = new Reforma()
             reforma.anio = anio
             reforma.concepto = params.texto
@@ -1810,11 +1781,11 @@ class AjusteController extends Shield {
             if(!reforma.save(flush: true)){
                 println("error al guardar el nuevo ajuste " + errors)
                 render "no"
-            }else{
+            } else {
                 render "ok_${reforma.id}"
             }
 
-        }else{
+        } else {
             //editar
 //            println("entro b")
 
@@ -1836,11 +1807,7 @@ class AjusteController extends Shield {
                 render "ok_${reforma.id}"
             }
         }
-
-
     }
-
-
 
     def asignacionOrigenAjuste_ajax () {
 

@@ -92,6 +92,8 @@ class ProyectoController extends Shield {
      * @return proyectoInstanceList: la lista de elementos filtrados, proyectoInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
+        println "proyectos list $params"
+        params.max = Math.max(params.max.toInteger(), 15)
         def proyectoInstanceList = getList(params, false)
         def proyectoInstanceCount = getList(params, true).size()
 
