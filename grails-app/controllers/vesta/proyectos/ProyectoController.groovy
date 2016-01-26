@@ -93,6 +93,7 @@ class ProyectoController extends Shield {
      */
     def list() {
         println "proyectos list $params"
+        params.max = params.max?:10
         params.max = Math.max(params.max.toInteger(), 15)
         def proyectoInstanceList = getList(params, false)
         def proyectoInstanceCount = getList(params, true).size()
