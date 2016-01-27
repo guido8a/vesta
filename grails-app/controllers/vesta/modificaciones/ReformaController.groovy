@@ -1,5 +1,6 @@
 package vesta.modificaciones
 
+import vesta.ProyectosService
 import vesta.alertas.Alerta
 import vesta.avales.EstadoAval
 import vesta.parametros.TipoElemento
@@ -2744,6 +2745,8 @@ class ReformaController extends Shield {
         def actual = params.anio ? Anio.get(params.anio) : Anio.findByAnio(new Date().format("yyyy"))
 
         def  proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+//        def  proyectos3 = Proyecto.findAllByAprobadoIlike('a')
+        println "proyectos3: $proyectos3"
 
         def detalle = null
 

@@ -1,21 +1,30 @@
 <%@ page import="vesta.poa.Asignacion" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 03/12/15
+  Time: 11:47 AM
+--%>
+
 %{--//origen--}%
 <form id="frmAsignacion">
-<div class="row">
-    <div class="col-md-2">
-        <label>Objetivo del gasto permanente:</label>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Proyecto: </label>
+        </div>
+        <div  class="col-md-8">
+            <g:select from="${proyectos}" optionKey="id" optionValue="nombre" name="proyecto" class="form-control input-sm required requiredCombo"
+                      noSelection="['-1': 'Seleccione...']"/>
+
+        </div>
     </div>
-    <div  class="col-md-8">
-        <g:select from="${objetivos}" optionKey="id" optionValue="descripcion" name="objetivo" class="form-control input-sm required requiredCombo"
-                  noSelection="['-1': 'Seleccione...']"/>
-    </div>
-</div>
 
     <div class="row">
         <div class="col-md-2">
-            <label>Macro Actividad:</label>
+            <label>Componente:</label>
         </div>
         <div  class="col-md-8" id="divComp">
+
         </div>
     </div>
 
@@ -24,14 +33,7 @@
             <label>Actividad:</label>
         </div>
         <div  class="col-md-8" id="divAct">
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-2">
-            <label>Tarea:</label>
-        </div>
-        <div  class="col-md-5" id="divTarea">
         </div>
     </div>
 
@@ -40,41 +42,45 @@
             <label>Asignación:</label>
         </div>
         <div  class="col-md-5" id="divAsg">
+
         </div>
     </div>
 
-<div class="row">
-    <div class="col-md-2">
-        <label>Monto:</label>
-    </div>
-    <div  class="col-md-5">
-         <div class="input-group">
-        <g:textField type="text" name="monto" style="float: right" class="form-control required input-sm number money" value="${detalle?.valor}"/>
-        <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Monto:</label>
+        </div>
+
+        <div  class="col-md-5">
+            <div class="input-group">
+                <g:textField type="text" name="monto" style="float: right" class="form-control required input-sm number money" value="${detalle?.valor}"/>
+                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <label>Saldo:</label>
+        </div>
+
+        <div id="max">
+
         </div>
     </div>
-
-    <div class="col-md-2">
-        <label>Saldo:</label>
-    </div>
-    <div id="max">
-    </div>
-</div>
 </form>
 
 <script type="text/javascript">
 
-    $("#objetivo").change(function () {
+    $("#proyecto").change(function () {
         $("#divComp").html(spinner);
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller: 'reformaPermanente', action:'macro_ajax')}",
+            url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste_ajax')}",
             data    : {
-                objetivo   : $("#objetivo").val(),
+                id   : $("#proyecto").val(),
                 anio : $("#anio").val()
             },
             success : function (msg) {
-                $("#divMacro").html(msg);
+                $("#divComp").html(msg);
                 $("#divAct").html("");
                 $("#divAsg").html("");
             }
@@ -82,16 +88,13 @@
     });
 
     <g:if test="${detalle}">
-    $("#objetivo").val("${detalle?.objetivoGastoCorriente?.id}").change();
+    $("#proyecto").val("${detalle?.componente?.proyecto?.id}").change();
     setTimeout(function () {
-        $("#mac").val("${detalle?.macroActividad?.id}").change();
+        $("#comp").val("${detalle?.componente?.id}").change();
         setTimeout(function () {
-            $("#act").val("${vesta.poaCorrientes.Tarea.get(detalle?.tarea).actividad.id}").change();
+            $("#actividadRf").val("${ detalle?.asignacionOrigen?.marcoLogicoId}").change();
             setTimeout(function () {
-                $("#tar").val("${vesta.poaCorrientes.Tarea.get(detalle?.tarea).id}").change();
-                setTimeout(function () {
-                    $("#asg").val("${detalle?.asignacionOrigenId}").change();
-                }, 500);
+                $("#asignacion").val("${detalle?.asignacionOrigenId}").change();
             }, 500);
         }, 500);
     }, 500);
@@ -131,22 +134,22 @@
     }
 
 
-        $("#frmAsignacion").validate({
-            errorClass: "help-block",
-            onfocusout: false,
-            errorPlacement: function (error, element) {
-                if (element.parent().hasClass("input-group")) {
-                    error.insertAfter(element.parent());
-                } else {
-                    error.insertAfter(element);
-                }
-                element.parents(".grupo").addClass('has-error');
-            },
-            success: function (label) {
-                label.parents(".grupo").removeClass('has-error');
-                label.remove();
+    $("#frmAsignacion").validate({
+        errorClass: "help-block",
+        onfocusout: false,
+        errorPlacement: function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
             }
-        });
+            element.parents(".grupo").addClass('has-error');
+        },
+        success: function (label) {
+            label.parents(".grupo").removeClass('has-error');
+            label.remove();
+        }
+    });
 
 
 
