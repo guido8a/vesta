@@ -790,7 +790,8 @@ class ReformaPermanenteController extends  Shield{
             def reforma = Reforma.findByFirmaSolicitud(firma)
             def estadoSolicitado = EstadoAval.findByCodigo("E01")
 
-            def num = reforma.persona.unidad.gerencia.siguienteNumeroSolicitudReformaGp
+//            def num = reforma.persona.unidad.gerencia.siguienteNumeroSolicitudReformaGp
+            def num = firmasService.requirentes(reforma.persona.unidad).siguienteNumeroSolicitudReformaGp
 
             reforma.numero = num
             reforma.estado = estadoSolicitado

@@ -1919,8 +1919,9 @@ class ReformaController extends Shield {
             def reforma = Reforma.findByFirmaSolicitud(firma)
             def estadoSolicitado = EstadoAval.findByCodigo("E01")
 
-//            def unidades = proyectosService.getUnidadYGerencia(reforma.persona.unidad)
-            def num = reforma.persona.unidad.gerencia.siguienteNumeroSolicitudReforma
+            // debe identificar la gerencia del requienre y pedir número
+//            def num = reforma.persona.unidad.gerencia.siguienteNumeroSolicitudReforma
+            def num = firmasService.requirentes(reforma.persona.unidad).siguienteNumeroSolicitudReforma
 
             reforma.numero = num
             reforma.estado = estadoSolicitado
