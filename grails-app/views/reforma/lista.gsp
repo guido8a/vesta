@@ -58,7 +58,7 @@
             <th style="width: 80px;">Monto</th>
             <th style="width: 200px">Tipo</th>
             <th style="width: 105px;">Estado</th>
-            <th style="width: 90px;">Acciones</th>
+            <th style="width: 90px;">Documentos</th>
         </tr>
         </thead>
     </table>

@@ -58,6 +58,7 @@
                 <table class="table table-condensed table-bordered">
                     <thead>
                         <tr>
+                            <th>Proyecto</th>
                             <th>Proceso</th>
                             <th>Justificación</th>
                             <th>Monto</th>
@@ -68,6 +69,7 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td>${solicitud.proceso.proyecto.nombre}</td>
                             <td>${solicitud.proceso.nombre}</td>
                             <td>${solicitud.concepto}</td>
                             <td class="text-right">

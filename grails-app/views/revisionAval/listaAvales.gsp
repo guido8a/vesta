@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 14/01/15
-  Time: 12:15 PM
---%>
-
 <%@ page import="vesta.parametros.UnidadEjecutora; vesta.parametros.poaPac.Anio; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -32,7 +25,7 @@
 
                 <div class="form-group">
                     <label for="descProceso">Requirente:</label>
-                    <g:select name="requirente" from="${unidades}" noSelection="['': '- Seleccione -']"
+                    <g:select name="requirente" from="${unidades}" noSelection="['': '- Todos -']"
                               class="form-control input-sm" style="width: 200px;" optionKey="id" id="requirenteId"/>
                 </div>
 
@@ -47,6 +40,7 @@
         </div>
 
         <div id="detalle" style="width: 100%;height: 500px;overflow: auto"></div>
+
         <script>
             function cargarHistorial(anio, numero, proceso, requirente) {
 

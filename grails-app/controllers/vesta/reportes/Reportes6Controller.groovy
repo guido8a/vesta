@@ -702,7 +702,56 @@ class Reportes6Controller {
 
     }
 
+    /**
+     * todo: para hacer un reporte con columnas dinámicas por año se debe usar un mapa con "nombre columna": valor
+     * de esta forma se puede tener la clumna "2016" y el valor priorizado correspondiente, pero
+     * para cada año se debería tener: "priorizado 2016", "avalado 2016" y "disponible 2016",
+     * !!!!!!! mejor tener un reporte para cada año !!!!!!!!!
+     */
     def disponibilidadFuente_funcion(Fuente fuente) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select distinct anio.anio__id, anioanio from anio, asgn where anio.anio__id = asgn.anio__id " +
+              "order by anioanio"
+        def anios = []
+        def datos = []
+        def avalado = 0.0
+        def liberado = 0.0
+        cn.eachRow(sql.toString()){
+            anios.add(id: it.anio__id, anio: it.anioanio)
+        }
+        println "anios: $anios"
+        def actual = anios.remove(0)
+        sql = "select asgn__id, substr(prspnmro,1,2) prsp, mrlgnmro, mrlgobjt, unejnmbr, asgnprio " +
+                "from asgn, prsp, mrlg, unej " +
+                "where prsp.prsp__id = asgn.prsp__id and mrlg.mrlg__id = asgn.mrlg__id and " +
+                "unej.unej__id = asgn.unej__id and anio__id = ${actual.id}" +
+                "order by prspnmro"
+        cn.eachRow(sql.toString()) {
+            datos.add(id: it.asgn__id, prsp: it.prsp, nmro: it.mrlgnmro, actv: it.mrlgobjt, unej: it.unejnmbr, prio: it.asgnprio)
+        }
+        println "datos: $datos"
+
+/*
+        if(anios.size() > 0) {
+            anios.each {
+
+            }
+        }
+*/
+
+        /** calculo de lo avalado y recursos disponibles */
+        datos.each {
+            avalado = cn.rows("select sum(poasmnto) suma from poas, aval where aval.prco__id = poas.prco__id and " +
+                    "asgn__id = ${it.id} and edav__id = 89".toString())[0].suma?:0
+            liberado = cn.rows("select sum(poaslbrd) suma from poas, aval where aval.prco__id = poas.prco__id and " +
+                    "asgn__id = ${it.id} and edav__id = 92".toString())[0].suma?:0
+            it['avalado'] = avalado + liberado
+        }
+
+        println "--datos: $datos"
+
+        def iniRow = 0
+
         def data = [:]
         def totales = [:]
         totales.priorizado = 0
@@ -761,6 +810,7 @@ class Reportes6Controller {
             }
         }
         return [data: data, totales: totales]
+//        return [data: datos, totales: totales]
     }
 
 

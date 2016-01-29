@@ -386,6 +386,8 @@ class ReformaController extends Shield {
      */
     def lista() {
 //        println "lista ref: $params"
+        def aprobado = EstadoAval.findByCodigo("E02")
+        def liberado = EstadoAval.findByCodigo("E05")
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
@@ -401,6 +403,7 @@ class ReformaController extends Shield {
         def tx = ""
         reformas = Reforma.withCriteria {
             eq("tipo", "R")
+            inList("estado", aprobado, liberado)
             persona {
                 if(params.requirente){
                     eq("unidad", UnidadEjecutora.get(params.requirente))

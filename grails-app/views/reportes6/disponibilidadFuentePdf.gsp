@@ -77,39 +77,47 @@
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
                 <tr>
-                    <th>GG</th>
-                    <th>#</th>
-                    <th>ACTIVIDAD</th>
-                    <th>RESPONSABLE</th>
-                    <th>PRESUPUESTO CODIFICADO</th>
-                    <th>MONTO AVALADO</th>
-                    <th>RECURSOS DISPONIBLES</th>
+                    <th width="3%">GG</th>
+                    <th width="3%">#</th>
+                    <th width="40%">ACTIVIDAD</th>
+                    <th width="30%">RESPONSABLE</th>
+                    <th width="8%">PRESUPUESTO CODIFICADO</th>
+                    <th width="8%">MONTO AVALADO</th>
+                    <th width="8%">RECURSOS DISPONIBLES</th>
                 </tr>
             </thead>
             <tbody>
                 <g:each in="${data}" var="val" status="i">
+                %{--<g:each in="${data}" var="v">--}%
                     <g:set var="v" value="${val.value}"/>
                     <tr>
                         <td>
                             ${v?.partida?.numero[0..1]}
+                            %{--${v?.prsp}--}%
                         </td>
                         <td>
                             ${v?.actividad?.numero}
+                            %{--${v?.nmro}--}%
                         </td>
                         <td>
                             ${v?.actividad?.toStringCompleto()}
+                            %{--${v?.actv}--}%
                         </td>
                         <td>
                             ${v?.actividad?.responsable?.nombre}
+                            %{--${v?.unej}--}%
                         </td>
                         <td class="text-right">
                             <g:formatNumber number="${v?.valores['priorizado']}" type="currency" currencySymbol=""/>
+                            %{--<g:formatNumber number="${v?.prio}" type="currency" currencySymbol=""/>--}%
                         </td>
                         <td class="text-right">
                             <g:formatNumber number="${v?.valores['avales']}" type="currency" currencySymbol=""/>
+                            %{--<g:formatNumber number="${v?.avalado}" type="currency" currencySymbol=""/>--}%
                         </td>
                         <td class="text-right">
                             <g:formatNumber number="${v?.valores['disponible']}" type="currency" currencySymbol=""/>
+                            %{--<g:formatNumber number="${v.prio - v.avalado}" type="currency" currencySymbol=""/>--}%
                         </td>
                     </tr>
                 </g:each>

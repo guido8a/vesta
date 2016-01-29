@@ -1084,7 +1084,7 @@ class ElementosTagLib {
             str += "<i class='fa fa-search'></i> ${label ? title : ''}"
             str += "</a>"
 
-            println "primer parte: $str"
+//            println "primer parte: $str"
 
             if (accion2 != "") {
                 str += "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: controlador, action: accion2, id: reforma?.id)}&filename=${fileName2}\""
@@ -1093,7 +1093,7 @@ class ElementosTagLib {
                 str += "</a>"
             }
 
-            println "<<<< $str"
+//            println "<<<< $str"
             out << str
         }
     }

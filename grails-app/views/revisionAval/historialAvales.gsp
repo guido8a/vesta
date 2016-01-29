@@ -1,10 +1,4 @@
 <%@ page import="vesta.avales.SolicitudAval; vesta.avales.Aval" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 14/01/15
-  Time: 01:13 PM
---%>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 
@@ -12,12 +6,13 @@
     <table class="table table-condensed table-bordered table-striped table-hover">
         <thead>
             <tr>
-                <th sort="numero" class="sort ${(sort == 'numero') ? order : ''}">Número</th>
-                <th sort="proyecto" class="sort ${(sort == 'proyecto') ? order : ''}">Proyecto</th>
+                <th sort="requiriente" class="">Requirente</th>
+                <th class="">Solicitud No.</th>
+                <th sort="numero" class="sort ${(sort == 'numero') ? order : ''}">Aval No.</th>
+                <th sort="fechaAprobacion" class="sort ${(sort == 'fechaAprobacion') ? order : ''}">F. Emisión</th>
+                %{--<th sort="proyecto" class="sort ${(sort == 'proyecto') ? order : ''}">Proyecto</th>--}%
                 <th sort="proceso" class="sort ${(sort == 'proceso') ? order : ''}">Proceso</th>
                 <th sort="monto" class="sort ${(sort == 'monto') ? order : ''}">Monto</th>
-                <th sort="requiriente" class="">Requirente</th>
-                <th sort="fechaAprobacion" class="sort ${(sort == 'fechaAprobacion') ? order : ''}">F. Emisión</th>
                 <th sort="estado" class="sort ${(sort == 'estado') ? order : ''}">Estado</th>
             </tr>
         </thead>
@@ -25,17 +20,16 @@
             <g:each in="${datos}" var="aval" status="j">
                 <g:set var="sol" value="${SolicitudAval.findByAval(aval)}"/>
                 <tr estadoTr="${aval.estado.codigo}" data-sol="${sol.id}" data-id="${aval?.id}" usu="${perfil}">
+                    <td>${unidades[j]}</td>
+                    <td>${sol.fecha?.format("yyyy")}-GPE No.<elm:imprimeNumero solicitud="${sol.id}"/></td>
                     <td>${aval.fechaAprobacion?.format("yyyy")}-GPE No.<elm:imprimeNumero aval="${aval.id}"/></td>
-                    <td style="text-align: center" title="${aval.proceso.proyecto.toStringCompleto()}">${aval.proceso.proyecto}</td>
+                    <td>${aval.fechaAprobacion?.format("dd-MM-yyyy")}</td>
+                    %{--<td style="text-align: center" title="${aval.proceso.proyecto.toStringCompleto()}">${aval.proceso.proyecto}</td>--}%
                     <td>${aval.proceso.nombre}</td>
                     <td style="text-align: right">
                         <g:formatNumber number="${aval.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
                     </td>
                     %{--<td>${sol.unidad}</td>--}%
-                    <td>${unidades[j]}</td>
-                    <td>
-                        ${aval.fechaAprobacion?.format("dd-MM-yyyy")}
-                    </td>
                     <g:set var="avalEstado" value="${aval.estado?.codigo}"/>
                     <td style="text-align: center" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : 'verde'}">
                         ${aval.estado?.descripcion}
