@@ -212,7 +212,7 @@ class Reportes6Controller {
         def titulo = "DISPONIBILIDAD DE RECURSOS AÑO " + anio
         def subtitulo = "${fuente ? 'FUENTE ' + fuente.descripcion : 'TODAS LAS FUENTES'} - EN DÓLARES"
 
-        return [data: data, totales: totales, titulo: titulo, subtitulo: subtitulo]
+        return [data: data, totales: totales, titulo: titulo, subtitulo: subtitulo, anios: datos.anios]
     }
 
     def aprobarProyectoXlsx() {
@@ -710,46 +710,78 @@ class Reportes6Controller {
      */
     def disponibilidadFuente_funcion(Fuente fuente) {
         def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
         def sql = "select distinct anio.anio__id, anioanio from anio, asgn where anio.anio__id = asgn.anio__id " +
               "order by anioanio"
+        def txto = ""
         def anios = []
         def datos = []
+        def asignado = 0.0
         def avalado = 0.0
         def liberado = 0.0
+        def totalDisp = 0.0
+
         cn.eachRow(sql.toString()){
             anios.add(id: it.anio__id, anio: it.anioanio)
         }
+        def todosLosAnios = anios.clone()
         println "anios: $anios"
         def actual = anios.remove(0)
-        sql = "select asgn__id, substr(prspnmro,1,2) prsp, mrlgnmro, mrlgobjt, unejnmbr, asgnprio " +
+        sql = "select asgn__id, asgn.prsp__id, asgn.mrlg__id, substr(prspnmro,1,2) prsp, mrlgnmro, mrlgobjt, unejnmbr, asgnprio " +
                 "from asgn, prsp, mrlg, unej " +
                 "where prsp.prsp__id = asgn.prsp__id and mrlg.mrlg__id = asgn.mrlg__id and " +
-                "unej.unej__id = asgn.unej__id and anio__id = ${actual.id}" +
+                "unej.unej__id = asgn.unej__id and anio__id = ${actual.id} and fnte__id = ${fuente.id} " + //and asgn.prsp__id between 338 and 339 " //and asgn.mrlg__id between 502 and 550 " +
                 "order by prspnmro"
         cn.eachRow(sql.toString()) {
-            datos.add(id: it.asgn__id, prsp: it.prsp, nmro: it.mrlgnmro, actv: it.mrlgobjt, unej: it.unejnmbr, prio: it.asgnprio)
+            /** calculo de lo avalado y recursos disponibles */
+            avalado = cn1.rows("select sum(poasmnto) suma from poas, aval where aval.prco__id = poas.prco__id and " +
+                    "asgn__id = ${it.asgn__id} and edav__id = 89".toString())[0].suma ?: 0
+            liberado = cn1.rows("select sum(poaslbrd) suma from poas, aval where aval.prco__id = poas.prco__id and " +
+                    "asgn__id = ${it.asgn__id} and edav__id = 92".toString())[0].suma ?: 0
+
+            datos.add(id: it.asgn__id, prsp__id: it.prsp__id, mrlg__id: it.mrlg__id, prsp: it.prsp, nmro: it.mrlgnmro,
+                    actv: it.mrlgobjt, unej: it.unejnmbr,
+                    anios: [[anio: actual.anio, prio:it.asgnprio, avalado: avalado + liberado]])
+            totalDisp += it.asgnprio - avalado - liberado
         }
-        println "datos: $datos"
-
-/*
+//        println "datos: $datos"
+//        println "antes del each $anios"
+        /** para los años restantes obtiene priorizado y valores de aval y leberado  --> añade a datos**/
         if(anios.size() > 0) {
-            anios.each {
+            anios.each {anio ->
+//                println "porcesa año: ${anio.id}"
+                datos.each { d ->
+                    asignado = 0
+                    def cont = 0
+                    txto = "select asgn__id, asgnprio from asgn where prsp__id = ${d.prsp__id} and " +
+                            "mrlg__id = ${d.mrlg__id} and anio__id = ${anio.id} and fnte__id = ${fuente.id}"
 
+                    cn1.eachRow(txto.toString()) { a ->
+                        asignado = a?.asgnprio?:0
+                        avalado = 0
+                        liberado = 0
+                        cont++
+                        if(asignado > 0) {
+//                            println "asgn: ${d.id} .. $txto"
+                            avalado = cn1.rows("select sum(poasmnto) suma from poas, aval where aval.prco__id = poas.prco__id and " +
+                                    "asgn__id = ${a.asgn__id} and edav__id = 89".toString())[0].suma ?: 0
+                            liberado = cn1.rows("select sum(poaslbrd) suma from poas, aval where aval.prco__id = poas.prco__id and " +
+                                    "asgn__id = ${a.asgn__id} and edav__id = 92".toString())[0].suma ?: 0
+                        }
+                        if(cont > 1) println "procesa varios: ${d.prsp__id} con ${d.mrlg__id}"
+                    }
+
+                    d.anios.add([anio: anio.anio, prio: asignado, avalado: avalado + liberado])    //añade a datos
+
+                    totalDisp += asignado - avalado - liberado
+                }
             }
         }
-*/
 
-        /** calculo de lo avalado y recursos disponibles */
-        datos.each {
-            avalado = cn.rows("select sum(poasmnto) suma from poas, aval where aval.prco__id = poas.prco__id and " +
-                    "asgn__id = ${it.id} and edav__id = 89".toString())[0].suma?:0
-            liberado = cn.rows("select sum(poaslbrd) suma from poas, aval where aval.prco__id = poas.prco__id and " +
-                    "asgn__id = ${it.id} and edav__id = 92".toString())[0].suma?:0
-            it['avalado'] = avalado + liberado
-        }
+//        println "--datos: ${datos.anios}"
+        println "--TOtal: ${totalDisp}"
 
-        println "--datos: $datos"
-
+/*
         def iniRow = 0
 
         def data = [:]
@@ -809,8 +841,11 @@ class Reportes6Controller {
                 totales.disponible += dis
             }
         }
-        return [data: data, totales: totales]
-//        return [data: datos, totales: totales]
+*/
+
+//        println "todos los anios: $todosLosAnios"
+//        return [data: data, totales: totales]
+        return [data: datos, totales: totalDisp, anios: todosLosAnios]
     }
 
 

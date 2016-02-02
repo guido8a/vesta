@@ -74,6 +74,8 @@
             Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}
         </p>
 
+    <g:set var="totalDisponible" value="${0}"/>
+
         <table class="table table-bordered table-hover table-condensed table-bordered">
             <thead>
                 <tr>
@@ -81,53 +83,75 @@
                     <th width="3%">#</th>
                     <th width="40%">ACTIVIDAD</th>
                     <th width="30%">RESPONSABLE</th>
+                    <g:each in="${anios}" var="anio">
+                        <th>${anio.anio}</th>
+                        <th> Avalado </th>
+                        <th> Disponible </th>
+                    </g:each>
+%{--
                     <th width="8%">PRESUPUESTO CODIFICADO</th>
                     <th width="8%">MONTO AVALADO</th>
                     <th width="8%">RECURSOS DISPONIBLES</th>
+--}%
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${data}" var="val" status="i">
-                %{--<g:each in="${data}" var="v">--}%
-                    <g:set var="v" value="${val.value}"/>
+                %{--<g:each in="${data}" var="val" status="i">--}%
+                <g:each in="${data}" var="v">
+                    %{--<g:set var="v" value="${val.value}"/>--}%
                     <tr>
                         <td>
-                            ${v?.partida?.numero[0..1]}
-                            %{--${v?.prsp}--}%
+                            %{--${v?.partida?.numero[0..1]}--}%
+                            ${v?.prsp}
                         </td>
                         <td>
-                            ${v?.actividad?.numero}
-                            %{--${v?.nmro}--}%
+                            %{--${v?.actividad?.numero}--}%
+                            ${v?.nmro}
                         </td>
                         <td>
-                            ${v?.actividad?.toStringCompleto()}
-                            %{--${v?.actv}--}%
+                            %{--${v?.actividad?.toStringCompleto()}--}%
+                            ${v?.actv}
                         </td>
                         <td>
-                            ${v?.actividad?.responsable?.nombre}
-                            %{--${v?.unej}--}%
+                            %{--${v?.actividad?.responsable?.nombre}--}%
+                            ${v?.unej}
                         </td>
+
+                    <g:each in = "${v.anios}" var="anio">
+                        <td> ${anio.prio} </td>
+                        <td> ${anio.avalado} </td>
+                        <td> ${anio.prio - anio.avalado}</td>
+                        <g:set var="totalDisponible" value="${totalDisponible += anio.prio - anio.avalado}"/>
+                    </g:each>
+
+%{--
+
                         <td class="text-right">
                             <g:formatNumber number="${v?.valores['priorizado']}" type="currency" currencySymbol=""/>
-                            %{--<g:formatNumber number="${v?.prio}" type="currency" currencySymbol=""/>--}%
+                            --}%
+%{--<g:formatNumber number="${v?.prio}" type="currency" currencySymbol=""/>--}%%{--
+
                         </td>
                         <td class="text-right">
                             <g:formatNumber number="${v?.valores['avales']}" type="currency" currencySymbol=""/>
-                            %{--<g:formatNumber number="${v?.avalado}" type="currency" currencySymbol=""/>--}%
+                            --}%
+%{--<g:formatNumber number="${v?.avalado}" type="currency" currencySymbol=""/>--}%%{--
+
                         </td>
                         <td class="text-right">
                             <g:formatNumber number="${v?.valores['disponible']}" type="currency" currencySymbol=""/>
-                            %{--<g:formatNumber number="${v.prio - v.avalado}" type="currency" currencySymbol=""/>--}%
+                            --}%
+%{--<g:formatNumber number="${v.prio - v.avalado}" type="currency" currencySymbol=""/>--}%%{--
+
                         </td>
+--}%
                     </tr>
                 </g:each>
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-right" colspan="4">TOTAL</th>
-                    <th class="text-right"><g:formatNumber number="${totales.priorizado}" type="currency" currencySymbol=""/></th>
-                    <th class="text-right"><g:formatNumber number="${totales.avales}" type="currency" currencySymbol=""/></th>
-                    <th class="text-right"><g:formatNumber number="${totales.disponible}" type="currency" currencySymbol=""/></th>
+                    <th class="text-right" colspan="4">TOTAL DISPONIBLE</th>
+                    <th class="text-right" colspan="3"><g:formatNumber number="${totalDisponible}" type="currency" currencySymbol=""/></th>
                 </tr>
             </tfoot>
         </table>
