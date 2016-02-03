@@ -209,4 +209,8 @@ class AvalCorriente {
         firmaAnulacion2 nullable: true
         fechaLiberacion nullable: true
     }
+
+    String toString() {
+        "Solicitud de Aval para ${this.concepto}"
+    }
 }

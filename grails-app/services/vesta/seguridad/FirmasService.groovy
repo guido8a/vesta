@@ -59,6 +59,7 @@ class FirmasService {
         def directores = Persona.withCriteria {
             inList("unidad", unidades)
             ilike("cargo", "%director%")
+            eq("estaActivo", 1)
 //            cargoPersonal {
 //                ilike("descripcion", "%director%")
 //            }
@@ -70,6 +71,7 @@ class FirmasService {
         def directores = Persona.withCriteria {
             eq("unidad", unidad)
             ilike("cargo", "%director%")
+            eq("estaActivo", 1)
         }
         return directores
     }

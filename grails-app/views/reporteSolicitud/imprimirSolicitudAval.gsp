@@ -1,11 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 13/08/14
-  Time: 04:23 PM
---%>
-
 <%@ page import="vesta.avales.ProcesoAsignacion" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.seguridad.FirmasService" %>
+<%
+    def firmasService = grailsApplication.classLoader.loadClass('vesta.seguridad.FirmasService').newInstance()
+%>
 <html>
     <head>
         <title>Imprimir acta</title>
@@ -67,7 +64,7 @@
                         UNIDAD REQUIRENTE
                     </th>
                     <td>
-                        ${solicitud.usuario.unidad}
+                        ${firmasService.requirentes(solicitud.usuario.unidad).nombre}
                     </td>
                 </tr>
                 <tr>

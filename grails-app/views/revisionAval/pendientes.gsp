@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 28/01/15
-  Time: 01:06 PM
---%>
-
 <%@ page import="vesta.seguridad.Persona; vesta.parametros.UnidadEjecutora; vesta.parametros.poaPac.Anio" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>

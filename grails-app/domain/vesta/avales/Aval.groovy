@@ -207,4 +207,8 @@ class Aval {
         }
     }
 
+    String toString() {
+        "Solicitud de Aval para ${this.concepto}"
+    }
+
 }
