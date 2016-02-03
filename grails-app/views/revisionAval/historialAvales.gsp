@@ -1,4 +1,8 @@
 <%@ page import="vesta.avales.SolicitudAval; vesta.avales.Aval" %>
+<%@ page import="vesta.seguridad.FirmasService" %>
+<%
+    def firmasService = grailsApplication.classLoader.loadClass('vesta.seguridad.FirmasService').newInstance()
+%>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 
@@ -21,7 +25,7 @@
                 <g:set var="sol" value="${SolicitudAval.findByAval(aval)}"/>
                 <tr estadoTr="${aval.estado.codigo}" data-sol="${sol.id}" data-id="${aval?.id}" usu="${perfil}">
                     <td>${unidades[j]}</td>
-                    <td>${sol.fecha?.format("yyyy")}-GPE No.<elm:imprimeNumero solicitud="${sol.id}"/></td>
+                    <td>${sol.fecha?.format("yyyy")}-${firmasService.requirentes(sol.usuario.unidad).sigla} No.<elm:imprimeNumero solicitud="${sol.id}"/></td>
                     <td>${aval.fechaAprobacion?.format("yyyy")}-GPE No.<elm:imprimeNumero aval="${aval.id}"/></td>
                     <td>${aval.fechaAprobacion?.format("dd-MM-yyyy")}</td>
                     %{--<td style="text-align: center" title="${aval.proceso.proyecto.toStringCompleto()}">${aval.proceso.proyecto}</td>--}%
