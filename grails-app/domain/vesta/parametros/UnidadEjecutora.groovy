@@ -131,7 +131,7 @@ class UnidadEjecutora {
 
             nombre column: 'unejnmbr'
             direccion column: 'unejdire'
-            sigla column: 'unejsgla'
+            sigla column: 'unejsgla'            /* no se usa */
             objetivo column: 'unejobjt'
             telefono column: 'unejtelf'
             fax column: 'unejfaxx'

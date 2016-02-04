@@ -1112,7 +1112,7 @@ class AvalesController extends vesta.seguridad.Shield {
 
         def preview = params.preview == "S"
 
-        def strSolicitud = params.tipo == "A" ? "solicitud de anulación" : "solicitud"
+        def strSolicitud = params.tipo == "A" ? "solicitud de anulación enviada" : "Solicitud de Aval POA enviada para revisión y aprobación"
 
         def path = servletContext.getRealPath("/") + "pdf/solicitudAval/"
         new File(path).mkdirs()
@@ -1287,7 +1287,7 @@ class AvalesController extends vesta.seguridad.Shield {
             redirect(action: 'solicitudProceso', params: [id: params.proceso])
             return
         } else {
-            flash.message = "${strSolicitud.capitalize()} enviada"
+            flash.message = "${strSolicitud.capitalize()}"
             redirect(action: 'avalesProceso', params: [id: params.proceso])
             return
         }

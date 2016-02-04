@@ -25,6 +25,7 @@
 
         <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
+%{--
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link controller="avales" action="listaProcesos" class="btn btn-default"><i class="fa fa-bars"></i> Lista de procesos de avales</g:link>
@@ -33,8 +34,10 @@
                 </g:link>
             </div>
         </div>
+--}%
 
-        <h3 class="text-info">Avales y solicitudes de aval del proceso <em>${proceso.nombre}</em></h3>
+        %{--<h3 class="text-info">Avales y solicitudes de aval del proceso <em>${proceso.nombre}</em></h3>--}%
+        <h3 class="text-info">Proceso: ${proceso.nombre}</h3>
 
         <div role="tabpanel">
             <!-- Nav tabs -->

@@ -47,7 +47,7 @@
                           numero="${proceso.numeroAval.toString().padLeft(3, '0')}" estilo="right" anio="${proceso.fechaSolicitud.format('yyyy')}"/>
 
         <p>
-            Con solicitud de aval de POA ${anio}-${proceso.usuario.unidad.sigla}
+            Con solicitud de aval de POA ${anio}-${proceso.usuario.unidad.codigo}
             Nro. ${proceso.numeroAval.toString().padLeft(3, '0')}, de fecha ${proceso.fechaSolicitud.format("dd-MM-yyyy")},
             la ${proceso.usuario.unidad.nombre} solicita emitir el aval de POA para realizar el proceso "${proceso.nombreProceso}",
             por un monto total de USD <g:formatNumber number="${proceso.monto}" type="currency" currencySymbol="USD "/>

@@ -1399,7 +1399,7 @@
             bootbox.alert("Debe agregar detalles antes de enviar la solicitud!")
         } else {
             if ($("#frmFirmas").valid()) {
-                bootbox.confirm("¿Está seguro de querer enviar esta solicitud de reforma?<br/>Ya no podrá modificar su contenido.",
+                bootbox.confirm("¿Está seguro de querer enviar esta solicitud de ajuste?<br/>Ya no podrá modificar su contenido.",
                         function (res) {
                             if (res) {
                                 openLoader();
