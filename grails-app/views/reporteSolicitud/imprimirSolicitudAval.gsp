@@ -182,32 +182,44 @@
 
         </div>
 
-        <div class="texto">
-            <p>
-                <strong>Nota Técnica:</strong> ${solicitud?.notaTecnica}
-            </p>
+        %{--<div class="texto">--}%
+            <table width="100%" border="0">
+            <tr>
+                <td><strong>Nota Técnicaxx:</strong> ${solicitud?.notaTecnica}</td>
+                <td style="text-align: right"><strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}</td>
+        </tr>
+        <tr>
 
-            <p style="float: right">
-                <strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}
-            </p>
-
-        </div>
-
-        <div class="no-break">
-            <div class="texto">
-                <strong>Elaborado por:</strong> ${solicitud?.usuario?.sigla ?: solicitud?.usuario?.nombre + ' ' + solicitud?.usuario?.apellido}
-            </div>
-
-            <div class="texto">
-                <p>
+            <td colspan="2">
                     <strong>Revisado por:</strong>  ${solicitud?.director?.sigla ?:
                         solicitud?.director?.nombre && solicitud?.director?.apellido ? solicitud?.director?.nombre + ' ' + solicitud?.director?.apellido : ''}
-                </p>
+                </td>
+        </tr>
+        <tr>
+                <td colspan="2">
+                    <strong>Revisado por:</strong>  ${solicitud?.director?.sigla ?:
+                        solicitud?.director?.nombre && solicitud?.director?.apellido ? solicitud?.director?.nombre + ' ' + solicitud?.director?.apellido : ''}
+                </td>
+            </tr>
 
-                <p style="float: right; margin-top: -20px">
-                    <strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}
-                </p>
-            </div>
+            %{--<span style="float: right">--}%
+                %{--<strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}--}%
+            %{--</span>--}%
+
+
+            </table>
+        %{--</div>--}%
+
+        <div class="no-break">
+            %{--<div class="texto">--}%
+                %{--<strong>Elaborado por:</strong> ${solicitud?.usuario?.sigla ?: solicitud?.usuario?.nombre + ' ' + solicitud?.usuario?.apellido}--}%
+            %{--</div>--}%
+            %{--<div class="texto">--}%
+                %{--<p>--}%
+                    %{--<strong>Revisado por:</strong>  ${solicitud?.director?.sigla ?:--}%
+                        %{--solicitud?.director?.nombre && solicitud?.director?.apellido ? solicitud?.director?.nombre + ' ' + solicitud?.director?.apellido : ''}--}%
+                %{--</p>--}%
+            %{--</div>--}%
 
 
             <g:if test="${solicitud.firma?.estado == 'F'}">
