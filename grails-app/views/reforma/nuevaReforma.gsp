@@ -146,6 +146,7 @@
                         %{--<td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto?.substring(0,69) + "..."}</td>--}%
                         %{--</g:if>--}%
                         %{--<g:else>--}%
+                        %{--<td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.numero} - ${det?.asignacionOrigen?.marcoLogico?.objeto}</td>--}%
                         <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
                         %{--</g:else>--}%
                         <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
@@ -167,6 +168,7 @@
 
                     <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                     <td style=width:16%>${det?.componente?.objeto}</td>
+                    %{--<td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.numero} - ${det?.asignacionOrigen?.marcoLogico?.objeto}</td>--}%
                     <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
                     <g:if test="${det?.tipoReforma?.codigo == 'P'}">
                         <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
@@ -191,6 +193,7 @@
                         <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
                     <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                     <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
+                    %{--<td style=width:15%>${det?.componente?.numero} - ${det?.componente?.objeto}</td>--}%
                     <td style=width:15%>${det?.componente?.objeto}</td>
                     <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
                     <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
@@ -207,9 +210,18 @@
                     <g:set var="montoFinal" value="${montoFinal += (det?.valorDestinoInicial + det?.valor)}"/>
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'A'}" >
+                    <g:set var="nuevaActv" value="${vesta.proyectos.MarcoLogico.findByObjeto(detallesNuevos?.descripcionNuevaActividad)?.numero}"/>
+                    <g:if test="${nuevaActv}">
+                        <g:set var="nuevaActvStr" value="${nuevaActv} - "/>
+                    </g:if>
+                    <g:else>
+                        <g:set var="nuevaActvStr" value="S/N - "/>
+                    </g:else>
+
                     <tr class="rowD" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
                         <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                         <td style=width:16%>${det?.componente?.objeto}</td>
+                        %{--<td style=width:15%>${nuevaActvStr}${det?.descripcionNuevaActividad}</td>--}%
                         <td style=width:15%>${det?.descripcionNuevaActividad}</td>
                         <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
                         <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>

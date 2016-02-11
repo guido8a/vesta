@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 16/12/15
-  Time: 11:03 AM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -71,7 +64,7 @@
                             <tr>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style="width: 16%">${detallesNuevos?.componente?.objeto}</td>
-                                <td style="width: 15%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                                <td style="width: 15%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
                                 <td style="width: 8%; text-align: center">${detallesNuevos?.asignacionOrigen?.presupuesto?.numero}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
                                 <td style="width: 8%; text-align: right"><g:formatNumber number="${detallesNuevos?.valorOrigenInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -87,11 +80,11 @@
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                             <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'P'}">
                                 <td style="width: 16%">${detallesNuevos?.componente?.marcoLogico?.objeto}</td>
-                                <td style="width: 15%">${detallesNuevos?.componente?.objeto}</td>
+                                <td style="width: 15%">${detallesNuevos?.componente?.numero} - ${detallesNuevos?.componente?.objeto}</td>
                             </g:if>
                             <g:else>
                                 <td style="width: 16%">${detallesNuevos?.componente?.objeto}</td>
-                                <td style="width: 15%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                                <td style="width: 15%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
                             </g:else>
 
                                 <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'P'}">
@@ -111,9 +104,16 @@
                         </g:if>
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'A'}" >
                             <tr>
+                                <g:set var="nuevaActv" value="${vesta.proyectos.MarcoLogico.findByObjeto(detallesNuevos?.descripcionNuevaActividad)?.numero}"/>
+                                <g:if test="${nuevaActv}">
+                                    <g:set var="nuevaActvStr" value="${nuevaActv} - "/>
+                                </g:if>
+                                <g:else>
+                                    <g:set var="nuevaActvStr" value="S/N - "/>
+                                </g:else>
                                 <td style='width:15%'>${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style='width:16%'>${detallesNuevos?.componente?.objeto}</td>
-                                <td style='width:15%'>${detallesNuevos?.descripcionNuevaActividad}</td>
+                                <td style='width:15%'>${nuevaActvStr}${detallesNuevos?.descripcionNuevaActividad}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
                                 <td style='width:8%; text-align: center'>${' --- '}</td>
