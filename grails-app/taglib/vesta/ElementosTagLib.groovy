@@ -876,6 +876,33 @@ class ElementosTagLib {
     }
 
     /**
+     * Imprime el número de reforma o ajuste con el formato '003'
+     * @param solicitud (opcional) el id de la reforma
+     */
+    def numeroRef = { attrs ->
+        println("numeroRef " + attrs)
+        def rfrm = null
+        if (attrs.solicitud) {
+            rfrm = Reforma.get(attrs.solicitud)
+        }
+        def num = null
+        def uno = 1
+        def output = ""
+        if (rfrm) {
+            num = rfrm.numero.toString()
+        }
+
+        num = num.toString().padLeft(3, '0')
+//        println("num1 " + num)
+        if (!num || num == "null") {
+            num = "000"
+        }
+        output += num
+        out << output
+    }
+
+
+    /**
      * Imprime el número del aval o de la solicidud con el formato '003'
      * @param aval (opcional) el id del aval
      * @param solicitud (opcional) el id de la solicitud

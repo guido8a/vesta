@@ -29,6 +29,7 @@
             <thead>
                 <tr>
                     <th>Solicita</th>
+                    <th>No. Solicitud</th>
                     <th style="width: 85px;">Fecha</th>
                     <th>Concepto</th>
                     <th>Tipo</th>
@@ -40,6 +41,7 @@
                 <g:each in="${reformas}" var="reforma">
                     <tr>
                         <td>${reforma.persona.unidad} - ${reforma.persona}</td>
+                        <td><elm:numeroRef solicitud="${reforma.id}"/></td>
                         <td>${reforma.fecha.format("dd-MM-yyyy")}</td>
                         <td>${reforma.concepto}</td>
                         <td>
