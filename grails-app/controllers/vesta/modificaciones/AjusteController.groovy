@@ -1889,9 +1889,9 @@ class AjusteController extends Shield {
             actual = Anio.findByAnio(new Date().format("yyyy"))
         }
 
-//        def unidadUsuario = UnidadEjecutora.get(session.usuario.unidad.id)
-        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
-//        def gerencias = firmasService.requirentes(unidadUsuario)
+//        def proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+        def proyectos3 = Proyecto.list([sort: 'nombre'])
+
         def detalle = null
 
         if(params.id){

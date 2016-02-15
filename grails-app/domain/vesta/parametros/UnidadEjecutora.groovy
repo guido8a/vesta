@@ -298,7 +298,7 @@ class UnidadEjecutora {
         def asignaciones = this.getAsignacionesUnidad(anio, perfilCodigo)
         def actividades = []
         def actividades2 = []
-        println "asignaciones: ${asignaciones.id}"
+//        println "asignaciones: ${asignaciones.id}"
         asignaciones.each { b ->
             def c3 = b.marcoLogico.marcoLogico
             def act2 = b.marcoLogico.id

@@ -1786,7 +1786,7 @@ class AsignacionController extends Shield {
         def sqlSelect = "select prsp__id, prspnmro, prspdscr from prsp"
         def sqlWhere = "where prspmvnt = 1 and (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
 
-        def sqlOrder = ""
+        def sqlOrder = "order by prspnmro limit 40"
 
 //        println "llega params: $params"
 //        params.nombre = "Código"
@@ -1827,7 +1827,7 @@ class AsignacionController extends Shield {
 
         def sqlSelect = "select prsp__id, prspnmro, prspdscr from prsp "
         def sqlWhere = "where prspmvnt = 1 and (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
-        def sqlOrder = "order by prspnmro"
+        def sqlOrder = "order by prspnmro limit 40"
 
 
         if(campos.find {it.campo == params.buscador}?.size() > 0) {
