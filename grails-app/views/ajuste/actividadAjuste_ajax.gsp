@@ -1,17 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 28/12/15
-  Time: 11:23 AM
---%>
-
 <%@ page import="vesta.parametros.UnidadEjecutora; vesta.parametros.poaPac.Fuente; vesta.proyectos.Categoria" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 07/12/15
-  Time: 10:51 AM
---%>
+
 <form id="frmNuevaActividad">
     <div class="row">
         <div class="col-md-2">

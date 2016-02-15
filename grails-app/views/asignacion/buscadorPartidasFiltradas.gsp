@@ -1,24 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 26/10/15
-  Time: 02:55 PM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 15/10/15
-  Time: 10:21 AM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 06/10/15
-  Time: 11:39 AM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="vesta.utilitarios.BuscadorService" %>
 

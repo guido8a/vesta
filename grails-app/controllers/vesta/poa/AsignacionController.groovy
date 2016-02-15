@@ -1770,9 +1770,9 @@ class AsignacionController extends Shield {
         params.criterio = buscadorService.limpiaCriterio(params.criterio)
 
         def sql = armaSqlPartidas(params)
+//        println "sql buscar:  " + sql
         def res = cn.rows(sql)
 //        println "registro retornados del sql: ${res.size()}"
-//        println ("sql :  " + sql)
         params.criterio = params.old
 //        println("res " + res)
         return [res: res, params: params]
@@ -1783,11 +1783,10 @@ class AsignacionController extends Shield {
         def operador = buscadorService.operadores()
 
 
-        def sqlSelect = "select prsp__id, prspnmro, prspdscr  " +
-                "from prsp"
-        def sqlWhere = "where (prspnmro ilike '5%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
+        def sqlSelect = "select prsp__id, prspnmro, prspdscr from prsp"
+        def sqlWhere = "where prspmvnt = 1 and (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
 
-        def sqlOrder = "order by prspnmro limit 40"
+        def sqlOrder = ""
 
 //        println "llega params: $params"
 //        params.nombre = "Código"
@@ -1813,6 +1812,7 @@ class AsignacionController extends Shield {
         params.criterio = buscadorService.limpiaCriterio(params.criterio)
 
         def sql = armaSqlPartidasFiltradas(params)
+//        println "sql: $sql"
         def res = cn.rows(sql)
         params.criterio = params.old
 
@@ -1825,11 +1825,9 @@ class AsignacionController extends Shield {
         def operador = buscadorService.operadores()
 
 
-        def sqlSelect = "select prsp__id, prspnmro, prspdscr  " +
-                "from prsp"
-        def sqlWhere = "where (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
-
-        def sqlOrder = "order by prspnmro limit 40"
+        def sqlSelect = "select prsp__id, prspnmro, prspdscr from prsp "
+        def sqlWhere = "where prspmvnt = 1 and (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
+        def sqlOrder = "order by prspnmro"
 
 
         if(campos.find {it.campo == params.buscador}?.size() > 0) {
