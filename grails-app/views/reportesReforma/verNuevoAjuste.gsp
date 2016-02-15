@@ -7,15 +7,12 @@
     </title>
 
     <style type="text/css">
-
     .formato {
         font-weight : bold;
         background  : #008080;
         color       : #ffffff;
     }
     </style>
-
-
 </head>
 
 <body>

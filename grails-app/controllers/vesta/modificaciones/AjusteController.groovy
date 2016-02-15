@@ -1451,6 +1451,7 @@ class AjusteController extends Shield {
      * Acción para firmar la aprobación de la reforma
      */
     def firmarAprobarNuevoAjuste() {
+        println "firmarAprobarNuevoAjuste params: $params"
         def firma = Firma.findByKey(params.key)
         if (!firma) {
             response.sendError(403)
@@ -1480,6 +1481,7 @@ class AjusteController extends Shield {
                 def detalles = DetalleReforma.findAllByReforma(reforma)
 
                detalles.each { d->
+                   println "..procesa id: ${d.id}, tipo: ${d?.tipoReforma?.codigo}"
                    switch (d?.tipoReforma?.codigo){
                        case "O":  //asignacion origen
 //                           println("entro origen")
@@ -1553,9 +1555,11 @@ class AjusteController extends Shield {
                            nuevaActividad.categoria = d?.categoria
                            nuevaActividad.fechaInicio = d?.fechaInicioNuevaActividad
                            nuevaActividad.fechaFin = d?.fechaFinNuevaActividad
-                           nuevaActividad.responsable = detalles.responsable
+                           nuevaActividad.responsable = d.responsable
                            nuevaActividad.numero = numAct
                            nuevaActividad.reforma = reforma
+
+                           println "pone responsable de actividad a: ${d.responsable}"
 
                            if (!nuevaActividad.save(flush: true)) {
                                println "error al guardar la actividad A " + nuevaActividad.errors
