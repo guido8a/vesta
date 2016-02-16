@@ -1763,7 +1763,8 @@ class AsignacionController extends Shield {
 
     }
 
-    def buscadorPartidas () {
+    def buscadorPartidas () { //sirve para inversión y corrientes dependiendo de "tipo"
+//        println "buscadorPartidas params: $params"
         def cn = dbConnectionService.getConnection()
 
         params.old = params.criterio
@@ -1778,13 +1779,34 @@ class AsignacionController extends Shield {
         return [res: res, params: params]
     }
 
+    def buscadorPartidasCorr () {
+        def cn = dbConnectionService.getConnection()
+
+        params.old = params.criterio
+        params.criterio = buscadorService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlPartidas(params)
+//        println "sql buscar:  " + sql
+        def res = cn.rows(sql)
+//        println "registro retornados del sql: ${res.size()}"
+        params.criterio = params.old
+//        println("res " + res)
+        return [res: res, params: params]
+    }
+
+
+
     def armaSqlPartidas(params){
         def campos = buscadorService.parametrosPartidas()
         def operador = buscadorService.operadores()
-
+        def wh = "prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
+        if(params.tipo == 'corrientes') {
+            wh = "prspnmro ilike '5%' or prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
+        }
 
         def sqlSelect = "select prsp__id, prspnmro, prspdscr from prsp"
-        def sqlWhere = "where prspmvnt = 1 and (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
+//        def sqlWhere = "where prspmvnt = 1 and (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
+        def sqlWhere = "where prspmvnt = 1 and (${wh})"
 
         def sqlOrder = "order by prspnmro limit 40"
 
@@ -1823,10 +1845,14 @@ class AsignacionController extends Shield {
     def armaSqlPartidasFiltradas(params){
         def campos = buscadorService.parametrosPartidas()
         def operador = buscadorService.operadores()
-
+        def wh = "prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
+        if(params.tipo == 'corrientes') {
+            wh = "prspnmro ilike '5%' or prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
+        }
 
         def sqlSelect = "select prsp__id, prspnmro, prspdscr from prsp "
-        def sqlWhere = "where prspmvnt = 1 and (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
+//        def sqlWhere = "where prspmvnt = 1 and (prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%')"
+        def sqlWhere = "where prspmvnt = 1 and (${wh})"
         def sqlOrder = "order by prspnmro limit 40"
 
 

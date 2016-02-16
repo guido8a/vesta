@@ -614,14 +614,14 @@ class AvalesController extends vesta.seguridad.Shield {
 //            numero = 0
             def r = verificarProceso(proceso, solicitud)
             flash.message = r.message
-            if (flash.message != "") {
+            if((flash.message != "") && (solicitud.estado.codigo != 'D01' )) {
                 readOnly = true
             }
             def disponible = r.disponible
 
 //            def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [EstadoAval.findByCodigo("E01"), EstadoAval.findByCodigo("EF4")])
 
-//            println "Aqui:   " + proceso + "    " + solicitud
+//            println "Aqui: ,,,,,,   " + proceso + "    " + solicitud + "readOnly: $readOnly"
 
             return [proceso  : proceso, disponible: disponible, personas: personasFirma, numero: 0,
                     refencial: referencial, readOnly: readOnly, solicitud: solicitud, params: params]

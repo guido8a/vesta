@@ -1,17 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 15/10/15
-  Time: 10:21 AM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 06/10/15
-  Time: 11:39 AM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="vesta.utilitarios.BuscadorService" %>
 
@@ -91,7 +77,7 @@
 
     $("#buscarP").click(function(){
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-                "&operador=" + $("#oprd").val();
+                "&operador=" + $("#oprd").val() + "&tipo=corrientes";
         $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidas')}",
             data     : datos,
             success  : function (msg) {

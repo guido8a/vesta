@@ -37,25 +37,9 @@
             </div>
         </g:if>
 
-    %{--****************************************************************************************************************************************--}%
+    %{--********************************************--}%
         <elm:wizardAvales paso="3" proceso="${proceso}"/>
-    %{--****************************************************************************************************************************************--}%
-
-    %{--<div class="wizard-container row">--}%
-    %{--<div class="col-md-4 wizard-step wizard-next-step corner-left wizard-completed">--}%
-    %{--<span class="badge wizard-badge">1</span>--}%
-    %{--<g:link action="nuevaSolicitud" id="${proceso.id}">Proceso de aval</g:link>--}%
-    %{--</div>--}%
-
-    %{--<div class="col-md-4 wizard-step wizard-next-step wizard-completed">--}%
-    %{--<span class="badge wizard-badge">2</span>--}%
-    %{--<g:link action="solicitudAsignaciones" id="${proceso.id}">Asignaciones</g:link>--}%
-    %{--</div>--}%
-
-    %{--<div class="col-md-4 wizard-step corner-right wizard-current">--}%
-    %{--<span class="badge wizard-badge">3</span> Solicitud--}%
-    %{--</div>--}%
-    %{--</div>--}%
+    %{--********************************************--}%
 
         <g:uploadForm class="form-horizontal wizard-form corner-bottom frmAval" action="guardarSolicitud" controller="avales">
             <g:hiddenField name="proceso" value="${proceso.id}"/>
@@ -183,18 +167,19 @@
 
                     <div class="col-md-4">
                         <g:if test="${!readOnly}">
+%{--
                             <g:if test="${solicitud?.estado?.codigo == 'D01'}">
                                 <p class="form-control-static">
                                     ${solicitud?.director}
                                 </p>
                             </g:if>
                             <g:else>
-                            %{--*${solicitud?.directorId}*--}%
+--}%
                                 <g:select from="${personas}" optionKey="id" class="form-control input-sm required"
                                           optionValue="${{
                                               it.nombre + ' ' + it.apellido
                                           }}" name="firma1" value="${solicitud?.directorId}" noSelection="['': '.. Seleccione ..']"/>
-                            </g:else>
+                            %{--</g:else>--}%
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
