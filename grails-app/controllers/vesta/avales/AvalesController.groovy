@@ -1108,7 +1108,7 @@ class AvalesController extends vesta.seguridad.Shield {
     }
 
     def guardarSolicitud() {
-//        println "solicitud aval params:" + params
+        println "guardar solicitud aval params:" + params
 
         def preview = params.preview == "S"
 
@@ -1171,7 +1171,6 @@ class AvalesController extends vesta.seguridad.Shield {
         }
 
         def proceso = ProcesoAval.get(params.proceso)
-        def usuFirma
 
         def monto = params.monto
         monto = monto.toDouble()
@@ -1180,13 +1179,8 @@ class AvalesController extends vesta.seguridad.Shield {
         def sol = new SolicitudAval()
         if (params.solicitud) {  // no se crea otra solicitud se ya existe
             sol = SolicitudAval.get(params.solicitud)
-            usuFirma = sol.director
-            if (!usuFirma) {
-                usuFirma = Persona.get(params.firma1)
-            }
-        } else {
-            usuFirma = Persona.get(params.firma1)
         }
+        def usuFirma = Persona.get(params.firma1)
 //        println "usuFirma: " + usuFirma
         sol.director = usuFirma
 //        println "director: " + sol.director
@@ -1222,33 +1216,6 @@ class AvalesController extends vesta.seguridad.Shield {
                 if (!sol.save(flush: true)) {
                     println "ERROR: " + sol.errors
                 }
-//                def firma = new Firma()
-//                firma.usuario = usuFirma
-//
-//                firma.accion = "firmarSolicitud"
-//                firma.controlador = "avales"
-//
-//                firma.idAccion = sol.id
-//                firma.idAccionVer = sol.id
-//
-//                if (params.tipo == "A") {
-//                    firma.accionVer = "imprimirSolicitudAnulacionAval"
-//                    firma.controladorVer = "reporteSolicitud"
-//
-//                    firma.documento = "SolicitudDeAnulacionDeAval_" + sol.proceso.nombre
-//                    firma.concepto = "Solicitud de Anulación de aval del proceso: " + proceso.nombre
-//                } else {
-//                    firma.accionVer = "imprimirSolicitudAval"
-//                    firma.controladorVer = "reporteSolicitud"
-//
-//                    firma.documento = "SolicitudDeAval_" + sol.proceso.nombre
-//                    firma.concepto = "Solicitud de aval del proceso: " + proceso.nombre
-//                }
-//
-//                if (!firma.save(flush: true)) {            // ******** guarda firmas
-//                    println "Error en firma: " + firma.errors
-//                }
-//                sol.firma = firma
 
                 def alerta = new Alerta()
                 alerta.from = session.usuario

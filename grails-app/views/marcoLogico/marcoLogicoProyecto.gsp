@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 12/01/15
-  Time: 04:24 PM
---%>
-
 <%@ page import="vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
