@@ -52,11 +52,12 @@
         <thead>
         <tr style="width: 1120px">
             <th style="width: 200px;">Solicita</th>
-            <th style="width: 80px;">No. Sol.</th>
+            <th style="width: 65px;">No. Sol.</th>
             <th style="width: 85px;">Fecha</th>
             <th style="width: 360px;">Justificación</th>
             <th style="width: 80px;">Monto</th>
             <th style="width: 200px">Tipo</th>
+            <th style="width: 65px">No. Ref.</th>
             <th style="width: 105px;">Estado</th>
             <th style="width: 90px;">Documentos</th>
         </tr>
@@ -76,11 +77,12 @@
                     <tr>
                         %{--<td style="width: 380px;">${reforma.persona.unidad} - ${reforma.persona}</td>--}%
                         <td style="width: 200px;">${reforma.persona.unidad}</td>
-                        <td style="width: 80px;">${reforma?.numero}</td>
+                        <td style="width: 65px;"><elm:numeroRef numero="${reforma?.numero}"/></td>
                         <td style="width: 85px;">${reforma.fecha.format("dd-MM-yyyy")}</td>
                         <td style="width: 360px;">${reforma.concepto}</td>
                         <td style="width: 80px;">${totales[reforma.id]}</td>
                         <td style="width: 200px"><elm:tipoReforma reforma="${reforma}"/></td>
+                        <td style="width: 65px"><elm:numeroRef numero="${reforma?.numeroReforma}"/></td>
                         <td style="width: 105px" class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                         <td style="text-align: center;width: 90px">
                             <div class="btn-group btn-group-xs" role="group">
@@ -93,11 +95,12 @@
                     <g:else>
                         <tr>
                         <td style="width: 200px;">${reforma.persona.unidad}</td>
-                        <td style="width: 80px;">${reforma?.numero}</td>
+                        <td style="width: 65px;"><elm:numeroRef numero="${reforma?.numero}"/></td>
                         <td style="width: 85px;">${reforma.fecha.format("dd-MM-yyyy")}</td>
                         <td style="width: 360px;">${reforma.concepto}</td>
                         <td style="width: 80px;">${totales[reforma.id]}</td>
                         <td style="width: 200px"><elm:tipoReforma reforma="${reforma}"/></td>
+                        <td style="width: 65px"><elm:numeroRef numero="${reforma?.numeroReforma}"/></td>
                         <td style="width: 105px" class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                         <td style="text-align: center;width: 90px">
                             <div class="btn-group btn-group-xs" role="group">

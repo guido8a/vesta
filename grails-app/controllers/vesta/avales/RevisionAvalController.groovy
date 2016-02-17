@@ -202,23 +202,25 @@ class RevisionAvalController extends Shield {
                 }
             }
 
+            avales.sort{ it.numero.toInteger()}
+
             def requirente
             def filtroSol = []
             def unidadComun
 
-            if(params.requirente != '' && params.requirente != null){
-              unidadComun = UnidadEjecutora.get(params.requirente)
-              requirente =  firmasService.requirentes(unidadComun)
+            if (params.requirente != '' && params.requirente != null) {
+                unidadComun = UnidadEjecutora.get(params.requirente)
+                requirente = firmasService.requirentes(unidadComun)
 
-              def solicitudes = SolicitudAval.findAllByAvalInList(avales)
+                def solicitudes = SolicitudAval.findAllByAvalInList(avales)
 
-              solicitudes.each {
-                  if(firmasService.requirentes(it.unidad) == requirente){
-                      filtroSol.add(it.aval)
-                  }
-              }
-               datos = filtroSol
-            }else{
+                solicitudes.each {
+                    if (firmasService.requirentes(it.unidad) == requirente) {
+                        filtroSol.add(it.aval)
+                    }
+                }
+                datos = filtroSol.sort{ it.numero.toInteger() }
+            } else {
                 datos = avales
             }
         }

@@ -79,7 +79,7 @@
             }
             $("#buscar").button().click(function () {
 //                cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirente").val())
-                cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirenteId").val())
+                cargarHistorialSort($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirenteId").val())
             })
         </script>
     </body>

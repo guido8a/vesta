@@ -41,7 +41,7 @@
                 <g:each in="${reformas}" var="reforma">
                     <tr>
                         <td>${reforma.persona.unidad} - ${reforma.persona}</td>
-                        <td><elm:numeroRef solicitud="${reforma.id}"/></td>
+                        <td><elm:numeroRef numero="${reforma.numero}"/></td>
                         <td>${reforma.fecha.format("dd-MM-yyyy")}</td>
                         <td>${reforma.concepto}</td>
                         <td>

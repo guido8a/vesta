@@ -880,16 +880,11 @@ class ElementosTagLib {
      * @param solicitud (opcional) el id de la reforma
      */
     def numeroRef = { attrs ->
-        println("numeroRef " + attrs)
-        def rfrm = null
-        if (attrs.solicitud) {
-            rfrm = Reforma.get(attrs.solicitud)
-        }
         def num = null
         def uno = 1
         def output = ""
-        if (rfrm) {
-            num = rfrm.numero.toString()
+        if (attrs.numero) {
+            num = attrs.numero.toString()
         }
 
         num = num.toString().padLeft(3, '0')
