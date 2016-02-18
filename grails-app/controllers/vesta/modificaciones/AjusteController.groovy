@@ -1901,7 +1901,7 @@ class AjusteController extends Shield {
         if(params.id){
             detalle = DetalleReforma.get(params.id)
         }
-
+        println "detalle: $detalle"
         return [proyectos: proyectos3, detalle: detalle]
     }
 

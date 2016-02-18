@@ -245,9 +245,18 @@ class AvalesController extends vesta.seguridad.Shield {
     def cargarActividades2_ajax = {
         def comp = MarcoLogico.get(params.id)
         def anio = Anio.get(params.anio)
+        def priorizado = []
 //        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
         def acts = UnidadEjecutora.get(session.unidad.id).getActividadesUnidadComponente(anio, comp, session.perfil.codigo.toString())
-        return [acts: acts]
+
+        acts.each { ac ->
+            def prsp = Asignacion.findByMarcoLogico(ac)
+            priorizado << [id: ac.id, numero: ac.numero, objeto: ac.objeto, prio: "${prsp.presupuesto.numero}: ${prsp.priorizado}"]
+        }
+
+//        println "acts: ${acts.id}"
+
+        return [acts: acts, priorizado: priorizado]
     }
 
     /**
@@ -339,7 +348,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * @Renders el monto priorizado menos el monto utilizado
      */
     def getMaximoAsg = {
-//        println "params Maximo " + params
+        println "params Maximo " + params
         def asg = Asignacion.get(params.id)
         def monto = asg.priorizado
         def usado = 0;
@@ -362,6 +371,7 @@ class AvalesController extends vesta.seguridad.Shield {
             }
         }
 
+/*
         def locked = 0
         def detalles = DetalleReforma.withCriteria {
             reforma {
@@ -372,7 +382,9 @@ class AvalesController extends vesta.seguridad.Shield {
         if (detalles.size() > 0) {
             locked = detalles.sum { it.valor }
         }
-        def disponible = monto - usado - locked
+*/
+//        def disponible = monto - usado - locked
+        def disponible = monto - usado
 //        println "get Maximo asgn2 " + params + " :  monto: " + monto + "   usado: " + usado + "    locked: " + locked + "     disponible: " + disponible
         render "" + (disponible)
     }

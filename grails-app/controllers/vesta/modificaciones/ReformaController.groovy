@@ -3045,8 +3045,8 @@ class ReformaController extends Shield {
             detalleReforma.valorDestinoInicial = 0
             detalleReforma.fuente = fuente
             detalleReforma.presupuesto = partida
-//            detalleReforma.responsable = session.usuario.unidad
-            detalleReforma.responsable = actividad.responsable
+//            detalleReforma.responsable = actividad.responsable
+            detalleReforma.responsable = UnidadEjecutora.get(params.responsable)
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma C  " + errors);
@@ -3070,8 +3070,8 @@ class ReformaController extends Shield {
             detalleReforma.valorDestinoInicial = 0
             detalleReforma.fuente = fuente
             detalleReforma.presupuesto = partida
-//            detalleReforma.responsable = session.usuario.unidad
-            detalleReforma.responsable = actividad.responsable
+//            detalleReforma.responsable = actividad.responsable
+            detalleReforma.responsable = UnidadEjecutora.get(params.responsable)
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma C  " + errors);

@@ -111,7 +111,7 @@
             <label>Reponsable</label>
         </div>
 
-        <div class="col-md-4 grupo">
+        <div class="col-md-8 grupo">
             <g:select name="responsable" from="${vesta.parametros.UnidadEjecutora.list([sort: 'nombre'])}"
                       optionKey="id" value="${detalle?.responsable?.id}"
                       class="form-control required" noSelection="['': 'Seleccione...']"/>

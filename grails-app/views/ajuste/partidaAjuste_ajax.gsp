@@ -1,19 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 28/12/15
-  Time: 11:04 AM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 04/12/15
-  Time: 10:12 AM
---%>
 
 <form id="frmPartida">
-
 
     <div class="row">
         <div class="col-md-2">
@@ -62,6 +48,24 @@
                       name="fuente" class="form-control input-sm required requiredCmb" value="${detalle?.fuente?.id}"/>
         </div>
     </div>
+
+    <div class="row">
+
+        <div class="col-md-2">
+            <label>Reponsable</label>
+        </div>
+
+        <div class="col-md-8 grupo">
+            <g:select name="responsable" from="${vesta.parametros.UnidadEjecutora.list([sort: 'nombre'])}"
+                      optionKey="id" value="${detalle?.responsable?.id}"
+                      class="form-control required" noSelection="['': 'Seleccione...']"/>
+
+            %{--<g:select from="${gerencias}" name="responsable" optionKey="id" optionValue="codigo"--}%
+            %{--class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']" value="${detalle?.responsable?.id}"/>--}%
+        </div>
+
+    </div>
+
 
     <div class="row">
         <div class="col-md-2">

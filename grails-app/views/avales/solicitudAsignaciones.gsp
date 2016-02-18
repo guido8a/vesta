@@ -44,7 +44,7 @@
             <g:if test="${!readOnly}">
                 <div class="row">
                     <span class="grupo">
-                        <label class="col-md-2 control-label">
+                        <label class="col-md-1 control-label">
                             Año
                         </label>
 
@@ -57,7 +57,7 @@
                     <div class="col-md-2"></div>
 
                     <span class="grupo">
-                        <label class="col-md-1 control-label">
+                        <label class="col-md-2 control-label">
                             Asignación
                         </label>
 
@@ -69,7 +69,7 @@
 
                 <div class="row">
                     <span class="grupo">
-                        <label class="col-md-2 offset-md-1 control-label">
+                        <label class="col-md-1 offset-md-1 control-label">
                             Componente
                         </label>
 
@@ -86,7 +86,7 @@
                     </span>
 
                     <span class="grupo">
-                        <label for="monto" class="col-md-1 control-label">
+                        <label for="monto" class="col-md-2 control-label">
                             Monto
                         </label>
 
@@ -107,11 +107,11 @@
 
                 <div class="row">
                     <span class="grupo">
-                        <label class="col-md-2 control-label">
+                        <label class="col-md-1 control-label">
                             Actividad
                         </label>
 
-                        <div class="col-md-4" id="divAct">
+                        <div class="col-md-5" id="divAct">
                             %{--<g:select name="actividad" from="${[]}" class="form-control input-sm" id="actividad" noSelection="['-1': 'Seleccione...']"/>--}%
                         </div>
                     </span>
@@ -160,7 +160,7 @@
                 $.ajax({
                     type    : "POST",
                     async   : false,
-                    url     : "${createLink(action:'getMaximoAsg')}",
+                    url     : "${createLink(action: 'getMaximoAsg')}",
                     data    : {
                         id : asg
                     },

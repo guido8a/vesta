@@ -167,7 +167,7 @@ class ModificacionesPoaController extends Shield {
 
 
     def componentesProyectoAjuste_ajax = {
-//        println "comp "+params
+        println "comp "+params
         def proyecto = Proyecto.get(params.id)
 //        def comps = MarcoLogico.findAllByProyectoAndTipoElemento(proyecto, TipoElemento.get(2))
         def anio = Anio.get(params.anio)
