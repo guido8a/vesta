@@ -1,10 +1,3 @@
-l<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 23/06/15
-  Time: 02:46 PM
---%>
-
 <g:each in="${asignaciones}" var="asg">
     <g:set var="objTitle" value="${asg.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}"/>
     <g:set var="obj" value="${objTitle.size() > 80 ? objTitle[0..79] + '…' : objTitle}"/>
@@ -73,7 +66,7 @@ l<%--
 
     $(".editar_ajax").click(function () {
 
-        cargarActividadesTareas($("#mac").val(), false);
+//        cargarActividadesTareas($("#mac").val(), false);
 
         $("#btnVerTodos").removeClass('show').addClass('hide');
         $("#divColor1").removeClass("hide").addClass("show");

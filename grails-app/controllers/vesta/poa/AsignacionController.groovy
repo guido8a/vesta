@@ -1465,11 +1465,11 @@ class AsignacionController extends Shield {
             def macros = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
             def actividades = ActividadCorriente.findAllByMacroActividadInList(macros)
             def tareas = Tarea.findAllByActividadInList(actividades)
-            asignaciones = Asignacion.findAllByTareaInListAndAnioAndUnidad(tareas, anio, unidad, [sort: 'unidad', order: 'unidad'])
+            asignaciones = Asignacion.findAllByTareaInListAndAnioAndUnidad(tareas, anio, unidad, [sort: 'unidad', sort:'id'])
 
         }
         if (params.objetivo == 'T') {
-            asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', order: 'unidad'])
+            asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', sort:'id'])
         }
 
         return [asignaciones: asignaciones]

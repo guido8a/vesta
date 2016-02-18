@@ -364,7 +364,8 @@
 
                 $("#btnGuardar").click(function () {
 
-                    var rest = parseFloat($("#divRestante").data("res"))
+//                    var rest = parseFloat($("#divRestante").data("res"))
+                    var rest = 10000000
                     var objetivo = $("#objetivo").val();
                     var macro = $("#mac").val();
                     var actividad = $("#act").val();
@@ -427,7 +428,8 @@
 
                 $("#guardarEditar").click(function () {
 
-                    var rest = parseFloat($("#divRestante").data("res"))
+//                    var rest = parseFloat($("#divRestante").data("res"))
+                    var rest = 10000000
 
                     //guardar
                     var responsable = $("#idResponsable").val();
