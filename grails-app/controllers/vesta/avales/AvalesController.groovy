@@ -1,6 +1,7 @@
 package vesta.avales
 
 import vesta.modificaciones.DetalleReforma
+import vesta.modificaciones.TipoReforma
 import vesta.parametros.Auxiliar
 import vesta.parametros.poaPac.Anio
 import vesta.poa.Asignacion
@@ -348,7 +349,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * @Renders el monto priorizado menos el monto utilizado
      */
     def getMaximoAsg = {
-        println "params Maximo " + params
+//        println "params Maximo " + params
         def asg = Asignacion.get(params.id)
         def monto = asg.priorizado
         def usado = 0;
@@ -359,33 +360,33 @@ class AvalesController extends vesta.seguridad.Shield {
         def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
         def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
         def estados = [estadoPendiente, estadoPorRevisar, estadoSolicitado, estadoSolicitadoSinFirma, estadoAprobadoSinFirma]
+        def tprf = TipoReforma.findByCodigo("E")
 
         ProcesoAsignacion.findAllByAsignacion(asg).each {
+//            println "asignacion: ${it.asignacion.id}, proceso: ${it.proceso.id}"
             def estadoAval = Aval.findByProceso(it.proceso)?.estado
+//            println "estado aval: ${estadoAval.id}"
             if(estadoAval?.id == estadoLiberado.id){
-//                usado += it.liberado
-                usado += it.monto
-            }else{
-//                usado += it.monto
                 usado += it.liberado
+            }else{
+                usado += it.monto
             }
         }
 
-/*
         def locked = 0
-        def detalles = DetalleReforma.withCriteria {
+        def detalles = DetalleReforma.withCriteria {   // reformas en proceso con disminución de recuros tprf = 'E'
             reforma {
                 inList("estado", estados)
             }
             eq("asignacionOrigen", asg)
+            eq("tipoReforma", tprf)
         }
         if (detalles.size() > 0) {
             locked = detalles.sum { it.valor }
         }
-*/
-//        def disponible = monto - usado - locked
-        def disponible = monto - usado
-//        println "get Maximo asgn2 " + params + " :  monto: " + monto + "   usado: " + usado + "    locked: " + locked + "     disponible: " + disponible
+
+        def disponible = monto - usado - locked
+//        println "get Maximo asgn2 $params  monto: $monto  usado: $usado reformas: $locked disponible: $disponible"
         render "" + (disponible)
     }
 

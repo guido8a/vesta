@@ -202,6 +202,7 @@ class AsignacionController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
      */
     def delete_ajax() {
+        println "delete_ajax.. $params"
         if (params.id) {
             def asignacionInstance = Asignacion.get(params.id)
             if (!asignacionInstance) {
@@ -209,10 +210,15 @@ class AsignacionController extends Shield {
                 return
             }
             try {
+                ProgramacionAsignacion.findAllByAsignacion(asignacionInstance).each {
+                    it.delete(flush: true)
+                }
+
                 asignacionInstance.delete(flush: true)
                 render "SUCCESS*Asignacion borrada exitosamente."
                 return
             } catch (DataIntegrityViolationException e) {
+                println "error delete_ajax: $e"
                 render "ERROR*Ha ocurrido un error al eliminar la Asignacion"
                 return
             }

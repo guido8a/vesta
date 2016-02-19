@@ -28,7 +28,7 @@
             <div class="btn-group btn-group-xs" role="group">
                 <a href="#" id="btnEditar" class="btn btn-success editar_ajax" title="Editar" iden="${asg.id}"><i class="fa fa-pencil"></i>
                 </a>
-                <a href="#" id="btnBorrar" class="btn btn-danger borrar_ajax" title="Borrar" iden="${asg.id}" nom="${asg?.actividad}"><i class="fa fa-trash"></i>
+                <a href="#" id="btnBorrar" class="btn btn-danger borrar_ajax" title="Borrar" iden="${asg.id}" nom="${asg?.presupuesto?.descripcion}"><i class="fa fa-trash"></i>
                 </a>
             </div>
         </td>
@@ -44,7 +44,10 @@
         var nombreBorrar = $(this).attr("nom");
         var objetivo = $("#objetivo").val();
         var unidad = $("#idResponsable").val();
-        bootbox.confirm("<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i>Está seguro que desea borrar la asignación: " + nombreBorrar + " ?", function (result) {
+        bootbox.confirm("<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'>" +
+                "</i>Está seguro que desea borrar la asignación: " + nombreBorrar + "<br/>" +
+                "se borrará además la programación de esta asignación <br/>" +
+                "¿Proceder con el borrado?", function (result) {
             if (result) {
                 openLoader();
                 $.ajax({
