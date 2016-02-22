@@ -1230,10 +1230,13 @@ class ElementosTagLib {
                 clase = "success"
                 icono = "check"
                 if (perfil.codigo == "ASPL") {
-//                    controlador = "reforma"
-//                    accion = "procesar"
-                    controlador = "ajuste"
-                    accion = "nuevoAjuste"
+                    if(reforma?.tipo == 'A'){
+                        controlador = "ajuste"
+                        accion = "nuevoAjuste"
+                    }else{
+                        controlador = "reforma"
+                        accion = "procesar"
+                    }
                 } else if (perfil.codigo == "ASAF") {
                     controlador = "reformaPermanente"
                     accion = "procesar"
