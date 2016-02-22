@@ -197,6 +197,7 @@ class AjusteController extends Shield {
                 return
             }
             detalles = DetalleReforma.findAllByReforma(reforma)
+            println("detalles " + detalles)
             if (detalles.size() > 0) {
                 total = detalles.sum { it.valor }
             }
@@ -487,7 +488,7 @@ class AjusteController extends Shield {
                 firma2.accionVer = "existente"
                 firma2.controladorVer = "reportesReforma"
                 firma2.idAccionVer = reforma.id
-                firma1.accionNegar = "devolverAprobarAjuste"
+                firma2.accionNegar = "devolverAprobarAjuste"
                 firma2.controladorNegar = "ajuste"
                 firma2.idAccionNegar = reforma.id
                 firma2.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
@@ -649,7 +650,7 @@ class AjusteController extends Shield {
                 firma2.accionVer = "verNuevoAjuste"
                 firma2.controladorVer = "reportesReforma"
                 firma2.idAccionVer = reforma.id
-                firma1.accionNegar = "devolverAprobarAjuste"
+                firma2.accionNegar = "devolverAprobarAjuste"
                 firma2.controladorNegar = "ajuste"
                 firma2.idAccionNegar = reforma.id
                 firma2.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
@@ -1696,7 +1697,8 @@ class AjusteController extends Shield {
         //E: existente, A: actividad, P: partida
         switch (reforma.tipoSolicitud) {
             case "E":
-                accion = "existente"
+//                accion = "existente"
+                accion = "nuevoAjuste"
 //                mensaje = "Devolución de ${tipoStr}: "
                 break;
             case "A":
@@ -1708,7 +1710,9 @@ class AjusteController extends Shield {
 //                mensaje = "Devolución de ${tipoStr}: "
                 break;
             default:
-                accion = "existente"
+//                accion = "existente"
+
+                accion = "nuevoAjuste"
 //                mensaje = "Devolución de ${tipoStr}: "
         }
 
