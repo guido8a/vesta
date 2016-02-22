@@ -283,8 +283,9 @@
                         devolver : {
                             label     : "<i class='fa fa-pencil'></i> Solicitar firma",
                             className : "btn-success",
-                            callback  : function () {
+                             callback  : function () {
                                 if ($form.valid()) {
+                                    $(".btn-success").replaceWith(spinner);
                                     openLoader("Solicitando");
                                     $.ajax({
                                         type    : "POST",
@@ -306,7 +307,12 @@
                                             }
                                         },
                                         error   : function () {
+                                            $(".btn-success").replaceWith(spinner);
                                             log("Ha ocurrido un error interno", "error");
+                                            setTimeout(function () {
+                                                location.href = "${createLink(action: 'lista')}";
+                                            }, 1000);
+
                                             closeLoader();
                                         }
                                     });
