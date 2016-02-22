@@ -687,7 +687,8 @@
                     %{--}--}%
                     %{--</g:if>--}%
 //                    if (ok) {
-                    if ($("#frmFirmas").valid() && (${disminucion} == ${incremento})) {
+                    if ($("#frmFirmas").valid() && (${Math.round(disminucion*100)/100} == ${Math.round(incremento*100)/100})) {
+                    %{--if ($("#frmFirmas").valid() && (${Math.abs(disminucion - incremento)} > 0.001)) {--}%
                         procesar(true, true);
                     } else {
                         alert("No cuadran los valores: \n Disminución: ${disminucion} \n Incremento: ${incremento}")

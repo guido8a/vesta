@@ -380,11 +380,12 @@ class AvalesController extends vesta.seguridad.Shield {
             }
             eq("asignacionOrigen", asg)
             eq("tipoReforma", tprf)
+            eq("presupuesto", asg.presupuesto)
         }
         if (detalles.size() > 0) {
             locked = detalles.sum { it.valor }
         }
-
+//        println "regormas: ${detalles.reforma.id}"
         def disponible = monto - usado - locked
 //        println "get Maximo asgn2 $params  monto: $monto  usado: $usado reformas: $locked disponible: $disponible"
         render "" + (disponible)
