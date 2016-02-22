@@ -29,7 +29,7 @@
             <thead>
                 <tr>
                     <th>Solicita</th>
-                    <th>No. Solicitud</th>
+                    <th>No. Ajuste</th>
                     <th style="width: 85px;">Fecha</th>
                     <th>Concepto</th>
                     <th>Tipo</th>
