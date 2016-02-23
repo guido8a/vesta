@@ -90,7 +90,7 @@
         </thead>
         <tbdoy>
             <tr>
-                <td>9999</td>
+                <td>GG</td>
                 <td>Viceministerio</td>
                 <td class="num"><g:formatNumber number="${asignado99}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
                 <td class="num"><g:formatNumber number="${original99}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/></td>

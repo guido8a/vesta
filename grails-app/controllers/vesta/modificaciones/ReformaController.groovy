@@ -2730,6 +2730,8 @@ class ReformaController extends Shield {
 //        println "anios: $anios"
 
         def personasFirma = firmasService.listaDirectoresUnidad(unidad)
+//        def personasFirma = firmasService.listaDirectoresUnidadCorr(unidad)
+
 
         def reforma
         def detalle

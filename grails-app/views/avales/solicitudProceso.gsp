@@ -198,8 +198,8 @@
 
                     <div class="col-md-9">
                         <g:if test="${!readOnly}">
-                            <g:textArea name="notaTecnica" style="resize: none" maxlength="350" class="form-control input-sm"
-                                        value="${solicitud?.notaTecnica}" title="Nota técnica"/>
+                            <g:textArea name="notaTecnica" style="resize: none" maxlength="350" class="form-control input-sm required"
+                                        value="${solicitud?.notaTecnica}" title="* El monto solicitado incluye el Impuesto al Valor Agregado IVA 12%"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">
@@ -207,9 +207,9 @@
                             </p>
                         </g:else>
                     </div>
+
                 </span>
             </div>
-
             <div class="row">
                 <div class="col-md-11 text-right">
                     <g:if test="${!readOnly}">

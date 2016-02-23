@@ -87,7 +87,8 @@ class FirmasService {
 //        } else {
 
 
-        if (unidad.padre.codigo == '9999') {
+//        if (unidad.padre.codigo == '9999') {
+        if (unidad.padre.codigo == 'GG') {
             gerentes = listaDirectoresUnidad(unidad)
 
             def gerenteUnidad = Persona.withCriteria {

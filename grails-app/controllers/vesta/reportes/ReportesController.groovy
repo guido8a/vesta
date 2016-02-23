@@ -245,8 +245,8 @@ class ReportesController {
     def reasignacion = {
         /*todo*/
         def anio = Anio.findByAnio(new Date().format("yyyy"))
-        def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort { it.codigo.toInteger() }
+        def uni99 = UnidadEjecutora.findAllByCodigo("GG")
+        def resto = UnidadEjecutora.findAllByCodigoNotEqual("GG").sort { it.codigo.toInteger() }
         //resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def asignado99 = 0
         def original99 = 0
@@ -309,8 +309,8 @@ class ReportesController {
      */
     def reasignacionDetallado = {
         def anio = Anio.findByAnio(new Date().format("yyyy"))
-        def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort { it.codigo.toInteger() }
+        def uni99 = UnidadEjecutora.findAllByCodigo("GG")
+        def resto = UnidadEjecutora.findAllByCodigoNotEqual("GG").sort { it.codigo.toInteger() }
         //resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def asignado99 = 0
         def original99 = 0
@@ -397,8 +397,8 @@ class ReportesController {
         sheet.setColumnView(6, 20)
 
         def anio = Anio.findByAnio(new Date().format("yyyy"))
-        def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort { it.codigo.toInteger() }
+        def uni99 = UnidadEjecutora.findAllByCodigo("GG")
+        def resto = UnidadEjecutora.findAllByCodigoNotEqual("GG").sort { it.codigo.toInteger() }
         //resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def asignado99 = 0
         def original99 = 0
@@ -445,7 +445,7 @@ class ReportesController {
 
         }
 
-        label = new Label(1, columna, "9999");
+        label = new Label(1, columna, "GG");
         sheet.addCell(label);
         label = new Label(2, columna, "Planta Central");
         sheet.addCell(label);
@@ -546,8 +546,8 @@ class ReportesController {
         sheet.setColumnView(6, 20)
 
         def anio = Anio.findByAnio(new Date().format("yyyy"))
-        def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort { it.codigo.toInteger() }
+        def uni99 = UnidadEjecutora.findAllByCodigo("GG")
+        def resto = UnidadEjecutora.findAllByCodigoNotEqual("GG").sort { it.codigo.toInteger() }
         //resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def asignado99 = 0
         def original99 = 0
@@ -687,13 +687,13 @@ class ReportesController {
      */
     def reasignacionAgrupado = {
         def anio = Anio.findByAnio(new Date().format("yyyy"))
-//        def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-//        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort{it.codigo.toInteger()}
+//        def uni99 = UnidadEjecutora.findAllByCodigo("GG")
+//        def resto = UnidadEjecutora.findAllByCodigoNotEqual("GG").sort{it.codigo.toInteger()}
 //        resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def cn = dbConnectionService.getConnection()
         def resultados = []
         def total = 0
-        def sql = "SELECT '9999',prspnmro,pg.pgpscdgo,f.fntecdgo,sum(asgnplan) from asgn a,prsp p,pgps pg,fnte f where a.prsp__id = p.prsp__id and a.pgps__id = pg.pgps__id and a.fnte__id = f.fnte__id and a.unej__id in (select unej__id from unej where unejcdgo='9999') and a.mrlg__id is null and a.anio__id=${anio.id} group by 1,2,3,4 order by 3"
+        def sql = "SELECT 'GG',prspnmro,pg.pgpscdgo,f.fntecdgo,sum(asgnplan) from asgn a,prsp p,pgps pg,fnte f where a.prsp__id = p.prsp__id and a.pgps__id = pg.pgps__id and a.fnte__id = f.fnte__id and a.unej__id in (select unej__id from unej where unejcdgo='GG') and a.mrlg__id is null and a.anio__id=${anio.id} group by 1,2,3,4 order by 3"
         cn.eachRow(sql) { d ->
             def temp = []
             temp.add(d[0])
@@ -704,7 +704,7 @@ class ReportesController {
             resultados.add(temp)
             total += d[4]
         }
-        sql = "SELECT '9999',prspnmro,pg.pgpscdgo,f.fntecdgo,pr.proy__id,sum(asgnplan) from asgn a,prsp p,pgps pg,fnte f,mrlg m,proy pr where a.prsp__id = p.prsp__id and a.mrlg__id=m.mrlg__id and m.proy__id=pr.proy__id and pr.pgps__id = pg.pgps__id and a.fnte__id = f.fnte__id and a.unej__id in (select unej__id from unej where unejcdgo='9999') and a.mrlg__id is not null and a.anio__id=${anio.id} group by 1,2,3,4,5 order by 3"
+        sql = "SELECT 'GG',prspnmro,pg.pgpscdgo,f.fntecdgo,pr.proy__id,sum(asgnplan) from asgn a,prsp p,pgps pg,fnte f,mrlg m,proy pr where a.prsp__id = p.prsp__id and a.mrlg__id=m.mrlg__id and m.proy__id=pr.proy__id and pr.pgps__id = pg.pgps__id and a.fnte__id = f.fnte__id and a.unej__id in (select unej__id from unej where unejcdgo='GG') and a.mrlg__id is not null and a.anio__id=${anio.id} group by 1,2,3,4,5 order by 3"
         cn.eachRow(sql) { d ->
             def temp = []
             temp.add(d[0])
@@ -716,7 +716,7 @@ class ReportesController {
             total += d[5]
         }
 
-        sql = "SELECT u.unejcdgo,unejnmbr,prspnmro,pg.pgpscdgo,f.fntecdgo,sum(asgnplan) from unej u,asgn a,prsp p,pgps pg,fnte f where unejcdgo != '9999' and a.unej__id = u.unej__id and p.prsp__id = a.prsp__id and a.mrlg__id is null and pg.pgps__id = a.pgps__id  and f.fnte__id = a.fnte__id and a.anio__id=${anio.id} group by p.prspnmro,1,2,pg.pgpscdgo,f.fntecdgo order by u.unejcdgo"
+        sql = "SELECT u.unejcdgo,unejnmbr,prspnmro,pg.pgpscdgo,f.fntecdgo,sum(asgnplan) from unej u,asgn a,prsp p,pgps pg,fnte f where unejcdgo != 'GG' and a.unej__id = u.unej__id and p.prsp__id = a.prsp__id and a.mrlg__id is null and pg.pgps__id = a.pgps__id  and f.fnte__id = a.fnte__id and a.anio__id=${anio.id} group by p.prspnmro,1,2,pg.pgpscdgo,f.fntecdgo order by u.unejcdgo"
 
         cn.eachRow(sql) { d ->
             def temp = []
@@ -729,7 +729,7 @@ class ReportesController {
             total += d[5]
         }
 
-        sql = "SELECT u.unejcdgo,unejnmbr,prspnmro,pg.pgpscdgo,f.fntecdgo,pr.proy__id,sum(asgnplan) from unej u,asgn a,prsp p,pgps pg,fnte f,proy pr,mrlg m where unejcdgo != '9999' and a.unej__id = u.unej__id and p.prsp__id = a.prsp__id and a.mrlg__id is not null and a.mrlg__id = m.mrlg__id and m.proy__id = pr.proy__id and  pg.pgps__id = pr.pgps__id  and f.fnte__id = a.fnte__id and a.anio__id=${anio.id} group by p.prspnmro,1,2,pg.pgpscdgo,f.fntecdgo,pr.proy__id order by u.unejcdgo"
+        sql = "SELECT u.unejcdgo,unejnmbr,prspnmro,pg.pgpscdgo,f.fntecdgo,pr.proy__id,sum(asgnplan) from unej u,asgn a,prsp p,pgps pg,fnte f,proy pr,mrlg m where unejcdgo != 'GG' and a.unej__id = u.unej__id and p.prsp__id = a.prsp__id and a.mrlg__id is not null and a.mrlg__id = m.mrlg__id and m.proy__id = pr.proy__id and  pg.pgps__id = pr.pgps__id  and f.fnte__id = a.fnte__id and a.anio__id=${anio.id} group by p.prspnmro,1,2,pg.pgpscdgo,f.fntecdgo,pr.proy__id order by u.unejcdgo"
         cn.eachRow(sql) { d ->
             def temp = []
             temp.add(d[0])
@@ -753,8 +753,8 @@ class ReportesController {
      */
     def reasignacionAgrupadoXls = {
         def anio = Anio.findByAnio(new Date().format("yyyy"))
-//        def uni99 = UnidadEjecutora.findAllByCodigo("9999")
-//        def resto = UnidadEjecutora.findAllByCodigoNotEqual("9999").sort{it.codigo.toInteger()}
+//        def uni99 = UnidadEjecutora.findAllByCodigo("GG")
+//        def resto = UnidadEjecutora.findAllByCodigoNotEqual("GG").sort{it.codigo.toInteger()}
 //        resto+= UnidadEjecutora.findAllByCodigoIsNull()
         def cn = dbConnectionService.getConnection()
         def resultados = []
@@ -800,7 +800,7 @@ class ReportesController {
 
         def columna = 2
 
-        def sql = "SELECT '9999',prspnmro,pg.pgpscdgo,f.fntecdgo,sum(asgnplan) from asgn a,prsp p,pgps pg,fnte f where a.prsp__id = p.prsp__id and a.pgps__id = pg.pgps__id and a.fnte__id = f.fnte__id and a.unej__id in (select unej__id from unej where unejcdgo='9999') and a.mrlg__id is null and a.anio__id=${anio.id} group by 1,2,3,4 order by 3"
+        def sql = "SELECT 'GG',prspnmro,pg.pgpscdgo,f.fntecdgo,sum(asgnplan) from asgn a,prsp p,pgps pg,fnte f where a.prsp__id = p.prsp__id and a.pgps__id = pg.pgps__id and a.fnte__id = f.fnte__id and a.unej__id in (select unej__id from unej where unejcdgo='GG') and a.mrlg__id is null and a.anio__id=${anio.id} group by 1,2,3,4 order by 3"
         cn.eachRow(sql) { d ->
             def temp = []
             temp.add(d[0])
@@ -826,7 +826,7 @@ class ReportesController {
 
 
 
-        sql = "SELECT '9999',prspnmro,pg.pgpscdgo,f.fntecdgo,pr.proy__id,sum(asgnplan) from asgn a,prsp p,pgps pg,fnte f,mrlg m,proy pr where a.prsp__id = p.prsp__id and a.mrlg__id=m.mrlg__id and m.proy__id=pr.proy__id and pr.pgps__id = pg.pgps__id and a.fnte__id = f.fnte__id and a.unej__id in (select unej__id from unej where unejcdgo='9999') and a.mrlg__id is not null and a.anio__id=${anio.id} group by 1,2,3,4,5 order by 3"
+        sql = "SELECT 'GG',prspnmro,pg.pgpscdgo,f.fntecdgo,pr.proy__id,sum(asgnplan) from asgn a,prsp p,pgps pg,fnte f,mrlg m,proy pr where a.prsp__id = p.prsp__id and a.mrlg__id=m.mrlg__id and m.proy__id=pr.proy__id and pr.pgps__id = pg.pgps__id and a.fnte__id = f.fnte__id and a.unej__id in (select unej__id from unej where unejcdgo='GG') and a.mrlg__id is not null and a.anio__id=${anio.id} group by 1,2,3,4,5 order by 3"
         cn.eachRow(sql) { d ->
             def temp = []
             temp.add(d[0])
@@ -849,7 +849,7 @@ class ReportesController {
             columna++
         }
 
-        sql = "SELECT u.unejcdgo,unejnmbr,prspnmro,pg.pgpscdgo,f.fntecdgo,sum(asgnplan) from unej u,asgn a,prsp p,pgps pg,fnte f where unejcdgo != '9999' and a.unej__id = u.unej__id and p.prsp__id = a.prsp__id and a.mrlg__id is null and pg.pgps__id = a.pgps__id  and f.fnte__id = a.fnte__id and a.anio__id=${anio.id} group by p.prspnmro,1,2,pg.pgpscdgo,f.fntecdgo order by u.unejcdgo"
+        sql = "SELECT u.unejcdgo,unejnmbr,prspnmro,pg.pgpscdgo,f.fntecdgo,sum(asgnplan) from unej u,asgn a,prsp p,pgps pg,fnte f where unejcdgo != 'GG' and a.unej__id = u.unej__id and p.prsp__id = a.prsp__id and a.mrlg__id is null and pg.pgps__id = a.pgps__id  and f.fnte__id = a.fnte__id and a.anio__id=${anio.id} group by p.prspnmro,1,2,pg.pgpscdgo,f.fntecdgo order by u.unejcdgo"
 
         cn.eachRow(sql) { d ->
             def temp = []
@@ -873,7 +873,7 @@ class ReportesController {
             columna++
         }
 
-        sql = "SELECT u.unejcdgo,unejnmbr,prspnmro,pg.pgpscdgo,f.fntecdgo,pr.proy__id,sum(asgnplan) from unej u,asgn a,prsp p,pgps pg,fnte f,proy pr,mrlg m where unejcdgo != '9999' and a.unej__id = u.unej__id and p.prsp__id = a.prsp__id and a.mrlg__id is not null and a.mrlg__id = m.mrlg__id and m.proy__id = pr.proy__id and  pg.pgps__id = pr.pgps__id  and f.fnte__id = a.fnte__id and a.anio__id=${anio.id} group by p.prspnmro,1,2,pg.pgpscdgo,f.fntecdgo,pr.proy__id order by u.unejcdgo"
+        sql = "SELECT u.unejcdgo,unejnmbr,prspnmro,pg.pgpscdgo,f.fntecdgo,pr.proy__id,sum(asgnplan) from unej u,asgn a,prsp p,pgps pg,fnte f,proy pr,mrlg m where unejcdgo != 'GG' and a.unej__id = u.unej__id and p.prsp__id = a.prsp__id and a.mrlg__id is not null and a.mrlg__id = m.mrlg__id and m.proy__id = pr.proy__id and  pg.pgps__id = pr.pgps__id  and f.fnte__id = a.fnte__id and a.anio__id=${anio.id} group by p.prspnmro,1,2,pg.pgpscdgo,f.fntecdgo,pr.proy__id order by u.unejcdgo"
         cn.eachRow(sql) { d ->
             def temp = []
             temp.add(d[0])
@@ -3262,7 +3262,7 @@ class ReportesController {
             row++
         }
 
-//        label = new Label(1, columna, "9999");
+//        label = new Label(1, columna, "GG");
 //        sheet.addCell(label);
 //        number = new Number(3, columna, asignado99);
 //        sheet.addCell(number);
@@ -5086,7 +5086,7 @@ class ReportesController {
 
         // inicia textos y numeros para asocias a columnas
         def label = new Label(0, 1, "Texto", times16format);
-        def nmro = new Number(12, 1, 9999);
+        def nmro = new Number(12, 1, GG);
 
         def result = reportePacXls(params.id, params.anio)
 

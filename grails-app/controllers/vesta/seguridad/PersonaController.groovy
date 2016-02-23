@@ -435,22 +435,22 @@ class PersonaController extends Shield {
        'F' 'Financiero'
 
        administrativo
-       si esigef = 9999 -> solo de la direccion administrativa // id=93
+       si esigef = GG -> solo de la direccion administrativa // id=93
        else -> de la unidad
 
        ejecucion
        de la unidad
 
        financiero
-       si esigef = 9999 -> solo de la direccion financiera // id=94
+       si esigef = GG -> solo de la direccion financiera // id=94
        else -> de la unidad
 
        planificacion
-       si esigef = 9999 -> solo de la direccion de planificacion // id=85
+       si esigef = GG -> solo de la direccion de planificacion // id=85
        else -> de la unidad
 
        seguimiento
-       si esigef = 9999 -> solo de la direccion de planificacion // id=85
+       si esigef = GG -> solo de la direccion de planificacion // id=85
        else -> de la unidad
        */
 
@@ -465,7 +465,7 @@ class PersonaController extends Shield {
         if (tipo) {
             switch (tipo.codigo) {
                 case 'A':
-                    if (unidad.codigo == "9999") {
+                    if (unidad.codigo == "GG") {
                         usuarios = Persona.findAllByUnidad(dirAdmin)
                     } else {
                         if (unidad) {
@@ -477,7 +477,7 @@ class PersonaController extends Shield {
                     usuarios = Persona.findAllByUnidad(unidad)
                     break;
                 case 'F':
-                    if (unidad.codigo == "9999") {
+                    if (unidad.codigo == "GG") {
                         usuarios = Persona.findAllByUnidad(dirFinan)
                     } else {
                         if (unidad) {
@@ -487,7 +487,7 @@ class PersonaController extends Shield {
                     break;
                 case 'I':
 /*
-                    if (unidad.codigo == "9999") {
+                    if (unidad.codigo == "GG") {
                         usuarios = Usro.findAllByUnidad(dirPlan)
                     } else {
 */
@@ -499,7 +499,7 @@ class PersonaController extends Shield {
 */
                     break;
                 case 'S':
-                    if (unidad.codigo == "9999") {
+                    if (unidad.codigo == "GG") {
                         usuarios = Persona.findAllByUnidad(dirPlan)
                     } else {
                         if (unidad) {

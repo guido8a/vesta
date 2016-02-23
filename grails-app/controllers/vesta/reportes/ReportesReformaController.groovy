@@ -910,7 +910,7 @@ class ReportesReformaController {
 
     static String requirentesUnej(id) {
         def requirentes = []
-        def general = UnidadEjecutora.findByCodigo('9999')
+        def general = UnidadEjecutora.findByCodigo('GG')
         def tecnica = UnidadEjecutora.findByCodigo('GT')
         def administrativaFinan = UnidadEjecutora.findByCodigo('GAF')
         def planificacion = UnidadEjecutora.findByCodigo('GPE')
