@@ -1,9 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 17/12/15
-  Time: 12:36 PM
---%>
 
 <%@ page import="vesta.proyectos.MarcoLogico" contentType="text/html;charset=UTF-8" %>
 <html>
