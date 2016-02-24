@@ -266,6 +266,7 @@ class AvalesController extends vesta.seguridad.Shield {
      */
     def cargarActividadesAjuste_ajax = {
         def comp = MarcoLogico.get(params.id)
+        def priorizado = []
 //        def acts = []
 //        if (params.id != "-1") {
 //            acts = MarcoLogico.findAllByMarcoLogico(comp, [sort: "numero"])
@@ -274,7 +275,15 @@ class AvalesController extends vesta.seguridad.Shield {
         def anio = Anio.get(params.anio)
 //        def acts = proyectosService.getActividadesUnidadComponente(UnidadEjecutora.get(session.unidad.id), anio, comp, session.perfil.codigo.toString())
         def acts = UnidadEjecutora.get(session.unidad.id).getActividadesUnidadComponente(anio, comp, session.perfil.codigo.toString())
-        return [acts: acts, div: params.div]
+
+
+
+        acts.each { ac ->
+            def prsp = Asignacion.findByMarcoLogico(ac)
+            priorizado << [id: ac.id, numero: ac.numero, objeto: ac.objeto, prio: "${prsp.presupuesto.numero}: ${prsp.priorizado}"]
+        }
+
+        return [acts: acts, div: params.div, priorizado: priorizado]
     }
 
     /**
@@ -468,7 +477,9 @@ class AvalesController extends vesta.seguridad.Shield {
             def estadoDevuelto = EstadoAval.findByCodigo("D01")
             def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
             def estadoPendiente = EstadoAval.findByCodigo("P01")
-            def estados = [estadoDevuelto, estadoSolicitadoSinFirma, estadoPendiente]
+            def estadoNegado = EstadoAval.findByCodigo('E03')
+
+            def estados = [estadoDevuelto, estadoSolicitadoSinFirma, estadoPendiente, estadoNegado]
             def solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, estados)
             if (solicitudes.size() == 1) {
                 solicitud = solicitudes.first()
@@ -663,6 +674,7 @@ class AvalesController extends vesta.seguridad.Shield {
         def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
         def estadoAprobado = EstadoAval.findByCodigo("E02")
         def estadoAnulado = EstadoAval.findByCodigo("E05")
+        def estadoNegado = EstadoAval.findByCodigo("E03")
 
 //        def estadoPendiente = EstadoAval.findByCodigo("P01")
         def estadoPorRevisar = EstadoAval.findByCodigo("R01")
@@ -683,7 +695,7 @@ class AvalesController extends vesta.seguridad.Shield {
                 inList("estado", [estadoPorRevisar, estadoSolicitadoSinFirma, estadoSolicitado, estadoDevueltoDirReq])
             }
         } else {
-            solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [estadoPorRevisar, estadoSolicitadoSinFirma, estadoSolicitado, estadoDevueltoDirReq])
+            solicitudes = SolicitudAval.findAllByProcesoAndEstadoInList(proceso, [estadoPorRevisar, estadoSolicitadoSinFirma, estadoSolicitado, estadoDevueltoDirReq, estadoNegado])
         }
 
         def disponible = proceso.getMonto()

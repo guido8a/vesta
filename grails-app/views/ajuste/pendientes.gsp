@@ -51,9 +51,14 @@
                                         </td>
                                         <td class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                                         <td>
-                                            <div class="btn-group btn-group-sm" role="group">
+                                            <div class="btn-group btn-group-xs" role="group" style="width: 100px">
                                                 <elm:linkPdfReforma reforma="${reforma}"/>
                                                 <elm:linkEditarReforma reforma="${reforma}" perfil="${session.perfil}"/>
+                                                <g:if test="${session.perfil.codigo == 'ASPL' && !vesta.modificaciones.DetalleReforma.findAllByReforma(vesta.modificaciones.Reforma.get(reforma?.id))}">
+                                                    <a href="#"  class="btn btn-danger borrar"  ajuste="${reforma?.id}" title="Eliminar ajuste">
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+                                                </g:if>
                                             </div>
                                         </td>
                                     </tr>
@@ -91,6 +96,42 @@
             $(function () {
                 buscar();
             });
+
+            $(".borrar").click(function () {
+                var id = $(this).attr('ajuste');
+                bootbox.confirm("¿Está seguro de querer eliminar este ajuste?", function (res) {
+                    if(res){
+                        openLoader('Eliminando ajuste');
+                        $.ajax({
+                            type    : "POST",
+                            data : {
+                                id: id
+                            },
+                            url     : "${createLink(action:'borrarAjuste_ajax')}",
+                            success : function (msg) {
+                                if (msg != "ok") {
+                                    closeLoader();
+                                    bootbox.alert({
+                                                message : "Error al eliminar el ajuste",
+                                                title   : "Error",
+                                                class   : "modal-error"
+                                            }
+                                    );
+                                }else{
+                                    closeLoader();
+                                    log("Ajuste eliminado correctamente", "success");
+                                    setTimeout(function () {
+                                        location.reload(true)
+                                    }, 2000);
+
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+
         </script>
     </body>
 </html>

@@ -6,7 +6,7 @@
 --%>
 
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.modificaciones.Reforma" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
@@ -65,10 +65,10 @@
                                 <g:each in="${reformas}" var="reforma" status="j">
                                     <tr>
                                         %{--<td>${reforma.persona}</td>--}%
-                                        <td>${gerencias[j].codigo}</td>
+                                        <td>${gerencias[j]?.codigo}</td>
                                         <td>${reforma?.numero}</td>
-                                        <td>${reforma.fecha.format("dd-MM-yyyy")}</td>
-                                        <td>${reforma.concepto}</td>
+                                        <td>${reforma?.fecha?.format("dd-MM-yyyy")}</td>
+                                        <td>${reforma?.concepto}</td>
                                         <td>${totales[reforma.id]}</td>
                                         <td>
                                             <elm:tipoReforma reforma="${reforma}"/>
@@ -78,6 +78,11 @@
                                             <div class="btn-group btn-group-xs" role="group">
                                                 <elm:linkPdfReforma reforma="${reforma}"/>
                                                 <elm:linkEditarReforma reforma="${reforma}" perfil="${session.perfil}"/>
+                                                <g:if test="${session.perfil.codigo == 'RQ' && !vesta.modificaciones.DetalleReforma.findAllByReforma(vesta.modificaciones.Reforma.get(reforma?.id))}">
+                                                    <a href="#"  class="btn btn-danger borrar"  reforma="${reforma?.id}" title="Eliminar reforma">
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+                                                </g:if>
                                             </div>
                                         </td>
                                     </tr>
@@ -116,10 +121,41 @@
                 buscar();
             });
 
-            %{--$("#btnActualizar").click(function () {--}%
-                %{--console.log("entrofff")--}%
-                %{--location.href = "${createLink(controller: 'reforma', action: 'pendientes')}"--}%
-            %{--});--}%
+
+            $(".borrar").click(function () {
+                var id = $(this).attr('reforma');
+                bootbox.confirm("¿Está seguro de querer eliminar esta reforma?", function (res) {
+                     if(res){
+                         openLoader('Eliminando reforma');
+                        $.ajax({
+                            type    : "POST",
+                            data : {
+                                id: id
+                            },
+                            url     : "${createLink(action:'borrarReforma_ajax')}",
+                            success : function (msg) {
+                                if (msg != "ok") {
+                                    closeLoader();
+                                    bootbox.alert({
+                                                message : "Error al eliminar la reforma",
+                                                title   : "Error",
+                                                class   : "modal-error"
+                                            }
+                                    );
+                                }else{
+                                    closeLoader();
+                                    log("Reforma eliminada correctamente", "success");
+                                    setTimeout(function () {
+                                        location.reload(true)
+                                    }, 2000);
+
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
         </script>
     </body>
 </html>

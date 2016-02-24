@@ -3225,4 +3225,16 @@ class ReformaController extends Shield {
     }
 
 
+    def borrarReforma_ajax () {
+        def reforma = Reforma.get(params.id)
+//        println("reforma " +  reforma)
+        def detalleReforma = DetalleReforma.findAllByReforma(reforma)
+        if(!detalleReforma){
+            reforma.delete(flush: true)
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
+
 }

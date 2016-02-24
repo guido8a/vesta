@@ -49,7 +49,7 @@
             <tbody>
                 <g:each in="${procesos}" var="p">
                     <g:set var="sols" value="${SolicitudAval.findAllByProceso(p).estado}"/>
-                    <tr data-id="${p?.id}">
+                    <tr data-id="${p?.id}" data-estado="${SolicitudAval.findAllByProceso(p).estado.codigo.first().toString()}">
                         <td title="${p.proyecto.toStringCompleto()}">${p.proyecto}</td>
                         <td>${p.nombre}</td>
                         <td class="${sols.codigo.join(" ")}">
@@ -81,22 +81,27 @@
             function createContextMenu(node) {
                 var $tr = $(node);
                 var idPro = $tr.data("id");
+                var estado = $tr.data("estado");
+
 
                 var items = {
                     header : {
                         label  : "Acciones",
                         header : true
-                    },
-                    editar : {
+                    }
+                };
+
+//                if(estado != 'E03'){
+                    items.editar = {
                         label  : "Editar",
                         icon   : "fa fa-pencil",
                         action : function ($element) {
                             var id = $element.data("id");
                             location.href = "${createLink(controller: 'avales', action:  'nuevaSolicitud')}/" + id;
-//                            createEditRow(idPro)
                         }
-                    }
-                };
+                    };
+//                }
+
 
                 items.avales = {
                     label  : "Avales",

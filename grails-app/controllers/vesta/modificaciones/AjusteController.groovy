@@ -1966,8 +1966,6 @@ class AjusteController extends Shield {
             }else{
                 render "ok"
             }
-
-
         }else{
             //editar
 
@@ -1989,7 +1987,21 @@ class AjusteController extends Shield {
                 render "ok"
             }
         }
+    }
 
+    def borrarAjuste_ajax() {
+
+        def reforma = Reforma.get(params.id)
+//        println("reforma " +  reforma)
+        def detalleReforma = DetalleReforma.findAllByReforma(reforma)
+        if(!detalleReforma){
+            reforma.delete(flush: true)
+            render "ok"
+        }else{
+            render "no"
+        }
 
     }
+
+
 }
