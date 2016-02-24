@@ -615,7 +615,7 @@ class ReportesNuevosController {
         "from prco, slav, unej, aval, poas, asgn " +
         "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
         "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
-        "asgn.asgn__id = poas.asgn__id " +
+        "asgn.asgn__id = poas.asgn__id and slav.edav__id <> 90 " +
         "group by slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, avalnmro, avalfcap, fnte__id " +
         "order by cast(avalnmro as integer), prconmbr, fnte__id;"
 
@@ -1028,12 +1028,12 @@ class ReportesNuevosController {
         def cn = dbConnectionService.getConnection()
         def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, sum(poasmnto), fnte__id " +
                 "from prco, slav, unej, aval, poas, asgn " +
-                "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
+                "where slav.prco__id = prco.prco__id and unej.unej__id = slav.unej__id and " +
                 "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
-                "asgn.asgn__id = poas.asgn__id " +
+                "asgn.asgn__id = poas.asgn__id and slav.edav__id <> 90 " +
                 "group by avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, avalnmro, avalfcap, fnte__id " +
                 "order by avalnmro, fnte__id;"
-
+        println "+++sql: $tx"
         def res = cn.rows(tx.toString())
         def unidades = []
 

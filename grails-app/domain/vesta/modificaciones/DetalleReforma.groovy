@@ -1,6 +1,7 @@
 package vesta.modificaciones
 
 import vesta.parametros.UnidadEjecutora
+import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
@@ -102,6 +103,11 @@ class DetalleReforma {
     String solicitado
 
     /**
+     * año del POA
+     */
+    Anio anio
+
+    /**
      * Define los campos que se van a ignorar al momento de hacer logs
      */
     static auditable = [ignore: []]
@@ -137,6 +143,7 @@ class DetalleReforma {
             tipoReforma column: 'tprf__id'
             responsable column: 'unej__id'
             solicitado column: 'dtrfslct'
+            anio column: 'anio__id'
 
         }
     }
