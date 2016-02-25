@@ -198,7 +198,8 @@ class UnidadEjecutora {
     UnidadEjecutora getGerencia() {
         def gerencia = this
         def padre = this.padre
-        def codigosNo = ['343', '9999'] // yachay, Gerencia general, Gerencia tecnica
+//        def codigosNo = ['343', '9999'] // yachay, Gerencia general, Gerencia tecnica
+        def codigosNo = ['343', 'GG'] // yachay, Gerencia general, Gerencia tecnica
         if (!codigosNo.contains(padre.codigo)) {
             gerencia = padre
         }
@@ -214,7 +215,7 @@ class UnidadEjecutora {
     def getUnidades() {
         def padre = this.padre
         def unidades = [this]
-        def codigosNo = ['343', '9999', 'GT'] // yachay, Gerencia general, Gerencia tecnica
+        def codigosNo = ['343', 'GG', 'GT'] // yachay, Gerencia general, Gerencia tecnica
         if (!codigosNo.contains(padre.codigo)) {
             unidades += padre
             unidades += UnidadEjecutora.findAllByPadre(padre)
@@ -234,7 +235,7 @@ class UnidadEjecutora {
         } else {
             def padre = this.padre
             unidades = [this]
-            def codigosNo = ['343', '9999', 'GT'] // yachay, Gerencia general, Gerencia tecnica
+            def codigosNo = ['343', 'GG', 'GT'] // yachay, Gerencia general, Gerencia tecnica
             if (!codigosNo.contains(padre.codigo)) {
                 unidades += padre
                 unidades += UnidadEjecutora.findAllByPadre(padre)
