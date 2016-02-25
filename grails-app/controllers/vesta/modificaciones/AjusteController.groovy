@@ -1943,6 +1943,11 @@ class AjusteController extends Shield {
         def actividad = MarcoLogico.get(params.actividad)
         def fuente = Fuente.get(params.fuente)
         def partida = Presupuesto.get(params.partida)
+        def anio
+
+        if(params.anio){
+            anio = Anio.get(params.anio)
+        }
 
         def detalleReforma
 
@@ -1959,9 +1964,10 @@ class AjusteController extends Shield {
             detalleReforma.fuente = fuente
             detalleReforma.presupuesto = partida
             detalleReforma.responsable = session.usuario.unidad
+            detalleReforma.anio = anio
 
             if(!detalleReforma.save(flush: true)){
-                println("error al guardar detalle de reforma E  " + errors);
+                println("error al guardar detalle de reforma E  " + detalleReforma.errors);
                 render "no"
             }else{
                 render "ok"
@@ -1980,8 +1986,9 @@ class AjusteController extends Shield {
             detalleReforma.presupuesto = partida
             detalleReforma.responsable = session.usuario.unidad
 
+
             if(!detalleReforma.save(flush: true)){
-                println("error al guardar detalle de reforma E  " + errors);
+                println("error al guardar detalle de reforma E  " + detalleReforma.errors);
                 render "no"
             }else{
                 render "ok"

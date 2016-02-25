@@ -2929,6 +2929,7 @@ class ReformaController extends Shield {
             detalleReforma.valorDestinoInicial = 0
             detalleReforma.fuente = fuente
             detalleReforma.responsable = asignacion.unidad
+            detalleReforma.anio = asignacion.anio
             if(params.adicional){
                 println("entro")
                 detalleReforma.solicitado = params.adicional
@@ -2953,6 +2954,7 @@ class ReformaController extends Shield {
             detalleReforma.valorDestinoInicial = 0
             detalleReforma.fuente = fuente
             detalleReforma.responsable = asignacion.unidad
+//            detalleReforma.anio = asignacion.anio
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma A " + detalleReforma.errors);
@@ -2988,6 +2990,7 @@ class ReformaController extends Shield {
             detalleReforma.valorDestinoInicial = asignacion.priorizado
             detalleReforma.fuente = fuente
             detalleReforma.responsable = asignacion.unidad
+            detalleReforma.anio = asignacion.anio
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma B " + errors);
@@ -3008,6 +3011,7 @@ class ReformaController extends Shield {
             detalleReforma.valorDestinoInicial = asignacion.priorizado
             detalleReforma.fuente = fuente
             detalleReforma.responsable = asignacion.unidad
+//            detalleReforma.anio = asignacion.anio
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma B " + errors);
@@ -3030,6 +3034,11 @@ class ReformaController extends Shield {
 //        def asignacion = Asignacion.get(params.asignacion)
         def fuente = Fuente.get(params.fuente)
         def partida = Presupuesto.get(params.partida)
+        def anio
+
+        if(params.anio){
+            anio = Anio.get(params.anio)
+        }
 
         def detalleReforma
 
@@ -3049,9 +3058,10 @@ class ReformaController extends Shield {
             detalleReforma.presupuesto = partida
 //            detalleReforma.responsable = actividad.responsable
             detalleReforma.responsable = UnidadEjecutora.get(params.responsable)
+            detalleReforma.anio = anio
 
             if(!detalleReforma.save(flush: true)){
-                println("error al guardar detalle de reforma C  " + errors);
+                println("error al guardar detalle de reforma C  " + detalleReforma.errors);
                 render "no"
             }else{
                 render "ok"
@@ -3075,8 +3085,9 @@ class ReformaController extends Shield {
 //            detalleReforma.responsable = actividad.responsable
             detalleReforma.responsable = UnidadEjecutora.get(params.responsable)
 
+
             if(!detalleReforma.save(flush: true)){
-                println("error al guardar detalle de reforma C  " + errors);
+                println("error al guardar detalle de reforma C  " + detalleReforma.errors);
                 render "no"
             }else{
                 render "ok"
@@ -3089,7 +3100,6 @@ class ReformaController extends Shield {
     def grabarDetalleD () {
 
 //        println("params D " + params)
-
         def reforma = Reforma.get(params.reforma)
         def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
         def componente = MarcoLogico.get(params.componente)
@@ -3098,10 +3108,14 @@ class ReformaController extends Shield {
         def categoria = Categoria.get(params.categoria)
         def inicio = new Date().parse("dd-MM-yyyy", params.inicio)
         def fin = new Date().parse("dd-MM-yyyy", params.fin)
-
         def responsable = UnidadEjecutora.get(params.responsable)
-
         def detalleReforma
+        def anio
+
+        if(params.anio){
+            anio = Anio.get(params.anio)
+        }
+
 
         if(!params.id){
             //crear
@@ -3120,6 +3134,7 @@ class ReformaController extends Shield {
             detalleReforma.fechaFinNuevaActividad = fin
             detalleReforma.descripcionNuevaActividad = params.actividad
             detalleReforma.responsable = responsable
+            detalleReforma.anio = anio
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma D  " + errors);

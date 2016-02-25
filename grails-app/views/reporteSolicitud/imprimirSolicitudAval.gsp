@@ -195,12 +195,12 @@
                         solicitud?.director?.nombre && solicitud?.director?.apellido ? solicitud?.director?.nombre + ' ' + solicitud?.director?.apellido : ''}
                 </td>
         </tr>
-        <tr>
-                <td colspan="2">
-                    <strong>Revisado por:</strong>  ${solicitud?.director?.sigla ?:
-                        solicitud?.director?.nombre && solicitud?.director?.apellido ? solicitud?.director?.nombre + ' ' + solicitud?.director?.apellido : ''}
-                </td>
-            </tr>
+        %{--<tr>--}%
+                %{--<td colspan="2">--}%
+                    %{--<strong>Revisado por:</strong>  ${solicitud?.director?.sigla ?:--}%
+                        %{--solicitud?.director?.nombre && solicitud?.director?.apellido ? solicitud?.director?.nombre + ' ' + solicitud?.director?.apellido : ''}--}%
+                %{--</td>--}%
+            %{--</tr>--}%
 
             %{--<span style="float: right">--}%
                 %{--<strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}--}%

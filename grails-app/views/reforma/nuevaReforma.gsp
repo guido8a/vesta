@@ -689,6 +689,7 @@
                                                 responsable: dataDestino.responsable_id,
                                                 id: detalleId
 
+
                                             },
                                             success: function (msg){
                                                 if(msg == 'ok'){
@@ -770,7 +771,8 @@
                                             actividad: dataDestino.actividad_id,
                                             asignacion: dataDestino.asignacion_id,
                                             tipoReforma: "O",
-                                            reforma: '${reforma?.id}'
+                                            reforma: '${reforma?.id}',
+                                            anio: $("#anio").val()
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
@@ -911,16 +913,9 @@
                                     dataDestino.componente_id = $("#comp").val();
                                     dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                     dataDestino.actividad_id = $("#actividadRf").val();
-//                                    dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-//                                    var part = $("#asignacion").find("option:selected").text().split(": ")
-//                                    var partid = part[2].split(",")
-//                                    var ini = part[1].split(", Partida")
                                     var nume = $("#prsp_id").val().split("-");
                                     dataDestino.partida = nume[0];
                                     dataDestino.partida_id = $("#prsp_hide").val();
-//                                    dataDestino.inicial = ini[0]
-//                                    dataDestino.asignacion_id = $("#asignacion").val();
-//                                    addPartida(dataOrigen, dataDestino);
                                     dataDestino.fuente = $("#fuente").val();
                                     resetForm();
 
@@ -936,8 +931,8 @@
                                             tipoReforma: "P",
                                             reforma: '${reforma?.id}',
                                             partida: dataDestino.partida_id,
-                                            fuente: dataDestino.fuente
-
+                                            fuente: dataDestino.fuente,
+                                            anio: $("#anio").val()
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
@@ -1021,7 +1016,8 @@
                                             fuente: dataDestino.fuente,
                                             inicio: dataDestino.fi,
                                             fin: dataDestino.ff,
-                                            responsable: dataDestino.responsable_id
+                                            responsable: dataDestino.responsable_id,
+                                            anio:  $("#anio").val()
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){

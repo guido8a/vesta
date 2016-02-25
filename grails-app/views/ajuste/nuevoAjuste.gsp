@@ -415,6 +415,7 @@
         var detalleId = $(this).parent().parent().data("id");
         var codigoDt = $(this).parent().parent().data("cod");
 
+
         if(codigoDt == 'O'){
             $.ajax({
                 type: 'POST',
@@ -574,6 +575,7 @@
             });
         }
         if(codigoDt == 'P'){
+
             $.ajax({
                 type: 'POST',
                 url     : "${createLink(controller: 'ajuste', action: 'partidaAjuste_ajax')}",
@@ -1015,7 +1017,8 @@
                                             tipoReforma: "P",
                                             reforma: '${reforma?.id}',
                                             partida: dataDestino.partida_id,
-                                            fuente: dataDestino.fuente
+                                            fuente: dataDestino.fuente,
+                                            anio: $("#anio").val()
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
@@ -1099,7 +1102,8 @@
                                             fuente: dataDestino.fuente,
                                             inicio: dataDestino.fi,
                                             fin: dataDestino.ff,
-                                            responsable: dataDestino.responsable_id
+                                            responsable: dataDestino.responsable_id,
+                                            anio: $("#anio").val()
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
@@ -1174,7 +1178,8 @@
                                             tipoReforma: "N",
                                             reforma: '${reforma?.id}',
                                             partida: dataDestino.partida_id,
-                                            fuente: dataDestino.fuente
+                                            fuente: dataDestino.fuente,
+                                            anio: $("#anio").val()
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
