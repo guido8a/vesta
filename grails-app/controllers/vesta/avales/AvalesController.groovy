@@ -360,7 +360,7 @@ class AvalesController extends vesta.seguridad.Shield {
     def getMaximoAsg = {
 //        println "params Maximo " + params
         def asg = Asignacion.get(params.id)
-        def monto = asg.priorizado
+        def monto = asg?.priorizado?:0
         def usado = 0;
         def estadoPendiente = EstadoAval.findByCodigo("P01")
         def estadoPorRevisar = EstadoAval.findByCodigo("R01")
@@ -374,10 +374,16 @@ class AvalesController extends vesta.seguridad.Shield {
         ProcesoAsignacion.findAllByAsignacion(asg).each {
 //            println "asignacion: ${it.asignacion.id}, proceso: ${it.proceso.id}"
             def estadoAval = Aval.findByProceso(it.proceso)?.estado
-//            println "estado aval: ${estadoAval.id}"
-            if(estadoAval?.id == estadoLiberado.id){
-                usado += it.liberado
-            }else{
+//            println "proceso: ${it.proceso.id}, ${it.monto} estado aval: ${estadoAval?.id} y estadoLiberado: $estadoLiberado.id"
+            if(SolicitudAval.findByProceso(it.proceso)){
+                if(estadoAval?.id == estadoLiberado.id){
+                    usado += it.liberado
+                }else{
+                    usado += it.monto
+                }
+            }
+            //toma en cuenta el poas del proceso actual
+            if(it.proceso.id == params.prco.toInteger()){
                 usado += it.monto
             }
         }
@@ -389,14 +395,14 @@ class AvalesController extends vesta.seguridad.Shield {
             }
             eq("asignacionOrigen", asg)
             eq("tipoReforma", tprf)
-            eq("presupuesto", asg.presupuesto)
+            eq("presupuesto", asg?.presupuesto)
         }
         if (detalles.size() > 0) {
             locked = detalles.sum { it.valor }
         }
 //        println "regormas: ${detalles.reforma.id}"
         def disponible = monto - usado - locked
-//        println "get Maximo asgn2 $params  monto: $monto  usado: $usado reformas: $locked disponible: $disponible"
+//        println "get Maximo asgn $params  monto: $monto  usado: $usado reformas: $locked disponible: $disponible"
         render "" + (disponible)
     }
 

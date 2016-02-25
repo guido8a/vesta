@@ -162,7 +162,8 @@
                     async   : false,
                     url     : "${createLink(action: 'getMaximoAsg')}",
                     data    : {
-                        id : asg
+                        id  : asg,
+                        prco: ${proceso.id}
                     },
                     success : function (msg) {
                         if ($("#asignacion").val() != "-1")
