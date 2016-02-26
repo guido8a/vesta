@@ -4,6 +4,8 @@ import vesta.alertas.Alerta
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.poa.Asignacion
+import vesta.poa.ProgramacionAsignacion
+import vesta.proyectos.Proceso
 import vesta.seguridad.*
 
 /**
@@ -938,10 +940,11 @@ class RevisionAvalController extends Shield {
 //                        sesiones.each { sesn ->
 //                            Persona usro = sesn.usuario
                             def mail = personaMail.mail
-                            if (mail) {
+                            def analista = sol.analista.mail
+                            if (mail || analista) {
                                 println "Envía mail de Aval firmado para: ${sol.firma.usuario.login} a $mail"
                                 mailService.sendMail {
-                                    to mail
+                                    to mail, analista
                                     subject "Nuevo aval emitido"
                                     body "Se ha emitido el aval #" + aval.numeroAval
                                 }
@@ -1711,5 +1714,54 @@ class RevisionAvalController extends Shield {
         return [solicitud: solicitud, anios: anios, arr: arr, devengado: dosDevengado, anio: anio, gerentes: gerentes]
     }
 
+
+    def borrarSolicitud_ajax() {
+        println("params " + params)
+
+        def estadoPendiente = EstadoAval.findByCodigo('P01')
+        def proceso = ProcesoAval.get(params.id)
+        def poas = ProcesoAsignacion.findAllByProceso(proceso)
+        def solicitud = SolicitudAval.findByProcesoAndEstado(proceso, estadoPendiente)
+
+//        println("proceso " + proceso)
+//        println("poas " + poas)
+//        println("solicitud " + solicitud)
+
+        if(solicitud) {
+//            println("entro soli")
+            try {
+                solicitud.delete(flush: true)
+            } catch (e) {
+                render "no"
+            }
+            poas.each { p ->
+                try {
+                    p.delete(flush: true)
+                } catch (e) {
+                    render "no"
+                }
+            }
+            proceso.delete(flush: true)
+            render "ok"
+        }
+        else{
+            if(poas.size() > 0){
+//                println("entro poas")
+                poas.each {po->
+                    try{
+                        po.delete(flush: true)
+                    }catch(e){
+                        render "no"
+                    }
+                }
+                proceso.delete(flush: true)
+                render "ok"
+            }else{
+//                println("entro proceso")
+                proceso.delete(flush: true)
+                render "ok"
+            }
+        }
+    }
 }
 

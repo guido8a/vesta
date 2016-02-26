@@ -71,6 +71,9 @@
                                                 <a href="${g.createLink(controller: 'avales', action: 'nuevaSolicitud', id: p.id)}" class="aprobar btn btn-info" title="Editar">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
+                                                <a href="#" class="borrarSolicitud btn btn-danger" title="Eliminar solicitud" sol="${p?.id}">
+                                                    <i class="fa fa-close"></i>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -133,6 +136,9 @@
                                                         <g:else>
                                                             <a href="${g.createLink(controller: 'avales', action: 'nuevaSolicitud', id: p.proceso.id)}" class="aprobar btn btn-info" title="Editar">
                                                                 <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                            <a href="#" class="borrarSolicitud btn btn-danger" title="Eliminar solicitud" sol="${p.proceso.id}">
+                                                                <i class="fa fa-close"></i>
                                                             </a>
                                                         </g:else>
                                                     </g:if>
@@ -318,6 +324,41 @@
                         }
                     });
                 });
+            });
+
+            $(".borrarSolicitud").click(function (){
+               var id = $(this).attr("sol")
+                bootbox.confirm("¿Está seguro de querer eliminar esta solicitud?", function (res) {
+                    if(res){
+                        openLoader('Eliminando solicitud');
+                        $.ajax({
+                            type    : "POST",
+                            data : {
+                                id: id
+                            },
+                            url     : "${createLink(action:'borrarSolicitud_ajax')}",
+                            success : function (msg) {
+                                if (msg != "no") {
+                                    closeLoader();
+                                    log("Solicitud eliminada correctamente", "success");
+                                    setTimeout(function () {
+                                        location.reload(true)
+                                    }, 2000);
+                                }else{
+                                    closeLoader();
+                                    bootbox.alert({
+                                                message : "No se puede eliminar esta solicitud",
+                                                title   : "Error",
+                                                class   : "modal-error"
+                                            }
+                                    );
+                                }
+                            }
+                        });
+                    }
+                });
+
+
             });
 
         </script>

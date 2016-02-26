@@ -1915,6 +1915,7 @@ class ReformaController extends Shield {
      * Acción para que un director requirente firme una reforma
      */
     def firmarReforma() {
+        println("entro en firmarReforma")
         def firma = Firma.findByKey(params.key)
         if (!firma) {
             response.sendError(403)
@@ -1987,7 +1988,7 @@ class ReformaController extends Shield {
      * Acción para firmar la aprobación de la reforma
      */
     def firmarAprobarReforma() {
-//        println "FIRMAR APROBAR REFORMA"
+        println "FIRMAR APROBAR REFORMA"
 //        println params
 
         def firma = Firma.findByKey(params.key)
@@ -2026,6 +2027,7 @@ class ReformaController extends Shield {
 //                } else {
 //                    detalles = DetalleReforma.findAllByReforma(reforma)
 //                }
+
                 detalles.each { detalle ->
                     def origen = detalle.asignacionOrigen
                     def destino
@@ -2199,6 +2201,10 @@ class ReformaController extends Shield {
                 reforma.estado = estadoAprobado
                 reforma.numeroReforma = num
                 reforma.save(flush: true)
+
+
+
+
                 def usu = Persona.get(session.usuario.id)
                 def now = new Date()
 
@@ -2379,6 +2385,28 @@ class ReformaController extends Shield {
                     }
 
                 }
+
+
+
+                //mail
+
+                def analista =  reforma.persona.mail
+                def director = reforma.director.mail
+                println("mail1 " + director )
+                println("mail2 " + analista )
+
+
+                if (director || analista) {
+                    mailService.sendMail {
+                        to director, analista
+                        subject "Notificación de aprobación de reforma"
+                        body "Se le notifica que la reforma: ${reforma?.concepto?.toString()} ha sido aprobada"
+                    }
+                } else {
+                    println "no tienen mail el director o el analista!!"
+
+                }
+
             }
             println("errores "  + errores)
             if(errores != ""){
@@ -2584,6 +2612,8 @@ class ReformaController extends Shield {
                 if (!alerta1.save(flush: true)) {
                     println "error alerta1: " + alerta1.errors
                 }
+//                def analista = solicitud.persona.mail
+//                println("mail2 " + analista )
                 if (mail) {
                     mailService.sendMail {
                         to mail

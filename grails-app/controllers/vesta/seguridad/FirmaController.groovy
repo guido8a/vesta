@@ -202,7 +202,8 @@ class FirmaController extends Shield {
             //  def baseUri = request.scheme + "://" + "10.0.0.3" + ":" + request.serverPort
             def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
             firma = firmasService.firmarDocumento(session.usuario.id, params.pass, firma, baseUri)
-            println "firma " + firma + "  " + baseUri
+            println "firma- " + firma + "  " + baseUri
+
             if (firma.class == Firma) {
                 println "redirect " + firma.controlador + "  " + firma.accion + "  " + firma.idAccion + "  " + firma.key
                 redirect(controller: firma.controlador, action: firma.accion, params: [id: firma.idAccion, key: firma.key, firma: firma.id])
