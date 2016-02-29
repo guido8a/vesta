@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page import="vesta.avales.ProcesoAsignacion" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.avales.Aval; vesta.modificaciones.Reforma; vesta.avales.ProcesoAsignacion" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <title>Aval</title>
@@ -235,11 +235,13 @@
                         (sol.analista.sigla ?: sol.analista.nombre + ' ' + sol.analista.apellido) :
                         (sol.usuario.sigla ?: sol.usuario.nombre + ' ' + sol.usuario.apellido)
                 }
+                    <span style="float: right"><strong>FECHA:</strong> ${vesta.avales.Aval.get(sol?.aval?.id)?.fechaAprobacion?.format("dd-MM-yyyy")}</span>
                 </p>
 
-                <p style="float: right">
-                    <strong>FECHA:</strong> ${sol.fecha.format("dd-MM-yyyy")}
-                </p>
+                %{--<p style="float: right">--}%
+                    %{--<strong>FECHA:</strong> ${sol.fecha.format("dd-MM-yyyy")}--}%
+                    %{--<strong>FECHA:</strong> ${vesta.avales.Aval.get(sol?.aval?.id)?.fechaAprobacion?.format("dd-MM-yyyy")   ?:   sol.fecha.format("dd-MM-yyyy")}--}%
+                %{--</p>--}%
 
             </div>
 

@@ -961,6 +961,8 @@ class RevisionAvalController extends Shield {
 //            redirect(controller: "pdf",action: "pdfLink",params: [url:g.createLink(controller: firma.controladorVer,action: firma.accionVer,id: firma.idAccionVer)])
                 }
             }
+            println("cont: " + firma.controladorVer)
+            println("act: " + firma.accionVer)
             def url = g.createLink(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
             render "${url}"
         }
