@@ -87,7 +87,7 @@ class Alerta {
         persona(blank: false)
         fechaEnvio(blank: false)
         fechaRecibido(nullable: true, blank: true)
-        mensaje(size: 5..200, blank: false)
+        mensaje(size: 5..300, blank: false)
         controlador(nullable: true, blank: true)
         accion(nullable: true, blank: true)
         id_remoto(nullable: true, blank: true)

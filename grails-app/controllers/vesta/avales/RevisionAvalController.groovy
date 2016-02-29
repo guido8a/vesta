@@ -836,8 +836,21 @@ class RevisionAvalController extends Shield {
      * Acción que permite devolver un aval al analista de planificacion
      */
     def devolverAvalAPlanificacion() {
+        println "devolverAvalAPlanificacion $params"
+
         def sol = SolicitudAval.get(params.id)
         sol.estado = EstadoAval.findByCodigo("D03") //devuelto al analista
+
+/*
+        if (sol.firma1) {
+            sol.firma1.estado = "N"
+            sol.firma1.save(flush: true)
+        }
+        if (sol.firma2) {
+            sol.firma2.estado = "N"
+            sol.firma2.save(flush: true)
+        }
+*/
 
         def strAnulacion = sol.tipo == "A" ? "anulación de " : ""
 

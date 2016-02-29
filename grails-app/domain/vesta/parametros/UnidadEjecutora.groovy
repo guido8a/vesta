@@ -254,6 +254,7 @@ class UnidadEjecutora {
             inList("unidad", unidades)
             isNotNull("marcoLogico")
         }
+
         return asignaciones.unique()
     }
 
