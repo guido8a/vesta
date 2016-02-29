@@ -645,7 +645,7 @@ class AvalesController extends vesta.seguridad.Shield {
 //            numero = 0
             def r = verificarProceso(proceso, solicitud)
             flash.message = r.message
-            if((flash.message != "") && (solicitud.estado.codigo != 'D01' )) {
+            if((flash.message != "") && (solicitud?.estado?.codigo != 'D01' )) {
                 readOnly = true
             }
             def disponible = r.disponible

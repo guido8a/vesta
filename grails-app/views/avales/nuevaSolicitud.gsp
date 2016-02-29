@@ -115,7 +115,7 @@
                     <div class="col-md-9">
                         <g:if test="${!readOnly}">
                             <g:textArea class="form-control input-sm required"
-                                        name="nombre" value="${proceso?.nombre}" id="nombre" title="Nombre del Proceso"/>
+                                        name="nombre" value="${proceso?.nombre}" id="nombre" title="Nombre del Proceso" maxlength="255"/>
                         </g:if>
                         <g:else>
                             <p class="form-control-static">

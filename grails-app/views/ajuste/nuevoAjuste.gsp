@@ -54,7 +54,8 @@
         <label>Justificación del ajuste</label>
     </div>
     <div class="col-md-9 grupo">
-        <g:textArea name="concepto" class="form-control required" style="height: 60px; resize: none" value="${reforma?.concepto}" />
+        <g:textArea name="concepto" class="form-control required" style="height: 60px; resize: none"
+                    value="${reforma?.concepto}" maxlength="255" />
     </div>
     <div class="col-md-2">
         <div class="btn-group pull-center" role="group" style="margin-top: 25px">
