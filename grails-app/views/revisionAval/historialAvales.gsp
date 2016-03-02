@@ -122,99 +122,69 @@
         }); //ajax
     } //crea
 
-    //    $("#dlgLiberar").dialog({
-    //        autoOpen:false,
-    //        position:"center",
-    //        title:'Liberar Aval',
-    //        width:500,
-    //        modal:true,
-    //        buttons:{
-    //            "Liberar":function(){
-    //                var file = $("#archivo").val()
-    //                var contrato = $("#contrato").val()
-    //                var monto = $("#monto").val()
-    //                var msg =""
-    //                if(monto==""){
-    //                    msg+="<br>Por favor ingrese un monto."
-    //                }
-    //                if(isNaN(monto)){
-    //                    msg+="<br>El monto debe ser un número positivo mayor a cero."
-    //                }else{
-    //                    if(monto*1<0){
-    //                        msg+="<br>El monto debe ser un número positivo mayor a cero."
-    //                    } else{
-    //                        if(monto>$("#max").html()*1){
-    //                            msg+="<br>El monto no puede ser mayor a: "+$("#max").html()
-    //                        }
-    //                    }
-    //                }
-    //                if(contrato==""){
-    //                    msg+="<br>Ingrese un número de contrato."
-    //                }
-    //
-    //                if(file.length<1){
-    //                    msg+="<br>Por favor seleccione un archivo."
-    //                }else{
-    //                    var ext = file.split('.').pop();
-    //                    if(ext!="pdf"){
-    //                        msg+="<br>Por favor seleccione un archivo de formato pdf. El formato "+ext+" no es aceptado por el sistema"
-    //                    }
-    //                }
-    //                if(msg==""){
-    //                    $(".frmLiberar").submit()
-    //                }else{
-    //                    $.box({
-    //                        title:"Error",
-    //                        text:msg,
-    //                        dialog: {
-    //                            resizable: false,
-    //                            buttons  : {
-    //                                "Cerrar":function(){
-    //
-    //                                }
-    //                            }
-    //                        }
-    //                    });
-    //                }
-    //
-    //            },"Cerrar":function(){
-    //                $("#dlgLiberar").dialog("close")
-    //            }
-    //        }
-    //    })
 
-    //    $("#dlgCaducar").dialog({
-    //        autoOpen:false,
-    //        position:"center",
-    //        title:'Caducar Aval',
-    //        width:500,
-    //        modal:true,
-    //        buttons:{
-    //            "Caducar":function(){
-    //                var msg =""
-    //                if(msg==""){
-    //                    $(".frmCaducar").submit()
-    //                }else{
-    ////                    $.box({
-    //                    var b = bootbox.dialog({
-    //                        title:"Error",
-    //                        text:msg,
-    //                        dialog: {
-    //                            resizable: false,
-    //                            buttons  : {
-    //                                "Cerrar":function(){
-    //
-    //                                }
-    //                            }
-    //                        }
-    //                    });
-    //                }
-    //
-    //            },"Cerrar":function(){
-    //                $("#dlgCaducar").dialog("close")
-    //            }
-    //        }
-    //    })
+    function cambiarNumero(id) {
+        var data = id ? {id : id} : {};
+        var idAval = id
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'cambiarNumero')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCambiarNumero",
+                    title   : "Cambiar Número",
+                    class   : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                var sol = $("#numNuevo").val()
+                                var av = $("#numNuevoAval").val()
+                                $.ajax ({
+                                   type: 'POST',
+                                    url: '${createLink(action: 'guardarCambioNumero')}',
+                                    data: {
+                                        sol: sol,
+                                        aval: av,
+                                        id: idAval
+                                    },
+                                    success: function (msg) {
+                                        var parts = msg.split("*")
+                                        if(parts[0] == 'ok'){
+                                            log("Número cambiado correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 2000);
+                                        }else{
+                                            log(parts[1],"error");
+                                        }
+                                    }
+                                });
+//                                return submitForm();
+//                                closeLoader();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //crea
+
+
+
 
     $(".imprimiAval").button({icons : {primary : "ui-icon-print"}, text : false}).click(function () {
         //location.href = "${createLink(controller:'avales',action:'descargaAval')}/"+$(this).attr("iden")
@@ -268,6 +238,22 @@
                 }
             };
         }
+
+        //cambiar número
+        if ($tr.attr("usu") == 'ASPL') {
+            items.numero = {
+                label  : "Cambiar número",
+                icon   : "fa fa-exchange",
+                action : function ($element) {
+                    var id = $element.data("id");
+                    cambiarNumero(id);
+                    return false
+                }
+            };
+        }
+
+
+
         return items;
     }
 

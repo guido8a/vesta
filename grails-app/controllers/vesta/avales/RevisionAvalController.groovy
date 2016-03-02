@@ -132,6 +132,18 @@ class RevisionAvalController extends Shield {
         [aval: aval, detalle: detalle]
     }
 
+
+    /**
+     * Acción que muestra la pantalla que permite cambiar el número de sol aval o aval
+     * @param id el id del aval
+     */
+    def cambiarNumero = {
+        def aval = Aval.get(params.id)
+        def solicitud = SolicitudAval.findByAval(aval);
+        [aval: aval, solicitud: solicitud]
+    }
+
+
     /**
      * Acción que muestra la pantalla con el historial de avales de un año
      * @param anio el año para el cual se van a mostrar los avales
@@ -1039,6 +1051,40 @@ class RevisionAvalController extends Shield {
             def url = g.createLink(controller: "pdf", action: "pdfLink", params: [url: g.createLink(controller: firma.controladorVer, action: firma.accionVer, id: firma.idAccionVer)])
             render "${url}"
         }
+    }
+
+
+
+    /**
+     * Acción que permite guardar el cambio de número de solcitud y aval
+     * @params los parámetros enviados por el submit del formulario
+     */
+
+    def guardarCambioNumero () {
+
+        println("cambiado!!" + params)
+
+        if(params.sol == '' || params.aval == ''){
+            render "no*Ingrese un número válido!"
+        }else{
+            def aval = Aval.get(params.id)
+            def solAval = SolicitudAval.findByAval(aval)
+
+            aval.numero = params.aval.toInteger()
+            solAval.numero = params.sol.toInteger()
+
+            if(!aval.save(flush: true)){
+                render "no*Error al guardar el número del aval!"
+            }else{
+                if(!solAval.save(flush: true)){
+                    render "no*Error al guardar el número de la solicitud!"
+                }else {
+                    render "ok"
+                }
+            }
+        }
+
+
     }
 
     /**
