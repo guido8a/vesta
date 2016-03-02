@@ -358,7 +358,7 @@ class AvalesController extends vesta.seguridad.Shield {
      * @Renders el monto priorizado menos el monto utilizado
      */
     def getMaximoAsg = {
-//        println "params Maximo " + params
+        println "params Maximo " + params
         def asg = Asignacion.get(params.id)
         def monto = asg?.priorizado?:0
         def usado = 0;
@@ -402,7 +402,7 @@ class AvalesController extends vesta.seguridad.Shield {
         }
 //        println "regormas: ${detalles.reforma.id}"
         def disponible = monto - usado - locked
-//        println "get Maximo asgn $params  monto: $monto  usado: $usado reformas: $locked disponible: $disponible"
+        println "get Maximo asgn $params  monto: $monto  usado: $usado reformas: $locked disponible: $disponible"
         render "" + (disponible)
     }
 
