@@ -56,13 +56,20 @@ class FirmasService {
 //        }
 //        return directores
         def unidades = unidad.unidades
-        def directores = Persona.withCriteria {
-            inList("unidad", unidades)
-            ilike("cargo", "%director%")
-            eq("estaActivo", 1)
-//            cargoPersonal {
-//                ilike("descripcion", "%director%")
-//            }
+        println "unidades: $unidades, ${unidades[0].codigo}"
+        def directores
+        if(unidades[0].codigo == 'GG') {
+            directores = Persona.withCriteria {
+                inList("unidad", unidades)
+                ilike("cargo", "%gerent%")
+                eq("estaActivo", 1)
+            }
+        } else {
+            directores = Persona.withCriteria {
+                inList("unidad", unidades)
+                ilike("cargo", "%director%")
+                eq("estaActivo", 1)
+            }
         }
         return directores
     }
@@ -123,7 +130,7 @@ class FirmasService {
         def juridica = UnidadEjecutora.findByCodigo('GJ')
         def gerencias = UnidadEjecutora.findAllByPadreAndNombreIlike(tecnica, 'gerenc%', [sort: 'nombre'])
         def direcciones = UnidadEjecutora.findAllByPadreAndNombreIlike(general, 'direcc%', [sort: 'nombre'])
-        requirentes = gerencias + direcciones + administrativaFinan + juridica + planificacion
+        requirentes = gerencias + direcciones + administrativaFinan + juridica + planificacion + general
 //        println "requirentes: $requirentes"
 
         def un = unej

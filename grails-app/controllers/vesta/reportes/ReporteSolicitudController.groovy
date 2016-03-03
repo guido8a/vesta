@@ -542,7 +542,7 @@ class ReporteSolicitudController {
      * Acción que genera un archivo PDF de la solicitud de aval
      */
     def imprimirSolicitudAval = {
-//        println "impr sol " + params
+        println "impr sol " + params
         def solicitud = SolicitudAval.get(params.id)
         def unidaAutonoma = firmasService.requirentes(solicitud.unidad)
 //        println "solcitud " + solicitud

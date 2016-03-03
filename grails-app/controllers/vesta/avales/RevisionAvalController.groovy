@@ -291,7 +291,7 @@ class RevisionAvalController extends Shield {
      * @param numero
      */
     def historial = {
-//        println "historial " + params
+        println "historial " + params
         def anio = Anio.get(params.anio).anio
         def numero = params.numero ? params.numero.toInteger() : ""
         def proc = params.proceso
@@ -316,7 +316,12 @@ class RevisionAvalController extends Shield {
 //            }
 //        }
 //        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
-        unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+
+        if(params.requirente) {
+            unidades = [UnidadEjecutora.get(params.requirente)]
+        } else {
+            unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+        }
 
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")

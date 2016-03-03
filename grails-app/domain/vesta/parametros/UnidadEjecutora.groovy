@@ -214,12 +214,13 @@ class UnidadEjecutora {
 
     def getUnidades() {
         def padre = this.padre
+        println "getUnidades -- padre: ${padre.codigo}"
         def unidades = [this]
         def codigosNo = ['343', 'GG', 'GT'] // yachay, Gerencia general, Gerencia tecnica
         if (!codigosNo.contains(padre.codigo)) {
             unidades += padre
             unidades += UnidadEjecutora.findAllByPadre(padre)
-        } else {
+        } else if(this.codigo != 'GG') {
             unidades += UnidadEjecutora.findAllByPadre(this)
         }
 //        println "---------unidades: $unidades"
