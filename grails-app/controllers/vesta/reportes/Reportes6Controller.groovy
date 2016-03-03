@@ -714,12 +714,16 @@ class Reportes6Controller {
         def sql = "select distinct anio.anio__id, anioanio from anio, asgn where anio.anio__id = asgn.anio__id " +
               "order by anioanio"
         def txto = ""
+        def tx = ""
         def anios = []
         def datos = []
         def asignado = 0.0
         def avalado = 0.0
         def liberado = 0.0
         def totalDisp = 0.0
+        def sumaPrio = 0.0
+        def sumaAval = 0.0
+        def sumaDisp = 0.0
 
         cn.eachRow(sql.toString()){
             anios.add(id: it.anio__id, anio: it.anioanio)
@@ -732,8 +736,12 @@ class Reportes6Controller {
                 "where prsp.prsp__id = asgn.prsp__id and mrlg.mrlg__id = asgn.mrlg__id and " +
                 "unej.unej__id = asgn.unej__id and anio__id = ${actual.id} and fnte__id = ${fuente.id} " + //and asgn.prsp__id between 338 and 339 " //and asgn.mrlg__id between 502 and 550 " +
                 "order by prspnmro"
+//        println "------- $sql"
         cn.eachRow(sql.toString()) {
             /** calculo de lo avalado y recursos disponibles */
+//            tx = "select sum(poasmnto) suma from poas, aval where aval.prco__id = poas.prco__id and " +
+//                    "asgn__id = ${it.asgn__id} and edav__id = 89"
+//            println "....... $tx"
             avalado = cn1.rows("select sum(poasmnto) suma from poas, aval where aval.prco__id = poas.prco__id and " +
                     "asgn__id = ${it.asgn__id} and edav__id = 89".toString())[0].suma ?: 0
             liberado = cn1.rows("select sum(poaslbrd) suma from poas, aval where aval.prco__id = poas.prco__id and " +
@@ -743,23 +751,36 @@ class Reportes6Controller {
                     actv: it.mrlgobjt, unej: it.unejnmbr,
                     anios: [[anio: actual.anio, prio:it.asgnprio, avalado: avalado + liberado]])
             totalDisp += it.asgnprio - avalado - liberado
+            sumaPrio += it.asgnprio
+            sumaAval += avalado + liberado
+            sumaDisp += it.asgnprio - avalado + liberado
         }
+
 //        println "datos: $datos"
-//        println "antes del each $anios"
+
+        todosLosAnios.find { it.id == actual.id}["prio"] = sumaPrio
+        todosLosAnios.find { it.id == actual.id}["aval"] = sumaAval
+        todosLosAnios.find { it.id == actual.id}["disp"] = sumaDisp
+
+        println "con sumatorias: $todosLosAnios"
+
         /** para los años restantes obtiene priorizado y valores de aval y leberado  --> añade a datos**/
+        sumaPrio = 0.0
+        sumaAval = 0.0
+        sumaDisp = 0.0
         if(anios.size() > 0) {
             anios.each {anio ->
 //                println "porcesa año: ${anio.id}"
                 datos.each { d ->
                     asignado = 0
+                    avalado = 0
+                    liberado = 0
                     def cont = 0
                     txto = "select asgn__id, asgnprio from asgn where prsp__id = ${d.prsp__id} and " +
                             "mrlg__id = ${d.mrlg__id} and anio__id = ${anio.id} and fnte__id = ${fuente.id}"
 
                     cn1.eachRow(txto.toString()) { a ->
                         asignado = a?.asgnprio?:0
-                        avalado = 0
-                        liberado = 0
                         cont++
                         if(asignado > 0) {
 //                            println "asgn: ${d.id} .. $txto"
@@ -774,74 +795,19 @@ class Reportes6Controller {
                     d.anios.add([anio: anio.anio, prio: asignado, avalado: avalado + liberado])    //añade a datos
 
                     totalDisp += asignado - avalado - liberado
+                    sumaPrio += asignado
+                    sumaAval += avalado + liberado
+                    sumaDisp += asignado - avalado + liberado
                 }
+                todosLosAnios.find { it.id == anio.id}["prio"] = sumaPrio
+                todosLosAnios.find { it.id == anio.id}["aval"] = sumaAval
+                todosLosAnios.find { it.id == anio.id}["disp"] = sumaDisp
             }
         }
 
-//        println "--datos: ${datos.anios}"
+        println "--datos: ${todosLosAnios}"
         println "--TOtal: ${totalDisp}"
 
-/*
-        def iniRow = 0
-
-        def data = [:]
-        def totales = [:]
-        totales.priorizado = 0
-        totales.avales = 0
-        totales.disponible = 0
-        def partidas = Presupuesto.findAllByNumeroLike('%0000', [sort: 'numero'])
-
-        def estadoAprobado = EstadoAval.findByCodigo("E02")
-
-        partidas.each { partida ->
-            def numero = partida.numero?.replaceAll("0", "")
-            def asignaciones = Asignacion.withCriteria {
-                presupuesto {
-                    like("numero", numero + "%")
-                }
-                if (fuente) {
-                    eq("fuente", fuente)
-                }
-            }
-            asignaciones.each { asg ->
-                def actividad = asg.marcoLogico
-
-                def key = numero + "_" + actividad?.id
-
-                if (!data[key]) {
-                    data[key] = [:]
-                    data[key].partida = partida
-                    data[key].actividad = actividad
-                    data[key].valores = [:]
-                    data[key].valores.priorizado = 0
-                    data[key].valores.avales = 0
-                    data[key].valores.disponible = 0
-                }
-                data[key].valores.priorizado += asg.priorizado
-                totales.priorizado += asg.priorizado
-
-                def procs = ProcesoAsignacion.findAllByAsignacion(asg).proceso
-                def avales = []
-                def av = 0
-                if (procs.size() > 0) {
-                    avales = Aval.withCriteria {
-                        inList("proceso", procs)
-                        eq("estado", estadoAprobado)
-                    }
-                    if (avales.size() > 0) {
-                        av = avales.sum { it.monto }
-                    }
-                }
-                data[key].valores.avales += av
-                totales.avales += av
-
-                def dis = asg.priorizado - av
-
-                data[key].valores.disponible += dis
-                totales.disponible += dis
-            }
-        }
-*/
 
 //        println "todos los anios: $todosLosAnios"
 //        return [data: data, totales: totales]

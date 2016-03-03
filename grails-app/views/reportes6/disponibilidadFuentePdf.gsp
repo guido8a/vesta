@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 11/06/15
-  Time: 09:51 AM
---%>
-
-
 <%@ page import="vesta.poa.ProgramacionAsignacion; vesta.poa.Asignacion; vesta.parametros.TipoElemento; vesta.proyectos.MarcoLogico; vesta.parametros.poaPac.Mes" contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -88,11 +80,6 @@
                         <th> Avalado </th>
                         <th> Disponible </th>
                     </g:each>
-%{--
-                    <th width="8%">PRESUPUESTO CODIFICADO</th>
-                    <th width="8%">MONTO AVALADO</th>
-                    <th width="8%">RECURSOS DISPONIBLES</th>
---}%
                 </tr>
             </thead>
             <tbody>
@@ -118,40 +105,24 @@
                         </td>
 
                     <g:each in = "${v.anios}" var="anio">
-                        <td> ${anio.prio} </td>
-                        <td> ${anio.avalado} </td>
-                        <td> ${anio.prio - anio.avalado}</td>
-                        <g:set var="totalDisponible" value="${totalDisponible += anio.prio - anio.avalado}"/>
+                        <td class="text-right"> <g:formatNumber number="${anio.prio}" type="currency" currencySymbol=""/></td>
+                        <td class="text-right"> <g:formatNumber number="${anio.avalado}" type="currency" currencySymbol=""/> </td>
+                        <td class="text-right"> <g:formatNumber number="${anio.prio - anio.avalado}" type="currency" currencySymbol=""/></td>
                     </g:each>
 
-%{--
-
-                        <td class="text-right">
-                            <g:formatNumber number="${v?.valores['priorizado']}" type="currency" currencySymbol=""/>
-                            --}%
-%{--<g:formatNumber number="${v?.prio}" type="currency" currencySymbol=""/>--}%%{--
-
-                        </td>
-                        <td class="text-right">
-                            <g:formatNumber number="${v?.valores['avales']}" type="currency" currencySymbol=""/>
-                            --}%
-%{--<g:formatNumber number="${v?.avalado}" type="currency" currencySymbol=""/>--}%%{--
-
-                        </td>
-                        <td class="text-right">
-                            <g:formatNumber number="${v?.valores['disponible']}" type="currency" currencySymbol=""/>
-                            --}%
-%{--<g:formatNumber number="${v.prio - v.avalado}" type="currency" currencySymbol=""/>--}%%{--
-
-                        </td>
---}%
                     </tr>
                 </g:each>
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-right" colspan="4">TOTAL DISPONIBLE</th>
-                    <th class="text-right" colspan="3"><g:formatNumber number="${totalDisponible}" type="currency" currencySymbol=""/></th>
+                    <th class="text-right" colspan="3"><pre>TOTAL DISPONIBLE:     <g:formatNumber number="${totales}" type="currency" currencySymbol=""/></pre></th>                    %{--<th class="text-right"><g:formatNumber number="${totales}" type="currency" currencySymbol=""/></th>--}%
+                    <th class="text-right">TOTALES:</th>
+                    <g:each in="${anios}" var="anio">
+                        <th class="text-right"> <g:formatNumber number="${anio.prio}" type="currency" currencySymbol=""/></th>
+                        <th class="text-right"> <g:formatNumber number="${anio.aval}" type="currency" currencySymbol=""/> </th>
+                        <th class="text-right"> <g:formatNumber number="${anio.disp}" type="currency" currencySymbol=""/></th>
+                    </g:each>
+
                 </tr>
             </tfoot>
         </table>
