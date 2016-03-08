@@ -1,11 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 19/01/15
-  Time: 12:32 PM
---%>
-
-<%@ page import="vesta.parametros.poaPac.Anio; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.seguridad.FirmasService" %>
+<%@ page import="vesta.avales.SolicitudAval; vesta.parametros.poaPac.Anio; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
+<%
+    def firmasService = grailsApplication.classLoader.loadClass('vesta.seguridad.FirmasService').newInstance()
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -59,17 +56,28 @@
                         <table class="table table-condensed table-bordered table-striped table-hover" style="margin-top: 20px">
                             <thead>
                                 <tr>
+                                    <th>No. Solicitud</th>
+                                    <th>Fecha Solicitud</th>
                                     <th>Proceso</th>
+                                    <th>Monto</th>
                                     <th>Área gestión solicitante</th>
                                     <th style="width: 250px;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <g:each in="${firmasAvales}" var="f">
+                                    <g:set var="slav" value="${vesta.avales.SolicitudAval.get(f.idAccionVer)}"/>
                                     <tr data-firma="${f}" esPdf="${f.esPdf}" accVer="${f.accionVer}">
                                         %{--<td>${f.concepto}</td>--}%
+                                        <td>${slav.fecha?.format("yyyy")}-${firmasService.requirentes(slav.usuario.unidad)?.codigo} No.<elm:imprimeNumero solicitud="${slav.id}"/></td>
+                                        %{--<td>${slav?.numero} </td>--}%
+                                        <td>${slav.fecha?.format("dd-MM-yyyy")}</td>
                                         <td>${vesta.avales.SolicitudAval.get(f.idAccionVer)?.proceso?.nombre} </td>
-                                        <td>${vesta.avales.SolicitudAval.findById(f.idAccionVer)?.usuario?.unidad?.nombre}</td>
+                                        <td style="text-align: right">
+                                            <g:formatNumber number="${slav.monto}" format="###,##0" minFractionDigits="2" maxFractionDigits="2"/>
+                                        </td>
+                                        %{--<td>${vesta.avales.SolicitudAval.findById(f.idAccionVer)?.usuario?.unidad?.nombre}</td>--}%
+                                        <td>${firmasService.requirentes(vesta.avales.SolicitudAval.findById(f.idAccionVer)?.usuario?.unidad)}</td>
                                         <td style="text-align: center">
                                             <div class="btn-group btn-group-sm" role="group">
                                                 <g:if test="${f.accionVer}">

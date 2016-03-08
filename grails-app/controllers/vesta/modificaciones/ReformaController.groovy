@@ -2395,12 +2395,17 @@ class ReformaController extends Shield {
                 println("mail1 " + director )
                 println("mail2 " + analista )
 
+                println "mail: Se ha aprobado la Reforma 2016 – GPE Nro. ${reforma.numeroReforma}, puede ingresar la(s) " +
+                        "solicitud(es) de Aval POA para el o los procesos correspondientes."
 
                 if (director || analista) {
                     mailService.sendMail {
                         to director, analista
                         subject "Notificación de aprobación de reforma"
-                        body "Se le notifica que la reforma: ${reforma?.concepto?.toString()} ha sido aprobada"
+                        body "Se ha aprobado la Reforma 2016 – GPE Nro. ${reforma.numeroReforma}, puede ingresar la(s) " +
+                                "solicitud(es) de Aval POA para el o los procesos correspondientes."
+                        println "mail ok: Se ha aprobado la Reforma 2016 – GPE Nro. ${reforma.numeroReforma}, puede ingresar la(s) " +
+                                "solicitud(es) de Aval POA para el o los procesos correspondientes."
                     }
                 } else {
                     println "no tienen mail el director o el analista!!"

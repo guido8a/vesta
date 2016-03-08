@@ -965,6 +965,9 @@ class RevisionAvalController extends Shield {
 //                            sesiones += ses
 //                        }
 //                    }
+                        println "mail: Se ha emitido el aval No.${aval.numeroAval} para el proceso: ${aval.proceso.nombre}, " +
+                                "por el monto de USD. ${formatNumber(number: aval.monto, type: 'currency' , currencySymbol:'')}"
+
                         if (personaMail) {
 //                        println "Se enviaran ${sesiones.size()} mails"
 //                        sesiones.each { sesn ->
@@ -976,7 +979,10 @@ class RevisionAvalController extends Shield {
                                 mailService.sendMail {
                                     to mail, analista
                                     subject "Nuevo aval emitido"
-                                    body "Se ha emitido el aval #" + aval.numeroAval
+                                    body "Se ha emitido el aval No.${aval.numeroAval} para el proceso: ${aval.proceso.nombre}, " +
+                                            "por el monto de USD. ${formatNumber(number: aval.monto, type: 'currency' , currencySymbol:'')}"
+                                    println "mail ok: Se ha emitido el aval No.${aval.numeroAval} para el proceso: ${aval.proceso.nombre}, " +
+                                            "por el monto de USD. ${formatNumber(number: aval.monto, type: 'currency' , currencySymbol:'')}"
                                 }
                             } else {
                                 println "El usuario ${sol.firma.usuario.login} no tiene email"
