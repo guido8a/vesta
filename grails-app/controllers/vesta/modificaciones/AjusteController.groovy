@@ -1735,6 +1735,7 @@ class AjusteController extends Shield {
 
         def cn = dbConnectionService.getConnection()
         def actual
+        def sql = ""
         if (params.anio) {
             actual = Anio.get(params.anio)
         } else {
@@ -1759,6 +1760,43 @@ class AjusteController extends Shield {
             reforma = Reforma.findByIdAndTipoAndTipoSolicitud(params.id, "A", "Z")
             detalle = DetalleReforma.findAllByReforma(reforma, [sort: 'tipoReforma.id', order: 'desc'],[sort: 'id', order: 'desc'])
         }
+
+        def fuentes= []
+        def suma = 0
+        cn.rows("select distinct dtrf.fnte__id, fntedscr from dtrf, c_fnte " +
+            "where rfrm__id = ${params.id} and c_fnte.fnte__id = dtrf.fnte__id order by 1".toString()).each {
+            suma = 0
+//            println "fnte__id = ${it.fnte__id}"
+            sql = "select sum(dtrfvlor) suma from dtrf, asgn where rfrm__id = ${params.id} and " +
+                    "asgn.fnte__id = ${it.fnte__id} and asgn.asgn__id = dtrf.asgn__id and tprf__id in (1,3)"
+//            println "sql1: $sql"
+            suma += cn.rows(sql.toString())[0].suma?:0
+            sql = "select sum(dtrfvlor) suma from dtrf where rfrm__id = ${params.id} and " +
+                    "fnte__id = ${it.fnte__id} and tprf__id in (2,4)"
+//            println "sql2: $sql"
+            suma += cn.rows(sql.toString())[0].suma?:0
+            sql = "select sum(dtrfvlor) suma from dtrf, asgn where rfrm__id = ${params.id} and " +
+                    "asgn.fnte__id = ${it.fnte__id} and asgn.asgn__id = dtrf.asgn__id and tprf__id in (6)"
+//            println "sql3: $sql"
+            suma -= cn.rows(sql.toString())[0].suma?:0
+
+            fuentes.add([fuente: it.fntedscr, suma: suma])
+            if(Math.abs(suma) > 0.001) {
+                if(flash.message) {
+                    flash.message += "<br/> La fuente ${it.fntedscr} tiene un descuadre de ${suma}"
+                } else {
+                    flash.message = "La fuente ${it.fntedscr} tiene un descuadre de ${suma}"
+                }
+                flash.tipo = "error"
+            }
+        }
+
+//        println "fuentes: $fuentes, flash: ${flash.message}"
+
+
+//        def fnte = cn.rows("select sum(dtrfvlor) from dtrf, asgn where rfrm__id = ${params.id} and " +
+//                "asgn.fnte__id = 9 and asgn.asgn__id = dtrf.asgn__id and tprf__id in (1,3);
+
 
         return [actual: actual, proyectos: proyectos, reforma: reforma, detalle: detalle,
                 anios: anios, gerentes : firmas.gerentes, personas: firmas.directores]

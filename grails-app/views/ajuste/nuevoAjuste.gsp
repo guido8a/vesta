@@ -113,6 +113,7 @@
     </div>
 </div>
 
+<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
 <form id="frmReforma">
     <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
