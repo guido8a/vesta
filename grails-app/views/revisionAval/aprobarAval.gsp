@@ -89,6 +89,9 @@
                                 <a href="#" class="btn btn-default btn-sm imprimirSolicitud " iden="${solicitud.id}">
                                     <i class="fa fa-print"></i>
                                 </a>
+                                <a href="#" class="btn btn-success btn-sm btnTexto " iden="${solicitud.id}" title="Editar texto">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -355,6 +358,60 @@
                         return false;
                     });
 
+
+                    $(".btnTexto").click(function () {
+                        var idSol = $(this).attr('iden')
+                        $.ajax({
+                            type   : "POST",
+                            url    : "${createLink(controller: 'revisionAval', action:'cambiarTexto_ajax')}",
+                            data   : {id: idSol},
+                            success: function (msg) {
+                                var b = bootbox.dialog({
+                                    id   : "dlgEditarTexto",
+                                    title: "Editar Texto",
+                                    message: msg,
+                                    class   : "modal-lg",
+                                    buttons: {
+                                        cancelar: {
+                                            label    : "Cancelar",
+                                            className: "btn-primary",
+                                            callback : function () {
+                                            }
+                                        },
+                                        guardar : {
+                                            id       : "btnSave",
+                                            label    : "<i class='fa fa-save'></i> Guardar",
+                                            className: "btn-success",
+                                            callback : function () {
+                                                $.ajax({
+                                                  type: 'POST',
+                                                  url: "${createLink(controller: 'revisionAval', action:'guardarTexto_ajax')}",
+                                                  data: {nombre: $("#procesoNombre").val(),
+                                                         concepto: $("#concepto").val(),
+                                                  id: idSol},
+                                                    success: function (msg){
+                                                        if(msg == 'ok'){
+                                                            log("Texto cambiado correctamente", "success")
+                                                            setTimeout(function () {
+                                                                location.href = "${createLink(controller:'revisionAval',action:'aprobarAval')}/" + idSol;
+                                                            }, 1000);
+                                                        }else{
+                                                            log("Error al cambiar el texto", "error")
+                                                        }
+                                                    }
+                                                });
+                                            } //callback
+                                        } //guardar
+                                    } //buttons
+                                }); //dialog
+                                setTimeout(function () {
+                                    b.find(".form-control").first().focus()
+                                }, 500);
+                            } //success
+                        }); //ajax
+                    });
+
+
                     $("#btnNegar").click(function () {
 //                        var $msg = $("<div>");
 //                        var $form = $("<form class='form-horizontal'>");
@@ -417,50 +474,50 @@
                                             }
                                         });
                                         %{--bootbox.dialog({--}%
-                                        %{--title   : "Negar",--}%
-                                        %{--message : $msg,--}%
-                                        %{--class   : "modal-sm",--}%
-                                        %{--buttons : {--}%
-                                        %{--devolver : {--}%
-                                        %{--label     : "<i class='fa fa-thumbs-down'></i> Negar",--}%
-                                        %{--className : "btn-danger",--}%
-                                        %{--callback  : function () {--}%
-                                        %{--if ($form.valid()) {--}%
-                                        %{--openLoader("Negando");--}%
-                                        %{--var aval = $("#numero").val();--}%
-                                        %{--var obs = $("#richText").val();--}%
-                                        %{--$.ajax({--}%
-                                        %{--type    : "POST",--}%
-                                        %{--url     : "${createLink(controller: 'revisionAval', action:'negarAval')}",--}%
-                                        %{--data    : {--}%
-                                        %{--id   : "${solicitud.id}",--}%
-                                        %{--auth : $auth.val(),--}%
-                                        %{--aval : aval,--}%
-                                        %{--obs  : obs--}%
-                                        %{--},--}%
-                                        %{--success : function (msg) {--}%
-                                        %{--var parts = msg.split("*");--}%
-                                        %{--log(parts[1], parts[0]); // log(msg, type, title, hide)--}%
-                                        %{--if (parts[0] == "SUCCESS") {--}%
-                                        %{--setTimeout(function () {--}%
-                                        %{--location.href = "${createLink(action: 'pendientes')}";--}%
-                                        %{--}, 1000);--}%
-                                        %{--} else {--}%
-                                        %{--closeLoader();--}%
-                                        %{--}--}%
-                                        %{--}--}%
-                                        %{--});--}%
-                                        %{--}--}%
-                                        %{--return false;--}%
-                                        %{--}--}%
-                                        %{--},--}%
-                                        %{--cancelar : {--}%
-                                        %{--label     : "Cancelar",--}%
-                                        %{--className : "btn-default",--}%
-                                        %{--callback  : function () {--}%
-                                        %{--}--}%
-                                        %{--}--}%
-                                        %{--}--}%
+                                            %{--title   : "Negar",--}%
+                                            %{--message : $msg,--}%
+                                            %{--class   : "modal-sm",--}%
+                                            %{--buttons : {--}%
+                                                %{--devolver : {--}%
+                                                    %{--label     : "<i class='fa fa-thumbs-down'></i> Negar",--}%
+                                                    %{--className : "btn-danger",--}%
+                                                    %{--callback  : function () {--}%
+                                                        %{--if ($form.valid()) {--}%
+                                                            %{--openLoader("Negando");--}%
+                                                            %{--var aval = $("#numero").val();--}%
+                                                            %{--var obs = $("#richText").val();--}%
+                                                            %{--$.ajax({--}%
+                                                                %{--type    : "POST",--}%
+                                                                %{--url     : "${createLink(controller: 'revisionAval', action:'negarAval')}",--}%
+                                                                %{--data    : {--}%
+                                                                    %{--id   : "${solicitud.id}",--}%
+                                                                    %{--auth : $auth.val(),--}%
+                                                                    %{--aval : aval,--}%
+                                                                    %{--obs  : obs--}%
+                                                                %{--},--}%
+                                                                %{--success : function (msg) {--}%
+                                                                    %{--var parts = msg.split("*");--}%
+                                                                    %{--log(parts[1], parts[0]); // log(msg, type, title, hide)--}%
+                                                                    %{--if (parts[0] == "SUCCESS") {--}%
+                                                                        %{--setTimeout(function () {--}%
+                                                                            %{--location.href = "${createLink(action: 'pendientes')}";--}%
+                                                                        %{--}, 1000);--}%
+                                                                    %{--} else {--}%
+                                                                        %{--closeLoader();--}%
+                                                                    %{--}--}%
+                                                                %{--}--}%
+                                                            %{--});--}%
+                                                        %{--}--}%
+                                                        %{--return false;--}%
+                                                    %{--}--}%
+                                                %{--},--}%
+                                                %{--cancelar : {--}%
+                                                    %{--label     : "Cancelar",--}%
+                                                    %{--className : "btn-default",--}%
+                                                    %{--callback  : function () {--}%
+                                                    %{--}--}%
+                                                %{--}--}%
+                                            %{--}--}%
                                         %{--});--}%
                                     }
                                 });

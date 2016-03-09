@@ -409,6 +409,26 @@ class RevisionAvalController extends Shield {
         return [solicitud: solicitud, personas: firmas.directores, personasGerente: firmas.gerentes, numero: numero]
     }
 
+
+    def cambiarTexto_ajax () {
+        def solicitud = SolicitudAval.get(params.id)
+        return [solicitud: solicitud]
+    }
+
+    def guardarTexto_ajax () {
+//        println("params " + params)
+        def solicitud = SolicitudAval.get(params.id)
+        solicitud.proceso.nombre = params.nombre
+        solicitud.concepto = params.concepto
+        if(solicitud.save(flush: true)){
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
+
+
+
     /**
      * Acción que muestra la pantalla que permite aprobar la solicitud de anulación
      * @param id el id de la solicitud de aval
