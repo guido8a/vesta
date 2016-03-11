@@ -37,7 +37,6 @@ class RevisionAvalController extends Shield {
      * @Returns "ok" si se puede negar el aval, "no" en caso de que el usuario no pueda negar avales
      */
     def negarAval = {
-        def band = false
         def usuario = Persona.get(session.usuario.id)
 //        def ok = params.auth.toString().trim().encodeAsMD5() == usuario.autorizacion
         def ok = true
@@ -46,27 +45,28 @@ class RevisionAvalController extends Shield {
 
             def strSolicitud = sol.tipo == "A" ? "solicitud de anulación" : "solicitud"
 
-            band = true
-            if (band) {
-                sol.estado = EstadoAval.findByCodigo("E03")
-                sol.observaciones = params.obs
-                sol.fechaRevision = new Date()
-                sol.save(flush: true)
-                //quitar dinero del poas
+            sol.estado = EstadoAval.findByCodigo("E03")
+            sol.observaciones = params.obs
+            sol.fechaRevision = new Date()
+            sol.save(flush: true)
 
-                def proceso = sol.proceso
+            //quitar dinero del poas
+            def proceso = sol.proceso
+            def poas = ProcesoAsignacion.findAllByProceso(proceso)
 
-                def poas = ProcesoAsignacion.findAllByProceso(proceso)
-
-                poas.each { p->
-                    p.monto = 0
-                    p.save(flush: true)
-                }
-
-                render "SUCCESS*${strSolicitud.capitalize()} de aval negado exitosamente"
-            } else {
-                render("ERROR*No puede negar solicitudes")
+            poas.each { p ->
+                p.monto = 0
+                p.save(flush: true)
             }
+
+            //actualiza estado de aval si existe
+            def aval = Aval.findByProceso(proceso)
+            if(aval) {
+                aval.estado = EstadoAval.findByCodigo("E03")
+                aval.save(flush: true)
+            }
+
+            render "SUCCESS*${strSolicitud.capitalize()} de aval negado exitosamente"
         } else {
             render("ERROR*Clave de autorización incorrecta")
         }
