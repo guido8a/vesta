@@ -150,7 +150,8 @@ class AvalCorrienteController extends Shield {
 
         def anio = new Date().format("yyyy")
 
-        def minDate = new Date().parse("dd-MM-yyyy", "01-01-" + anio)
+//        def minDate = new Date().parse("dd-MM-yyyy", "01-01-" + anio)
+        def minDate = new Date().parse("dd-MM-yyyy", "01-01-2016")
         def maxDate = new Date().parse("dd-MM-yyyy", "31-12-" + anio)
 
         def ahora = new Date()

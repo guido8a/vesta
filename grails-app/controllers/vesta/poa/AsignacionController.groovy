@@ -1807,7 +1807,8 @@ class AsignacionController extends Shield {
         def operador = buscadorService.operadores()
         def wh = "prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
         if(params.tipo == 'corrientes') {
-            wh = "prspnmro ilike '5%' or prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
+//            wh = "prspnmro ilike '5%' or prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
+            wh = "prspnmro ilike '5%' or prspnmro ilike '8%'"
         }
 
         def sqlSelect = "select prsp__id, prspnmro, prspdscr from prsp"
@@ -1853,7 +1854,8 @@ class AsignacionController extends Shield {
         def operador = buscadorService.operadores()
         def wh = "prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
         if(params.tipo == 'corrientes') {
-            wh = "prspnmro ilike '5%' or prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
+//            wh = "prspnmro ilike '5%' or prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
+            wh = "prspnmro ilike '5%' or prspnmro ilike '8%'"
         }
 
         def sqlSelect = "select prsp__id, prspnmro, prspdscr from prsp "
