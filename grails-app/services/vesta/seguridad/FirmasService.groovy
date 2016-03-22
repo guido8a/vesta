@@ -171,9 +171,9 @@ class FirmasService {
                 def key = ""
                 def texto = baseUri + g.createLink(controller: "firma", action: "verDocumento") + "?ky="
                 def pathQr = servletContext.getRealPath("/") + path
-                def nombre = "" + user.login + "_" + now.format("dd_MM_yyyy_MM_ss") + ".png"
+                def nombre = "" + user.login + "_" + now.format("dd_MM_yyyy_mm_ss") + ".png"
                 new File(pathQr).mkdirs()
-                // println " "+now.format("ddMMyyyyhhmmss.SSS")+" "+" nombre "+nombre+"  "+user.usroLogin.encodeAsMD5()+"   "+(user.autorizacion.substring(10,20))
+                println " "+now.format("ddMMyyyyhhmmss.SSS")+" "+" nombre "+nombre+"  "+user.login.encodeAsMD5()+"   "+(user.autorizacion.substring(10,20))
                 key = now.format("ddMMyyyyhhmmss.SSS").encodeAsMD5() + (user.login.encodeAsMD5().substring(0, 10)) + (user.autorizacion.substring(10, 20))
                 // println "key "+key
                 texto += key
@@ -195,7 +195,7 @@ class FirmasService {
                 firma.key = key
                 firma.path = nombre
                 firma.estado = "F"
-                println("FIRMA " + firma)
+                println "FIRMA ${firma.id} creado archivo: $nombre"
                 firma.save(flush: true)
                 return firma
             } catch (e) {
