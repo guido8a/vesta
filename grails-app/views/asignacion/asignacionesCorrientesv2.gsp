@@ -12,19 +12,12 @@
     <body>
 
         <div class="btn-group btn-group-sm" role="group" style="width: 800px;">
-
             <a href="#" id="btnProgramacion" class="btn btn-success" title="Programación"><i class="fa fa-gear"></i> Programación</a>
-
-            <a href="#" id="btnVerTodos" class="btn btn-success" title="Ver todas"><i class="fa fa-search"></i> Ver todas
-            </a>
-            <a href="#" id="btnCopiar" class="btn btn-success" title="Copiar asignaciones"><i class="fa fa-copy"></i> Copiar asignaciones
-            </a>
+            <a href="#" id="btnVerTodos" class="btn btn-success" title="Ver todas"><i class="fa fa-search"></i> Ver todas</a>
+            <a href="#" id="btnCopiar" class="btn btn-success" title="Copiar asignaciones"><i class="fa fa-copy"></i> Copiar asignaciones</a>
             <a href="#" id="btnReporte" class="btn btn-success" title="Reporte"><i class="fa fa-print"></i> Reporte</a>
-
             <a href="#" id="btnReporteUnidad" class="btn btn-success" title="Reporte Unidad"><i class="fa fa-print"></i> Reporte por Área</a>
-
             <a href="#" id="btnReporteExcel" class="btn btn-success" title="Reporte Excel"><i class="fa fa-print"></i> Reporte Excel</a>
-
             <a href="#" id="btnReporteCompleto" class="btn btn-success" title="Reporte POA Completo"><i class="fa fa-print"></i> Reporte Completo</a>
         </div>
 
@@ -40,11 +33,9 @@
 
                 <tr>
                     <td style="width: 120px"><g:select from="${vesta.parametros.poaPac.Anio.list([sort: 'anio'])}" name="anio" optionKey="id" optionValue="anio" class="many-to-one form-control input-sm" value="${actual.id}"/></td>
-
                     <td style="width: 380px"><g:select from="${objetivos}" id="objetivo" name="objetivo_name" optionKey="id"
                                                        optionValue="descripcion" class="many-to-one form-control input-sm selectpicker "
                                                        noSelection="['-1': 'Seleccione...']" value=""/></td>
-
                     <td id="tdMacro" style="width: 380px"></td>
                 </tr>
             </table>
@@ -54,8 +45,6 @@
             </div>
 
         </div>
-
-    %{--<span class="ui-icon ui-icon-carat-2-e-w text-info" style="display: inline-block;  "></span><span id="ocultaActv" class="text-info" style="display: inline-block; cursor: pointer">Mostrar/Ocultar actividades y tareas</span>--}%
 
     <div id="divActividadesTareas">
     <fieldset class="ui-corner-all" style="min-height: 10px;font-size: 11px; align-content: center">
@@ -105,7 +94,6 @@
             <table class="table table-condensed table-bordered table-striped table-hover" style="width: auto;">
                 <thead>
                     <th style="width: 350px">Responsable</th>
-                    %{--<th style="width: 270px">Asignación</th>--}%
                     <th style="width: 300px;">Fuente</th>
                     <th style="width: 210px;">Partida</th>
                     <th style="width: 150px;">Presupuesto</th>
@@ -120,26 +108,21 @@
                         <td class="fuente">
                             <g:select from="${fuentes}" id="fuente" optionKey="id" optionValue="descripcion" name="fuente" class="fuente many-to-one form-control input-sm" value="" style="width: 300px;"/>
                         </td>
-
                         <td class="prsp">
                             <g:hiddenField name="partidaHide" id="prsp_hide" value=""/>
                             <g:textField name="partida" id="prsp_id" class="fuente many-to-one form-control input-sm" value=""/>
                         </td>
-
                         <td class="valor">
                             <g:textField name="valor_name" id="valor" class="form-control input-sm number" style="width: 150px" value=""/>
                         </td>
                         <td>
-                            <a href="#" id="btnGuardar" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Agregar
-                            </a>
-
+                            <a href="#" id="btnGuardar" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Agregar</a>
                             <div class="btn-group btn-group-xs" role="group" style="width: 100px;">
                                 <a href="#" id="guardarEditar" class="btn btn-success hide" title="Guardar"><i class="fa fa-save"></i>
                                 </a>
                                 <a href="#" id="cancelarEditar" class="btn btn-danger hide" title="Cancelar edición"><i class="fa fa-remove"></i>Cancelar
                                 </a>
                             </div>
-
                         </td>
                     </tr>
                 </tbody>
@@ -222,26 +205,6 @@
                 });
             }
 
-/*
-            function cargarActividadesTareas(macro, band) {
-//                console.log("cargarActividadesTareas")
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(controller: 'asignacion', action:'actividadesTareas_ajax')}",
-                    data    : {
-                        anio  : $("#anio").val(),
-                        macro : macro
-                    },
-                    success : function (msg) {
-//                        console.log("success cargarActividadesTareas")
-                        $("#divActividadesTareas").html(msg);
-                        if(band){
-                            $("#divColor1").removeClass("show").addClass("hide");
-                        }
-                    }
-                });
-            }
-*/
 
             function totales(objetivo, unidad) {
                 $.ajax({
@@ -329,7 +292,7 @@
                             $("#tdMacro").html(msg);
                             $("#tdActividad").html("");
                             $("#tdTarea").html("");
-                            $("#crearActividad").removeClass('show').addClass('hide');
+//                            $("#crearActividad").removeClass('show').addClass('hide');
                             $("#crearTarea").removeClass('show').addClass('hide');
                             $("#editarActividad").removeClass('show').addClass('hide');
                             $("#editarTarea").removeClass('show').addClass('hide');
@@ -550,7 +513,7 @@
                     },
                     success: function(msg) {
                         bootbox.dialog ({
-                            id: "dlgCrearActividad",
+                            id: "dlgEditarActividad",
                             title: "Editar Actividad",
 //                        class: "modal-lg",
                             message: msg,
