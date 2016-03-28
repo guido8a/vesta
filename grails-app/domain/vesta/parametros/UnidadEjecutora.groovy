@@ -249,7 +249,7 @@ class UnidadEjecutora {
 
     def getAsignacionesUnidad(Anio anio, String perfilCodigo) {
         def unidades = this.getUnidadesPorPerfil(perfilCodigo)
-//        println "unidades: ${unidades.nombre} ${unidades.id}"
+        println "unidades: ${unidades.nombre} ${unidades.id}"
         def asignaciones = Asignacion.withCriteria {
             eq("anio", anio)
             inList("unidad", unidades)
@@ -279,10 +279,12 @@ class UnidadEjecutora {
     }
 
     def getComponentesUnidadProyecto(Anio anio, Proyecto proyecto, String perfilCodigo) {
+        println "anio: $anio, proyecto: ${proyecto.id}, perfil: $perfilCodigo"
         def asignaciones = this.getAsignacionesUnidad(anio, perfilCodigo)
         def componentes = []
         def componentes2 = []
 
+        println "getComponentesUnidadProyecto asignaciones: ${asignaciones.marcoLogico.objeto}"
         asignaciones.each { f ->
             def p2 = f.marcoLogico.proyecto
             def c2 = f.marcoLogico.marcoLogico.id
