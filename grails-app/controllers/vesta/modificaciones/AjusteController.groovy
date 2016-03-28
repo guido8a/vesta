@@ -1568,7 +1568,8 @@ class AjusteController extends Shield {
                            } else {
 
                                def destinoActividad = new Asignacion()
-                               destinoActividad.anio = reforma.anio
+//                               destinoActividad.anio = reforma.anio
+                               destinoActividad.anio = d?.anio
                                destinoActividad.fuente = d?.fuente
                                destinoActividad.marcoLogico = nuevaActividad
                                destinoActividad.presupuesto = d?.presupuesto
@@ -1602,7 +1603,8 @@ class AjusteController extends Shield {
                        case "P": //partida - priorizado original en 0, valor ingresado en priorizado, no tiene padre
 //                           println("entro partida")
                            def nuevaPartida = new Asignacion()
-                           nuevaPartida.anio = reforma.anio
+//                           nuevaPartida.anio = reforma.anio
+                           nuevaPartida.anio = d?.anio
                            nuevaPartida.fuente = d?.fuente
                            nuevaPartida.marcoLogico = d?.componente
                            nuevaPartida.presupuesto = d?.presupuesto
@@ -1637,7 +1639,8 @@ class AjusteController extends Shield {
                        case "N": //partida - priorizado original en 0, valor ingresado en priorizado, no tiene padre
 //                           println("entro techo")
                            def nuevaPartida = new Asignacion()
-                           nuevaPartida.anio = reforma.anio
+//                           nuevaPartida.anio = reforma.anio
+                           nuevaPartida.anio = d?.anio
                            nuevaPartida.fuente = d?.fuente
                            nuevaPartida.marcoLogico = d?.componente
                            nuevaPartida.presupuesto = d?.presupuesto

@@ -2202,18 +2202,13 @@ class ReformaController extends Shield {
                 reforma.numeroReforma = num
                 reforma.save(flush: true)
 
-
-
-
                 def usu = Persona.get(session.usuario.id)
                 def now = new Date()
 
                 def detalles
 
                 detalles = DetalleReforma.findAllByReforma(reforma)
-
-                println("detalles " + detalles)
-
+//                println("detalles " + detalles)
                 detalles.each { d->
 
                     switch (d?.tipoReforma?.codigo){
@@ -2312,7 +2307,8 @@ class ReformaController extends Shield {
                             } else {
 
                                 def destinoActividad = new Asignacion()
-                                destinoActividad.anio = reforma.anio
+//                                destinoActividad.anio = reforma.anio
+                                destinoActividad.anio = d?.anio
                                 destinoActividad.fuente = d?.fuente
                                 destinoActividad.marcoLogico = nuevaActividad
                                 destinoActividad.presupuesto = d?.presupuesto
@@ -2348,10 +2344,11 @@ class ReformaController extends Shield {
 
                             //partida - priorizado original en 0, valor ingresado en priorizado, no tiene padre
 
-                            println("entro partida")
+//                            println("entro partida")
 
                             def nuevaPartida = new Asignacion()
-                            nuevaPartida.anio = reforma.anio
+//                            nuevaPartida.anio = reforma.anio
+                            nuevaPartida.anio = d?.anio
                             nuevaPartida.fuente = d?.fuente
                             nuevaPartida.marcoLogico = d?.componente
                             nuevaPartida.presupuesto = d?.presupuesto

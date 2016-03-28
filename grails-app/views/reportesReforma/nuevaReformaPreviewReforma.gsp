@@ -43,6 +43,7 @@
                 <table class="table table-hover table-condensed table-hover table-bordered">
                     <thead>
                     <tr>
+                        <th>Año</th>
                         <th>Proyecto</th>
                         <th>Componente</th>
                         <th>Actividad</th>
@@ -58,6 +59,7 @@
                     <g:each in="${detallesReforma}" var="detallesNuevos">
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'O'}">
                             <tr>
+                                <td style="width: 5%">${detallesNuevos?.anio}</td>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style="width: 16%">${detallesNuevos?.componente?.objeto}</td>
                                 <td style="width: 15%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
@@ -73,6 +75,7 @@
                         </g:if>
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'E' || detallesNuevos?.tipoReforma?.codigo == 'P' }">
                             <tr>
+                                <td style="width: 5%">${detallesNuevos?.anio}</td>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'P'}">
                                     <td style="width: 16%">${detallesNuevos?.componente?.marcoLogico?.objeto}</td>
@@ -107,7 +110,7 @@
                                 <g:else>
                                     <g:set var="nuevaActvStr" value="S/N - "/>
                                 </g:else>
-
+                                <td style="width: 5%">${detallesNuevos?.anio}</td>
                                 <td style='width:15%'>${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style='width:16%'>${detallesNuevos?.componente?.objeto}</td>
                                 <td style='width:15%'>${nuevaActvStr}${detallesNuevos?.descripcionNuevaActividad}</td>
@@ -126,7 +129,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th colspan="5" class="formato" style="text-align: center">TOTAL: </th>
+                        <th colspan="6" class="formato" style="text-align: center">TOTAL: </th>
                         <th style="width: 8%; text-align: right" class="formato"><g:formatNumber number="${totalOrigen}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
                         <th style="width: 9%; text-align: right" class="formato"><g:formatNumber number="${disminucion}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
                         <th style="width: 9%; text-align: right" class="formato"><g:formatNumber number="${incremento}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>

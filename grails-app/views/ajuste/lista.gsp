@@ -53,9 +53,12 @@
                             %{--reforma.tipoSolicitud == 'I' ? ' de incremento' : '??'}--}%
                         </td>
                         <td>${reforma.estado.descripcion}</td>
-                        <td style="text-align: center">
+                        <td style="text-align: center; width: 90px">
                             %{--<div class="btn-group" role="group">--}%
-                                <elm:linkPdfReforma reforma="${reforma}"/>
+                            <div class="btn-group btn-group-xs" role="group">
+                            <elm:linkPdfReforma reforma="${reforma}"/>
+                            </div>
+
                                 %{--<g:if test="${reforma.estado.codigo == 'E02'}">--}%
                                 %{--<g:set var="accion" value="${reforma.tipoSolicitud == 'E' ? 'existenteReforma' :--}%
                                 %{--reforma.tipoSolicitud == 'A' ? 'actividadReforma' :--}%
