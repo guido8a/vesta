@@ -84,6 +84,8 @@
         <g:form action="saveProcesoWizard" class="form-horizontal wizard-form corner-bottom" name="frmProceso" role="form" method="POST">
             <input type="hidden" name="id" value="${proceso?.id}">
 
+            <input type="hidden" name="id2" value="${proceso?.proyecto?.id}">
+
             <div class="row">
                 <span class="grupo">
                     <label class="col-md-2 control-label">
@@ -240,6 +242,44 @@
                 });
 
             });
+
+
+            $("#proyecto").change(function () {
+
+                if('${proceso?.id}') {
+
+                    if( '${proceso?.proyecto?.id}' != $("#proyecto").val() ){
+//                        console.log("cambio " + $("#proyecto").val())
+
+                        bootbox.confirm("Al cambiar el proyecto actual se borraran las asignaciones del paso 2", function (result) {
+                                    if(result){
+
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: "${createLink(controller: 'avales', action: 'borrarAsignaciones_ajax')}",
+                                            data: {
+                                                    proceso: '${proceso?.id}'
+                                            },
+                                            success: function (msg){
+                                                    if(msg == "no"){
+                                                        log("Error al borrar las asignaciones")
+                                                    }
+                                            }
+
+                                        })
+
+                                    }else{
+                                        $("#proyecto").val(${proceso?.proyecto?.id})
+                                    }
+                        })
+                    }
+
+
+
+                }
+
+            });
+
         </script>
 
     </body>

@@ -6,6 +6,7 @@ import vesta.parametros.Auxiliar
 import vesta.parametros.poaPac.Anio
 import vesta.poa.Asignacion
 import vesta.proyectos.MarcoLogico
+import vesta.proyectos.Proceso
 import vesta.proyectos.Proyecto
 import vesta.parametros.UnidadEjecutora
 import vesta.alertas.Alerta
@@ -502,9 +503,10 @@ class AvalesController extends vesta.seguridad.Shield {
      * Acción que guarda el proceso y redirecciona a la acción solicitudAsignaciones una vez completado.
      */
     def saveProcesoWizard = {
-        println "save proceso " + params
+//        println "save proceso " + params
 
         def usuario = Persona.get(session.usuario.id)
+
 
         def proceso
         if (params.id) {
@@ -513,7 +515,7 @@ class AvalesController extends vesta.seguridad.Shield {
             proceso = new ProcesoAval()
         }
 
-        println("personsa " + usuario)
+//        println("personsa " + usuario)
         proceso.properties = params
         proceso.usuario = usuario
         println("persona desp " + proceso.usuario)
@@ -1494,6 +1496,33 @@ class AvalesController extends vesta.seguridad.Shield {
         } else {
             render "archivo no encontrado"
         }
+    }
+
+
+    def borrarAsignaciones_ajax () {
+
+//        println("params borrar" + params)
+
+        def proceso = ProcesoAval.get(params.proceso)
+        def asignaciones = ProcesoAsignacion.findAllByProceso(proceso)
+
+//        println("asignaciones " + asignaciones)
+
+        if(asignaciones){
+            asignaciones.each { a->
+                try {
+                    a.delete(flush: true)
+                    render "ok"
+                }catch(e){
+                    render "no"
+                    println("error al borrar asignaciones" + a.errors)
+                }
+            }
+        }else{
+            render "ok"
+        }
+
+
     }
 
 
