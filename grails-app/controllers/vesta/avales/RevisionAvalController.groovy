@@ -187,6 +187,7 @@ class RevisionAvalController extends Shield {
                 band = false
             }
         }
+
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy HH:mm:ss", "01-01-" + anio + " 00:01:01")
             fechaFin = new Date().parse("dd-MM-yyyy HH:mm:ss", "31-12-" + anio + " 23:59:59")
