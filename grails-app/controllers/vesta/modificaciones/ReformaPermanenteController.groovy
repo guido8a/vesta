@@ -252,6 +252,7 @@ class ReformaPermanenteController extends  Shield{
             detalleReforma.macroActividad = macro
             detalleReforma.objetivoGastoCorriente = objetivo
             detalleReforma.tarea = tar.id
+            detalleReforma.anio = asignacion.anio
 
             if(params.adicional){
                 detalleReforma.solicitado = params.adicional
@@ -278,6 +279,7 @@ class ReformaPermanenteController extends  Shield{
             detalleReforma.macroActividad = macro
             detalleReforma.objetivoGastoCorriente = objetivo
             detalleReforma.tarea = tar.id
+//            detalleReforma.anio = asignacion.anio
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma A " + detalleReforma.errors);
@@ -320,6 +322,7 @@ class ReformaPermanenteController extends  Shield{
             detalleReforma.macroActividad = macro
             detalleReforma.objetivoGastoCorriente = objetivo
             detalleReforma.tarea = tar.id
+            detalleReforma.anio = asignacion.anio
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma B " + errors);
@@ -366,6 +369,12 @@ class ReformaPermanenteController extends  Shield{
         def tar = Tarea.get(params.tarea)
         def fuente = Fuente.get(params.fuente)
         def partida = Presupuesto.get(params.partida)
+        def anio
+
+        if(params.anio){
+            anio = Anio.get(params.anio)
+        }
+
 
         def detalleReforma
 
@@ -384,6 +393,7 @@ class ReformaPermanenteController extends  Shield{
             detalleReforma.macroActividad = macro
             detalleReforma.objetivoGastoCorriente = objetivo
             detalleReforma.tarea = tar.id
+            detalleReforma.anio = anio
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma C  " + errors);

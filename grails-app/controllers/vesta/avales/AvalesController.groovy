@@ -384,7 +384,7 @@ class AvalesController extends vesta.seguridad.Shield {
                 }
             }
             //toma en cuenta el poas del proceso actual
-            if(it.proceso.id == params.prco.toInteger()){
+            if(it.proceso.id == params?.prco?.toInteger()){
                 usado += it.monto
             }
         }
