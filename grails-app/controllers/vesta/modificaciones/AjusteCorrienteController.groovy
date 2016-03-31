@@ -377,6 +377,7 @@ class AjusteCorrienteController {
                     detalle.valor = monto
                     detalle.valorOrigenInicial = asignacionOrigen.priorizado
                     detalle.valorDestinoInicial = asignacionDestino.priorizado
+                    detalle.anio = anio
                     if (!detalle.save(flush: true)) {
                         println "error al guardar detalle: " + detalle.errors
                         errores += renderErrors(bean: detalle)
@@ -561,6 +562,7 @@ class AjusteCorrienteController {
             detalle.valorDestinoInicial = 0
             detalle.presupuesto = presupuesto
             detalle.fuente = asignacionOrigen.fuente
+            detalle.anio = anio
 
             if (!detalle.save(flush: true)) {
                 println "error al guardar detalle: " + detalle.errors
