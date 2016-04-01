@@ -186,7 +186,8 @@
             <table width="100%" border="0">
             <tr>
                 <td><strong>Nota Técnica:</strong> ${solicitud?.notaTecnica}</td>
-                <td style="text-align: right"><strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}</td>
+                %{--<td style="text-align: right"><strong>FECHA:</strong>  ${solicitud.fecha.format("dd-MM-yyyy")}</td>--}%
+                <td style="text-align: right"><strong>FECHA:</strong>  ${solicitud?.firma?.fecha?.format("dd-MM-yyyy")}</td>
         </tr>
         <tr>
 
