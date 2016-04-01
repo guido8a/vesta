@@ -224,7 +224,16 @@
                     var url = "${g.createLink(controller: 'reportes',action: 'certificacion')}/?id=" + id;
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=aval.pdf"
                 }
-            }
+            },
+            solicitud: {
+            label   : "Imprimir Solicitud",
+            icon    : "fa fa-print" ,
+                action : function ($element) {
+                    var id = $element.data("sol");
+                    var url = "${g.createLink(controller: 'reporteSolicitud',action: 'imprimirSolicitudAval')}/?id=" + id;
+                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud.pdf"
+                }
+        }
         };
 
         if ($tr.attr("estadoTr") == 'E02' && $tr.attr("usu") == 'ASPL') {
