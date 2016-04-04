@@ -742,10 +742,7 @@ class AjusteCorrienteController {
             detalles.each {d->
                 try{
                     d.delete(flush: true)
-                    render "ok"
-
                 }catch(e){
-                    render "no"
                     println("error al borrar detalle del ajuste" + d.errors)
                     band ++
                 }
