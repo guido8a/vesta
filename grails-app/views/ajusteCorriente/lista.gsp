@@ -51,7 +51,8 @@
                             <div class="btn-group btn-group-sm" role="group">
                                 <elm:linkPdfReforma reforma="${reforma}"/>
                                 <g:if test="${reforma?.estado?.codigo == 'P01' && (unidad == 'DF' || unidad == 'DA' || unidad == 'GAF')}">
-                                    <a href="#" id="btnEditar" class="btn btn-success edit" title="Editar"><i class="fa fa-pencil"></i></a>
+                                    <a href="#" id="btnEditar" class="btn btn-success edit" data-ref="${reforma?.id}" title="Editar"><i class="fa fa-pencil"></i></a>
+                                    <a href="#" id="btnBorrar" class="btn btn-danger borrar" data-ref="${reforma?.id}" title="Borrar"><i class="fa fa-trash"></i></a>
                                 </g:if>
                             </div>
                         </td>
@@ -63,22 +64,38 @@
         <script type="text/javascript">
 
             $(".edit").click(function () {
-                console.log($("#trLista").data("id"));
+                console.log($(this).data("ref"));
 
-                var idf = $("#trLista").data("id");
+                var idf = $(this).data("ref");
                 location.href = "${createLink(controller: 'ajusteCorriente', action: 'existente')}?id=" + idf;
 
-                %{--$.ajax({--}%
-                    %{--type    : "POST",--}%
-                    %{--url     : "${createLink(controller: 'ajusteCorriente', action:'existente')}",--}%
-                    %{--data    : {--}%
-                        %{--id  :  $("#trLista").data("id")--}%
 
-                    %{--},--}%
-                    %{--success : function (msg) {--}%
+            });
 
-                    %{--}--}%
-                %{--});--}%
+            $(".borrar").click(function () {
+
+            var r = $(this).data("ref")
+                bootbox.confirm("Eliminar el ajuste?", function (result) {
+                    if(result){
+                        console.log(r);
+                        $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(controller: 'ajusteCorriente', action:'borrarAjuste_ajax')}",
+                        data    : {
+                        id  :  r
+                        },
+                        success : function (msg) {
+                            if(msg == 'ok'){
+                                log("Ajuste borrado correctamente", "success");
+                                location.href="${createLink(controller: 'ajusteCorriente', action: 'lista')}"
+                            }else{
+                                log("Error al borrar ajuste","error")
+                            }
+                        }
+                        });
+                    }
+                });
+
             });
 
 

@@ -730,4 +730,39 @@ class AjusteCorrienteController {
         render "OK"
     }
 
+    def borrarAjuste_ajax () {
+        println("params borrar" + params)
+
+        def reforma = Reforma.get(params.id)
+        def detalles = DetalleReforma.findAllByReforma(reforma)
+        def band = 0
+
+
+        if(detalles.size() > 0){
+            detalles.each {d->
+                try{
+                    d.delete(flush: true)
+                    render "ok"
+
+                }catch(e){
+                    render "no"
+                    println("error al borrar detalle del ajuste" + d.errors)
+                    band ++
+                }
+            }
+        }
+
+
+        if(band == 0){
+            try {
+                reforma.delete(flush: true)
+                render "ok"
+            }catch (e){
+                render "no"
+                println("error al borrar reforma " + reforma.errors)
+            }
+        }
+
+    }
+
 }

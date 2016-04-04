@@ -189,22 +189,22 @@
                                     -<g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
                                 </td>
                             </tr>
-                            <g:set var="objt_ds" value="${detalle.asignacionDestino.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}"/>
+                            <g:set var="objt_ds" value="${detalle?.asignacionDestino?.tarea?.actividad?.macroActividad?.objetivoGastoCorriente?.descripcion}"/>
                             <tr class="success">
                                 <td>
                                     "${objt.size() > 70 ? objt[0..70] + "..." : objt}"
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino.tarea.actividad.macroActividad.descripcion}
+                                    ${detalle?.asignacionDestino?.tarea?.actividad?.macroActividad?.descripcion}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino.tarea.actividad.descripcion}
+                                    ${detalle?.asignacionDestino?.tarea?.actividad?.descripcion}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino.tarea.descripcion}
+                                    ${detalle?.asignacionDestino?.tarea?.descripcion}
                                 </td>
                                 <td>
-                                    ${detalle.asignacionDestino.presupuesto.descripcion + ': ' + detalle.asignacionDestino.presupuesto.numero}
+                                    ${detalle?.asignacionDestino?.presupuesto?.descripcion + ': ' + detalle?.asignacionDestino?.presupuesto?.numero}
                                 </td>
                                 <td class="text-right">
                                     <g:formatNumber number="${detalle.valor}" type="currency" currencySymbol=""/>
