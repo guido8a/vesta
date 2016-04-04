@@ -228,8 +228,8 @@
             function cargarHistorial(anio, numero, proceso, requirente) {
                 $.ajax({
                     type    : "POST",
-                    %{--url     : "${createLink(controller: 'revisionAval', action:'historial')}",--}%
-                    url     : "${createLink(controller: 'revisionAval', action:'historialAvales')}",
+                    url     : "${createLink(controller: 'revisionAval', action:'historial')}",
+                    %{--url     : "${createLink(controller: 'revisionAval', action:'historialAvales')}",--}%
                     data    : {
                         anio       : anio,
                         numero     : numero,
