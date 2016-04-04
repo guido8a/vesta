@@ -434,7 +434,7 @@ class AvalesController extends vesta.seguridad.Shield {
         def estadoPendiente = EstadoAval.findByCodigo("P01")
         def estadoPorRevisar = EstadoAval.findByCodigo("R01")
         def estados = [estadoDevuelto, estadoSolicitadoSinFirma, estadoPendiente, estadoPorRevisar]
-        return [procesos: l, estados: estados]
+        return [procesos: l, estados: estados, perfil: perfil]
     }
 
     def procesos() {
@@ -773,10 +773,11 @@ class AvalesController extends vesta.seguridad.Shield {
      * @param id el id del proceso
      */
     def avalesProceso = {
+        def perfil = session.perfil.codigo
         def proceso = ProcesoAval.get(params.id)
         def avales = Aval.findAllByProceso(proceso)
         def solicitudes = SolicitudAval.findAllByProceso(proceso, [sort: "fecha"])
-        [avales: avales, proceso: proceso, solicitudes: solicitudes]
+        [avales: avales, proceso: proceso, solicitudes: solicitudes, perfil: perfil]
     }
 
     /**

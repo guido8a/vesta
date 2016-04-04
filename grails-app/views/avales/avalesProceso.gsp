@@ -81,20 +81,13 @@
                                         <td style="text-align: center;font-weight: bold" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : avalEstado == 'E02' ? 'verde' : 'rojo'}">
                                             ${p.estado?.descripcion}
                                         </td>
-
-%{--
-                                        <td style="text-align: center" class="${avalEstado == 'E05' ? 'amarillo' : avalEstado == 'E04' ? 'rojo' : 'verde'}">
-                                            ${p.estado?.descripcion}
-                                        </td>
---}%
-
                                         <td style="text-align: center">
                                             <a href="#" class="imprimiAval btn btn-info btn-sm" title="Imprimir" iden="${SolicitudAval.findByAval(p)?.id}">
                                                 <i class="fa fa-print "></i>
                                             </a>
                                         </td>
                                         <td style="text-align: center">
-                                            <g:if test="${p.estado.codigo == 'E02'}">
+                                            <g:if test="${p.estado.codigo == 'E02' && perfil != 'OBS'}">
                                                 <a href="#" class="solAnulacion btn btn-danger btn-sm" iden="${p.id}" title="Solicitar anulación">
                                                     <i class="fa fa-times"></i>
                                                 </a>

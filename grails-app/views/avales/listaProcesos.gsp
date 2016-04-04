@@ -49,7 +49,7 @@
             <tbody>
                 <g:each in="${procesos}" var="p">
                     <g:set var="sols" value="${SolicitudAval.findAllByProceso(p).estado}"/>
-                    <tr data-id="${p?.id}" data-estado="${SolicitudAval.findAllByProceso(p).estado.codigo.first().toString()}">
+                    <tr data-id="${p?.id}" data-estado="${SolicitudAval.findAllByProceso(p).estado.codigo.first().toString()}" data-perfil="${perfil}">
                         <td title="${p.proyecto.toStringCompleto()}">${p.proyecto}</td>
                         <td>${p.nombre}</td>
                         <td class="${sols.codigo.join(" ")}">
@@ -91,7 +91,7 @@
                     }
                 };
 
-//                if(estado != 'E03'){
+                if($tr.data("perfil") != 'OBS'){
                     items.editar = {
                         label  : "Editar",
                         icon   : "fa fa-pencil",
@@ -100,7 +100,7 @@
                             location.href = "${createLink(controller: 'avales', action:  'nuevaSolicitud')}/" + id;
                         }
                     };
-//                }
+                }
 
 
                 items.avales = {
@@ -112,25 +112,29 @@
                     }
                 };
 
-                items.actividades = {
-                    label  : "Actividades",
-                    icon   : "fa fa-calendar-o",
-                    action : function ($element) {
-                        var id = $element.data("id");
-                        location.href = "${createLink(controller: "avanceFisico", action: "list")}?id=" + idPro;
+                if($tr.data("perfil") != 'OBS') {
+                    items.actividades = {
+                        label: "Actividades",
+                        icon: "fa fa-calendar-o",
+                        action: function ($element) {
+                            var id = $element.data("id");
+                            location.href = "${createLink(controller: "avanceFisico", action: "list")}?id=" + idPro;
 
-                    }
-                };
+                        }
+                    };
+                }
 
-                items.financiero = {
-                    label  : "Av. Financiero",
-                    icon   : "fa fa-line-chart",
-                    action : function ($element) {
-                        var id = $element.data("id");
-                        location.href = "${createLink(controller: "hito", action: "avancesFinancieros")}?id=" + idPro;
+                if($tr.data("perfil") != 'OBS') {
+                    items.financiero = {
+                        label: "Av. Financiero",
+                        icon: "fa fa-line-chart",
+                        action: function ($element) {
+                            var id = $element.data("id");
+                            location.href = "${createLink(controller: "hito", action: "avancesFinancieros")}?id=" + idPro;
 
-                    }
-                };
+                        }
+                    };
+                }
 
                 return items
             }
