@@ -113,7 +113,8 @@ class RevisionAvalController extends Shield {
             }
         }
 
-        unidades = unidades.sort { it.nombre }
+        unidades = unidades.sort{ it.nombre }
+        println "listaAvales unidades: $unidades"
 
         return [actual: actual, unidades: unidades]
     }

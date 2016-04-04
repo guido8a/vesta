@@ -39,9 +39,6 @@ class Shield {
 //        }
 //        return true
         return true
-
     }
-
-
 }
  
