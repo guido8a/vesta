@@ -11,9 +11,11 @@
         <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="reformas" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Solicitar reforma
-                </g:link>
+                <g:if test="${session.perfil.codigo != 'OBS'}">
+                    <g:link action="reformas" class="btn btn-default btnCrear">
+                        <i class="fa fa-file-o"></i> Solicitar reforma
+                    </g:link>
+                </g:if>
                 <g:link action="lista" class="btn btn-success">
                     <i class="fa fa-refresh"></i> Actualizar
                 </g:link>
