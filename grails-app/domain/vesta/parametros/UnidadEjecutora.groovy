@@ -228,7 +228,7 @@ class UnidadEjecutora {
     }
 
     def getUnidadesPorPerfil(String perfilCodigo) {
-        def perfilesAll = ["GAF", "ASPL", "GP", "DP"]
+        def perfilesAll = ["GAF", "ASPL", "GP", "DP", "OBS"]
         //gerencia administrativa financiera, Analista de Planificación, Gerencia de Planificación
         def unidades = []
         if (perfilesAll.contains(perfilCodigo)) {

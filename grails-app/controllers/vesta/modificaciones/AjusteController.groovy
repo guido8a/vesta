@@ -36,31 +36,27 @@ class AjusteController extends Shield {
     def lista() {
         def reformas
         def perfil = session.perfil.codigo.toString()
-//        def perfiles = ["GAF", "ASPL"]
+
+        def perfiles = ["OBS"]
 //
-//        if (perfiles.contains(perfil)) {
-//            reformas = Reforma.withCriteria {
-//                eq("tipo", "A")
-//                persona {
-//                    order("unidad", "asc")
-//                }
-//                order("fecha", "desc")
-//            }
-//        } else {
-//            def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id))
-//            def personas = Persona.findAllByUnidadInList(unidades)
-//
-//            reformas = Reforma.findAllByTipoAndPersonaInList('A', personas, [sort: "fecha", order: "desc"])
-//        }
-//        def unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
-        def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
-        reformas = Reforma.withCriteria {
-            eq("tipo", "A")
-            persona {
-                inList("unidad", unidades)
-                order("unidad", "asc")
+        if (perfiles.contains(perfil)) {
+            reformas = Reforma.withCriteria {
+                eq("tipo", "A")
+                persona {
+                    order("unidad", "asc")
+                }
+                order("fecha", "desc")
             }
-            order("fecha", "desc")
+        } else {
+            def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+            reformas = Reforma.withCriteria {
+                eq("tipo", "A")
+                persona {
+                    inList("unidad", unidades)
+                    order("unidad", "asc")
+                }
+                order("fecha", "desc")
+            }
         }
         return [reformas: reformas]
     }

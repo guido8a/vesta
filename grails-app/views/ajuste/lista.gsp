@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 21/04/15
-  Time: 08:50 AM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -19,9 +12,11 @@
         <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="ajustes" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Solicitar ajuste
-                </g:link>
+                <g:if test="${session.perfil.codigo == 'ASPL'}">
+                    <g:link action="ajustes" class="btn btn-default btnCrear">
+                        <i class="fa fa-file-o"></i> Solicitar ajuste
+                    </g:link>
+                </g:if>
             </div>
         </div>
 
