@@ -419,8 +419,11 @@ class ReformaController extends Shield {
                 eq("numeroReforma", params.numero.toInteger())
             }
 
-            order("fecha", "desc")
+//            order("fecha", "desc")
+            order("numeroReforma", "desc")
         }
+
+        reformas = reformas.sort{it.numeroReforma}.reverse()
 
         reformas.each {rf ->
             switch (rf.tipoSolicitud){

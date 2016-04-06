@@ -18,7 +18,7 @@
             <span id="selOpt"></span>
             <b style="margin-left: 20px">Criterio: </b>
             <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio}" id="criterio_con"/>
-            <a href="#" id="buscarP" class="btn btn-success" title="Buscar"><i class="fa fa-search"></i> Buscar</a>
+            <a href="#" id="buscarPartida" class="btn btn-success" title="Buscar"><i class="fa fa-search"></i> Buscar</a>
 
         </div>
 
@@ -65,10 +65,10 @@
 
 <script type="text/javascript">
 
-    $("#buscarP").click(function(){
+    $("#buscarPartida").click(function(){
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
                 "&operador=" + $("#oprd").val();
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidas')}",
+        $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidasFiltradas')}",
             data     : datos,
             success  : function (msg) {
                 $("#detalle").html(msg)

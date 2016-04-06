@@ -77,6 +77,7 @@
 
     $("#buscarP").click(function(){
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
+//                "&operador=" + $("#oprd").val();
                 "&operador=" + $("#oprd").val() + "&tipo=corrientes";
         $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidas')}",
             data     : datos,
