@@ -870,7 +870,7 @@
             bootbox.alert("Debe agregar detalles antes de enviar la solicitud!")
         } else {
             if ($("#frmFirmas").valid()) {
-                bootbox.confirm("¿Está seguro de querer enviar esta solicitud de ajuste?<br/>Ya no podrá modificar su contenido.",
+                bootbox.confirm("¿Está seguro de querer enviar esta solicitud de ajuste de gasto permanente?<br/>Ya no podrá modificar su contenido.",
                         function (res) {
                             if (res) {
                                 openLoader();
@@ -884,7 +884,7 @@
                                 data.send = "S";
                                 $.ajax({
                                     type    : "POST",
-                                    url     : "${createLink(action:'saveNuevoAjuste_ajax')}",
+                                    url     : "${createLink(action:'saveNuevoAjusteCorriente_ajax')}",
                                     data    : data,
                                     success : function (msg) {
                                         var parts = msg.split("*");

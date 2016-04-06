@@ -1272,7 +1272,8 @@ class ReformaPermanenteController extends  Shield{
                             println("entro partida")
 
                             def nuevaPartida = new Asignacion()
-                            nuevaPartida.anio = reforma.anio
+//                            nuevaPartida.anio = reforma.anio
+                            nuevaPartida.anio = d?.anio
                             nuevaPartida.fuente = d?.fuente
                             nuevaPartida.tarea  = Tarea.get(d?.tarea)
                             nuevaPartida.presupuesto = d?.presupuesto

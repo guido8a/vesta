@@ -1155,5 +1155,327 @@ class AjusteCorrienteController {
 
 
 
+    def saveNuevoAjusteCorriente_ajax () {
+
+        println("save nuevo ajuste corriente " + params)
+
+        def anio = Anio.get(params.anio.toLong())
+        def personaFirma1, personaFirma2
+
+        def estado = EstadoAval.findByCodigo("P01") //pendiente
+        if (params.send == "S") {
+            estado = EstadoAval.findByCodigo("EF1") //aprobado sin firma
+        }
+
+        def now = new Date()
+        def usu = Persona.get(session.usuario.id)
+        def reforma
+
+        if (params.id) {
+            reforma = Reforma.get(params.id)
+            personaFirma1 = reforma.firma1?.usuario
+            personaFirma2 = reforma.firma2?.usuario
+
+            if(!personaFirma1){
+                personaFirma1 = Persona.get(params.firma1.toLong())
+            }
+            if(!personaFirma2){
+                personaFirma2 = Persona.get(params.firma2.toLong())
+            }
+        }
+
+        reforma.anio = anio
+        reforma.persona = usu
+        reforma.analista = usu
+        reforma.estado = estado
+        reforma.concepto = params.concepto.trim()
+        reforma.fecha = now
+        reforma.tipo = "A"
+        reforma.tipoSolicitud = "Y"
+        if (!reforma.save(flush: true)) {
+            println ("error al guardar el ajuste corriente: " + reforma.errors)
+            render "ERROR*" + renderErrors(bean: reforma)
+            return
+        }
+
+        def tipoStr = elm.tipoReformaStr(tipo: 'Ajuste', tipoSolicitud: reforma.tipoSolicitud)
+
+        if (params.send == "S") {
+            println "nuevo ajuste: se hace la alerta y se manda mail, se crean las firmas"
+            if (params.id && reforma.firma1 && reforma.firma2) {
+                def firma1 = reforma.firma1
+                firma1.estado = "S"
+                firma1.save(flush: true)
+                def firma2 = reforma.firma2
+                firma2.estado = "S"
+                firma2.save(flush: true)
+            } else {
+                def firma1 = new Firma()
+                firma1.usuario = personaFirma1
+                firma1.fecha = now
+                firma1.accion = "firmarAprobarNuevoAjusteCorriente"
+                firma1.controlador = "ajusteCorriente"
+                firma1.idAccion = reforma.id
+                firma1.accionVer = "ajusteGp"
+                firma1.controladorVer = "reportesReforma"
+                firma1.idAccionVer = reforma.id
+                firma1.accionNegar = "devolverAprobarAjusteCorriente"
+                firma1.controladorNegar = "ajusteCorriente"
+                firma1.idAccionNegar = reforma.id
+                firma1.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+                firma1.tipoFirma = "AJST"
+                if (!firma1.save(flush: true)) {
+                    println "error al crear firma1: " + firma1.errors
+                    render "ERROR*" + renderErrors(bean: firma1)
+                    return
+                }
+                def firma2 = new Firma()
+                firma2.usuario = personaFirma2
+                firma2.fecha = now
+                firma2.accion = "firmarAprobarNuevoAjusteCorriente"
+                firma2.controlador = "ajusteCorriente"
+                firma2.idAccion = reforma.id
+                firma2.accionVer = "ajusteGp"
+                firma2.controladorVer = "reportesReforma"
+                firma2.idAccionVer = reforma.id
+                firma2.accionNegar = "devolverAprobarAjusteCorriente"
+                firma2.controladorNegar = "ajusteCorriente"
+                firma2.idAccionNegar = reforma.id
+                firma2.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+                firma2.tipoFirma = "AJST"
+                if (!firma2.save(flush: true)) {
+                    println "error al crear firma2: " + firma2.errors
+                    render "ERROR*" + renderErrors(bean: firma2)
+                    return
+                }
+                reforma.firma1 = firma1
+                reforma.firma2 = firma2
+                reforma.save(flush: true)
+            }
+            def alerta1 = new Alerta()
+            alerta1.from = usu
+            alerta1.persona = personaFirma1
+            alerta1.fechaEnvio = now
+            alerta1.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta1.controlador = "firma"
+            alerta1.accion = "firmasPendientes"
+            alerta1.id_remoto = reforma.id
+            if (!alerta1.save(flush: true)) {
+                println "error alerta: " + alerta1.errors
+            }
+            def alerta2 = new Alerta()
+            alerta2.from = usu
+            alerta2.persona = personaFirma2
+            alerta2.fechaEnvio = now
+            alerta2.mensaje = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
+            alerta2.controlador = "firma"
+            alerta2.accion = "firmasPendientes"
+            alerta2.id_remoto = reforma.id
+            if (!alerta2.save(flush: true)) {
+                println "error alerta: " + alerta2.errors
+            }
+        } else {
+            println "no se manda: no se hace alerta ni se manda mail ni se hacen firmas"
+        }
+
+        def errores = ""
+
+        if (errores == "") {
+            if (params.send == "S") {
+                render "SUCCESS*Ajuste de gasto permanente solicitado exitosamente"
+            } else {
+                render "SUCCESS*Ajuste de gasto permanente guardado exitosamente*" + reforma.id
+            }
+        } else {
+            render "ERROR*" + errores
+        }
+    }
+
+    /**
+     * Acción para firmar la aprobación de la reforma
+     */
+    def firmarAprobarNuevoAjusteCorriente() {
+        println ("firmarAprobarNuevoAjusteCorriente params " + params)
+        def firma = Firma.findByKey(params.key)
+        if (!firma) {
+            response.sendError(403)
+        } else {
+            def reforma = Reforma.findByFirma1OrFirma2(firma, firma)
+            if (reforma.firma1.estado == "F" && reforma.firma2.estado == "F") {
+                //busco el ultimo numero asignado para signar el siguiente
+                def ultimoNum = Reforma.withCriteria {
+                    eq("tipo", "A")
+                    projections {
+                        max "numero"
+                    }
+                }
+
+                def num = 1
+                if (ultimoNum && ultimoNum.size() == 1) {
+                    num = ultimoNum.first() + 1
+                }
+
+                def estadoAprobado = EstadoAval.findByCodigo("E02")
+                reforma.estado = estadoAprobado
+                reforma.numero = num
+                reforma.save(flush: true)
+                def usu = Persona.get(session.usuario.id)
+                def now = new Date()
+                def errores = ""
+                def detalles = DetalleReforma.findAllByReforma(reforma)
+
+                detalles.each { d->
+                    println "..procesa id: ${d.id}, tipo: ${d?.tipoReforma?.codigo}"
+                    switch (d?.tipoReforma?.codigo){
+                        case "O":  //asignacion origen
+//                           println("entro origen")
+                            def modificacionOrigen = new ModificacionAsignacion()
+                            modificacionOrigen.usuario = usu
+                            modificacionOrigen.desde = d?.asignacionOrigen
+                            modificacionOrigen.fecha = now
+                            modificacionOrigen.valor = d?.valor
+                            modificacionOrigen.estado = 'A'
+                            modificacionOrigen.detalleReforma = d
+                            modificacionOrigen.originalOrigen = d?.asignacionOrigen?.priorizado
+
+                            if (!modificacionOrigen.save(flush: true)) {
+                                println "error al guardar modificacion tipo O: " + modificacionOrigen.errors
+                                errores += renderErrors(bean: modificacionOrigen)
+                            } else {
+
+                                def asig = Asignacion.get(d?.asignacionOrigen?.id)
+                                asig?.priorizado -= d?.valor
+                                if (!asig.save(flush: true)) {
+                                    println "error al guardar origen O: " + asig.errors
+                                    errores += renderErrors(bean: asig)
+                                }
+                            }
+                            break;
+
+                        case "E":  //incremento
+//                           println("entro incremento")
+                            def modificacionIncremento = new ModificacionAsignacion()
+                            modificacionIncremento.usuario = usu
+                            modificacionIncremento.recibe = d?.asignacionOrigen
+                            modificacionIncremento.fecha = now
+                            modificacionIncremento.valor = d?.valor
+                            modificacionIncremento.estado = 'A'
+                            modificacionIncremento.detalleReforma = d
+                            modificacionIncremento.originalDestino = d?.asignacionOrigen?.priorizado
+
+                            if (!modificacionIncremento.save(flush: true)) {
+                                println "error al guardar modificacion tipo E: " + modificacionIncremento.errors
+                                errores += renderErrors(bean: modificacionIncremento)
+                            } else {
+                                def asigDestino = Asignacion.get(d?.asignacionOrigen?.id)
+                                asigDestino?.priorizado += d?.valor
+                                if (!asigDestino.save(flush: true)) {
+                                    println "error al guardar origen E: " + asigDestino.errors
+                                    errores += renderErrors(bean: asigDestino)
+                                }
+                            }
+                            break;
+                        case "P": //partida - priorizado original en 0, valor ingresado en priorizado, no tiene padre
+//                           println("entro partida")
+                            def nuevaPartida = new Asignacion()
+//                           nuevaPartida.anio = reforma.anio
+                            nuevaPartida.anio = d?.anio
+                            nuevaPartida.fuente = d?.fuente
+                            nuevaPartida.tarea  = Tarea.get(d?.tarea)
+                            nuevaPartida.marcoLogico = d?.componente
+                            nuevaPartida.presupuesto = d?.presupuesto
+                            nuevaPartida.planificado = 0
+                            nuevaPartida.priorizadoOriginal = 0
+                            nuevaPartida.unidad = d?.responsable
+                            nuevaPartida.priorizado = d?.valor
+                            if (!nuevaPartida.save(flush: true)) {
+                                println "error al guardar la nueva partida   " + nuevaPartida.errors
+                                errores += renderErrors(bean: nuevaPartida)
+                                nuevaPartida = null
+                            }else{
+
+                                def modificacionPartida = new ModificacionAsignacion()
+                                modificacionPartida.usuario = usu
+                                modificacionPartida.recibe = nuevaPartida
+                                modificacionPartida.fecha = now
+                                modificacionPartida.valor = d?.valor
+                                modificacionPartida.estado = 'A'
+                                modificacionPartida.detalleReforma = d
+                                modificacionPartida.originalDestino = nuevaPartida?.priorizado
+
+                                if (!modificacionPartida.save(flush: true)) {
+                                    println "error al guardar modificacion tipo P: " + modificacionPartida.errors
+                                    errores += renderErrors(bean: modificacionPartida)
+                                } else {
+//                                    render "ok"
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+            render "ok"
+        }
+    }
+
+
+    /**
+     * Acción para devolver la solicitud de reforma al analista de planificación
+     */
+    def devolverAprobarAjusteCorriente() {
+        def now = new Date()
+        def usu = Persona.get(session.usuario.id)
+
+        def reforma = Reforma.get(params.id)
+        reforma.estado = EstadoAval.findByCodigo("D03") //devuelto al analista
+        reforma.save(flush: true)
+
+        reforma.firma1.estado = "N"
+        reforma.firma2.estado = "N"
+        reforma.firma1.save(flush: true)
+        reforma.firma2.save(flush: true)
+
+        def tipoStr = elm.tipoReformaStr(tipo: 'Ajuste', tipoSolicitud: reforma.tipoSolicitud)
+        def accion
+        def mensaje = "Devolución de ${tipoStr}"
+        //E: existente, A: actividad, P: partida
+        switch (reforma.tipoSolicitud) {
+            case "E":
+//                accion = "existente"
+                accion = "nuevoAjuste"
+//                mensaje = "Devolución de ${tipoStr}: "
+                break;
+            case "A":
+                accion = "actividad"
+//                mensaje = "Devolución de ${tipoStr}: "
+                break;
+            case "P":
+                accion = "partida"
+//                mensaje = "Devolución de ${tipoStr}: "
+                break;
+            default:
+//                accion = "existente"
+
+                accion = "nuevoAjuste"
+//                mensaje = "Devolución de ${tipoStr}: "
+        }
+
+        def alerta = new Alerta()
+        alerta.from = usu
+        alerta.persona = reforma.persona
+        alerta.fechaEnvio = now
+        alerta.mensaje = mensaje + reforma.concepto
+        alerta.controlador = "ajuste"
+        alerta.accion = accion
+        alerta.id_remoto = reforma.id
+        if (!alerta.save(flush: true)) {
+            println "error alerta: " + alerta.errors
+        }
+        render "OK"
+    }
+
+
+
+
 
 }

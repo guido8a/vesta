@@ -127,6 +127,26 @@ class ReportesReformaController {
     }
 
 
+
+    /**
+     * Acción que muestra el pdf de nuevo ajuste corriente
+     */
+    def ajusteGp () {
+
+
+        def reforma = Reforma.get(params.id.toString().toLong())
+        def detallesReforma = DetalleReforma.findAllByReforma(reforma, [sort: 'tipoReforma.id', order: 'desc'],[sort: 'id'])
+
+        def uni = firmasService.requirentes(reforma.persona.unidad)
+
+//        println("detalles " + detallesReforma)
+
+        return [reforma: reforma, detallesReforma: detallesReforma, unidades: reforma.persona.unidad.unidadYGerencia, uni: uni]
+
+    }
+
+
+
     /**
      * Acción que muestra el pdf de la solicitud de reforma de modificacion de techos
      */

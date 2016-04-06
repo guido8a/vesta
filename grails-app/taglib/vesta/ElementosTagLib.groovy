@@ -970,6 +970,9 @@ class ElementosTagLib {
             case "Q":
                 str += "Gasto Permanente"
                 break;
+            case "Y":
+                str += " de Gasto Permanente"
+                break;
 
         }
         out << "" + str
