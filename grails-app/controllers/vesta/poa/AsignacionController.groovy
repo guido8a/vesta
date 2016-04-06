@@ -1803,7 +1803,7 @@ class AsignacionController extends Shield {
 
 
     def armaSqlPartidas(params){
-        println "armaSqlPartidas params: $params"
+//        println "armaSqlPartidas params: $params"
         def campos = buscadorService.parametrosPartidas()
         def operador = buscadorService.operadores()
         def wh = "prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
@@ -1842,7 +1842,7 @@ class AsignacionController extends Shield {
         params.criterio = buscadorService.limpiaCriterio(params.criterio)
 
         def sql = armaSqlPartidasFiltradas(params)
-        println "sql: $sql"
+//        println "sql: $sql"
         def res = cn.rows(sql)
         params.criterio = params.old
         params.inversion = 'inversion'
@@ -1852,7 +1852,7 @@ class AsignacionController extends Shield {
 
 
     def armaSqlPartidasFiltradas(params){
-        println "armaSqlPartidasFiltradas params: $params"
+//        println "armaSqlPartidasFiltradas params: $params"
         def campos = buscadorService.parametrosPartidas()
         def operador = buscadorService.operadores()
         def wh = "prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
