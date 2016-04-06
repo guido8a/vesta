@@ -5,10 +5,13 @@ import vesta.avales.EstadoAval
 import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
+import vesta.parametros.poaPac.Fuente
 import vesta.parametros.poaPac.Presupuesto
 import vesta.poa.Asignacion
 import vesta.poaCorrientes.ActividadCorriente
+import vesta.poaCorrientes.MacroActividad
 import vesta.poaCorrientes.ObjetivoGastoCorriente
+import vesta.poaCorrientes.Tarea
 import vesta.proyectos.MarcoLogico
 import vesta.proyectos.ModificacionAsignacion
 import vesta.seguridad.Firma
@@ -17,6 +20,7 @@ import vesta.seguridad.Persona
 class AjusteCorrienteController {
 
     def firmasService
+    def dbConnectionService
 
     /**
      * Acción que muestra los diferentes tipos de reforma posibles y permite seleccionar uno para comenzar el proceso
@@ -761,5 +765,395 @@ class AjusteCorrienteController {
         }
 
     }
+
+
+    def nuevoAjusteCorriente () {
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def cn = dbConnectionService.getConnection()
+
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def proyectos = unidad.getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
+                "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
+                "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
+                "order by anioanio".toString()).anio__id
+
+        def anios = Anio.findAllByIdInList(anios__id)
+
+        def firmas = firmasService.listaFirmasCombos()
+
+        def reforma
+        def detalle
+
+        if(params.id){
+            reforma = Reforma.findByIdAndTipoAndTipoSolicitud(params.id, "A", "Y")
+            detalle = DetalleReforma.findAllByReforma(reforma, [sort: 'tipoReforma.id', order: 'desc'],[sort: 'id', order: 'desc'])
+        }
+
+
+        return [actual: actual, anios: anios, reforma: reforma, detalle: detalle, personas: firmas.directores, gerentes: firmas.gerentes]
+
+    }
+
+    def guardarNuevoAjusteCorriente () {
+//        println("params nr " + params)
+        def anio = Anio.get(params.anio)
+        def estadoAval = EstadoAval.findByCodigo("P01")
+        def usuario = Persona.get(session.usuario.id)
+
+        def reforma
+
+        if(!params.id){
+            reforma = new Reforma()
+            reforma.anio = anio
+            reforma.concepto = params.texto
+            reforma.estado = estadoAval
+            reforma.persona = usuario
+            reforma.tipo = 'A'
+            reforma.tipoSolicitud = 'Y'
+            reforma.numero = 0
+            reforma.numeroReforma = 0
+            reforma.fecha = new Date()
+
+            if(!reforma.save(flush: true)){
+                println("error al guardar el nuevo ajuste " + errors)
+                render "no"
+            } else {
+                render "ok_${reforma.id}"
+            }
+
+        } else {
+            //editar
+//            println("entro b")
+
+            reforma = Reforma.get(params.id)
+            reforma.anio = anio
+            reforma.concepto = params.texto
+            reforma.estado = estadoAval
+            reforma.persona = usuario
+            reforma.tipo = 'A'
+            reforma.tipoSolicitud = 'Y'
+            reforma.numero = 0
+            reforma.numeroReforma = 0
+            reforma.fecha = new Date()
+
+            if(!reforma.save(flush: true)){
+                println("error al actualizar nuevo ajuste " + errors)
+                render "no"
+            }else{
+                render "ok_${reforma.id}"
+            }
+        }
+    }
+
+
+    def origen_ajax () {
+        println("params a " + params)
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def detalle = null
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        List<ObjetivoGastoCorriente> objetivos = []
+        ActividadCorriente.findAllByAnio(actual).each { ac ->
+            def ob = ac.macroActividad.objetivoGastoCorriente
+            if (!objetivos.contains(ob)) {
+                objetivos += ob
+            }
+        }
+        objetivos.sort { it.descripcion }
+
+        return [detalle: detalle, objetivos: objetivos]
+    }
+
+    def grabarDetalleA () {
+
+        println("params A " + params)
+
+        def reforma = Reforma.get(params.reforma)
+        def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
+        def asignacion = Asignacion.get(params.asignacion)
+        def fuente = Fuente.get(asignacion?.fuente?.id)
+        def macro = MacroActividad.get(params.macro)
+        def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+        def acti = ActividadCorriente.get(params.actividad)
+        def tar = Tarea.get(params.tarea)
+
+        def detalleReforma
+
+        if(!params.id){
+            //crear
+
+            detalleReforma = new DetalleReforma()
+            detalleReforma.reforma = reforma
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = asignacion.priorizado
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+            detalleReforma.responsable = asignacion.unidad
+            detalleReforma.presupuesto = asignacion.presupuesto
+            detalleReforma.macroActividad = macro
+            detalleReforma.objetivoGastoCorriente = objetivo
+            detalleReforma.tarea = tar.id
+            detalleReforma.anio = asignacion.anio
+
+            if(params.adicional){
+                detalleReforma.solicitado = params.adicional
+            }
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma A " + detalleReforma.errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }else{
+            //editar
+
+            detalleReforma = DetalleReforma.get(params.id)
+            detalleReforma.reforma = reforma
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = asignacion.priorizado
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+            detalleReforma.responsable = asignacion.unidad
+            detalleReforma.presupuesto = asignacion.presupuesto
+            detalleReforma.macroActividad = macro
+            detalleReforma.objetivoGastoCorriente = objetivo
+            detalleReforma.tarea = tar.id
+            detalleReforma.anio = asignacion.anio
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma A " + detalleReforma.errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }
+    }
+
+
+    def incrementoCorriente_ajax () {
+
+//        println("params b " + params)
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def detalle = null
+
+        if (params.id) {
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        //objetivos
+
+        List<ObjetivoGastoCorriente> objetivos = []
+        ActividadCorriente.findAllByAnio(actual).each { ac ->
+            def ob = ac.macroActividad.objetivoGastoCorriente
+            if (!objetivos.contains(ob)) {
+                objetivos += ob
+            }
+        }
+        objetivos.sort { it.descripcion }
+
+        return [detalle: detalle, objetivos: objetivos]
+
+    }
+
+    def grabarDetalleB () {
+//        println("params B " + params)
+
+        def reforma = Reforma.get(params.reforma)
+        def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
+        def asignacion = Asignacion.get(params.asignacion)
+        def fuente = Fuente.get(asignacion?.fuente?.id)
+        def macro = MacroActividad.get(params.macro)
+        def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+        def acti = ActividadCorriente.get(params.actividad)
+        def tar = Tarea.get(params.tarea)
+
+        def detalleReforma
+
+        if(!params.id){
+            //crear
+
+            detalleReforma = new DetalleReforma()
+            detalleReforma.reforma = reforma
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = asignacion.priorizado
+            detalleReforma.fuente = fuente
+            detalleReforma.responsable = asignacion.unidad
+            detalleReforma.presupuesto = asignacion.presupuesto
+            detalleReforma.macroActividad = macro
+            detalleReforma.objetivoGastoCorriente = objetivo
+            detalleReforma.tarea = tar.id
+            detalleReforma.anio = asignacion.anio
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma B " + detalleReforma.errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }else{
+            //editar
+
+            detalleReforma = new DetalleReforma()
+            detalleReforma.reforma = reforma
+            detalleReforma.asignacionOrigen = asignacion
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = asignacion.priorizado
+            detalleReforma.fuente = fuente
+            detalleReforma.responsable = asignacion.unidad
+            detalleReforma.presupuesto = asignacion.presupuesto
+            detalleReforma.macroActividad = macro
+            detalleReforma.objetivoGastoCorriente = objetivo
+            detalleReforma.tarea = tar.id
+            detalleReforma.anio = asignacion.anio
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma B " + detalleReforma.errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }
+    }
+
+    def partidaCorriente_ajax () {
+
+
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def unidad = UnidadEjecutora.get(session.usuario.unidad.id)
+        def gerencias = firmasService.requirentes(unidad)
+
+        def detalle = null
+
+        if (params.id) {
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        //objetivos
+        List<ObjetivoGastoCorriente> objetivos = []
+        ActividadCorriente.findAllByAnio(actual).each { ac ->
+            def ob = ac.macroActividad.objetivoGastoCorriente
+            if (!objetivos.contains(ob)) {
+                objetivos += ob
+            }
+        }
+        objetivos.sort {it.descripcion}
+
+        return [gerencias: gerencias, detalle: detalle, objetivos: objetivos]
+    }
+
+
+    def grabarDetalleC () {
+
+        println("params C " + params)
+//
+        def reforma = Reforma.get(params.reforma)
+        def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
+        def asignacion = Asignacion.get(params.asignacion)
+        def macro = MacroActividad.get(params.macro)
+        def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+        def tar = Tarea.get(params.tarea)
+        def fuente = Fuente.get(params.fuente)
+        def partida = Presupuesto.get(params.partida)
+        def anio
+
+        if(params.anio){
+            anio = Anio.get(params.anio)
+        }
+
+
+        def detalleReforma
+
+        if(!params.id){
+            //crear
+
+            detalleReforma = new DetalleReforma()
+            detalleReforma.reforma = reforma
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+            detalleReforma.presupuesto = partida
+            detalleReforma.responsable = session.usuario.unidad
+            detalleReforma.macroActividad = macro
+            detalleReforma.objetivoGastoCorriente = objetivo
+            detalleReforma.tarea = tar.id
+            detalleReforma.anio = anio
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma C  " + detalleReforma.errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+
+
+        }else{
+            //editar
+
+            detalleReforma = DetalleReforma.get(params.id)
+            detalleReforma.reforma = reforma
+            detalleReforma.tipoReforma = tipoReforma
+            detalleReforma.valor = params.monto.toDouble()
+            detalleReforma.valorOrigenInicial = 0
+            detalleReforma.valorDestinoInicial = 0
+            detalleReforma.fuente = fuente
+            detalleReforma.presupuesto = partida
+            detalleReforma.responsable = session.usuario.unidad
+            detalleReforma.macroActividad = macro
+            detalleReforma.objetivoGastoCorriente = objetivo
+            detalleReforma.tarea = tar.id
+            detalleReforma.anio = anio
+
+            if(!detalleReforma.save(flush: true)){
+                println("error al guardar detalle de reforma C  " + detalleReforma.errors);
+                render "no"
+            }else{
+                render "ok"
+            }
+        }
+    }
+
+
+
 
 }

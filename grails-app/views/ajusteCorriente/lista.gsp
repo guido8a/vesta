@@ -89,7 +89,9 @@
                         success : function (msg) {
                             if(msg == 'ok'){
                                 log("Ajuste borrado correctamente", "success");
+                                setTimeout(function () {
                                 location.href="${createLink(controller: 'ajusteCorriente', action: 'lista')}"
+                                }, 500);
                             }else{
                                 log("Error al borrar ajuste","error")
                             }

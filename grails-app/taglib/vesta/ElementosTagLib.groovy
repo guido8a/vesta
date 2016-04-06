@@ -1029,6 +1029,10 @@ class ElementosTagLib {
                         accion = "reformaGp"
                         fileName = "reformaGp"
                         break;
+                    case "Y":
+                        accion = "ajusteGp"
+                        fileName = "ajusteGp"
+                        break;
                 }
             }
             def title, clase, title2 = "", clase2 = ""

@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 05/04/16
+  Time: 11:56 AM
+--%>
+
 <form id="frmPartida">
     <div class="row">
         <div class="col-md-2">
@@ -138,6 +145,5 @@
         }, 500);
     }, 500);
     </g:if>
-
 
 </script>

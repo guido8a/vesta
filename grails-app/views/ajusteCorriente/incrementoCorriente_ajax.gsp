@@ -1,4 +1,13 @@
-<form id="frmPartida">
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 05/04/16
+  Time: 11:44 AM
+--%>
+
+<%@ page import="vesta.poa.Asignacion" %>
+
+<form id="frmIncremento">
     <div class="row">
         <div class="col-md-2">
             <label>Objetivo del gasto permanente:</label>
@@ -36,74 +45,31 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-md-2">
-            <label>Partida</label>
+            <label>Asignación:</label>
         </div>
+        <div  class="col-md-5" id="divAsg">
 
-        <div class="col-md-4">
-            <g:hiddenField name="partidaHide" id="prsp_hide" value="${detalle?.presupuesto?.id}"/>
-            <g:textField name="partida" id="prsp_id" class="fuente many-to-one form-control input-sm required" value="${detalle ? (detalle?.presupuesto?.numero + " - " + detalle?.presupuesto?.descripcion) : " "}"/>
         </div>
-
-
-        <div class="col-md-1">
-            <label>Fuente</label>
-        </div>
-
-        <div class="col-md-4">
-            <g:select from="${vesta.parametros.poaPac.Fuente.list()}" optionKey="id" optionValue="descripcion"
-                      name="fuente" class="form-control input-sm required requiredCmb" value="${detalle?.fuente?.id}"/>
-        </div>
-
-
     </div>
 
-    <div class="row">
 
+    <div class="row">
         <div class="col-md-2">
-            <label for="monto">Monto a aumentar</label>
+            <label>Monto:</label>
         </div>
 
-        <div class="col-md-3">
+        <div  class="col-md-5">
             <div class="input-group">
-                <g:textField type="text" name="monto"
-                             class="form-control required input-sm number money" value="${detalle?.valor}"/>
+                <g:textField type="text" name="monto" style="float: right" class="form-control required input-sm number money" value="${detalle?.valor}"/>
                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
             </div>
         </div>
     </div>
-
 </form>
 
 <script type="text/javascript">
-
-
-    $("#prsp_id").click(function(){
-
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidasFiltradas')}",
-            data     : {
-
-            },
-            success  : function (msg) {
-                var b = bootbox.dialog({
-                    id: "dlgPartidas",
-                    title: "Buscador Partidas",
-                    class   : "modal-lg",
-                    message: msg,
-                    buttons : {
-                        cancelar : {
-                            label : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    }
-                })
-            }
-        });
-    });
 
     $("#objetivo").val("-1").change(function () {
         $.ajax({
@@ -138,6 +104,53 @@
         }, 500);
     }, 500);
     </g:if>
+
+    function getMaximo(asg) {
+        if ($("#asignacion").val() != "-1") {
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(action:'getMaximoAsg',controller: 'avales')}",
+                data    : {
+                    id : asg
+                },
+                success : function (msg) {
+                    var valor = parseFloat(msg);
+//                    console.log("valor " + valor)
+                    var tot = 0;
+                    $(".tableReformaNueva").each(function () {
+
+                        var d = $(this).children().children().data("cod")
+                        var parId = $(this).children().children().data("par")
+                        var valorP = $(this).children().children().data("val")
+                    });
+//                    console.log("total " + tot)
+                    var ok = valor - tot;
+                    $("#max").html("$" + number_format(ok, 2, ".", ","))
+                            .attr("valor", ok);
+                    $("#monto").attr("tdnMax", ok);
+                }
+            });
+        }
+    }
+
+
+    $("#frmIncremento").validate({
+        errorClass: "help-block",
+        onfocusout: false,
+        errorPlacement: function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success: function (label) {
+            label.parents(".grupo").removeClass('has-error');
+            label.remove();
+        }
+    });
+
 
 
 </script>

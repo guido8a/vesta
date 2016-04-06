@@ -90,18 +90,18 @@
         });
     });
 
-    <g:if test="${detalle}">
-    $("#proyecto").val("${detalle?.componente?.proyecto?.id}").change();
-    setTimeout(function () {
-        $("#comp").val("${detalle?.componente?.id}").change();
-        setTimeout(function () {
-            $("#actividadRf").val("${ detalle?.asignacionOrigen?.marcoLogicoId}").change();
-            setTimeout(function () {
-                $("#asignacion").val("${detalle?.asignacionOrigenId}").change();
-            }, 500);
-        }, 500);
-    }, 500);
-    </g:if>
+    %{--<g:if test="${detalle}">--}%
+    %{--$("#proyecto").val("${detalle?.componente?.proyecto?.id}").change();--}%
+    %{--setTimeout(function () {--}%
+        %{--$("#comp").val("${detalle?.componente?.id}").change();--}%
+        %{--setTimeout(function () {--}%
+            %{--$("#actividadRf").val("${ detalle?.asignacionOrigen?.marcoLogicoId}").change();--}%
+            %{--setTimeout(function () {--}%
+                %{--$("#asignacion").val("${detalle?.asignacionOrigenId}").change();--}%
+            %{--}, 500);--}%
+        %{--}, 500);--}%
+    %{--}, 500);--}%
+    %{--</g:if>--}%
 
     function getMaximo(asg) {
         if ($("#asignacion").val() != "-1") {

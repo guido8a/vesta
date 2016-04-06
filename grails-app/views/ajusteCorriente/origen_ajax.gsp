@@ -1,6 +1,13 @@
-<%@ page import="vesta.poa.Asignacion" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 05/04/16
+  Time: 11:24 AM
+--%>
 
-<form id="frmIncremento">
+<%@ page import="vesta.poa.Asignacion" %>
+%{--Asignación Origen--}%
+<form id="frmAsignacion">
     <div class="row">
         <div class="col-md-2">
             <label>Objetivo del gasto permanente:</label>
@@ -59,6 +66,14 @@
                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
             </div>
         </div>
+
+        <div class="col-md-2">
+            <label>Saldo:</label>
+        </div>
+
+        <div id="max">
+
+        </div>
     </div>
 </form>
 
@@ -115,6 +130,11 @@
                         var d = $(this).children().children().data("cod")
                         var parId = $(this).children().children().data("par")
                         var valorP = $(this).children().children().data("val")
+//                        if(d == 'O'){
+//                            if(parId == asg){
+//                            tot += parseFloat(valorP)
+//                            }
+//                        }
                     });
 //                    console.log("total " + tot)
                     var ok = valor - tot;
@@ -127,7 +147,7 @@
     }
 
 
-    $("#frmIncremento").validate({
+    $("#frmAsignacion").validate({
         errorClass: "help-block",
         onfocusout: false,
         errorPlacement: function (error, element) {
