@@ -66,7 +66,8 @@
             url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste_ajax')}",
             data    : {
                 id   : $("#proyecto").val(),
-                anio : $("#anio").val()
+//                anio : $("#anio").val()
+                anio : ${anio?.id}
             },
             success : function (msg) {
                 $("#divComp").html(msg);

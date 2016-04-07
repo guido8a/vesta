@@ -26,7 +26,8 @@
             url     : "${createLink(action:'cargarAsignaciones_ajax',controller: 'avales')}",
             data    : {
                 id   : $("#actividadRf").val(),
-                anio : $("#anio").val()
+//                anio : $("#anio").val()
+                anio : ${anio?.id}
             },
             success : function (msg) {
                 $("#${div?:'divAsg'}").html(msg);

@@ -8,7 +8,8 @@
             url     : "${createLink(action:'cargarActividadesAjuste_ajax',controller: 'avales')}",
             data    : {
                 id   : $("#${idCombo?idCombo:'comp'}").val(),
-                anio : $("#anio").val()
+//                anio : $("#anio").val()
+                anio : ${anio?.id}
                 <g:if test="${div}">
                 ,
                 div  : "divAsg_dest"

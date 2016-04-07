@@ -180,7 +180,8 @@
             url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste2_ajax')}",
             data    : {
                 id      : $("#proyectoDest").val(),
-                anio    : $("#anio").val(),
+//                anio    : $("#anio").val(),
+                anio    : ${anio?.id},
                 idCombo : "compDest",
                 div     : "divAct_dest"
             },

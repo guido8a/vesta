@@ -130,7 +130,7 @@
                     <g:each in="${detallesX}" var="det" >
 
                         <g:if test="${det?.tipoReforma?.codigo == 'O'}">
-                            <tr class="info" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.id}" data-val="${det?.valor}">
+                            <tr class="info" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.id}" data-val="${det?.valor}" data-anio="${det?.anio?.id}">
                                 <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                                 <td style=width:16%>${det?.componente?.objeto}</td>
                                 <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
@@ -150,10 +150,10 @@
                         </g:if>
                         <g:if test="${det?.tipoReforma?.codigo == 'E' || det?.tipoReforma?.codigo == 'P' }">
                             <g:if test="${det?.tipoReforma?.codigo == 'E'}">
-                                <tr class="success" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+                                <tr class="success" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
                             </g:if>
                             <g:else>
-                                <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+                                <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
                             </g:else>
                             <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                             <g:if test="${det?.tipoReforma?.codigo == 'P'}">
@@ -181,7 +181,7 @@
                             <g:set var="montoFinal" value="${montoFinal += (det?.valorDestinoInicial + det?.valor)}"/>
                         </g:if>
                         <g:if test="${det?.tipoReforma?.codigo == 'A'}" >
-                            <tr class="rowD" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+                            <tr class="rowD" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
                                 <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                                 <td style=width:16%>${det?.componente?.objeto}</td>
                                 <td style=width:15%>${det?.descripcionNuevaActividad}</td>
@@ -343,13 +343,15 @@
             $(".editarTr").click(function () {
                 var detalleId = $(this).parent().parent().data("id");
                 var codigoDt = $(this).parent().parent().data("cod");
+                var detalleAnio = $(this).parent().parent().data("anio");
 
                 if(codigoDt == 'O'){
                     $.ajax({
                         type: 'POST',
                         url     : "${createLink(controller: 'reforma', action: 'asignacionOrigen_ajax')}",
                         data : {
-                            id: detalleId
+                            id: detalleId,
+                            anio: detalleAnio
                         },
                         success : function (msg) {
                             var b = bootbox.dialog({
@@ -599,48 +601,6 @@
                             }
                         }
                     });
-                    %{--bootbox.dialog({--}%
-                    %{--title   : str3,--}%
-                    %{--message : $msg,--}%
-                    %{--class   : "modal-sm",--}%
-                    %{--buttons : {--}%
-                    %{--devolver : {--}%
-                    %{--label     : "<i class='fa fa-" + ico + "'></i> " + str3,--}%
-                    %{--className : "btn-" + clase,--}%
-                    %{--callback  : function () {--}%
-                    %{--if ($form.valid()) {--}%
-                    %{--data.auth = $auth.val();--}%
-                    %{--openLoader(str);--}%
-                    %{--$.ajax({--}%
-                    %{--type    : "POST",--}%
-                    %{--url     : url,--}%
-                    %{--data    : data,--}%
-                    %{--success : function (msg) {--}%
-                    %{--var parts = msg.split("*");--}%
-                    %{--log(parts[1], parts[0]);--}%
-                    %{--if (parts[0] == "SUCCESS") {--}%
-                    %{--if (mandar) {--}%
-                    %{--location.href = "${createLink(action:'pendientes')}";--}%
-                    %{--} else {--}%
-                    %{--location.reload(true);--}%
-                    %{--}--}%
-                    %{--} else {--}%
-                    %{--closeLoader();--}%
-                    %{--}--}%
-                    %{--}--}%
-                    %{--});--}%
-                    %{--}--}%
-                    %{--return false;--}%
-                    %{--}--}%
-                    %{--},--}%
-                    %{--cancelar : {--}%
-                    %{--label     : "Cancelar",--}%
-                    %{--className : "btn-default",--}%
-                    %{--callback  : function () {--}%
-                    %{--}--}%
-                    %{--}--}%
-                    %{--}--}%
-                    %{--});--}%
                 };
                 if (mandar) {
                     bootbox.confirm("¿Está seguro de querer <strong class='text-" + clase + "'>" + str2 + "</strong> esta solicitud de reforma?<br/>Esta acción no puede revertirse.",

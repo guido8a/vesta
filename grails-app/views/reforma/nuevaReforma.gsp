@@ -140,7 +140,7 @@
                 <tbody>
 
                 <g:if test="${det?.tipoReforma?.codigo == 'O'}">
-                    <tr class="info" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.id}" data-val="${det?.valor}">
+                    <tr class="info" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.id}" data-val="${det?.valor}" data-anio="${det?.anio?.id}">
                         <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                         <td style=width:16%>${det?.componente?.objeto}</td>
                         %{--<g:if test="${det?.asignacionOrigen?.marcoLogico?.objeto?.size() >= 70}">--}%
@@ -165,7 +165,7 @@
                     <g:set var="montoFinal" value="${montoFinal += (det?.valorOrigenInicial - det?.valor)}"/>
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'E'}">
-                    <tr class="success" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+                    <tr class="success" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
 
                     <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                     <td style=width:16%>${det?.componente?.objeto}</td>
@@ -191,7 +191,7 @@
                     <g:set var="montoFinal" value="${montoFinal += (det?.valorDestinoInicial + det?.valor)}"/>
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'P'}">
-                        <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+                        <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
                     <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                     <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
                     %{--<td style=width:15%>${det?.componente?.numero} - ${det?.componente?.objeto}</td>--}%
@@ -219,7 +219,7 @@
                         <g:set var="nuevaActvStr" value="S/N - "/>
                     </g:else>
 
-                    <tr class="rowD" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
+                    <tr class="rowD" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
                         <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                         <td style=width:16%>${det?.componente?.objeto}</td>
                         %{--<td style=width:15%>${nuevaActvStr}${det?.descripcionNuevaActividad}</td>--}%
@@ -387,13 +387,15 @@
     $(".editarTr").click(function () {
         var detalleId = $(this).parent().parent().data("id");
         var codigoDt = $(this).parent().parent().data("cod");
+        var detalleAnio = $(this).parent().parent().data("anio");
 
         if(codigoDt == 'O'){
             $.ajax({
                 type: 'POST',
                 url     : "${createLink(controller: 'reforma', action: 'asignacionOrigen_ajax')}",
                 data : {
-                    id: detalleId
+                    id: detalleId,
+                    anio: detalleAnio
                 },
                 success : function (msg) {
                     var b = bootbox.dialog({
@@ -467,11 +469,13 @@
 
         }
         if(codigoDt == 'E'){
+            console.log("AQUI")
             $.ajax({
                 type: 'POST',
                 url     : "${createLink(controller: 'reforma', action: 'incremento_ajax')}",
                 data : {
-                    id : detalleId
+                    id : detalleId,
+                    anio: detalleAnio
                 },
                 success : function (msg) {
 
@@ -551,7 +555,8 @@
                 type: 'POST',
                 url     : "${createLink(controller: 'reforma', action: 'partida_ajax')}",
                 data: {
-                    id: detalleId
+                    id: detalleId,
+                    anio: detalleAnio
                 },
                 success : function (msg) {
                     var b = bootbox.dialog({
@@ -632,7 +637,8 @@
                 type: 'POST',
                 url     : "${createLink(controller: 'reforma', action: 'actividad_ajax')}",
                 data: {
-                    id: detalleId
+                    id: detalleId,
+                    anio: detalleAnio
                 },
                 success : function (msg) {
                     var b = bootbox.dialog({

@@ -304,11 +304,17 @@
                                                 }, 1000);
                                             } else {
                                                 closeLoader();
+//                                                log("Ha ocurrido un error interno", "error");
+                                                bootbox.alert(parts[1]);
+                                                setTimeout(function () {
+                                                location.href = "${createLink(controller: 'reforma', action: 'revisionSolicitud')}/" + ${reforma?.id};
+                                                }, 2000);
                                             }
-                                        },
+                                        }
+                                        ,
                                         error   : function () {
                                             $(".btn-success").replaceWith(spinner);
-                                            log("Ha ocurrido un error interno", "error");
+//                                            log("Ha ocurrido un error interno", "error");
                                             setTimeout(function () {
                                                 location.href = "${createLink(action: 'lista')}";
                                             }, 1000);

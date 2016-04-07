@@ -2786,7 +2786,6 @@ class ReformaController extends Shield {
         def actual = params.anio ? Anio.get(params.anio) : Anio.findByAnio(new Date().format("yyyy"))
 
         def  proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
-//        def  proyectos3 = Proyecto.findAllByAprobadoIlike('a')
         println "proyectos3: $proyectos3"
 
         def detalle = null
@@ -2794,7 +2793,7 @@ class ReformaController extends Shield {
         if(params.id){
             detalle = DetalleReforma.get(params.id)
         }
-        return [proyectos:  proyectos3, detalle: detalle]
+        return [proyectos:  proyectos3, detalle: detalle, anio: actual]
     }
 
     def asignacionDestino_ajax () {
@@ -2812,6 +2811,8 @@ class ReformaController extends Shield {
 
     def incremento_ajax () {
 
+        println("incremento params " + params)
+
         def actual
         if (params.anio) {
             actual = Anio.get(params.anio)
@@ -2827,7 +2828,7 @@ class ReformaController extends Shield {
             detalle = DetalleReforma.get(params.id)
         }
 
-        return [proyectos:  proyectos3, detalle: detalle]
+        return [proyectos:  proyectos3, detalle: detalle, anio: actual]
     }
 
     def partida_ajax () {
@@ -2850,7 +2851,7 @@ class ReformaController extends Shield {
             detalle = DetalleReforma.get(params.id)
         }
 
-        return [proyectos:  proyectos3, gerencias: gerencias, detalle: detalle]
+        return [proyectos:  proyectos3, gerencias: gerencias, detalle: detalle, anio: actual]
 
     }
 
@@ -2875,7 +2876,7 @@ class ReformaController extends Shield {
             detalle = DetalleReforma.get(params.id)
         }
 
-        return [proyectos: proyectos3, gerencias: gerencias, detalle: detalle]
+        return [proyectos: proyectos3, gerencias: gerencias, detalle: detalle, anio: actual]
     }
 
 

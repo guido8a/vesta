@@ -284,7 +284,7 @@ class AvalesController extends vesta.seguridad.Shield {
             priorizado << [id: ac.id, numero: ac.numero, objeto: ac.objeto, prio: "${prsp.presupuesto.numero}: ${prsp.priorizado}"]
         }
 
-        return [acts: acts, div: params.div, priorizado: priorizado]
+        return [acts: acts, div: params.div, priorizado: priorizado, anio: anio]
     }
 
     /**

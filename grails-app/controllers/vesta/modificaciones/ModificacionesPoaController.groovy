@@ -173,7 +173,7 @@ class ModificacionesPoaController extends Shield {
         def anio = Anio.get(params.anio)
 //        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
         def comps = UnidadEjecutora.get(session.unidad.id).getComponentesUnidadProyecto(anio, proyecto, session.perfil.codigo.toString())
-        [comps: comps, idCombo: params.idCombo, div: params.div]
+        [comps: comps, idCombo: params.idCombo, div: params.div, anio: anio]
     }
 
 
