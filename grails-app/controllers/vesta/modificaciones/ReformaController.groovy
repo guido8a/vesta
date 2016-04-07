@@ -2330,7 +2330,7 @@ class ReformaController extends Shield {
                                     modificacionActividad.valor = d?.valor
                                     modificacionActividad.estado = 'A'
                                     modificacionActividad.detalleReforma = d
-                                    modificacionActividad.originalDestino = destinoActividad?.priorizado
+                                    modificacionActividad.originalDestino = 0
 
                                     if (!modificacionActividad.save(flush: true)) {
                                         println "error al guardar modificacion tipo A: " + modificacionActividad.errors
@@ -2372,7 +2372,7 @@ class ReformaController extends Shield {
                                 modificacionPartida.valor = d?.valor
                                 modificacionPartida.estado = 'A'
                                 modificacionPartida.detalleReforma = d
-                                modificacionPartida.originalDestino = nuevaPartida?.priorizado
+                                modificacionPartida.originalDestino = 0
 
                                 if (!modificacionPartida.save(flush: true)) {
                                     println "error al guardar modificacion tipo P: " + modificacionPartida.errors
