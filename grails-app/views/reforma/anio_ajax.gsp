@@ -1,25 +1,25 @@
+
 <%@ page import="vesta.poa.Asignacion" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 03/12/15
-  Time: 11:47 AM
---%>
+
 
 %{--//origen--}%
 <form id="frmAsignacion">
 
-
-
-
+    <div class="row">
+        <div class="col-md-2">
+            <label>Año: </label>
+        </div>
+        <div  class="col-md-8">
+            <g:select from="${anios}" value="${actual.anio}" optionKey="id" optionValue="anio" name="anio"
+                      class="form-control input-sm required requiredCombo" id="anioPro"/>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-2">
             <label>Proyecto: </label>
         </div>
-        <div  class="col-md-8">
-            <g:select from="${proyectos}" optionKey="id" optionValue="nombre" name="proyecto" class="form-control input-sm required requiredCombo"
-                      noSelection="['-1': 'Seleccione...']"/>
+        <div  class="col-md-8" id="divProy">
 
         </div>
     </div>
@@ -75,25 +75,30 @@
 
 <script type="text/javascript">
 
-    $("#proyecto").change(function () {
-        $("#divComp").html(spinner);
+
+    $("#anioPro").change(function () {
+        $("#divProy").html(spinner);
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller: 'modificacionesPoa', action:'componentesProyectoAjuste_ajax')}",
+            url     : "${createLink(controller: 'reforma', action:'asignacionOrigenProcesar_ajax')}",
             data    : {
-                id   : $("#proyecto").val(),
-//                anio : $("#anio").val()
-                anio : ${anio?.id}
+                id: '${detalle?.id}',
+                anio   : $("#anioPro").val()
             },
             success : function (msg) {
-                $("#divComp").html(msg);
+                $("#divProy").html(msg);
+                $("#divComp").html("");
                 $("#divAct").html("");
                 $("#divAsg").html("");
             }
         });
     });
 
+
+
     <g:if test="${detalle}">
+    $("#anioPro").val(${detalle?.anio?.id}).change();
+    setTimeout(function () {
     $("#proyecto").val("${detalle?.componente?.proyecto?.id}").change();
     setTimeout(function () {
         $("#comp").val("${detalle?.componente?.id}").change();
@@ -103,6 +108,7 @@
                 $("#asignacion").val("${detalle?.asignacionOrigenId}").change();
             }, 500);
         }, 500);
+    }, 500);
     }, 500);
     </g:if>
 

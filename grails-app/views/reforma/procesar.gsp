@@ -114,16 +114,17 @@
                 <table class="table table-hover table-condensed table-hover table-bordered">
                     <thead>
                     <tr>
-                        <th>Proyecto</th>
-                        <th>Componente</th>
-                        <th>Actividad</th>
-                        <th>Partida</th>
-                        <th>Responsable</th>
-                        <th>Valor inicial<br/>USD</th>
-                        <th>Disminución<br/>USD</th>
-                        <th>Aumento<br/>USD</th>
-                        <th>Valor final<br/>USD</th>
-                        <th></th>
+                        <th style="width:4%;">Año</th>
+                        <th style="width:15%;">Proyecto</th>
+                        <th style="width:15%;">Componente</th>
+                        <th style="width:14%;">Actividad</th>
+                        <th style="width:8%;">Partida</th>
+                        <th style="width:8%;">Responsable</th>
+                        <th style="width:8%;">Valor inicial<br/>USD</th>
+                        <th style="width:8%;">Disminución<br/>USD</th>
+                        <th style="width:9%;">Aumento<br/>USD</th>
+                        <th style="width:8%;">Valor final<br/>USD</th>
+                        <th style="width:3%;"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -131,6 +132,7 @@
 
                         <g:if test="${det?.tipoReforma?.codigo == 'O'}">
                             <tr class="info" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.id}" data-val="${det?.valor}" data-anio="${det?.anio?.id}">
+                                <td style=width:4%>${det?.anio}</td>
                                 <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                                 <td style=width:16%>${det?.componente?.objeto}</td>
                                 <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
@@ -155,6 +157,7 @@
                             <g:else>
                                 <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
                             </g:else>
+                            <td style=width:4%>${det?.anio}</td>
                             <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                             <g:if test="${det?.tipoReforma?.codigo == 'P'}">
                                 <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
@@ -182,6 +185,7 @@
                         </g:if>
                         <g:if test="${det?.tipoReforma?.codigo == 'A'}" >
                             <tr class="rowD" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
+                                <td style=width:4%>${det?.anio}</td>
                                 <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
                                 <td style=width:16%>${det?.componente?.objeto}</td>
                                 <td style=width:15%>${det?.descripcionNuevaActividad}</td>
@@ -205,10 +209,10 @@
                 <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
                     <thead>
                     <tr>
-                        <th style="width: 63%;">TOTAL: </th>
+                        <th style="width: 64%;">TOTAL: </th>
                         <th style="width: 8%;"><g:formatNumber number="${totalOrigen}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
                         <th style="width: 9%;"><g:formatNumber number="${disminucion}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
-                        <th style="width: 9%;"><g:formatNumber number="${incremento}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
+                        <th style="width: 8%;"><g:formatNumber number="${incremento}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
                         <g:if test="${totalOrigen != montoFinal}">
                             <g:if test="${detallesX?.tipoReforma?.codigo?.contains("E") || detallesX?.tipoReforma?.codigo?.contains("A") }">
                                 <th style="width: 8%;"><g:formatNumber number="${montoFinal}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
@@ -220,7 +224,7 @@
                         <g:else>
                             <th style="width: 8%;"><g:formatNumber number="${montoFinal}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
                         </g:else>
-                        <th></th>
+                        <th th style="width: 4%"></th>
                     </tr>
                     </thead>
                 </table>
@@ -261,9 +265,6 @@
                             <a href="#" class="btn btn-success" id="btnGuardar">
                                 <i class="fa fa-save"></i> Guardar texto
                             </a>
-                            %{--<a href="#" class="btn btn-default" id="descargaForm">--}%
-                            %{--<i class="fa fa-search-plus"></i> Previzualizar--}%
-                            %{--</a>--}%
                         </div>
                     </div>
                 </div>
@@ -348,7 +349,7 @@
                 if(codigoDt == 'O'){
                     $.ajax({
                         type: 'POST',
-                        url     : "${createLink(controller: 'reforma', action: 'asignacionOrigen_ajax')}",
+                        url     : "${createLink(controller: 'reforma', action: 'anio_ajax')}",
                         data : {
                             id: detalleId,
                             anio: detalleAnio
@@ -433,7 +434,7 @@
             $("#btnAsignacion").click(function () {
                 $.ajax({
                     type: 'POST',
-                    url     : "${createLink(controller: 'reforma', action: 'asignacionOrigen_ajax')}",
+                    url     : "${createLink(controller: 'reforma', action: 'anio_ajax')}",
                     success : function (msg) {
 
                         var b = bootbox.dialog({

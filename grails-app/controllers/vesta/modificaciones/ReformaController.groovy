@@ -2796,6 +2796,28 @@ class ReformaController extends Shield {
         return [proyectos:  proyectos3, detalle: detalle, anio: actual]
     }
 
+
+    def asignacionOrigenProcesar_ajax () {
+        println("params a " + params)
+
+        def actual = params.anio ? Anio.get(params.anio) : Anio.findByAnio(new Date().format("yyyy"))
+
+        def  proyectos3 = UnidadEjecutora.get(session.unidad.id).getProyectosUnidad(actual, session.perfil.codigo.toString())
+        println "proyectos3: $proyectos3"
+
+        def detalle
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+        return [proyectos:  proyectos3, anio: actual, detalle: detalle]
+    }
+
+
+
+
+
     def asignacionDestino_ajax () {
         def actual
         if (params.anio) {
@@ -3286,6 +3308,54 @@ class ReformaController extends Shield {
         }else{
             render "no"
         }
+    }
+
+    def anio_ajax() {
+
+        println("params anio a" + params)
+
+        def cn = dbConnectionService.getConnection()
+
+        def actual
+
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def proyectos = unidad.getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def anios__id = 0
+        try {
+            anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
+                    "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
+                    "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
+                    "order by anioanio".toString()).anio__id
+
+        } catch (e) {
+            println e
+        }
+
+        def anios = []
+        if(anios__id) {
+            anios = Anio.findAllByIdInList(anios__id)
+        }
+
+        def detalle = null
+
+        if(params.id){
+            detalle = DetalleReforma.get(params.id)
+        }
+
+
+        println("detalle " + detalle)
+        println("detalle " + actual)
+        println("detalle " + anios)
+
+        return [detalle: detalle, actual: actual, anios: anios]
+
     }
 
 }
