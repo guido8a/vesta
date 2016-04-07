@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 24/06/15
-  Time: 10:29 AM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -58,9 +51,14 @@
                                         </td>
                                         <td class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                                         <td>
-                                            <div class="btn-group btn-group-sm" role="group">
+                                            <div class="btn-group btn-group-xs" role="group">
                                                 <elm:linkPdfReforma reforma="${reforma}"/>
                                                 <elm:linkEditarReforma reforma="${reforma}" perfil="${session.perfil}"/>
+                                                <g:if test="${session.perfil.codigo == 'ASAF' && !vesta.modificaciones.DetalleReforma.findAllByReforma(vesta.modificaciones.Reforma.get(reforma?.id))}">
+                                                    <a href="#"  class="btn btn-danger borrar"  reforma="${reforma?.id}" title="Eliminar ajuste">
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+                                                </g:if>
                                             </div>
                                         </td>
                                     </tr>
@@ -98,6 +96,42 @@
             $(function () {
                 buscar();
             });
+
+            $(".borrar").click(function () {
+                var id = $(this).attr('reforma');
+                bootbox.confirm("¿Está seguro de querer eliminar esta reforma?", function (res) {
+                    if(res){
+                        openLoader('Eliminando reforma');
+                        $.ajax({
+                            type    : "POST",
+                            data : {
+                                id: id
+                            },
+                            url     : "${createLink(action:'borrarReforma_ajax')}",
+                            success : function (msg) {
+                                if (msg != "ok") {
+                                    closeLoader();
+                                    bootbox.alert({
+                                                message : "Error al eliminar la reforma",
+                                                title   : "Error",
+                                                class   : "modal-error"
+                                            }
+                                    );
+                                }else{
+                                    closeLoader();
+                                    log("Reforma eliminada correctamente", "success");
+                                    setTimeout(function () {
+                                        location.reload(true)
+                                    }, 2000);
+
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+
         </script>
     </body>
 </html>

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 14/04/15
-  Time: 03:31 PM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -17,6 +10,7 @@
         <elm:container tipo="horizontal" titulo="Ajustes al POA de gasto permanente">
 
             <div class="list-group">
+%{--
                 <g:link action="existente" class="list-group-item bgExistentes">
                     <h4 class="list-group-item-heading"><span class="icon"></span>
                         <elm:tipoReformaStr tipo="Ajuste" tipoSolicitud="E"/>
@@ -36,6 +30,7 @@
                         cual se añaden partidas, repartiendo el valor de la asignación en nuevas partidas
                     </p>
                 </g:link>
+--}%
                 <g:link action="nuevoAjusteCorriente" class="list-group-item">
                     <h4 class="list-group-item-heading"><span class="icon"></span>
                         <elm:tipoReformaStr tipo="Ajuste" tipoSolicitud="Q"/>

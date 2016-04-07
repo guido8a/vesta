@@ -72,7 +72,8 @@ class AjusteCorrienteController {
         }
 
         def reformas = Reforma.withCriteria {
-            eq("tipo", "C")
+            eq("tipo", "A")
+            eq("tipoSolicitud", "Y")
             if (estados.size() > 0) {
                 inList("estado", estados)
             }
@@ -1475,6 +1476,17 @@ class AjusteCorrienteController {
     }
 
 
+    def borrarReforma_ajax () {
+        def reforma = Reforma.get(params.id)
+//        println("reforma " +  reforma)
+        def detalleReforma = DetalleReforma.findAllByReforma(reforma)
+        if(!detalleReforma){
+            reforma.delete(flush: true)
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
 
 
 
