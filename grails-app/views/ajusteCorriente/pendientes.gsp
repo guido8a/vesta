@@ -54,6 +54,9 @@
                                             <div class="btn-group btn-group-xs" role="group">
                                                 <elm:linkPdfReforma reforma="${reforma}"/>
                                                 <elm:linkEditarReforma reforma="${reforma}" perfil="${session.perfil}"/>
+                                                <g:if test="${reforma?.estado?.codigo == 'P01' && (unidad == 'DF' || unidad == 'DA' || unidad == 'GAF')}">
+                                                    <a href="#" id="btnEditar" class="btn btn-success edit" data-ref="${reforma?.id}" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                </g:if>
                                                 <g:if test="${session.perfil.codigo == 'ASAF' && !vesta.modificaciones.DetalleReforma.findAllByReforma(vesta.modificaciones.Reforma.get(reforma?.id))}">
                                                     <a href="#"  class="btn btn-danger borrar"  reforma="${reforma?.id}" title="Eliminar ajuste">
                                                         <i class="fa fa-close"></i>
@@ -129,6 +132,11 @@
                         });
                     }
                 });
+            });
+
+            $(".edit").click(function () {
+                var idf = $(this).data("ref");
+                location.href = "${createLink(controller: 'ajusteCorriente', action: 'nuevoAjusteCorriente')}?id=" + idf;
             });
 
 

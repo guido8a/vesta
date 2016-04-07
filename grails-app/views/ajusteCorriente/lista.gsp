@@ -69,7 +69,8 @@
                 console.log($(this).data("ref"));
 
                 var idf = $(this).data("ref");
-                location.href = "${createLink(controller: 'ajusteCorriente', action: 'existente')}?id=" + idf;
+                %{--location.href = "${createLink(controller: 'ajusteCorriente', action: 'existente')}?id=" + idf;--}%
+                location.href = "${createLink(controller: 'ajusteCorriente', action: 'nuevoAjusteCorriente')}?id=" + idf;
 
 
             });

@@ -40,11 +40,14 @@ class AjusteCorrienteController {
         def unidadesReales = UnidadEjecutora.findAllByCodigoInList(listaUnidades)
         println("unidades " + unidadesReales )
         reformas = Reforma.withCriteria {
-            eq("tipo", "C")
+//            eq("tipo", "C")
+            eq("tipoSolicitud", "Y")
+/*
             persona {
                 inList("unidad", unidadesReales)
                 order("unidad", "asc")
             }
+*/
             order("fecha", "desc")
         }
         return [reformas: reformas, unidad: unidadPersona]
@@ -54,6 +57,7 @@ class AjusteCorrienteController {
      * Acción que muestra la lista de las reformas solicitadas para q un analista de planificación apruebe y pida firmas o niegue
      */
     def pendientes() {
+        def unidadPersona = Persona.get(session.usuario.id).unidad.codigo
         def estadoPendiente = EstadoAval.findByCodigo("P01")
         def estadoDevueltoAnPlan = EstadoAval.findByCodigo("D03")
 
@@ -108,7 +112,7 @@ class AjusteCorrienteController {
 
         unidadesList = unidadesList.sort { it.nombre }
 
-        return [reformas: reformas, actual: actual, unidades: unidadesList]
+        return [reformas: reformas, actual: actual, unidades: unidadesList, unidad: unidadPersona]
     }
 
     /**
