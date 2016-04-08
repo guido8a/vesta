@@ -96,18 +96,6 @@
                 <i class="fa fa-plus"></i> Partida
             </a>
         </div>
-
-        %{--<div class="btn-group">--}%
-            %{--<a href="#" id="btnAddD" class="btn botonD pull-right ${reforma?.id ?: 'disabled'} botones">--}%
-                %{--<i class="fa fa-plus"></i> Actividad--}%
-            %{--</a>--}%
-        %{--</div>--}%
-
-        %{--<div class="btn-group">--}%
-            %{--<a href="#" id="btnAddE" class="btn botonE pull-right ${reforma?.id ?: 'disabled'} botones">--}%
-                %{--<i class="fa fa-plus"></i> Techo--}%
-            %{--</a>--}%
-        %{--</div>--}%
     </div>
 </div>
 
@@ -236,12 +224,7 @@
             <th style="width: 9%;"><g:formatNumber number="${disminucion}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
             <th style="width: 9%;"><g:formatNumber number="${incremento}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
             <g:if test="${totalOrigen != montoFinal}">
-                <g:if test="${detalle?.tipoReforma?.codigo?.contains("E") || detalle?.tipoReforma?.codigo?.contains("A") }">
-                    <th style="width: 8%;"><g:formatNumber number="${montoFinal}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
-                </g:if>
-                <g:else>
-                    <th style="width: 8%; color: #ff180a"><g:formatNumber number="${montoFinal}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
-                </g:else>
+            <th style="width: 8%; color: #ff180a"><g:formatNumber number="${montoFinal}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
             </g:if>
             <g:else>
                 <th style="width: 8%;"><g:formatNumber number="${montoFinal}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
@@ -870,6 +853,10 @@
         if ($(this).hasClass("disabled")) {
             bootbox.alert("Debe agregar detalles antes de enviar la solicitud!")
         } else {
+            <g:if test="${totalOrigen != montoFinal}">
+            bootbox.alert("La suma del valor inicial de las asignaciones es diferente al valor del monto final!");
+            </g:if>
+            <g:else>
             if ($("#frmFirmas").valid()) {
                 bootbox.confirm("¿Está seguro de querer enviar esta solicitud de ajuste de gasto permanente?<br/>Ya no podrá modificar su contenido.",
                         function (res) {
@@ -906,6 +893,8 @@
                             }
                         });
             }
+            </g:else>
+
         }
         return false;
     });

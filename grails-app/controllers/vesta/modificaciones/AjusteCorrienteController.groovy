@@ -1234,7 +1234,7 @@ class AjusteCorrienteController {
                 firma1.controladorNegar = "ajusteCorriente"
                 firma1.idAccionNegar = reforma.id
                 firma1.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-                firma1.tipoFirma = "AJST"
+                firma1.tipoFirma = "AJSC"
                 if (!firma1.save(flush: true)) {
                     println "error al crear firma1: " + firma1.errors
                     render "ERROR*" + renderErrors(bean: firma1)
@@ -1253,7 +1253,7 @@ class AjusteCorrienteController {
                 firma2.controladorNegar = "ajusteCorriente"
                 firma2.idAccionNegar = reforma.id
                 firma2.concepto = "${tipoStr} (${now.format('dd-MM-yyyy')}): " + reforma.concepto
-                firma2.tipoFirma = "AJST"
+                firma2.tipoFirma = "AJSC"
                 if (!firma2.save(flush: true)) {
                     println "error al crear firma2: " + firma2.errors
                     render "ERROR*" + renderErrors(bean: firma2)
@@ -1453,7 +1453,7 @@ class AjusteCorrienteController {
         switch (reforma.tipoSolicitud) {
             case "E":
 //                accion = "existente"
-                accion = "nuevoAjuste"
+                accion = "nuevoAjusteCorriente"
 //                mensaje = "Devolución de ${tipoStr}: "
                 break;
             case "A":
@@ -1466,8 +1466,7 @@ class AjusteCorrienteController {
                 break;
             default:
 //                accion = "existente"
-
-                accion = "nuevoAjuste"
+                accion = "nuevoAjusteCorriente"
 //                mensaje = "Devolución de ${tipoStr}: "
         }
 
@@ -1476,7 +1475,7 @@ class AjusteCorrienteController {
         alerta.persona = reforma.persona
         alerta.fechaEnvio = now
         alerta.mensaje = mensaje + reforma.concepto
-        alerta.controlador = "ajuste"
+        alerta.controlador = "ajusteCorriente"
         alerta.accion = accion
         alerta.id_remoto = reforma.id
         if (!alerta.save(flush: true)) {
