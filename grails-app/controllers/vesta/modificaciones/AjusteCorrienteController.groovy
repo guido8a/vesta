@@ -1,8 +1,10 @@
 package vesta.modificaciones
 
 import vesta.alertas.Alerta
+import vesta.avales.Aval
 import vesta.avales.EstadoAval
 import vesta.avales.ProcesoAsignacion
+import vesta.avales.SolicitudAval
 import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
