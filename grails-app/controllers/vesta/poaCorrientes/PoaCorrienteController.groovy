@@ -1,9 +1,13 @@
 package vesta.poaCorrientes
 
+import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.seguridad.Shield
 
+
+
 class PoaCorrienteController extends Shield {
+    def dbConnectionService
 
     def copiarPoa() {
         def aniosDesde = ActividadCorriente.withCriteria {
@@ -16,6 +20,7 @@ class PoaCorrienteController extends Shield {
     }
 
     def cargaActividadesDisponibles_ajax() {
+        println("params " + params)
         def anio = Anio.get(params.anio)
         def macro = MacroActividad.get(params.macro)
 
@@ -132,5 +137,74 @@ class PoaCorrienteController extends Shield {
         } else {
             render "ERROR*<ul>" + errores + "</ul>"
         }
+    }
+
+    def administrar () {
+
+
+        def cn = dbConnectionService.getConnection()
+        def actual
+        if (params.anio) {
+            actual = Anio.get(params.anio)
+        } else {
+            actual = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        def unidad = UnidadEjecutora.get(session.unidad.id)
+        def proyectos = unidad.getProyectosUnidad(actual, session.perfil.codigo.toString())
+
+        def anios__id = 0
+        try {
+            anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
+                    "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
+                    "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
+                    "order by anioanio".toString()).anio__id
+
+        } catch (e) {
+            println e
+        }
+
+        def anios = []
+        if(anios__id) {
+            anios = Anio.findAllByIdInList(anios__id)
+        }
+
+
+        return [anios: anios, actual: actual]
+
+    }
+
+    def cargarObjetivos_ajax () {
+
+        def anio = Anio.get(params.anio)
+        List<ObjetivoGastoCorriente> objetivos = []
+        ActividadCorriente.findAllByAnio(anio).each { ac ->
+            def ob = ac.macroActividad.objetivoGastoCorriente
+            if (!objetivos.contains(ob)) {
+                objetivos += ob
+            }
+        }
+        objetivos = objetivos.unique().sort { it.descripcion }
+        return [objetivos: objetivos, params: params]
+
+    }
+
+    def cargarMacro_ajax () {
+        if (!params.mod) {
+            params.mod = ""
+        }
+        def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+        def macroActividades = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+        return [macro: macroActividades, params: params, valor: params.mac ?: '']
+    }
+
+    def cargarActividades_ajax() {
+
+        def anio = Anio.get(params.anio)
+        def macro = MacroActividad.get(params.macro)
+
+        def acts = ActividadCorriente.findAllByAnioAndMacroActividad(anio, macro)
+        return [acts: acts]
+
     }
 }

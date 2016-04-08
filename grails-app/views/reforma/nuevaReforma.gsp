@@ -579,16 +579,13 @@
                                         dataDestino.componente_id = $("#comp").val();
                                         dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
                                         dataDestino.actividad_id = $("#actividadRf").val();
-//                                        dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-//                                        var part = $("#asignacion").find("option:selected").text().split(": ")
-//                                        var partid = part[2].split(",")
-//                                        var ini = part[1].split(", Partida")
-//                                    dataDestino.partida = partid[0]
                                         var nume = $("#prsp_id").val().split("-");
                                         dataDestino.partida = nume[0];
                                         dataDestino.partida_id = $("#prsp_hide").val();
-//                                        dataDestino.inicial = ini[0]
                                         dataDestino.asignacion_id = $("#asignacion").val();
+                                        dataDestino.fuente = $("#fuente").val();
+                                        dataDestino.responsable = $("#responsable").find("option:selected").text()
+                                        dataDestino.responsable_id = $("#responsable").val()
                                         resetForm();
 
                                         $.ajax({
@@ -599,11 +596,12 @@
                                                 monto: dataOrigen.monto,
                                                 componente: dataDestino.componente_id,
                                                 actividad: dataDestino.actividad_id,
-//                                                asignacion: dataDestino.asignacion_id,
                                                 tipoReforma: "P",
                                                 reforma: '${reforma?.id}',
                                                 partida: dataDestino.partida_id,
-                                                id: detalleId
+                                                id: detalleId,
+                                                fuente: dataDestino.fuente,
+                                                responsable: dataDestino.responsable_id
 
                                             },
                                             success: function (msg){
@@ -918,6 +916,8 @@
                                     dataDestino.partida = nume[0];
                                     dataDestino.partida_id = $("#prsp_hide").val();
                                     dataDestino.fuente = $("#fuente").val();
+                                    dataDestino.responsable = $("#responsable").find("option:selected").text()
+                                    dataDestino.responsable_id = $("#responsable").val()
                                     resetForm();
 
                                     $.ajax({
@@ -933,7 +933,8 @@
                                             reforma: '${reforma?.id}',
                                             partida: dataDestino.partida_id,
                                             fuente: dataDestino.fuente,
-                                            anio: $("#anio").val()
+                                            anio: $("#anio").val(),
+                                            responsable: dataDestino.responsable_id
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){

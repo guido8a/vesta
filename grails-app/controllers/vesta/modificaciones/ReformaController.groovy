@@ -3084,15 +3084,16 @@ class ReformaController extends Shield {
     def grabarDetalleC () {
 
         println("params C " + params)
-//
+
         def reforma = Reforma.get(params.reforma)
         def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
         def componente = MarcoLogico.get(params.componente)
         def actividad = MarcoLogico.get(params.actividad)
-//        def asignacion = Asignacion.get(params.asignacion)
         def fuente = Fuente.get(params.fuente)
         def partida = Presupuesto.get(params.partida)
         def anio
+        def responsable = UnidadEjecutora.get(params.responsable)
+
 
         if(params.anio){
             anio = Anio.get(params.anio)
@@ -3115,7 +3116,7 @@ class ReformaController extends Shield {
             detalleReforma.fuente = fuente
             detalleReforma.presupuesto = partida
 //            detalleReforma.responsable = actividad.responsable
-            detalleReforma.responsable = UnidadEjecutora.get(params.responsable)
+            detalleReforma.responsable = responsable
             detalleReforma.anio = anio
 
             if(!detalleReforma.save(flush: true)){
@@ -3141,7 +3142,7 @@ class ReformaController extends Shield {
             detalleReforma.fuente = fuente
             detalleReforma.presupuesto = partida
 //            detalleReforma.responsable = actividad.responsable
-            detalleReforma.responsable = UnidadEjecutora.get(params.responsable)
+            detalleReforma.responsable = responsable
 
 
             if(!detalleReforma.save(flush: true)){

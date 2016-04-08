@@ -1,5 +1,12 @@
 <%--
   Created by IntelliJ IDEA.
+  User: gato
+  Date: 08/04/16
+  Time: 11:28 AM
+--%>
+
+<%--
+  Created by IntelliJ IDEA.
   User: luz
   Date: 25/06/15
   Time: 01:21 PM
@@ -19,10 +26,9 @@
         $("#tdMacro").html(spinner);
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller: 'asignacion', action:'macro_ajax')}",
+            url     : "${createLink(controller: 'poaCorriente', action:'cargarMacro_ajax')}",
             data    : {
                 objetivo     : ob,
-                copiar       : "${params.copiar}",
                 asignaciones : "${params.asignaciones}",
                 width        : "${params.width}"
             },
@@ -30,11 +36,7 @@
                 $("#tdMacro").html(msg);
                 $("#tdActividad").html("");
                 $("#tdTarea").html("");
-                $("#tdAsignacion").html("");
-                $("#max").html("");
-
                 $("#actividadesDisponibles").html("");
-                $("#actividadesActuales").html("");
             }
         });
     });

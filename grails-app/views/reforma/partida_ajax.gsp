@@ -72,6 +72,19 @@
              <span class="input-group-addon"><i class="fa fa-usd"></i></span>
          </div>
      </div>
+
+
+        <div class="col-md-2">
+            <label>Reponsable</label>
+        </div>
+
+        <div class="col-md-4 grupo">
+            <g:select from="${gerencias}" name="responsable" optionKey="id" optionValue="codigo"
+                      class="form-control required requiredCombo input-sm" noSelection="['': 'Seleccione...']" value="${detalle?.responsable?.id}"/>
+        </div>
+
+
+
  </div>
 
 </form>
