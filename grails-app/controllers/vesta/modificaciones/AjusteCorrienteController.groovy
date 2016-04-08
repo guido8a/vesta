@@ -1529,7 +1529,7 @@ class AjusteCorrienteController {
                 }
             }
             //toma en cuenta el poas del proceso actual
-            if(it.avalCorriente.id == params?.prco?.toInteger()){
+            if(it.avalCorriente.id == params?.avalCorriente?.toInteger()){
                 usado += it.monto
             }
         }
