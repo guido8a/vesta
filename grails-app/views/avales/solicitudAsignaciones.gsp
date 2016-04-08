@@ -202,6 +202,7 @@
                 $("#asignacion").val("-1");
             }
 
+
             function cargarCompAnio() {
                 $("#div_comp").html(spinner);
                 $.ajax({
