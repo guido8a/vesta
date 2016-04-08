@@ -107,7 +107,7 @@
         if ($("#asignacion").val() != "-1") {
             $.ajax({
                 type    : "POST",
-                url     : "${createLink(action:'getMaximoAsg',controller: 'avales')}",
+                url     : "${createLink(action:'maximoAsgGP',controller: 'ajusteCorriente')}",
                 data    : {
                     id : asg
                 },

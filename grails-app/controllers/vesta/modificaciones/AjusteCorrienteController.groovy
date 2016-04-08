@@ -1,10 +1,8 @@
 package vesta.modificaciones
 
 import vesta.alertas.Alerta
-import vesta.avales.Aval
 import vesta.avales.EstadoAval
 import vesta.avales.ProcesoAsignacion
-import vesta.avales.SolicitudAval
 import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
@@ -1502,8 +1500,10 @@ class AjusteCorrienteController {
 
     /**
      * Acción llamada con ajax que calcula el monto máximo que se le puede dar a una asignación GP
+     *   ********* se debe usar en lugar de Avalcorriente.getMaximoAsg
      * @param id el id de la asignación
      * @Renders el monto priorizado menos el monto utilizado
+     *
      */
     def maximoAsgGP = {
         println "params maximoAsgGP $params"
@@ -1520,17 +1520,13 @@ class AjusteCorrienteController {
         def tprf = TipoReforma.findByCodigo("E")
 
         ProcesoAsignacion.findAllByAsignacion(asg).each {
-//            println "asignacion: ${it.asignacion.id}, proceso: ${it.proceso.id}"
-            def estadoAval = Aval.findByProceso(it.proceso)?.estado
-//            println "proceso: ${it.proceso.id}, ${it.monto} estado aval: ${estadoAval?.id} y estadoLiberado: $estadoLiberado.id"
-            if(SolicitudAval.findByProceso(it.proceso)){
-                if(estadoAval?.id == estadoLiberado.id){
-                    usado += it.liberado
-                }else{
-                    usado += it.monto
-                }
+            if(it.avalCorriente.estado?.id == estadoLiberado.id){
+                usado += it.liberado
+            }else{
+                usado += it.monto
             }
-            //toma en cuenta el poas del proceso actual
+
+            //toma en cuenta el poas de la solicitud actual
             if(it.avalCorriente.id == params?.avalCorriente?.toInteger()){
                 usado += it.monto
             }
