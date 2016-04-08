@@ -7,8 +7,10 @@
 
 <script>
 
-    $("#asg${params.mod}").change(function () {
-        getMaximo($(this).val(), "${params.mod}");
-    })
+    if(${incremento != 'incremento'}){
+        $("#asg${params.mod}").change(function () {
+            getMaximo($(this).val(), "${params.mod}");
+        })
+    }
 
 </script>

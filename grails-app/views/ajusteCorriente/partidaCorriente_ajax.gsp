@@ -91,7 +91,7 @@
 
         $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidasFiltradas')}",
             data     : {
-
+                    tipo: "corrientes"
             },
             success  : function (msg) {
                 var b = bootbox.dialog({

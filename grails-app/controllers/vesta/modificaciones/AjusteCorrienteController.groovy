@@ -984,7 +984,13 @@ class AjusteCorrienteController {
         }
         objetivos.sort { it.descripcion }
 
-        return [detalle: detalle, objetivos: objetivos]
+        def inc
+
+        if(params.tipo){
+            inc = "incremento"
+        }
+
+        return [detalle: detalle, objetivos: objetivos, incremento: inc]
 
     }
 

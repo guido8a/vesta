@@ -13,7 +13,8 @@
                 id    : $(this).val(),
                 anio  : $("#anio").val(),
                 mod   : "${params.mod}",
-                width : "${params.width}"
+                width : "${params.width}",
+                tipo: '${incremento}'
             },
             success : function (msg) {
                 $("#divAct").html(msg);

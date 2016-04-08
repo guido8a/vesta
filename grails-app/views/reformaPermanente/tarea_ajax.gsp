@@ -26,7 +26,8 @@
             data    : {
                 id    : $(this).val(),
                 mod   : "${params.mod}",
-                width : "${params.width}"
+                width : "${params.width}",
+                tipo: '${incremento}'
             },
             success : function (msg) {
                 $("#divAsg${params.mod}").html(msg);

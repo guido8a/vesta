@@ -40,8 +40,15 @@ class ReformaPermanenteController extends  Shield{
         }
         def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
         def macroActividades = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+
+        def inc
+
+        if(params.tipo){
+            inc = "incremento"
+        }
+
         println "macros: $macroActividades"
-        return [macro: macroActividades, params: params, valor: params.mac ?: '']
+        return [macro: macroActividades, params: params, valor: params.mac ?: '', incremento: inc]
 
     }
 
@@ -62,9 +69,13 @@ class ReformaPermanenteController extends  Shield{
         def macro = MacroActividad.get(params.id)
         def actividades = ActividadCorriente.findAllByAnioAndMacroActividad(anio, macro)
 
-//        println("actividades " + actividades)
+        def inc
 
-        return [actividades: actividades, params: params, valor: params.act ?: '']
+        if(params.tipo){
+            inc = "incremento"
+        }
+
+        return [actividades: actividades, params: params, valor: params.act ?: '', incremento: inc]
     }
 
     def tarea_ajax() {
@@ -76,7 +87,13 @@ class ReformaPermanenteController extends  Shield{
 
         def tareas = Tarea.findAllByActividad(actvidad)
 
-        return [tareas: tareas, params: params, valor: params.tar ?: '']
+        def inc
+
+        if(params.tipo){
+            inc = "incremento"
+        }
+
+        return [tareas: tareas, params: params, valor: params.tar ?: '', incremento: inc]
     }
 
     def asignacion_ajax() {
@@ -88,7 +105,13 @@ class ReformaPermanenteController extends  Shield{
 
         def asignaciones = Asignacion.findAllByTarea(tarea)
 
-        return [asignaciones: asignaciones, params: params]
+        def inc
+
+        if(params.tipo){
+            inc = "incremento"
+        }
+
+        return [asignaciones: asignaciones, params: params, incremento: inc]
     }
 
 

@@ -77,7 +77,8 @@
             url     : "${createLink(controller: 'reformaPermanente', action:'macro_ajax')}",
             data    : {
                 objetivo : $(this).val(),
-                width    : "140px"
+                width    : "140px",
+                tipo: '${incremento}'
             },
             success : function (msg) {
                 $("#divMacro").html(msg);

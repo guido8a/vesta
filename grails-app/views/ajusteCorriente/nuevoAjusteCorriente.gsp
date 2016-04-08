@@ -701,7 +701,8 @@
             type: 'POST',
             url     : "${createLink(controller: 'ajusteCorriente', action: 'incrementoCorriente_ajax')}",
             data    : {
-                anio: $("#anio").val()
+                anio: $("#anio").val(),
+                tipo: "incremento"
             },
             success : function (msg) {
 
