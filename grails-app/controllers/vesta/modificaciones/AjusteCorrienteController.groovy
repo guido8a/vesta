@@ -2,6 +2,7 @@ package vesta.modificaciones
 
 import vesta.alertas.Alerta
 import vesta.avales.EstadoAval
+import vesta.avales.ProcesoAsignacion
 import vesta.parametros.TipoElemento
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
@@ -793,7 +794,7 @@ class AjusteCorrienteController {
 
         def anios = Anio.findAllByIdInList(anios__id)
 
-        def firmas = firmasService.listaFirmasCombos()
+        def firmas = firmasService.listaFirmasCorrientes()
 
         def reforma
         def detalle
@@ -1496,6 +1497,60 @@ class AjusteCorrienteController {
         }else{
             render "no"
         }
+    }
+
+    /**
+     * Acción llamada con ajax que calcula el monto máximo que se le puede dar a una asignación GP
+     * @param id el id de la asignación
+     * @Renders el monto priorizado menos el monto utilizado
+     */
+    def maximoAsgGP = {
+        println "params maximoAsgGP $params"
+        def asg = Asignacion.get(params.id)
+        def monto = asg?.priorizado?:0
+        def usado = 0;
+        def estadoPendiente = EstadoAval.findByCodigo("P01")
+        def estadoPorRevisar = EstadoAval.findByCodigo("R01")
+        def estadoSolicitado = EstadoAval.findByCodigo("E01")
+        def estadoLiberado = EstadoAval.findByCodigo("E05")
+        def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
+        def estadoAprobadoSinFirma = EstadoAval.findByCodigo("EF1")
+        def estados = [estadoPendiente, estadoPorRevisar, estadoSolicitado, estadoSolicitadoSinFirma, estadoAprobadoSinFirma]
+        def tprf = TipoReforma.findByCodigo("E")
+
+        ProcesoAsignacion.findAllByAsignacion(asg).each {
+//            println "asignacion: ${it.asignacion.id}, proceso: ${it.proceso.id}"
+            def estadoAval = Aval.findByProceso(it.proceso)?.estado
+//            println "proceso: ${it.proceso.id}, ${it.monto} estado aval: ${estadoAval?.id} y estadoLiberado: $estadoLiberado.id"
+            if(SolicitudAval.findByProceso(it.proceso)){
+                if(estadoAval?.id == estadoLiberado.id){
+                    usado += it.liberado
+                }else{
+                    usado += it.monto
+                }
+            }
+            //toma en cuenta el poas del proceso actual
+            if(it.avalCorriente.id == params?.prco?.toInteger()){
+                usado += it.monto
+            }
+        }
+
+        def locked = 0
+        def detalles = DetalleReforma.withCriteria {   // reformas en proceso con disminución de recuros tprf = 'E'
+            reforma {
+                inList("estado", estados)
+            }
+            eq("asignacionOrigen", asg)
+            eq("tipoReforma", tprf)
+            eq("presupuesto", asg?.presupuesto)
+        }
+        if (detalles.size() > 0) {
+            locked = detalles.sum { it.valor }
+        }
+//        println "regormas: ${detalles.reforma.id}"
+        def disponible = monto - usado - locked
+        println "get Maximo asgn $params  monto: $monto  usado: $usado reformas: $locked disponible: $disponible"
+        render "" + (disponible)
     }
 
 

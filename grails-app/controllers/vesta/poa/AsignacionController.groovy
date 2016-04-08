@@ -1852,7 +1852,7 @@ class AsignacionController extends Shield {
 
 
     def armaSqlPartidasFiltradas(params){
-//        println "armaSqlPartidasFiltradas params: $params"
+        println "armaSqlPartidasFiltradas params: $params"
         def campos = buscadorService.parametrosPartidas()
         def operador = buscadorService.operadores()
         def wh = "prspnmro ilike '6%' or prspnmro ilike '7%' or prspnmro ilike '8%'"
