@@ -6,6 +6,10 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.seguridad.FirmasService" %>
+<%
+    def firmasService = grailsApplication.classLoader.loadClass('vesta.seguridad.FirmasService').newInstance()
+%>
 <html>
     <head>
         <title>Solicitud aval gasto permanente</title>
@@ -55,7 +59,12 @@
                 <th style="width: 200px">
                     UNIDAD REQUIRENTE
                 </th>
-                <td>${proceso.usuario.unidad}</td>
+                <td>
+
+                ${firmasService.requirentesGP(vesta.parametros.UnidadEjecutora.findByCodigo(proceso?.usuario?.unidad?.codigo))?.nombre}
+
+                %{--${proceso.usuario.unidad}--}%
+                </td>
             </tr>
             <tr>
                 <th>

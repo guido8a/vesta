@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.seguridad.FirmasService" %>
+<%
+    def firmasService = grailsApplication.classLoader.loadClass('vesta.seguridad.FirmasService').newInstance()
+%>
 <html>
 <head>
     <meta name="layout" content="reportesReformaSolicitud"/>
@@ -63,7 +67,8 @@
                                 <td style="width: 16%">${vesta.poaCorrientes.Tarea.get(detallesNuevos?.tarea).actividad?.descripcion}</td>
                                 <td style="width: 15%">${vesta.poaCorrientes.Tarea.get(detallesNuevos?.tarea).descripcion}</td>
                                 <td style="width: 8%; text-align: center">${detallesNuevos?.asignacionOrigen?.presupuesto?.numero}</td>
-                                <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
+                                %{--<td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>--}%
+                                <td style='width:8%; text-align: center'>${firmasService.requirentesGP(vesta.parametros.UnidadEjecutora.findByCodigo(detallesNuevos?.responsable?.codigo))?.codigo}</td>
                                 <td style="width: 8%; text-align: right"><g:formatNumber number="${detallesNuevos?.valorOrigenInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                                 <td style="width: 9%; text-align: right;"><g:formatNumber number="${detallesNuevos?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                                 <td style="width: 9%; text-align: center ">${' --- '}</td>
@@ -90,7 +95,9 @@
                                 <g:else>
                                     <td style='width:8%; text-align: center'>${detallesNuevos?.asignacionOrigen?.presupuesto?.numero}</td>
                                 </g:else>
-                                <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
+                                %{--<td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>--}%
+                                <td style='width:8%; text-align: center'>${firmasService.requirentesGP(vesta.parametros.UnidadEjecutora.findByCodigo(detallesNuevos?.responsable?.codigo))?.codigo}</td>
+
                                 <td style='width:8%; text-align: right'><g:formatNumber number="${detallesNuevos?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                                 <td style='width:9%; text-align: center'>${' --- '}</td>
                                 <td style='width:9%; text-align: right'><g:formatNumber number="${detallesNuevos?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -105,7 +112,9 @@
                                 <td style='width:16%'>${detallesNuevos?.componente?.objeto}</td>
                                 <td style='width:15%'>${detallesNuevos?.descripcionNuevaActividad}</td>
                                 <td style='width:8%; text-align: center'>${detallesNuevos?.presupuesto?.numero}</td>
-                                <td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>
+                                %{--<td style='width:8%; text-align: center'>${detallesNuevos?.responsable?.codigo}</td>--}%
+                                <td style='width:8%; text-align: center'>${firmasService.requirentesGP(vesta.parametros.UnidadEjecutora.findByCodigo(detallesNuevos?.responsable?.codigo))?.codigo}</td>
+
                                 <td style='width:8%; text-align: center'>${' --- '}</td>
                                 <td style='width:9%; text-align: center'>${' --- '}</td>
                                 <td style='width:9%; text-align: right'><g:formatNumber number="${detallesNuevos?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>

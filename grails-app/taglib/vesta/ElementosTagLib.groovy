@@ -1127,6 +1127,163 @@ class ElementosTagLib {
         }
     }
 
+
+
+    def linkPdfAjuste = { attrs ->
+//        println "linkPdfReforma - attrs: $attrs"
+
+        Reforma reforma = attrs.reforma
+
+//        def solicitud = attrs.solicitud?.toUpperCase() == "S"
+
+        def disabledIfNull = attrs.disabledIfNull && (attrs.disabledIfNull == "true" || attrs.disabledIfNull == true)
+
+        if (!reforma && !disabledIfNull) {
+            out << "ERROR"
+        } else {
+            def preview = attrs.preview ?: false
+            def label = attrs.label && (attrs.label == "true" || attrs.label == true)
+            def accion = "", accion2 = "", controlador = "reportesReforma"
+            def fileName = "", fileName2 = ""
+            if (reforma) {
+                switch (reforma.tipoSolicitud) {
+                    case "E":
+                        accion = "existente"
+                        fileName = "existente"
+                        break;
+                    case "A":
+                        accion = "actividad"
+                        fileName = "actividad"
+                        break;
+                    case "C":
+                        accion = "incrementoActividad"
+                        fileName = "incremento_actividad"
+                        break;
+                    case "I":
+                        accion = "incremento"
+                        fileName = "incremento"
+                        break;
+                    case "P":
+                        accion = "partida"
+                        fileName = "partida"
+                        break;
+                    case "T":
+                        accion = "techo"
+                        fileName = "techo"
+                        break;
+                    case "X":
+                        accion = "nuevaReforma"
+                        fileName = "nuevaReforma"
+                        break;
+                    case "Z":
+                        accion = "verNuevoAjuste"
+                        fileName = "verNuevoAjuste"
+                        break;
+                    case "Q":
+                        accion = "reformaGp"
+                        fileName = "reformaGp"
+                        break;
+                    case "Y":
+                        accion = "ajusteGp"
+                        fileName = "ajusteGp"
+                        break;
+                }
+            }
+            def title, clase, title2 = "", clase2 = ""
+            if (preview) {
+                accion += "PreviewReforma"
+                fileName += "_previsualizacion"
+                title = "Previsualizar"
+                clase = "btn-info"
+            } else {
+                if (reforma?.estado?.codigo == 'E02') {    //aprobado
+                    if(reforma.tipoSolicitud == 'Z') {
+                        accion2 = accion
+                        title2 = "Ajuste"
+                        clase2 = "btn-success"
+                    }
+//                    else if(reforma?.tipoSolicitud != 'X'){
+//                        accion2 = accion + "Reforma"
+//                        if (reforma?.tipo == 'C') {
+//                            fileName += "_corriente"
+//                        }
+//                        fileName2 = fileName + "_reforma.pdf"
+//                        title2 = "Reforma"
+//                        clase2 = "btn-success"
+//                    }else{
+//                        accion2 = accion + "PreviewReforma"
+//                        if (reforma?.tipo == 'C') {
+//                            fileName += "_corriente"
+//                        }
+//                        fileName2 = fileName + "_reforma.pdf"
+//                        title2 = "Reforma"
+//                        clase2 = "btn-success"
+//                    }
+
+                }
+                if (reforma?.tipo == "R") {
+                    fileName = "reforma_" + fileName + "_solicitud"
+                } else {
+                    if (reforma?.tipo == "C") {
+                        fileName = "ajuste_" + fileName + "_poa_permanente"
+                    } else {
+                        fileName = "ajuste_" + fileName + "_solicitud"
+                    }
+                }
+                title = "Ajuste"
+                clase = "btn-info"
+            }
+
+            if (attrs.class) {
+                clase = attrs.class
+            }
+            if (attrs.title) {
+                title = attrs.title
+            }
+
+            if (attrs.class2) {
+                clase2 = attrs.class2
+            }
+            if (attrs.title2) {
+                title2 = attrs.title2
+            }
+
+            if (disabledIfNull && !reforma) {
+                clase += " disabled"
+            }
+
+            fileName += ".pdf"
+
+//            if (reforma.tipo == "C") {
+//                controlador = "reportesReformaCorrientes"
+//            } else {
+//                controlador = "reportesReforma"
+//            }
+
+            def str = "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: controlador, action: accion, id: reforma?.id)}&filename=${fileName}\""
+            str += "class='btn ${clase} btnVer' title='${title}'>"
+            str += "<i class='fa fa-search'></i> ${label ? title : ''}"
+            str += "</a>"
+
+//            println "primer parte: $str"
+
+            if (accion2 != "") {
+                str += "<a href=\"${g.createLink(controller: 'pdf', action: 'pdfLink')}?url=${g.createLink(controller: controlador, action: accion2, id: reforma?.id)}&filename=${fileName2}\""
+                str += "class='btn ${clase2} btnVer' title='${title2}'>"
+                str += "<i class='fa fa-search'></i> ${label ? title2 : ''}"
+                str += "</a>"
+            }
+
+//            println "<<<< $str"
+            out << str
+        }
+    }
+
+
+
+
+
+
     def linkEditarReforma = { attrs ->
         Reforma reforma = attrs.reforma
         if (!reforma) {

@@ -49,7 +49,7 @@
                         <td class="${reforma.estado.codigo}">${reforma.estado.descripcion}</td>
                         <td style="text-align: center">
                             <div class="btn-group btn-group-sm" role="group">
-                                <elm:linkPdfReforma reforma="${reforma}"/>
+                                <elm:linkPdfAjuste reforma="${reforma}"/>
                                 <g:if test="${session.perfil.codigo != 'OBS'}">
                                     <g:if test="${reforma?.estado?.codigo == 'P01' && (unidad == 'DF' || unidad == 'DA' || unidad == 'GAF')}">
                                     <a href="#" id="btnEditar" class="btn btn-success edit" data-ref="${reforma?.id}" title="Editar"><i class="fa fa-pencil"></i></a>
