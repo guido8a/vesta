@@ -23,6 +23,9 @@ class AvalCorrienteController extends Shield {
      * Acción que muestra la lista de solicitudes dependiendo del perfil
      */
     def listaProcesos() {
+
+        println "unidad: ${firmasService.requirentesGP(UnidadEjecutora.get(session.usuario.unidad.id))}"
+
         def perfil = session.perfil.codigo.toString()
         def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
 
