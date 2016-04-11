@@ -1846,6 +1846,7 @@ class AsignacionController extends Shield {
         def res = cn.rows(sql)
         params.criterio = params.old
         params.inversion = 'inversion'
+//        params.tipo = params.tipo
 
         return [res: res, params: params]
     }

@@ -296,6 +296,10 @@ class RevisionAvalController extends Shield {
      */
     def historial = {
         println "historial " + params
+        params.requirente = params.requirente?:123
+
+        def unej = firmasService.gerencias(UnidadEjecutora.get(params.requirente))
+        println "retorna: ${unej.codigo}"
         def anio = Anio.get(params.anio).anio
         def numero = params.numero ? params.numero.toInteger() : ""
         def proc = params.proceso
@@ -322,9 +326,11 @@ class RevisionAvalController extends Shield {
 //        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
 
         if(params.requirente) {
-            unidades = [UnidadEjecutora.get(params.requirente)]
+//            unidades = [UnidadEjecutora.get(params.requirente)]
+            unidades = firmasService.gerencias(UnidadEjecutora.get(params.requirente))
         } else {
-            unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+//            unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
+            unidades = firmasService.gerencias(session.unidad)
         }
 
         if (anio && anio != "") {

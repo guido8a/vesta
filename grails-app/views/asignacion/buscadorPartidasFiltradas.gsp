@@ -67,7 +67,7 @@
 
     $("#buscarPartida").click(function(){
         var datos = "si=${"si"}&buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() +
-                "&operador=" + $("#oprd").val();
+                "&operador=" + $("#oprd").val() + "&tipo=${params.tipo}";
         $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidasFiltradas')}",
             data     : datos,
             success  : function (msg) {

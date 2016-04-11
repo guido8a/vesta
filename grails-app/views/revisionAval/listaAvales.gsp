@@ -25,7 +25,7 @@
 
                 <div class="form-group">
                     <label for="descProceso">Requirente:</label>
-                    <g:select name="requirente" from="${unidades}" noSelection="['': '- Todos -']"
+                    <g:select name="requirente" from="${unidades}" noSelection="['': '- TODOS -']"
                               class="form-control input-sm" style="width: 200px;" optionKey="id" id="requirenteId"/>
                 </div>
 

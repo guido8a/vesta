@@ -82,10 +82,10 @@
 
     $("#prsp_id").click(function(){
 
-        %{--$.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidasFiltradas')}",--}%
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidas')}",
+        $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidasFiltradas')}",
+        %{--$.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'buscadorPartidas')}",--}%
             data     : {
-
+                tipo: "corrientes"
             },
             success  : function (msg) {
                 var b = bootbox.dialog({
