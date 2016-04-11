@@ -403,6 +403,7 @@ class ReformaController extends Shield {
         def tx = ""
         reformas = Reforma.withCriteria {
             eq("tipo", "R")
+            eq("tipoSolicitud", "X")
             inList("estado", aprobado, liberado)
             persona {
                 if(params.requirente){
