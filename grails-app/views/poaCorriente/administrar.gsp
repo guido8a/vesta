@@ -220,38 +220,40 @@
 
 
          $("#btnDelete").click(function () {
-            bootbox.confirm("¿Está seguro de querer eliminar estas actividades/tareas?", function () {
-                var acts = "";
-                var tareas = "";
-                $(".actTitleDisp.selected").each(function () {
-                    acts += $(this).data("id") + ",";
-                });
-                $(".tareaDisp.selected").each(function () {
-                    tareas += $(this).data("id") + ",";
-                });
-                openLoader();
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink( action:'eliminarActividadesTareas_ajax')}",
-                    data    : {
-                        acts   : acts,
-                        tareas : tareas
-                    },
-                    success : function (msg) {
-                        var parts = msg.split("*");
-                        if(parts[0] == "SUCCESS"){
-                            log(parts[1], parts[0]);
-                            closeLoader();
-                            setTimeout(function () {
-                                location.href = "${createLink(controller:'poaCorriente',action:'administrar')}";
-                            }, 1500);
-                        }else{
-                            log(parts[1], parts[0]);
-                            closeLoader();
-                        }
+            bootbox.confirm("¿Está seguro de querer eliminar estas actividades/tareas?", function (res) {
+                if(res){
+                    var acts = "";
+                    var tareas = "";
+                    $(".actTitleDisp.selected").each(function () {
+                        acts += $(this).data("id") + ",";
+                    });
+                    $(".tareaDisp.selected").each(function () {
+                        tareas += $(this).data("id") + ",";
+                    });
+                    openLoader();
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink( action:'eliminarActividadesTareas_ajax')}",
+                        data    : {
+                            acts   : acts,
+                            tareas : tareas
+                        },
+                        success : function (msg) {
+                            var parts = msg.split("*");
+                            if(parts[0] == "SUCCESS"){
+                                log(parts[1], parts[0]);
+                                closeLoader();
+                                setTimeout(function () {
+                                    location.href = "${createLink(controller:'poaCorriente',action:'administrar')}";
+                                }, 1500);
+                            }else{
+                                log(parts[1], parts[0]);
+                                closeLoader();
+                            }
 
-                    }
-                });
+                        }
+                    });
+                }
             });
             return false;
         });
