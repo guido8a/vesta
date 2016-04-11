@@ -119,6 +119,35 @@ class FirmasService {
     }
 
 
+    /** def vesta.parametros.UnidadEjecutora requirentes(unej)  **/
+    def requirentesGP(unej) {
+        def requirentes = []
+//        def general = UnidadEjecutora.findByCodigo('9999')
+        def general = UnidadEjecutora.findByCodigo('GG')
+        def tecnica = UnidadEjecutora.findByCodigo('GT')
+        def administrativaFinan = UnidadEjecutora.findByCodigo('GAF')
+        def planificacion = UnidadEjecutora.findByCodigo('GPE')
+        def juridica = UnidadEjecutora.findByCodigo('GJ')
+        def gerencias = UnidadEjecutora.findAllByPadreAndNombreIlike(tecnica, 'gerenc%', [sort: 'nombre'])
+        def direcciones = UnidadEjecutora.findAllByPadreAndNombreIlike(general, 'direcc%', [sort: 'nombre'])
+        requirentes = gerencias + direcciones + administrativaFinan + juridica + planificacion + general
+//        println "requirentes: $requirentes"
+
+        def un = unej
+//        println("unej " + un.id)
+        while(un != null) {
+//            println " verfica si es $un"
+            if(requirentes.find { it.id == un.id }) {
+//                println "si contiene retorna $un"
+                return un
+            }
+            un = un.padre
+        }
+
+        return null
+    }
+
+
 //    def vesta.parametros.UnidadEjecutora requirentes(unej) {
     def requirentes(unej) {
         def requirentes = []
