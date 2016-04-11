@@ -98,33 +98,33 @@
     }, 500);
     </g:if>
 
-    function getMaximo(asg) {
-        if ($("#asignacion").val() != "-1") {
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'getMaximoAsg',controller: 'avales')}",
-                data    : {
-                    id : asg
-                },
-                success : function (msg) {
-                    var valor = parseFloat(msg);
-//                    console.log("valor " + valor)
-                    var tot = 0;
-                    $(".tableReformaNueva").each(function () {
+    %{--function getMaximo(asg) {--}%
+        %{--if ($("#asignacion").val() != "-1") {--}%
+            %{--$.ajax({--}%
+                %{--type    : "POST",--}%
+                %{--url     : "${createLink(action:'getMaximoAsg',controller: 'avales')}",--}%
+                %{--data    : {--}%
+                    %{--id : asg--}%
+                %{--},--}%
+                %{--success : function (msg) {--}%
+                    %{--var valor = parseFloat(msg);--}%
+%{--//                    console.log("valor " + valor)--}%
+                    %{--var tot = 0;--}%
+                    %{--$(".tableReformaNueva").each(function () {--}%
 
-                        var d = $(this).children().children().data("cod")
-                        var parId = $(this).children().children().data("par")
-                        var valorP = $(this).children().children().data("val")
-                    });
-//                    console.log("total " + tot)
-                    var ok = valor - tot;
-                    $("#max").html("$" + number_format(ok, 2, ".", ","))
-                            .attr("valor", ok);
-                    $("#monto").attr("tdnMax", ok);
-                }
-            });
-        }
-    }
+                        %{--var d = $(this).children().children().data("cod")--}%
+                        %{--var parId = $(this).children().children().data("par")--}%
+                        %{--var valorP = $(this).children().children().data("val")--}%
+                    %{--});--}%
+%{--//                    console.log("total " + tot)--}%
+                    %{--var ok = valor - tot;--}%
+                    %{--$("#max").html("$" + number_format(ok, 2, ".", ","))--}%
+                            %{--.attr("valor", ok);--}%
+                    %{--$("#monto").attr("tdnMax", ok);--}%
+                %{--}--}%
+            %{--});--}%
+        %{--}--}%
+    %{--}--}%
 
 
     $("#frmIncremento").validate({

@@ -42,6 +42,8 @@ class AjusteController extends Shield {
         if (perfiles.contains(perfil)) {
             reformas = Reforma.withCriteria {
                 eq("tipo", "A")
+                eq("tipoSolicitud", "Z")
+
                 persona {
                     order("unidad", "asc")
                 }
@@ -51,6 +53,7 @@ class AjusteController extends Shield {
             def unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
             reformas = Reforma.withCriteria {
                 eq("tipo", "A")
+                eq("tipoSolicitud", "Z")
                 persona {
                     inList("unidad", unidades)
                     order("unidad", "asc")
