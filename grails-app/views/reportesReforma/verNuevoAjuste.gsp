@@ -101,7 +101,8 @@
                                 </g:else>
 
                                 %{--<td style='width:8%; text-align: center'>${vesta.proyectos.MarcoLogico.findByMarcoLogico(detallesNuevos.componente)?.responsable?.codigo}</td>--}%
-                                <td style='width:8%; text-align: center'>${firmasService.requirentes(vesta.parametros.UnidadEjecutora.findByCodigo(vesta.proyectos.MarcoLogico.findByMarcoLogico(detallesNuevos.componente)?.responsable?.codigo))?.codigo}</td>
+                                <td style='width:8%; text-align: center'>${firmasService.requirentes(vesta.parametros.UnidadEjecutora.findByCodigo(detallesNuevos?.responsable?.codigo))?.codigo}</td>
+                                %{--<td style='width:8%; text-align: center'>${firmasService.requirentes(vesta.parametros.UnidadEjecutora.findByCodigo(vesta.proyectos.MarcoLogico.findByMarcoLogico(detallesNuevos.componente)?.responsable?.codigo))?.codigo}</td>--}%
                                 <td style='width:8%; text-align: right'><g:formatNumber number="${detallesNuevos?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                                 <td style='width:9%; text-align: center'>${' --- '}</td>
                                 <td style='width:9%; text-align: right'><g:formatNumber number="${detallesNuevos?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>

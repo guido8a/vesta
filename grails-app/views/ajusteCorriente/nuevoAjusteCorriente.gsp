@@ -6,6 +6,10 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="vesta.seguridad.FirmasService" %>
+<%
+    def firmasService = grailsApplication.classLoader.loadClass('vesta.seguridad.FirmasService').newInstance()
+%>
 <html>
 <head>
     <meta name="layout" content="main">
@@ -143,7 +147,8 @@
                         <td style=width:16%>${vesta.poaCorrientes.Tarea.get(det?.tarea).actividad?.descripcion}</td>
                         <td style=width:15%>${vesta.poaCorrientes.Tarea.get(det?.tarea).descripcion}</td>
                         <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
-                        <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
+                        %{--<td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>--}%
+                        <td style='width:8%; text-align: center'>${firmasService.requirentesGP(vesta.parametros.UnidadEjecutora.findByCodigo(det?.responsable?.codigo))?.codigo}</td>
                         <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorOrigenInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                         <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                         <td style='width:9%' class='text-center'>${' --- '}</td>
@@ -168,7 +173,9 @@
                         <g:else>
                             <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
                         </g:else>
-                        <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
+                        %{--<td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>--}%
+                        <td style='width:8%; text-align: center'>${firmasService.requirentesGP(vesta.parametros.UnidadEjecutora.findByCodigo(det?.responsable?.codigo))?.codigo}</td>
+
                         <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                         <td style='width:9%' class='text-center'>${' --- '}</td>
                         <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -187,7 +194,9 @@
                         <td style=width:16%>${vesta.poaCorrientes.Tarea.get(det?.tarea).actividad?.descripcion}</td>
                         <td style=width:15%>${vesta.poaCorrientes.Tarea.get(det?.tarea).descripcion}</td>
                         <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
-                        <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
+                        %{--<td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>--}%
+                        <td style='width:8%; text-align: center'>${firmasService.requirentesGP(vesta.parametros.UnidadEjecutora.findByCodigo(det?.responsable?.codigo))?.codigo}</td>
+
                         <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
                         <td style='width:9%' class='text-center'>${' --- '}</td>
                         <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -391,18 +400,15 @@
                                         var dataOrigen = {};
                                         dataOrigen.monto = str_replace(",", "", $("#monto").val());
                                         var dataDestino = {};
-                                        dataDestino.proyecto_nombre = $("#proyecto").find("option:selected").text();
-                                        dataDestino.componente_nombre = $("#comp").find("option:selected").text();
-                                        dataDestino.componente_id = $("#comp").val();
-                                        dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
-                                        dataDestino.actividad_id = $("#actividadRf").val();
-                                        dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                        var part = $("#asignacion").find("option:selected").text().split(": ");
-                                        var partid = part[2].split(",");
-                                        var ini = part[1].split(", Partida");
-                                        dataDestino.partida = partid[0];
-                                        dataDestino.inicial = ini[0];
-                                        dataDestino.asignacion_id = $("#asignacion").val();
+                                        dataDestino.objetivo_nombre = $("#objetivo").find("option:selected").text();
+                                        dataDestino.objetivo_id = $("#objetivo").val();
+                                        dataDestino.macro_nombre = $("#mac").find("option:selected").text();
+                                        dataDestino.macro_id = $("#mac").val();
+                                        dataDestino.actividad_nombre = $("#act").find("option:selected").text();
+                                        dataDestino.actividad_id = $("#act").val();
+                                        dataDestino.tarea_id = $("#tar").val();
+                                        dataDestino.asignacion_id = $("#asg").val();
+//                                    addAsignacionOrigen(dataOrigen, dataDestino);
                                         resetForm();
 
                                         //grabar detalle reforma
@@ -411,9 +417,11 @@
                                             url: "${createLink(controller: 'ajusteCorriente', action: 'grabarDetalleA')}",
                                             data:{
                                                 monto: dataOrigen.monto,
-                                                componente: dataDestino.componente_id,
+                                                objetivo: dataDestino.objetivo_id,
+                                                macro: dataDestino.macro_id,
                                                 actividad: dataDestino.actividad_id,
                                                 asignacion: dataDestino.asignacion_id,
+                                                tarea: dataDestino.tarea_id,
                                                 tipoReforma: "O",
                                                 reforma: '${reforma?.id}',
                                                 id: detalleId
@@ -470,29 +478,26 @@
                                         var dataOrigen = {};
                                         dataOrigen.monto = str_replace(",", "", $("#monto").val());
                                         var dataDestino = {};
-                                        dataDestino.proyecto_nombre = $("#proyecto").find("option:selected").text();
-                                        dataDestino.componente_nombre = $("#comp").find("option:selected").text();
-                                        dataDestino.componente_id = $("#comp").val();
-                                        dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
-                                        dataDestino.actividad_id = $("#actividadRf").val();
-                                        dataDestino.asignacion_nombre = $("#asignacion").find("option:selected").text();
-                                        var part = $("#asignacion").find("option:selected").text().split(": ");
-                                        var partid = part[2].split(",");
-                                        var ini = part[1].split(", Partida");
-                                        dataDestino.partida = partid[0];
-                                        dataDestino.inicial = ini[0];
-                                        dataDestino.asignacion_id = $("#asignacion").val();
+                                        dataDestino.objetivo_nombre = $("#objetivo").find("option:selected").text();
+                                        dataDestino.objetivo_id = $("#objetivo").val();
+                                        dataDestino.macro_nombre = $("#mac").find("option:selected").text();
+                                        dataDestino.macro_id = $("#mac").val();
+                                        dataDestino.actividad_nombre = $("#act").find("option:selected").text();
+                                        dataDestino.actividad_id = $("#act").val();
+                                        dataDestino.tarea_id = $("#tar").val();
+                                        dataDestino.asignacion_id = $("#asg").val();
                                         resetForm();
 
                                         $.ajax({
                                             type: 'POST',
                                             url: "${createLink(controller: 'ajusteCorriente', action: 'grabarDetalleB')}",
                                             data:{
-
                                                 monto: dataOrigen.monto,
-                                                componente: dataDestino.componente_id,
+                                                objetivo: dataDestino.objetivo_id,
+                                                macro: dataDestino.macro_id,
                                                 actividad: dataDestino.actividad_id,
                                                 asignacion: dataDestino.asignacion_id,
+                                                tarea: dataDestino.tarea_id,
                                                 tipoReforma: "E",
                                                 reforma: '${reforma?.id}',
                                                 id: detalleId
@@ -550,15 +555,19 @@
                                         var dataOrigen = {};
                                         dataOrigen.monto = str_replace(",", "", $("#monto").val());
                                         var dataDestino = {};
-                                        dataDestino.proyecto_nombre = $("#proyecto").find("option:selected").text();
-                                        dataDestino.componente_nombre = $("#comp").find("option:selected").text();
-                                        dataDestino.componente_id = $("#comp").val();
-                                        dataDestino.actividad_nombre = $("#actividadRf").find("option:selected").text();
-                                        dataDestino.actividad_id = $("#actividadRf").val();
+                                        dataDestino.objetivo_nombre = $("#objetivo").find("option:selected").text();
+                                        dataDestino.objetivo_id = $("#objetivo").val();
+                                        dataDestino.macro_nombre = $("#mac").find("option:selected").text();
+                                        dataDestino.macro_id = $("#mac").val();
+                                        dataDestino.actividad_nombre = $("#act").find("option:selected").text();
+                                        dataDestino.actividad_id = $("#act").val();
+                                        dataDestino.tarea_id = $("#tar").val();
+                                        dataDestino.asignacion_id = $("#asg").val();
                                         var nume = $("#prsp_id").val().split("-");
                                         dataDestino.partida = nume[0];
                                         dataDestino.partida_id = $("#prsp_hide").val();
-                                        dataDestino.asignacion_id = $("#asignacion").val();
+                                        dataDestino.fuente = $("#fuente").val();
+                                        dataDestino.responsable = $("#responsable").val()
                                         resetForm();
 
                                         $.ajax({
@@ -566,13 +575,17 @@
                                             url: "${createLink(controller: 'ajusteCorriente', action: 'grabarDetalleC')}",
                                             data:{
                                                 monto: dataOrigen.monto,
-                                                componente: dataDestino.componente_id,
+                                                objetivo: dataDestino.objetivo_id,
+                                                macro: dataDestino.macro_id,
                                                 actividad: dataDestino.actividad_id,
-//                                                asignacion: dataDestino.asignacion_id,
+                                                asignacion: dataDestino.asignacion_id,
+                                                tarea: dataDestino.tarea_id,
                                                 tipoReforma: "P",
                                                 reforma: '${reforma?.id}',
                                                 partida: dataDestino.partida_id,
-                                                id: detalleId
+                                                fuente: dataDestino.fuente,
+                                                id: detalleId,
+                                                responsable: dataDestino.responsable
                                             },
                                             success: function (msg){
                                                 if(msg == 'ok'){
@@ -718,7 +731,6 @@
                                     dataDestino.actividad_id = $("#act").val();
                                     dataDestino.tarea_id = $("#tar").val();
                                     dataDestino.asignacion_id = $("#asg").val();
-
                                     resetForm();
 
                                     $.ajax({
@@ -733,6 +745,7 @@
                                             tarea: dataDestino.tarea_id,
                                             tipoReforma: "E",
                                             reforma: '${reforma?.id}'
+
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){
@@ -799,6 +812,7 @@
                                     dataDestino.partida = nume[0];
                                     dataDestino.partida_id = $("#prsp_hide").val();
                                     dataDestino.fuente = $("#fuente").val();
+                                    dataDestino.responsable = $("#responsable").val()
                                     resetForm();
 
                                     $.ajax({
@@ -816,7 +830,8 @@
                                             reforma: '${reforma?.id}',
                                             partida: dataDestino.partida_id,
                                             fuente: dataDestino.fuente,
-                                            anio:  $("#anio").val()
+                                            anio:  $("#anio").val(),
+                                            responsable: dataDestino.responsable
 
                                         },
                                         success: function (msg){

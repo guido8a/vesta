@@ -614,6 +614,7 @@
                                         dataDestino.partida = nume[0];
                                         dataDestino.partida_id = $("#prsp_hide").val();
                                         dataDestino.asignacion_id = $("#asignacion").val();
+                                        dataDestino.responsable = $("#responsable").val()
                                         resetForm();
 
                                         $.ajax({
@@ -627,7 +628,8 @@
                                                 tipoReforma: "P",
                                                 reforma: '${reforma?.id}',
                                                 partida: dataDestino.partida_id,
-                                                id: detalleId
+                                                id: detalleId,
+                                                responsable: dataDestino.responsable
                                             },
                                             success: function (msg){
                                                 if(msg == 'ok'){
@@ -1007,6 +1009,7 @@
                                     dataDestino.partida = nume[0];
                                     dataDestino.partida_id = $("#prsp_hide").val();
                                     dataDestino.fuente = $("#fuente").val();
+                                    dataDestino.responsable = $("#responsable").val()
                                     resetForm();
 
                                     $.ajax({
@@ -1020,7 +1023,9 @@
                                             reforma: '${reforma?.id}',
                                             partida: dataDestino.partida_id,
                                             fuente: dataDestino.fuente,
-                                            anio: $("#anio").val()
+                                            anio: $("#anio").val(),
+                                            responsable: dataDestino.responsable
+
                                         },
                                         success: function (msg){
                                             if(msg == 'ok'){

@@ -901,6 +901,11 @@ class AjusteCorrienteController {
         def tar = Tarea.get(params.tarea)
 
         def detalleReforma
+        def anio
+
+        if(params.anio){
+            anio = Anio.get(params.anio)
+        }
 
         if(!params.id){
             //crear
@@ -945,7 +950,6 @@ class AjusteCorrienteController {
             detalleReforma.macroActividad = macro
             detalleReforma.objetivoGastoCorriente = objetivo
             detalleReforma.tarea = tar.id
-            detalleReforma.anio = asignacion.anio
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma A " + detalleReforma.errors);
@@ -996,7 +1000,7 @@ class AjusteCorrienteController {
     }
 
     def grabarDetalleB () {
-//        println("params B " + params)
+        println("params B " + params)
 
         def reforma = Reforma.get(params.reforma)
         def tipoReforma = TipoReforma.findByCodigo(params.tipoReforma)
@@ -1008,6 +1012,12 @@ class AjusteCorrienteController {
         def tar = Tarea.get(params.tarea)
 
         def detalleReforma
+        def anio
+
+        if(params.anio){
+            anio = Anio.get(params.anio)
+        }
+
 
         if(!params.id){
             //crear
@@ -1036,7 +1046,7 @@ class AjusteCorrienteController {
         }else{
             //editar
 
-            detalleReforma = new DetalleReforma()
+            detalleReforma = DetalleReforma.get(params.id)
             detalleReforma.reforma = reforma
             detalleReforma.asignacionOrigen = asignacion
             detalleReforma.tipoReforma = tipoReforma
@@ -1049,7 +1059,6 @@ class AjusteCorrienteController {
             detalleReforma.macroActividad = macro
             detalleReforma.objetivoGastoCorriente = objetivo
             detalleReforma.tarea = tar.id
-            detalleReforma.anio = asignacion.anio
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma B " + detalleReforma.errors);
@@ -1106,6 +1115,7 @@ class AjusteCorrienteController {
         def fuente = Fuente.get(params.fuente)
         def partida = Presupuesto.get(params.partida)
         def anio
+        def responsable = UnidadEjecutora.get(params.responsable)
 
         if(params.anio){
             anio = Anio.get(params.anio)
@@ -1116,6 +1126,8 @@ class AjusteCorrienteController {
 
         if(!params.id){
             //crear
+
+            println("crear")
 
             detalleReforma = new DetalleReforma()
             detalleReforma.reforma = reforma
@@ -1130,6 +1142,7 @@ class AjusteCorrienteController {
             detalleReforma.objetivoGastoCorriente = objetivo
             detalleReforma.tarea = tar.id
             detalleReforma.anio = anio
+            detalleReforma.responsable = responsable
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma C  " + detalleReforma.errors);
@@ -1154,7 +1167,7 @@ class AjusteCorrienteController {
             detalleReforma.macroActividad = macro
             detalleReforma.objetivoGastoCorriente = objetivo
             detalleReforma.tarea = tar.id
-            detalleReforma.anio = anio
+            detalleReforma.responsable = responsable
 
             if(!detalleReforma.save(flush: true)){
                 println("error al guardar detalle de reforma C  " + detalleReforma.errors);
