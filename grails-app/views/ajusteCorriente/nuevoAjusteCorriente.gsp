@@ -223,7 +223,8 @@
             <th style="width: 8%;"><g:formatNumber number="${totalOrigen}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
             <th style="width: 9%;"><g:formatNumber number="${disminucion}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
             <th style="width: 9%;"><g:formatNumber number="${incremento}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
-            <g:if test="${totalOrigen != montoFinal}">
+            %{--<g:if test="${totalOrigen != montoFinal}">--}%
+                <g:if test="${Math.round(totalOrigen.toDouble()*100)/100 != Math.round(montoFinal.toDouble()*100)/100}">
             <th style="width: 8%; color: #ff180a"><g:formatNumber number="${montoFinal}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
             </g:if>
             <g:else>
@@ -853,7 +854,7 @@
         if ($(this).hasClass("disabled")) {
             bootbox.alert("Debe agregar detalles antes de enviar la solicitud!")
         } else {
-            <g:if test="${totalOrigen != montoFinal}">
+            <g:if test="${Math.round(totalOrigen.toDouble()*100)/100 != Math.round(montoFinal.toDouble()*100)/100}">
             bootbox.alert("La suma del valor inicial de las asignaciones es diferente al valor del monto final!");
             </g:if>
             <g:else>

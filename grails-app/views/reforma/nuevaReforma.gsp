@@ -70,7 +70,7 @@
     </g:if>
     <g:else>
         <div class="col-md-2 alert-danger">
-        No hay POA para este año
+            No hay POA para este año
         </div>
     </g:else>
 
@@ -162,45 +162,45 @@
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'E'}">
                     <tr class="success" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
-                    <td style=width:4%>${det?.anio}</td>
-                    <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
-                    <td style=width:16%>${det?.componente?.objeto}</td>
-                    <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
-                    <g:if test="${det?.tipoReforma?.codigo == 'P'}">
-                        <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
-                    </g:if>
-                    <g:else>
-                        <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
-                    </g:else>
-                    <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
-                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:9%' class='text-center'>${' --- '}</td>
-                    <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:3%'>
-                        <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
-                        <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
-                    </td>
+                        <td style=width:4%>${det?.anio}</td>
+                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:16%>${det?.componente?.objeto}</td>
+                        <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                        <g:if test="${det?.tipoReforma?.codigo == 'P'}">
+                            <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
+                        </g:if>
+                        <g:else>
+                            <td style='width:8%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
+                        </g:else>
+                        <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:9%' class='text-center'>${' --- '}</td>
+                        <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:3%'>
+                            <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
+                            <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
+                        </td>
                     </tr>
                     <g:set var="incremento" value="${incremento += det?.valor}"/>
                     <g:set var="montoFinal" value="${montoFinal += (det?.valorDestinoInicial + det?.valor)}"/>
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'P'}">
-                        <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
-                    <td style=width:4%>${det?.anio}</td>
-                    <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
-                    <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
-                    <td style=width:15%>${det?.componente?.objeto}</td>
-                    <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
-                    <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
-                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:9%' class='text-center'>${' --- '}</td>
-                    <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
-                    <td style='width:3%'>
-                        <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
-                        <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
-                    </td>
+                    <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}" data-anio="${det?.anio?.id}">
+                        <td style=width:4%>${det?.anio}</td>
+                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:16%>${det?.componente?.marcoLogico?.objeto}</td>
+                        <td style=width:15%>${det?.componente?.objeto}</td>
+                        <td style='width:8%' class='text-center'>${det?.presupuesto?.numero}</td>
+                        <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:9%' class='text-center'>${' --- '}</td>
+                        <td style='width:9%' class='text-right'><g:formatNumber number="${det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial + det?.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
+                        <td style='width:3%'>
+                            <a href='#' class='btn btn-danger btn-xs pull-right borrarTr' title="Borrar"><i class='fa fa-trash-o'></i></a>
+                            <a href='#' class='btn btn-success btn-xs pull-right editarTr' title="Editar"><i class='fa fa-pencil'></i></a>
+                        </td>
                     </tr>
                     <g:set var="incremento" value="${incremento += det?.valor}"/>
                     <g:set var="montoFinal" value="${montoFinal += (det?.valorDestinoInicial + det?.valor)}"/>
@@ -256,7 +256,9 @@
             <th style="width: 8%;"><g:formatNumber number="${totalOrigen}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
             <th style="width: 8%;"><g:formatNumber number="${disminucion}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
             <th style="width: 9%;"><g:formatNumber number="${incremento}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
-            <g:if test="${totalOrigen != montoFinal}">
+        %{--<g:if test="${totalOrigen != montoFinal}">--}%
+            <g:if test="${Math.round(totalOrigen.toDouble()*100)/100 != Math.round(montoFinal.toDouble()*100)/100}">
+
                 <g:if test="${detalle?.tipoReforma?.codigo?.contains("E") || detalle?.tipoReforma?.codigo?.contains("A") }">
                     <th style="width: 8%;"><g:formatNumber number="${montoFinal}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
                 </g:if>
@@ -1250,11 +1252,6 @@
                                 openLoader();
                                 var data = {};
                                 var c = 0;
-//                                $(".tableReformaNueva").each(function () {
-//                                    var d = $(this).data();
-//                                    data["r" + c] = d.origen.asignacion_id + "_" + d.destino.asignacion_id + "_" + d.origen.monto;
-//                                    c++;
-//                                });
                                 data.firma = $("#firma").val();
                                 data.anio = $("#anio").val();
                                 data.concepto = $("#concepto").val();
