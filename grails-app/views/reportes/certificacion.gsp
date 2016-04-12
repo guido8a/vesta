@@ -53,24 +53,6 @@
             font-size : 8pt !important;
         }
 
-        /*.observaciones {*/
-            /*border            : 1px solid black;*/
-            /*padding           : 5px;*/
-            /*text-align        : justify;*/
-            /*page-break-inside : avoid;*/
-            /*font-size         : 0.5em;*/
-        /*}*/
-
-        /*.observaciones p {*/
-            /*font-size : 6pt;*/
-        /*}*/
-
-        /*.observaciones .ttl {*/
-            /*font-size       : 9pt;*/
-            /*font-weight     : bold;*/
-            /*text-decoration : underline;*/
-        /*}*/
-
         .letra {
             font-size: 0.5em !important;
         }
@@ -94,7 +76,8 @@
 
             <div style="text-align: justify;float: left;font-size: 8pt;">
                 <p>
-                    Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${sol.fecha.format("dd-MM-yyyy")},
+                    %{--Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${sol.fecha.format("dd-MM-yyyy")},--}%
+                    Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${vesta.avales.Aval.get(sol?.aval?.id)?.fechaAprobacion?.format("dd-MM-yyyy")},
                     la ${ua.nombre} solicita emitir el aval de POA para realizar el proceso "${sol.proceso.nombre}",
                     por un monto total de <g:formatNumber number="${sol.monto}" type="currency" currencySymbol="USD "/>
                     (${transf.capitalize()}), con base en cual informo lo siguiente:
@@ -112,17 +95,9 @@
                                 UNIDAD RESPONSABLE
                             </th>
                             <td>
-                                %{--<g:if test="${sol.usuario.unidad.padre.nombre}">--}%
-                                    %{--${sol.usuario.unidad.padre.nombre}--}%
-                                %{--</g:if>--}%
-                                %{--<g:else>--}%
-                                    %{--${sol.usuario.unidad.nombre}--}%
-                                %{--</g:else>--}%
                                 ${ua}
-
                             </td>
                         </tr>
-
                         <tr>
                             <th>
                                 PROYECTO
@@ -149,10 +124,7 @@
                         </tr>
                     </table>
 
-
-
                     <g:each in="${arr}" var="primero">
-
                         <table width="100%" border="1" class="tbl" style="margin-top: 15px">
                             <tr>
                                 <td style="width:200px; font-weight: bold">COMPONENTE</td>
