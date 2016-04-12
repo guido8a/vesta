@@ -77,7 +77,7 @@
             <div style="text-align: justify;float: left;font-size: 8pt;">
                 <p>
                     %{--Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${sol.fecha.format("dd-MM-yyyy")},--}%
-                    Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${vesta.avales.Aval.get(sol?.aval?.id)?.fechaAprobacion?.format("dd-MM-yyyy")},
+                    Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${sol?.firma?.fecha?.format("dd-MM-yyyy")},
                     la ${ua.nombre} solicita emitir el aval de POA para realizar el proceso "${sol.proceso.nombre}",
                     por un monto total de <g:formatNumber number="${sol.monto}" type="currency" currencySymbol="USD "/>
                     (${transf.capitalize()}), con base en cual informo lo siguiente:
