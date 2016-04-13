@@ -661,11 +661,7 @@ class AjusteCorrienteController {
                         modificacion.desde = origen
                         if (destino) {
                             modificacion.recibe = destino
-                            if(reforma.tipoSolicitud == 'P') {
-                                modificacion.originalDestino = 0
-                            } else {  // cuiando es tprf = 'E' guarda el valor original
-                                modificacion.originalDestino = destino.priorizado
-                            }
+                            modificacion.originalDestino = destino.priorizado
                         }
                         modificacion.fecha = now
                         modificacion.valor = detalle.valor
@@ -1334,6 +1330,7 @@ class AjusteCorrienteController {
                 //busco el ultimo numero asignado para signar el siguiente
                 def ultimoNum = Reforma.withCriteria {
                     eq("tipo", "A")
+                    eq("tipoSolicitud", "Y")
                     projections {
                         max "numero"
                     }
@@ -1430,7 +1427,7 @@ class AjusteCorrienteController {
                                 modificacionPartida.valor = d?.valor
                                 modificacionPartida.estado = 'A'
                                 modificacionPartida.detalleReforma = d
-                                modificacionPartida.originalDestino = nuevaPartida?.priorizado
+                                modificacionPartida.originalDestino = 0
 
                                 if (!modificacionPartida.save(flush: true)) {
                                     println "error al guardar modificacion tipo P: " + modificacionPartida.errors
