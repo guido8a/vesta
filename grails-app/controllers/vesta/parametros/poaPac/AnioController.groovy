@@ -182,6 +182,22 @@ class AnioController extends Shield {
         }
     }
 
+    def aprobarAnioGp() {
+        if (request.method == 'POST') {
+
+            def anio = Anio.get(params.anio)
+            anio.estadoGp = 1
+            anio.save(flush: true)
+            Asignacion.executeUpdate("UPDATE Asignacion SET priorizadoOriginal = planificado WHERE anio=${anio.id} and mrlg__id is null")
+            flash.message = "Las asignaciones del año ${anio.anio} han sido aprobadas."
+            render "ok"
+
+        } else {
+            redirect(controller: "shield", action: "ataques")
+        }
+    }
+
+
     /**
      * Acción
      */

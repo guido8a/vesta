@@ -11,7 +11,7 @@
 
     <body>
 
-        <div class="btn-group btn-group-sm" role="group" style="width: 800px;">
+        <div class="btn-group btn-group-sm" role="group" style="width: 850px;">
             <a href="#" id="btnProgramacion" class="btn btn-success" title="Programación"><i class="fa fa-gear"></i> Programación</a>
             <a href="#" id="btnVerTodos" class="btn btn-success" title="Ver todas"><i class="fa fa-search"></i> Ver todas</a>
             <a href="#" id="btnCopiar" class="btn btn-success" title="Copiar asignaciones"><i class="fa fa-copy"></i> Copiar asignaciones</a>
@@ -19,6 +19,9 @@
             <a href="#" id="btnReporteUnidad" class="btn btn-success" title="Reporte Unidad"><i class="fa fa-print"></i> Reporte por Área</a>
             <a href="#" id="btnReporteExcel" class="btn btn-success" title="Reporte Excel"><i class="fa fa-print"></i> Reporte Excel</a>
             <a href="#" id="btnReporteCompleto" class="btn btn-success" title="Reporte POA Completo"><i class="fa fa-print"></i> Reporte Completo</a>
+            <g:if test="${actual?.estadoGp == 0}">
+                <a href="#" id="btnAprobar" class="btn btn-success" title="Aprobar POA"><i class="fa fa-check"></i> Aprobar POA</a>
+            </g:if>
         </div>
 
         <div style="margin-top: 15px;">
@@ -156,6 +159,32 @@
         </fieldset>
 
         <script type="text/javascript">
+
+            $("#btnAprobar").click(function () {
+                bootbox.confirm("Está seguro que desea aprobar el POA?", function (res){
+                   if(res){
+                           openLoader();
+                           $.ajax({
+                               type    : "POST",
+                               url     : "${createLink(controller: 'anio', action:'aprobarAnioGp')}",
+                               data    : {
+                                   anio : $("#anio").val()
+                               },
+                               success : function (msg) {
+                                   if (msg != "no") {
+                                       log("POA aprobado correctamente","success");
+                                       setTimeout(function () {
+                                           location.href = "${createLink(action:'asignacionesCorrientesv2')}"
+                                       }, 2000);
+                                   } else {
+                                       log("Ocurrió un error al aprobar el POA","error")
+                                   }
+                               }
+                           });
+              }
+
+                });
+            });
 
 
             $("#prsp_id").click(function(){

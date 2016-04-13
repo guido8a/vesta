@@ -25,12 +25,14 @@
                                                  format="###,##0"
                                                  minFractionDigits="2" maxFractionDigits="2"/></td>
         <td style="width: 100px;">
-            <div class="btn-group btn-group-xs" role="group">
-                <a href="#" id="btnEditar" class="btn btn-success editar_ajax" title="Editar" iden="${asg.id}"><i class="fa fa-pencil"></i>
-                </a>
-                <a href="#" id="btnBorrar" class="btn btn-danger borrar_ajax" title="Borrar" iden="${asg.id}" nom="${asg?.presupuesto?.descripcion}"><i class="fa fa-trash"></i>
-                </a>
-            </div>
+            <g:if test="${anio?.estadoGp == 0}">
+                <div class="btn-group btn-group-xs" role="group">
+                    <a href="#" id="btnEditar" class="btn btn-success editar_ajax" title="Editar" iden="${asg.id}"><i class="fa fa-pencil"></i>
+                    </a>
+                    <a href="#" id="btnBorrar" class="btn btn-danger borrar_ajax" title="Borrar" iden="${asg.id}" nom="${asg?.presupuesto?.descripcion}"><i class="fa fa-trash"></i>
+                    </a>
+                </div>
+            </g:if>
         </td>
     </tr>
 </g:each>

@@ -2038,7 +2038,7 @@ class Reportes6Controller {
                 curCol++
 
                 tableCell = tableRow.createCell(curCol)
-                tableCell.setCellValue(a?.priorizado)
+                tableCell.setCellValue(a?.priorizadoOriginal)
                 tableCell.setCellStyle(styleNumber)
                 curCol++
 

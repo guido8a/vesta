@@ -1478,7 +1478,7 @@ class AsignacionController extends Shield {
             asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', sort:'id'])
         }
 
-        return [asignaciones: asignaciones]
+        return [asignaciones: asignaciones, anio: anio]
     }
 
     def editarAsignacion_ajax() {
