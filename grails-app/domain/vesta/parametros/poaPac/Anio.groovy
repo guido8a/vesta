@@ -14,6 +14,10 @@ class Anio   {
      * Estado del año: 0: no aprobado, 1: aprobado
      */
     int estado = 0 /* 0 -> no aprobado    1-> aprobadp */
+    /**
+     * Estado del año para gasto permanente: 0: no aprobado, 1: aprobado
+     */
+    int estadoGp = 0 /* 0 -> no aprobado    1-> aprobadp */
 
     /**
      * Define los campos que se van a ignorar al momento de hacer logs
@@ -33,6 +37,7 @@ class Anio   {
             id column: 'anio__id'
             anio column: 'anioanio'
             estado column: 'anioetdo'
+            estadoGp column: 'anioedgp'
         }
     }
 
@@ -42,6 +47,7 @@ class Anio   {
     static constraints = {
         anio(size: 1..31, blank: false, attributes: [mensaje: 'Año al cual corresponde el PAPP'])
         estado(blank: false, nullable: false)
+        estadoGp(blank: false, nullable: false)
     }
 
     /**

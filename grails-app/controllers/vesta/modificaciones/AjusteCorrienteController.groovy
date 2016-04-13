@@ -661,7 +661,11 @@ class AjusteCorrienteController {
                         modificacion.desde = origen
                         if (destino) {
                             modificacion.recibe = destino
-                            modificacion.originalDestino = destino.priorizado
+                            if(reforma.tipoSolicitud == 'P') {
+                                modificacion.originalDestino = 0
+                            } else {  // cuiando es tprf = 'E' guarda el valor original
+                                modificacion.originalDestino = destino.priorizado
+                            }
                         }
                         modificacion.fecha = now
                         modificacion.valor = detalle.valor
