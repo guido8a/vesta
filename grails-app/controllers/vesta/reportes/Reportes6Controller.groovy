@@ -1977,7 +1977,13 @@ class Reportes6Controller {
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("CODIFICADO")
+            cellHeader.setCellValue("PRIORIZADO ORIGINAL")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PRIORIZADO")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 3000)
             curCol++
@@ -2039,6 +2045,11 @@ class Reportes6Controller {
 
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(a?.priorizadoOriginal)
+                tableCell.setCellStyle(styleNumber)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(a?.priorizado)
                 tableCell.setCellStyle(styleNumber)
                 curCol++
 
