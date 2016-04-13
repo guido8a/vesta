@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 25/06/15
-  Time: 09:59 AM
---%>
-
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="vesta.proyectos.MarcoLogico; vesta.parametros.poaPac.Anio; vesta.parametros.TipoElemento" contentType="text/html;charset=UTF-8" %>
 <html>

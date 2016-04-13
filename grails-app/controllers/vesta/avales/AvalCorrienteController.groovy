@@ -151,6 +151,14 @@ class AvalCorrienteController extends Shield {
         def unidad = UnidadEjecutora.get(session.unidad.id)
         def personasFirma = firmasService.listaDirectoresUnidadCorr(unidad)
 
+        println "directores: $personasFirma"
+
+        if(!personasFirma) {
+            personasFirma = firmasService.listaGerentesUnidad(unidad)
+        }
+
+        println "Gerentes y directores: $personasFirma"
+
         def anio = new Date().format("yyyy")
 
 //        def minDate = new Date().parse("dd-MM-yyyy", "01-01-" + anio)

@@ -36,7 +36,7 @@
                     <a href="#AVCR" class="" role="tab" data-toggle="tab">Firmas solicitud de aval gasto permanente</a>
                 </li>
                 <li role="presentation">
-                    <a href="#AJSC" class="" role="tab" data-toggle="tab">Firmas solicitud de ajuste de gasto permanente</a>
+                    <a href="#AJSC" class="" role="tab" data-toggle="tab">Firmas de ajustes de gasto permanente</a>
                 </li>
                 <li role="presentation">
                     <a href="#RFRM" class="" role="tab" data-toggle="tab">Firmas reformas de gasto permanente</a>
