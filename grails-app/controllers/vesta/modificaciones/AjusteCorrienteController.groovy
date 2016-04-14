@@ -1560,6 +1560,8 @@ class AjusteCorrienteController {
         }
 //        println "regormas: ${detalles.reforma.id}"
         def disponible = monto - usado - locked
+        disponible = Math.round(disponible * 100)/100
+
         println "get Maximo asgn $params  monto: $monto  usado: $usado reformas: $locked disponible: $disponible"
         render "" + (disponible)
     }
