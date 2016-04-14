@@ -2123,16 +2123,21 @@ class Reportes6Controller {
 
 //        println("params per excel " + params)
 
+        def aprobado = EstadoAval.findByCodigo('E02')
         def fechaInicio =  new Date().parse("dd-MM-yyyy", params.ini)
         def fechaFin = new Date().parse("dd-MM-yyyy", params.fin)
 
         def corrientes = AvalCorriente.withCriteria {
-
             gt("fechaInicioProceso", fechaInicio)
             lt("fechaFinProceso", fechaFin)
+            eq("estado", aprobado)
         }
 
 //        println("corrientes " + corrientes)
+
+        def poas = ProcesoAsignacion.findAllByAvalCorrienteNotIsNull()
+//        println "corrientes: ${corrientes.size()}"
+        if(!poas) throw new IllegalArgumentException()
 
         def iniRow = 0
         def iniCol = 1
@@ -2213,7 +2218,10 @@ class Reportes6Controller {
             def totalSaldo = 0
 
 //            cn.eachRow(tx.toString()) { d ->
+//            println "---> $corrientes"
             corrientes.each { d->
+//                println "poas: ${ProcesoAsignacion.findByAvalCorriente(d)?.asignacion?.priorizado?:0}"
+//                println "resta: ${d?.monto}"
 
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
@@ -2247,10 +2255,15 @@ class Reportes6Controller {
                 cellTabla.setCellValue(d?.monto)
                 cellTabla.setCellStyle(styleNumber)
                 curCol++
+//                println "....3"
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(ProcesoAsignacion.findByAvalCorriente(d)?.asignacion?.priorizado - d?.monto)
+//                println "....4"
+                cellTabla.setCellValue(ProcesoAsignacion.findByAvalCorriente(d)?.asignacion?.priorizado?:0 - d?.monto)
+//                println "....5"
                 cellTabla.setCellStyle(styleNumber)
-                totalSaldo += (ProcesoAsignacion.findByAvalCorriente(d)?.asignacion?.priorizado - d?.monto)
+//                println "....6"
+                totalSaldo += (ProcesoAsignacion.findByAvalCorriente(d)?.asignacion?.priorizado?:0 - d?.monto)
+//                println "....7"
 
                 curCol++
                 curRow++
