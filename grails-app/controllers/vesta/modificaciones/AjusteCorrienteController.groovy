@@ -787,9 +787,8 @@ class AjusteCorrienteController {
         def unidad = UnidadEjecutora.get(session.unidad.id)
         def proyectos = unidad.getProyectosUnidad(actual, session.perfil.codigo.toString())
 
-        def anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
-                "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
-                "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
+        def anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, anio " +
+                "where mrlg__id is null and anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
                 "order by anioanio".toString()).anio__id
 
         def anios = Anio.findAllByIdInList(anios__id)
