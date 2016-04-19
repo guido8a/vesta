@@ -161,6 +161,56 @@
                 }); //ajax
             }
 
+            function dialogXlsPdfFuenteFechas(title, urlExcel, urlPdf, pdfFileName) {
+                var buttons = {};
+                if (urlPdf) {
+                    buttons.pdf = {
+                        id        : "btnPdf",
+                        label     : "<i class='fa fa-file-pdf-o'></i> Reporte Pdf",
+                        className : "btn-success",
+                        callback  : function () {
+                            var fnt = $("#fuente").val();
+                            var url = urlPdf + "?fnt=" + fnt + "Wini=" + $("#fchaInicio").val() + "Wfin=" + $("#fchaFin").val();
+                            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "Wfilename=" + pdfFileName;
+                        } //callback
+                    };
+                }
+                if (urlExcel) {
+                    buttons.excel = {
+                        id        : "btnExcel",
+                        label     : "<i class='fa fa-file-excel-o'></i> Reporte Excel",
+                        className : "btn-success",
+                        callback  : function () {
+                            var fnt = $("#fuente").val();
+                            location.href = urlExcel + "?fnt=" + fnt;
+                            return false;
+                        } //callback
+                    };
+                }
+                buttons.cancelar = {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                };
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller:'reportesNuevos', action:'fuente_y_fechas_ajax')}",
+                    data    : '',
+                    success : function (msg) {
+                        var b = bootbox.dialog({
+                            id      : "dlgAvales",
+                            title   : title ? title : "Reporte",
+                            message : msg,
+                            buttons : buttons
+                        }); //dialog
+                        setTimeout(function () {
+                            b.find(".form-control").first().focus()
+                        }, 500);
+                    } //success
+                }); //ajax
+            }
+
             function dialogXlsPdf(title, message, urlExcel, urlPdf, pdfFileName) {
                 var buttons = {};
                 if (urlPdf) {
@@ -218,7 +268,7 @@
                     var urlExcel = "${createLink(controller: 'reportesNuevos', action: 'reporteReformasExcel')}";
                     var urlPdf = "${createLink(controller: 'reportes5', action: 'reporteReformasPdf')}";
                     var pdfFileName = "";
-                    dialogXlsPdfFuente("Reporte de Reformas y Ajustes", urlExcel, urlPdf, pdfFileName);
+                    dialogXlsPdfFuenteFechas("Reporte de Reformas y Ajustes", urlExcel, urlPdf, pdfFileName);
                 });
 
                 $("#subproyectos").click(function () {

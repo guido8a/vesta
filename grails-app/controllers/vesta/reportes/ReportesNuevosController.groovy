@@ -604,6 +604,10 @@ class ReportesNuevosController {
 
     }
 
+    def fuente_y_fechas_ajax() {
+
+    }
+
     def reporteAvalesExcel() {
 
         def cn = dbConnectionService.getConnection()

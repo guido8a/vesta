@@ -74,6 +74,7 @@
         </label>
     </div>
     <div class="col-md-2">
+        %{--${actual.anio}--}%
         <g:select from="${anios}" value="${actual.anio}" optionKey="id" optionValue="anio" name="anio"
                   class="form-control input-sm required requiredCombo"/>
     </div>

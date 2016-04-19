@@ -87,6 +87,7 @@ class AjusteController extends Shield {
 
         def reformas = Reforma.withCriteria {
             eq("tipo", "A")
+            eq("tipoSolicitud", "Z")
             if (estados.size() > 0) {
                 inList("estado", estados)
             }
@@ -1751,7 +1752,9 @@ class AjusteController extends Shield {
                 "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
                 "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
                 "order by anioanio".toString()).anio__id
-        def anios = Anio.findAllByIdInList(anios__id)
+        def anios = Anio.findAllByIdInList(anios__id, [sort: 'anio'])
+
+//        println "anños: ... ${anios}, actual: ${actual}"
 
         def personasFirma = firmasService.listaDirectoresUnidad(unidad)
         def firmas = firmasService.listaFirmasCombos()

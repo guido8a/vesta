@@ -1,31 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 10/06/15
-  Time: 03:18 PM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 08/06/15
-  Time: 12:45 PM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 05/06/15
-  Time: 11:24 AM
---%>
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 9/16/11
-  Time: 11:35 AM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page import="vesta.avales.ProcesoAsignacion" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -101,10 +73,7 @@
         <tr>
 
             <th class="text-center">
-               C
-            </th>
-            <th class="text-center">
-               P
+                Año
             </th>
             <th class="text-center">
                 #
@@ -113,7 +82,16 @@
                 ACTIVIDAD
             </th>
             <th class="text-center">
+                PARTIDA
+            </th>
+            <th class="text-center">
                 VALOR INICIAL
+            </th>
+            <th class="text-center">
+                REF.
+            </th>
+            <th class="text-center">
+                AJS.
             </th>
             <th class="text-center">
                 INCREMENTO
@@ -130,26 +108,17 @@
         <tbody>
         <g:each in="${modificacion}" var="m">
             <tr>
-                <td>${m?.desde?.componente?.descripcion}</td>
-                <td>${m?.desde?.programa?.descripcion}</td>
-                <td>${m?.desde?.marcoLogico?.numero}</td>
-                <td>${m?.desde?.marcoLogico?.toStringCompleto()}</td>
-                <td>${m?.originalOrigen}</td>
-                <td>${m?.valor}</td>
-                <td></td>
-                <td>${m?.originalOrigen+m?.valor}</td>
+                <td>${m?.anio}</td>
+                <td>${m?.nmro}</td>
+                <td>${m?.actv}</td>
+                <td>${m?.prsp}</td>
+                <td>${m?.vlin}</td>
+                <td>${m?.rfrm}</td>
+                <td>${m?.ajst}</td>
+                <td>${m?.incr}</td>
+                <td>${m?.decr}</td>
+                <td>${m?.prcl}</td>
             </tr>
-            <tr>
-                <td>${m?.recibe?.componente?.descripcion}</td>
-                <td>${m?.recibe?.programa?.descripcion}</td>
-                <td>${m?.recibe?.marcoLogico?.numero}</td>
-                <td>${m?.recibe?.marcoLogico?.toStringCompleto()}</td>
-                <td>${m?.originalDestino}</td>
-                <td></td>
-                <td>${m?.valor}</td>
-                <td>${m?.originalDestino - m?.valor}</td>
-            </tr>
-
         </g:each>
         </tbody>
         <tfoot>
@@ -158,10 +127,12 @@
             <th></th>
             <th></th>
             <th>TOTAL</th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th><g:formatNumber number="${totalInicial}" maxFractionDigits="2" minFractionDigits="2"/></th>
-            <th></th>
-            <th></th>
             <th><g:formatNumber number="${totalFinal}" maxFractionDigits="2" minFractionDigits="2"/></th>
+            <th></th>
         </tr>
         </tfoot>
     </table>

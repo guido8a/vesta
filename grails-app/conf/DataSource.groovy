@@ -19,7 +19,7 @@ environments {
 //            url = "jdbc:postgresql://10.0.0.2:5432/vesta"
 //            url = "jdbc:postgresql://10.0.0.2:5432/vesta_corr1"  // desarrollo GP reformas y ajustes
 //            url = "jdbc:postgresql://10.0.0.2:5432/vesta_prdc"
-            url = "jdbc:postgresql://10.0.0.2:5432/vesta_prba"  //BD de yachay: vesta2016
+            url = "jdbc:postgresql://10.0.0.10:5432/vesta_prba"  //BD de yachay: vesta2016
             username = "postgres"
             password = "postgres"
         }

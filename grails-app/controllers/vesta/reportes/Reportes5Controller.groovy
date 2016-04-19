@@ -654,20 +654,21 @@ class Reportes5Controller {
     }
 
     def reporteReformasPdf () {
+        println "reporteReformasPdf params: $params"
         def fuente = Fuente.get(params.fnt.toLong())
+        def cn = dbConnectionService.getConnection()
+        def sql = "select nmro, prsp, anio, actv, vlin, incr, decr, rfrm, ajst, fcha, mdasorgn, prcl " +
+                "from reforma('1-feb-2016', '14-apr-2016', ${fuente.id}) order by proy, comp, nmro, prsp, mdas__id"
+
         def totalInicial = 0
         def totalFinal = 0
 
-        def modificacion = ModificacionAsignacion.withCriteria {
-            desde {
-                eq("fuente", fuente)
-            }
-        }
+        def modificacion = cn.rows(sql.toString())
 
         modificacion.each{mod->
 
-            totalInicial += (mod?.originalDestino + mod?.originalOrigen)
-            totalFinal += ((mod?.originalOrigen + mod.valor) + (mod?.originalDestino - mod?.valor))
+            totalInicial += (mod?.incr)
+            totalFinal += (mod?.decr)
 
         }
 
