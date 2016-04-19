@@ -666,7 +666,7 @@ class Reportes5Controller {
 //                "from reforma('1-feb-2016', '14-apr-2016', ${fuente.id}) order by proy, comp, nmro, prsp, mdas__id"
 
         def sql = "select nmro, prsp, anio, actv, vlin, incr, decr, rfrm, ajst, fcha, mdasorgn, prcl " +
-                "from reforma('${fechaInicio.format("dd-MM-yyyy")}', '${fechaFin.format("dd-MM-yyyy")}', ${fuente.id}) order by proy, comp, nmro, prsp, mdas__id"
+                "from reforma('${fechaInicio.format("yyyy-MM-dd")}', '${fechaFin.format("yyyy-MM-dd")}', ${fuente.id}) order by proy, comp, nmro, prsp, mdas__id"
 
 
         def totalInicial = 0
