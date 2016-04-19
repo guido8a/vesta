@@ -171,7 +171,18 @@
                         callback  : function () {
                             var fnt = $("#fuente").val();
                             var url = urlPdf + "?fnt=" + fnt + "Wini=" + $("#fchaInicio").val() + "Wfin=" + $("#fchaFin").val();
-                            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "Wfilename=" + pdfFileName;
+                            if(!$("#fchaInicio").val() || !$("#fchaFin").val()){
+                                bootbox.alert("Ingrese las fechas para realizar la búsqueda!");
+                                return false;
+                            }else{
+                                if($("#fchaInicio").val() > $("#fchaFin").val()){
+                                    bootbox.alert("La fecha de inicio debe ser menor a la fecha de fin!");
+
+                                }else{
+                                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "Wfilename=" + pdfFileName;
+                                }
+
+                            }
                         } //callback
                     };
                 }

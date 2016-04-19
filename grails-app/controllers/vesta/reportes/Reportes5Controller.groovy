@@ -656,9 +656,18 @@ class Reportes5Controller {
     def reporteReformasPdf () {
         println "reporteReformasPdf params: $params"
         def fuente = Fuente.get(params.fnt.toLong())
+
+        def fechaInicio = new Date().parse("dd-MM-yyyy",params?.ini)
+        def fechaFin = new Date().parse("dd-MM-yyyy",params?.fin)
+
+
         def cn = dbConnectionService.getConnection()
+//        def sql = "select nmro, prsp, anio, actv, vlin, incr, decr, rfrm, ajst, fcha, mdasorgn, prcl " +
+//                "from reforma('1-feb-2016', '14-apr-2016', ${fuente.id}) order by proy, comp, nmro, prsp, mdas__id"
+
         def sql = "select nmro, prsp, anio, actv, vlin, incr, decr, rfrm, ajst, fcha, mdasorgn, prcl " +
-                "from reforma('1-feb-2016', '14-apr-2016', ${fuente.id}) order by proy, comp, nmro, prsp, mdas__id"
+                "from reforma('${fechaInicio.format("dd-MM-yyyy")}', '${fechaFin.format("dd-MM-yyyy")}', ${fuente.id}) order by proy, comp, nmro, prsp, mdas__id"
+
 
         def totalInicial = 0
         def totalFinal = 0

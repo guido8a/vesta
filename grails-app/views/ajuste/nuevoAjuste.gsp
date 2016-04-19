@@ -120,9 +120,12 @@
     <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px;">
         <thead>
         <tr>
-            <th style="width:15%;">Proyecto</th>
+
+            <th style="width:4%;">Año</th>
+            <th style="width:4%;">Fuente</th>
+            <th style="width:13%;">Proyecto</th>
             <th style="width:12%;">Componente</th>
-            <th style="width:22%;">Actividad</th>
+            <th style="width:15%;">Actividad</th>
             <th style="width:6%;">Partida</th>
             <th style="width:8%;">Responsable</th>
             <th style="width:8%;">Valor Inicial</th>
@@ -153,9 +156,11 @@
 
                 <g:if test="${det?.tipoReforma?.codigo == 'O'}">
                     <tr class="info" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.id}" data-val="${det?.valor}">
-                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:4%>${det?.anio}</td>
+                        <td style=width:4%>${det?.fuente?.codigo}</td>
+                        <td style=width:13%>${det?.componente?.proyecto?.nombre}</td>
                         <td style=width:12%>${det?.componente?.objeto}</td>
-                        <td style=width:22%>${det?.asignacionOrigen?.marcoLogico?.numero} - ${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                        <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.numero} - ${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
                         <td style='width:6%' class='text-center'>${det?.asignacionOrigen?.presupuesto?.numero}</td>
                         <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
                         <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorOrigenInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -172,10 +177,11 @@
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'E'}">
                     <tr class="success" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
-
-                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:4%>${det?.anio}</td>
+                        <td style=width:4%>${det?.fuente?.codigo}</td>
+                        <td style=width:13%>${det?.componente?.proyecto?.nombre}</td>
                         <td style=width:12%>${det?.componente?.objeto}</td>
-                        <td style=width:22%>${det?.asignacionOrigen?.marcoLogico?.numero} - ${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
+                        <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.numero} - ${det?.asignacionOrigen?.marcoLogico?.objeto}</td>
                         <g:if test="${det?.tipoReforma?.codigo == 'P'}">
                             <td style='width:6%' class='text-center'>${det?.presupuesto?.numero}</td>
                         </g:if>
@@ -197,9 +203,11 @@
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'P'}">
                     <tr class="rowC" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
-                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:4%>${det?.anio}</td>
+                        <td style=width:4%>${det?.fuente?.codigo}</td>
+                        <td style=width:13%>${det?.componente?.proyecto?.nombre}</td>
                         <td style=width:12%>${det?.componente?.marcoLogico?.objeto}</td>
-                        <td style=width:22%>${det?.componente?.numero} - ${det?.componente?.objeto}</td>
+                        <td style=width:15%>${det?.componente?.numero} - ${det?.componente?.objeto}</td>
                         <td style='width:6%' class='text-center'>${det?.presupuesto?.numero}</td>
                         <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
                         <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
@@ -216,9 +224,11 @@
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'A'}" >
                     <tr class="rowD" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
-                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:4%>${det?.anio}</td>
+                        <td style=width:4%>${det?.fuente?.codigo}</td>
+                        <td style=width:13%>${det?.componente?.proyecto?.nombre}</td>
                         <td style=width:12%>${det?.componente?.objeto}</td>
-                        <td style=width:22%>${det?.descripcionNuevaActividad}</td>
+                        <td style=width:15%>${det?.descripcionNuevaActividad}</td>
                         <td style='width:6%' class='text-center'>${det?.presupuesto?.numero}</td>
                         <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
                         <td style='width:8%' class='text-center'>${' --- '}</td>
@@ -235,9 +245,11 @@
                 </g:if>
                 <g:if test="${det?.tipoReforma?.codigo == 'N'}">
                     <tr class="rowE" data-id="${det?.id}" id="detr" data-cod="${det?.tipoReforma?.codigo}" data-par="${det?.asignacionOrigen?.presupuesto?.id}">
-                        <td style=width:15%>${det?.componente?.proyecto?.nombre}</td>
+                        <td style=width:4%>${det?.anio}</td>
+                        <td style=width:4%>${det?.fuente?.codigo}</td>
+                        <td style=width:13%>${det?.componente?.proyecto?.nombre}</td>
                         <td style=width:12%>${det?.componente?.marcoLogico?.objeto}</td>
-                        <td style=width:22%>${det?.asignacionOrigen?.marcoLogico?.numero} - ${det?.componente?.objeto}</td>
+                        <td style=width:15%>${det?.asignacionOrigen?.marcoLogico?.numero} - ${det?.componente?.objeto}</td>
                         <td style='width:6%' class='text-center'>${det?.presupuesto?.numero}</td>
                         <td style='width:8%' class='text-center'>${det?.responsable?.codigo}</td>
                         <td style='width:8%' class='text-right'><g:formatNumber number="${det?.valorDestinoInicial}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></td>
