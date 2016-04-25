@@ -48,7 +48,8 @@
                 <table class="table table-hover table-condensed table-hover table-bordered">
                     <thead>
                     <tr>
-                        <th style="width: 5%">Año</th>
+                        <th style="width: 4%">Año</th>
+                        <th style="width: 4%">Fuente</th>
                         <th style="width: 15%">Proyecto</th>
                         <th style="width: 12%">Componente</th>
                         <th style="width: 25%">Actividad</th>
@@ -64,7 +65,8 @@
                     <g:each in="${detallesReforma}" var="detallesNuevos">
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'O' && detallesNuevos?.solicitado != 'R'}">
                             <tr>
-                                <td style="width: 5%">${detallesNuevos?.anio}</td>
+                                <td style="width: 4%">${detallesNuevos?.anio}</td>
+                                <td style="width:4%">${detallesNuevos?.fuente?.codigo}</td>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style="width: 12%">${detallesNuevos?.componente?.objeto}</td>
                                 <td style="width: 25%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.asignacionOrigen?.marcoLogico?.objeto}</td>
@@ -82,7 +84,8 @@
                         </g:if>
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'E' || detallesNuevos?.tipoReforma?.codigo == 'P' }">
                             <tr>
-                                <td style="width: 5%">${detallesNuevos?.anio}</td>
+                                <td style="width: 4%">${detallesNuevos?.anio}</td>
+                                <td style="width:4%">${detallesNuevos?.fuente?.codigo}</td>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'P'}">
                                     <td style="width: 12%">${detallesNuevos?.componente?.marcoLogico?.objeto}</td>
@@ -120,7 +123,8 @@
                                 <g:else>
                                     <g:set var="nuevaActvStr" value="S/N - "/>
                                 </g:else>
-                                <td style="width: 5%">${detallesNuevos?.anio}</td>
+                                <td style="width: 4%">${detallesNuevos?.anio}</td>
+                                <td style="width:4%">${detallesNuevos?.fuente?.codigo}</td>
                                 <td style='width:15%'>${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style='width:12%'>${detallesNuevos?.componente?.objeto}</td>
                                 %{--<td style='width:25%'>${vesta.proyectos.MarcoLogico.findByObjeto(detallesNuevos?.descripcionNuevaActividad)?.numero} - ${detallesNuevos?.descripcionNuevaActividad}</td>--}%
@@ -139,7 +143,8 @@
                         </g:if>
                         <g:if test="${detallesNuevos?.tipoReforma?.codigo == 'N'}">
                             <tr>
-                                <td style="width: 5%">${detallesNuevos?.anio}</td>
+                                <td style="width: 4%">${detallesNuevos?.anio}</td>
+                                <td style="width:4%">${detallesNuevos?.fuente?.codigo}</td>
                                 <td style="width: 15%">${detallesNuevos?.componente?.proyecto?.nombre}</td>
                                 <td style="width: 12%">${detallesNuevos?.componente?.marcoLogico?.objeto}</td>
                                 <td style="width: 25%">${detallesNuevos?.asignacionOrigen?.marcoLogico?.numero} - ${detallesNuevos?.componente?.objeto}</td>
@@ -158,7 +163,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th colspan="6" class="formato" style="text-align: center">TOTAL: </th>
+                        <th colspan="7" class="formato" style="text-align: center">TOTAL: </th>
                         <th style="width: 8%; text-align: right" class="formato"><g:formatNumber number="${totalOrigen}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
                         <th style="width: 9%; text-align: right" class="formato"><g:formatNumber number="${disminucion}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
                         <th style="width: 9%; text-align: right" class="formato"><g:formatNumber number="${incremento}" maxFractionDigits="2" minFractionDigits="2" format="##,###"/></th>
