@@ -662,6 +662,7 @@ class Reportes5Controller {
 
 
         def cn = dbConnectionService.getConnection()
+
 //        def sql = "select nmro, prsp, anio, actv, vlin, incr, decr, rfrm, ajst, fcha, mdasorgn, prcl " +
 //                "from reforma('1-feb-2016', '14-apr-2016', ${fuente.id}) order by proy, comp, nmro, prsp, mdas__id"
 
