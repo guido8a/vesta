@@ -85,13 +85,13 @@
                 PARTIDA
             </th>
             <th class="text-center">
-                VALOR INICIAL
-            </th>
-            <th class="text-center">
                 REF.
             </th>
             <th class="text-center">
                 AJS.
+            </th>
+            <th class="text-center">
+                VALOR INICIAL
             </th>
             <th class="text-center">
                 INCREMENTO
@@ -112,9 +112,9 @@
                 <td>${m?.nmro}</td>
                 <td>${m?.actv}</td>
                 <td>${m?.prsp}</td>
-                <td>${m?.vlin}</td>
                 <td>${m?.rfrm}</td>
                 <td>${m?.ajst}</td>
+                <td>${m?.vlin}</td>
                 <td>${m?.incr}</td>
                 <td>${m?.decr}</td>
                 <td>${m?.prcl}</td>
