@@ -791,7 +791,7 @@ class AjusteCorrienteController {
                 "where mrlg__id is null and anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
                 "order by anioanio".toString()).anio__id
 
-        def anios = Anio.findAllByIdInList(anios__id)
+        def anios = Anio.findAllByIdInList(anios__id, [sort: 'anio'])
 
         def firmas = firmasService.listaFirmasCorrientes()
 

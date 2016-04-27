@@ -141,7 +141,6 @@ class PoaCorrienteController extends Shield {
 
     def administrar () {
 
-
         def cn = dbConnectionService.getConnection()
         def actual
         if (params.anio) {
@@ -164,14 +163,9 @@ class PoaCorrienteController extends Shield {
             println e
         }
 
-        def anios = []
-        if(anios__id) {
-            anios = Anio.findAllByIdInList(anios__id)
-        }
-
+        def anios = Anio.findAllByIdInList(anios__id, [sort: 'anio'])
 
         return [anios: anios, actual: actual]
-
     }
 
     def cargarObjetivos_ajax () {

@@ -2758,10 +2758,7 @@ class ReformaController extends Shield {
             println e
         }
 
-        def anios = []
-        if(anios__id) {
-            anios = Anio.findAllByIdInList(anios__id)
-        }
+        def anios = Anio.findAllByIdInList(anios__id, [sort: 'anio'])
 
 //        println "anios: $anios"
 
@@ -3340,10 +3337,7 @@ class ReformaController extends Shield {
             println e
         }
 
-        def anios = []
-        if(anios__id) {
-            anios = Anio.findAllByIdInList(anios__id)
-        }
+        def anios = Anio.findAllByIdInList(anios__id, [sort: 'anio'])
 
         def detalle = null
 
