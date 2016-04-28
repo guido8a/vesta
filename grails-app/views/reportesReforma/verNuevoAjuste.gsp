@@ -187,7 +187,12 @@
         </div>
 
         <div class="fright">
-            <strong>FECHA:</strong> ${reforma.fecha?.format("dd-MM-yyyy")}
+            <g:if test="${reforma?.firma1?.id > reforma?.firma2?.id }">
+                <strong>FECHA:</strong> ${reforma.firma1?.fecha?.format("dd-MM-yyyy")}
+            </g:if>
+            <g:else>
+                <strong>FECHA:</strong> ${reforma.firma2?.fecha?.format("dd-MM-yyyy")}
+            </g:else>
         </div>
 
         <div style="margin-top: 10px;">
