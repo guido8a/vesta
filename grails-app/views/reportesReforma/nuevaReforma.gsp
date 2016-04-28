@@ -171,7 +171,7 @@
         </div>
 
         <div class="fright">
-            <strong>FECHA:</strong> ${reforma.fecha?.format("dd-MM-yyyy")}
+            <strong>FECHA:</strong> ${reforma?.firmaSolicitud?.fecha?.format("dd-MM-yyyy")}
         </div>
 
         <div style="margin-top: 10px;">
