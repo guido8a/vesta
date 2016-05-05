@@ -167,7 +167,7 @@ class FirmasService {
         def juridica = UnidadEjecutora.findByCodigo('GJ')
         def gerencias = UnidadEjecutora.findAllByPadreAndNombreIlike(tecnica, 'gerenc%', [sort: 'nombre'])
         def direcciones = UnidadEjecutora.findAllByPadreAndNombreIlike(general, 'direcc%', [sort: 'nombre'])
-        println "gerencias: ${gerencias.codigo}\n direccines: ${direcciones.codigo}"
+//        println "gerencias: ${gerencias.codigo}\n direccines: ${direcciones.codigo}"
         resultado = gerencias + direcciones + administrativaFinan + juridica + planificacion + general
 //        println "requirentes: $requirentes"
 
@@ -201,7 +201,7 @@ class FirmasService {
 
     /** busca unej dentro de la generencia **/
     def unidadHijo(gr) {
-        println "busca hijos de ${gr.codigo}"
+//        println "busca hijos de ${gr.codigo}"
         def unej = UnidadEjecutora.findAllByPadre(gr)
         def hijos = UnidadEjecutora.countByPadre(unej)
         if(hijos > 0) {

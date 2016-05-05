@@ -156,11 +156,11 @@ class ReportesController {
      * Acción
      */
     def certificacion = {
-        println "certificacion params " + params
+        println "certiificacion imprime aval " + params
         def solicitud = SolicitudAval.get(params.id)
         def aval = solicitud?.aval
         def unidaAutonoma = firmasService.requirentes(solicitud.unidad)
-//        println "estado" + aval.estado.codigo
+//        println "aval " + aval
         def anio = Anio.findByAnio(new Date().format("yyyy"))
 
         def mes

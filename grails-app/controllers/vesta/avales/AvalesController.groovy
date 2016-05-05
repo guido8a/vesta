@@ -222,6 +222,7 @@ class AvalesController extends vesta.seguridad.Shield {
         def anio = Anio.get(params.anio)
 //        def comps = proyectosService.getComponentesUnidadProyecto(UnidadEjecutora.get(session.unidad.id), anio, proyecto, session.perfil.codigo.toString())
         def comps = UnidadEjecutora.get(session.unidad.id).getComponentesUnidadProyecto(anio, proyecto, session.perfil.codigo.toString())
+//        println "comps: $comps"
         return [comps: comps]
     }
 

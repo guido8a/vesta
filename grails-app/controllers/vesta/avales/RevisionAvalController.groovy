@@ -295,9 +295,9 @@ class RevisionAvalController extends Shield {
      * @param numero
      */
     def historial = {
-//        println "historial " + params
-        params.requirente = params.requirente?:123
-
+        println "historial solicitudes " + params
+//        params.requirente = params.requirente?:123
+//
         def unej = firmasService.gerencias(UnidadEjecutora.get(params.requirente))
 //        println "retorna: ${unej.codigo}"
         def anio = Anio.get(params.anio).anio
@@ -325,13 +325,20 @@ class RevisionAvalController extends Shield {
 //        }
 //        unidades = proyectosService.getUnidadesUnidad(UnidadEjecutora.get(session.unidad.id), perfil)
 
+        def unidad
+
         if(params.requirente) {
+//            println "si hay params.requirente: ${params.requirente}"
+            unidad = UnidadEjecutora.get(params.requirente)
 //            unidades = [UnidadEjecutora.get(params.requirente)]
-            unidades = firmasService.gerencias(UnidadEjecutora.get(params.requirente))
         } else {
 //            unidades = UnidadEjecutora.get(session.unidad.id).getUnidadesPorPerfil(perfil)
-            unidades = firmasService.gerencias(session.unidad)
+            unidad = UnidadEjecutora.get(session.unidad.id)
+//            println "no hay params.requirente, unidad: ${unidad}"
         }
+        unidades = firmasService.gerencias(unidad)
+
+//        println "sesion: ${session.unidad} unidad: $unidad, unidades: $unidades"
 
         if (anio && anio != "") {
             fechaInicio = new Date().parse("dd-MM-yyyy hh:mm:ss", "01-01-" + anio + " 00:01:01")
