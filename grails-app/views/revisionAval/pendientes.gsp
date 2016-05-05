@@ -238,6 +238,7 @@
                     },
                     success : function (msg) {
                         $("#detalle").html(msg)
+                        closeLoader();
                     }
                 });
             }
@@ -261,6 +262,7 @@
                 });
 
                 $("#buscar").click(function () {
+                    openLoader("Cargando solicitudes...");
                     cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirente").val());
                 });
                 $(".negar").click(function () {

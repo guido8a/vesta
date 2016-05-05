@@ -39,9 +39,9 @@
             </form>
         </div>
 
-        <div id="detalle" style="width: 100%;height: 500px;overflow: auto"></div>
+        <div id="detalle" style="width: 100%;height: 500px;"></div>
 
-        <script>
+        <script type="text/javascript">
             function cargarHistorial(anio, numero, proceso, requirente) {
 
                 $.ajax({
@@ -54,7 +54,7 @@
                     },
                     success : function (msg) {
                         $("#detalle").html(msg)
-
+                        closeLoader();
                     }
                 });
 
@@ -72,13 +72,14 @@
                     },
                     success : function (msg) {
                         $("#detalle").html(msg)
+                        closeLoader();
 
                     }
                 });
 
             }
             $("#buscar").button().click(function () {
-//                cargarHistorial($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirente").val())
+                openLoader("Cargando avales..");
                 cargarHistorialSort($("#anio").val(), $("#numero").val(), $("#descProceso").val(), $("#requirenteId").val())
             })
         </script>

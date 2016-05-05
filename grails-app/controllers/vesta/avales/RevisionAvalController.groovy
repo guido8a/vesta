@@ -114,7 +114,7 @@ class RevisionAvalController extends Shield {
         }
 
         unidades = unidades.sort{ it.nombre }
-        println "listaAvales unidades: $unidades"
+//        println "listaAvales unidades: $unidades"
 
         return [actual: actual, unidades: unidades]
     }
@@ -154,7 +154,7 @@ class RevisionAvalController extends Shield {
      * @param order
      */
     def historialAvales = {
-        println "historial aval " + params
+//        println "historial aval " + params
 
         def now = new Date()
         def anio = Anio.get(params.anio).anio
@@ -295,11 +295,11 @@ class RevisionAvalController extends Shield {
      * @param numero
      */
     def historial = {
-        println "historial " + params
+//        println "historial " + params
         params.requirente = params.requirente?:123
 
         def unej = firmasService.gerencias(UnidadEjecutora.get(params.requirente))
-        println "retorna: ${unej.codigo}"
+//        println "retorna: ${unej.codigo}"
         def anio = Anio.get(params.anio).anio
         def numero = params.numero ? params.numero.toInteger() : ""
         def proc = params.proceso
@@ -1134,7 +1134,7 @@ class RevisionAvalController extends Shield {
      * @params los parámetros enviados por el submit del formulario
      */
     def guardarLiberacion = {
-        println "liberacion " + params
+//        println "liberacion " + params
 
         if (params.monto) {
             params.monto = params.monto.replaceAll("\\.", "")
@@ -1233,7 +1233,7 @@ class RevisionAvalController extends Shield {
                     aval.certificacion = params.certificacion
                     aval.fechaLiberacion = new Date()
                     aval.save(flush: true)
-                    println "... actualiza datos de aval liberado: ${aval.id}"
+//                    println "... actualiza datos de aval liberado: ${aval.id}"
 //                    flash.message = "Aval " + aval.fechaAprobacion.format("yyyy") + "-GP No." + aval.numeroAval + " Liberado"
 //                    redirect(action: 'listaAvales', controller: 'revisionAval')
                     render "SUCCESS*Aval ${aval.id} liberado."

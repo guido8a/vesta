@@ -64,6 +64,11 @@
 
         }
 
+        .tbl3 {
+            border : solid 1px #ff1e19;
+            border-collapse : collapse;
+        }
+
 
         </style>
 
@@ -74,7 +79,32 @@
             <rep:headerFooter title="Aval de POA" unidad="${sol.unidad}"
                               numero="${elm.imprimeNumero(aval: aval?.id)}" anio="${anio}" estilo="right"/>
 
+
+
+
             <div style="text-align: justify;float: left;font-size: 8pt;">
+
+                <g:if test="${aval?.estado?.codigo == 'E05'}">
+                <div style="margin-left: 400px; margin-top: 20px;">
+                    <table width="100%" class="tbl3">
+                        <tbody>
+                        <tr style="border-bottom: transparent">
+                            <td>Aval de POA liberado mediante solicitud de</td>
+                        </tr>
+                        <tr style="border-bottom: hidden">
+                            <td>${aval?.contrato}</td>
+                        </tr>
+                        <tr>
+                            <td>de ${aval?.fechaLiberacion?.format("dd-MM-yyyy")} por USD. ${vesta.avales.ProcesoAsignacion.findAllByProceso(aval?.proceso).liberado.sum()}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </g:if>
+
+
+
+
                 <p>
                     %{--Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${sol.fecha.format("dd-MM-yyyy")},--}%
                     Con solicitud de aval de POA ${anio}-${ua.codigo}  Nro. ${elm.imprimeNumero(solicitud: sol.id)}, de fecha ${sol?.firma?.fecha?.format("dd-MM-yyyy")},
