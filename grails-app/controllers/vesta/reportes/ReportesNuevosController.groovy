@@ -608,21 +608,209 @@ class ReportesNuevosController {
 
     }
 
+
+    //old
+//    def reporteAvalesExcel() {
+//
+//        def cn = dbConnectionService.getConnection()
+//
+//
+//        //nuevo query
+//
+//        def tx =  "select slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, sum(poasmnto), fnte__id " +
+//        "from prco, slav, unej, aval, poas, asgn " +
+//        "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
+//        "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
+//        "asgn.asgn__id = poas.asgn__id and slav.edav__id <> 90 " +
+//        "group by slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, avalnmro, avalfcap, fnte__id " +
+//        "order by cast(avalnmro as integer), prconmbr, fnte__id;"
+//
+//
+//        def iniRow = 0
+//        def iniCol = 1
+//
+//        def curRow = iniRow
+//        def curCol = iniCol
+//
+//        try {
+//
+//            Workbook wb = new Workbook()
+//            Sheet sheet = wb.createSheet("Reporte de Avales")
+//
+//            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+//            CellStyle styleHeader = estilos.styleHeader
+//            CellStyle styleTabla = estilos.styleTabla
+//            CellStyle styleFooter = estilos.styleFooter
+//            CellStyle styleFooterCenter = estilos.styleFooterCenter
+//            CellStyle styleNumber = estilos.styleNumber
+//            CellStyle styleDate = estilos.styleDate
+//
+//
+//            def titulo = "REPORTE DE AVALES"
+//            def subtitulo = ""
+//            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
+//
+//            Row rowHeader = sheet.createRow((short) curRow)
+//            curRow++
+//            Cell cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("N° SOLICITUD")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 3000)
+//            curCol++
+//
+//            println("pp")
+//
+//
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("N° AVAL")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 2000)
+//            curCol++
+//
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("FUENTE")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 2000)
+//            curCol++
+//
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("FECHA EMISIÓN AVAL")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 4500)
+//            curCol++
+//
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("NOMBRE DEL PROCESO")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 20000)
+//            curCol++
+//
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("VALOR")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 4000)
+//            curCol++
+//
+//            cellHeader = rowHeader.createCell((short) curCol)
+//            cellHeader.setCellValue("RESPONSABLE")
+//            cellHeader.setCellStyle(styleHeader)
+//            sheet.setColumnWidth(curCol, 10000)
+//            curCol++
+//
+//            def totalCols = curCol
+//            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols, false)
+//            def totalPriorizado = 0
+//
+//            cn.eachRow(tx.toString()) { d ->
+//
+//                curCol = iniCol
+//                Row tableRow = sheet.createRow((short) curRow)
+//                Cell cellTabla = tableRow.createCell((short) curCol)
+//
+//                cellTabla = tableRow.createCell((short) curCol)
+//                cellTabla.setCellValue(d.slavnmro)
+//                cellTabla.setCellStyle(styleTabla)
+//                curCol++
+//                cellTabla = tableRow.createCell((short) curCol)
+//                cellTabla.setCellValue(d.avalnmro)
+//                cellTabla.setCellStyle(styleTabla)
+//                curCol++
+//                cellTabla = tableRow.createCell((short) curCol)
+//                cellTabla.setCellValue(Fuente.get(d.fnte__id).codigo)
+//                cellTabla.setCellStyle(styleTabla)
+//                curCol++
+//                cellTabla = tableRow.createCell((short) curCol)
+//                cellTabla.setCellValue(d.avalfcap)
+//                cellTabla.setCellStyle(styleDate)
+//                curCol++
+//                cellTabla = tableRow.createCell((short) curCol)
+//                cellTabla.setCellValue(d.prconmbr)
+//                cellTabla.setCellStyle(styleTabla)
+//                curCol++
+//                cellTabla = tableRow.createCell((short) curCol)
+//                cellTabla.setCellValue(d.sum)
+//                cellTabla.setCellStyle(styleNumber)
+//                totalPriorizado += d.sum
+//                curCol++
+//                cellTabla = tableRow.createCell((short) curCol)
+////                cellTabla.setCellValue(d.unejnmbr)
+//                cellTabla.setCellValue(firmasService.requirentes(UnidadEjecutora.get(d.unej__id)).toString())
+//                cellTabla.setCellStyle(styleTabla)
+//                curCol++
+//                curRow++
+//
+//            }
+//            cn.close()
+//
+//            curCol = iniCol
+//            Row totalRow = sheet.createRow((short) curRow)
+//            Cell cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("TOTAL")
+//            cellFooter.setCellStyle(styleFooterCenter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("")
+//            cellFooter.setCellStyle(styleFooterCenter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("")
+//            cellFooter.setCellStyle(styleFooterCenter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("")
+//            cellFooter.setCellStyle(styleFooterCenter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue(totalPriorizado)
+//            cellFooter.setCellStyle(styleFooter)
+//
+//            cellFooter = totalRow.createCell((short) curCol)
+//            curCol++
+//            cellFooter.setCellValue("")
+//            cellFooter.setCellStyle(styleFooter)
+//
+//            sheet.addMergedRegion(new CellRangeAddress(
+//                    curRow, //first row (0-based)
+//                    curRow, //last row  (0-based)
+//                    iniCol, //first column (0-based)
+//                    iniCol + 3 //last column  (0-based)
+//            ))
+//
+//            def output = response.getOutputStream()
+//            def header = "attachment; filename=" + "reporte_avales.xlsx"
+//            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+//            response.setHeader("Content-Disposition", header)
+//            wb.write(output)
+//            output.flush()
+//
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//
+//    }
+
+
+
     def reporteAvalesExcel() {
+
+//        println("params " + params)
+
+        def fechaInicio = new Date().parse("dd-MM-yyyy",params?.ini)
+        def fechaFin = new Date().parse("dd-MM-yyyy",params?.fin)
+        def actual = new Date().format("yyyy")
+        def siguiente = new Date().format("yyyy" + 1)
 
         def cn = dbConnectionService.getConnection()
 
+        def tx =  "select slavnmro, avalnmro, fntedscr, avalfcha, prconmbr, avalmnto, " +
+                "vloractl, vlorsgnt, edavdscr, lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', '${fechaFin.format("yyyy-MM-dd")}', ${params.fuente});"
 
-        //nuevo query
-
-        def tx =  "select slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, sum(poasmnto), fnte__id " +
-        "from prco, slav, unej, aval, poas, asgn " +
-        "where slav.prco__id = prco.prco__id and unej.unej__Id = slav.unej__id and " +
-        "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
-        "asgn.asgn__id = poas.asgn__id and slav.edav__id <> 90 " +
-        "group by slavnmro, avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, avalnmro, avalfcap, fnte__id " +
-        "order by cast(avalnmro as integer), prconmbr, fnte__id;"
-
+//        println("txt " + tx)
 
         def iniRow = 0
         def iniCol = 1
@@ -656,9 +844,6 @@ class ReportesNuevosController {
             sheet.setColumnWidth(curCol, 3000)
             curCol++
 
-            println("pp")
-
-
             cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("N° AVAL")
             cellHeader.setCellStyle(styleHeader)
@@ -690,6 +875,36 @@ class ReportesNuevosController {
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("${actual}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("${actual.toInteger() + 1}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ESTADO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("LIBERADO ${actual}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("LIBERADO ${actual.toInteger() + 1}")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("RESPONSABLE")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 10000)
@@ -697,7 +912,6 @@ class ReportesNuevosController {
 
             def totalCols = curCol
             ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols, false)
-            def totalPriorizado = 0
 
             cn.eachRow(tx.toString()) { d ->
 
@@ -714,11 +928,11 @@ class ReportesNuevosController {
                 cellTabla.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(Fuente.get(d.fnte__id).codigo)
+                cellTabla.setCellValue(d.fntedscr)
                 cellTabla.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(d.avalfcap)
+                cellTabla.setCellValue(d.avalfcha.format("dd-MM-yyyy"))
                 cellTabla.setCellStyle(styleDate)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
@@ -726,13 +940,31 @@ class ReportesNuevosController {
                 cellTabla.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(d.sum)
+                cellTabla.setCellValue(d.avalmnto)
                 cellTabla.setCellStyle(styleNumber)
-                totalPriorizado += d.sum
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-//                cellTabla.setCellValue(d.unejnmbr)
-                cellTabla.setCellValue(firmasService.requirentes(UnidadEjecutora.get(d.unej__id)).toString())
+                cellTabla.setCellValue(d.vloractl)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d.vlorsgnt)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d.edavdscr)
+                cellTabla.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d.lbrdactl)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d.lbrdsgnt)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d.unejnmbr)
                 cellTabla.setCellStyle(styleTabla)
                 curCol++
                 curRow++
@@ -740,44 +972,6 @@ class ReportesNuevosController {
             }
             cn.close()
 
-            curCol = iniCol
-            Row totalRow = sheet.createRow((short) curRow)
-            Cell cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue("TOTAL")
-            cellFooter.setCellStyle(styleFooterCenter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooterCenter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooterCenter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooterCenter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue(totalPriorizado)
-            cellFooter.setCellStyle(styleFooter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooter)
-
-            sheet.addMergedRegion(new CellRangeAddress(
-                    curRow, //first row (0-based)
-                    curRow, //last row  (0-based)
-                    iniCol, //first column (0-based)
-                    iniCol + 3 //last column  (0-based)
-            ))
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "reporte_avales.xlsx"
@@ -791,6 +985,12 @@ class ReportesNuevosController {
         }
 
     }
+
+
+
+
+
+
 
     def reporteReformasExcel() {
 
@@ -1025,31 +1225,52 @@ class ReportesNuevosController {
 
     }
 
+//    def reportePdfAvales() {
+//
+//        def total = 0
+//
+//        def cn = dbConnectionService.getConnection()
+//        def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, sum(poasmnto), fnte__id " +
+//                "from prco, slav, unej, aval, poas, asgn " +
+//                "where slav.prco__id = prco.prco__id and unej.unej__id = slav.unej__id and " +
+//                "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
+//                "asgn.asgn__id = poas.asgn__id and slav.edav__id <> 90 " +
+//                "group by avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, avalnmro, avalfcap, fnte__id " +
+//                "order by avalnmro, fnte__id;"
+//        println "+++sql: $tx"
+//        def res = cn.rows(tx.toString())
+//        def unidades = []
+//
+//        cn.eachRow(tx.toString()) { d ->
+//            total += d.sum
+//            unidades += firmasService.requirentes(UnidadEjecutora.get(d.unej__id))
+//        }
+//
+//        cn.close()
+//        return [cn: res, total: total, unidades: unidades]
+//
+//    }
+
+
     def reportePdfAvales() {
 
-        def total = 0
+//        println("params " + params)
+
+        def actual = new Date().format("yyyy")
 
         def cn = dbConnectionService.getConnection()
-        def tx = "select avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, sum(poasmnto), fnte__id " +
-                "from prco, slav, unej, aval, poas, asgn " +
-                "where slav.prco__id = prco.prco__id and unej.unej__id = slav.unej__id and " +
-                "aval.prco__id = prco.prco__id and poas.prco__id = prco.prco__id and " +
-                "asgn.asgn__id = poas.asgn__id and slav.edav__id <> 90 " +
-                "group by avalnmro, avalfcap, prconmbr, unejnmbr, unej.unej__id, avalnmro, avalfcap, fnte__id " +
-                "order by avalnmro, fnte__id;"
-        println "+++sql: $tx"
+        def fechaInicio = new Date().parse("dd-MM-yyyy",params?.ini)
+        def fechaFin = new Date().parse("dd-MM-yyyy",params?.fin)
+
+        def tx =  "select slavnmro, avalnmro, fntedscr, avalfcha, prconmbr, avalmnto, " +
+                "vloractl, vlorsgnt, edavdscr, lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', '${fechaFin.format("yyyy-MM-dd")}', ${params.fuente});"
+
         def res = cn.rows(tx.toString())
-        def unidades = []
-
-        cn.eachRow(tx.toString()) { d ->
-            total += d.sum
-            unidades += firmasService.requirentes(UnidadEjecutora.get(d.unej__id))
-        }
-
         cn.close()
-        return [cn: res, total: total, unidades: unidades]
+        return [cn: res, actual: actual]
 
     }
+
 
     def reporteEgresosGastosPdf() {
 

@@ -18,7 +18,7 @@
 <head>
     <title>Aval</title>
 
-    <rep:estilos orientacion="p" pagTitle="Reporte de Avales"/>
+    <rep:estilos orientacion="h" pagTitle="Reporte de Avales"/>
 
     <style type="text/css">
     .table {
@@ -86,61 +86,90 @@
 
         %{--<div class="tabla" style="margin-top: 10px">--}%
 
-    <table class="table table-bordered table-hover table-condensed table-bordered">
+        <table class="table table-bordered table-hover table-condensed table-bordered">
 
-        <thead>
-        <tr>
-                    <th style="width: 100px">
-                        N° AVAL
-                    </th>
-
-                    <th>
-                        FUENTE
-                    </th>
-
-                    <th>
-                        FECHA EMISIÓN AVAL
-                    </th>
-
-                    <th>
-                       NOMBRE DEL PROCESO
-                    </th>
-
-                    <th>
-                       VALOR
-                    </th>
-
-                    <th>
-                        RESPONSABLE
-                    </th>
-        </tr>
-        </thead>
-        <tbody>
-
-                <g:each in="${cn}" var="d" status="j">
-                    <tr>
-                        <td>${d.avalnmro}</td>
-                        <td>${vesta.parametros.poaPac.Fuente.get(d.fnte__id).codigo}</td>
-                        %{--<td>${d.avalfcap}</td>--}%
-                        <td><g:formatDate date="${d.avalfcap}" format="dd-MM-yyyy"/> </td>
-                        <td>${d.prconmbr}</td>
-                        <td><g:formatNumber number="${d.sum ?: 0}" type="currency"/></td>
-                        %{--<td>${d.unejnmbr}</td>--}%
-                        <td>${unidades[j]}</td>
-                    </tr>
-                </g:each>
-        </tbody>
-        <tfoot>
+            <thead>
             <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>TOTAL</th>
-                <th><g:formatNumber number="${total}" type="currency"/></th>
-                <th></th>
+
+                <th style="width: 100px">
+                    N° SOLICITUD
+                </th>
+
+                <th style="width: 100px">
+                    N° AVAL
+                </th>
+
+                <th>
+                    FUENTE
+                </th>
+
+                <th>
+                    FECHA EMISIÓN AVAL
+                </th>
+
+                <th>
+                    NOMBRE DEL PROCESO
+                </th>
+
+                <th>
+                    VALOR
+                </th>
+
+                <th>
+                    ${actual}
+                </th>
+
+                <th>
+                   ${actual.toInteger() + 1}
+                </th>
+
+                <th>
+                    ESTADO
+                </th>
+
+                <th>
+                    LIBERADO ${actual}
+                </th>
+
+                <th>
+                   LIBERADO ${actual.toInteger() + 1}
+                </th>
+
+                <th>
+                    RESPONSABLE
+                </th>
             </tr>
-        </tfoot>
-    </table>
+            </thead>
+            <tbody>
+
+            <g:each in="${cn}" var="d" status="j">
+                <tr>
+                    <td>${d.slavnmro}</td>
+                    <td>${d.avalnmro}</td>
+                    <td>${d.fntedscr}</td>
+                    <td><g:formatDate date="${d.avalfcha}" format="dd-MM-yyyy"/> </td>
+                    <td>${d.prconmbr}</td>
+                    <td><g:formatNumber number="${d.avalmnto}" type="currency"/></td>
+                    <td><g:formatNumber number="${d.vloractl}" type="currency"/></td>
+                    <td><g:formatNumber number="${d.vlorsgnt}" type="currency"/></td>
+                    <td>${d.edavdscr}</td>
+                    <td><g:formatNumber number="${d.lbrdactl}" type="currency"/></td>
+                    <td><g:formatNumber number="${d.lbrdsgnt}" type="currency"/></td>
+                    <td>${d.unejnmbr}</td>
+                </tr>
+            </g:each>
+            </tbody>
+            %{--<tfoot>--}%
+            %{--<tr>--}%
+                %{--<th></th>--}%
+                %{--<th></th>--}%
+                %{--<th></th>--}%
+                %{--<th>TOTAL</th>--}%
+                %{--<th><g:formatNumber number="${total}" type="currency"/></th>--}%
+                %{--<th></th>--}%
+            %{--</tr>--}%
+            %{--</tfoot>--}%
+        </table>
     </div>
 </div>
 

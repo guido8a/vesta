@@ -259,7 +259,103 @@
                 }); //dialog
             }
 
+
+
+
+            function dialogFechas(title, urlExcel, urlPdf, pdfFileName) {
+                var buttons = {};
+                if (urlPdf) {
+                    buttons.pdf = {
+                        id        : "btnPdf",
+                        label     : "<i class='fa fa-file-pdf-o'></i> Reporte Pdf",
+                        className : "btn-success",
+                        callback  : function () {
+                            var fnt = $("#fuente").val();
+                            var url = urlPdf + "?fnt=" + fnt + "Wini=" + $("#fchaInicio").val() + "Wfin=" + $("#fchaFin").val();
+                            if(!$("#fchaInicio").val() || !$("#fchaFin").val()){
+                                bootbox.alert("Ingrese las fechas para realizar la búsqueda!");
+                                return false;
+                            }else{
+                                if($("#fchaInicio").val() > $("#fchaFin").val()){
+                                    bootbox.alert("La fecha de inicio debe ser menor a la fecha de fin!");
+
+                                }else{
+                                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "Wfilename=" + pdfFileName;
+                                }
+
+                            }
+                        } //callback
+                    };
+                }
+                if (urlExcel) {
+                    buttons.excel = {
+                        id        : "btnExcel",
+                        label     : "<i class='fa fa-file-excel-o'></i> Reporte Excel",
+                        className : "btn-success",
+                        callback  : function () {
+                            var url = urlExcel + "?ini=" + $("#fchaInicio").val() + "&fin=" + $("#fchaFin").val() + "&fuente=" + $("#fuente").val();
+
+
+
+                            if(!$("#fchaInicio").val() || !$("#fchaFin").val()){
+                                bootbox.alert("Ingrese las fechas para realizar la búsqueda!");
+                                return false;
+                            }else{
+                                if($("#fchaInicio").val() > $("#fchaFin").val()){
+                                    bootbox.alert("La fecha de inicio debe ser menor a la fecha de fin!");
+
+                                }else{
+                                    location.href = url
+                                }
+
+                            }
+
+
+
+                        } //callback
+                    };
+                }
+                buttons.cancelar = {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                };
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller:'reportesNuevos', action:'fuente_y_fechas_ajax')}",
+                    data    : '',
+                    success : function (msg) {
+                        var b = bootbox.dialog({
+                            id      : "dlgAvales",
+                            title   : title ? title : "Reporte",
+                            message : msg,
+                            buttons : buttons
+                        }); //dialog
+                        setTimeout(function () {
+                            b.find(".form-control").first().focus()
+                        }, 500);
+                    } //success
+                }); //ajax
+            }
+
+
+
+
+
+
             $(function () {
+
+
+                $("#avales").click(function () {
+                    var urlExcel = "${createLink(controller: 'reportesNuevos', action: 'reporteAvalesExcel')}";
+                    var urlPdf = "${g.createLink(controller: 'reportesNuevos',action: 'reportePdfAvales')}";
+                    var pdfFileName = "";
+                    dialogFechas("Reporte de Avales", urlExcel, urlPdf, pdfFileName);
+                });
+
+
+
                 $("#egresos").click(function () {
                     var urlExcel = "${createLink(controller: 'reportesNuevos', action: 'reporteEgresosGastosExcel')}";
                     var urlPdf = "${createLink(controller: 'reportesNuevos', action: 'reporteEgresosGastosPdf')}";
@@ -267,13 +363,13 @@
                     dialogXlsPdf("Reporte de egresos", "Reporte de Egresos permanentes - grupo de gastos", urlExcel, urlPdf, pdfFileName);
                 });
 
-                $("#avales").click(function () {
-                    var urlExcel = "${createLink(controller: 'reportesNuevos', action: 'reporteAvalesExcel')}";
-                    var urlPdf = "${g.createLink(controller: 'reportesNuevos',action: 'reportePdfAvales')}";
-                    var pdfFileName = "avales.pdf";
-                    dialogXlsPdf("Reporte de Avales", "Reporte de Avales", urlExcel, urlPdf, pdfFileName);
-//                    dialogXlsPdfFuente("Reporte de Avales", urlExcel, urlPdf, pdfFileName);
-                });
+                %{--$("#avales").click(function () {--}%
+                    %{--var urlExcel = "${createLink(controller: 'reportesNuevos', action: 'reporteAvalesExcel')}";--}%
+                    %{--var urlPdf = "${g.createLink(controller: 'reportesNuevos',action: 'reportePdfAvales')}";--}%
+                    %{--var pdfFileName = "avales.pdf";--}%
+                    %{--dialogXlsPdf("Reporte de Avales", "Reporte de Avales", urlExcel, urlPdf, pdfFileName);--}%
+%{--//                    dialogXlsPdfFuente("Reporte de Avales", urlExcel, urlPdf, pdfFileName);--}%
+                %{--});--}%
 
                 $("#reformas").click(function () {
                     var urlExcel = "${createLink(controller: 'reportesNuevos', action: 'reporteReformasExcel')}";
