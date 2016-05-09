@@ -91,11 +91,11 @@
             <thead>
             <tr>
 
-                <th style="width: 100px">
+                <th style="width: 50px">
                     N° SOLICITUD
                 </th>
 
-                <th style="width: 100px">
+                <th style="width: 50px">
                     N° AVAL
                 </th>
 

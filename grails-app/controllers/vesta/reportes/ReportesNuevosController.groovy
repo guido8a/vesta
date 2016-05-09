@@ -1263,7 +1263,10 @@ class ReportesNuevosController {
         def fechaFin = new Date().parse("dd-MM-yyyy",params?.fin)
 
         def tx =  "select slavnmro, avalnmro, fntedscr, avalfcha, prconmbr, avalmnto, " +
-                "vloractl, vlorsgnt, edavdscr, lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', '${fechaFin.format("yyyy-MM-dd")}', ${params.fuente});"
+                "vloractl, vlorsgnt, edavdscr, lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', '${fechaFin.format("yyyy-MM-dd")}', ${params.fnt});"
+
+        println("tx " + tx)
+
 
         def res = cn.rows(tx.toString())
         cn.close()
