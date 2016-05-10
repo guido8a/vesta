@@ -807,8 +807,9 @@ class ReportesNuevosController {
 
         def cn = dbConnectionService.getConnection()
 
-        def tx =  "select slavnmro, avalnmro, fntedscr, avalfcha, prconmbr, avalmnto, " +
-                "vloractl, vlorsgnt, edavdscr, lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', '${fechaFin.format("yyyy-MM-dd")}', ${params.fuente});"
+        def tx =  "select slavnmro, avalnmro, fntedscr, avalfcha, prconmbr, avalmnto, vloractl, vlorsgnt, edavdscr, " +
+                "lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', " +
+                "'${fechaFin.format("yyyy-MM-dd")}', ${params.fuente}) where avalmnto > 0;"
 
 //        println("txt " + tx)
 
@@ -1262,8 +1263,9 @@ class ReportesNuevosController {
         def fechaInicio = new Date().parse("dd-MM-yyyy",params?.ini)
         def fechaFin = new Date().parse("dd-MM-yyyy",params?.fin)
 
-        def tx =  "select slavnmro, avalnmro, fntedscr, avalfcha, prconmbr, avalmnto, " +
-                "vloractl, vlorsgnt, edavdscr, lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', '${fechaFin.format("yyyy-MM-dd")}', ${params.fnt});"
+        def tx =  "select slavnmro, avalnmro, fntedscr, avalfcha, prconmbr, avalmnto, vloractl, vlorsgnt, " +
+                "edavdscr, lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', " +
+                "'${fechaFin.format("yyyy-MM-dd")}', ${params.fnt}) where avalmnto > 0;"
 
         println("tx " + tx)
 
