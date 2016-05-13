@@ -1206,21 +1206,17 @@ class RevisionAvalController extends Shield {
 
             } else {
                 def band = false
-//                def usuario = Usro.get(session.usuario.id)
                 def usuario = Persona.get(session.usuario.id)
                 def aval = Aval.get(params.id)
                 /*Todo aqui validar quien puede*/
                 band = true
                 def datos = params.datos.split("&")
-//                println "..... datos. $datos"
                 datos.each {
                     if (it != "") {
                         def data = it.split(";")
-//                        println "data " + data
                         if (data.size() == 2) {
                             def det = ProcesoAsignacion.get(data[0])
                             det.liberado = data[1].toDouble()
-//                            det.monto = params.montoAvalado.toDouble()
                             det.save(flush: true)
                         }
                     }

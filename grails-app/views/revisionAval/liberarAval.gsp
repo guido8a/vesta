@@ -16,7 +16,7 @@
         <div class="form-group keeptogether">
             <span class="grupo">
                 <label for="contrato" class="col-md-3 control-label">
-                    Contrato:
+                    Solicitado mediante:
                 </label>
                 <div class="col-md-5">
                     <g:textField class="form-control input-sm required" name="contrato" id="contrato" maxlength="50"/>
@@ -46,7 +46,7 @@
                     Documento de respaldo:
                 </label>
                 <div class="col-md-5">
-                    <input type="file"  class="form-control input-sm required" id="archivo" name="archivo" >
+                    <input type="file"  class="form-control input-sm" id="archivo" name="archivo" >
                 </div>
             </span>
             *
