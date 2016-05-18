@@ -193,8 +193,15 @@
                         className : "btn-success",
                         callback  : function () {
                             var fnt = $("#fuente").val();
-                            location.href = urlExcel + "?fnt=" + fnt;
-                            return false;
+                            var url2 = urlExcel + "?fnt=" + fnt + "&ini=" + $("#fchaInicio").val() + "&fin=" + $("#fchaFin").val();
+
+                            if(!$("#fchaInicio").val() || !$("#fchaFin").val()){
+                                bootbox.alert("Ingrese las fechas para realizar la búsqueda!");
+                                return false;
+                            }else{
+                                location.href = url2;
+                            }
+//                            return false;
                         } //callback
                     };
                 }

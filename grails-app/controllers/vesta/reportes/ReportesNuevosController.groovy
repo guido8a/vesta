@@ -995,13 +995,46 @@ class ReportesNuevosController {
 
     def reporteReformasExcel() {
 
+//        def fuente = Fuente.get(params.fnt.toLong())
+//
+//        def modificacion = ModificacionAsignacion.withCriteria {
+//            desde {
+//                eq("fuente", fuente)
+//            }
+//        }
+
+
+
+        println "reporteReformasExcel params: $params"
         def fuente = Fuente.get(params.fnt.toLong())
 
-        def modificacion = ModificacionAsignacion.withCriteria {
-            desde {
-                eq("fuente", fuente)
-            }
+        def fechaInicio = new Date().parse("dd-MM-yyyy",params?.ini)
+        def fechaFin = new Date().parse("dd-MM-yyyy",params?.fin)
+
+
+        def cn = dbConnectionService.getConnection()
+
+
+        def sql = "select nmro, prsp, anio, actv, vlin, incr, decr, rfrm, ajst, fcha, mdasorgn, prcl " +
+                "from reforma('${fechaInicio.format("yyyy-MM-dd")}', '${fechaFin.format("yyyy-MM-dd")}', ${fuente.id}) " +
+                "order by nmro, anio, prsp, mdas__id"
+
+        println "sql: $sql"
+
+        def totalInicial = 0
+        def totalFinal = 0
+
+        def modificacion = cn.rows(sql.toString())
+
+        modificacion.each{mod->
+
+            totalInicial += (mod?.incr)
+            totalFinal += (mod?.decr)
+
         }
+
+
+
 
         def iniRow = 2
         def iniCol = 1
@@ -1029,19 +1062,13 @@ class ReportesNuevosController {
             Row rowHeader = sheet.createRow((short) curRow)
             curRow++
             Cell cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("C")
+            cellHeader.setCellValue("AÑO")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 2000)
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("P")
-            cellHeader.setCellStyle(styleHeader)
-            sheet.setColumnWidth(curCol, 2000)
-            curCol++
-
-            cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("N°")
+            cellHeader.setCellValue("#")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 2000)
             curCol++
@@ -1050,6 +1077,24 @@ class ReportesNuevosController {
             cellHeader.setCellValue("ACTIVIDAD")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 20000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PARTIDA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("REF.")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("AJS.")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
@@ -1071,7 +1116,7 @@ class ReportesNuevosController {
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
-            cellHeader.setCellValue("VALOR CODIFICADO")
+            cellHeader.setCellValue("VALOR CÓDIFICADO")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 4000)
             curCol++
@@ -1079,8 +1124,6 @@ class ReportesNuevosController {
             def totalCols = curCol
             ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols, false)
 
-            def totalInicial = 0
-            def totalFinal = 0
 
 //            println("mod " + modificacion)
 
@@ -1092,62 +1135,73 @@ class ReportesNuevosController {
                 Row tableRow2 = sheet.createRow((short) curRow + 1)
                 Cell cellTabla2 = tableRow2.createCell((short) curCol)
 
-                cellTabla.setCellValue(it?.desde?.programa?.descripcion)
-                cellTabla.setCellStyle(styleTabla)
-                cellTabla2.setCellValue(it?.recibe?.programa?.descripcion)
-                cellTabla2.setCellStyle(styleTabla)
-                curCol++
-                cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it?.desde?.componente?.descripcion)
-                cellTabla.setCellStyle(styleTabla)
-                cellTabla2 = tableRow2.createCell((short) curCol)
-                cellTabla2.setCellValue(it?.recibe?.componente?.descripcion)
-                cellTabla2.setCellStyle(styleTabla)
-                curCol++
-                cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it?.desde?.marcoLogico?.numero)
-                cellTabla.setCellStyle(styleTabla)
-                cellTabla2 = tableRow2.createCell((short) curCol)
-                cellTabla2.setCellValue(it?.recibe?.marcoLogico?.numero)
-                cellTabla2.setCellStyle(styleTabla)
-                curCol++
-                cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it?.desde?.marcoLogico?.toStringCompleto())
-                cellTabla.setCellStyle(styleTabla)
-                cellTabla2 = tableRow2.createCell((short) curCol)
-                cellTabla2.setCellValue(it?.recibe?.marcoLogico?.toStringCompleto())
-                cellTabla2.setCellStyle(styleTabla)
-                curCol++
-                cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it.originalOrigen)
-                cellTabla.setCellStyle(styleTabla)
-                cellTabla2 = tableRow2.createCell((short) curCol)
-                cellTabla2.setCellValue(it.originalDestino)
-                cellTabla2.setCellStyle(styleTabla)
-                totalInicial += (it.originalOrigen + it.originalDestino)
-                curCol++
-                cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it.valor)
+                cellTabla.setCellValue(it?.anio)
                 cellTabla.setCellStyle(styleNumber)
-                cellTabla2 = tableRow2.createCell((short) curCol)
-                cellTabla2.setCellValue('')
-                cellTabla2.setCellStyle(styleTabla)
+//                cellTabla2.setCellValue(it?.recibe?.programa?.descripcion)
+//                cellTabla2.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue('')
+                cellTabla.setCellValue(it?.nmro)
                 cellTabla.setCellStyle(styleTabla)
-                cellTabla2 = tableRow2.createCell((short) curCol)
-                cellTabla2.setCellValue(it.valor)
-                cellTabla2.setCellStyle(styleNumber)
+//                cellTabla2 = tableRow2.createCell((short) curCol)
+//                cellTabla2.setCellValue(it?.recibe?.componente?.descripcion)
+//                cellTabla2.setCellStyle(styleTabla)
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
-                cellTabla.setCellValue(it.originalOrigen + it.valor)
-                cellTabla.setCellStyle(styleNumber)
-                cellTabla2 = tableRow2.createCell((short) curCol)
-                cellTabla2.setCellValue(it.originalDestino - it.valor)
-                cellTabla2.setCellStyle(styleNumber)
-                totalFinal += ((it.originalOrigen + it.valor) + (it.originalDestino - it.valor))
+                cellTabla.setCellValue(it?.actv)
+                cellTabla.setCellStyle(styleTabla)
+//                cellTabla2 = tableRow2.createCell((short) curCol)
+//                cellTabla2.setCellValue(it?.recibe?.marcoLogico?.numero)
+//                cellTabla2.setCellStyle(styleTabla)
                 curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it?.prsp)
+                cellTabla.setCellStyle(styleNumber)
+//                cellTabla2 = tableRow2.createCell((short) curCol)
+//                cellTabla2.setCellValue(it?.recibe?.marcoLogico?.toStringCompleto())
+//                cellTabla2.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it?.rfrm)
+                cellTabla.setCellStyle(styleNumber)
+//                cellTabla2 = tableRow2.createCell((short) curCol)
+//                cellTabla2.setCellValue(it.originalDestino)
+//                cellTabla2.setCellStyle(styleTabla)
+//                totalInicial += (it.originalOrigen + it.originalDestino)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it?.ajst)
+                cellTabla.setCellStyle(styleNumber)
+//                cellTabla2 = tableRow2.createCell((short) curCol)
+//                cellTabla2.setCellValue('')
+//                cellTabla2.setCellStyle(styleTabla)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it?.vlin)
+                cellTabla.setCellStyle(styleNumber)
+//                cellTabla2 = tableRow2.createCell((short) curCol)
+//                cellTabla2.setCellValue(it.valor)
+//                cellTabla2.setCellStyle(styleNumber)
+                curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it.incr)
+                cellTabla.setCellStyle(styleNumber)
+//                cellTabla2 = tableRow2.createCell((short) curCol)
+//                cellTabla2.setCellValue(it.originalDestino - it.valor)
+//                cellTabla2.setCellStyle(styleNumber)
+//                totalFinal += ((it.originalOrigen + it.valor) + (it.originalDestino - it.valor))
+                curCol++
+
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it.decr)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
+
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(it.prcl)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
+
                 curRow++
             }
 
@@ -1176,22 +1230,33 @@ class ReportesNuevosController {
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooter)
+
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
             cellFooter.setCellValue(totalInicial)
             cellFooter.setCellStyle(styleFooter)
 
             cellFooter = totalRow.createCell((short) curCol)
             curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
-            cellFooter.setCellValue("")
-            cellFooter.setCellStyle(styleFooter)
-
-            cellFooter = totalRow.createCell((short) curCol)
-            curCol++
             cellFooter.setCellValue(totalFinal)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
             cellFooter.setCellStyle(styleFooter)
 
             sheet.addMergedRegion(new CellRangeAddress(
