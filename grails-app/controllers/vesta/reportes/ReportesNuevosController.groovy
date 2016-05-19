@@ -1056,7 +1056,7 @@ class ReportesNuevosController {
 
             // Create a row and put some cells in it. Rows are 0 based.
             def titulo = "REPORTE DE REFORMAS Y AJUSTES - Desde: ${fechaInicio.format("dd-MM-yyyy")} hasta: ${fechaFin.format("dd-MM-yyy")}"
-            def subtitulo = ""
+            def subtitulo = "FUENTE: ${fuente?.descripcion}"
             curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
 
             Row rowHeader = sheet.createRow((short) curRow)
@@ -1082,7 +1082,7 @@ class ReportesNuevosController {
             cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("PARTIDA")
             cellHeader.setCellStyle(styleHeader)
-            sheet.setColumnWidth(curCol, 4000)
+            sheet.setColumnWidth(curCol, 7000)
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)

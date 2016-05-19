@@ -157,7 +157,7 @@ class ReportesNuevosExcelController {
 
         if (subtitulo && subtitulo != "") {
             Row rowSubtitulo = sheet.createRow((short) curRow)
-            Cell cellSubtitulo = rowSubtitulo.createCell((short) iniCol)
+            Cell cellSubtitulo = rowSubtitulo.createCell((short) iniCol + 3)
             cellSubtitulo.setCellValue(subtitulo)
             cellSubtitulo.setCellStyle(styleTitulo)
             curRow++
