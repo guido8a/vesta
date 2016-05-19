@@ -994,26 +994,13 @@ class ReportesNuevosController {
 
 
     def reporteReformasExcel() {
-
-//        def fuente = Fuente.get(params.fnt.toLong())
-//
-//        def modificacion = ModificacionAsignacion.withCriteria {
-//            desde {
-//                eq("fuente", fuente)
-//            }
-//        }
-
-
-
         println "reporteReformasExcel params: $params"
         def fuente = Fuente.get(params.fnt.toLong())
 
         def fechaInicio = new Date().parse("dd-MM-yyyy",params?.ini)
         def fechaFin = new Date().parse("dd-MM-yyyy",params?.fin)
 
-
         def cn = dbConnectionService.getConnection()
-
 
         def sql = "select nmro, prsp, anio, actv, vlin, incr, decr, rfrm, ajst, fcha, mdasorgn, prcl " +
                 "from reforma('${fechaInicio.format("yyyy-MM-dd")}', '${fechaFin.format("yyyy-MM-dd")}', ${fuente.id}) " +
@@ -1026,15 +1013,10 @@ class ReportesNuevosController {
 
         def modificacion = cn.rows(sql.toString())
 
-        modificacion.each{mod->
-
+        modificacion.each { mod->
             totalInicial += (mod?.incr)
             totalFinal += (mod?.decr)
-
         }
-
-
-
 
         def iniRow = 2
         def iniCol = 1
