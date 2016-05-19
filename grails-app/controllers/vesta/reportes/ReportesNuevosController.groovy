@@ -1055,8 +1055,8 @@ class ReportesNuevosController {
             CellStyle styleFooterCenter = estilos.styleFooterCenter
 
             // Create a row and put some cells in it. Rows are 0 based.
-            def titulo = "REPORTE DE REFORMAS Y AJUSTES"
-            def subtitulo = null
+            def titulo = "REPORTE DE REFORMAS Y AJUSTES - Desde: ${fechaInicio.format("dd-MM-yyyy")} hasta: ${fechaFin.format("dd-MM-yyy")}"
+            def subtitulo = ""
             curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
 
             Row rowHeader = sheet.createRow((short) curRow)
@@ -1136,7 +1136,7 @@ class ReportesNuevosController {
                 Cell cellTabla2 = tableRow2.createCell((short) curCol)
 
                 cellTabla.setCellValue(it?.anio)
-                cellTabla.setCellStyle(styleNumber)
+                cellTabla.setCellStyle(styleTabla)
 //                cellTabla2.setCellValue(it?.recibe?.programa?.descripcion)
 //                cellTabla2.setCellStyle(styleTabla)
                 curCol++
@@ -1163,7 +1163,7 @@ class ReportesNuevosController {
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
                 cellTabla.setCellValue(it?.rfrm)
-                cellTabla.setCellStyle(styleNumber)
+                cellTabla.setCellStyle(styleTabla)
 //                cellTabla2 = tableRow2.createCell((short) curCol)
 //                cellTabla2.setCellValue(it.originalDestino)
 //                cellTabla2.setCellStyle(styleTabla)
@@ -1171,7 +1171,7 @@ class ReportesNuevosController {
                 curCol++
                 cellTabla = tableRow.createCell((short) curCol)
                 cellTabla.setCellValue(it?.ajst)
-                cellTabla.setCellStyle(styleNumber)
+                cellTabla.setCellStyle(styleTabla)
 //                cellTabla2 = tableRow2.createCell((short) curCol)
 //                cellTabla2.setCellValue('')
 //                cellTabla2.setCellStyle(styleTabla)
