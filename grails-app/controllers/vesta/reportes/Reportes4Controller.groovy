@@ -226,6 +226,7 @@ class Reportes4Controller {
     }
 
     def poaXlsx() {
+        println "poaXlsx: $params"
         def datos = poa_funcion()
 
         def anio = datos.anio
@@ -1237,6 +1238,9 @@ class Reportes4Controller {
                 asignacionesCero = Asignacion.findAllByPriorizado(0.toDouble())
 
             }
+
+            asignacionesCero = Asignacion.findAllByMarcoLogicoInListAndPriorizado(actividades, 0)    //añadido para que salgan valores priorizados en 0 no funciona para el año actual + 1.
+
 
 //            println("asignaciones " + asignacionesCero)
 

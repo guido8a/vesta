@@ -27,10 +27,12 @@ class FirmasService {
         def directores = Persona.withCriteria {
             eq("unidad", unidad)
             ilike("cargo", "%director%")
+            eq("estaActivo", 1)
         }
         def gerentes = Persona.withCriteria {
             eq("unidad", unidad.padre)
             ilike("cargo", "%gerente%")
+            eq("estaActivo", 1)
         }
 
         return [directores: directores + gerentes, gerentes: gerentes]
