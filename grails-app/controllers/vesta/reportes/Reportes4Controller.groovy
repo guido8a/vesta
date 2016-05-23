@@ -227,7 +227,7 @@ class Reportes4Controller {
 
     def poaXlsx() {
         println "poaXlsx: $params"
-        def datos = poa_funcion()
+        def datos = poa_funcion(0)
 
         def anio = datos.anio
         def data = datos.data
@@ -818,6 +818,603 @@ class Reportes4Controller {
         }
     }
 
+
+    def poaSiguienteXlsx() {
+        println "poaXlsx: $params"
+        def datos = poa_funcion(1)
+
+        def anio = datos.anio
+        def data = datos.data
+        def anios = datos.anios
+        def meses = datos.meses
+        def totales = datos.totales
+
+        def iniRow = 0
+        def iniCol = 1
+
+        def curRow = iniRow
+        def curCol = iniCol
+
+        try {
+            Workbook wb = new Workbook()
+            Sheet sheet = wb.createSheet("Planificación operativa anual")
+            // Create a new font and alter it.
+            def estilos = ReportesNuevosExcelController.getEstilos(wb)
+            CellStyle styleHeader = estilos.styleHeader
+            CellStyle styleTabla = estilos.styleTabla
+            CellStyle styleDate = estilos.styleDate
+            CellStyle styleNumber = estilos.styleNumber
+            CellStyle styleSubtotal = estilos.styleSubtotal
+            CellStyle styleSubtotalNumber = estilos.styleSubtotalNumber
+            CellStyle styleFooter = estilos.styleFooter
+            CellStyle styleFooterCenter = estilos.styleFooterCenter
+
+            // Create a row and put some cells in it. Rows are 0 based.
+            def titulo = "PLANIFICACIÓN OPERATIVA ANUAL"
+            def subtitulo = "POA AÑO ${anio.anio} - EN DÓLARES"
+            curRow = ReportesNuevosExcelController.setTitulos(sheet, estilos, iniRow, iniCol, titulo, subtitulo)
+
+            Row rowHeader = sheet.createRow((short) curRow)
+            Cell cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PLAN NACIONAL DE DESARROLLO")
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("OBJETIVO ESTRATÉGICO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 12500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ESTRATEGIA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PORTAFOLIO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROGRAMA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("COD.")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROYECTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 10000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("COMPONENTE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("GG")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("P")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("C")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PARTIDA PRESUPUESTARIA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("#")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 1500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ACTIVIDAD")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("RESPONSABLE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("FECHA DE INICIO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("FECHA DE FIN")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 2500)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PRESUPUESTO")
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("")
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PROGRAMACIÓN MENSUAL AÑO " + anio.anio)
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            def colMes = curCol
+            def colFinMes = colMes + meses.size() - 1
+            meses.eachWithIndex { m, i ->
+                if (i > 0) {
+                    cellHeader = rowHeader.createCell((short) curCol)
+                    cellHeader.setCellValue("")
+                    cellHeader.setCellStyle(styleHeader)
+                    sheet.setColumnWidth(curCol, 3000)
+                    curCol++
+                }
+            }
+
+            anios.each { a ->
+                def str = "AÑO ${a}"
+                if (a == anio.anio) {
+                    str = "TOTAL"
+                }
+                cellHeader = rowHeader.createCell((short) curCol)
+                cellHeader.setCellValue(str)
+                cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 3000)
+                curCol++
+            }
+
+            def totalCols = curCol
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("TOTAL PLURIANUAL")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+
+            def rowHeader1o = curRow
+            curRow++
+            def rowHeader2o = curRow
+
+            curCol = iniCol
+
+            Row rowHeader2 = sheet.createRow((short) curRow)
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("OBJETIVO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("POLÍTICA")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("META")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 6000)
+            curCol++
+
+            curCol = colMes - 5
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("ARRASTRE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("FUENTE")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 4000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("NUEVO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            cellHeader = rowHeader2.createCell((short) curCol)
+            cellHeader.setCellValue("PRESUPUESTO CODIFICADO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 3000)
+            curCol++
+
+            meses.eachWithIndex { m, i ->
+                cellHeader = rowHeader2.createCell((short) curCol)
+                cellHeader.setCellValue(m.descripcion)
+                cellHeader.setCellStyle(styleHeader)
+                sheet.setColumnWidth(curCol, 3000)
+                curCol++
+            }
+
+            ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols)
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader1o, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 2  //last column  (0-based)
+            ))
+            (1..16).each { n ->
+                sheet.addMergedRegion(new CellRangeAddress(
+                        rowHeader1o, //first row (0-based)
+                        rowHeader2o, //last row  (0-based)
+                        iniCol + 2 + n, //first column (0-based)
+                        iniCol + 2 + n  //last column  (0-based)
+                ))
+            }
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader1o, //last row  (0-based)
+                    colMes - 5, //first column (0-based)
+                    colMes - 2  //last column  (0-based)
+            ))
+            sheet.addMergedRegion(new CellRangeAddress(
+                    rowHeader1o, //first row (0-based)
+                    rowHeader1o, //last row  (0-based)
+                    colMes - 1, //first column (0-based)
+                    colFinMes - 1  //last column  (0-based)
+            ))
+            (1..4).each { n ->
+                sheet.addMergedRegion(new CellRangeAddress(
+                        rowHeader1o, //first row (0-based)
+                        rowHeader2o, //last row  (0-based)
+                        colFinMes - 1 + n, //first column (0-based)
+                        colFinMes - 1 + n  //last column  (0-based)
+                ))
+            }
+
+            curRow++
+
+            def strAnio = anio.anio
+            def keyArrastre = "" + (strAnio.toInteger() - 1)        //ARRASTRE
+            def keyNuevo = "N" + strAnio                            //NUEVO
+            def keyTotalActual = "T" + strAnio                      //PRESUPUESTO CODIFICADO
+
+            data.each { v ->
+                curCol = iniCol
+
+                Proyecto proyecto = v.proyecto
+                Asignacion asignacion = v.asignacion
+
+                def esSubtotal = v.asignacion == null
+
+                Row tableRow = sheet.createRow((short) curRow)
+                def tableCell = tableRow.createCell(curCol)
+
+                if (esSubtotal) {
+
+                    tableCell.setCellValue("SUBTOTAL PROYECTO: " + proyecto.nombre)
+                    tableCell.setCellStyle(styleSubtotal)
+                    curCol += 19
+
+                    sheet.addMergedRegion(new CellRangeAddress(
+                            curRow, //first row (0-based)
+                            curRow, //last row  (0-based)
+                            iniCol, //first column (0-based)
+                            iniCol + 18 //last column  (0-based)
+                    ))
+
+                    tableCell = tableRow.createCell((short) curCol)
+                    tableCell.setCellValue(v.valores[keyArrastre] ?: 0)
+                    tableCell.setCellStyle(styleSubtotalNumber)
+                    curCol++
+
+                    tableCell = tableRow.createCell((short) curCol)
+                    tableCell.setCellValue("")
+                    tableCell.setCellStyle(styleSubtotalNumber)
+                    curCol++
+
+                    tableCell = tableRow.createCell((short) curCol)
+                    tableCell.setCellValue(v.valores[keyNuevo] ?: 0)
+                    tableCell.setCellStyle(styleSubtotalNumber)
+                    curCol++
+
+                    tableCell = tableRow.createCell((short) curCol)
+                    tableCell.setCellValue(v.valores[keyTotalActual] ?: 0)
+                    tableCell.setCellStyle(styleSubtotalNumber)
+                    curCol++
+
+                    meses.each { mes ->
+                        def keyMes = mes.numero + "_" + anio.anio
+                        tableCell = tableRow.createCell((short) curCol)
+                        tableCell.setCellValue(v.valores[keyMes] ?: 0)
+                        tableCell.setCellStyle(styleSubtotalNumber)
+                        curCol++
+                    }
+
+                    anios.each { a ->
+                        tableCell = tableRow.createCell((short) curCol)
+                        tableCell.setCellValue(v.valores[a] ?: 0)
+                        tableCell.setCellStyle(styleSubtotalNumber)
+                        curCol++
+                    }
+
+                    tableCell = tableRow.createCell((short) curCol)
+                    tableCell.setCellValue(v.valores["T"] ?: 0)
+                    tableCell.setCellStyle(styleSubtotalNumber)
+                    curCol++
+                } else {
+                    def metas = MetaBuenVivirProyecto.withCriteria {
+                        eq("proyecto", proyecto)
+                        metaBuenVivir {
+                            politica {
+                                objetivo {
+                                    order("codigo", "asc")
+                                }
+                                order("codigo", "asc")
+                            }
+                            order("codigo", "asc")
+                        }
+                    }
+                    def meta = metas.size() > 0 ? metas.first() : null
+
+                    tableCell.setCellValue(meta?.metaBuenVivir?.politica?.objetivo?.descripcion)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(meta?.metaBuenVivir?.politica?.descripcion)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(meta?.metaBuenVivir?.descripcion)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(proyecto.objetivoEstrategico?.descripcion)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(proyecto.estrategia?.descripcion)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(proyecto.portafolio?.descripcion)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(proyecto.programa?.descripcion)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(proyecto.codigo)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(proyecto.nombre)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.marcoLogico.marcoLogico.toStringCompleto())
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.presupuesto.numero[0..1])
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(proyecto.codigoEsigef)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.marcoLogico.marcoLogico.numeroComp)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.presupuesto.numero)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.marcoLogico.numero)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.marcoLogico.toStringCompleto())
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.marcoLogico.responsable.nombre) // Responsable
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.marcoLogico.fechaInicio)
+                    tableCell.setCellStyle(styleDate)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.marcoLogico.fechaFin)
+                    tableCell.setCellStyle(styleDate)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(v.valores[keyArrastre] ?: 0)
+                    tableCell.setCellStyle(styleNumber)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(asignacion.fuente.descripcion)
+                    tableCell.setCellStyle(styleTabla)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(v.valores[keyNuevo] ?: 0)
+                    tableCell.setCellStyle(styleNumber)
+                    curCol++
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(v.valores[keyTotalActual] ?: 0)
+                    tableCell.setCellStyle(styleNumber)
+                    curCol++
+
+                    meses.each { mes ->
+                        def keyMes = mes.numero + "_" + anio.anio
+
+                        tableCell = tableRow.createCell(curCol)
+                        tableCell.setCellValue(v.valores[keyMes] ?: 0)
+                        tableCell.setCellStyle(styleNumber)
+                        curCol++
+                    }
+                    anios.each { a ->
+                        tableCell = tableRow.createCell(curCol)
+                        tableCell.setCellValue(v.valores[a] ?: 0)
+                        tableCell.setCellStyle(styleNumber)
+                        curCol++
+                    }
+
+                    tableCell = tableRow.createCell(curCol)
+                    tableCell.setCellValue(v.valores["T"] ?: 0)
+                    tableCell.setCellStyle(styleNumber)
+                    curCol++
+                }
+
+                curRow++
+            }
+
+            sheet.addMergedRegion(new CellRangeAddress(
+                    curRow, //first row (0-based)
+                    curRow, //last row  (0-based)
+                    iniCol, //first column (0-based)
+                    iniCol + 18 //last column  (0-based)
+            ))
+
+            curCol = iniCol
+            Row totalRow = sheet.createRow((short) curRow)
+
+            Cell cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            (1..18).each {
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue("")
+                cellFooter.setCellStyle(styleFooterCenter)
+            }
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(totales[keyArrastre] ?: 0)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(totales[keyNuevo] ?: 0)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(totales[keyTotalActual] ?: 0)
+            cellFooter.setCellStyle(styleFooter)
+
+            meses.each { mes ->
+                def keyMes = mes.numero + "_" + anio.anio
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue(totales[keyMes] ?: 0)
+                cellFooter.setCellStyle(styleFooter)
+            }
+
+            anios.each { a ->
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue(totales[a] ?: 0)
+                cellFooter.setCellStyle(styleFooter)
+            }
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(totales["T"] ?: 0)
+            cellFooter.setCellStyle(styleFooter)
+
+            def output = response.getOutputStream()
+            def header = "attachment; filename=" + "poa.xlsx"
+            response.setContentType("application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response.setHeader("Content-Disposition", header)
+            wb.write(output)
+            output.flush()
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+
+
     def programacionPlurianualXlsx() {
         def fuente = Fuente.get(params.fnt.toLong())
         def datos = programacionPlurianual_funcion(fuente)
@@ -1195,9 +1792,22 @@ class Reportes4Controller {
         return [anio: anio, data: data, anios: anios, meses: meses, totales: totales]
     }
 
-    def poa_funcion() {
+    def poa_funcion(siguiente) {
+
+
+
         def strAnio = new Date().format('yyyy')
-        def anio = Anio.findByAnio(strAnio)
+        def anio
+
+
+        if(siguiente == 1){
+            println("entro 1")
+            anio = Anio.findByAnio(strAnio.toInteger() + 1)
+        }else{
+            println("entro 0")
+            anio = Anio.findByAnio(strAnio)
+        }
+
 
         def keyArrastre = "" + (strAnio.toInteger() - 1)        //ARRASTRE
         def keyNuevo = "N" + strAnio                            //NUEVO
@@ -1358,6 +1968,10 @@ class Reportes4Controller {
         anios = anios.sort()
         return [anio: anio, data: data, anios: anios, meses: meses, totales: totales]
     }
+
+
+
+
 
     def programacionPlurianual_funcion(Fuente fuente) {
         def strAnio = new Date().format('yyyy')

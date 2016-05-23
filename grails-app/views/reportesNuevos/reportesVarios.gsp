@@ -58,7 +58,7 @@
                         </li>
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
-                            <a href="#" id="poa">
+                            <a href="#" id="poaSiguiente">
                                 2.a. Planificación operativa anual - POA ${new Date().format('yyyy').toInteger() + 1}
                             </a>
                         </li>
@@ -442,6 +442,14 @@
 
                 $("#poa").click(function () {
                     var urlExcel = "${createLink(controller: 'reportes4', action: 'poaXlsx')}";
+                    var urlPdf = null;
+                    var pdfFileName = null;
+                    dialogXlsPdf("Reporte Planificación Operativa Anual", "Reporte Planificación Operativa Anual", urlExcel, urlPdf, pdfFileName);
+                });
+
+
+                $("#poaSiguiente").click(function () {
+                    var urlExcel = "${createLink(controller: 'reportes4', action: 'poaSiguienteXlsx')}";
                     var urlPdf = null;
                     var pdfFileName = null;
                     dialogXlsPdf("Reporte Planificación Operativa Anual", "Reporte Planificación Operativa Anual", urlExcel, urlPdf, pdfFileName);
