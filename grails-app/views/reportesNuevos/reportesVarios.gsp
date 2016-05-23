@@ -58,6 +58,12 @@
                         </li>
                         <li>
                             <i class="fa-li fa fa-print text-info"></i>
+                            <a href="#" id="poa">
+                                2.a. Planificación operativa anual - POA ${new Date().format('yyyy').toInteger() + 1}
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa-li fa fa-print text-info"></i>
                             <a href="#" id="poaGrupoGasto">
                                 2.1. POA: resumen por grupo de gasto
                             </a>
