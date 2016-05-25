@@ -1060,6 +1060,9 @@ class Reportes6Controller {
         def curRow = iniRow
         def curCol = iniCol
 
+        def sumaPlani = 0
+        def sumaPrio = 0
+
         try {
 
             Workbook wb = new Workbook()
@@ -1146,6 +1149,10 @@ class Reportes6Controller {
 
             asignaciones.each{ d ->
 
+
+                sumaPlani += d?.planificado
+                sumaPrio += d?.priorizado
+
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
                 Cell cellTabla = tableRow.createCell((short) curCol)
@@ -1200,8 +1207,36 @@ class Reportes6Controller {
                     curRow, //first row (0-based)
                     curRow, //last row  (0-based)
                     iniCol, //first column (0-based)
-                    iniCol + 3 //last column  (0-based)
+                    iniCol + 7 //last column  (0-based)
             ))
+
+
+            curCol = iniCol
+            Row totalRow = sheet.createRow((short) curRow)
+
+            Cell cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            (1..7).each {
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue("")
+                cellFooter.setCellStyle(styleFooterCenter)
+            }
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(sumaPlani)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(sumaPrio)
+            cellFooter.setCellStyle(styleFooter)
+
+
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "reporte_avales_perma.xlsx"
@@ -1727,6 +1762,9 @@ class Reportes6Controller {
         def curRow = iniRow
         def curCol = iniCol
 
+        def sumaPlani = 0
+        def sumaPrio = 0
+
         try {
 
             Workbook wb = new Workbook()
@@ -1885,6 +1923,9 @@ class Reportes6Controller {
 
             asignaciones.each{ d ->
 
+                sumaPlani += d?.planificado
+                sumaPrio += d?.priorizado
+
                 curCol = iniCol
                 Row tableRow = sheet.createRow((short) curRow)
                 Cell cellTabla = tableRow.createCell((short) curCol)
@@ -1943,8 +1984,39 @@ class Reportes6Controller {
                     curRow, //first row (0-based)
                     curRow, //last row  (0-based)
                     iniCol, //first column (0-based)
-                    iniCol + 3 //last column  (0-based)
+                    iniCol + 7 //last column  (0-based)
             ))
+
+
+
+            curCol = iniCol
+            Row totalRow = sheet.createRow((short) curRow)
+
+            Cell cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            (1..7).each {
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue("")
+                cellFooter.setCellStyle(styleFooterCenter)
+            }
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(sumaPlani)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(sumaPrio)
+            cellFooter.setCellStyle(styleFooter)
+
+
+
+
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "reporte_poa_completo.xlsx"

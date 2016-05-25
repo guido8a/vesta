@@ -115,6 +115,7 @@
             <th style="width: 100px;">Partida</th>
             <th style="width: 80px">Fuente</th>
             <th style="width: 100px">Presupuesto</th>
+            <th style="width: 100px">Actual</th>
         </tr>
         </thead>
         <tbody>
@@ -137,6 +138,9 @@
                 <td style="width: 80px">${asg?.fuente?.codigo}</td>
                 %{--<td style="width: 100px">${asg?.planificado}</td>--}%
                 <td style="width: 100px"><g:formatNumber number="${asg?.planificado.toDouble()}"
+                                                         format="###,##0"
+                                                         minFractionDigits="2" maxFractionDigits="2"/></td>
+                <td style="width: 100px"><g:formatNumber number="${asg?.priorizado.toDouble()}"
                                                          format="###,##0"
                                                          minFractionDigits="2" maxFractionDigits="2"/></td>
             </tr>
