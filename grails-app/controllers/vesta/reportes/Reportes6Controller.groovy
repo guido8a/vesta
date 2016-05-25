@@ -878,11 +878,6 @@ class Reportes6Controller {
     }
 
 
-
-
-
-
-
     def aprobarProyecto_funcion(Anio anio) {
 
         def strAnio = anio.anio
@@ -1924,8 +1919,6 @@ class Reportes6Controller {
 
 
     def reporteDisponibilidadPermanente () {
-
-
         def anio = Anio.findByAnio(new Date().format("yyyy"))
         def macro = MacroActividad.list()
         def actividades = ActividadCorriente.findAllByAnioAndMacroActividadInList(anio, macro)
@@ -1933,7 +1926,6 @@ class Reportes6Controller {
         def asignaciones = Asignacion.findAllByTareaInList(tareas)
 
 //        println("asignaciones " + asignaciones)
-
 
         def iniRow = 0
         def iniCol = 1
@@ -1977,6 +1969,12 @@ class Reportes6Controller {
             curCol++
 
             cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("PARTIDA")
+            sheet.setColumnWidth(curCol, 1800)
+            cellHeader.setCellStyle(styleHeader)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("PRIORIZADO ORIGINAL")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 5000)
@@ -2005,25 +2003,28 @@ class Reportes6Controller {
             curRow++
 
             def estadoAprobado = EstadoAval.findByCodigo("E02")
+            def avales = AvalCorriente.findAllByEstado(estadoAprobado)
 
-            asignaciones.each { a->
+            def sumaPror = 0
+            def sumaPrio = 0
+            def sumaAval = 0
 
-
+            asignaciones.each { a ->
                 def procs = ProcesoAsignacion.findAllByAsignacion(a).proceso
 
-                def avales = []
+                def avalado
                 def av = 0
                 if (procs.size() > 0) {
-                    avales = Aval.withCriteria {
-                        inList("proceso", procs)
-                        eq("estado", estadoAprobado)
-                    }
-                    if (avales.size() > 0) {
-                        av = avales.sum { it.monto }
+//                    avales = Aval.withCriteria {
+                    avalado = ProcesoAsignacion.findAllByAsignacionAndAvalCorrienteInList(a, avales)
+                    if (avalado.size() > 0) {
+                        av = avalado.sum { it.monto }
                     }
                 }
-
 //                println("ava " + av)
+                sumaPror += a?.priorizadoOriginal
+                sumaPrio += a?.priorizado
+                sumaAval += av
 
                 curCol = iniCol
 
@@ -2040,6 +2041,11 @@ class Reportes6Controller {
 
                 tableCell = tableRow.createCell(curCol)
                 tableCell.setCellValue(a?.tarea?.descripcion)
+                tableCell.setCellStyle(styleTabla)
+                curCol++
+
+                tableCell = tableRow.createCell(curCol)
+                tableCell.setCellValue(a?.presupuesto?.numero)
                 tableCell.setCellStyle(styleTabla)
                 curCol++
 
@@ -2067,6 +2073,8 @@ class Reportes6Controller {
 
             }
 
+            /* todo: poner totales */
+
             sheet.addMergedRegion(new CellRangeAddress(
                     curRow, //first row (0-based)
                     curRow, //last row  (0-based)
@@ -2075,34 +2083,39 @@ class Reportes6Controller {
             ))
 
             curCol = iniCol
-//            Row totalRow = sheet.createRow((short) curRow)
-//
-//            Cell cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue("TOTAL")
-//            cellFooter.setCellStyle(styleFooterCenter)
-//
-//            (1..3).each {
-//                cellFooter = totalRow.createCell((short) curCol)
-//                curCol++
-//                cellFooter.setCellValue("")
-//                cellFooter.setCellStyle(styleFooterCenter)
-//            }
-//
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue('')
-//            cellFooter.setCellStyle(styleFooter)
-//
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue('')
-//            cellFooter.setCellStyle(styleFooter)
-//
-//            cellFooter = totalRow.createCell((short) curCol)
-//            curCol++
-//            cellFooter.setCellValue('')
-//            cellFooter.setCellStyle(styleFooter)
+            Row totalRow = sheet.createRow((short) curRow)
+
+            Cell cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue("TOTAL")
+            cellFooter.setCellStyle(styleFooterCenter)
+
+            (1..3).each {
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue("")
+                cellFooter.setCellStyle(styleFooterCenter)
+            }
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(sumaPror)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(sumaPrio)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(sumaAval)
+            cellFooter.setCellStyle(styleFooter)
+
+            cellFooter = totalRow.createCell((short) curCol)
+            curCol++
+            cellFooter.setCellValue(sumaPrio - sumaAval)
+            cellFooter.setCellStyle(styleFooter)
 
             def output = response.getOutputStream()
             def header = "attachment; filename=" + "disponibilidad_recursos_permanentes.xlsx"
