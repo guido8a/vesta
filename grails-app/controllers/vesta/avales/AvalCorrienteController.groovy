@@ -1462,5 +1462,27 @@ class AvalCorrienteController extends Shield {
     }
 */
 
+    def borrarSolicitudGP_ajax() {
+        println "borrarSolicitudGP_ajax params " + params
+
+        def estadoPendiente = EstadoAval.findByCodigo('P01')
+        def avcr = AvalCorriente.get(params.id)
+        def poas = ProcesoAsignacion.findAllByAvalCorriente(avcr)
+
+        if (avcr.estado.id == estadoPendiente.id) {
+            if (poas.size() > 0) {
+                poas.each { po ->
+                    try {
+                        po.delete(flush: true)
+                    } catch (e) {
+                        render "no"
+                    }
+                }
+            }
+            avcr.delete(flush: true)
+            render "ok"
+        }
+        render "no"
+    }
 
 }

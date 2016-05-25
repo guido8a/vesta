@@ -20,7 +20,8 @@
             <elm:datepicker class="form-control input-sm fechaInicio required"
                             name="fechaInicio"
                             title="Fecha inicio"
-                            id="fchaInicio"/>
+                            id="fchaInicio"
+                            value="${Date.parse("yyyy-MM-dd", new Date().format('yyyy') + "-01-01")}"/>
 
         </div>
 

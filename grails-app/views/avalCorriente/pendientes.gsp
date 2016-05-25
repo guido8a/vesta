@@ -69,6 +69,9 @@
                                                     <g:link class="btn btn-info" action="nuevaSolicitud" id="${proc.id}" title="Editar">
                                                         <i class="fa fa-pencil"></i>
                                                     </g:link>
+                                                    <a href="#" class="borrarSolicitud btn btn-danger" title="Eliminar solicitud" sol="${proc?.id}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
                                                 </g:if>
                                                 <g:elseif test="${proc.director.id == session.usuario.id && (proc.estado.codigo == 'R01' || proc.estado.codigo == 'D02')}">
                                                     <g:link class="btn btn-info" action="revisarSolicitud" id="${proc.id}" title="Revisar">
@@ -190,6 +193,42 @@
                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=solicitud_aval_corriente.pdf";
                     return false;
                 });
+
+                $(".borrarSolicitud").click(function (){
+                    var id = $(this).attr("sol")
+                    bootbox.confirm("¿Está seguro de querer eliminar esta solicitud de aval?", function (res) {
+                        if(res){
+                            openLoader('Eliminando solicitud');
+                            $.ajax({
+                                type    : "POST",
+                                data : {
+                                    id: id
+                                },
+                                url     : "${createLink(action:'borrarSolicitudGP_ajax')}",
+                                success : function (msg) {
+                                    if (msg != "no") {
+                                        closeLoader();
+                                        log("Solicitud eliminada correctamente", "success");
+                                        setTimeout(function () {
+                                            location.reload(true)
+                                        }, 2000);
+                                    }else{
+                                        closeLoader();
+                                        bootbox.alert({
+                                                    message : "No se puede eliminar esta solicitud",
+                                                    title   : "Error",
+                                                    class   : "modal-error"
+                                                }
+                                        );
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+
+                });
+
             });
         </script>
     </body>

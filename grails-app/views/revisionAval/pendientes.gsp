@@ -72,7 +72,7 @@
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                                 <a href="#" class="borrarSolicitud btn btn-danger" title="Eliminar solicitud" sol="${p?.id}">
-                                                    <i class="fa fa-close"></i>
+                                                    <i class="fa fa-trash"></i>
                                                 </a>
                                             </div>
                                         </td>
