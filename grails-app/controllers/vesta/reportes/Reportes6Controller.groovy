@@ -1033,7 +1033,7 @@ class Reportes6Controller {
 
     def reporteAvalesPermanentesExcel() {
 
-        println("params excel: " + params)
+//        println("params excel: " + params)
 
 
         def anio = Anio.get(params.anio)
@@ -1134,6 +1134,12 @@ class Reportes6Controller {
             sheet.setColumnWidth(curCol, 5000)
             curCol++
 
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ACTUAL")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
             def totalCols = curCol
             ReportesNuevosExcelController.joinTitulos(sheet, iniRow, iniCol, totalCols, false)
             def totalPriorizado = 0
@@ -1180,6 +1186,11 @@ class Reportes6Controller {
                 cellTabla.setCellValue(d?.planificado)
                 cellTabla.setCellStyle(styleNumber)
                 curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.priorizado)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
+
 
                 curRow++
 
@@ -1659,18 +1670,38 @@ class Reportes6Controller {
 
     def reporteCompletoPermanente () {
 
-//        println("params excel: " + params)
+//        println("params completo: " + params)
 
         def anio = Anio.get(params.anio)
         def asignaciones = []
-        def unidad = UnidadEjecutora.get(params.unidad)
+//        def unidad = UnidadEjecutora.get(params.unidad)
 
-        def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
-        def macros = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
-        def actividades = ActividadCorriente.findAllByMacroActividadInList(macros)
-        def tareas = Tarea.findAllByActividadInList(actividades)
+//        def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+//        def macros = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+//        def actividades = ActividadCorriente.findAllByMacroActividadInList(macros)
+//        def tareas = Tarea.findAllByActividadInList(actividades)
 
-        asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', order: 'unidad'])
+
+
+        if (params.objetivo != '-1') {
+//            println("entro if")
+            def objetivo = ObjetivoGastoCorriente.get(params.objetivo)
+            def unidad = UnidadEjecutora.get(params.unidad)
+            def macros = MacroActividad.findAllByObjetivoGastoCorriente(objetivo)
+            def actividades = ActividadCorriente.findAllByMacroActividadInList(macros)
+            def tareas = Tarea.findAllByActividadInList(actividades)
+            asignaciones = Asignacion.findAllByTareaInListAndAnioAndUnidad(tareas, anio, unidad, [sort: 'unidad', order: 'unidad'])
+
+        }else{
+//            println("entro else")
+            asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', order: 'unidad'])
+        }
+
+
+
+
+
+//        asignaciones = Asignacion.findAllByAnioAndTareaIsNotNull(anio, [sort: 'unidad', order: 'unidad'])
 
         //programacion
 
@@ -1684,9 +1715,9 @@ class Reportes6Controller {
             actual = Anio.list([sort: 'anio', order: 'desc']).pop()
         }
 
-        def asgProy = Asignacion.findAll("from Asignacion where unidad=${unidad.id} and marcoLogico is not null and anio=${actual.id} order by id")
-        def asgCor = Asignacion.findAll("from Asignacion where actividad is not null and anio=${actual.id} and marcoLogico is null order by id")
-        def max = PresupuestoUnidad.findByUnidadAndAnio(unidad,actual)
+//        def asgProy = Asignacion.findAll("from Asignacion where unidad=${unidad.id} and marcoLogico is not null and anio=${actual.id} order by id")
+//        def asgCor = Asignacion.findAll("from Asignacion where actividad is not null and anio=${actual.id} and marcoLogico is null order by id")
+//        def max = PresupuestoUnidad.findByUnidadAndAnio(unidad,actual)
 
         def meses = Mes.list([sort: 'numero', order: 'asc'])
 
@@ -1765,6 +1796,12 @@ class Reportes6Controller {
 
             cellHeader = rowHeader.createCell((short) curCol)
             cellHeader.setCellValue("PRESUPUESTO")
+            cellHeader.setCellStyle(styleHeader)
+            sheet.setColumnWidth(curCol, 5000)
+            curCol++
+
+            cellHeader = rowHeader.createCell((short) curCol)
+            cellHeader.setCellValue("ACTUAL")
             cellHeader.setCellStyle(styleHeader)
             sheet.setColumnWidth(curCol, 5000)
             curCol++
@@ -1888,10 +1925,14 @@ class Reportes6Controller {
                 cellTabla.setCellValue(d?.planificado)
                 cellTabla.setCellStyle(styleNumber)
                 curCol++
+                cellTabla = tableRow.createCell((short) curCol)
+                cellTabla.setCellValue(d?.priorizado)
+                cellTabla.setCellStyle(styleNumber)
+                curCol++
 
                 meses.each {
                     cellTabla = tableRow.createCell((short) curCol)
-                    cellTabla.setCellValue(ProgramacionAsignacion.findAll("from ProgramacionAsignacion where asignacion = ${d?.id} and mes = ${it.id} and padre is null")?.valor?.pop())
+                    cellTabla.setCellValue(ProgramacionAsignacion.find("from ProgramacionAsignacion where asignacion = ${d?.id} and mes = ${it?.id} and padre is null")?.valor)
                     cellTabla.setCellStyle(styleNumber)
                     curCol++
                 }
