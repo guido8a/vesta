@@ -69,7 +69,9 @@
 
 <body>
 <div class="hoja">
-    <rep:headerFooter title="POA GASTO PERMANENTE POR ÁREA ADMINISTRATIVA" estilo="right" unidad="${unidad}"/>
+    %{--<rep:headerFooter title="POA GASTO PERMANENTE POR ÁREA ADMINISTRATIVA" estilo="right" unidad="${unidad}"/>--}%
+    <div class='tituloRprt tituloReporteSinLinea'>Empresa pública YACHAY EP</div>'
+    <div class='tituloRprt tituloReporte'>POA GASTO PERMANENTE POR ÁREA ADMINISTRATIVA</div>'
 
     <p>
         Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}
@@ -81,12 +83,16 @@
         <tr>
             <th style="width: 200px">Área Administrativa</th>
             <th style="width: 150px">Total Unidad</th>
+            <th style="width: 150px">Avalado</th>
+            <th style="width: 150px">Disponible</th>
 
         </tr>
         </thead>
         <tbody>
 
         <g:set var="totales" value="${0}"/>
+        <g:set var="totalAv" value="${0}"/>
+        <g:set var="totalDs" value="${0}"/>
 
         <g:each in="${mapa}" var="map">
             <tr>
@@ -95,7 +101,15 @@
                     <td style="width: 100px; text-align: right"><g:formatNumber number="${map.value.total.toDouble()}"
                                                              format="###,##0"
                                                              minFractionDigits="2" maxFractionDigits="2"/></td>
+                    <td style="width: 100px; text-align: right"><g:formatNumber number="${map.value.avalado.toDouble()}"
+                                                             format="###,##0"
+                                                             minFractionDigits="2" maxFractionDigits="2"/></td>
+                    <td style="width: 100px; text-align: right"><g:formatNumber number="${map.value.disponible.toDouble()}"
+                                                             format="###,##0"
+                                                             minFractionDigits="2" maxFractionDigits="2"/></td>
                  <g:set var="totales" value="${totales += map.value.total.toDouble()}"/>
+                 <g:set var="totalAv" value="${totalAv += map.value.avalado.toDouble()}"/>
+                 <g:set var="totalDs" value="${totalDs += map.value.disponible.toDouble()}"/>
             </tr>
         </g:each>
 
@@ -105,6 +119,14 @@
             </td>
 
             <td style="width: 100px; text-align: right; font-weight: bold"><g:formatNumber number="${totales.toDouble()}"
+                                                     format="###,##0"
+                                                     minFractionDigits="2" maxFractionDigits="2"/>
+            </td>
+            <td style="width: 100px; text-align: right; font-weight: bold"><g:formatNumber number="${totalAv.toDouble()}"
+                                                     format="###,##0"
+                                                     minFractionDigits="2" maxFractionDigits="2"/>
+            </td>
+            <td style="width: 100px; text-align: right; font-weight: bold"><g:formatNumber number="${totalDs.toDouble()}"
                                                      format="###,##0"
                                                      minFractionDigits="2" maxFractionDigits="2"/>
             </td>

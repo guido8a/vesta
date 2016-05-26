@@ -9,6 +9,9 @@ import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFRow
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import vesta.avales.AvalCorriente
+import vesta.avales.EstadoAval
+import vesta.avales.ProcesoAsignacion
 import vesta.parametros.UnidadEjecutora
 import vesta.parametros.poaPac.Anio
 import vesta.parametros.poaPac.Fuente
@@ -723,6 +726,8 @@ class Reportes5Controller {
 
         def unidad = UnidadEjecutora.get(params.unidad)
         def anio = Anio.get(params.anio)
+        def aprobados = EstadoAval.findByCodigo("E02")
+        def liberados = EstadoAval.findByCodigo("E05")
 
 
 
@@ -732,15 +737,34 @@ class Reportes5Controller {
 
         unidades.each {uni->
 
+//            println "unidad: ${uni.nombre} id=${uni.id}"
             def totalUnidad = 0
-            asignacionesxunidad = Asignacion.findAllByUnidadAndAnioAndMarcoLogicoIsNull(uni, anio).each {
+            def totalAvalado = 0
+            Asignacion.findAllByUnidadAndAnioAndMarcoLogicoIsNull(uni, anio).each {
                 totalUnidad += it?.planificado
+                def avcr = AvalCorriente.findAllByEstadoInList([aprobados, liberados])
+                avcr.each { av ->
+                    def poas = ProcesoAsignacion.findAllByAsignacionAndAvalCorriente(it, av)
+                    if(poas.size() > 0) {
+                        if (av.estado == liberados) {
+//                        if (av.estado == aprobados) {
+                            totalAvalado += poas.sum { it.liberado }
+                        } else {
+//                            println "...**no liberado"
+                            totalAvalado += poas.sum { it.monto }
+                        }
+                    }
+                }
             }
+
+//            println "--- total avalado, unidad: ${uni.nombre}: $totalAvalado"
 
             if(totalUnidad != 0){
                 mapa[uni.id] = [
                         unidad : uni,
-                        total : totalUnidad
+                        total : totalUnidad,
+                        avalado : totalAvalado,
+                        disponible : totalUnidad - totalAvalado
                 ]
             }
 

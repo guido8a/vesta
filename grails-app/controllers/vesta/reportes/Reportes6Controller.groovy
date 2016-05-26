@@ -1755,6 +1755,11 @@ class Reportes6Controller {
 //        def max = PresupuestoUnidad.findByUnidadAndAnio(unidad,actual)
 
         def meses = Mes.list([sort: 'numero', order: 'asc'])
+        def totlMeses = new Double[12]
+        12.times {
+            totlMeses[it] = 0
+        }
+//        println " inicio.... ${totlMeses[0]} "
 
         def iniRow = 0
         def iniCol = 1
@@ -1971,11 +1976,17 @@ class Reportes6Controller {
                 cellTabla.setCellStyle(styleNumber)
                 curCol++
 
+                def valor = 0
                 meses.each {
                     cellTabla = tableRow.createCell((short) curCol)
-                    cellTabla.setCellValue(ProgramacionAsignacion.find("from ProgramacionAsignacion where asignacion = ${d?.id} and mes = ${it?.id} and padre is null")?.valor)
+                    valor = ProgramacionAsignacion.find("from ProgramacionAsignacion where asignacion = ${d?.id} and mes = ${it?.id} and padre is null")?.valor?:0.0
+
+//                    cellTabla.setCellValue(ProgramacionAsignacion.find("from ProgramacionAsignacion where asignacion = ${d?.id} and mes = ${it?.id} and padre is null")?.valor)
+                    cellTabla.setCellValue(valor)
                     cellTabla.setCellStyle(styleNumber)
                     curCol++
+//                    println "indice: ${it.id-20}, valor: ${valor}"
+                    totlMeses[(int) it.id - 20] += valor
                 }
                 curRow++
             }
@@ -2014,7 +2025,12 @@ class Reportes6Controller {
             cellFooter.setCellValue(sumaPrio)
             cellFooter.setCellStyle(styleFooter)
 
-
+            12.times {
+                cellFooter = totalRow.createCell((short) curCol)
+                curCol++
+                cellFooter.setCellValue(totlMeses[it])
+                cellFooter.setCellStyle(styleFooter)
+            }
 
 
 
