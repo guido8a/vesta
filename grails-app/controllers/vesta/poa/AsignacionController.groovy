@@ -941,7 +941,8 @@ class AsignacionController extends Shield {
         datos.each {
             def partes = it.split(":")
             println "partes: $partes"
-            def prog = ProgramacionAsignacion.findByAsignacionAndMes(asig, Mes.get(partes[0]))
+//            def prog = ProgramacionAsignacion.findByAsignacionAndMes(asig, Mes.get(partes[0]))
+            def prog = ProgramacionAsignacion.findByAsignacionAndMes(asig, Mes.findByNumero(partes[0]))
             println "prog: $prog"
             if ((!prog) && (partes[1]?:0 > 0)) {
                 prog = new ProgramacionAsignacion()

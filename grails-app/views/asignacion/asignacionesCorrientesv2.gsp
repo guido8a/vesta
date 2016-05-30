@@ -494,6 +494,7 @@
 
 
                 $("#btnProgramacion").click(function () {
+                    openLoader("Cargando Programación...");
                     location.href = "${createLink(controller: 'asignacion', action: 'programacionAsignacionesCorrientes')}?id=" + $("#idResponsable").val() + "&anio=" + ${actual?.id};
                 });
 
@@ -522,7 +523,9 @@
                 $("#btnReporteCompleto").click(function () {
                     var idObjetivo = $("#objetivo").val();
                     var idUnidad = $("#idResponsable").val();
+                    openLoader("Cargando...");
                     location.href =   "${createLink(controller: 'reportes6', action: 'reporteCompletoPermanente')}?objetivo=" + idObjetivo + "&unidad=" + idUnidad + "&anio=" + ${actual?.id};
+                    closeLoader();
                 });
 
             });

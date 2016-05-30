@@ -104,7 +104,9 @@
                         <g:set var="totalMeses" value="${0}"/>
 
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                            <td colspan="15">%{--<b>Programa:</b>${asg?.programa?.descripcion}--}% <b>Actividad:</b> ${asg?.tarea?.actividad?.descripcion} <b>Partida:</b> ${asg.presupuesto.descripcion}
+                            %{--<td colspan="15">--}%%{--<b>Programa:</b>${asg?.programa?.descripcion}--}%%{-- <b>Actividad:</b> ${asg?.tarea?.actividad?.descripcion} <b>Partida:</b> ${asg.presupuesto.descripcion}--}%
+                            <td colspan="15"><b>Responsable:</b> ${asg?.unidad?.nombre} <b>Objetivo:</b> ${asg.tarea.actividad.macroActividad.objetivoGastoCorriente.descripcion}
+                            <b>Macroactividad:</b> ${asg?.tarea?.actividad?.macroActividad?.descripcion} <b>Actividad:</b> ${asg?.tarea?.actividad?.descripcion} <b>Tarea:</b> ${asg?.tarea?.descripcion} <b>Partida:</b> ${asg.presupuesto.descripcion}
                             </td>
                         </tr>
 
@@ -148,7 +150,8 @@
 
                                     <td class="${mes}" style="width: 70px;padding: 0;height: 30px">
 
-                                        <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes}"
+                                        %{--<input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes}"--}%
+                                        <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number" mes="${mes}"
                                                value="${g.formatNumber(number: progra?.valor, format: '###,##0', minFractionDigits: '2', maxFractionDigits: '2')}">
 
                                         <g:set var="totalFila" value="${totalFila += progra.valor}"/>
@@ -218,11 +221,13 @@
                                     <td class="${mes}" style="width: 70px;padding: 0;height: 30px">
 
                                         <g:if test="${j != 11}">
-                                            <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes}"
+                                            %{--<input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes}"--}%
+                                            <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number" mes="${mes}"
                                                    value="${g.formatNumber(number: valorMes, format: '###,##0', minFractionDigits: '2', maxFractionDigits: '2')}">
                                         </g:if>
                                         <g:else>
-                                            <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes}"
+                                            %{--<input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number money" mes="${mes}"--}%
+                                            <input type="text" class="${j} valor asg_cor_${asg.id} form-control input-sm number" mes="${mes}"
                                                    value="${g.formatNumber(number: (valorPrio - (valorMes * 11)), format: '###,##0', minFractionDigits: '2', maxFractionDigits: '2')}">
                                         </g:else>
 
@@ -347,12 +352,13 @@
     });
 
     $("#btnActualizar").click(function () {
+        openLoader("Cargando Programación...");
         window.location.reload(true)
     });
 
 
     $(".guardar").click(function () {
-        var icono = $("#" + $(this).attr("icono"))
+        var icono = $("#" + $(this).attr("icono"));
         var total = 0
         var max = $(this).attr("max") * 1
         var datos = ""
@@ -371,6 +377,7 @@
                 title   : "Error",
                 class   : "modal-error"
             });
+            location.reload(true);
         } else {
             $.ajax({
                 type    : "POST",
