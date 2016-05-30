@@ -32,7 +32,7 @@
 }
 
 .horizontal-container {
-    border-bottom : 1px solid black;
+    /*border-bottom : 1px solid black;*/
     padding-left  : 0px;
     position      : relative;
     margin-top: 20px;
