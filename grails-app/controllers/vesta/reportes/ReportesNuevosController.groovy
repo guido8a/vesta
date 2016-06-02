@@ -809,7 +809,7 @@ class ReportesNuevosController {
 
         def tx =  "select slavnmro, avalnmro, fntedscr, avalfcha, prconmbr, avalmnto, vloractl, vlorsgnt, edavdscr, " +
                 "lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', " +
-                "'${fechaFin.format("yyyy-MM-dd")}', ${params.fuente}) where avalmnto > 0;"
+                "'${fechaFin.format("yyyy-MM-dd")}', ${params.fuente}) where avalmnto >= 0;"
 
 //        println("txt " + tx)
 
@@ -1312,7 +1312,7 @@ class ReportesNuevosController {
 
         def tx =  "select slavnmro, avalnmro, fntedscr, avalfcha, prconmbr, avalmnto, vloractl, vlorsgnt, " +
                 "edavdscr, lbrdactl, lbrdsgnt, unejnmbr from rp_avales('${fechaInicio.format("yyyy-MM-dd")}', " +
-                "'${fechaFin.format("yyyy-MM-dd")}', ${params.fnt}) where avalmnto > 0;"
+                "'${fechaFin.format("yyyy-MM-dd")}', ${params.fnt}) where avalmnto >= 0;"
 
         println("tx " + tx)
 
