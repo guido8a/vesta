@@ -85,17 +85,18 @@
             <div style="text-align: justify;float: left;font-size: 8pt;">
 
                 <g:if test="${aval?.estado?.codigo == 'E05'}">
-                <div style="margin-left: 360px; margin-top: 20px;">
+                <div style="margin-left: 240px; margin-top: 20px;">
                     <table width="100%" class="tbl3">
                         <tbody>
                         <tr style="border-bottom: transparent; text-align: center">
-                            <td>Aval de POA <strong>liberado</strong> mediante solicitud de</td>
+                            <td>Aval de POA <strong>liberado</strong> mediante solicitud de:</td>
                         </tr>
                         <tr style="border-bottom: hidden; text-align: center">
-                            <td>${aval?.contrato}</td>
+                            <td>${aval?.contrato}  de ${aval?.fechaLiberacion?.format("dd-MM-yyyy")}.</td>
                         </tr>
                         <tr style="text-align: center">
-                            <td>de ${aval?.fechaLiberacion?.format("dd-MM-yyyy")} por <strong>USD. ${vesta.avales.ProcesoAsignacion.findAllByProceso(aval?.proceso).liberado.sum()}</strong></td>
+                            <td>El monto actualizado del Aval POA se determina en USD. <strong>
+                                ${vesta.avales.ProcesoAsignacion.findAllByProceso(aval?.proceso).liberado.sum()}</strong></td>
                         </tr>
                         </tbody>
                     </table>
