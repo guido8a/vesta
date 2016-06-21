@@ -255,8 +255,9 @@ class FirmasService {
                 def logo = servletContext.getRealPath("/") + "images/logo_yachay_qr.png"
                 Map information = [chl: texto]
                 information.chs = "200x200"
+                println "invoca a createQRCode con: $information, $logo, $pathQr, $nombre"
                 QRCodeService.createQRCode(information, logo, pathQr, nombre)
-
+                println "firma creada"
                 firma.fecha = now
                 firma.key = key
                 firma.path = nombre
