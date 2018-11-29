@@ -260,7 +260,7 @@ class UnidadEjecutora {
     }
 
     List<Proyecto> getProyectosUnidad(Anio anio, String perfilCodigo) {
-//        println "anio " + anio + " perf " + perfilCodigo
+        println "anio " + anio + " perf " + perfilCodigo
         def asignaciones = this.getAsignacionesUnidad(anio, perfilCodigo)
         def proyectos = []
         def proyectos2 = []

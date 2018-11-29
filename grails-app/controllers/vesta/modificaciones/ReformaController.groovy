@@ -385,7 +385,7 @@ class ReformaController extends Shield {
      T: Ajuste por modificación de techo presupuestario (ajustes -> 4)
      */
     def lista() {
-//        println "lista ref: $params"
+        println "lista ref: $params"
         def aprobado = EstadoAval.findByCodigo("E02")
         def liberado = EstadoAval.findByCodigo("E05")
         def actual
@@ -425,6 +425,7 @@ class ReformaController extends Shield {
         }
 
         reformas = reformas.sort{it.numeroReforma}.reverse()
+        println "reformas: $reformas, unidad: ${unidades.id}"
 
         reformas.each {rf ->
             switch (rf.tipoSolicitud){
@@ -2749,10 +2750,12 @@ class ReformaController extends Shield {
 
         def anios__id = 0
         try {
-            anios__id = cn.rows("select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
+            def txto = "select distinct asgn.anio__id, anioanio from asgn, mrlg, anio " +
                     "where mrlg.mrlg__id = asgn.mrlg__id and proy__id in (${proyectos.id.join(',')}) and " +
                     "anio.anio__id = asgn.anio__id and cast(anioanio as integer) >= ${actual.anio} " +
-                    "order by anioanio".toString()).anio__id
+                    "order by anioanio"
+            println "nuevaRef: $txto"
+            anios__id = cn.rows(txto.toString()).anio__id
 
         } catch (e) {
             println e
