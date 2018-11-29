@@ -566,11 +566,13 @@ class AvalesController extends vesta.seguridad.Shield {
             }
 
             def actual
+
             if (params.anio) {
                 actual = Anio.get(params.anio)
             } else {
                 actual = Anio.findByAnio(new Date().format("yyyy"))
             }
+
             def solicitud = null
             def estadoDevuelto = EstadoAval.findByCodigo("D01")
             def estadoSolicitadoSinFirma = EstadoAval.findByCodigo("EF4")
