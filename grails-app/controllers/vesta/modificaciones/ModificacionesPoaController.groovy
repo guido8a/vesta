@@ -26,12 +26,16 @@ class ModificacionesPoaController extends Shield {
     def ajuste() {
         def proyectos = []
         def actual
+
         Asignacion.list().each {
-//            println "p "+proyectos
-            def p = it.marcoLogico.proyecto
-            if (!proyectos?.id.contains(p.id)) {
-                proyectos.add(p)
+
+            if(it?.marcoLogico){
+                def p = it.marcoLogico.proyecto
+                if (!proyectos?.id.contains(p.id)) {
+                    proyectos.add(p)
+                }
             }
+
         }
         if (params.anio) {
             actual = Anio.get(params.anio)
