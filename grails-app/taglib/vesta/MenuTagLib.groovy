@@ -13,7 +13,7 @@ class MenuTagLib {
         def html = ""
         html += "<footer class='footer'>"
         html += "<div class='container text-center'>"
-        html += "2015 - Empresa Pública Yachay"
+        html += "Empresa Pública Yachay"
 //        html += "<span style='font-size:0.8em; margin-left:100px'>Versión ${message(code: 'version', default: '1.1.0x')}</span></div>"
         html += "</div>"
         html += "</footer>"
