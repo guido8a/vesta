@@ -190,6 +190,7 @@ class DocumentoController extends Shield {
                 render "ERROR*No se encontró Documento."
                 return
             }
+//            println ".... show_ajax ${documentoInstance?.proyecto.nombre}"
             return [documentoInstance: documentoInstance]
         } else {
             render "ERROR*No se encontró Documento."

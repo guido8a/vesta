@@ -13,8 +13,8 @@
                     Proyecto
                 </div>
                 
-                <div class="col-md-4">
-                    ${documentoInstance?.proyecto?.encodeAsHTML()}
+                <div class="col-md-9">
+                    ${documentoInstance?.proyecto?.nombre?.encodeAsHTML()}
                 </div>
                 
             </div>
